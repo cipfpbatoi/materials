@@ -8,7 +8,7 @@ VirtualBox pot treballar amb discos de VMware (amb extensió **vmdk**) i fins i 
 
 Un qüestió important en crear un nou disc dur és si ho volem d'expansió dinàmica o de mesura fixa. Nosaltres sempre triarem la primera opció que vol dir que el fitxer vdi que es crea no tindrà tota la mesura del disc portar creat sinó que tindrà només l'espai necessari per a funcionar, que anirà augmentant-se segons la màquina vaja necessitant més espai.
 
-![Administrador de medis virtuals](./img/adm-med-virt.md)
+![Administrador de medis virtuals](./img/adm-med-virt.png)
 
 En aquest cas des de l'Administrador de mitjans virtuals podem veure la mesura virtual del disc (la que es pensa que té la màquina virtual i el màxim que podria arribar a tindre) i la mesura real del disc que és la que ocupa el fitxer vdi en el disc dur real.
 
@@ -23,13 +23,13 @@ Si optem per un disc SATA no cal configurar res, igual que passa en la realitat,
 
 En el cas dels discos IDE hem d'indicar si serà el primari o el secundari i dins de cadascun si és el mestre o l'esclau (recordeu que normalment en un PC hi ha 2 connectors IDE, un anomenat primari i l'altre secundari, i que en cadascun podem connectar fins a 2 dispositius, el mestre i l'esclau).
 
-![Disc SATA](./img/disco-sata.md)
+![Disc SATA](./img/disco-sata.png)
 
 Per a afegir un disc a un controlador existent (IDE o SATA) seleccionem el controlador i en les icones que apareixen a la dreta triem si volem afegir un dispositiu de CD/DVD o un nou disc portar al controlador.
 
 També tenim en la part inferior de l'arbre d'emmagatzematge una icona per a afegir un nou controlador que pot ser SCSI, SAS o de disquette a més de IDE o SATA.
 
-![SATA Controller](./img/control-sata.md)
+![SATA Controller](./img/control-sata.png)
 
 NOTA: si en una màquina virtual hem instal·lat un sistema operatiu en un disc configurat com IDE (o SATA) i després l'arranquem en una màquina on està configurat com SATA (o IDE) el sistema podria no arrancar correctament.
 
