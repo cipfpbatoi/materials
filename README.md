@@ -10,4 +10,5 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   
 ### Altres apunts
 * [Virtualització. Virtualbox](./altres/virtualbox/)
+* [Crear documentación con Markdown](https://juanseguravasco.github.io/proyectos/flipped/markdown/)
 
