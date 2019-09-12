@@ -6,7 +6,7 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
 
 ### Apunts de mòduls
 * CFGS Desenvolupament d'Aplicacions Web (DAW)
-  * [Desenvolupament Web en Entorn Client (2nDAW)](https://juanseguravasco.github.io/daw_dwc/)
+  * [Desenvolupament Web en Entorn Client (2nDAW)](./daw/dwc/)
   
 ### Altres apunts
 * [Virtualització. Virtualbox](./altres/virtualitzacio/)
