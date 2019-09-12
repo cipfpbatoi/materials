@@ -46,6 +46,8 @@ La més comuna és la virtualització completa en la qual s'emula completament e
 
 Ací la virtualització es realitza mitjançant un programa anomenat _**hypervisor**_ i pot ser de 2 tipus:
 * **Hypervisor de tipus 2**: és un programa que s'executa sobre el sistema operatiu de la màquina real (host) com qualsevol altre programa de la màquina. És el que utilitzarem nosaltres en aquest curs i els més coneguts són **Virtualbox, VMWare Player**, etc. Com s'explica en l'enllaç anterior no és la manera més eficient de virtualitzar màquines però ens permet utilitzar el nostre ordinador de classe per a fer altres tasques a part de virtualitzar.
+
 ![VMM-Type2](https://es.wikipedia.org/wiki/M%C3%A1quina_virtual#/media/Archivo:VMM-Type2.JPG)
+
 * **Hypervisor de tipus 1**: s'executa directament sobre el maquinari de la màquina real (en realitat inclou un mínim SO per a accedir a aquest maquinari) pel que en aqueixa màquina real no es pot fer cap tasca a part de crear màquines virtuals. És la virtualització més eficient i és la que realitzen programes com **Proxmox, VMWare ESX/ESXi**, ...
 ![VMM-Type1](https://es.wikipedia.org/wiki/M%C3%A1quina_virtual#/media/Archivo:VMM-Type1.JPG)
