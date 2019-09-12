@@ -9,6 +9,6 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   * [Desenvolupament Web en Entorn Client (2nDAW)](https://juanseguravasco.github.io/daw_dwc/)
   
 ### Altres apunts
-* [Virtualització. Virtualbox](./altres/virtualbox/)
+* [Virtualització. Virtualbox](./altres/virtualitzacio/)
 * [Crear documentación con Markdown](https://juanseguravasco.github.io/proyectos/flipped/markdown/)
 
