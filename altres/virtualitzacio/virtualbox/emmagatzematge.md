@@ -1,4 +1,4 @@
-# [Virtualbox](../)
+# [Virtualbox](./README.md)
 
 ## Emmagatzematge en VirtualBox
 
