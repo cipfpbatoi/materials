@@ -31,7 +31,7 @@ Importar i exportar màquines virtuals.
 ## Importar i exportar màquinas virtuals
 En el menú Arxiu de VirtualBox trobem opcions per a importar i exportar màquines virtuals, anomenades Importar/Exportar servei virtualitzat.
 
-
+![Exportar ova](./img/exportar-ova.png)
 
 L'exportació crea un arxiu comprimit en el qual es guarda tota la informació de configuració de la màquina virtual, així com tots els seus discos durs amb les dades, aplicacions, etc., del sistema operatiu guest . L'extensió d'aquest tipus de fitxer és **.ova**.
 
