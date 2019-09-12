@@ -1,5 +1,3 @@
-{{ content }}
-
 # Markdown
 Es un lenguaje de marcas ligero. Su ventaja frente a otros lenguajes de marcado (como HTML) es que el fichero de texto con la información es mucho más legible.
 
