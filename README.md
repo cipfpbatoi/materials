@@ -10,6 +10,6 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   
 ### Altres apunts
 * [Virtualització. Virtualbox](./altres/virtualitzacio/)
-* [Configurar la xarxa en GNU/Linux](https://juanseguravasco.github.io/smx/ubuntu18/)
-* [Crear documentación con Markdown](https://juanseguravasco.github.io/proyectos/flipped/markdown/)
+* [Configurar la xarxa en GNU/Linux](./altres/xarxa-linux/)
+* [Crear documentación con Markdown](./altres/markdown/)
 
