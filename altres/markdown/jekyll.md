@@ -1,5 +1,3 @@
-{{ content }}
-
 # Crear nuestra documentació con Jekyll
 Una opción si queremos hacer una "web" de documentación más compleja es utlizar alguna herramienta como Jekyll que es como están hechas las GH Pages.
 
