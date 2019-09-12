@@ -2,9 +2,9 @@
 
 ## Emmagatzematge en VirtualBox
 
-La part més important del nostre sistema és el disc dur virtual on el tenim instal·lat. Aquest disc portar és un fitxer que es guarda en la màquina real amb extensió vdi en la carpeta del nostre directori d'inici denominada VirtualBox VMs.
+La part més important del nostre sistema és el disc dur virtual on el tenim instal·lat. Aquest disc portar és un fitxer que es guarda en la màquina real amb extensió **vdi** en la carpeta del nostre directori d'inici denominada **VirtualBox VMs**.
 
-VirtualBox pot treballar amb discos de VMware (amb extensió vmdk) i fins i tot crear un nou disc dur amb aqueix format (ens pregunta el format a l'hora de crear un nou disc).
+VirtualBox pot treballar amb discos de VMware (amb extensió **vmdk**) i fins i tot crear un nou disc dur amb aqueix format (ens pregunta el format a l'hora de crear un nou disc).
 
 Un qüestió important en crear un nou disc dur és si ho volem d'expansió dinàmica o de mesura fixa. Nosaltres sempre triarem la primera opció que vol dir que el fitxer vdi que es crea no tindrà tota la mesura del disc portar creat sinó que tindrà només l'espai necessari per a funcionar, que anirà augmentant-se segons la màquina vaja necessitant més espai.
 
@@ -38,10 +38,10 @@ Des de l'administrador de mitjans virtuals podem veure tots els discos durs que 
 
 A vegades volem fer una còpia d'un disc existent per a tindre una segona màquina virtual (per exemple si necessitem 2 clients Windows 7 no té sentit instal·lar i configurar el sistema en cada màquina sinó que ho fem una vegada i després “copiem” el disc dur ja creat).
 
-Per a fer això no podem simplement copiar el fitxer vdi que constitueix el disc dur de la màquina perquè cada disc és únic i té un codi que l'identifica, el seu UUID. En intentar afegir el nou disc vdi a VirtualBox obtindrem un missatge d'error indicant que ja tenim un disc portar amb aqueix UUID. El que hem de fer és “clonar” el disc dur de manera que tenim una còpia igual del mateix però amb diferent identificador. Podem fer-ho des de l'Administrador de mitjans virtuals amb l'opció menú Arxiu -> Copiar disc.
+Per a fer això no podem simplement copiar el fitxer vdi que constitueix el disc dur de la màquina perquè cada disc és únic i té un codi que l'identifica, el seu UUID. En intentar afegir el nou disc vdi a VirtualBox obtindrem un missatge d'error indicant que ja tenim un disc portar amb aqueix UUID. El que hem de fer és “clonar” el disc dur de manera que tenim una còpia igual del mateix però amb diferent identificador. Podem fer-ho des de l'_Administrador de mitjans virtuals_ amb la primera icona (_'Copiar'_) o des del `menú Medi -> Copiar`.
 
 ### Canviar el CD
-En qualsevol moment podem canviar el CD que tenim en la unitat de CD sense necessitat d'apagar la màquina virtual, des del menú Dispositius.
+En qualsevol moment podem canviar el CD que tenim en la unitat de CD sense necessitat d'apagar la màquina virtual, des del `menú Dispositius -> Unitats òptiques` de la màquina.
 
 ## [La Xarxa en Virtualbox](./xarxa.md)
 
