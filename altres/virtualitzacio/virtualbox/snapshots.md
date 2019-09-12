@@ -9,6 +9,6 @@ Ens permeten guardar “instantànies” de l'estat de la nostra màquina i torn
 
 És una opció molt útil si farem un canvi en la configuració de la màquina virtual i no sabem si afectarà negativament aqueixa màquina.
 
-![Snapshot](./snapshot.png)
+![Snapshot](./img/snapshot.png)
 
 En aquesta finestra apareixeran totes les instantànies i podem tornar a ella en qualsevol moment seleccionant-la i prement el botó de Restauració d'una instantània.
