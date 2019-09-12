@@ -37,8 +37,8 @@ L'exportació crea un arxiu comprimit en el qual es guarda tota la informació d
 
 La importació d'un fitxer ova crea una nova màquina virtual exactament igual a la que es va exportar.
 
-## Emmagatzematge en VirtualBox
+## [Emmagatzematge en VirtualBox](./emmagatzematge.md)
 
-## La xarxa en Virtualbox
+## [La xarxa en Virtualbox](./xarxa.md)
 
-## Snapshots o Instantànies
+## [Snapshots o Instantànies](./snapshots.md)
