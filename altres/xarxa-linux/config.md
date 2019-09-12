@@ -34,7 +34,7 @@ network:
             dhcp4: yes
 ```
 
-![interfaces](./img/interfaces.png)
+![interfaces](./img/interfaces.jpg)
 
 La informació que trobem és:
 * auto: per a què la interfície s'active automàticament en arrancar l'equip sense haver de fer ifup.
@@ -64,7 +64,7 @@ network:
             optional: true
 ```
 
-![interfaces](./img/interfaces2.png)
+![interfaces](./img/interfaces2.jpg)
 
 Podem configurar cada interfície de forma estàtica (iface ethX inet static) o per dhcp (iface ethX inet dhcp). Si ho fem estàticament hem d'indicar la IP (address), la màscara (netmask), la porta d'enllaç si fa falta (gateway) i els servidors DNS (dns-nameservers). També es pot indicar la xarxa (network) i l'adreça de broadcast però no és necessari perquè es pot calcular a partir de la IP i la màscara.
 
