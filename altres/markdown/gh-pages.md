@@ -1,5 +1,3 @@
-{{ content }}
-
 # Publicar en gh-pages
 GitHub Pages es un servicio de alojamiento web estático de GitHub que permite publicar documentación. Al ser contenido estático podemos usar HTML, CSS y Javascript y podemos usarlo para publicar apuntes, portfolio, información sobre los repositorios, etc. Las _gh-pages_ están accesible en el dominio github.io. Y podemos poner las páginas en formato MD y GitHun las sirve automáticamente como HTML.
 
