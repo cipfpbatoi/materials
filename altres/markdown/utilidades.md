@@ -1,5 +1,3 @@
-{{ content }}
-
 # Conversiones de formato 
 
 ## Convertir de HTML a MD
