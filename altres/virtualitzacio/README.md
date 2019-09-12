@@ -6,6 +6,6 @@ Ací explicarem què és la Virtualització i com utilitzar l'aplicació Virttua
     1. Avantatges i inconvenients de virtualitzar
     2. Tipus de virtualització
 3. [VirtualBox](./virtualbox/)
-    4. [Emmagatzematge en VirtualBox](./virtualbox/emmagatzematge.md)
-    5. [La xarxa en Virtualbox](./virtualbox/xarxa.md)
-    6. [Snapshots o Instantànies](./virtualbox/snapshots.md)
+    1. [Emmagatzematge en VirtualBox](./virtualbox/emmagatzematge.md)
+    1. [La xarxa en Virtualbox](./virtualbox/xarxa.md)
+    1. [Snapshots o Instantànies](./virtualbox/snapshots.md)
