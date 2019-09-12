@@ -17,7 +17,7 @@ La página principal que se abrirá automáticamente se debe llamar README.md, i
 
 Una vez creadas las paginas hay que activar las GitHub Pages para ese repositorio yendo a **Settings** y escogiendo dónde se encuentran.
 
-[Settings](img/01-settings.png)
+![Settings](img/01-settings.png)
 
 También podemos aplicar a nuestra documentación un tema de Jekyll.
 
