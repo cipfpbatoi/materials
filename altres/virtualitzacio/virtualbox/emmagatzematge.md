@@ -1,3 +1,5 @@
+# [Virtualbox](../)
+
 ## Emmagatzematge en VirtualBox
 
 La part més important del nostre sistema és el disc dur virtual on el tenim instal·lat. Aquest disc portar és un fitxer que es guarda en la màquina real amb extensió vdi en la carpeta del nostre directori d'inici denominada VirtualBox VMs.
@@ -40,3 +42,7 @@ Per a fer això no podem simplement copiar el fitxer vdi que constitueix el disc
 
 ### Canviar el CD
 En qualsevol moment podem canviar el CD que tenim en la unitat de CD sense necessitat d'apagar la màquina virtual, des del menú Dispositius.
+
+## [La Xarxa en Virtualbox](./xarxa.md)
+
+## [Snapshots](./snapshots.md)
