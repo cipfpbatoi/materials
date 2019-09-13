@@ -10,11 +10,9 @@ La **EFI** (_Extensible Firmware Interface_), és una especificació desenvolupa
 * L'entorn és molt més amigable (entorn gràfic amb ratolí front a la interfície de text de BIOS)
 * El temps d'arrencada del sistema operatiu és més curt perquè UEFI pot carregar directament el carregador del sistema operatiu sense "intermediaris".
 * Només carrega sistemes operatius de 64 bits.
-* La interfície UEFI te un modo compatible amb la BIOS (**Legacy BIOS**) que li permet funcionar con una BIOS per a carregar sistemes operatius de 32 bits o que estiguen en discos MBR.
+* La interfície UEFI te un modo compatible amb la BIOS (**Legacy BIOS**) que li permet funcionar con una BIOS per a carregar sistemes operatius de 32 bits o que estiguen en discos MBR. NOTA: Per a saber quin tipus d'instal·lació de Windows tenim executem (menu contextual del botó Inici -> Executar) msinfo32.
 
-NOTA: Per a saber quin tipus d'instal·lació de Windows tenim executem (menu contextual del botó Inici -> Executar) msinfo32.
-
-![img](./img/.png)
+![uefi](./img/uefi.png)
 
 El procés d'arrencada és més simple que amb BIOS: al arrancar l'equip s'executa el prgrama que hi ha en la UEFI que comprova i inicialitza el hardware i carrega directament en la RAM el carregador del sistema operatiu que carrega el kernel del sistema i tot el que necessita.
 
@@ -22,7 +20,7 @@ L'arrencada amb UEFI és més senzilla i ràpida perquè aquest firmware pot car
 
 Un ordinador amb arrencada UEFI necessita una partició en el disc dur anomenada **ESP** (_EFI System Partition_) on es guarden els carregadors dels sistemes operatius instal·lats en el disc. Aquesta partició ha de tindre un sistema d'arxius **FAT32** i conté el carregador de cada sistema operatiu instal·lat.
 
-![img](./img/.png)
+![ESP](./img/esp.png)
 
 En la imatge anterior podem veure la partició EFI d'un equip amb Windows 8, Debian i Ubuntu instal·lats. En el panel de la dreta podem veure el contingut de la carpeta d'arrencada de Windows amb el carregador (bootmgr) i el menú d'opcions d'inici (BCD).
 
@@ -41,7 +39,7 @@ Els pasos per a fer-ho són els següents:
 1. **Arranquem amb un LiveCD** de GNU/Linux. Quan ens pregunte li direm que volem provar el sistema sense instal·lar res (en realitat el nostre GN//Linux ja està instal·lat, només que no podem accedir a ell).
 2. **Obrim una terminal** i determinem quina és la partició de EFI i quina la del nostre sistema GNU/Linux. Podem fer-ho amb `sudo fdisk -l` (o si el fdisk diu que no enten particions GPT fem `sudo parted`).
 
-![img]()
+![fdisk](./img/fdisk.png)
 
 En el nostre cas la partició EFI és /dev/sda2 i la de Linux és /dev/sda5.
 
@@ -75,4 +73,3 @@ umount /mnt
 Ara ja podem reiniciar el nostre sistema i apareixerà el menú de Grub per a tria quin sistema operatiu carregar.
 
 (Font [https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader](https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader) )
-
