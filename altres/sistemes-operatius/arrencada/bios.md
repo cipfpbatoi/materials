@@ -1,3 +1,6 @@
+# [Introducció](./)
+## [Arrencada del sistema amb UEFI](./uefi.md#arrencada-amb-bios)
+
 ## Arrencada amb BIOS
 La **BIOS** és un xip de memòria ROM que conté les configuracions bàsiques de l'ordinador (com la data i hora o la seqüència d'arrencada) i un xicotet programa per a carregar el sistema operatiu.
 
