@@ -33,7 +33,7 @@ Si el firmware no troba cap opció al arrancar directament carrega el fitxer **`
 
 Això no hauria de ser un problema però hi ha alguns equips amb una implementació dèbil d'EFI on els carregadors no es registren correctament en la NVRAM per la qual cosa només arranquen el carregador per defecte, és a dir,el de Windows (font: [http://mjg59.livejournal.com/138188.html](http://mjg59.livejournal.com/138188.html)).
 
-La [solució](http://localhost/moodle/mod/page/view.php?id=96) si tenim un equip amb aquest problema on volem tindre un Windows i un GNU/Linux és sobreescriure el `EFI/boot/bootx64.efi` amb el carregador de GNU/Linux que ens donarà opció d'arrancar tant Linux com Windows.
+La solució si tenim un equip amb aquest problema on volem tindre un Windows i un GNU/Linux és sobreescriure el `EFI/boot/bootx64.efi` amb el carregador de GNU/Linux que ens donarà opció d'arrancar tant Linux com Windows.
 
 Els pasos per a fer-ho són els següents:
 1. **Arranquem amb un LiveCD** de GNU/Linux. Quan ens pregunte li direm que volem provar el sistema sense instal·lar res (en realitat el nostre GN//Linux ja està instal·lat, només que no podem accedir a ell).
