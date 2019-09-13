@@ -158,19 +158,19 @@ Els passos a seguir són:
 1. Obrir una terminal.
 1. Si no sabem en quina partició tenim instal·lat el sistema operatiu ho determinarem amb fdisk.
 ```bash
-sudo fdisk -l
+    sudo fdisk -l
 ```
-1. Muntar la partició que conté la instal·lació d'Ubuntu (canvia **sdXY** per la partici'o que cont'e el sistema, per exemple, **sda1** o **sda5**).
+4. Muntar la partició que conté la instal·lació d'Ubuntu (canvia **sdXY** per la partici'o que cont'e el sistema, per exemple, **sda1** o **sda5**).
 ```bash
     sudo mount /dev/sdXY /mnt
 ```
-1. Executar l'ordre `grub-install` com es descriu a continuació (canviant **sdX** pel disc dur de l-equip, per exemple, **sda**). Açò reinstal·larà els fitxers de Grub 2 en la partició muntada en la seua correcta ubicació i també corregirà el MBR:
+5. Executar l'ordre `grub-install` com es descriu a continuació (canviant **sdX** pel disc dur de l-equip, per exemple, **sda**). Açò reinstal·larà els fitxers de Grub 2 en la partició muntada en la seua correcta ubicació i també corregirà el MBR:
 ```bash
     sudo grub-install --root-directory=/mnt/ /dev/sdX
 ```
-1. Si hem fet algun canvi en els sistemes que teníem instal·lats (com instal·lar un nou Windows) hem d-actualitzar el menú de Grub 2 amb:
+6. Si hem fet algun canvi en els sistemes que teníem instal·lats (com instal·lar un nou Windows) hem d-actualitzar el menú de Grub 2 amb:
 ```bash
-sudo update-grub
+    sudo update-grub
 ```
 
 Ara ja podem reiniciar l'equip.
@@ -199,8 +199,8 @@ Es tracta de un LiveCD que permet arrencar des de la partició que conté en nos
 ```bash
     sudo grub-install /dev/sdX
 ```
-1. Actualitzar el menú Grub 2 amb `sudo update-grub` si hem fet algun canvi en el disc (per exemple si hem instal·lat un nou Windows)
+2. Actualitzar el menú Grub 2 amb `sudo update-grub` si hem fet algun canvi en el disc (per exemple si hem instal·lat un nou Windows)
 ```bash
     sudo update-grub
 ```
-1. Reiniciar l'equip.
+3. Reiniciar l'equip.
