@@ -14,7 +14,7 @@ El procés de carregar el S.O. tindrà vàries fases:
 
 Aquest procés tarda alrededor d'un minut en els sistemes operatius moderns, encara que en els servidors pot tardar varis minuts.
 
-## [Arrencada del sistema amb BIOS](./bios.html)
-### [Arrencada de Windows amb BIOS](./bios.html#arrencada-de-windows-amb-bios)
-### [Arrencada de GNU/Linux amb Grub2 i BIOS](./bios.html#arrencada-de-gnulinux-amb-grub2-i-bios)
-## [Arrencada del sistema amb UEFI](./uefi.html#arrencada-amb-bios)
+## [Arrencada del sistema amb BIOS](./bios.md)
+### [Arrencada de Windows amb BIOS](./bios.md#arrencada-de-windows-amb-bios)
+### [Arrencada de GNU/Linux amb Grub2 i BIOS](./bios.md#arrencada-de-gnulinux-amb-grub2-i-bios)
+## [Arrencada del sistema amb UEFI](./uefi.md#arrencada-amb-bios)
