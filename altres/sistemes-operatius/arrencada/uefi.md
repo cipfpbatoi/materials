@@ -1,3 +1,8 @@
+## [Introducció](./)
+## [Arrencada del sistema amb BIOS](./bios.md)
+### [Arrencada de Windows amb BIOS](./bios.md#arrencada-de-windows-amb-bios)
+### [Arrencada de GNU/Linux amb Grub2 i BIOS](./bios.md#arrencada-de-gnulinux-amb-grub2-i-bios)
+
 ## Arrencada amb UEFI
 La **EFI** (_Extensible Firmware Interface_), és una especificació desenvolupada per Intel per a reemplaçar la antiga BIOS que tenia moltes limitacions:
 * Dona suport complet als discos **GPT** que superen les limitacions dels **MBR** (la mida màxima d'una partició MBR és de 2 TB front als 8 ZB i només permeten 4 particions primàries front a les 128 que permeten els discos GPT).
