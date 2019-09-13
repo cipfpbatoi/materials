@@ -4,7 +4,7 @@
 ## Arrencada amb BIOS
 La **BIOS** és un xip de memòria ROM que conté les configuracions bàsiques de l'ordinador (com la data i hora o la seqüència d'arrencada) i un xicotet programa per a carregar el sistema operatiu.
 
-![img](./img/.png)
+![BIOS](https://upload.wikimedia.org/wikipedia/commons/0/05/Award_BIOS_setup_utility.png)
 
 Encara que la inmensa majoria d'equips ja no tenen BIOS sino la nova **UEFI** aquesta es pot configurar en mode **Legacy BIOS** per a que funcione com una BIOS.
 
@@ -24,7 +24,7 @@ Alguns carregadors canvien el programa del MBR per a que carregue directament el
 
 El Master Boot Record (**MBR**) és el primer sector d'un dispositiu d'emmagatzematge de dades, com un disc dur o un pen-drive. Conté la taula de particions (64 bytes) que indica quines particions hi ha en el dispostiu i normalment també le programa que inicia la seqüència d'arrencada del sistema operatiu (446 bytes):
 
-![img](./img/.png)
+![MBR](./img/mbr.png)
 
 La taula de particions conté 4 registres de 16 bytes, amb informació de les 4 particions primàries:. La informació que guarda de cada partició és si és la partició activa, el seu sistema d'arxuis, on comença i on acaba, la seua mida, etc.
 
@@ -33,7 +33,7 @@ La taula de particions conté 4 registres de 16 bytes, amb informació de les 4 
 #### Windows 8/10 vs 7
 La manera en que arranca l'ordinador és pràcticament igual en Windows 7 i Windows 10 ( o 8). La principal diferència entre els dos sistemes és que quan apaguen un ordinador amb Windows 7 es tanquen les sessions dels usuaris, s'aturen els serveis i s'apaga la màquina. Amb Windows 8/10 només es tanquen les sessions dels usuaris però la màquina s'hiberna i es guarda el contingut de la memòria en un fitxer anomenat hiberfil.sys. Això té l'avantatge que el sistema s'inicia molt ràpidament perquè no han de carregar-se els drivers i iniciar el sistema operatiu i els serveis.
 
-![img](./img/.png)
+![Windows 8/10 vs 7](./img/win7_vs_win8.png)
 
 El procés d'arrencada és el següent:
 * Com hem vist el primer lugar s'executa el **POST** i tras comprovar el hardware carrega el **MBR**
@@ -55,15 +55,15 @@ NOTA: ací anem a veure com podem modificar l'arrencada de Windows des del matei
 
 La manera més senzilla de modificar les opcions del BCD és amb el comando `msconfig`. Podem canviar el temps d'espera, el sistema operatiu per defecte o les opcions de càrrega:
 
-![img](./img/.png)
+![msconfig](./img/msconfig.png)
 
 Altra manera de canviar les opcions és des de `Panell de Control -> Sistema i Seguretat -> Sistema -> Configuració Avançada del sistema -> Opcions Avançades -> Inici i Recuperació -> Configuració`. Des d'ací només permet canviar el temps i el sistema operatiu per defecte:
 
-![img](./img/.png)
+![Inici i Recuperació](./img/win_inicio.png)
 
 L'opció més potent però més difícil de canviar les opcions és executar des de la **terminal d'Administrador** l'eina `bcdedit`. A continuació hi ha un exemple de l'execució d'aquesta ordre sense cap paràmetre o opció.
 
-![img](./img/.png)
+![bcdedit](./img/bcdedit.png)
 
 El comando `BCDEDIT` eina permet configurar qualsevol opció d'arrencada en el menú BCD. Podem obtindre ajuda del mateix amb:
 * `bcdedit /?`: mostra informació general del comando
@@ -73,15 +73,15 @@ El comando `BCDEDIT` eina permet configurar qualsevol opció d'arrencada en el m
 #### Reparar l'arrencada del sistema
 El primer que hem de fer és introduir el CD d'instal·lació de Windows i arrancar l'equip. Una vegada iniciem amb el CD, cal triar l'opció de "reparar equip" i no continuar amb l'opció genèrica d'instal·lació del sistema.
 
-![img](./img/.png)
+![Reparar Windows](./img/win7-arranque.png)
 
 Una vegada triem aquesta opció, ens apareixerà una finestra amb dos opcions:
 
-![img](./img/.png)
+![Reparar Windows](./img/win7-arranque2.png)
 
 Com en el nostre cas el que volem és reparar el sistema, però no recuperar-lo d'una imatge anterior, cal triar l'opció que apareix en primer lloc. En principi el sistema a carregar apareixerà en la llista. Després de polsar “següent”, ens apareixerà una finestra en les diferents possibilitats de recuperació. Segons el nostre problema haurem de triar una o altra.
 
-![img](./img/.png)
+![Reparar Windows](./img/win7-arranque3.png)
 
 Entre les diferents opcions, en el cas que estem, caldria executar la primera opció “Reparació d'inici”. Aquesta opció és la que triem i serà l'encarregada de resoldre si hi han problemes en l'arranc del sistema.
 
@@ -102,9 +102,7 @@ Per exemple per a recuperar el sector d'arrancada de la partició del sistema am
 #### Reparacions d'inici en Windows 10
 La forma de reparar Windows 10 és molt semblant al que hem vist per a Windows 7 però canvia la forma d'accedir a algunes opcions i també inclou nous assitents per a fer més senzilla la tarea.
 
-En la següent adreça podeu veure un vídeo de com fer les reparacions més comuns, encara que és només un exemple i podeu trobar molts més en Internet:
-
-Play Video
+En internet podeu trobar infinitat de pàgines i vídeos de com fer les reparacions més comuns.
 
 ### Arrencada de GNU/Linux amb Grub2 i BIOS
 Tenim molts carregadors per als sisteme Linux però el més utilitzat és Grub2.
@@ -132,7 +130,7 @@ Per a que els canvis fets tinguen efecte, després de fer qualsevol modificació
 
 També podem instal·lar qualsevol programa gràfic per a editar les opcions d'inici com **StartUp Manager**, **Grub Customizer**, etc:
 
-![StartUp Manager](./img.png)
+![StartUp Manager](./img/startup-manager.png)
 
 #### Reparar l'arrencada del sistema
 Hi pot haver ocasions en què un usuari necessita tornar a instal·lar Grub 2. Això passa sovint quan el MBR del dispositiu d'arrencada s'altera i GRUB 2 s'elimina, per exemple quan Windows s'instal·la (o es re-instal·la) després d'instal·lar GNU/Linux.
