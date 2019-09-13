@@ -1,4 +1,4 @@
-# [Introducció](./)
+## [Introducció](./)
 ## [Arrencada del sistema amb UEFI](./uefi.md#arrencada-amb-bios)
 
 ## Arrencada amb BIOS
