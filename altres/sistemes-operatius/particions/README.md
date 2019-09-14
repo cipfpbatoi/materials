@@ -1,4 +1,14 @@
 # Particionament de discos
+
+## Índex
+* [Introducció](#introducció)
+* [Per què utilitzar particions](#per-qu%C3%A8-utilitzar-particions)
+* [Nom de les particions](#nom-de-les-particions)
+* [Veure les nostres particions](#veure-les-nostres-particions)
+* [Taula de particions Ms-DOS o MBR](./mbr.html#taula-de-particions-ms-dos-o-mbr)
+* [Taula de particions GUID (GPT)](./gpt.html#taula-de-particions-guid-o-gpt)
+
+## Introducció
 Encara que podem instal·lar el sistema operatiu en un medi extraïble com una memòria USB, el més normal és fer-ho en el disc dur de l'ordinador. Encara que un disc dur està format per plats, cilindres, pistes i sectors, en realitat el sistema operatiu el veu com si fos una sèrie de clústers consecutius.
 
 Per a utilitzar qualsevol suport d'emmagatzematge ho hem de particionar prèviament, és a dir, hem de fer particions (al menys una) en ell. Una partició de disc és cada part en que es divideix un disc. Quan particionem un disc, els sistemes operatius reconeixen l'únic disc físic com un conjunt de discos lògics, a tots els efectes independents. Per tant cada partició tindrà el seu propi sistema d'arxius que gestiona com es guarden els fitxers en eixa partició. 
@@ -50,6 +60,6 @@ Des de la terminal en tots els sistemes Linux podem veure els discos i particion
 
 ![fdisk (CC0)](./img/fdisk.png)
 
-## [Taula de particions Ms-DOS o MBR](./mbr.md)
+## [Taula de particions Ms-DOS o MBR](./mbr.html#taula-de-particions-ms-dos-o-mbr)
 
-## [Taula de particions GUID (GPT)](./gpt.md)
+## [Taula de particions GUID (GPT)](./gpt.html#taula-de-particions-guid-o-gpt)
