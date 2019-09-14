@@ -32,20 +32,28 @@ En la imatge anterior podem veure un disc dur de 233 GB particionat de la següe
 * Altra partició primària de 54 GB també amb sistema d'arxius ext4
 
 ### Còpia de seguretat del MBR
-En UNIX es pot fer una còpia i restaurar el MBR des de la consola. Ho farem amb l'ordre dd que copia els bytes indicats del dispositiu d'entrada (especificat per if) en el dispositiu d'eixida (especificat per of).
+En UNIX es pot fer una còpia i restaurar el MBR des de la consola. Ho farem amb l'ordre `dd` que copia els bytes indicats del dispositiu d'entrada (especificat per _if_) en el dispositiu d'eixida (especificat per _of_).
 
 Per a fer la còpia de seguretat, executarem:
-
+```bash
 dd if=/dev/sda of=mbr.backup bs=512 count=1
-Estem dient-li que del dispositiu /dev/sda (és a dir el primer disc dur SATA, si volem altre canviarem això) copie al dispositiu d'eixida (el fitxer mbr.backup que després haurem de guardar en un USB o altre lloc) 1 bloc (count=1) de 512 bytes (bs=512).
+```
+
+Estem dient-li que del dispositiu `/dev/sda` (és a dir el primer disc dur, si volem altre canviarem això) copie al dispositiu d'eixida (el fitxer `mbr.backup` que després haurem de guardar en un USB o altre lloc) 1 bloc (`count=1`) de 512 bytes (bs=512).
 
 Per a restaurar-lo:
-
+```bash
 dd if=mbr.backup of=/dev/sda
+```
+
 Si el nostre disc utilitza el sistema GPT en compte de l'MBR (ho veurem en el pròxim apartat) i volem fer una còpia de seguretat de l'arrencada del disc hem de copiar els primers 63 sectors del disc (que equivalen al primer cilindre del disc) i no només el primer sector. La instrucció seria:
+```bash
+dd if=/dev/sda of=gpt.backup count=63
+```
 
-dd if=/dev/sda of=mbr_63.backup count=63
 Per a esborrar el contingut de l'MBR podem posar els bytes del MBC a zero (però no tot el MBR perquè perdríem també la taula de particions).
-
+```bash
 dd if=/dev/zero of=/dev/sda bs=446 count=1
+```
+
 En els sistemes operatius de Microsoft no podem accedir a l'MBR.
