@@ -16,6 +16,15 @@ Hi ha moltes raons per a tindre més d'una partició al nostre disc dur:
 * Es pot guardar una còpia de seguretat de les dades de l'usuari en altra partició del mateix disc, per a evitar la pèrdua d'informació important. Aquesta opció no es molt recomanable perquè si s'estropeja el disc sencer es perdria també la còpia.
 * Alguns sistemes operatius aconsellen tindre més d'una partició, per exemple, els sistemes GNU/Linux recomanen tindre una partició d'intercanvi (swap) per a la memòria virtual o els sistemes Windows que recomanen tindre els fitxers d'arrencada en una partició diferent a la del sistema operatiu.
 
+## Nom de les particions
+En sistemes basats en Unix (com Gnu/Linux), cada disc té un nom de tipus **sdX** (el 1r disc es diu **sda**, el 2n disc **sdb**, etc). Recorda que qualsevol pen drive, disc SSD, etc que connectem a l'ordinador és un nou disc i rebrà un nom d'aquest tipus.
+
+Cada partició rep el nom del disc seguit d'un número que indica quina partició és dins del disc. Per exemple la 1a partició primària del 1r disc s'anomene **sda1**, la 2a **sda2**, etc. La 1a partició primària de segon disc seria **sdb1**. Les particions lògiques rebren números a partir del 5. Així la 1a partició lògica del 1r disc es diu **sda5** i la 2a **sda6**.
+
+Per exemple, un disc dur amb 2 particons primàries i una estesa que conté 3 particions lògiques es veuria com:
+
+![particions linux](./img/.png)
+
 ## [Taula de particions Ms-DOS o MBR](mbr.md)
 
 ## [Taula de particions GUID (GPT)](./gpt.md)
