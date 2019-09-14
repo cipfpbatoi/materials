@@ -48,7 +48,7 @@ En Windows els discos s'identifiquen con **Disco0** el 1r, **Disco1** el 2n, etc
 ## Veure les nostres particions
 En Windows podem veure els diferents discos i particions que tenim al nostre equip des de l'**Administrador de disc** que trobem dins d'**Adminstracío d'equips** (es pot obrir, per exemple, des del `menú contextual de 'Equip' -> Administrar`):
 
-![Administrador de disc](./img/admin-discos.png)
+![Administrador de disc](./img/adm-discos.png)
 
 Des de la terminal podem treballar amb els discos amb els comandos `FDISK` (per a discos MBR) o `DISKPART` (per a discos MBR o GPT).
 
