@@ -32,7 +32,24 @@ En l'exemple anterior trobem les particions:
   * sda5: primera partició lògica amb format ext4
   * sda6: segona partició lògica, per a la memòria virtual d'un sistema Linux (swap)
   * sda7: tercera partició lògica, amb NTFS
-  
+
+En Windows els discos s'identifiquen con **Disco0** el 1r, **Disco1** el 2n, etc. Les particions quan es munten rebren una lletra (C:, D:, E:, ...) però només es munten les particions amb format NTFS o FAT.
+
+## Veure les nostres particions
+En Windows podem veure els diferents discos i particions que tenim al nostre equip des de l'**Administrador de disc** que trobem dins d'**Adminstracío d'equips** (es pot obrir, per exemple, des del `menú contextual de 'Equip' -> Administrar`):
+
+![Administrador de disc](./img/admin-discos.png)
+
+Des de la terminal podem treballar amb els discos amb els comandos `FDISK` (per a discos MBR) o `DISKPART` (per a discos MBR o GPT).
+
+En el cas de GNU/Linux cada distribució inclou la seua pròpia eina gràfica de gestió de discos i particions (_Utilitat de discos_ en Ubuntu, _Discos_ en Linux Mint, ...).
+
+![Discos en Linux Mint (CC0)](./img/mint-discos.png)
+
+Des de la terminal en tots els sistemes Linux podem veure els discos i particions de l'equip amb els comandos `fdisk -l` o `parted`. Cal se administrador per a poder executar aquestes ordres.
+
+![fdisk (CC0)](./img/fdisk.png)
+
 ## [Taula de particions Ms-DOS o MBR](./mbr.md)
 
 ## [Taula de particions GUID (GPT)](./gpt.md)
