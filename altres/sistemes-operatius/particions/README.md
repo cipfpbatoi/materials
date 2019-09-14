@@ -23,8 +23,16 @@ Cada partició rep el nom del disc seguit d'un número que indica quina partici�
 
 Per exemple, un disc dur amb 2 particons primàries i una estesa que conté 3 particions lògiques es veuria com:
 
-![particions linux](./img/.png)
+![particions linux](./img/particions.png)
 
-## [Taula de particions Ms-DOS o MBR](mbr.md)
+En l'exemple anterior trobem les particions:
+* sda1: primera partició primària, amb format FAT32
+* sda2: segona partición primària amb format NTFS
+* sda3: partició estesa (conta com una primària). Dins trobem:
+  * sda5: primera partició lògica amb format ext4
+  * sda6: segona partició lògica, per a la memòria virtual d'un sistema Linux (swap)
+  * sda7: tercera partició lògica, amb NTFS
+  
+## [Taula de particions Ms-DOS o MBR](./mbr.md)
 
 ## [Taula de particions GUID (GPT)](./gpt.md)
