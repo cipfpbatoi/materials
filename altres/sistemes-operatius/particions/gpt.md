@@ -1,3 +1,13 @@
+
+## Índex
+* [Introducció](#introducció)
+* [Per què utilitzar particions](#per-qu%C3%A8-utilitzar-particions)
+* [Nom de les particions](#nom-de-les-particions)
+* [Veure les nostres particions](#veure-les-nostres-particions)
+* [Taula de particions Ms-DOS o MBR](./mbr.html#taula-de-particions-ms-dos-o-mbr)
+* Taula de particions GUID (GPT)
+  * [Estructura de GPT](#estructura-de-gpt)
+
 ## Taula de Particions GUID o GPT
 La _GUID Partition Table_ (GPT) és un estàndard de particionament de discos que vol solucionar les limitacions de l'MBR:
 * MBR només permet fer 4 particions primàries (per això posteriorment es van crear les particions lògiques) però GPT permet fins a 128 particions primàries en un disc
