@@ -6,10 +6,11 @@
 * [Nom de les particions](#nom-de-les-particions)
 * [Veure les nostres particions](#veure-les-nostres-particions)
 * [Taula de particions Ms-DOS o MBR](./mbr.md#taula-de-particions-ms-dos-o-mbr)
-  * [MBR](.mbr.md/#mbr)
-  * [Tipus de particions](.mbr.md/#tipus-de-particions)
-  * [Còpia de seguretat del MBR](.mbr.md/#c%C3%B2pia-de-seguretat-del-mbr)
+  * [MBR](.mbr.md#mbr)
+  * [Tipus de particions](.mbr.md#tipus-de-particions)
+  * [Còpia de seguretat del MBR](.mbr.md#c%C3%B2pia-de-seguretat-del-mbr)
 * [Taula de particions GUID (GPT)](./gpt.md#taula-de-particions-guid-o-gpt)
+  * [Estructura de GPT](./gpt.m#estructura-de-gpt)
 
 ## Introducció
 Encara que podem instal·lar el sistema operatiu en un medi extraïble com una memòria USB, el més normal és fer-ho en el disc dur de l'ordinador. Encara que un disc dur està format per plats, cilindres, pistes i sectors, en realitat el sistema operatiu el veu com si fos una sèrie de clústers consecutius.
