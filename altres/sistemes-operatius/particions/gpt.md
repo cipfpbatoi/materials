@@ -11,6 +11,11 @@
   * [Còpia de seguretat del MBR](./mbr.md#c%C3%B2pia-de-seguretat-del-mbr)
 * Taula de particions GUID (GPT)
   * [Estructura de GPT](#estructura-de-gpt)
+* [Particions en Windows](./win.md#particions-en-windows)
+  * [Instal·lar Windows amb BIOS+MBR](./win.md#installar-windows-amb-biosmbr)
+  * [Instal·lar Windows amb UEFI+GPT](./win.md#installar-windows-amb-uefigpt)
+* [Particions en GNU/Linux](./lin.md#particions-en-gnulinux)
+  * [Particions en un disc GPT](./lin.md#particions-en-un-disc-gpt)  
 
 ## Taula de Particions GUID o GPT
 La _GUID Partition Table_ (GPT) és un estàndard de particionament de discos que vol solucionar les limitacions de l'MBR:
