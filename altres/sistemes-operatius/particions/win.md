@@ -14,7 +14,7 @@
 * Particions en Windows
   * [Instal·lar Windows amb BIOS+MBR](#installar-windows-amb-biosmbr)
   * [Instal·lar Windows amb UEFI+GPT](#installar-windows-amb-uefigpt)
-* [Particions en GNU/Linux](./lin.md/particions-en-gnulinux)
+* [Particions en GNU/Linux](./lin.md#particions-en-gnulinux)
   * [Particions en un disc GPT](./lin.md#particions-en-un-disc-gpt)
 
 ## Particions en Windows
