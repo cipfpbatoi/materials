@@ -1,10 +1,10 @@
 # Particionament de discos
 
 ## Índex
-* [Introducció](#introducció)
-* [Per què utilitzar particions](#per-qu%C3%A8-utilitzar-particions)
-* [Nom de les particions](#nom-de-les-particions)
-* [Veure les nostres particions](#veure-les-nostres-particions)
+* [Introducció](./#introducció)
+* [Per què utilitzar particions](./#per-qu%C3%A8-utilitzar-particions)
+* [Nom de les particions](./#nom-de-les-particions)
+* [Veure les nostres particions](./#veure-les-nostres-particions)
 * [Taula de particions Ms-DOS o MBR](./mbr.md#taula-de-particions-ms-dos-o-mbr)
   * [MBR](.mbr.md#mbr)
   * [Tipus de particions](.mbr.md#tipus-de-particions)
