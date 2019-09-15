@@ -11,7 +11,12 @@
   * [Còpia de seguretat del MBR](.mbr.md#c%C3%B2pia-de-seguretat-del-mbr)
 * [Taula de particions GUID (GPT)](./gpt.md#taula-de-particions-guid-o-gpt)
   * [Estructura de GPT](./gpt.m#estructura-de-gpt)
-
+* [Particions en Windows](./win.md#particions-en-windows)
+  * [Instal·lar Windows amb BIOS+MBR](./win.md#installar-windows-amb-biosmbr)
+  * [Instal·lar Windows amb UEFI+GPT](./win.md#installar-windows-amb-uefigpt)
+* [Particions en GNU/Linux](./lin.md#particions-en-gnulinux)
+  * [Particions en un disc GPT](./lin.md#particions-en-un-disc-gpt)
+  
 ## Introducció
 Encara que podem instal·lar el sistema operatiu en un medi extraïble com una memòria USB, el més normal és fer-ho en el disc dur de l'ordinador. Encara que un disc dur està format per plats, cilindres, pistes i sectors, en realitat el sistema operatiu el veu com si fos una sèrie de clústers consecutius.
 
