@@ -44,7 +44,7 @@ Per defecte les particions que crea el programa instal·lador de Windows 10 Pro 
 Com podem veure estan totes excepte la partició de recuperació.
 
 Si la nostra versió de Windows no crea la taula de particions GTP sino MBR podem fer-ho manualment des de la pantalla de fer les particions prement la tecla Shift+F10 per a obrir una terminal i executant el programa `diskpart` per a crear les particions que vulguem (altra opció més senzilla és crear prèviement les particions amb alguna eina com GParted). Els comandos a executar són:
-```bash
+```cmd
 diskpart
 select disk 0
 clean
