@@ -11,6 +11,11 @@
   * [Còpia de seguretat del MBR](#c%C3%B2pia-de-seguretat-del-mbr)
 * [Taula de particions GUID (GPT)](./gpt.md#taula-de-particions-guid-o-gpt)
   * [Estructura de GPT](./gpt.m#estructura-de-gpt)
+* [Particions en Windows](./win.md#particions-en-windows)
+  * [Instal·lar Windows amb BIOS+MBR](./win.md#installar-windows-amb-biosmbr)
+  * [Instal·lar Windows amb UEFI+GPT](./win.md#installar-windows-amb-uefigpt)
+* [Particions en GNU/Linux](./lin.md#particions-en-gnulinux)
+  * [Particions en un disc GPT](./lin.md#particions-en-un-disc-gpt)
   
 ## Taula de particions Ms-DOS o MBR
 Encara és un format de particionament molt utilitzat en els PCs que tenen uns anys però els nous equips ja porten normalment el format GPT.
