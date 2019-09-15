@@ -1,3 +1,21 @@
+# Particionament de discos
+
+## Índex
+* [Introducció](#introducció)
+* [Per què utilitzar particions](#per-qu%C3%A8-utilitzar-particions)
+* [Nom de les particions](#nom-de-les-particions)
+* [Veure les nostres particions](#veure-les-nostres-particions)
+* [Taula de particions Ms-DOS o MBR](./mbr.md#taula-de-particions-ms-dos-o-mbr)
+  * [MBR](.mbr.md#mbr)
+  * [Tipus de particions](.mbr.md#tipus-de-particions)
+  * [Còpia de seguretat del MBR](.mbr.md#c%C3%B2pia-de-seguretat-del-mbr)
+* [Taula de particions GUID (GPT)](./gpt.md#taula-de-particions-guid-o-gpt)
+  * [Estructura de GPT](./gpt.m#estructura-de-gpt)
+* Particions en Windows
+  * [Instal·lar Windows amb BIOS+MBR](#installar-windows-amb-biosmbr)
+  * [Instal·lar Windows amb UEFI+GPT](#installar-windows-amb-uefigpt)
+* [Particions en GNU/Linux](./lin.md/particions-en-gnulinux)
+  * [Particions en un disc GPT](./lin.md#particions-en-un-disc-gpt)
 
 ## Particions en Windows
 ### Instal·lar Windows amb BIOS+MBR
