@@ -1,5 +1,10 @@
 
 ## Particionar al instal·lar GNU/Linux
+Linux no crea per defecte una partició per al fitxers d'arrencada com fa Windows (encara que podem fer-ho manualment, i la muntarem en la carpeta _/boot_) però sí que crea una partició per a la memòria virtual o **swap** (recordeu que en Windows la memòria virtual és un fitxer dins de C:). No cal que siga massa gran perquè si estem utilitzant molta memòria virtual el rendiment del sistema es degradarà ràpidament. La mida recomanada és:
+* per a equips amb 1GB de RAM o menys: 1GB de swap
+* per a equips entre 2GB i 8GB de RAM: 2GB de swap
+* per a equips amb més de 8GB de RAM podem no crear partició de swap perquè és difícil que la necessitem (a menys que fem molta edició de vídeos, treballem amb moltes màquines viertuals o fem altres treballs amb fitxers grans)
+
 Quan instal·lem un sistema GNU/Linux tenim habitualment l'opció de fer el particionat automàticament o manualment:
 
 ![Instal·lar](./img/lin-instal.png)
@@ -9,7 +14,7 @@ En aquest cas es tracta d'un disc dur buit sense cap altre sistema operatiu. En 
 ![Instal·lar amb Windows](./img/lin-instal-win.png)
 
 Per a crear les particions automàticament seleccionem l'opció de _'Borrar tot el disc'_ ( o _'Instal·lar junt a l'altre sistema'_ si ja tenim un sistema operatiu en aquest disc) i es crearan automàticament 2 particions:
-* una xicoteta partició de swap (per a la memòria virtual) que creará al final del disc i serà de tipus lògica
+* una xicoteta **partició de swap** (per a la memòria virtual) que creará al final del disc i serà de tipus lògica
 * la resta del disc dur serà per a una única partició primària amb sistema de fitxers _ext4_ on instal·lar el sistema operatiu
 
 Si seleccionem l'opció _'Més opcions'_ haurem de crear nosaltres les particions del disc. Per a això tenim en la part inferior esquerra de la finestra els botons + (per a crear una nova partició en l'espai lliure sense particionar), - (per a eliminar la partició seleccionada) i _'Change'_ (per a canviar la partició seleccionada):
@@ -35,8 +40,12 @@ Les particions creades són:
 * **/dev/sda6**: segona partició lògica per a la memòria virtual
 
 ### Particions en un disc GPT
-Si volem instal·lar GNU/Linux en un disc amb GPT recordeu que hem de crear una particó per a **EFI** de al menys 250 MB amb format _FAT32_. Es recomana que siga la primera partició del disc i no hauríem de muntar-la (per a evitar que els usuaris puguen modificar-la per error).
+Si volem instal·lar GNU/Linux en un disc amb GPT recordeu que hem de crear una particó per a **EFI** de al menys 250 MB amb format _FAT32_. Es recomana que siga la primera partició del disc i no hauríem de muntar-la (per a evitar que els usuaris puguen modificar-la per error). 
 
-També farem una partición de 1 MB al final del disc per a BIOSGRUB.
+Si configurem el nostre firmware el mode _'UEFI'_ ho farà automàticament i crearà 2 particions:
+* la partició per a **EFI** de 500 MB
+* una partició amb la resta d'espai per al sistema i les dades
 
-Si tenim una distribució preparada per a _'UEFI'_ i configurem així el nostre firmware tot això ho farà automàticament. Si no farem la instal·lació en mode _'Legacy BIOS'_ i després canviarem al mode _'UEFI'_ (com exemple teniu ací un tutorial per a [instal·lar Debian](http://gnulinuxvagos.es/topic/1818-debian-gnulinux-amd64-y-uefi/) i ací altre per a [instal·lar Ubuntu amb Windows 10](https://windtux.com/instalando-windows-10-y-ubuntu-14-04-con-uefi-gpt-configuracion-y-ventajas)).
+Si volem més particions haurem de fer-les manualment.
+
+Si tenim una distribució Linux antiga que no permet instal·lar en mode _'UEFI'_ farem la instal·lació en mode _'Legacy BIOS'_ i després canviarem al mode _'UEFI'_ (com exemple teniu ací un tutorial per a [instal·lar Debian](http://gnulinuxvagos.es/topic/1818-debian-gnulinux-amd64-y-uefi/) i ací altre per a [instal·lar Ubuntu amb Windows 10](https://windtux.com/instalando-windows-10-y-ubuntu-14-04-con-uefi-gpt-configuracion-y-ventajas)).
