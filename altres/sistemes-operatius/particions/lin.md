@@ -1,5 +1,10 @@
-
-## Particionar al instal·lar GNU/Linux
+* [Particions en Windows](./win.md#particions-en-windows)
+  * [Instal·lar Windows amb BIOS+MBR](./win.md#installar-windows-amb-biosmbr)
+  * [Instal·lar Windows amb UEFI+GPT](./win.md#installar-windows-amb-uefigpt)
+* Particions en GNU/Linux
+  * [Particions en un disc GPT](#particions-en-un-disc-gpt)
+  
+## Particions en GNU/Linux
 Linux no crea per defecte una partició per al fitxers d'arrencada com fa Windows (encara que podem fer-ho manualment, i la muntarem en la carpeta _/boot_) però sí que crea una partició per a la memòria virtual o **swap** (recordeu que en Windows la memòria virtual és un fitxer dins de C:). No cal que siga massa gran perquè si estem utilitzant molta memòria virtual el rendiment del sistema es degradarà ràpidament. La mida recomanada és:
 * per a equips amb 1GB de RAM o menys: 1GB de swap
 * per a equips entre 2GB i 8GB de RAM: 2GB de swap
