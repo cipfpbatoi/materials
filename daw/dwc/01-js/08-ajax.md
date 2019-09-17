@@ -1,3 +1,5 @@
+# Ajax
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -17,8 +19,6 @@
 - [Otras llamadas asíncornas](#otras-llamadas-as%C3%ADncronas)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Ajax
 
 ## Introducción
 AJAX es el acrónimo de **_Asynchronous Javascript And XML_** (Javascript asíncrono y XML) y es lo que usamos para hacer peticiones asíncronas al servidor desde Javascript. Cuando hacemos una petición al servidor no nos responde inmediatamente (la petición tiene que llegar al servidor, procesarse allí y enviarse la respuesta que llegará al cliente). 
