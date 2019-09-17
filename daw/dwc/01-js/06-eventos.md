@@ -1,3 +1,5 @@
+# Eventos
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -17,8 +19,6 @@
   - [Propagación de eventos (bubbling)](#propagaci%C3%B3n-de-eventos-bubbling)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Eventos
 
 ## Introducción
 Nos permiten detectar acciones que realiza el usuario o cambios que suceden en la página y reaccionar en respuesta a ellas. Existen muchos eventos diferentes (podéis ver la lista en [w3schools](https://www.w3schools.com/jsref/dom_obj_event.asp)) aunque nosotros nos centraremos en los más comunes.
