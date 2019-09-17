@@ -1,3 +1,5 @@
+# Document Object Model (DOM)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -13,8 +15,6 @@
     - [Estilos de los nodos](#estilos-de-los-nodos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Document Object Model (DOM)
 
 ## Introducción
 La mayoría de las veces que programamos con Javascript es para que se ejecute en una página web mostrada por el navegador. En este contexto tenemos acceso a ciertos objetos que nos permiten interactuar con la página (DOM) y con el navegador (Browser Object Model, BOM).
