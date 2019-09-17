@@ -1,3 +1,5 @@
+# Arrays
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -30,8 +32,6 @@
   - [Set](#set)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Arrays
 
 ## Introducción
 Son un tipo de objeto y no tienen tamaño fijo sino que podemos añadirle elementos en cualquier momento. 
