@@ -1,3 +1,5 @@
+# Programación Orientada a Objetos en Javascript
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -12,8 +14,6 @@
   - [Bibliografía](#bibliograf%C3%ADa)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Programación Orientada a Objetos en Javascript
 
 ## Introducción
 Desde ES2015 la POO en Javascript es similar a como se hace en otros lenguajes: clases, herencia, ... 
