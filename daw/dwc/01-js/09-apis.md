@@ -1,3 +1,5 @@
+# APIs HTML5: Drag And Drop. Local Storage. Geolocalización. API de Google Maps
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -13,8 +15,6 @@
   - [Google Maps API](#google-maps-api)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# APIs HTML5: Drag And Drop. Local Storage. Geolocalización. API de Google Maps
 
 ## Introducción
 En este tema varemos diferentes APIs incluidas en HTML5 (como la de Local Storage) y otras que se han hecho muy populares como la de Google Maps.
