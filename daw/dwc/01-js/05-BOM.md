@@ -1,3 +1,5 @@
+# Browser Object Model (BOM)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -13,8 +15,6 @@
     - [Otros objetos](#otros-objetos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Browser Object Model (BOM)
 
 ## Introducción
 Si en el tema anterior vimos cómo interactuar con la página (DOM) en este veremos cómo acceder a objetos que nos permitan interactuar con el navegador ( y Browser Object Model, BOM).
