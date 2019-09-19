@@ -354,6 +354,7 @@ Algunos métodos y propiedades de las cadenas son:
 * **.replace(busco, reemplaza)**: `'Hola mundo'.replace('Hola', 'Adiós')` devuelve "Adiós mundo"
 * **.toLocaleLowerCase()**: `'Hola mundo'.toLocaleLowerCase()` devuelve "hola mundo" (.toLowerCase no funciona con ñ, á, ç, ...)
 * **.toLocaleUpperCase()**: `'Hola mundo'.toLocaleUpperCase()` devuelve "HOLA MUNDO"
+* **.localeCompare(cadena)**: devuelve -1 si la cadena a que se aplica el método es anterior alfabéticamente a 'cadena', 1 si es posterior y 0 si ambas son iguales. Tiene en cuenta caracteres locales como acentos ñ, ç, etc
 * **.trim(cadena)**: `'   Hola mundo   '.trim()` devuelve "Hola mundo"
 * **.startsWith(cadena)**: `'Hola mundo'.startsWith('Hol')` devuelve _true_
 * **.endsWith(cadena)**: `'Hola mundo'.endsWith('Hol')` devuelve _false_
