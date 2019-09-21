@@ -11,12 +11,13 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total, como en el siguiente ejemplo:
 ```
-5 uds. x TV Samsung MP45 (235,95 €/u) = 1179.75 €
+    5 uds. x TV Samsung MP45 (235,95 €/u) = 1179.75 €
 ```
 - **Store**: es el almacén de productos (podríamos tener más de uno) que guardaremos en _store.class.js_. Tendrá las **propiedades**:
   -  id: código numérico que nos pasan al crear el almacén
-  -  products: array de productos. No se le pasa al contructor ya que al crear un almacén el array estará vacío
-y los **métodos**:
+  -  products: array de productos. No se le pasa al contructor ya que al crear un almacén el array estará vacío.
+  
+  La clase tendrá los **métodos**:
   - findProduct: recibe un código de producto y devuelve el producto que tiene dicho código o undefined si ese código no existe en el almacén
   - addProduct: recibe un código, un nombre y un precio, crea el producto y lo añade al almacén, devolviendo true. Si ya existe un producto con ese código no hace nada y devuelve false
   - delProduct: recibe como parámetro el código de un producto y lo elimina del almacén si no tiene unidades devolviendo true. Si sus unidades no están a 0 no hace nada y devuelve false
