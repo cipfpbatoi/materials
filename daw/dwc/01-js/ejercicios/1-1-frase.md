@@ -1,4 +1,4 @@
-# Bloc 1: Javascript. Práctica prova1
+# Bloc 1: Javascript. Práctica 1.1 - Frase
 Vamos a pedir al usuario que introduzca una frase y a continuación mostraremos en la consola:
 - el número de letras y de palabras que tiene
 - la frase en mayúsculas
