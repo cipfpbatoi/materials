@@ -167,7 +167,7 @@ let personasOrdenado=personas.sort((persona1, persona2) => persona1.edad-persona
 ```
 > Si lo que queremos es ordenar por n campo de texto podemos usar la función _toLocaleCompare_:
 ```javascript
-let personasOrdenado=personas.sort((persona1, persona2) => persona1.nombre.toLocaleCompare(persona2.nombre));
+let personasOrdenado=personas.sort((persona1, persona2) => persona1.nombre.localeCompare(persona2.nombre));
 ```
 
 ### Otros métodos comunes
@@ -212,12 +212,17 @@ let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
 let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 let primerAprobado=arrayNotas.find(nota => nota>=5);    // primerAprobado=5
 ```
+
+Este método tiene más sentido con objetos. Por ejemplo, si queremos encontrar la persona con DNI '21345678Z' dentro de un array llamado personas cuyos elementos son objetos con un campo 'dni' haremos:
+```javascript
+let personaBuscada=personas.find(persona => persona.dni=='21345678Z');    // devolverá el objeto completo
+```
+
 #### findIndex
-Como _find_ pero en vez de devolver el elemento devuelve su posición (o -1 si nadie cumple la condición). En el ejemplo anterior el valor devuelto sería 0 (ya que el primer elemento cumple la condición).
+Como _find_ pero en vez de devolver el elemento devuelve su posición (o -1 si nadie cumple la condición). En el ejemplo anterior el valor devuelto sería 0 (ya que el primer elemento cumple la condición). Al igual que el anterior tiene más sentido con arrays de objetos.
 
 #### every / some
-La primera devuelve **true** si TODOS los elementos del array cumplen la condición y **false** en caso contrario. La segunda
-devuelve **true** si ALGÚN elemento del array cumple la condición. Ejemplo:
+La primera devuelve **true** si **TODOS** los elementos del array cumplen la condición y **false** en caso contrario. La segunda devuelve **true** si **ALGÚN** elemento del array cumple la condición. Ejemplo:
 ```javascript
 let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
@@ -345,24 +350,25 @@ let [primera, ...resto]=arrayNotas;           // primera=5, resto=[3.9, 6, 9.75,
 También se pueden asignar valores por defecto:
 ```javascript
 let preferencias=['Javascript', 'NodeJS'];
-let [lenguaje, backend='Laravel', frontend='VueJS'];  // lenguaje='Javascript', backend='NodeJS', frontend='VueJS'
+let [lenguaje, backend='Laravel', frontend='VueJS']=preferencias;  // lenguaje='Javascript', backend='NodeJS', frontend='VueJS'
 ```
 
 ## Map
 Es una colección de parejas de \[clave,valor]. Un objeto en Javascript es un tipo particular de _Map_ en que las claves sólo pueden ser texto o números. Se puede acceder a una propiedad con **.** o **\[propiedad]**. Ejemplo:
 ```javascript
 let persona={
-  nombre='John',
-  apellido='Doe',
-  edad=39
+  nombre: 'John',
+  apellido: 'Doe',
+  edad: 39
 }
 console.log(persona.nombre);      // John
 console.log(persona['nombre']);   // John
 ```
+
 Un _Map_ permite que la clave sea cualquier cosa (array, objeto, ...). No vamos a ver en profundidad estos objetos pero podéis saber más en [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) o cualwuier otra página. 
 
 ## Set
-Es cono un _Map_ pero que no almacena los vaores sino sólo la clave. Podemos verlo como una colección que no permite duplicados. Tiene la propiedad **size** que devuelve su tamaño y los métodos **.add** (añade un elemento), **.delete** (lo elimina) o **.has** (indica si el elemento pasado se encuentra o no en la colección) y también podemos recorrerlo con **.forEach**.
+Es como un _Map_ pero que no almacena los valores sino sólo la clave. Podemos verlo como una colección que no permite duplicados. Tiene la propiedad **size** que devuelve su tamaño y los métodos **.add** (añade un elemento), **.delete** (lo elimina) o **.has** (indica si el elemento pasado se encuentra o no en la colección) y también podemos recorrerlo con **.forEach**.
 
 Una forma sencilla de eliminar los duplicados de un array es crear con él un _Set_:
 ```javascript
