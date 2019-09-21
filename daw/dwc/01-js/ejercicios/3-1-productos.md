@@ -5,7 +5,8 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
   - name
   - price
   - units: las unidades que tenemos de ese producto. Si no le pasamos unidades al constructor su número por defecto será 0.
-Esta clase tendrá los siguientes **métodos**:
+  
+  Esta clase tendrá los siguientes **métodos**:
   - changeUnits: recibe la cantidad  de unidades a sumar (positiva o negativa) e incrementa (o decrementa) las unidades en la cantidad recibida y devuelve true. Si se intentan restar más unidades de las que hay no hace nada y devuelve false
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total, como en el siguiente ejemplo:
