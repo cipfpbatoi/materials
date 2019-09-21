@@ -18,9 +18,7 @@
 ## Introducción
 Desde ES2015 la POO en Javascript es similar a como se hace en otros lenguajes: clases, herencia, ... 
 
-Se crean con **new** o usando notación **JSON**:console.log(alumno[prop]);        // imprime 'Carlos'
-console.log(alumno[prop]);        // imprime 'Carlos'
-
+Se crean con **new** o usando notación **JSON**:
 ```javascript
 let .getInfo()=new Object();
 alumno.nombre='Carlos';     // se crea la propiedad 'nombre' y se le asigna un valor
@@ -31,7 +29,7 @@ alumno.getInfo=function() {
 }
 ```
 
-Usando **JSON** (recomendado) el ejemplo anteropr sería:
+Usando **JSON** (recomendado) el ejemplo anterior sería:
 ```javascript
 let alumno={
     nombre: 'Carlos',
@@ -60,7 +58,7 @@ for (let prop in alumno) {
 ```
 
 ## Clases
-Desde ES2015 funcionan como en la mayoría de lengiajes:
+Desde ES2015 funcionan como en la mayoría de lenguajes:
 ```javascript
 class Alumno {
     constructor(nombre, apellidos, edad) {
@@ -115,7 +113,7 @@ console.log(user.getRoles()); // Uncaught TypeError: user.getRoles is not a func
 ```
 
 ### toString() y valueOf()
-Al convertir un objeto a string (por ejemplo al hacer un `console.log` o al concatenarlo) se llama al método **_.toString()_** del mismo que devuelve `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
+Al convertir un objeto a string (por ejemplo al hacer un `console.log` o al concatenarlo) se llama al método **_.toString()_** del mismo, que devuelve `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
 ```javascript
 class Alumno {
     ...
@@ -128,7 +126,7 @@ let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
 console.log(cpo);     // imprime 'Pérez Ortíz, Carlos'
 ```
 
-Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar. Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Ya no es necesario hacer:
+Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Ya no es necesario hacer:
 ```javascript
 misAlumnos.sort(function(alum1, alum2) {
     if (alum1.apellidos > alum2.apellidos)
