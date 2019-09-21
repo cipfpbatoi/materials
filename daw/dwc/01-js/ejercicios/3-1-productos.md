@@ -15,7 +15,7 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
 ```
 - **Store**: es el almacén de productos (podríamos tener más de uno) que guardaremos en _store.class.js_. Tendrá las **propiedades**:
   -  id: código numérico que nos pasan al crear el almacén
-  -  products: array de productos. No se le pasa al contructor ya que al crear un almacén el array estará vacío.
+  -  products: array de productos. No se le pasa al constructor ya que al crear un almacén el array estará vacío.
   
   La clase tendrá los **métodos**:
   - findProduct: recibe un código de producto y devuelve el producto que tiene dicho código o undefined si ese código no existe en el almacén
