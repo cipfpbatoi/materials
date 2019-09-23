@@ -256,7 +256,7 @@ let arrayNotasSubidas=arrayNotas.map(nota => nota+nota*10%);
 Es el método más general de los que hemos visto. No devuelve nada sino que permite realizar algo con cada elemento del array.
 ```javascript
 let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-arrayNotas.foreach((nota, indice) => {
+arrayNotas.forEach((nota, indice) => {
   console.log('El elemento de la posición '+indice+' es: '+nota);
 });
 ```
