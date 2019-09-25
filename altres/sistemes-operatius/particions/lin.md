@@ -46,11 +46,11 @@ Al crear cada partició ens pregunta:
 * el sistema d'arxius que tindrà. Per al sistema operatiu el més normal és triar el sistema _ext4_. Per a la partició de swap triarem l'opció _Àrea d'intercanvi_. Si volem una partició de dades per a compartir amb Windows hem de triar _FAT_ perquè no tenim l'opció de _NTFS_ (el millor seria haver fet abans aquesta partició en _NTFS_)
 * el punt de muntatge si volem que la partició es munte automàticament i es puga utilitzar. Recordeu que en Windows les particions es munten en lletres (C:, D:, ...) però en Linux es munten en carpetes (/home, /var, ...) i ací indiquem que al accedir a eixa carpeta estarem accedim en realitat a la partició. El punt de muntatge per al sistema operatiu ha de ser **/**. Si fem una partició apart per a les dades dels usuaris de GNU/LInux (no per a compartir amb Windows) la muntarem en **/home**. Si volem muntar una partició de dades o de Windows ací triarem la carpeta que vulgam (per exemple **/dades** o **/windows**). Si no especifiquen un punt de muntatge la partició no es muntarà automàticament al iniciar el sistema i haurem de muntar-la nosaltres per a poder-la utilitzar.
 
-![Nova partició](lin-nova-part.png)
+![Nova partició](./img/lin-nova-part.png)
 
 En l'exemple següent tindrem una partició separada per al sistema operatiu i per a les dades dels usuaris:
 
-![Particions](lin-part.png)
+![Particions](./img/lin-part.png)
 
 Les particions creades són:
 * **/dev/sda1**: primera partició primària on s'instal·larà el sistema operatiu (es munta en **/**), amb sistema d'arxius _ext4_
