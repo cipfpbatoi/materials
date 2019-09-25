@@ -141,7 +141,7 @@ Podem fer-ho de diferents maneres (podeu trobar més informació en [https://hel
 Els passos a seguir són:
 1. Arrencar amb el LiveCD.
 1. Obrir una terminal.
-1. Si no sabem en quina partició tenim instal·lat el sistema operatiu ho determinarem amb fdisk.
+1. Si no sabem en quina partició tenim instal·lat el sistema operatiu ho determinarem amb el comando `lsblk` o `fdisk`.
 ```bash
     sudo fdisk -l
 ```
