@@ -37,7 +37,7 @@ Per a crear les particions automàticament seleccionem l'opció de _'Borrar tot 
 
 Si seleccionem l'opció _'Més opcions'_ haurem de crear nosaltres les particions del disc. Per a això tenim en la part inferior esquerra de la finestra els botons + (per a crear una nova partició en l'espai lliure sense particionar), - (per a eliminar la partició seleccionada) i _'Change'_ (per a canviar la partició seleccionada):
 
-![Fer particions](lin-fer-part.png)
+![Fer particions](./img/lin-fer-part.png)
 
 Al crear cada partició ens pregunta:
 * la mida de la nova partició
