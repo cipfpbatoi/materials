@@ -2,7 +2,7 @@
 Materials, apunts, pràctiques, etc del Centre que complementen els cursos del [nostre moodle](https://moodle.cipfpbatoi.es)
 
 ## Informàtica
-Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més d'un mòdul. 
+Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més d'un mòdul.
 
 ### Apunts de mòduls
 * CFGS Desenvolupament d'Aplicacions Web (DAW)
