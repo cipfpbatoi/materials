@@ -41,8 +41,6 @@ Por ejemplo, la página HTML:
 ```
 se convierte en el siguiente árbol DOM:
 
-![Árbol DOM](./img/dom-arbol.png)
-
 <a title="L. David Baron [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Dom_tree.png"><img width="512" alt="Dom tree" src="https://upload.wikimedia.org/wikipedia/commons/5/58/Dom_tree.png"></a>
 
 Cada etiqueta HTML suele originar 2 nodos:
@@ -53,7 +51,7 @@ Cada nodo es un objeto con sus propiedades y métodos.
 
 ## Acceso a los nodos
 Los principales métodos para acceder a los diferentes nodos son:
-* `document.getElementById('id')`: devuelve el nodo con la _id_ indicada. Ej.:
+* **.getElementById**: devuelve el nodo con la _id_ indicada. Ej.:
 ```javascript
 let nodo=document.getElementById('main');   // nodo contendrá el nodo cuya id es _main_
 ```
