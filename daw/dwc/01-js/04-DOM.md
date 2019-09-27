@@ -126,10 +126,17 @@ Las principales propiedades de un nodo son:
 ```javascript
 let contenido=elemento.innerHTML;   // contenido='Esta página es <strong>muy simple</strong>'
 ```
-* `elemento.textContent`: todo lo que hay entre la etiqueta que abre _elemento_ y la que lo cierra, pero ignorando otras etiquetas HTML. Por ejemplo si _elemento_ es el nodo `<p>Esta página es <strong>muy simple</strong></p>`
+* `elemento.textContent`: todo lo que hay entre la etiqueta que abre _elemento_ y la que lo cierra, pero ignorando otras etiquetas HTML. Siguiendo con el ejemplo anterior:
 ```javascript
 let contenido=elemento.textContent;   // contenido='Esta página es muy simple'
 ```
+* `elemento.value`: devuelve la propiedad 'value' de un \<input> (en el caso de un \<input> de tipo text devuelve lo que hay escrito en él). Como los \<inputs> no tienen etiqueta de cierre (\</input>) no podemos usar _.innerHTML_ ni _.textContent_.  Por ejemplo si _elem1_ es el nodo `<input name="nombre">` y _elem2_ es el nodo `<input tipe="radio" value="H">Hombre`
+```javascript
+let cont1=elem1.value;   // cont1 valdría lo que haya escrito en el <input> en ese momento
+let cont2=elem2.value;   // cont2="H"
+```
+
+Otras propiedades:
 * `elemento.innerText`: igual que _textContent_
 * `elemento.focus`: da el foco a _elemento_ (para inputs, etc). Para quitarle el foco `elemento.blur`
 * `elemento.clientHeight` / `elemento.clientWidth`: devuelve el alto / ancho visible del _elemento_
@@ -157,7 +164,7 @@ miPrimeraLista.appendChild(nuevoLi);    // añade LI como último hijo de UL, es
 ```javascript
 let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
 let primerElementoDeLista=miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
-miPrimeraLista.appendChild(nuevoLi, primerElementoDeLista);    // añade LI al principio de la lista
+miPrimeraLista.insertBefore(nuevoLi, primerElementoDeLista);    // añade LI al principio de la lista
 ```
 * `elemento.removeChild(nodo)`: borra _nodo_ de _elemento_ y por tanto se elimina de la página. Ej.:
 ```javascript
@@ -165,7 +172,7 @@ let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º
 let primerElementoDeLista=miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.removeChild(primerElementoDeLista);    // borra el primer elemento de la lista
 // También podríamos haberlo borrado sin tener el padre con:
-primerElementoDeLista.parentNode.removeChild(primerElementoDeLista);
+primerElementoDeLista.parentElement.removeChild(primerElementoDeLista);
 ```
 * `elemento.replaceChild(nuevoNodo, viejoNodo)`: reemplaza _viejoNodo_ con _nuevoNodo_ como hijo de _elemento_. Ej.:
 ```javascript
@@ -198,8 +205,8 @@ Childnode es una interfaz que permite maipular del DOM de forma más sencilla pe
 Podemos ver y modificar los valores de los atributos de cada elemento HTML y también añadir o eliminar atributos:
 * `elemento.attributes`: devuelve un array con todos los atributos de _elemento_
 * `elemento.hasAttribute('nombreAtributo')`: indica si _elemento_ tiene o no definido el atributo _nombreAtributo_
-* `elemento.getAttribute('nombreAtributo')`: devuelve el valor del atributo _nombreAtributo_ de _elemento_
-* `elemento.setAttribute('nombreAtributo', 'valor')`: establece _valor_ como nuevo valor del atributo _nombreAtributo_ de _elemento_
+* `elemento.getAttribute('nombreAtributo')`: devuelve el valor del atributo _nombreAtributo_ de _elemento_. Para muchos elementos este valor puede directamente con `elemento.atributo`. 
+* `elemento.setAttribute('nombreAtributo', 'valor')`: establece _valor_ como nuevo valor del atributo _nombreAtributo_ de _elemento_. También puede cambiarse el valor directamente con `elemento.atributo=valor`.
 * `elemento.removeAttribute('nombreAtributo')`: elimina el atributo _nombreAtributo_ de _elemento_
 
 Algunos atributos comunes se pueden acceder y cambiar como una propiedad del elemento como `id`, `title` o `className` (para el atributo **class**). Ejemplo:
@@ -211,8 +218,9 @@ miPrimeraLista.setAttribute('id', 'primera-lista');
 ```
 
 ### Estilos de los nodos
-Los estilos están accesibles como el atributo **style**. Cualquier estilo es una propiedad de dicho atributo pero con la sintaxis _caelCase_ en vez de _kebab-case_. Por ejemplo para poner el color de fondo _rojo_ al elemento _miPrimeraLista_ haremos:
+Los estilos están accesibles como el atributo **style**. Cualquier estilo es una propiedad de dicho atributo pero con la sintaxis _camelCase_ en vez de _kebab-case_. Por ejemplo para cambiar el color de fondo (propiedad background-color) y ponerle el color _rojo_ al elemento _miPrimeraLista_ haremos:
 ```javascript
 miPrimeraLista.style.backgroundColor='red';
 ```
 
+De todas formas normalmente **NO CAMBIAREMOS ESTILOS** a los elementos sino que les pondremos o quitaremos clases que harán que se le apliquen o no los estilos definidos para ellas en el CSS.
