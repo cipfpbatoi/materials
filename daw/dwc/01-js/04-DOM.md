@@ -40,6 +40,8 @@ se convierte en el siguiente árbol DOM:
 
 ![Árbol DOM](./img/dom-arbol.png)
 
+<a title="L. David Baron [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Dom_tree.png"><img width="512" alt="Dom tree" src="https://upload.wikimedia.org/wikipedia/commons/5/58/Dom_tree.png"></a>
+
 Cada etiqueta HTML suele originar 2 nodos:
 * Element: correspondiente a la etiqueta
 * Text: correspondiente a su contenido (lo que hay entre la etiqueta y su par de cierre)
