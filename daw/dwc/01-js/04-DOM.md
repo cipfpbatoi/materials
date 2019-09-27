@@ -28,13 +28,16 @@ Por ejemplo, la página HTML:
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Página simple</title>
+  <title>My Document</title>
 </head>
 <body>
-  <p>Esta página es <strong>muy simple</strong></p>
+  <h1>Header</h1>
+  <p>
+    Paragraph
+  </p>
 </body>
 </html>
+
 ```
 se convierte en el siguiente árbol DOM:
 
