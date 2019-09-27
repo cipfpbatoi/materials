@@ -226,3 +226,40 @@ miPrimeraLista.style.backgroundColor='red';
 De todas formas normalmente **NO CAMBIAREMOS ESTILOS** a los elementos sino que les pondremos o quitaremos clases que harán que se le apliquen o no los estilos definidos para ellas en el CSS.
 
 ### Atributos de clase
+Ya sabemos que el aspecto de la página debe configurarse en el CSS por lo que no debemos aplicar atributos _style_ al HTML. En lugar de ello les ponemos clases a los elementos que harán que se les aplique el estilo definido para dicha clase.
+
+Como es algo muy común en lugar de utilizar las instrucciones de `elemento.setAttribute('className', 'destacado')` o directamente `elemento.className='destacado'` podemos usar la propiedad **_[classList](https://developer.mozilla.org/es/docs/Web/API/Element/classList)_** que devuelve la colección de todas las clases que tiene el elemento. Por ejemplo si _elemento_ es `<p class="destacado direccion">...`: 
+```javascript
+let clases=elemento.classList;   // clases=['destacado', 'direccion'], OJO es una colección, no un Array
+```
+
+Además dispone de los métodos:
+* **.add(clase)**: añade a l elemento la clase pasada, si no la tiene ya. Ej.:
+```javascript
+elemento.classList.add('primero');   // ahora elemento será <p class="destacado direccion primero">...
+```
+* **.remove(clase)**: elimina del elemento la clase pasada, si la tiene ya. Ej.:
+```javascript
+elemento.classList.remove('direccion');   // ahora elemento será <p class="destacado primero">...
+```
+* **.toogle(clase)**: añade la clase pasada si no la tiene o la elimina si la tiene ya. Ej.:
+```javascript
+elemento.classList.toogle('destacado');   // ahora elemento será <p class="primero">...
+elemento.classList.toogle('direccion');   // ahora elemento será <p class="primero direccion">...
+```
+* **.contains(clase)**: dice si el elemento tiene o no la clase pasada. Ej.:
+```javascript
+elemento.classList.contains('direccion');   // devuelve true
+```
+* **.replace(oldClase, newClase)**: reemplaza del elemento una clase existente por una nueva. Ej.:
+```javascript
+elemento.classList.replace('primero', 'ultimo');   // ahora elemento será <p class="ultimo direccion">...
+```
+
+Tened en cuenta que NO todos los navegadores soportan _classList_ por lo que si queremos añadir o quitar clases en navegadores que no lo soportan debemos hacerlo con los métodos estándar, por ejemplo para añadir la clase 'rojo':
+```javascript
+let clases = elemento.className.split(" ");
+if (clases.indexOf('rojo') == -1) {
+  elemento.className += " " + 'rojo';
+}
+```
