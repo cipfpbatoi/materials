@@ -28,6 +28,29 @@ Por ejemplo, la página HTML:
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <title>Página simple</title>
+</head>
+<body>
+  <p>Esta página es <strong>muy simple</strong></p>
+</body>
+</html>
+```
+se convierte en el siguiente árbol DOM:
+
+![Árbol DOM](./img/domSimple.png)
+
+Cada etiqueta HTML suele originar 2 nodos:
+* Element: correspondiente a la etiqueta
+* Text: correspondiente a su contenido (lo que hay entre la etiqueta y su par de cierre)
+
+Cada nodo es un objeto con sus propiedades y métodos.
+
+El ejemplo anterior está simplificado porque sólo aparecen los nodos de tipo _**elemento**_ pero en realidad también generan nodos los saltos de línea, tabuladores, espacios, comentarios, etc. En el siguiente ejemplo podemos ver TODOS los nodos que realmente se generan. La página:
+```html
+<!DOCTYPE html>
+<html>
+<head>
   <title>My Document</title>
 </head>
 <body>
@@ -43,40 +66,36 @@ se convierte en el siguiente árbol DOM:
 
 <a title="L. David Baron [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Dom_tree.png"><img width="512" alt="Dom tree" src="https://upload.wikimedia.org/wikipedia/commons/5/58/Dom_tree.png"></a>
 
-Cada etiqueta HTML suele originar 2 nodos:
-* Element: correspondiente a la etiqueta
-* Text: correspondiente a su contenido (lo que hay entre la etiqueta y su par de cierre)
-
-Cada nodo es un objeto con sus propiedades y métodos.
-
 ## Acceso a los nodos
 Los principales métodos para acceder a los diferentes nodos son:
-* **.getElementById**: devuelve el nodo con la _id_ indicada. Ej.:
+* **.getElementById(id)**: devuelve el nodo con la _id_ pasada. Ej.:
 ```javascript
 let nodo=document.getElementById('main');   // nodo contendrá el nodo cuya id es _main_
 ```
-* `document.getElementsByClassName('clase')`: devuelve una colección (similar a un array) con todos los nodos de la _clase_ indicada. Ej.:
+* **.getElementsByClassName(clase)**: devuelve una colección (similar a un array) con todos los nodos de la _clase_ indicada. Ej.:
 ```javascript
 let nodos=document.getElementsByClassName('error');   // nodos contendrá todos los nodos cuya clase es _error_
 ```
 NOTA: las colecciones son similares a arrays (se accede a sus elementos con _\[indice]_) pero no se les pueden aplicar sus métodos _filter_, _map_, ... a menos que se conviertan a arrays con _Array.from()_
-* `document.getElementsByTagName('etiqueta')`: devuelve una colección con todos los nodos de la _etiqueta_ HTML indicada. Ej.:
+* **.getElementsByTagName(etiqueta)**: devuelve una colección con todos los nodos de la _etiqueta_ HTML indicada. Ej.:
 ```javascript
 let nodos=document.getElementsByTagName('p');   // nodos contendrá todos los nodos de tipo  _<p>_
 ```
-* `document.querySelector('selector')`: devuelve el primer nodo seleccionad por el _selector_ CSS indicado. Ej.:
+* **.querySelector(selector)**: devuelve el primer nodo seleccionad por el _selector_ CSS indicado. Ej.:
 ```javascript
 let nodo=document.querySelector('p.error');   // nodo contendrá el primer párrafo de clase _error_
 ```
-* `document.querySelectorAll('selector')`: devuelve una colección con todos los nodos seleccionados por el _selector_ CSS indicado. Ej.:
+* **.querySelectorAll(selector)**: devuelve una colección con todos los nodos seleccionados por el _selector_ CSS indicado. Ej.:
 ```javascript
 let nodos=document.querySelectorAll('p.error');   // nodos contendrá todos los párrafos de clase _error_
 ```
 NOTA: al aplicar estos métodos sobre _document_ se seleccionará sobre la página pero podrían también aplicarse a cualquier nodo y en ese caso la búsqueda se realizaría sólo entre los descendientes de dicho nodo.
-* `document.documentElement`: devuelve el nodo del elemento _<html>_
-* `document.head`: devuelve el nodo del elemento _<head>_
-* `document.body`: devuelve el nodo del elemento _<body>_
-* `document.title`: devuelve el nodo del elemento _<title>_
+
+También tenemos 'atajos' para obtener algunos elementos comunes:
+* `document.documentElement`: devuelve el nodo del elemento _\<html>_
+* `document.head`: devuelve el nodo del elemento _\<head>_
+* `document.body`: devuelve el nodo del elemento _\<body>_
+* `document.title`: devuelve el nodo del elemento _\<title>_
 * `document.link`: devuelve una colección con todos los hiperenlaces del documento
 * `document.anchor`: devuelve una colección con todas las anclas del documento
 * `document.form`: devuelve una colección con todos los formularios del documento
@@ -85,7 +104,7 @@ NOTA: al aplicar estos métodos sobre _document_ se seleccionará sobre la pági
   
 ## Acceso a nodos a partir de otros
 En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para ello tenemos los siguientes métodos que se aplican sobre un elemento del árbol DOM:
-* `elemento.parentNode`: devuelve el padre de _elemento_
+* `elemento.parentElement`: devuelve el elemento padre de _elemento_
 * `elemento.children`: devuelve la colección con todos los elementos hijo de _elemento_ (sólo elementos HTML, no comentarios ni nodos de tipo texto)
 * `elemento.childNodes`: devuelve la colección con todos los hijos de _elemento_, incluyendo comentarios y nodos de tipo texto por lo que no suele utilizarse
 * `elemento.firstElementChild`: devuelve el elemento HTML que es el primer hijo de _elemento_ 
@@ -94,11 +113,12 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 * `elemento.nextElementSibling`: devuelve el elemento HTML que es el siguiente hermano de _elemento_ 
 * `elemento.nextSibling`: devuelve el nodo que es el siguiente hermano de _elemento_ (incluyendo nodos de tipo texto o comentarios)
 * `elemento.previousElementSibling`, `elemento.previousSibling`: igual pero con el hermano anterior
-NOTA: siempre suelen usarse los métodos que sólo devuelven elementos HTML
 * `elemento.hasChildNodes`: indica si _elemento_ tiene o no nodos hijos
 * `elemento.childElementCount`: devuelve el nº de nodos hijo de  _elemento_
 
-![Recorrer el árbol DOM](./img/dom-recorrerArbol.png)
+**IMPORTANTE**: a menos que me interesen comantarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
+
+![Recorrer el árbol DOM](./img/domRelaciones.png)
 
 ### Propiedades de un nodo
 Las principales propiedades de un nodo son:
