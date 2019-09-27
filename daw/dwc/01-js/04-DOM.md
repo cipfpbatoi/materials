@@ -224,3 +224,5 @@ miPrimeraLista.style.backgroundColor='red';
 ```
 
 De todas formas normalmente **NO CAMBIAREMOS ESTILOS** a los elementos sino que les pondremos o quitaremos clases que harán que se le apliquen o no los estilos definidos para ellas en el CSS.
+
+### Atributos de clase
