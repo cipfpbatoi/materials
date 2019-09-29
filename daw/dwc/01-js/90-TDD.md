@@ -1,5 +1,58 @@
-# Testear nuestro código
-Es fundamental que nuestro código tenga un cierto nivel de calidad para minimizar los fallos del programa, más cuanto más compleja es la aplicación que estamos desarrollando. Para ello debemos testearlo y dicho testeo seguramente incluirá test automáticos (que nos permitirán evitar los _errores de regresión_ (fallos de nuestro programa 
+# Testing
+Es fundamental que nuestro código tenga un cierto nivel de calidad para minimizar los fallos del programa, más cuanto más compleja es la aplicación que estamos desarrollando. Para ello debemos testearlo y dicho testeo seguramente incluirá test automáticos. Dichos test nos permiten:
+* comprobar que nuestro código responde como e espera de él
+* evitar los _errores de regresión_ (fallos en cosas que funcionaban tras incluir una nueva funcioalidad en nuestro programa) 
+* incluso mejoran la documentación del proyecto ya que el test indica cómo debe funcionar mi código
+
+Como ya sabéis existen varios tipos de tests:
+* unitarios: prueban un trozo de código que sólo hace una cosa (habitualmente una función) 
+* de integración: prueban que varias partes del código funcionan bien juntas
+* de aceptación: prueba que el código permite hacer algo que el cliente quiere qu pueda hacerse
+
+De momento desarrollaremos tests unitarios. Estos tienen 3 partes:
+* Preparación (_Arrange_): perparamos el código para poder probarlo, por ejemplo, creamos las variables u objetos a probar
+* Actuación (_Act_): realizamos la acción, por ejemplo, llamamos a la función
+* Aserción (_Assert_): comprobamos que el resultado es el esperado
+
+Ejemplo: 
+```javascript
+test('wordCount() returns 2 when the input is "Hello world", () => {
+  // Arrange
+  const string = 'Hello world';
+  
+  // Act
+  const result = wordCount(string);
+  
+  // Assert
+  expect(result).toBe(2);
+});
+```
+
+## Testing en Javascript
+Tenemos muchas herramientas para hacer tests unitarios. Usaremos una llamada **_Jest_**. Para instalarla usaremos el gestor de paquetes **_npm_** que es el más utlizado para usar bibliotecas y sus dependencias en el FrontEnd. 
+
+### Instalar npm
+**npm** es el gestor de paquetes de **_nodejs_** por lo que debemos instalarlo para tener npm. Podemos hacerlo desde el repositorio de nuestra distribución pero no se instalará la última versión. Es mejor seguir las indicaciones de la [página oficial](https://nodejs.org/es/download/package-manager/) que, para el caso de [distribuciones basadas en Debian/Ubuntu](https://github.com/nodesource/distributions/blob/master/README.md#debinstall), son (para la versión 12):
+```javascript
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+### Instalar jest
+Una vez instalado npm crearemos una carpeta para nuestro proyecto y dentro de ella ejecutaremos:
+```javascript
+npm init
+```
+
+Se nos pedirá información sobre el proyecto y cuando nos pregunten por al herramienta para hacer tests escribiremos **jest**. Tras ello tendremos ya creado el fichero **package.json** de nuestra aplicación. Ahora falta instalar jest, lo que haremos con:
+```javascript
+npm install --save-dev jest
+```
+
+Estamos instalando jest sólo como dependencia de desarrollo ya que no lo necesitaremos en producción (lo mismo abreviado sería `npm i -D jest`).
+
+## Usar jest
+[ver](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
 # Desarrollo guiado por pruebas (TDD)
 Es una forma de programar que consiste en escribir primero las pruebas que deba pasar el código (Test Dirve Development) y después refactorizarlo ([Refactoring](https://es.wikipedia.org/wiki/Refactorizaci%C3%B3n)). Para escribir las pruebas generalmente se utilizan las [pruebas unitarias](https://es.wikipedia.org/wiki/Prueba_unitaria) (unit test en inglés). 
