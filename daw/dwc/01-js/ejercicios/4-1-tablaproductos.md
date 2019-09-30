@@ -16,10 +16,9 @@ Para introducir estos datos tenemos unos formularios vacíos sobre la tabla que 
 
 Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 ```html
-<button type="submit" class="btn btn-primary">Añadir</button>
-<button type="reset" class="btn btn-danger">Reset</button>
+<button type="submit" class="btn btn-default btn-primary">Añadir</button>
+<button type="reset" class="btn btn-secondary">Reset</button>
 ```
-
 
 Debajo de la tabla crearemos otros 2 formularios nuevos:
 * Listado del almacén: hemos de indicar si lo queremos alfabético o por nº descendente de unidades
