@@ -2,7 +2,7 @@
 Siguiendo con la práctica de POO vamos a mostrar en una tabla los productos de nuestro almacén. Cada fila corresponderá a un producto y se mostrará su código, nombre, unidades, precio por unidad e importe. En el fichero index.html tenemos una tabla vacía con id almacen donde pintaremos ese almacén. Dicha tabla usa **_bootstrap_** para mejorar la presentación. Debajo de la misma mostraremos el importe total del almacén.
 
 Ya tenemos creadas las clases por lo que la lógica de negocio de nuestra aplicación la tenemos ya hecha. Ahora nos falta crear funciones con las que interactuará el usuario y que se encargarán de modificar los datos usando las clases ya creadas y reflejar los cambios hechos en la página para que los vea el usuario. Necesitaremos funciones para:
-* Añadir productos al almacén: deberemos pasarle un nombre del producto, su precio por unidad y, opcionalmente, el nº inicial de unidades. Como código tomará automáticamente el siguiente al mayor del almacén (como si fuera un campo autonumérico)
+* Añadir productos al almacén: deberemos pasarle el nombre del producto y su precio por unidad. Como código tomará automáticamente el siguiente al mayor del almacén (como si fuera un campo autonumérico)
 * Eliminar productos del almacén: debemos pasarle el código del producto a eliminar. Deberá pedir confirmación (mostraremos al usuario su código y su nombre) y, si el producto tiene unidades, volverá a pedirla indicando las unidades que tenemos del mismo
 * Cambiar stock: recibe un código de producto y el nº de unidades (positivo o negativo) a modificar
 
