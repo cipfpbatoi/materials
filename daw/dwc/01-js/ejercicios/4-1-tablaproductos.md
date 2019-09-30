@@ -19,6 +19,7 @@ Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 <button type="submit" class="btn btn-default btn-primary">Añadir</button>
 <button type="reset" class="btn btn-secondary">Reset</button>
 ```
+![Almacén](./img/ejer4-1.png)
 
 Debajo de la tabla crearemos otros 2 formularios nuevos:
 * Listado del almacén: hemos de indicar si lo queremos alfabético o por nº descendente de unidades
