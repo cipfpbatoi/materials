@@ -6,7 +6,7 @@ Ya tenemos creadas las clases por lo que la lógica de negocio de nuestra aplica
 * Eliminar productos del almacén: debemos pasarle el código del producto a eliminar. Deberá pedir confirmación (mostraremos al usuario su código y su nombre) y, si el producto tiene unidades, volverá a pedirla indicando las unidades que tenemos del mismo
 * Cambiar stock: recibe un código de producto y el nº de unidades (positivo o negativo) a modificar
 
-Para introducir estos datos tenemos unos formularios vacíos sobre la tabla que deberemos completar (sólo tenemos el título). Para mejorar su presentación usaremos también _bootstrap_ por lo que cada input del formulario tendrá la siguiente estructura básica:
+Para introducir estos datos tenemos unos formularios vacíos sobre la tabla que deberemos completar (sólo tenemos el título). Para mejorar su presentación usaremos también _bootstrap_ por lo que cada input del formulario tendrá la siguiente estructura básica (añadiremos estas 4 líneas de código al _index.html_ para cada input que queramos poner:
 ```html
 <div class="form-group">
   <label for="new-name">Nombre:</label>
@@ -21,7 +21,7 @@ Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 ```
 ![Almacén](./img/ejer4-1.png)
 
-Debajo de la tabla crearemos otros 2 formularios nuevos:
+En el fichero _index.html_ crearemos debajo de la tabla otros 2 formularios nuevos:
 * Listado del almacén: hemos de indicar si lo queremos alfabético o por nº descendente de unidades
 * Productos bajo stock: indicamos el número de unidades y si lo queremos ordenado alfabéticamente o por nº ascendente de unidades
 
@@ -30,4 +30,7 @@ Debajo de ellos crearemos una zona en la que mostraremos el resultado de estos l
  * TV Samsung MP45 (5): 235,95 €/u => 1179.75 €
 ```
 
+Podéis modificar lo que necesitéis del _index.html_. De hecho como mínimo tenemos que añadir los inputs de los formularios existentes así como los 2 formularios nuevos y el sitio donde mostrar los listados.
+
 NOTA: es importante no mezclar la lógica del negocio (el modelo) con la presentación (la vista). Nuestras clases deben ocuparse de los datos pero NO de cómo los vamos a presentar en la pantalla. De eso se ocuparan otras funciones de manera que si decidimos que la información se vea de otra forma eso no debe afectar al modelo.
+
