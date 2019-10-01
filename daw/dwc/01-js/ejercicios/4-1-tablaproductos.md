@@ -21,6 +21,16 @@ Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 ```
 ![Almacén](./img/ejer4-1.png)
 
+ATENCIÓN: En la etiqueta de cada formulario hemos puesto un atributo, _onsubmit_, que hará que se ejecute la función indicada en dicho atributo cuando se envíe el formulario. Por tanto deberemos crear esa función en nuestro código de la siguiente forma:
+```javascript
+function newProd(event) {
+    event.preventDefault();
+    ...
+}
+```
+
+La primera línea hace que no se recargue la página al enviar el formulario. A continuación pondremos el código necesario para obtener los datos del formulario, validarlos y llamar a las funciones correspondientes.
+
 En el fichero _index.html_ crearemos debajo de la tabla otros 2 formularios nuevos:
 * Listado del almacén: hemos de indicar si lo queremos alfabético o por nº descendente de unidades
 * Productos bajo stock: indicamos el número de unidades y si lo queremos ordenado alfabéticamente o por nº ascendente de unidades
