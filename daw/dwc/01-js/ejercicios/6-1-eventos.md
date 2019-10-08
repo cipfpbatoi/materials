@@ -18,12 +18,12 @@ Una vez hecho donde queramos añadir un icono sólo es necesario añadir una eti
 
 En la página de Material Design podemos ver cómo cambiar el estilo o el tamaño de los iconos. Para que un icono aparezca deshabilitado le añadiremos la clase _md-inactive_).
 
-Añadiremos iconos para aumentar en 1 las unidades, para disminuirlas en 1 y ara eliminar el producto. Si las unidades están a 0 deshabilitaremos el icono de restar unidades.
+Añadiremos iconos para aumentar en 1 las unidades, para disminuirlas en 1 y para eliminar el producto. Si las unidades están a 0 deshabilitaremos el icono de restar unidades.
 
 Por último vamos a ofrecer al usuario la posibilidad de modificar un producto. Podrá cambiar cualquier campo del mismo excepto su _id_. Para ello crearemos un nuevo formulario junto al de añadir productos y un icono en la tabla y cuando se pulse dicho icono se cargarán en el formulario los datos de dicho producto y ya podrá modificarse.
 
 **Posibles mejoras**:
-* Podríamos hacer que no se vea todo junto en la página sino que al cargarla sólo se vea la tabla con un botón para crear nuevos productos y otro para mostrar los listados. Al pulsar sobre 'Nuevo producto' o 'Editar' se oculta la tabla y se muestra el formulario correspondiente. Lo mismo al pulsar sobre 'Listados' que se mostrarían los 2 formularios de listados junto a la lista de debajo
+* Podríamos hacer que no se vea todo junto en la página sino que al cargarla sólo se vea la tabla de productos con un botón para crear nuevos productos y otro para mostrar los listados. Al pulsar sobre 'Nuevo producto' o 'Editar' se oculta la tabla y se muestra el formulario correspondiente. Lo mismo al pulsar sobre 'Listados' que se mostrarían los 2 formularios de listados junto a la lista de debajo
 
 * Podríamos usar el mismo formulario para añadir productos y para editarlos porque es casi igual
 
