@@ -18,3 +18,7 @@ Descargamos el paquete **.deb** de la página de [Visual Studio Code](https://co
 
 Posteriormente instalaremos le extensión **Vetur** para poder trabajar con ficheros _vue_ que usaremos en el siguiente bloque.
 
+## npm
+Es el gestor de paquetes de **Node JS**. Si no lo tenemos instalaremos node.js tal y como se indica en la página de [nodejs.org](https://nodejs.org/es/download/package-manager/#windows).
+
+
