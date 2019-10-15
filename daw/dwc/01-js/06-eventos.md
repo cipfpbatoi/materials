@@ -17,6 +17,7 @@
     - [Eventos de formulario](#eventos-de-formulario)
   - [Los objetos _this_ y _event_](#los-objetos-_this_-y-_event_)
   - [Propagación de eventos (bubbling)](#propagaci%C3%B3n-de-eventos-bubbling)
+  - [innerHTML y escuchadores de eventos)](#innerHTML-y-escuchadores-de-eventos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -142,6 +143,21 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
       > * para obtener el carácter a partir del código: `String fromCharCode(codigo);`
       
 Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejemplos de w3schools](https://www.w3schools.com/js/js_events_examples.asp).
+
+### bindeo del objeto this
+En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función escuchadora. Por ejemplo la función escuchadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función perdemos esa referencia.
+
+El método _.bind()_ nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función. Por defecto a una función escuchadora de eventos se le _bindea_ le valor de **event.currentTarget**. Si queremos que tenga otro valor se lo indicamos con **.bind()**: 
+```javascript
+document.getElementById('acepto').removeEventListener('click', aceptado.bind(variable));
+```
+
+En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_. EN el ejemplo que habíamos comentado de un escuchador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
+```javascript
+document.getElementById('acepto').removeEventListener('click', aceptado.bind(this));
+```
+por lo que el valor de _this_ dentro de la función _aceptado_ será el mismo que tenía fuera, es decir, el objeto.
+
 
 ## Propagación de eventos (bubbling)
 Normalmente en una página web los elementos HTML se solapan unos con otros, por ejemplo, un \<span> está en un \<p> que está en un \<div> que está en el \<body>. Si ponemos un escuchador del evento _click_ a todos ellos se ejecutarán todos ellos, pero ¿en qué orden?.
