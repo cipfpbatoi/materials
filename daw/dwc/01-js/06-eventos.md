@@ -157,3 +157,24 @@ Podéis ver un ejemplo en:
 Sin embargo si al método `.addEventListener` le pasamos un tercer parámetro con el valor _true_ el comportamiento será el contrario, lo que se conoce como _captura_ y el primer escuchador que se ejecutará es el del \<body> y el último el del \<span> (podéis probarlo añadiendo ese parámetro a los escuchadores del ejemplo anterior).
 
 En cualquier momento podemos evitar que se siga propagando el evento ejecutando el método `.stopPropagation()` en el código de cualquiera de los escuchadores.
+
+## innerHTML y escuchadores de eventos
+Si cambiamos la propiedad _innerHTML_ de un elemento del árbol DOM todos sus escuchadores de eventos desaparecen ya que es como si se volviera a crear ese elemento (y los escuchadores deben ponerse después de crearse). Por ejemplo si tenemos una tabla de datos y queremos que al hacer doble click en cada fila se muestre su id podríamos hacer:
+```javascript
+let miTabla = document.getElementById('tabla-datos');
+let nuevaFila = `<tr id="${id}"><td>${dato1}</td><td>${dato2}...</td></tr>`;
+miTabla.innerHTML += nuevaFila;
+document.getElementById(id).addEventListener('dblclick', mostraId);
+```
+
+Sin embargo esto sólo funcionaría para la última fila añadida ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos eliminando y volviendo a crear los nodos que hay bajo miTabla por lo que se pierden todos sus escuchadores. Sólo el de la fila añadida que lo ponemos después se mantendría.
+
+La forma correcta de hacerlo sería:
+```javascript
+let miTabla = document.getElementById('tabla-datos');
+let nuevaFila = document.createElement('tr');
+nuevaFila.id = id;
+nuevaFila.innerHTML = `<td>${dato1}</td><td>${dato2}...</td>`;
+nuevaFila.addEventListener('dblclick', mostraId);
+miTabla.appendChild(nuevaFila);
+```
