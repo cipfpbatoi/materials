@@ -144,7 +144,7 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
       
 Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejemplos de w3schools](https://www.w3schools.com/js/js_events_examples.asp).
 
-### bindeo del objeto this
+### _Bindeo_ del objeto _this_
 En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función escuchadora. Por ejemplo la función escuchadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función perdemos esa referencia.
 
 El método _.bind()_ nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función. Por defecto a una función escuchadora de eventos se le _bindea_ le valor de **event.currentTarget**. Si queremos que tenga otro valor se lo indicamos con **.bind()**: 
