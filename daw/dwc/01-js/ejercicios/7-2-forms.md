@@ -15,7 +15,9 @@ Haz una página con el formulario de registro siguiente:
 </form>
 ```
 
-Debes validar el formulario para que **si no hay errores** se envíen todos los campos a la página _verForm.php_. Si hay errores se mostrará junto a cada campo erróneo un mensaje (en el _span_ que hay junto a él). Deben verse TODOS los errores que hay y se situará el cursor en el 1º elemento erróneo. 
+Debes validar el formulario para que **si no hay errores** se envíen todos los campos a la página _verForm.php_. Si hay errores se mostrará junto a cada campo erróneo un mensaje (en el _span_ que hay junto a él). Deben verse TODOS los errores que hay y se situará el cursor en el 1º elemento erróneo:
+
+![Formulario erróneo](./img/form.png)
 
 Lo que debemos validar es:
 * todos los _inputs_ son obligatorios (no el _textarea_)
