@@ -32,7 +32,7 @@ console.log( parseInt('3.84') );          // imprime 3
 console.log( parseInt('28manzanas') );    // imprime 28
 console.log( parseInt('manzanas28') );    // imprime NaN
 ```
-* `parseFloat(valor)`: igual pero devuelve un número decimal. Ejemplos: 
+* `parseFloat(valor)`: igual pero devuelve un número decimal. Ejemplos:
 ```javascript
 console.log( parseFloat(3.84) );            // imprime 3.84
 console.log( parseFloat('3.84') );          // imprime 3.84
