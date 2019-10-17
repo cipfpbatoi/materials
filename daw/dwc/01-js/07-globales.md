@@ -13,6 +13,7 @@
   - [RegExp](#regexp)
     - [Patrones](#patrones)
     - [Métodos](#m%C3%A9todos)
+  - [Manejo de errores: try / catch](#manejo-de-errores)
   - [Validación de formularios](#validaci%C3%B3n-de-formularios)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -279,6 +280,21 @@ No vamos a profundizar más sobre las expresiones regulares. Es muy fácil encon
 * y muchas otras páginas
 
 También, hay páginas que nos permiten probar expresiones regulares con cualquier texto, como [regexr](http://regexr.com/).
+
+## Manejo de errores
+En javascript el manejo de errores se realiza con sentencias
+```javascript
+try {
+    ...
+} 
+catch(error) {
+    ...
+}
+```
+
+Cualquier error producido enel bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemo tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
+
+POdemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
 
 ## Validación de formularios
 Es una de las principales tareas para las que usaremos expresiones regulares. Los datos introducidos por los usuarios en un formulario SIEMPRE deben ser validados en el servidor pero una validación previa en el cliente es muy útil por:
