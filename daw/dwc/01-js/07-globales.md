@@ -317,6 +317,8 @@ Otra opción es no validar nada con HTML5 y hacerlo todo mediante Javascript, en
 
 Y una tercera opción es aprovechar la **API de validación de formularios** del navegador pero encargándonos desde Javascript de controlar qué mensajes se dan y cuándo se muestran. El problema de esta solución (igual que la de que lo valide el navegador) es que esta API aún no está soportada totalmente por todos los navegadores (podemos consultar el soporte en [caniuse](https://caniuse.com/#feat=constraint-validation)). Para usar esta forma de validar los formularios debemos en el HTML poner los atributos que queramos controlar (required, type, maxlength, min, pattern, ...) pero deshabilitar la validación por parte del navegador (poniendo en la etiqueta\<form> el atribito **novalidate**). 
 
+En la página de [MDN web docs](https://developer.mozilla.org/es/docs/Learn/HTML/Forms/Validacion_formulario_datos) de Mozilla podemos aprender las diferentes formas de validar formularios.
+
 Podéis ver los distintos [métodos que incluye esta API](https://html.spec.whatwg.org/dev/form-control-infrastructure.html#the-constraint-validation-api) y un [completo ejemplo](https://css-tricks.com/form-validation-part-2-constraint-validation-api-javascript/) de cómo usarla para validar formularios. ALgunos de los métodos más útiles que incluye la API son:
 * `_form_.checkValidity()`: devuelve **true** si todos los valores del formulario son válidos y **false** si alguno no lo es
 * `_element_.checkValidity()`: devuelve **true** si el valor del elemento es válido y **false** si no lo es
