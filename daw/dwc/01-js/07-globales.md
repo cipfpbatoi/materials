@@ -315,9 +315,27 @@ Una opción para validar formularios es dejar que sea el navegador quien se enca
 
 Otra opción es no validar nada con HTML5 y hacerlo todo mediante Javascript, en cuyo caso tenemos el control absoluto de lo que se haga, pero es un trabajo laborioso.
 
-Y una tercera opción es aprovechar la **API de validación de formularios** del navegador pero encargándonos desde Javascript de controlar qué mensajes se dan y cuándo se muestran. El problema de esta solución (igual que la de que lo valide el navegador) es que esta API aún no está soportada totalmente por todos los navegadores (podemos consultar el soporte en [caniuse](https://caniuse.com/#feat=constraint-validation)). Para usar esta forma de validar los formularios debemos en el HTML poner los atributos que queramos controlar (required, type, maxlength, min, pattern, ...) pero deshabilitar la validación por parte del navegador (poniendo en la etiqueta\<form> el atribito **novalidate**). 
+Y una tercera opción es aprovechar la **API de validación de formularios** del navegador pero encargándonos desde Javascript de controlar qué mensajes se dan y cuándo se muestran. Si optamos por esta solución (igual que la de que lo valide el navegador) debemos comprobar el soporte de esta API por los navegadores (podemos consultar el soporte en [caniuse](https://caniuse.com/#feat=constraint-validation)). 
 
 En la página de [MDN web docs](https://developer.mozilla.org/es/docs/Learn/HTML/Forms/Validacion_formulario_datos) de Mozilla podemos aprender las diferentes formas de validar formularios.
+
+Para usar la API de validación de formularios debemos poner en el HTML los atributos correspondientes a los inputs que queramos controlar (required, type, maxlength, min, pattern, ...) pero deshabilitar la validación por parte del navegador (poniendo en la etiqueta\<form> el atribito **novalidate**). 
+
+Podemos ver un ejemplo de cómo funciona:
+
+<script async src="//jsfiddle.net/juansegura/Lfoeqc7b/embed/"></script>
+
+La propiedad `.validationMessage` recoge el mensaje de error generado por la API al no cumplir alguno de los atributos. Este mensaje depende del navegador por lo que variará de un navegador a otro y aparecerá en el idioma del navegador y no en el de nuestra página.
+
+Podemos personalizarlo con el método `.setCustomValidity()`. Este método lo que hace es 'colocarle' al input un error cuyo mensaje es lo que le pasemos como parámetro. Por tanto el input ya es erróneo y el mensaje es lo indicado:
+
+<script async src="//jsfiddle.net/juansegura/p0ycgt3w/embed/"></script>
+
+El método `.checkValidity()` devuelve **true** si el input es válido y **false** si no lo es. Antes de llamarlo debemos 'quitarle' el error que le podamos haber colocado anteriormente con _.setCustomValidity()_.
+
+Si queremos personalizar distintos mensajes de error para diferentes requisitos que estén fallando haremos:
+
+<script async src="//jsfiddle.net/juansegura/5cuq17y6/embed/"></script>
 
 Podéis ver los distintos [métodos que incluye esta API](https://html.spec.whatwg.org/dev/form-control-infrastructure.html#the-constraint-validation-api) y un [completo ejemplo](https://css-tricks.com/form-validation-part-2-constraint-validation-api-javascript/) de cómo usarla para validar formularios. ALgunos de los métodos más útiles que incluye la API son:
 * `_form_.checkValidity()`: devuelve **true** si todos los valores del formulario son válidos y **false** si alguno no lo es
