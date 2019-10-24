@@ -1,4 +1,4 @@
-# Bloc 1: Javascript. Práctica 7.2 - Validación de formularios
+# Bloc 1: Javascript. Ejercicio 7.2 - Validación de formularios
 
 Haz una página con el formulario de registro siguiente:
 ```html
