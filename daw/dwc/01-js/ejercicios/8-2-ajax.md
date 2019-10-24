@@ -1,4 +1,4 @@
-# Práctica 8.2: Ajax
+# Bloc 1: Javascript. Ejercicio 8.2 - Ajax
 No tiene sentido que cada vez que cargo mi página no tenga datos y cada vez que la cierro se pierdan todos. Deberíamos almacenarlos en una base de datos y crear una aplicación del lado servidor para acceder a dichos datos (un API-REST).
 
 ## Preparación del entorno
