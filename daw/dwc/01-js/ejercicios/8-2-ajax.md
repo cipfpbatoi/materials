@@ -24,6 +24,8 @@ Para familiarizarnos con esta API (o con cualquier otra) vamos a instalar una ex
 Una vez hecho probaremos a hacer peticiones a nuestro servidor JSON para añadir, modificar o borrar datos del mismo y familiarizarnos así con la API.
 
 ## Práctica
-Ahora vamos a hacer que los productos del almacén se guarden de forma persistente. Al cargar la página cargaremos todos los productos del almacén y cada vez que modifiquemos éste guardaremos en el servidor las modificaciones.
+Ahora vamos a hacer que los productos del almacén se guarden de forma persistente. Al cargar la página cargaremos todos los productos del almacén y cada vez que añadamos un nuevo producto éste se guardará en el servidor (de momento no vamos a implementar ni modificaciones ni eliminaciones).
 
-Para ello deberemos cambiar nuetro modelo de manera que ya no guarde los datos en un array sino que lo haga en el servidor a través de su API.
+Como no queremos hacer grandes cambios en nuestra aplicación conservaremos el modelo que tenemos (tendremos un 'Store' en memoria con los datos) pero además:
+* Al cargar la página haremos una petición al servidor pidiendo los productos a la API, los añadiremos al 'Store' que tenemos y los pintaremos
+* Al añadir un nuevo producto haremos una petición a la API para que lo añada y, si todo va bien, lo añadiremos a nuestro 'Store' y lo mostraremos.
