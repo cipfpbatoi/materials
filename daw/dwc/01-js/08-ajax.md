@@ -190,7 +190,7 @@ Podemos enviar al servidor todo el contenido del formulario:
 ...
 // esta sería la función manejadora del 'submit' de 'addProduct'
 let peticion=new XMLHttpRequest();
-peticion.open('GET', 'https://localhost/products');
+peticion.open('POST', 'https://localhost/products');
 peticion.send(new FormData(document.getElementById("addProduct")));
 peticion.addEventListener('load', function() {
 ...
@@ -205,7 +205,7 @@ formData.append("descrip", document.getElementById("descrip").value);
 formData.append("photo", document.getElementById("photo").fles[0]);
 
 let peticion=new XMLHttpRequest();
-peticion.open('GET', 'https://localhost/products');
+peticion.open('POST', 'https://localhost/products');
 peticion.send(formData);
 peticion.addEventListener('load', function() {
 ...
