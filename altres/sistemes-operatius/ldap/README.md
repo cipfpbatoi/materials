@@ -1,22 +1,12 @@
 # LDAP
-El _Protocolo ligero de acceso a directorios (LDAP)_ permite centralizar en un directorio información sobre usuarios, recursos, etc. 
-LDAP es un protocolo estándar abierto, muchas empresas hacen su propia implementación del protocolo.
+El _Protocolo ligero de acceso a directorios (LDAP)_ permite centralizar en un directorio información sobre usuarios, recursos, etc. Se trata de un protocolo estándar abierto, del que se han hecho implementaciones privativas (como Microsoft Active Directory, Oracle Internet Directory, etc) y libres (como OpenLDAP, Apache DS, etc).
 
-Hay implementaciones comerciales de LDAP como:
+## Instalación
+En Debian y derivados instalaremos los paquetes **slapd** y **ldap-utils**. En RedHat y derivasos instalaremos **openldap**,  **openldap-servers** y **openldap-clients**. A continuación habilitaremos el servicio **slapd** para que se ejecute al iniciar el sistema.
 
-    Microsoft Active Directory.
-    Oracle Internet Directory.
-    Oracle Unified Directory.
-    IBM Security Directory Server.
-    UnboundIDDirectory Server.
-    NetIQeDirectory o eDirectory.
-    CA Directory o CA eTrust Directory.
+El primer paso es crear una contraseña para el usuario _Administrador_ con el comando `ldappassword`. Los ficheros de configuración se encuentran en **/etc/openldap/slapd.d** pero no debemos modificarlos directamente sino con el comando `ldapmodify`.
 
-Y implementaciones gratuitas de código abierto como:
 
-    OpenLDAP.
-    ForgeRockOpenDJ.
-    Apache DS.
 
 ## Webografía
 * [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
