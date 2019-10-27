@@ -16,6 +16,7 @@
     - [Configurar NAT en CentOS](./enrutament.md#configurar-nat-en-centos)
 
 ## Configurar la xarxa
+La majoria de sistemes GNU/Linux amb entorn gràfic utilitzen el servei **NetworkManager** per a gestionar la xarxa. A més tots tenen el servei 
 Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/ en netplan/`). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
 
 Ací veurem com configurar la xarxa en:
@@ -137,8 +138,10 @@ network:
 La configuració es similar a la de netplan i utilitzem també el comando `ip`. Però en compte d'un fitxer on es configuren totes les targetes cadascuna té el seu propi fitxer de configuració en **`/etc/sysconfig/network-scripts/ifcfg-enp0sX`**.
 
 Les principals opcions que hem de configurar són:
-* ONBOOT=yes (perquè alce la targeta en reiniciar, com auto en Ubuntu)
+* ONBOOT=yes
 * BOOTPROTO=dhcp
+
+L'opció ONBOOT indica al sistema que ha d'activar la targeta al iniciar el servei _network_ (igual que _auto_ en Ubuntu). BOOTPROTO indica com es configurarà la xarxa i potser _dhcp_, _static_ o _none_.
 
 Si volem configurar la targeta estàticament posarem:
 * BOOTPROTO=static
