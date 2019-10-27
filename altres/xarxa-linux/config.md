@@ -161,8 +161,10 @@ systemctl restart network.service
 
 Si el nostre CentOS te interfície gràfica el servei encarregat de la xarxa és **NetworkManager** i és el que haurem de reiniciar. 
 
+NOTA: si hem afegit posteriorment una nova targeta no es crea el seu fitxer de configuració dins de **/etc/sysconfig/network-scripts/**. Ho haurem de crear manualment (podem copiar-lo d'altre) o des de l'entorn gràfic seleccione la nova interfície i polsem la icona de afegir perfil (+) que apareix a la seua dreta.
+
 ### Configuració en Virtualbox
-Si volem configurar una màquina virtual que siga el servidor de una xarxa de màquines virtuals clients haurà de tindre 2 targetes de xarxa. La targeta interna la configurarem en VirtualBox com a 'Xarxa interna' i li assignarem un nom (és com si fóra el nom del switch al que es connecta el seu cable). Per a la interfície externa Virtualbox ens ofereix 2 opcions:
+Si volem configurar una màquina virtual que siga el servidor de una xarxa de màquines virtuals clients haurà de tindre al menys 2 targetes de xarxa: una 'externa' per a connectar-se a l'enterior i una interna per a cada xarxa interna de clients que vulga connectar. Cada targeta interna la configurarem en VirtualBox com a 'Xarxa interna' i li assignarem un nom (és com si fóra el nom del switch al que es connecta el seu cable). Per a la interfície externa Virtualbox ens ofereix 2 opcions:
 * **Adaptador pont**: la màquina serà una més de la xarxa real i es podrà accedir a ella des de qualsevol equip de la xarxa. Per tant la seua IP ha de ser una IP de la xarxa. El problema és que la xarxa en l'aula i a casa són diferents per la qual cosa la configuració que funciona a casa no ho fa en l'aula.
 * **NAT**: en aquest cas formen part d'una xarxa virtual que crea VirtualBox en la qual només estem nosaltres i el gateway que ens dóna eixida a l'exterior (amb la IP 10.0.2.2). L'avantatge és que aquesta configuració funciona en qualsevol lloc (perquè el 10.0.2.2 ens dóna eixida a l'ordinador real que ens trau en Internet) però des de fora d'aqueixa xarxa no es pot accedir a la nostra màquina (fins i tot no es pot accedir des de la màquina amfitrió).
 
