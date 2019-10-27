@@ -16,7 +16,9 @@
     - [Configurar NAT en CentOS](./enrutament.md#configurar-nat-en-centos)
 
 # La xarxa en GNU/Linux
-Totes les distribucions GNU/Linux basades en Debian han configurat sempre la xarxa amb el paquet **ifupdown**. Aquest paquet permet configurar-la amb el fitxer `/etc/network/interfaces` encara que també es pot configurar des de l'entorn gràfic amb el **NetworkManager**.
+La majoria de sistemes GNU/Linux amb entorn gràfic utilitzen el servei **NetworkManager** per a gestionar la xarxa. Amés totes tenen un servei per a gestionar-la si la volem configurar-la directament des de la terminal amb els fitxers de configuració, sense utilitzar l'entorn gràfic.
+
+Totes les distribucions GNU/Linux basades en Debian han configurat sempre la xarxa des de la terminal amb el paquet **ifupdown**. Aquest paquet permet configurar-la amb el fitxer `/etc/network/interfaces` (encara que també es pot configurar des de l'entorn gràfic amb el **NetworkManager**).
 
 A partir de Ubuntu 17.10 Canonical ha introduit una nova forma de configurar la xarxa: **netplan**. Ara el fitxer de configuració està dins de `/etc/netplan/` i es tracta d'un fitxer en format _YAML_ (on cada subsecció ha d'estar indentada de la secció pare amb uns ESPAIS en blanc). El motiu segons explique és per a superar certes limitacions de _ifupdown_.
 La configuració gràfica continua igual amb el **NetworkManager**.
