@@ -159,6 +159,8 @@ Per a reiniciar el servei de xarxa executarem:
 systemctl restart network.service
 ```
 
+Si el nostre CentOS te interfície gràfica el servei encarregat de la xarxa és **NetworkManager** i és el que haurem de reiniciar. 
+
 ### Configuració en Virtualbox
 Si volem configurar una màquina virtual que siga el servidor de una xarxa de màquines virtuals clients haurà de tindre 2 targetes de xarxa. La targeta interna la configurarem en VirtualBox com a 'Xarxa interna' i li assignarem un nom (és com si fóra el nom del switch al que es connecta el seu cable). Per a la interfície externa Virtualbox ens ofereix 2 opcions:
 * **Adaptador pont**: la màquina serà una més de la xarxa real i es podrà accedir a ella des de qualsevol equip de la xarxa. Per tant la seua IP ha de ser una IP de la xarxa. El problema és que la xarxa en l'aula i a casa són diferents per la qual cosa la configuració que funciona a casa no ho fa en l'aula.
