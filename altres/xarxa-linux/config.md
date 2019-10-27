@@ -16,7 +16,6 @@
     - [Configurar NAT en CentOS](./enrutament.md#configurar-nat-en-centos)
 
 ## Configurar la xarxa
-La majoria de sistemes GNU/Linux amb entorn gràfic utilitzen el servei **NetworkManager** per a gestionar la xarxa. A més tots tenen el servei 
 Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/ en netplan/`). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
 
 Ací veurem com configurar la xarxa en:
