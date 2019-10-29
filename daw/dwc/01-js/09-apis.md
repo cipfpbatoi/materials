@@ -73,9 +73,11 @@ NOTA: si hacemos _draggable_ un elemento, por ejemplo un párrafo, ya no se pued
 Podemos obtener más información de esta API [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) y ver y modificar ejemplos en [w3schhols](https://www.w3schools.com/html/html5_draganddrop.asp) y muchas otras páginas.
 
 ## Almacenamiento en el cliente: API Storage
-Antes de HTML5 la única manera que tenían los programadores de guardar algo en el navegador del cliente (como sus preferencias, su idioma predeterminado para nuestra web, etc) era utilizando _cookies_. Las cookies tienen muchas limitaciones (como vermoes más adelante) y es engorroso trabajar con ellas. 
+Antes de HTML5 la única manera que tenían los programadores de guardar algo en el navegador del cliente (como sus preferencias, su idioma predeterminado para nuestra web, etc) era utilizando _cookies_. Las cookies tienen muchas limitaciones y es engorroso trabajar con ellas. 
 
-HTML5 incorpora **localStorage** y **sessionStorage** que son un espacio de almacenamiento local de 5 MB o 10 MB por sitio web, según el navegador (que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en localStorage nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en sessionStorage se elimina automáticamente al cerrar la sesión el usuario.
+HTML5 incorpora la API de Local Storage para subsanar esto. Además existen otros métodos de almacenamiento en el cliente más vanzados como [IndexedDB](https://developer.mozilla.org/es/docs/IndexedDB) (es un estándar del W3C).
+
+El funcinamiento de la API Storage es muy sencillo: si el navegador la soporta dentro del objeto _window_ tendremos los objetos **localStorage** y **sessionStorage** deonde podremos almacenar información en el espacio de almacenamiento local (5 MB o 10 MB por sitio web según el navegador, que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en localStorage nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en sessionStorage se elimina automáticamente al cerrar la sesión el usuario.
 
 Mediante Javascript puedo saber si el navegador soporta o no esta API simplemente mirando su typeof:
 
@@ -188,7 +190,7 @@ Podemos acceder a esta API mediente el objeto **geolocation** de _navigator_. Pa
 if (geolocation in navigator)   // devuelve true si está soportado
 ```
 
-Para obtener la posición este objeto proporciona el método **.getCurrentPosition()** que hace una petición **asíncrona**. CUando se reciba la posición se ejecutará la función _callback_ que pasemos como parámetro. Podemos pasar otra como segundo parámetro que se ejecutará si se produce algú error. Ej.:
+Para obtener la posición este objeto proporciona el método **navigator.geolocation.getCurrentPosition()** que hace una petición **asíncrona**. Cuando se reciba la posición se ejecutará la función _callback_ que pasemos como parámetro y que recibirá las coordenadas de la localización. Podemos pasar otra como segundo parámetro que se ejecutará si se produce algú error y que recibirá un objeto con la propiedad _code_ que indica el error producido. Ej.:
 
 ```javascript
 navigator.geolocation.getCurrentPosition(
@@ -196,7 +198,21 @@ navigator.geolocation.getCurrentPosition(
         pinta_posicion(position.coords.latitude, position.coords.longitude);
     },
     function(error) {
-        muestra_error(error);
+      switch(error.code) {
+        case error.PERMISSION_DENIED: // El usuario no autoriza al navegador a acceder a la localización
+          msg = "El usuario ha denegado la petición de geolocalización"
+          break;
+        case error.POSITION_UNAVAILABLE: // No se puede obtener la localización
+          msg = "La información de localización no está disponible."
+          break;
+        case error.TIMEOUT: // Ha expirado el tiempo para obtener la localización
+          msg = "Ha expirado el tiempo para obtener la localización"
+          break;
+        case error.UNKNOWN_ERROR:
+          msg = "Se ha producido un error desconocido."
+          break;
+      }
+      muestra_error(msg);
     }
 );
 ```
@@ -216,6 +232,22 @@ let watchIdent=navigator.geolocation.watchPosition(
 // Cuando queremos dejar de obtener la posición haremos
 navigator.geolocation.clearWatch(watchIdent);
 ```
+
+Las principales propiedades del objeto de localización (algunas sólo estarán disponible cuando usemos un GPS) son:
+- coords.latitude: latitud
+- coords.longitude: longitud
+- coords.accuracy: precisión (en metros)
+- coords.altitude: altitud (en metros, sobre el nivel del mar)
+- coords.altitudeAccuracy: precisión de la altitud
+- coords.heading: orientación (en grados)
+- coords.speed: velocidad (en metros/segundo)
+- timestamp: tiempo de respuesta UNIX
+
+Podemos pasarle como tercer parámetro al método getCurrentPosition un objeto JSON con una o más de estas propiedades:
+- enableHighAccuracy: true/false que indica si el dispositivo debe usar todo lo posible para obtener la posición con mayor precisión (por defecto false porque consume más batería y tiempo)
+- timeout: milisegundos a esperar para obtener la posición antes de lanzar un error (por defecto es 0, espera indefnidamente)
+- maximumAge: milisegundos que guarda la última posición en caché. Si se solicita una nueva posición antes de expirar el
+tiempo, el navegador devuelve directamente el dato almacenado
 
 Podemos obtener más información de esta API en [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) y ver y modificar ejemplos en [w3schhols](http://www.w3schools.com/html/html5_geolocation.asp) y muchas otras páginas. i
 
