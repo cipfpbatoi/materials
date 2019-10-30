@@ -38,4 +38,4 @@ La solución es implementar la API con promesas y así nuestro código vuelve a 
 En esta práctica debes hacer las modificaciones necesarias para que nuestros datos se guarden en el servidor cada vez que los modifiquemos (al añadir, eliminar, modificar o cambiar unidades) utilizando promesas.
 
 ## Ejercicio OPCIONAL 8.4
-Reescribe el código utilizando la utilidad _fetch_
+Reescribe el código utilizando la utilidad _fetch_. Si no te gusta mucho cómo queda el código en el controlador puedes reescrubirlo usando _async/await_ junto con _fetch_ y quedará mucho mejor.
