@@ -234,7 +234,7 @@ Vamos a ver esto con un ejemplo de una llamada a Ajax (asíncorna). Vamos a hace
   1. Cuando recibe los datos se encarga de pintarlos en la tabla
   1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
   
-Por tanto todo el código, no sólo de la petición Ajax sino también de qué ahcer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página:
+Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página:
 
 <script async src="//jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
@@ -320,3 +320,11 @@ Para evitar esto surgieron las **_promesas_** que permiten evitar las funciones 
 Aún así el código no es muy limpio. Para mejorarlo, el futuro de las llamadas asíncronas lo constituyen **_async_ y _await_** como vemos en [este ejemplo](https://repl.it/DhMa/0). Estas funciones forman parte del estándard ES2017 por lo que sólo están soportadas por los últimos navegadores (aunque siempre podemos transpilar con _Babel_).
 
 Fuente: [todoJs: Controlar la ejecución asíncrona](https://www.todojs.com/controlar-la-ejecucion-asincrona/)
+
+Vamos a ver cómo usaríamos _async/await_ para hacer que el código que llama al fetch quede tan limpio como con las promesas:
+
+<script async src="//jsfiddle.net/juansegura/df1rL85v/embed/js,html/"></script>
+
+Con este código capturamos correctamente cualquier error que devuelva el servidor pero no un error de la red o si el servidor está caído (ya que lo que fllaría en ese caso es el _fetch_). Para hacerlo podríamos llamar al _fetch_ dentro de un _try/catch_:
+
+<script async src="//jsfiddle.net/juansegura/Lg4ca6v7/embed/js,html/"></script>
