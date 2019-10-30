@@ -100,6 +100,7 @@ DEFAULT_FORWARD_POLICY="ACCEPT"
 ```
 
 * Editar el titxer `/etc/ufw/before.rules` i afegir les següents línies al principi (abans de les regles de filtrat _\*filter_). Aquest exemple és per a enrutar la xarxa interna 192.168.226.0:
+
 ```bash
 # NAT table rules
 *nat
