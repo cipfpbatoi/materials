@@ -57,7 +57,7 @@ El comando per a veure la configuració de la xarxa és `ifconfig` (en Debian si
 
 Per a veure les rutes configurades i la porta d'enllaç tenim el comando `route`:
 
-![route](./img/route.png)
+![route](./img/route3.png)
 
 Ens indica que:
 * tots els paquets amb destinació la xarxa 192.168.101.0/24 eixiran per la targeta enp0s8
@@ -81,7 +81,7 @@ ip addr show
 ![ifconfig](./img/ifconfig.png)
 ![ip a](./img/ip-addr.png)
 
-Podem veure només un resum d'aquesta informació amb `ip -br a`.
+Es tracta de la xarxa d'un equip amb la interfície local (_localhost_ o _lo_), una targeta ethernet cablejada (_enp4s0f0_) i una inalàmbrica (_wlp3s0_). Podem veure només un resum d'aquesta informació amb `ip -br a`.
 
 ![ip -br a](./img/ip-br.png)
 
