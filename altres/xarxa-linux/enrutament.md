@@ -17,22 +17,24 @@
 
 
 ## Enrutament
-Si estem configurant un servidor de comunicacions que proporcione eixida a l'exterior a una xarxa haurà de tindre 2 targetes de xarxa:
+Si estem configurant un servidor de comunicacions que proporcione eixida a l'exterior a una xarxa haurà de tindre al menys 2 targetes de xarxa:
 * la externa que li comunica amb l'exterior (el router o altre equip que fa de porta d'enllaç)
-* la interna conectada al switch on estan els equips de la xarxa que han d'eixir per ell
+* una o més targetes internes conectades als switches on estan els equips de la xarxa que han d'eixir per ell
 
-Una vegada les 2 targetes estiguen correctament configurades com hem vist en l'apartat anterior, perquè els clients tinguen accés a Internet haurem de configurar l'enrutamient en el servidor, la qual cosa comporta 2 accions:
-* habilitar l'enrutament
-* configurar NAT (serà diferent si usem ifupdown o netplan)
+Una vegada les 2 targetes estiguen correctament configurades com hem vist en l'apartat anterior, perquè els clients tinguen accés a Internet haurem de configurar l'enrutamient en el servidor, la qual cosa permetrà als paquets que arriben per les targetes internes eixir a través de la targeta externa. 
 
 Si es tracta d'una màquina virtual la targeta interna la configurarem en VirtualBox com a 'Xarxa interna' i li assignarem un nom (és com si fóra el nom del switch al que es connecta el seu cable). Per a la interfície externa Virtualbox ens ofereix 2 opcions:
 * Adaptador pont: la màquina serà una més de la xarxa real i es podrà accedir a ella des de qualsevol equip de la xarxa. Per tant la seua IP ha de ser una IP de la xarxa. El problema és que la xarxa en l'aula i a casa són diferents per la qual cosa la configuració que funciona a casa no ho fa en l'aula.
 * NAT: en aquest cas formen part d'una xarxa virtual que crea VirtualBox en la qual només estem nosaltres i el gateway que ens dóna eixida a l'exterior (amb la IP 10.0.2.2). L'avantatge és que aquesta configuració funciona en qualsevol lloc (perquè el 10.0.2.2 ens dóna eixida a l'ordinador real que ens trau en Internet) però des de fora d'aqueixa xarxa no es pot accedir a la nostra màquina (fins i tot no es pot accedir des de la màquina amfitrió).
 
-### Habilitar l'enrutament
-L'enrutament el que fa és redirigir a la targeta de xarxa externa el tràfic de la targeta interna amb destinació a altres xarxes (com a Internet).
+Configurar l'enrutament comporta 2 accions:
+* habilitar l'enrutament
+* configurar NAT (serà diferent si usem ifupdown o netplan)
 
-Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` (en CentOS és `/etc/sysctl.d/99-sysctl.conf`) i descomentem la línia:
+### Habilitar l'enrutament
+L'enrutament el que fa és redirigir a la targeta de xarxa externa el tràfic de la targeta interna amb destinació a altres xarxes (com Internet).
+
+Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` (en sistemes amb netplan és `/etc/ufw/sysctl.conf` i en CentOS és `/etc/sysctl.d/99-sysctl.conf`) i descomentem la línia:
 ```bash
 net.ipv4.ip_forward=1
 ```
@@ -54,15 +56,15 @@ Per a comprovar si està habilitat executem l'ordre
 cat /proc/sys/net/ipv4/ip_forward
 ```
 
-(si retorna 1 és que està habilitat).
+(si retorna 1 és que està habilitat i 0 és que està deshabilitat).
 
 ### Configurar NAT en sistemes amb ifupdown
-Respecte al NAT, amb versions de GNU/Linux que utilitzen ifupdown (en Ubuntu fins la 17.04) hem d'afegir una regla a iptables. Per exemple si la nostra targeta externa és la eth0 amb IP 10.0.2.20 i la nostra xarxa interna és la 192.168.101.0 el comando per a activar NAT seria:
+Respecte al NAT, amb versions de GNU/Linux que utilitzen ifupdown hem d'afegir una regla a iptables. Per exemple si la nostra targeta externa és la enp0s3 amb IP 10.0.2.20 i la nostra xarxa interna és la 192.168.101.0 el comando per a activar NAT seria:
 ```bash
 iptables -t nat -A POSTROUTING -s 192.168.101.0/24 -o enp0s3 -j MASQUERADE
 ```
 
-El que indiquem és d'on provindrà el tràfic a enrutar (-s xarxa interna/màscara, és a dir, -s 192.168.10.0/24) a quina targeta s'enviarà (-o targeta externa, és a dir, -o enp0s3) i que enrute a la IP que tinga la targeta externa (-j MASQUERADE). Si nostra IP externa sempre serà la mateixa podem posar l'opció -j SNAT --to 10.0.2.20 (on 10.0.2.20 seria la IP externa) en compte de -j MASQUERADE.
+El que indiquem és d'on provindrà el tràfic a enrutar (**-s** xarxa interna/màscara, és a dir, `-s 192.168.10.0/24`) a quina targeta s'enviarà (**-o** targeta externa, és a dir, `-o enp0s3`) i que enrute a la IP que tinga la targeta externa (`-j MASQUERADE`). Si nostra IP externa sempre serà la mateixa podem posar l'opció `-j SNAT --to 10.0.2.20` (on 10.0.2.20 seria la IP externa) en compte de _-j MASQUERADE_.
 
 Si hem d'enrutar més d'una xarxa interna repetirem aquest comando per a cada xarxa a enrutar:
 ```bash
@@ -86,7 +88,7 @@ iptables  -t nat -F
 ```
 
 ### Configurar NAT en sistemes netplan
-Amb netplan s'utilitza el Firewal **ufw** (uncomplicated Firewall). Per defecte està desactivat i podem activar-ho o desactivar-ho amb els comandos `ufw enable` i `ufw disable`. Per a veure la configuració executem:
+Amb netplan s'utilitza el Firewal **ufw** (_uncomplicated firewall_). Per defecte està desactivat i podem activar-ho o desactivar-ho amb els comandos `ufw enable` i `ufw disable`. Per a veure la configuració executem:
 ```bash
 ufw status verbose
 ```
@@ -121,7 +123,7 @@ iptables  -t nat -L
  
 Com hem vist abans podem usar `iptables  -t nat -F` per a eliminar totes les regles de iptables.
 
-**NOTA**: Si fem la configuració de l’enrutament des de **Webmin** tot funciona igual però l’enrutament l’activa en `/etc/sysctl.conf` (no en /etc/ufw/sysctl.conf) i les regles de nat les guarda en /etc/iptables.up.rules (en compte de en /etc/ufw/before.rules) i les carrega afegint la següent línia a /etc/network/interfaces:
+**NOTA**: Si fem la configuració de l’enrutament des de **Webmin** tot funciona igual però s’enrutament l’activa en `/etc/sysctl.conf` (no en /etc/ufw/sysctl.conf) i les regles de nat les guarda en /etc/iptables.up.rules (en compte de en /etc/ufw/before.rules) i les carrega afegint la següent línia a /etc/network/interfaces:
 ```bash
 post-up iptables restore < /etc/iptables.up.rules
 ```
