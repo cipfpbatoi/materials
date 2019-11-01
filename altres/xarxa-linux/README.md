@@ -76,10 +76,14 @@ El comando `ifconfig` es troba en el paquet **net-tools** junt a `route` i altre
 ```bash
 ip addr show
 ```
-(o simplement ip a). Podem veure només un resum d'aquesta informació amb `ip -br a`.
+(o simplement ip a). 
 
 ![ifconfig](./img/ifconfig.png)
-![ip a](./img/ip.png)
+![ip a](./img/ip-addr.png)
+
+Podem veure només un resum d'aquesta informació amb `ip -br a`.
+
+![ip -br a](./img/ip-br.png)
 
 Per a veure la porta d'enllaç el comando és:
 ```bash
@@ -87,7 +91,7 @@ ip route show
 ```
 (o simplement ip r)
 
-![ip r](./img/ip-r.png)
+![ip r](./img/ip-route.png)
 
 ## Accions més comuns
 Tant els comandos `ifconfig` com `ip` ens permeten canviar al nostra configuració temporalment (per a canviar-la definitivament hem de fer-ho en els fitxers de configuració):
