@@ -16,7 +16,7 @@
     - [Configurar NAT en CentOS](./enrutament.md#configurar-nat-en-centos)
 
 ## Configurar la xarxa
-Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/ en netplan/`). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
+Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **systemd-networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/nom-del-fitxer.yaml` en netplan). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
 
 Ací veurem com configurar la xarxa en:
 * [sistemes amb ifupdown (Ubuntu fins 17.04 i altres distribucions)](#)
@@ -26,13 +26,6 @@ Ací veurem com configurar la xarxa en:
 
 ### Configuració de la xarxa amb ifupdown
 El fitxer de configuració de la xarxa és `/etc/network/interfaces`:
-```bash
-network:
-    version: 2
-    ethernets:
-        enp0s3:
-            dhcp4: yes
-```
 
 ![interfaces](./img/interfaces.jpg)
 
@@ -47,28 +40,12 @@ La informació que trobem és:
   * dns-nameservers: servidors DNS (separats per espai)
 
 Un altre exemple amb 2 targetes de xarxa configurades estàticament:
-```bash
-network:
-    version: 2
-    ethernets:
-        enp0s3:
-            addresses: [10.0.2.10/24]
-            gateway4: 10.0.2.2
-            nameservers:
-                addresses: [172.16.20.1]
-            dhcp4: false
-            optional: true
-        enp0s8:
-            addresses: [192.168.0.1/24]
-            dhcp4: false
-            optional: true
-```
 
 ![interfaces](./img/interfaces2.jpg)
 
 Podem configurar cada interfície de forma estàtica (iface ethX inet static) o per dhcp (iface ethX inet dhcp). Si ho fem estàticament hem d'indicar la IP (address), la màscara (netmask), la porta d'enllaç si fa falta (gateway) i els servidors DNS (dns-nameservers). També es pot indicar la xarxa (network) i l'adreça de broadcast però no és necessari perquè es pot calcular a partir de la IP i la màscara.
 
-Després de modificar el fitxer de configuració hem de reiniciar el servei de xarxa (amb systemd):
+Després de modificar el fitxer de configuració hem de reiniciar el servei de xarxa (amb systemctl):
 ```bash
 systemctl restart networking
 ```
