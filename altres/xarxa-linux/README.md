@@ -34,7 +34,7 @@ El nom que reben les targetes depen del tipus (**en...** per a les ethernet amb 
 
 ## Netplan vs ifupdown
 Les principals diferències entre els dos sistemes són, entre uns altres:
-* el fitxer de configuració que en _ifupdown_ era com tots de text pla (`/etc/network/interfícies`) ara és un fitxer _YAML_ que es troba dins de **`/etc/netplan`**
+* el fitxer de configuració que en _ifupdown_ era com tots de text pla (`/etc/network/interfícies`) ara és un fitxer _YAML_ que es troba dins de **`/etc/netplan/`**
 * el servei que gestiona la xarxa ara no és `networking` sino **`systemd-networkd`**
 * per a activar o desactivar una interficie ja no tenim els comandos `ifup` i `ifdown` sinó:
 ```bash
@@ -81,7 +81,7 @@ ip addr show
 ![ifconfig](./img/ifconfig.png)
 ![ip a](./img/ip.png)
 
-Per a veure la porta d'enllaç i les el comando és:
+Per a veure la porta d'enllaç el comando és:
 ```bash
 ip route show
 ```
