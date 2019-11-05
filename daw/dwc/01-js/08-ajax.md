@@ -323,8 +323,8 @@ Fuente: [todoJs: Controlar la ejecución asíncrona](https://www.todojs.com/cont
 
 Vamos a ver cómo usaríamos _async/await_ para hacer que el código que llama al fetch quede tan limpio como con las promesas:
 
-<script async src="//jsfiddle.net/juansegura/df1rL85v/embed/js,html/"></script>
+<script async src="https://jsfiddle.net/juansegura/df1rL85v/embed/js,html/"></script>
 
 Con este código capturamos correctamente cualquier error que devuelva el servidor pero no un error de la red o si el servidor está caído (ya que lo que fllaría en ese caso es el _fetch_). Para hacerlo podríamos llamar al _fetch_ dentro de un _try/catch_:
 
-<script async src="//jsfiddle.net/juansegura/Lg4ca6v7/embed/js,html/"></script>
+<script async src="https://jsfiddle.net/juansegura/Lg4ca6v7/embed/js,html/"></script>
