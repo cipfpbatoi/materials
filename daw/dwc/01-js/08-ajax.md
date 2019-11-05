@@ -248,7 +248,7 @@ Utilizando promesas vamos a conseguir que la función _getPosts()_ se encargue s
 
 El código usando promesas sería el siguiente:
 
-<script async src="//jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
+<script async src="http://jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
