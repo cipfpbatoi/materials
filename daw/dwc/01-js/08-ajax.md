@@ -236,7 +236,7 @@ Vamos a ver esto con un ejemplo de una llamada a Ajax (asíncorna). Vamos a hace
   
 Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página:
 
-<script async src="//jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
+<script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
 Utilizando promesas vamos a conseguir que la función _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los devuelve a quien la llamó que será el encargado de pintar los datos en la tabla o informar si hay un error:
 1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
@@ -248,7 +248,7 @@ Utilizando promesas vamos a conseguir que la función _getPosts()_ se encargue s
 
 El código usando promesas sería el siguiente:
 
-<script async src="http://jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
+<script async src="https://jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
