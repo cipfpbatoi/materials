@@ -162,9 +162,4 @@ firewall-cmd --reload
 firewall-cmd --complete-reload
 ```
 
-Podem veure les regles que estan aplicant-se igual que hem vist al partlar d'ifupdown.
-
-prova
-```
-asdas { { asdas }}
-```
+Podem veure les regles que estan aplicant-se igual que hem vist al parlar d'ifupdown.
