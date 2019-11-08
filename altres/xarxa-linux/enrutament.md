@@ -152,11 +152,14 @@ firewall-cmd --set-default-zone=internal
 
 Ara configurem l'enrutament entre les targetes interna i externa:
 ```bash
-firewall-cmd --direct --passthrough ipv4 -t nat -I POSTROUTING -s 192.168.100.0/24 -o enp0s3 -j SNAT --to 10.0.2.10 --permanent
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -s 192.168.100.0/24 -o enp0s3 -j SNAT --to 10.0.2.10
 ```
+(com hem dit quan parlavem d'ifupdown, en compte de `-j SNAT --to ...` podem posar `-j MASQUERADE`)
 
 Finalment només queda reiniciar el firewall:
 ```bash
 firewall-cmd --reload
 firewall-cmd --complete-reload
 ```
+
+Podem veure les regles que estan aplicant-se igual que hem vist al partlar d'ifupdown.
