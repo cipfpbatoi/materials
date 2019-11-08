@@ -166,5 +166,5 @@ Podem veure les regles que estan aplicant-se igual que hem vist al partlar d'ifu
 
 prova
 ```
-asdas \{{ asdas }}
+asdas { { asdas }}
 ```
