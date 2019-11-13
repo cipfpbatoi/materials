@@ -58,7 +58,7 @@ cat /proc/sys/net/ipv4/ip_forward
 
 (si retorna 1 és que està habilitat i 0 és que està deshabilitat).
 
-### Configurar NAT en sistemes amb ifupdown
+### Configurar NAT en sistemes amb ifupdown i iptables
 Respecte al NAT, amb versions de GNU/Linux que utilitzen ifupdown hem d'afegir una regla a iptables. Per exemple si la nostra targeta externa és la enp0s3 amb IP 10.0.2.20 i la nostra xarxa interna és la 192.168.101.0 el comando per a activar NAT seria:
 ```bash
 iptables -t nat -A POSTROUTING -s 192.168.101.0/24 -o enp0s3 -j MASQUERADE
@@ -86,6 +86,10 @@ Si volem eliminar totes les regles que tenim ara en iptables (per a tornar-las a
 ```bash
 iptables  -t nat -F
 ```
+
+#### Configurar NAT en sistemes amb ifupdown i nftables
+Desde _Debian 10 (Buster)_  **nftables** reemplaza a *iptables*.
+https://wiki.debian.org/nftables
 
 ### Configurar NAT en sistemes netplan
 Amb netplan s'utilitza el Firewal **ufw** (_uncomplicated firewall_). Per defecte està desactivat i podem activar-ho o desactivar-ho amb els comandos `ufw enable` i `ufw disable`. Per a veure la configuració executem:
