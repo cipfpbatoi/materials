@@ -88,8 +88,29 @@ iptables  -t nat -F
 ```
 
 #### Configurar NAT en sistemes amb ifupdown i nftables
-Desde _Debian 10 (Buster)_  **nftables** reemplaza a *iptables*.
-https://wiki.debian.org/nftables
+Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ però també podem utilitzar la sintaxis nova que és més senzilla. Per a això hem d'instal·lar i activar _nftables_:
+```bash
+apt install nftables
+systemctl enable nftables.service
+```
+
+Per a [crear les regles d'enrutament NAT](https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)) crearem una nova taula _nat_ on activem _prerouting_ i _postrouting_:
+```bash
+nft add table nat
+nft add chain nat prerouting { type nat hook prerouting priority 0 \; }
+nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
+```
+
+I a continuació afegim les regles que vulgam:
+```bash
+nft add rule nat postrouting ip saddr 192.168.101.0/24 oif enp0s3 snat 10.0.2.20
+nft add rule nat postrouting ip saddr 192.168.102.0/24 oif enp0s3 snat 10.0.2.20
+```
+
+Podem borrar totes les regles amb:
+```bash
+nft flush ruleset
+```
 
 ### Configurar NAT en sistemes netplan
 Amb netplan s'utilitza el Firewal **ufw** (_uncomplicated firewall_). Per defecte està desactivat i podem activar-ho o desactivar-ho amb els comandos `ufw enable` i `ufw disable`. Per a veure la configuració executem:
