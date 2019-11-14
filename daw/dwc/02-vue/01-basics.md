@@ -105,7 +105,7 @@ Fichero HTML:
 <body>
 
   <div id="app">
-    <p>{\{ message }}</p>
+    <p>{ { message }}</p>
   </div>
 
   <script src="https://unpkg.com/vue"></script>
