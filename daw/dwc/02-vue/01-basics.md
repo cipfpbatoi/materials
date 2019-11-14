@@ -3,7 +3,7 @@
 Tabla de contenidos
 
 - [Conceptos básicos](#conceptos-b%C3%A1sicos)
-  - [Instalar Vue](#instalar-vue)
+  - [Usar Vue](#usar-vue)
   - [La primera aplicación Vue](#la-primera-aplicaci%C3%B3n-vue)
     - [HTML](#html)
     - [Javascript](#javascript)
@@ -40,7 +40,7 @@ Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 * **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece buen rendimiento
 * **Popularidad**: es el framwork cyua popularidad más está creciendo y ya ha superado incluso a React. Como muestra en 2016 los proyectos desarrollados con Vue obtuvieron 7600 estrellas en GitHub, en 2017 fueron 36700 estrellas y en Junio de 2018 ya han superado las 100000.
 
-## Instalar Vue
+## Usar Vue
 Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN:
 ```html
 <!-- development version, includes helpful console warnings -->
