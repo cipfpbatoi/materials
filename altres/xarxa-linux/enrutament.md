@@ -116,6 +116,17 @@ Podem borrar totes les regles amb:
 nft flush ruleset
 ```
 
+Per a veure les regles que tenim establertes ara fem:
+```bash
+nft list ruleset
+```
+
+I per a tindre eixes regles actives al iniciar el servei hem de guardar-les en el fitxer de configuració de _nftables_ en **/etc/nftables.conf**. Podem fer-ho amb:
+```bash
+nft list ruleset > /etc/nftables.conf
+```
+
+
 ### Configurar NAT en sistemes netplan
 Amb netplan s'utilitza el Firewal **ufw** (_uncomplicated firewall_). Per defecte està desactivat i podem activar-ho o desactivar-ho amb els comandos `ufw enable` i `ufw disable`. Per a veure la configuració executem:
 ```bash
