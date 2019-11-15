@@ -89,7 +89,7 @@ iptables  -t nat -F
 ```
 
 #### Configurar NAT en sistemes amb ifupdown i nftables
-Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ però també podem utilitzar la sintaxis nova que és més senzilla. Per a això hem d'instal·lar i activar _nftables_:
+Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible però també podem utilitzar la sintaxis nova, amb el comando `nft`. Per a això hem d'instal·lar i activar _nftables_:
 ```bash
 apt install nftables
 systemctl enable nftables.service
@@ -98,6 +98,10 @@ systemctl enable nftables.service
 Per a [crear les regles d'enrutament NAT](https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)) crearem una nova taula _nat_ on activem _prerouting_ i _postrouting_:
 ```bash
 nft add table nat
+```
+
+Si volem borrar-la farem `nft add table nat`. Ara posem les cadenes de pre i postrouting:
+```bash
 nft add chain nat prerouting { type nat hook prerouting priority 0 \; }
 nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
 ```
