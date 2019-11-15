@@ -100,9 +100,8 @@ Per a [crear les regles d'enrutament NAT](https://wiki.nftables.org/wiki-nftable
 nft add table nat
 ```
 
-Si volem borrar-la farem `nft add table nat`. Ara posem les cadenes de pre i postrouting:
+Si volem borrar-la farem `nft add table nat`. Ara creem la cadena de postrouting:
 ```bash
-nft add chain nat prerouting { type nat hook prerouting priority 0 \; }
 nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
 ```
 
