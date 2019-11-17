@@ -117,7 +117,7 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
 * **this**: siempre hace referencia al elemento que contiene el código en donde se encuentra la variable _this_. En el caso de una función escuchadora será el elemento que tiene el escuchador que ha recibido el evento
 * **event**: es un objeto y la función escuchadora lo recibe como parámetro. Tiene propiedades y métodos que nos dan información sobre el evento, como:
   * **.type**: qué evento se ha producido (click, submit, keyDown, ...)
-  * **.target**: el elemento donde se produjo el evento (puede ser un descendiente de _this_ como en el ejemplo siguiente) 
+  * **.target**: el elemento donde se produjo el evento (puede ser _this_  o un descendiente de _this_, como en el ejemplo siguiente) 
   * **.currentTarget**: el elemento que contiene el escuchador del evento lanzado (normalmente el mismo que _this_). Por ejemplo si tenemos un _<p>_ al que le ponemos un escuchador de 'click' que dentro tiene un elemento _<span>_, si hacemos _click_ sobre el _<span>_ **event.target** será el _<span>_ que es donde hemos hecho click (está dentro de _<p>_) pero tanto _<this>_ como _event.currentTarget_ será _<p>_ (que es quien tiene el escuchador que se está ejecutando).
   * **.relatedTarget**: en un evento 'mouseover' **event.target** es el elemento donde ha entrado el puntero del ratón y **event.relatedTarget** el elemento del que ha salido. En un evento 'mouseout' sería al revés.
   * **cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
