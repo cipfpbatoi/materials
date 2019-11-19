@@ -157,11 +157,22 @@ Vue.component('my-comp', {
 ```javascript
 // BIEN
 Vue.component('my-comp', {
-  data(): {
+  data() {
     return {
       message: 'Hello',
       counter: 0
     }
+  }
+})
+```
+
+También podemos ponerlo en notación de _arrow function_:
+```javascript
+// BIEN
+Vue.component('my-comp', {
+  data: ()=>{
+      message: 'Hello',
+      counter: 0
   }
 })
 ```
