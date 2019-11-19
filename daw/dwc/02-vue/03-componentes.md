@@ -57,10 +57,10 @@ Vue.component('todo-item', {
     <li>
       <input type="checkbox" v-model="elem.done">
       <del v-if="elem.done">
-        {{ elem.title }}
+        { { elem.title }}
       </del>
       <span v-else>
-        {{ elem.title }}
+        { { elem.title }}
       </span>
     </li>`,
   data: ()=>({
