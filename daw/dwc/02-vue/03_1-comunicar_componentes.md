@@ -367,11 +367,11 @@ Es el método a utilizar en aplicaciones medias y grandes y lo veremos con más 
 Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://vuejs.org/v2/guide/components-slots.html). 
 
 Ejemplo:
-Componente _my-component_ con un slot:
+Tenemos un componente llamado _my-component_ con un slot:
 ```html
 <div>
   <h3>Componente con un slot</h3>
-  <slot>Esto se verá si no se pasa nada al slot</slot>
+  <slot><p>Esto se verá si no se pasa nada al slot</p></slot>
 </div>
 ```
 
@@ -385,7 +385,7 @@ se renderizará como:
 ```html
 <div>
   <h3>Componente con un slot</h3>
-  <slot>Esto se verá si no se pasa nada al slot</slot>
+  <p>Texto del slot</p>
 </div>
 ```
 
@@ -398,7 +398,7 @@ se renderizará como:
 ```html
 <div>
   <h3>Componente con un slot</h3>
-  Esto se verá si no se pasa nada al slot
+  <p>Esto se verá si no se pasa nada al slot</p>
 </div>
 ```
 
