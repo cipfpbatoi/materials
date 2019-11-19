@@ -4,7 +4,7 @@ Tabla de contenidos
 
 - [Componentes](#componentes)
   - [Registrar un componente](#registrar-un-componente)
-  - [Parámetros: _props_](#par%C3%A1metros-_props_)
+  - [Parámetros: _props_](#par%C3%A1metros-props)
   - [A tener en cuenta](#a-tener-en-cuenta)
     - [_template_ debe contener un único elemento](#_template_-debe-contener-un-%C3%BAnico-elemento)
     - [_data_ debe ser una función](#_data_-debe-ser-una-funci%C3%B3n)
