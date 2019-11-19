@@ -170,12 +170,13 @@ También podemos ponerlo en notación de _arrow function_:
 ```javascript
 // BIEN
 Vue.component('my-comp', {
-  data: ()=>{
+  data: ()=>({
       message: 'Hello',
       counter: 0
-  }
+  })
 })
 ```
+NOTA: hay que poner el objeto devuelto entre paréntesis para que se sepa que es un objeto y no las llaves que abren la función a ejecutar.
 
 ### Registrar un componente localmente
 Un componente registrado como hemos visto es _global_ y puede usarse en cualquier instancia raíz de Vue creada posteriormente (con _new Vue()_ ) y también dentro de subcomponentes de dicha instancia.
