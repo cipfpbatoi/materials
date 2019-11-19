@@ -16,7 +16,7 @@ Tabla de contenidos
 # Componentes
 El sistema de componentes es un concepto importante en Vue y en cualquier framework moderno. En lugar de separar nuestra aplicación en ficheros según el tipo de información que contienen (ficheros html, css o js) es más lógico separarla según su funcionalidad. Una página web muestra una UI donde se pueden distinguir diferentes partes. En el siguiente ejemplo tenemos:
 
-![Ejemplo de págna web](../img/borsa.png)
+![Ejemplo de págna web](../img/borsaTreball.png)
 
 - un menú que es una lista de elementos del menú, cada uno formado por un logo y un texto
 - un título
@@ -48,10 +48,24 @@ En definitiva nuestra aplicación será como un árbol de componentes con la ins
 ![Árbol de componentes](https://vuejs.org/images/components.png)
 
 ## Registrar un componente
-Para registrarlo debemos darle un nombre y definir el objeto con sus _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS:
+Para registrarlo debemos darle un nombre y definir el objeto con sus _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
+
+Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```javascript
 Vue.component('todo-item', {
-  template: '<li>Cosa a hacer</li>'
+  template: `
+    <li>
+      <input type="checkbox" v-model="elem.done">
+      <del v-if="elem.done">
+        {{ elem.title }}
+      </del>
+      <span v-else>
+        {{ elem.title }}
+      </span>
+    </li>`,
+  data: ()=>({
+    elem: { title: 'Cosa a hacer', done: true }
+  })
 })
 ```
 El nombre de un componente puede estar el kebab-case (my-component-name) o en PascalCase (MyComponentName). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
@@ -64,7 +78,12 @@ Ahora ya podemos usar el componente en nuestro HTML:
 ```
 >**Resultado:**
 ><ul>
->  <li>Cosa a hacer</li>
+>  <li>
+>    <input type="checkbox" checked>
+>    <del>
+>      Cosa a hacer
+>    </del>
+>  </li>
 ></ul>
 
 Podemos utilizar la etiqueta tal cual (_<todo-item>_) o ponerla como valor del atributo _is_:
@@ -79,29 +98,32 @@ De esta forma evitamos errores de validación de HTML ya que algunos elementos s
 Podemos pasar parámetros a un componente anñadiendo atributos a su etiqueta:
 ```html
 <ul>
-  <todo-item todo="Aprender Vue"></todo-item>
+  <todo-item :todo="{ title: 'Nueva cosa a hacer', done: false }"></todo-item>
 </ul>
 ```
+NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una variable.
+
 El parámetro lo recibimos en el componente en _props_:
 ```javascript
 Vue.component('todo-item', {
   props: ['todo'],
-  template: '<li>{ { todo.title }}</li>'
+  template: `
+    <li>
+      <input type="checkbox" v-model="todo.done">
+      ...
 })
 ```
 NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebeb-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`Vue.component('todo-item',{ props: ['todoElem'],...})`).
 
 >**Resultado:**
 ><ul>
->  <li>Aprender Vue</li>
+>  <li>
+>    <input type="checkbox">
+>    <span>
+>      Nueva cosa a hacer
+>    </span>
+>  </li>
 ></ul>
-
-Lo que pasamos como parámetro a un componente se considera como _String_. Para pasar una variable o expresión JS debemos hacerlo con la directiva _v-bind_:
-```html
-<ul>
-  <todo-item :todo="todos[0]"></todo-item>
-</ul>
-```
 
 En nuestro caso queremos un componente _todo-item_ para cada elemento del array _todos_:
 ```html
@@ -111,10 +133,19 @@ En nuestro caso queremos un componente _todo-item_ para cada elemento del array 
 ```
 >**Resultado:**
 ><ul>
-  >  <li>Learn JavaScript</li>
-  >  <li> Learn Vue</li>
-  >  <li>Play around in JSFiddle</li>
-  >  <li>Build something awesome>Cosa a hacer</li>
+>  <li>
+>    <input type="checkbox" checked>
+>    <del>
+>      Learn JavaScript
+>    </del>
+>  </li>
+>  <li>
+>    <input type="checkbox">
+>    <span>
+>      Learn Vue
+>    </span>
+>  </li>
+>  ...
 ></ul>
 
 NOTA: al usar _v-for_ con un componente debemos indicarle en la propiedad _key_ la clave de cada elemento.
