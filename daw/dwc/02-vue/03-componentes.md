@@ -3,7 +3,7 @@
 Tabla de contenidos
 
 - [Componentes](#componentes)
-  - [Registrar un componente](#registrar-un-componente)
+  - [Usar un componente](#usar-un-componente)
   - [Parámetros: _props_](#par%C3%A1metros-props)
   - [A tener en cuenta](#a-tener-en-cuenta)
     - [_template_ debe contener un único elemento](#_template_-debe-contener-un-%C3%BAnico-elemento)
@@ -47,8 +47,8 @@ El primer paso a la hora de hacer una aplicación debe ser analizar qué compone
 En definitiva nuestra aplicación será como un árbol de componentes con la instancia principal de Vue como raíz.
 ![Árbol de componentes](https://vuejs.org/images/components.png)
 
-## Registrar un componente
-Para registrarlo debemos darle un nombre y definir el objeto con sus _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
+## Usar un componente
+Para usarlo basta con crearlo con `Vue.component`, darle un nombre y definir el objeto con sus propiedades _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```javascript
