@@ -35,10 +35,12 @@ Configurar l'enrutament comporta 2 accions:
 ### Habilitar l'enrutament
 L'enrutament el que fa és redirigir a la targeta de xarxa externa el tràfic de la targeta interna amb destinació a altres xarxes (com Internet).
 
-Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` (en sistemes amb netplan és `/etc/ufw/sysctl.conf` i en CentOS és `/etc/sysctl.d/99-sysctl.conf`) i descomentem la línia:
+Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` i descomentem la línia:
 ```bash
 net.ipv4.ip_forward=1
 ```
+
+En sistemes amb netplan podem utilitzar el fitxer `/etc/ufw/sysctl.conf` que ho habilitarà quan iniciem el Firewal **ufw**. En CentOS ja està habilitat per defecte (si tinguerem que afegir opcions ho faríem en el fitxer `/etc/sysctl.d/99-sysctl.conf`)
 
 Perquè faça efecte hem de recarregar la configuració amb:
 ```bash
