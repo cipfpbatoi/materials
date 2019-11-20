@@ -26,6 +26,24 @@ En la imatge anterior podem veure la partició EFI d'un equip amb Windows 8, Deb
 
 Si el nostre ordinador amb UEFI no arranca accedirem a la shell de UEFI des d'on podem intentar arreglar l'arrencada del sistema. En qualsevol cas sempre podem arrancar des d'un USB amb algun gestor d'arrencada per a UEFI com **rEFInd**, **Boot-repair** o altres.
 
+Des de la shell de UEFI podem arreglar el problema afegint una opció per a que arranque el carregador que li indiquem. Hem primer lloc anem a veure els dispositius que tenim:
+```bash
+Shell> map
+```
+
+Entrem en el disc dur (normalment fs0):
+```bash
+Shell> fs0:
+```
+
+Amb `ls` podem veure el contingut i buscar el carregador (un fitxer _.efi_ que estarà dins de la carpeta de la nostra distribució). En el cas de Debian el trobem en _fs0:\EFI\debian\grubx64.efi_. Ara afegim una entrada per al carregador
+:
+```bash
+FS0:\> bcfg boot add 0 fs0:\EFI\debian\grubx64.efi "Debian"
+```
+
+Per a finalitzar eixim amb `exit` i ja tenim el carregador arreglat.
+
 ### I si Linux no arranca?
 Cada sistema operatiu que instal·lem crearà dins de la partició EFI una carpeta amb el seu nom (Microsoft, Debian, Ubuntu, Apple, etc) dins de la qual hi ha un fitxer anomenat _nomfitxerarquitectura.efi_ (per exemple **bootx64.efi** o **grubx64.efi**) que és el carregador d'eixe sistema operatiu. A més crea una variable en la NVRAM (Non-volatile RAM) de UEFI que apunta a eixe carregador per a que aparega eixa opció en el menú al arrancar (si només hi ha una opció no apareix el menú).
 
