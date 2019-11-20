@@ -29,6 +29,8 @@ El protocolo se controla por dos demonios o servicios:
 - **smbd**: ofrece los servicios de acceso remoto a archivos e impresoras
 - **nmbd**: proporciona los mecanismos de resolución de nombres de Windows, es decir, proporciona a un sistema GNU/Linux visibilidad dentro de la red de un equipo Windows cómo si fuera un equipo más de la red Windows.
 
+Además Samba4 incluye el servicio samba-ad-dc (_Samba Active Directory DOmain Controller_) que por defecto está deshabilitado y que sustituye a los anteriores en dominios _Active Directory_.
+
 La configuración del servicio se hace en el fichero **/etc/samba/smb.conf**. 
 
 ### Creación del dominio
@@ -52,7 +54,7 @@ También se puede ejecutar el comando poniéndole todas las opciones en vez de p
 ```bash
 samba-tool domain provision --realm ciptreball-99.lan --domain CIPTREBALL-99 --adminpass P@ssw0rd --server-role=dc --use-rfc2307
 ```
-(es todo una única línea). En este caso tendremos que editar después el fichero de configuración de Samba para indicar cuál será el reenviador de DNS.
+En este caso tendremos que editar después el fichero de configuración de Samba para indicar cuál será el reenviador de DNS.
 
 Si todo funciona correctamente se creará el nuevo dominio:
 
