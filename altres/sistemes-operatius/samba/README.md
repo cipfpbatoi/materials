@@ -29,7 +29,7 @@ El protocolo se controla por dos demonios o servicios:
 - **smbd**: ofrece los servicios de acceso remoto a archivos e impresoras
 - **nmbd**: proporciona los mecanismos de resolución de nombres de Windows, es decir, proporciona a un sistema GNU/Linux visibilidad dentro de la red de un equipo Windows cómo si fuera un equipo más de la red Windows.
 
-Además Samba4 incluye el servicio samba-ad-dc (_Samba Active Directory DOmain Controller_) que por defecto está deshabilitado y que sustituye a los anteriores en dominios _Active Directory_.
+Además Samba4 incluye el servicio **samba-ad-dc** (_Samba Active Directory DOmain Controller_) que por defecto está deshabilitado y que sustituye a los anteriores en dominios _Active Directory_.
 
 La configuración del servicio se hace en el fichero **/etc/samba/smb.conf**. 
 
@@ -40,8 +40,11 @@ El primer paso es hacer la provisión de nuestro dominio con el comando **samba-
 ```
 
 La opción use-rfc2307 permite a Samba guardar atributos POSIX de los usuarios y crear la información NIS para gestionarlos en GNU/Linux. Lo que nos preguntará este comando es:
-- el nombre del dominio para Kerberos (**REALM**): pondremos el nombre de nuestro dominio, por ejemplo _ciptreball-99.lan_
-- el nombre del dominio (su nombre NetBIOS): ya lo pone por defecto (en nuestro caso _ciptreball-99_)
+
+![Samba crear dominio](./img/sambaDomainCreate.png)
+
+- el nombre del dominio para Kerberos (**REALM**): pondremos el nombre de nuestro dominio, por ejemplo _cipfpbatoi.lan_
+- el nombre del dominio (su nombre NetBIOS): ya lo pone por defecto (en nuestro caso _cipfpbatoi_)
 - qué tipo de servidor será: 
   - controlador del dominio (DC)
   - miembro del dominio (ya debe haber algún controlador)
@@ -52,24 +55,29 @@ La opción use-rfc2307 permite a Samba guardar atributos POSIX de los usuarios y
 
 También se puede ejecutar el comando poniéndole todas las opciones en vez de poner –interactive para que nos las pida:
 ```bash
-samba-tool domain provision --realm ciptreball-99.lan --domain CIPTREBALL-99 --adminpass P@ssw0rd --server-role=dc --use-rfc2307
+samba-tool domain provision --realm cipfpbatoi.lan --domain CIPFPBATOI --adminpass P@ssw0rd --server-role=dc --use-rfc2307
 ```
 En este caso tendremos que editar después el fichero de configuración de Samba para indicar cuál será el reenviador de DNS.
 
 Si todo funciona correctamente se creará el nuevo dominio:
 
-![Dominio creado](./img/)
+![Dominio creado](./img/sambaDomainCreated.png)
 
-Ahora tenemos que cambiar la configuración de la red para poner como **dns-nameservers** nuestro servidor y añadir en **dns-search** nuestro dominio:
+Ahora tenemos que cambiar la configuración de la red para poner como **dns-nameservers** nuestro servidor y añadir en **dns-search** nuestro dominio. En _ifupdown_ haremos:
 
-![Configurar la red]()
+![Configurar la red](./img/sambaDNSifupdown.png)
 
-Comprobaremos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor.
+Y en netplan:
 
-Es importante que la hora sea la correcta tanto en el servidor como en el cliente para que Kerberos funcione adecuadamente. Para asegurarnos de ello podemos instalar el servicio NTP (el paquete se llama _ntp_) que coge la hora de Internet. Una vez instalado toma la hora por defecto de los servidores de hora de Ubuntu pero podemos indicarle otros servidores de hora.
+![Configurar la red netplan](./img/sambaDNSifupdown.png)
+
+Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor.
 
 Ya tenemos el dominio configurado y podemos añadir nuestros clientes Windows exactamente como se hace para añadirlos a un dominio creado con _Windows Server_. Recordad que el nombre del administrador de nuestro dominio es **Administrator** y no Administrador.
 
 Sin embargo para que Windows se comunique con el servidor y pueda crearse la cuenta del equipo en el dominio debemos haber instalado en el servidor el paquete _winbind_ (y reiniciar el servidor). Si no lo tenemos al añadir el cliente al dominio se nos pide las credenciales de quien nos puede añadir al dominio (y se validan correctamente en el servidor) pero luego aparece un error diciendo que el recurso ya no está disponible.
 
 Para añadir clientes GNU/Linux se hace igual que para añadirlos al Active Directory creado con un _Windows Server_.
+
+Es importante que la hora sea la correcta tanto en el servidor como en el cliente para que Kerberos funcione adecuadamente. Para asegurarnos de ello podemos instalar el servicio NTP (el paquete se llama _ntp_) que coge la hora de Internet. Una vez instalado toma la hora por defecto de los servidores de hora de Ubuntu pero podemos indicarle otros servidores de hora.
+
