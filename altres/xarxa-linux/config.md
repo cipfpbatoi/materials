@@ -132,14 +132,37 @@ Si no volem usar IPv6:
 * IPV6INIT=no
 * IPV6_AUTOCONF=no
 
-Per a reiniciar el servei de xarxa executarem:
+A més de configurar la xarxa canviant directament els fitxers podem utilitzar l'eina `nmcli` que és el client del **NetworkManager**. Fins i tot tenim una interfície de text anomenada `nmtui` (_NetworkManager Text User Interface_) que ens permet configurar la xarxa com es fa des de l'entorn gràfic. Podem obtindre informació de com utilitzar aquestes eines en pàgines com [LinuxConfig: How to configure a static IP address on RHEL 8 / CentOS 8 Linux](https://linuxconfig.org/rhel-8-configure-static-ip-address).
+
+Per a reiniciar el servei de xarxa es recomana utilitzar el comando `nmcli`:
 ```bash
-systemctl restart network.service
+nmcli nerworking off
+nmcli nerworking on
 ```
 
-Si el nostre CentOS te interfície gràfica el servei encarregat de la xarxa és **NetworkManager** i és el que haurem de reiniciar. 
+Encara que també el podem reiniciar amb `systemctl`
+```bash
+systemctl restart NetworkManager.service
+```
+NOTA: En CentOS 7 i anteriors el servei en un sistema sense interfície gràfica és **network.service** i no tenim el comando `nmcli`. Si te interfície gràfica el servei encarregat de la xarxa és també **NetworkManager** i és el que haurem de reiniciar. 
 
-NOTA: si hem afegit posteriorment una nova targeta no es crea el seu fitxer de configuració dins de **/etc/sysconfig/network-scripts/**. Ho haurem de crear manualment (podem copiar-lo d'altre) o des de l'entorn gràfic seleccione la nova interfície i polsem la icona de afegir perfil (+) que apareix a la seua dreta.
+#### Afegir noves targetes
+Si hem afegit posteriorment una nova targeta no es crea el seu fitxer de configuració dins de **/etc/sysconfig/network-scripts/**. Si tenim entorn gràfic seleccionem la nova interfície i polsem la icona de afegir perfil (+) que apareix a la seua dreta.
+
+Si no el tenim poder crear-ho manualment però és molt més senzill fer-ho amb `nmtui`. Al obrir-ho seleccinem _'Modificar una connexió'_ i com no ens apareix polsem sobre _'Afegir'_ i seleccionem el tipus de targeta (en el nostre cas _Ethernet_). Ens apareix una finestra on configurar la nova targeta:
+
+![nmtui-nova interfície](./img/nmtui.png)
+
+El que ens pregunta és:
+- Nom del perfil: el nom del fitxer on es guardarà. Normalment posem el nom de la targeta
+- Dispossitiu: el nom de la targeta que es gestionarà amb aquest fitxer
+- Ethernet: no cal configurar res
+- Configuració IPv4: podem triar 'Desactivat', 'Automàtic' (per DHCP), 'Manual',... Si triem _'Manual'_ hem de configurar els parèmetres de xarxa polsant en _'Mostrar'_
+- Configuració IPv6: igual per a IPv6
+- Connectar de forma automàtica: per a que s'active al reiniciar l'equip
+- Disponible per a tots els usuaris: la marcarem igual que l'anterior
+
+Això crea el fitxer **ifcfg-NomDelPerfil**. Reiniciem la xarxa i ja tenim la targeta funcionant.
 
 ### Configuració en Virtualbox
 Si volem configurar una màquina virtual que siga el servidor de una xarxa de màquines virtuals clients haurà de tindre al menys 2 targetes de xarxa: una 'externa' per a connectar-se a l'enterior i una interna per a cada xarxa interna de clients que vulga connectar. Cada targeta interna la configurarem en VirtualBox com a 'Xarxa interna' i li assignarem un nom (és com si fóra el nom del switch al que es connecta el seu cable). Per a la interfície externa Virtualbox ens ofereix 2 opcions:
