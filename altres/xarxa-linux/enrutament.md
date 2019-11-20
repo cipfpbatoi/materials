@@ -157,7 +157,7 @@ DEFAULT_FORWARD_POLICY="ACCEPT"
 COMMIT
 ```
 
-Només queda reiniciar el Firewall (podem desactivar-ho i tornar-lo a activar). Per a comprovar les regles que estan aplicant-se executem el comando que ja hem vist:
+Només queda reiniciar el Firewall (`ufw reload`). Per a comprovar les regles que estan aplicant-se executem el comando que ja hem vist:
 ```bash
 iptables  -t nat -L
 ```
