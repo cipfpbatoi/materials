@@ -81,3 +81,46 @@ Para añadir clientes GNU/Linux se hace igual que para añadirlos al Active Dire
 
 Es importante que la hora sea la correcta tanto en el servidor como en el cliente para que Kerberos funcione adecuadamente. Para asegurarnos de ello podemos instalar el servicio NTP (el paquete se llama _ntp_) que coge la hora de Internet. Una vez instalado toma la hora por defecto de los servidores de hora de Ubuntu pero podemos indicarle otros servidores de hora.
 
+### Crear el dominio en un servidor DNS
+Si queremos que nuestro servidor además de hacer de Contrlador del Dominio sea también un servidor DNS con bind tenemos que instalar el paquete **bind9** y configurarlo.
+
+Cuando creamos el dominio (con samba-tool domain provision) a la hora de escoger el DNS pondremos _BIND_DLZ_ (en mayúsculas) en lugar de SAMBA_INTERNAL.
+
+Después de crearse el dominio tenemos que configurar diversas cosas en algunos ficheros de bind:
+
+- Fichero **/etc/bind/named.conf**
+
+Añadiremos al final la línea:
+bash
+include "/var/lib/samba/private/named.conf";
+
+Eso incluye en BIND la configuración de Samba.
+
+    Fitxer /etc/bind/named.conf.options
+
+Añadimos al final (pero dentro de las llaves) la línea:
+
+tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
+
+Eso permitira a Samba añadir registros al DNS cuando se añadan clientes al dominio.
+
+    Fitxer /etc/bind/named.conf.local
+
+Si en este fichero tenemos ya una definición de zona de nuestro dominio (por ejemplo si estaba configurado antes con SAMBA_INTERNAL) tenemos que quitarla porque la añadira Samba automàticamente.
+
+Finalmente reiniciamos el servicio BIND:
+
+systemctl restart bind9
+
+Com ya dijimos, conviene añadir en /etc/samba/smb.conf en la sección global la opción
+
+allow dns updates = nonsecure and secure
+
+para permitir que se registren en el DNS los clientes al ser añadidos al dominio.
+
+Ya deberia funcionar el DNS y podemos continuar con la configuración del dominio como se ha explicado en el capítulo anterior.
+
+Fuentes:
+- Configuració do servidor Samba4 com a controlador de domini
+- BIND9 DLZ DNS Back End
+- Samba4 AD DC on Ubuntu 14.04
