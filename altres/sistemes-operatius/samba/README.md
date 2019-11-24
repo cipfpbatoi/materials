@@ -91,30 +91,34 @@ Después de crearse el dominio tenemos que configurar diversas cosas en algunos 
 - Fichero **/etc/bind/named.conf**
 
 Añadiremos al final la línea:
-bash
+```bash
 include "/var/lib/samba/private/named.conf";
+```
 
 Eso incluye en BIND la configuración de Samba.
 
-    Fitxer /etc/bind/named.conf.options
+- Fichero **/etc/bind/named.conf.options**
 
 Añadimos al final (pero dentro de las llaves) la línea:
-
+```bash
 tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
+```
 
 Eso permitira a Samba añadir registros al DNS cuando se añadan clientes al dominio.
 
-    Fitxer /etc/bind/named.conf.local
+- Fichero **/etc/bind/named.conf.local**
 
 Si en este fichero tenemos ya una definición de zona de nuestro dominio (por ejemplo si estaba configurado antes con SAMBA_INTERNAL) tenemos que quitarla porque la añadira Samba automàticamente.
 
 Finalmente reiniciamos el servicio BIND:
-
+```bash
 systemctl restart bind9
+```
 
-Com ya dijimos, conviene añadir en /etc/samba/smb.conf en la sección global la opción
-
+Com ya dijimos, conviene añadir en **/etc/samba/smb.conf** en la sección global la opción
+```bash
 allow dns updates = nonsecure and secure
+```
 
 para permitir que se registren en el DNS los clientes al ser añadidos al dominio.
 
