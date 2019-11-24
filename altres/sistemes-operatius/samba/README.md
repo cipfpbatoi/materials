@@ -125,6 +125,6 @@ para permitir que se registren en el DNS los clientes al ser añadidos al domini
 Ya deberia funcionar el DNS y podemos continuar con la configuración del dominio como se ha explicado en el capítulo anterior.
 
 Fuentes:
-- Configuració do servidor Samba4 com a controlador de domini
-- BIND9 DLZ DNS Back End
-- Samba4 AD DC on Ubuntu 14.04
+- [Configuració do servidor Samba4 com a controlador de domini](https://manuais.iessanclemente.net/index.php/Configuración_do_servidor_Samba4_como_controlador_de_dominio)
+- [BIND9 DLZ DNS Back End](https://wiki.samba.org/index.php/BIND9_DLZ_DNS_Back_End)
+- [Samba4 AD DC on Ubuntu 14.04](https://blogging.dragon.org.uk/samba4-ad-dc-on-ubuntu-14-04/)
