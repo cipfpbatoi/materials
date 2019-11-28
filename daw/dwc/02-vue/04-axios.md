@@ -74,6 +74,7 @@ Vamos a modificar los diferentes componentes para implementar os cambios requeri
 ### Pedir los datos al cargarse
 Modificamos el fichero **Todo-List.vue** para añadir en su sección _script_:
 * antes del objeto vue:
+
 ```javascript
 import axios from 'axios'
 
@@ -81,6 +82,7 @@ const url='http://localhost:3000'
 ```
 
 Dentro del objeto añadimos el _hook_ **monted** para hacer la petición Ajax al montar el componente:
+
 ```javascript
 ...
   mounted() {
@@ -140,7 +142,7 @@ Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamo
 
 A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue**:
 ```javascript
-    changeTodo(todo) {
+    toogleDone(todo) {
       axios.put(url+'/todos/'+todo.id, {
           id: todo.id, 
           title: todo.title, 
@@ -179,7 +181,7 @@ export class APIService{
   addTodo(newTodo) {
     return axios.post(url+'/todos', newTodo)
   },
-  changeTodo(todo) {
+  toogleDone(todo) {
     return axios.put(url+'/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
