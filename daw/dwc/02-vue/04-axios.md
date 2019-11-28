@@ -73,7 +73,7 @@ Vamos a modificar los diferentes componentes para implementar os cambios requeri
 
 ### Pedir los datos al cargarse
 Modificamos el fichero **Todo-List.vue** para añadir en su sección _script_:
-* antes del objeto vue:
+* Antes del objeto vue:
 
 ```javascript
 import axios from 'axios'
@@ -81,7 +81,7 @@ import axios from 'axios'
 const url='http://localhost:3000'
 ```
 
-Dentro del objeto añadimos el _hook_ **monted** para hacer la petición Ajax al montar el componente:
+* Dentro del objeto añadimos el _hook_ **monted** para hacer la petición Ajax al montar el componente:
 
 ```javascript
 ...
