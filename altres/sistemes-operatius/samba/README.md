@@ -69,7 +69,7 @@ Ahora tenemos que cambiar la configuración de la red para poner como **dns-name
 
 Y en netplan:
 
-![Configurar la red netplan](./img/sambaDNSifupdown.png)
+![Configurar la red netplan](./img/sambaDNSnetplan.png)
 
 Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor.
 
