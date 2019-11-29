@@ -71,7 +71,7 @@ Y en netplan:
 
 ![Configurar la red netplan](./img/sambaDNSnetplan.png)
 
-Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor.
+Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor. Si nuestro sistema usa _systemd-resolved_ no resolverá el dominio y tenemos que hacer las [configuraciones adicionales](#configuracion-adicional-en-sistemas-con-systemd-resolved) que se indican en el siguiente apartado para desactivar ese servicio.
 
 Ya tenemos el dominio configurado y podemos añadir nuestros clientes Windows exactamente como se hace para añadirlos a un dominio creado con _Windows Server_. Recordad que el nombre del administrador de nuestro dominio es **Administrator** y no Administrador.
 
@@ -80,6 +80,92 @@ Sin embargo para que Windows se comunique con el servidor y pueda crearse la cue
 Para añadir clientes GNU/Linux se hace igual que para añadirlos al Active Directory creado con un _Windows Server_.
 
 Es importante que la hora sea la correcta tanto en el servidor como en el cliente para que Kerberos funcione adecuadamente. Para asegurarnos de ello podemos instalar el servicio NTP (el paquete se llama _ntp_) que coge la hora de Internet. Una vez instalado toma la hora por defecto de los servidores de hora de Ubuntu pero podemos indicarle otros servidores de hora.
+
+### Configuración adicional en sistemas con systemd-resolved
+Algunas distribuciones como Ubuntu 17.10 y posteriores utilizan un servicio denominado **systemd-resolved** para resolver los nombres de dominio (tiene una caché que optimiza la resolución de nombres). En ellas cuando miramos su DNS nos dice que és la 127.0.0.1:53 (es el puerto que usa este servicio).
+
+Esto que es muy útil en una máquina cliente, causa problemas en el servidor porque interfiere con el DNS interno de Samba por lo que vamos a desactivarlo después de configurar el dominio.
+
+Los pasos a realizar son los siguientes:
+1. Paramos y deshabilitamos (para que no se iniciem de nuevo al arrancar el servidor) los servicios de samba (_smbd_ y _nmbd_), _winbind_ y _systemd-resolved_:
+```bash
+systemctl stop smbd nmbd winbind systemd-resolved
+systemctl disable smbd nmbd winbind systemd-resolved
+```
+
+2. Eliminamos **resolv.conf** (que ahora no es un fichero sino un enlace al de systemd-resolved) y lo creamos nuevo. En él escribimos el DNS 127.0.0.1 (para que resuelva el DNS de Samba) y el nombre del dominio (para que resuelve el nombre de nuestro servidor aunque no pongamos su nombre completo, con dominio):
+```bash
+rm /etc/resolv.conf
+nano /etc/resolv.conf
+```
+
+Y en él escribimos
+```bash
+search cipfpbatoi.lan
+nameserver 127.0.0.1
+```
+
+3. Arrancamos y habilitamos el servicio de controlador de dominio de Samba:
+```bash
+systemctl unmask samba-ad-dc
+systemctl start samba-ad-dc
+systemctl enable samba-ad-dc
+```
+
+Tras reiniciar el servidor comprobaremos que el servicio **samba-ad-dc** funciona correctamente.
+
+#### Configurar ufw
+Si tenemos activado el Firewall debemos abrir los puertos que utiliza el dominio de Samba para que el cliente pueda acceder al mismo (de hecho no funciona ni el comando _nslookup_ porque el puerto 53 está bloqueado como el resto).
+
+Por lo tanto tenemos que abrir en el firewall los puertos que vayamos a necesitar. Para abrir un puerto en los protocolos TCP y UDP ejecutamos:
+```bash
+ufw allow num_puerto
+```
+
+Para abrir un puerto sólo en TCP o en UDP hacemos igual pero con /TCP o /UPD:
+```bash
+ufw allow num_puerto/udp
+```
+
+Para abrir un rango de puertos se separan por ":" y se tiene que indicar el protocolo. Por ejemplo para abrir los puertos del 20 al 25 TCP:
+```bash
+ufw allow 20:25/tcp
+```
+
+Para cerrar puertos en vez de **allow** ponemos **deny** y para ver todos los puertos abiertos hacemos:
+```bash
+ufw status
+```
+
+Podemos quitar una regla que hemos puesto previamente con **delete** y la regla a eliminar:
+```bash
+ufw delete allow 20:25/tcp
+```
+
+Por último podemos reiniciar el firewall y dejarlo cómo al principio (sin ningún puerto abierto y deshabilitado) con:
+```bash
+ufw reset
+```
+
+Los puertos que utiliza samba y que tenemos que abrir en ufw son:
+
+Service | Port | Protocol
+:-- | :--: | :--:
+DNS * | 53 | tcp/udp
+Kerberos | 88 | tcp/udp
+End Point Mapper (DCE/RPC Locator Service) | 135 | tcp
+NetBIOS Name Service | 137 | udp
+NetBIOS Datagram | 138 | udp
+NetBIOS Session | 139 | tcp
+LDAP | 389 | tcp/udp
+SMB over TCP | 445 | tcp
+Kerberos kpasswd | 464 | tcp/udp
+LDAPS ** | 636 | tcp
+Dynamic RPC Ports *** | 49152-65535 | tcp
+Global Catalog | 3268 | tcp
+Global Catalog SSL ** | 3269 | tc
+
+Como son muchos podemos crear un script donde los anotamos y así sólo tenemos que ejecutar el script o modificarlo cuando lo necesitemos.
 
 ### Crear el dominio en un servidor DNS
 Si queremos que nuestro servidor además de hacer de Contrlador del Dominio sea también un servidor DNS con bind tenemos que instalar el paquete **bind9** y configurarlo.
