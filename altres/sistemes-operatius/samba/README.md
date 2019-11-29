@@ -71,7 +71,7 @@ Y en netplan:
 
 ![Configurar la red netplan](./img/sambaDNSnetplan.png)
 
-Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor. Si nuestro sistema usa _systemd-resolved_ no resolverá el dominio y tenemos que hacer las [configuraciones adicionales](#configuracion-adicional-en-sistemas-con-systemd-resolved) que se indican en el siguiente apartado para desactivar ese servicio.
+Tras recargar la red comprobamos que nuestro equipo sabe resolver tanto el dominio ldap como el servidor. Si nuestro sistema usa _systemd-resolved_ no resolverá el dominio y tenemos que hacer las [configuraciones adicionales](#configuración-adicional-en-sistemas-con-systemd-resolved) que se indican en el siguiente apartado para desactivar ese servicio.
 
 Ya tenemos el dominio configurado y podemos añadir nuestros clientes Windows exactamente como se hace para añadirlos a un dominio creado con _Windows Server_. Recordad que el nombre del administrador de nuestro dominio es **Administrator** y no Administrador.
 
