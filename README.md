@@ -14,6 +14,6 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
 * [Arrencada del sistema](./altres/sistemes-operatius/arrencada/)
 * [Particionament de discos](./altres/sistemes-operatius/particions/)
 * [Configurar la xarxa en GNU/Linux](./altres/xarxa-linux/)
-* [Samba](./altres/samba/)
+* [Samba](./altres/sistemes-operatius/samba/)
 * [Crear documentación con Markdown](./altres/markdown/)
 
