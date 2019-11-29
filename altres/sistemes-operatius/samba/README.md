@@ -214,3 +214,121 @@ Fuentes:
 - [Configuració do servidor Samba4 com a controlador de domini](https://manuais.iessanclemente.net/index.php/Configuración_do_servidor_Samba4_como_controlador_de_dominio)
 - [BIND9 DLZ DNS Back End](https://wiki.samba.org/index.php/BIND9_DLZ_DNS_Back_End)
 - [Samba4 AD DC on Ubuntu 14.04](https://blogging.dragon.org.uk/samba4-ad-dc-on-ubuntu-14-04/)
+
+## Samba4 en CentOS
+Red Hat no proporciona el servicio de Samba4 que permite implementar un _Active Directory_ y en vez de Samba4 apuesta por [FreeIPA](https://en.wikipedia.org/wiki/FreeIPA) para la administración de identidades.
+
+Si queremos instalar Samba 4 tenemos que descargarnos el código fuente de samba y compilarlo nosotros en nuestro servidor.  Los pasos a hacer son los siguientes:
+
+### 1.- Añadimos nuestro servidor a hosts. 
+Editamos **/etc/hosts** y añadimos una línea con nuestra IP y el nombre del el nuestro servidor, con y sin dominio, por ejemplo:
+```bash
+192.168.100.1 srvCentos srvCentos.acmé.lan
+```
+
+### 2.- Descargamos las herramientas necesarias. 
+Para poder descargar y compilar samba necesitaremos instalar wget, gcc, perl, python-devel, gnutls-devel, libacl-devel, openldap-devel y pam-devel. Además instalaremos los paquetes bind-utils (incluye los comandos nslookup, host y dig), krb5-workstation (para usar kerberos y el comando kinit), cups-devel (para tener el servicio CUPS). Con esto tendríamos que tener suficiente para compilar Samba.
+
+En la [página oficial de Samba](https://wiki.samba.org/index.php/Package_Dependencies_Required_to_Build_Samba#Red_Hat_Enterprise_Linux_7_.2F_CentOS_7_.2F_Scientific_Linux_7) nos dicen que los paquetes a instalar son:
+```bash
+yum groups install bind-utils docbook-style-xsl gcc gdb krb5-workstation libsemanage-python libxslt perl perl-ExtUtils-MakeMaker perl-Parse-Yapp perl-Test-Base pkgconfig policycoreutils-python python-crypto gnutls-devel gpgme-devel jansson-devel libattr-devel keyutils-libs-devel libacl-devel libaio-devel libblkid-devel libxml2-devel openldap-devel pam-devel popt-devel python2-devel readline-devel systemd-devel zlib-devel python-markdown
+```
+
+o directamente podemos instalar el grupo de paquetes "Development Tools" que nos instala todo eso (i muchas más cosas) y unos paquetes adicionales:
+```bash
+yum groups install "Development Tools"
+yum -y install iniparser libldb libtalloc libtdb libtevent python-devel gnutls-devel libacl-devel openldap-devel pam-devel readline-devel krb5-devel cups-devel 
+```
+NOTA: A partir de la versión de Samba 4.9.0 son necesarios unos paquetes (lmbd) que no están en el repositorio oficial de CentOS sino en el EPEL (Extra Packages for Enterprise Linux). Para añadir el repositorio EPEL e instalar este paquete haremos:
+```bash
+yum install epel-release
+yum --enablerepo="epel" install lmdb lmdb-devel
+```
+
+El comando para ver los repositorios instalados es `yum repolist`.
+
+### 3.- Descargamos samba
+Previamente debemos instalar los paquetes attr,  bind-utils docbook-style-xsl, libsemanage-python, python-devel, 
+
+Para descargar la última versión de Samba:
+```bash
+curl -O https://download.samba.org/pub/samba/samba-latest.tar.gz
+```
+
+y descomprimimos el fichero
+```bash
+tar zxvf samba-latest.tar.gz
+```
+
+### 4.- Compilamos samba
+Entramos al directorio donde hemos descomprimido samba y ejecutamos:
+```bash
+./configure --enable-debug --enable-selftest --with-ads --with-systemd --with-winbind
+make && make install
+```
+(Este comando tarda bastante. Paciencia)
+
+Si todo ha ido bien los ejecutables de samba los tendremos en /usr/local/samba/bin así que tenemos que añadir ese directorio al PATH:
+```bash
+export PATH=$PATH:/usr/local/samba/bin
+```
+
+Así sólo lo añadimos para esta sessió,. Para que se añada al PATH al iniciar sessión tenemos que configurarlo en el perfil del usuario (en ~/.bash_profile).
+
+### 5.- Creamos el dominio
+Antes de crear el dominio hay un par de cosas que tenemos que hacer:
+- Comentar del fichero /etc/krb5.conf la línea: `includedir /etc/krb5.conf.d/`
+- Borrar el fichero de configuración de samba, que ahora está en /usr/local/samba/etc/smb.conf
+
+Ahora creamos el dominio:
+```bash
+samba-tool domain provision --use-rfc2307 --interactive
+```
+
+Modificamos el DNS de nuestra tarjeta externa poniendo 127.0.0.1
+
+Copiamos el fichero de configuración de kerberos de Samba:
+```bash
+cp /usr/local/samba/private/krb5.conf /etc/krb5.conf
+```
+
+También podemos editar el fichero nosotros directamente. Sólo hace falta que tenga las siguientes líneas:
+```bash
+[libdefaults] 
+  dns_lookup_realm = true 
+  dns_lookup_kdc = true 
+  default_realm = ACME.LAN
+```
+
+### 6.- Configuraciones finales
+Abrimos los puertos en el firewall (ya vimos cuáles son):
+```bash
+firewall-cmd --add-port=53/tcp --permanent;firewall-cmd --add-port=53/udp --permanent;firewall-cmd --add-port=88/tcp --permanent;firewall-cmd --add-port=88/udp --permanent; firewall-cmd --add-port=135/tcp --permanent;firewall-cmd --add-port=137-138/udp --permanent;firewall-cmd --add-port=139/tcp --permanent; firewall-cmd --add-port=389/tcp --permanent;firewall-cmd --add-port=389/udp --permanent;firewall-cmd --add-port=445/tcp --permanent; firewall-cmd --add-port=464/tcp --permanent;firewall-cmd --add-port=464/udp --permanent;firewall-cmd --add-port=636/tcp --permanent; firewall-cmd --add-port=49152-65535/tcp --permanent;firewall-cmd --add-port=3268-3269/tcp --permanent
+firewall-cmd --reload
+```
+
+Creamos un fichero para que arranque el servicio samba en /etc/systemd/system/samba.service:
+```bash
+[Unit]
+Description= Samba 4 Active Directory
+After=syslog.target
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/usr/local/samba/var/run/samba.pid
+ExecStart=/usr/local/samba/sbin/samba
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Activamos y arrancamos el sericio samba:
+```bash
+systemctl enable samba
+systemctl start samba
+```
+
+Fuentes:
+- https://www.linkedin.com/pulse/samba-4-active-directory-centos-7-aur%C3%A9lien-husson
+- https://wiki.samba.org/index.php/samba_ad_dc_port_usage
