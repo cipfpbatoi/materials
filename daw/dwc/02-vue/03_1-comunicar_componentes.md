@@ -84,26 +84,26 @@ Al pasar un parámetro podemos indicar algunas cosas como:
 * **type**: su tipo (String, Boolean, Number, Object, ...). Puede ser un array con varios tipos: `type: [Boolean, Number]`
 * **default**: su valor por defecto si no se pasa ese parámetro
 * **required**: si es o no obligatorio
-* e incluso una función para validaciones más complejas
+* **validator**: una función que recibe como parámetro el valor del parámetro y devolverá true o false en función de si el valor es o no válido
 
 Ejemplos:
 ```javascript
 props: {
-  prop1: {
+  nombre: {
     type: String,
     required: true
   },
-  prop2: {
+  idPropietario: {
     type: [Boolean, Number],
     default: false
   },
-  prop3: {
+  products: {
     type: Object,
-    default(): { return {message: 'Hola'} }   # Si es un objeto o array _default_ debe devolver el valor
+    default(): { return {id:0, units: 0} }   # Si es un objeto o array _default_ debe devolver el valor
   },
-  prop4: {
-    validator(value) {
-      return ...                # Si devuelve *true* será válido
+  nifGestor: {
+    validator: function(value) {
+      return /^[0-9]{8}[A-Z]$/.test(value);              // Si devuelve *true* será válido
     }
   }
 ```
