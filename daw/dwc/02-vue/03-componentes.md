@@ -173,11 +173,13 @@ Vue.component('my-comp', {
 ```
 
 ### _data_ debe ser una función
-Un componente puede tener sus propios métodos y datos pero estos últimos no pueden devolverse directamente sino que _data_ debe ser una función:
+Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas, definidas en _data_ y sus propios métodos, _hooks_, etc.
+
+Pero _data_ en la instancia de Vue es un objeto pero en un componente es una función que devuelve ese objeto:
 
 ```javascript
-// MAL
-Vue.component('my-comp', {
+// En la instancia Vue
+new Vue({
   data: {
     message: 'Hello',
     counter: 0
@@ -186,9 +188,9 @@ Vue.component('my-comp', {
 ```
 
 ```javascript
-// BIEN
+// En un componente
 Vue.component('my-comp', {
-  data() {
+  data: function() {
     return {
       message: 'Hello',
       counter: 0
