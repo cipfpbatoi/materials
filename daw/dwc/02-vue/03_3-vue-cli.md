@@ -146,7 +146,7 @@ Es el fichero JS principal. Importa la librería _Vue_ y el componente _App.vue_
 Además indica que no estamos en modo producción lo que hace que en la consola aparezca un mensaje indicando que se está en modo desarrollo.
 
 **Fichero App.vue:**
-Es el componente principal de la aplicación. Lo que contiene el apartado _template_ es lo que se renderizará en el div _app_ que hay en _index.html_. Si contiene algún otro componente se indica aquí dónde renderizarlo (en este caso <HelloWorld>).
+Es el componente principal de la aplicación, el que contiene el _layout_ de la página. Lo que contiene el apartado _template_ es lo que se renderizará en el div _app_ que hay en _index.html_. Si contiene algún otro componente se indica aquí dónde renderizarlo (en este caso <HelloWorld>).
 
 Veamos qué contiene cada sección
 
@@ -159,7 +159,7 @@ _template_
   </div>
 </template>
 ```
-Muestra una imagen (las imágenes se guardan dentro de **/src/assets/**) y el subcomponente _HelloWorld_.
+Muestra una imagen (las imágenes y otros ficheros como ficheros .css se guardan dentro de **/src/assets/**) y el subcomponente _HelloWorld_.
 
 _script_
 ```javascript
