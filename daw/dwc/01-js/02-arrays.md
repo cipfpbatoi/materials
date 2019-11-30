@@ -353,6 +353,32 @@ let preferencias=['Javascript', 'NodeJS'];
 let [lenguaje, backend='Laravel', frontend='VueJS']=preferencias;  // lenguaje='Javascript', backend='NodeJS', frontend='VueJS'
 ```
 
+La desestructuración también funciona con objetos. Es normal pasar un objeto como parámetro para una función pero si sólo nos interesan algunas propiedades del mismo podemos desestructurarlo:
+```javascript
+const miProducto={
+    id: 5,
+    name: 'TV Samsung',
+    units: 3,
+    price: 395.95
+}
+
+muestraNombre(miProducto);
+
+function miProducto({name: nanme, units: units}) {        // Mejor pondríamos function miProducto({name, units}) {
+    console.log('Del producto '+name+' hay '+units+' unidades');
+}
+```
+
+También podemos asignar valores por defecto:
+```javascript
+function miProducto({name, units=0}) {
+    console.log('Del producto '+name+' hay '+units+' unidades');
+}
+
+muestraNombre({name: 'USB Kingston');
+// muestraría: Del producto USB Kingston hay 0 unidades
+```
+
 ## Map
 Es una colección de parejas de \[clave,valor]. Un objeto en Javascript es un tipo particular de _Map_ en que las claves sólo pueden ser texto o números. Se puede acceder a una propiedad con **.** o **\[propiedad]**. Ejemplo:
 ```javascript
