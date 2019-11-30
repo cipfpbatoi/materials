@@ -24,7 +24,7 @@ Declarar los componentes como hemos visto con `Vue.component()` en el fichero JS
 
 Por tanto eso puede ser adecuado para proyectos muy pequeños pero no lo es cuando estos enpiezan a crecer.
 
-La solución es guardar cada componente en un único fichero con extensión **.vue** que contendrá 3 secciones:
+La solución es guardar cada componente en un único fichero. Esto me lo permite la herramienta de Webpack **vue-loader**. Un fichero para un SFC tendrá extensión **.vue** y contendrá 3 secciones:
 * \<template>: contiene todo el HTML del componente
 * \<script>: con el JS del mismo
 * \<style>: donde pondremos el CSS del componente
@@ -80,7 +80,15 @@ export default {
 ```
 El párrafo tendrá la clase indicada en la variable `decoration` (en este caso _underline_) y además si el valor de `isBold` es verdadero tendrá la clase _weight_. Hacer que cambien las clases del elemento es tan sencillo como cambiar el valor de las variables.
 
-En la [página de Vue](https://vuejs.org/v2/guide/class-and-style.html) podemos ver las diferentes maneras de asignar clases a los elementos HTML.
+Podemos ver las diferentes maneras de asignar clases a los elementos HTML en la [página de Vue](https://vuejs.org/v2/guide/class-and-style.html) .
+
+### Custom blocks
+Además de estos 3 bloques un SFC puede tener otros bloques definidos por el programador para, por ejemplo, incluir la documentación del componente o su test unitarios:
+```vue
+<custom1 src="./unit-test.js">
+    Aquí podríamos incluir la documentación del proyecto
+</custom1>
+```
 
 ## TodoList con Single File Components
 Vamos a ver cómo sería el fichero **TodoList.vue** con el componente _todo-list_ de la aplicación anterior.
