@@ -201,14 +201,14 @@ Una alternativa a emitir eventos es "sincronizar" un parámetro pasado por el pa
 ```
 Si cambia el valor de _done_ en el hijo también cambiará en el padre.
 
-## Bus de comunicaciones
-Si queremos pasar información entre varios componentes que no tienen por qué ser padres/hijos podemos crear un componente que haga de bus y que lo incluiremos en cada componente que queramos comunicar:
+## Bus de eventos
+Si queremos pasar información entre varios componentes que no tienen por qué ser padres/hijos podemos crear un componente que haga de canal de comunicación y que incluiremos en cada componente que queramos comunicar:
 
-Para crear el objeto que gestione la comunicación entre componentes haremos:
+En primer lugar creamos de forma global (fuera de cualquier componente) el objeto que gestione la comunicación entre componentes:
 ```javascript
 var EventBus = new Vue;
 ```
-En cada componente que queramos que escuche eventos de ese bus importamos el componente y creamos un escuchador en el hook _created_ o _mounted_:
+En cada componente que queramos que escuche eventos de ese canal importamos el bus y creamos un escuchador en el hook _created_ o _mounted_:
 ```javascript
 created() {
     EventBus.$on('nombreevento', this.fnManejadora);
