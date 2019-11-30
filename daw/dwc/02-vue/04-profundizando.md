@@ -57,4 +57,47 @@ Un componente pasa por distintos estados a lo largo de su cilo de vida y podemos
 - **beforeDestroy**: antes de que se destruya el componente
 - **destroyed**: ya se ha destruido el componente
 
+## Componentes asíncronos
+En proyectos grandes con centenares de componentes podemos hacer que en cada momento se carguen sólo los componentes necesarios de manera que se ahorra mucho tiempo de carga de la página.
 
+Para que un componente se cargue asíncronamente al registrarlo se hace como un objeto que será una función que importe el componente. Un componente normal (síncrono) se registraría así:
+```vue
+<script>
+import ProductItem from './ProductItem.vue'
+
+export default {
+    name: 'products-table',
+    components: {
+        ProductItem,
+    },
+```
+
+Si queremos que se cargue asíncronamente no lo importamos hasta se registra:
+```vue
+<script>
+export default {
+    name: 'products-table',
+    components: {
+        ProductItem: () => import('./ProductItem.vue'),
+    },
+...
+```
+
+También podemos decirle que espere un tiempo a cargar el componente (delay) e incluso qué componente queremos cargar mientras está cargando el componente o cuál cargar si hay un error al cargarlo:
+```vue
+<script>
+export default {
+    name: 'products-table',
+    components: {
+        ProductItem: () => ({
+            component: import('./ProductItem.vue'),
+            delay: 500,       // en milisegundos
+            timeout: 6000,
+            loading: compLoading,   // componente que cargará mientras se está cargando
+            error: compError,       // componente que cargará si hay un error,
+        })
+    },
+...
+```
+
+## Filtros
