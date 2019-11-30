@@ -50,6 +50,8 @@ Se recomenda que Los nombres de las variables sigan la sintaxis _camelCase_ (ej.
 
 Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error. Se aconseja que el nombre de las constantes globales sea en mayúsculas.
 
+NOTA: en la página de [Babel](https://babeljs.io/) podemos teclear código en ES2015 y ver cómo quedaría una vez transpilado a ES5.
+
 ## Funciones
 Se declaran con **function** y se les pasan los parámetros entre paréntesis. La función puede devolver un valor usando **return** (si no tiene _return_ es como si devolviera _undefined_). 
 
