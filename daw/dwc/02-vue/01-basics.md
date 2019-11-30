@@ -76,11 +76,23 @@ es _message_. A cada variable le debemos dar un valor inicial.
 pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremmos más adelante.
 
 ## La instancia _Vue_
-La instancia que hemos creado (y cada componente) recibe un objeto de opciones con:
+La instancia que hemos creado (y cada componente) recibe un objeto de opciones con las siguientes propiedades:
 * **el**: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
 * **data**: objeto donde definiremos todas las variables que vamos a usar en la vista (las variables que sólo uemos en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas son accesibles desde la vista poniendo *{\{ su_nombre }}* y desde el código JS poniendo *this.su_nombre*.
+* **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
+```javascript
+data: {
+    nombre: 'Juan',
+    apellido: 'Segura', 
+},
+computed: {
+    nombreCompleto() {
+        return this.nombre+' '+this.apellido;
+    }
+}
+```
+
 * **methods**: objeto con métodos a los que podemos llamar desde la vista
-* **computed**: son métodos igual pero que se 'cachean'
 * _Eventos del ciclo de vida de la instancia_: para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
 
 ```javascript
