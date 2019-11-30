@@ -41,6 +41,25 @@ let alumno={
 };
 ```
 
+En ES6 si el valor de una propiedad es una función podemos ponerlo como:
+```javascript
+    ...
+    getInfo() {
+        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+    }
+    ...
+```
+
+Además si queremos que el valor de una propiedad sea el de una variable que se llama como ella no es necesario ponerlo:
+```javascript
+let nombre='Carlos';
+
+let alumno={
+    nombre,                           // es equivalente a nombre: nombre
+    apellidos: 'Pérez Ortiz',
+    ...
+```
+
 Podemos acceder a las propiedades con `.` (punto) o `[ ]`:
 ```javascript
 console.log(alumno.nombre);       // imprime 'Carlos'
