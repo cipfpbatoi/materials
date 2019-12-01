@@ -161,3 +161,24 @@ Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para 
 
 ## Transiciones
 Vue permite controlar transiciones en nuestra aplicación poniendo el código CSS correspondiente y añadiéndole al elemento el atributo _transition_. Podemos encontrar más información en la [documentación oficial de Vue](https://vuejs.org/v2/guide/transitions.html).
+
+## Entornos
+En Vue tenemos normalmente 3 entornos o _modos_, el de **development**, el de **test** y el de **production**. Las variables de entorno las guardaremos en uno de los siguientes ficheros:
+- **.env**: se cargan en todos los modos
+- **.env.local**: se cargan en todos los modos pero son ignordas por git
+- **.env.[modo]**: se cargan sólo en todos el modo indicado 
+- **.env.[modo].local**: ídem pero son ignordas por git
+
+En contenido de estos ficheros son variables en forma `clave=valor`:
+```javascript
+// fichero .env
+TITULO=Mi proyecto
+VUE_APP_API=https://localhost/api
+```
+
+Si el nombre de la variable comienza por `VUE_APP_` será accesible desde el código con `process.env.nombreVariable`:
+```javascript
+// <script> de componente
+console.log(process.env.VUE_APP_API);
+```
+
