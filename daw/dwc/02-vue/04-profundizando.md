@@ -182,3 +182,44 @@ Si el nombre de la variable comienza por `VUE_APP_` será accesible desde el có
 console.log(process.env.VUE_APP_API);
 ```
 
+
+## Guards del router
+Son _hooks_ que podemos controlar en distintos momentos, algunos desde el componente y otros desde el _router_. Podemos ponerlos para todas las rutas, para una ruta en concreto o en el componente.
+
+La mayoría reciben 3 parámetros:
+- **to**: ruta a la que se va a saltar
+- **from**: ruta de la que se viene
+- **next**: función para que continue la carga del router. Siempre tras ejecutar el código que deseemos pondremos `netx()`.
+
+En el router tenemos estos _guards_:
+- **router.beforeEach(to, from, next)**: se ejecuta antes de que vaya a cambiarse la ruta
+- **router.afterEach(to, from)**: se ejecuta una vez cambiada la ruta (por eso no tiene next, porque ya ha acabado)
+- **ruta.beforeEnter(to, from, next)**: se pone como propiedad de una ruta y se ejecuta antes de entrar a ella
+
+Para aplicarlos en nuestro router lo asignamos a una variable que exportamos:
+```javascript
+let router = new Router({
+  routes: [
+    {
+      path: '/',
+      component: 'MyComponent',
+      beforeEnter(to, from, next) {
+        console.log('Vengo de '+from+' y voy a '+to);
+        next();
+      },
+...
+})
+
+router.beforeEach(to, from, next) {
+  console.log('Vengo de '+from+' y voy a '+to);
+  next();
+}
+
+export default router
+```
+
+En un componente también puedo definir los _hooks_:
+- **beforeRouteEnter(to, from, next)**
+- **beforeRouteEnter(to, from, next)**
+- **beforeRouteLeave(to, from, next)**
+
