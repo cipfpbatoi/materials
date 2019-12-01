@@ -210,5 +210,4 @@ Definiremos la ruta del siguiente modo:
 }
 ```
 
-
 Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
