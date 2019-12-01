@@ -112,7 +112,8 @@ Además queremos que:
 
 ### Solución de la aplicación
 Puedes ver una solución al problema planteado en:
-<script async src="//jsfiddle.net/juansegura/qfbtewhe/embed/js,html,result/"></script>
+
+<script async src="//jsfiddle.net/juansegura/qfbtewhe/embed/"></script>
 
 Cosas a comentar:
 * *HTML* 
