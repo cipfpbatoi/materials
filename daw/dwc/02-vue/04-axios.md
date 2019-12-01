@@ -22,6 +22,8 @@ El framework _Vue_ sólo se ocupa de la capa de vista de la aplcación pero su "
 
 Una de las librerías más utilizadas es la que permite realizar de forma sencilla peticiones Ajax a un servidor. Existen múltiples librerías para ello y la más utilizada es [**axios**](https://github.com/axios/axios).
 
+Podríamos hacer peticiones Ajax como vimos en Javascript (con promesas o _fetch_) pero es más sencillo con _axios_. Axios ya devuelve los datos transformados a JSON en una propiedad llamada _data_.
+
 ## Instalación
 Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
 ```[bash]
