@@ -108,78 +108,44 @@ Además de estos 3 bloques un SFC puede tener otros bloques definidos por el pro
 ```
 
 ## TodoList con Single File Components
-Vamos a ver cómo sería el fichero **TodoList.vue** con el componente _todo-list_ de la aplicación anterior.
-### \<template>
+Crearemos un fichero _.vue_ para cada uno de los componentes y otro para el componente principal de la aplicacioón que llamaremos **TodoApp.vue** y que incluye los otros componentes. Veamos cada fichero.
+
+### TodoApp.vue
+
+#### \<template>
 ```html
-  <div>
-    <h2>{{ title }}</h2>
-    <ul>
-        <todo-item 
-          v-for="(item,index) in todos" 
-          :key="item.id"
-          :todo="item"
-          @delItem="delTodo(index)"
-          @doneChanged="changeTodo(index)">
-        </todo-item>
-    </ul>
-    <add-item @newItem="addTodo"></add-item>
+  <div id="app">
+    <todo-list title="Tengo que aprender:"></todo-list>
+    <todo-add></todo-add>
     <br>
-    <del-all @delAll="delTodos"></del-all>
+    <todo-del-all></todo-del-all>
   </div>
 ```
-El componente renderiza una lista de subcomponentes _todo-item_ a los que se pasa como _prop_ cada item de la lista en una variable llamada _todo_ y escucha los eventos _delItem_ y _doneChanged_ que emite dicho subcomponente. Después renderiza otros 2 subcomponentes más (y en cada uno de los cuales escucha un evento emitido por el subcomponente).
 
-### \<script>
+Este componente renderiza un componente _todo-list_ al que le pasa como parámetro el título a mostrar, un componente _todo_add_ y otro _todo-del-all_.
+
+#### \<script>
 ```javascript
-import TodoItem from './TodoItem.vue'
-import AddItem from './AddItem.vue'
-import DelAll from './DelAll.vue'
+import TodoList from './components/TodoList.vue'
+import TodoAdd from './components/TodoAdd.vue'
+import TodoDelAll from './components/TodoDelAll.vue'
 
 export default {
-  name: 'todo-list',
+  name: 'todo-app',
   components: {
-    'todo-item': TodoItem,
-    'add-item': AddItem,
-    'del-al': DelAll
-  },
-  props: ['title'],
-  data() {
-    return {
-      todos: []
-    }
-  },		
-  methods: {
-    ...
-  },
+    TodoList,
+    TodoAdd,
+    TodoDelAll,
+  }
 }
 ```
-Se importan los subcomponentes que usa este componente y se define el componente:
-* name: el nombre que damos al componente, _todo-list_
-* components: aquí registramos los 3 subcomponentes hijos que queremos usar. En el HTML usaremos como etiqueta el nombre con que lo registramos aquí. ES6 nos permite registralos sin indicar la etiqueta si es la misma que el nombre (aunque en kebab-case en vez de en TitleCase), por lo que podríamos haber puesto simplemente:
-```javascript
-  components: {
-    TodoItem,
-    AddItem,
-    DelAll
-  },
-```
-* props: registramos el parámetro que nos pasa el componente padre, en este caso _title_. Haremos referencia a esta variable igual que a cualquiera de las definidas en _data_ pero no debemos cambiar su valor porque el cambio no se comunicará al componente padre
-* data: variables locales del componente, en nuestro caso el array _todos_ que en principio está vacío
-* methods: aquí pondremos los métodos del componente (los que se ejecutan como respuesta a eventos -_delTodo, addTodo, delTodos_- y el resto de métodos del componente)
 
-### \<style>
+Simplemente se importan los 3 componentes y se registran.
+
+#### \<style>
 ```css
-body {
-  background: #20262E;
-  padding: 20px;
-  font-family: Helvetica;
-}
-
 #app {
-  background: #fff;
-  border-radius: 4px;
   padding: 20px;
-  transition: all 0.2s;
 }
 
 li {
@@ -194,4 +160,153 @@ h2 {
 del {
   color: rgba(0, 0, 0, 0.3);
 }
+```
+
+### TodoList.vue
+```vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+    <ul v-if="todos.length">
+      <todo-item 
+        v-for="(item,index) in todos" 
+        :key="item.id"
+        :todo="item"
+        @delItem="delTodo(index)"
+        @toogleDone="toogleDone(index)">
+       </todo-item>
+    </ul>
+    <p v-else>No hay tareas que mostrar</p>
+  </div>  
+</template>
+
+<script>
+import TodoItem from './TodoItem.vue'
+import { EventBus } from '../utils/EventBus'
+
+export default {
+  name: 'todo-list',
+  components: {
+    TodoItem,
+  },
+  props: ['title'],
+  data() {
+    return {
+      todos: []      
+    }
+  },
+  created() {
+      EventBus.$on('delAll', ()=>{
+          this.todos = [];
+      });
+      EventBus.$on('add', this.addTodo);
+  },
+  methods: {
+    toogleDone(index) {
+      this.todos[index].done=!this.todos[index].done;
+    },
+    delTodo(index){
+      this.todos.splice(index,1);
+    },
+    addTodo(title) {
+      this.todos.push({title: title, done: false});
+    },
+  }
+}
+</script>
+```
+
+El _template_ renderiza una lista de subcomponentes _todo-item_ a los que le pasa como parámetro cada item de la lista en una variable llamada _todo_ y escucha los eventos _delItem_ y _toogleDone_ que emite dicho subcomponente. 
+
+En el código se importa el subcomponente que usa este componente y el EventBus que utilizan para cominicarse la tabla, el formulario y el botón. Se define el componente:
+* name: el nombre que damos al componente, _todo-list_
+* components: aquí registramos el subcomponente hijo que queremos usar. En el HTML usaremos como etiqueta el nombre con que lo registramos aquí. 
+* props: registramos el parámetro que nos pasa el componente padre, en este caso _title_. Haremos referencia a esta variable igual que a cualquiera de las definidas en _data_ pero no debemos cambiar su valor porque el cambio no se comunicará al componente padre
+* data: variables locales del componente, en nuestro caso el array _todos_ que en principio está vacío
+* created: cuando se crea el componente se ponen 2 escuchadores al canal _EventBus_, uno para escuchar el evento 'delAll' que el envía el botón de borrar todos y otro para escuchar el 'add' que envía el formulario
+* methods: aquí pondremos los métodos del componente (los que se ejecutan como respuesta a eventos -_delTodo, addTodo, toogleDone_- y el resto de métodos del componente)
+
+### TodoIitem.vue
+```vue
+<template>
+  <li @dblclick="delTodo">
+    <label>
+      <input type="checkbox" :checked="todo.done" @change="toogleDone">
+      <del v-if="todo.done">
+        {{ todo.title }}  
+      </del>
+      <span v-else>
+        {{ todo.title }}          
+      </span>
+    </label>
+  </li>
+</template>
+
+<script>
+export default {
+  name: 'todo-item',
+  props: ['todo'],
+  methods: {
+    delTodo() {
+      this.$emit('delItem');
+    },
+    toogleDone() {
+      this.$emit('toogleDone');
+    }
+  }
+}  
+</script>
+```
+
+### TodoAdd.vue
+```vue
+<template>
+  <div>
+    <input v-model="newTodo">
+    <button @click="addTodo">Añadir</button>
+  </div>
+</template>
+
+<script>
+import { EventBus } from '../utils/EventBus';
+
+export default {
+  name: 'todo-add',
+  data() {
+    return {
+      newTodo: ''
+    }
+  },
+  methods: {
+    addTodo() {
+      if (this.newTodo) {
+        EventBus.$emit('add', this.newTodo);
+        this.newTodo='';      
+      }
+    }
+  }
+}
+</script>
+```
+
+### TodoDelAll.vue
+```vue
+<template>
+  <button @click="delTodos">Borrar toda la lista</button>
+</template>
+
+<script>
+import { EventBus } from '../utils/EventBus'
+
+export default {
+  name: 'todo-del-all',
+  methods: {
+    delTodos() {
+      if (confirm('¿Deseas borrar toda la lista de cosas a hacer?')) {
+        EventBus.$emit('delAll');
+      }
+    }
+  }
+}  
+</script>
 ```
