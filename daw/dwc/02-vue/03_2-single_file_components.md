@@ -39,6 +39,19 @@ Veamos en detalle cada una de las secciones del SFC.
 ### \<template>
 Aquí incluiremos el HTML que sustituirá a la etiqueta del componente. Recuerda que dentro sólo puede haber un único elemento HTML (si queremos poner más de uno los incluiremos en otro que los englobe).
 
+Si el código HTML a incluir en el template es muy largo podemos ponerlo en un fichero externo y vincularlo en el template, así nuestro SFC queda más pequeño y legible:
+```vue
+<template src="./myComp.html">
+</template>
+```
+
+Respecto al lenguaje, podemos usar HTML (la opción por defecto) o [PUG](https://pugjs.org/api/getting-started.html) que es una forma sencilla de escribir HTML. Lo indicamos como atributo de \<template>:
+```vue
+<template lang="pug">
+...
+```
+
+
 ### \<script>
 Aquí definimos el componente. Será un objeto que exportaremos con sus diferentes propiedades. Si utiliza subcomponentes hay que importarlos antes de definir el objeto y registrarlos dentro de este.
 
@@ -54,7 +67,7 @@ Entre las propiedades que podemos incluir están:
 * ...
 
 ### \<style>
-Aquí pondremos estilos CSS que se aplicarán al componente. Si la etiqueta incluye el atributo _scoped_ estos estilos se aplicarán únicamente a este componente.
+Aquí pondremos estilos CSS que se aplicarán al componente. Podemos usar CSS, SASS o PostCSS. Si la etiqueta incluye el atributo _scoped_ estos estilos se aplicarán únicamente a este componente (y sus descendientes) y no a todos los componentes de nuestra aplicación.
 
 La forma más común de asignar estilos a elementos es usando clases. Para conseguir que su estilo cambie fácilmente podemos asignar al elemento clases dinámicas que hagan referencia a variables del componente. Ej.:
 ```vue
@@ -73,7 +86,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
   .underline { text-decoration: underline; }
   .weight { font-weight: bold; }
 </style>
