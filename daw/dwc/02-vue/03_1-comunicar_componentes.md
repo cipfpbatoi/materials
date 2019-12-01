@@ -478,7 +478,8 @@ Por último vemos que en el checkbos del componente _todo-item_ estamos modifica
 Para evitarlo cambiamos el _v-model_ que es bidireccional (al modificar el checkbox se modifica la propiedad _done_) por un _v-bind_ es es unidireccional más una función que avisará al componente padre al cambiar el valor del checkbox para que cambie el valor de la tarea.
 
 **Solución**:
-<script async src="//jsfiddle.net/juansegura/u2joasts/embed/"></script>
+
+<script async src="//jsfiddle.net/juansegura/suj34rpy/embed/"></script>
 
 ## Solución con _Store pattern_
 Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde varios componentes. En él incluimos métodos para añadir y borrar un nuevo _todo_, para cambiar el estado de un _todo_ y para borrarlos todos.
