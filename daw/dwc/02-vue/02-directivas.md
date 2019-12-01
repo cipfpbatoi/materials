@@ -117,11 +117,13 @@ Puedes ver una solución al problema planteado en:
 
 Cosas a comentar:
 * *HTML* 
+  * linea 3: el \<ul> sólo se mostrará si hay elementos en la lista (todos.length)
   * línea 4: la directiva v-for además de crear una variable con el elemento crea otra con su posición dentro del array que usaremos para borrarla
   * línea 4: al método que llamamos al producirse el evento _dblclick_ le pasamos el índice de dicho elemento en el array de cosas a hacer
   * línea 7: enlazamos cada checkbox con la propiedad _done_ del elemento de forma que al marcar al checkbox la propiedad valdrá *true* y al desmarcarlo valdrá *false*
   * líneas 9 a 14: para mostrar un elemento no hecho usamos un span y para mostrar uno hecho un del para que aparezca tachado
-  * línea 18: el input lo enlazamos a una nueva variable, _newTodo_, donde guardaremos lo que se escriba
+  * líneas 18 a 20: si no se muestra el \<ul> se mostrará un párrafo diciendo que no hay elementos en la lista
+  * línea 21: el input lo enlazamos a una nueva variable, _newTodo_, donde guardaremos lo que se escriba
 * *Javascript* 
   * línea 4: creamos la nueva variable _newTodo_ para guardar el título de la nueva cosa a añadir. Lo inicializamos a una cadena vacía y así el input estará vacío de entrada
   * línea 26: delTodo recibe como parámetro el índice del elemento a borrar así que sólo tiene que hacer un splice al array
