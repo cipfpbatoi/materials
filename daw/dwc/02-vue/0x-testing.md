@@ -6,4 +6,6 @@ npm i -D karma
 
 Dentro del directorio _test_ tenemos otros 2: _e2e_ y _unit_.
 
-_Karma_ se utiliza para pasar los tests unitarios pero se apoya en [_Mocha_](https://mochajs.org/) y [_Chai_](https://www.chaijs.com/).
+_Karma_ es el _test runner_ para pasar los tests unitarios y se apoya en [_Mocha_](https://mochajs.org/) y [_Chai_](https://www.chaijs.com/) o en [_Jest_](https://jestjs.io/).
+
+## Tests unitarios
