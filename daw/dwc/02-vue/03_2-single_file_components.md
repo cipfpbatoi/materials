@@ -67,7 +67,7 @@ Entre las propiedades que podemos incluir están:
 * ...
 
 ### \<style>
-Aquí pondremos estilos CSS que se aplicarán al componente. Podemos usar CSS, SASS o PostCSS. Si la etiqueta incluye el atributo _scoped_ estos estilos se aplicarán únicamente a este componente (y sus descendientes) y no a todos los componentes de nuestra aplicación.
+Aquí pondremos estilos CSS que se aplicarán al componente. Podemos usar CSS, SASS o [PostCSS](https://postcss.org/). Si la etiqueta incluye el atributo _scoped_ estos estilos se aplicarán únicamente a este componente (y sus descendientes) y no a todos los componentes de nuestra aplicación.
 
 La forma más común de asignar estilos a elementos es usando clases. Para conseguir que su estilo cambie fácilmente podemos asignar al elemento clases dinámicas que hagan referencia a variables del componente. Ej.:
 ```vue
