@@ -255,16 +255,22 @@ export default {
 Para empezar a ver el uso de componentes vamos a seguir con la aplicación de la lista de cosas que hacer pero dividiéndola en componentes.
 
 La decisión de qué componentes crear es subjetiva pero en principio cuanto más descomponamos más posibilidades tendremos de reutilizar componentes. Nosotros haremos los siguientes componentes:
-* todo-list: engloba toda la aplicación. Dentro tendrá:
+* todo-list: muestra la lista de tareas a realizar. Dentro tendrá:
   * todo-item: cada una de las tareas a hacer
-  * add-item: incluye el input para introducir una nueva tarea y el botón de añadirla
-  * del-all: el botón para borrar toda la lista
+* add-item: incluye el input para introducir una nueva tarea y el botón de añadirla
+* del-all: el botón para borrar toda la lista
   
 **Solución**:
 <script async src="//jsfiddle.net/juansegura/3yoLvmnt/embed/"></script>
 
 **Pasos que he hecho**:
-1. Creo el componente más básico, _todo-item_. 
+1. Creo el componente que mostrará la lista: _todo-list_.
+    1. Su _template_ es un div que incluye el título (que será una variable para poderlo reutilizar) y la lista con las tareas a mostrar. Cada una de ellas será un subcomponente llamado _todo-item_
+    1. como parámetro recibirá el título de la lista como hemos indicado antes
+    1. llama al subcomponente _todo-item_ para cada tarea (v-for) y le pasa la tarea que debe mostrar
+    1. sus datos será el array de tareas
+    1. Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
+1. Creo el componente al que llama el anterio, _todo-item_. 
     1. recibirá un objeto con la tarea a mostrar
     1. su template será el <li> que tenía en el HTML pero quitando el _v-for_ porque él sólo se encarga de mostrar 1 item
     1. el método para borrarlo al hacer doble click ya no puede funcionar porque el componente no tiene acceso al array de tareas. De momento sólo ponemos un _alert_ que nos diga que lo queremos borrar
@@ -276,9 +282,4 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
     1. su _template_ es el botón
     1. ni recibe parámetros ni tiene variables propias
     1. con el método pasa lo mismo que en los otros casos así que simplemente muestro un _alert_
-1. Creo el componente principal _todo-list_ que incluirá los otros. Este componente no tiene mucho sentido porque incluye toda la aplicación pero así lo podré reutilizar en otras aplicaciones donde quiera también incluir una lista.
-    1. Su _template_ es un div que incluya el título (que podría ser variable para poderlo reutilizar) la lista con los componentes todo-item y los componentes de añadir y borrar todo
-    1. como parámetro recibirá el título de la lista como hemos indicado antes
-    1. su dato será el array de tareas
-    1. Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
   
