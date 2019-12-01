@@ -7,10 +7,13 @@ Tabla de contenidos
     - [\<template>](#%5Ctemplate)
     - [\<script>](#%5Cscript)
     - [\<style>](#%5Cstyle)
+    - [Custom blocks](#custom-blocks)
   - [TodoList con Single File Components](#todolist-con-single-file-components)
-    - [\<template>](#%5Ctemplate-1)
-    - [\<script>](#%5Cscript-1)
-    - [\<style>](#%5Cstyle-1)
+    - [TodoApp.vue](#todoappvue)
+    - [TodoList.vue](#todolistvue)
+    - [TodoItem.vue](#todoitemvue)
+    - [TodoAdd.vue](#todoaddvue)
+    - [TodoDelAll.vue](#tododelallvue)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -226,7 +229,7 @@ En el código se importa el subcomponente que usa este componente y el EventBus 
 * created: cuando se crea el componente se ponen 2 escuchadores al canal _EventBus_, uno para escuchar el evento 'delAll' que el envía el botón de borrar todos y otro para escuchar el 'add' que envía el formulario
 * methods: aquí pondremos los métodos del componente (los que se ejecutan como respuesta a eventos -_delTodo, addTodo, toogleDone_- y el resto de métodos del componente)
 
-### TodoIitem.vue
+### TodoItem.vue
 ```vue
 <template>
   <li @dblclick="delTodo">
