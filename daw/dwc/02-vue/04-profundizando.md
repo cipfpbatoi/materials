@@ -100,4 +100,64 @@ export default {
 ...
 ```
 
+## Custom Directives
+Podemos crear nuestras propias directivas para usar en los elementos que queramos. Se definen en un fichero .js con `Vue.directive` y le pasamos su nombre y un objeto con los estados en que queremos que reaccione. Por ejemplo vamos a hacer una directiva para que se le asigne el foco al elemento al que se la pongamos, que será de tipo _input_:
+```javascript
+import Vue from 'vue'
+
+Vue.directive('focus', {
+  inserted(el) {
+    el.focus();
+  }
+})
+```
+
+Para usarla en un componente la importamos y ya podemos usarla en el _template_:
+```vue
+<template>
+  ...
+  <input v-focus type="text" name="nombre">
+  ...
+</template>
+
+<script>
+import focus from './focus.js'
+...
+```
+
+Si queremos utilizarla en muchos componentes podemos importarla en el _main.js_ y así estará disponible para todos los componentes.
+
+Los estados de la directiva en los que podemos actuar son:
+- **inserted**: cuando se inserte la directiva
+- : cuando se actualice la directiva
+- : cuando se actualice el componente que contiene la directiva
+- : cuando se enganche la directiva al _template_
+- : cuando se desenganche la directiva del _template_
+
+
 ## Filtros
+Son similares a las directivas pero permiten modificar en el _template_ los datos que le llegan, por ejemplo podemos poner texto en mayúsculas, números en formato moneda o ...
+
+Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para definirlos se ponen en la propiedad _filter_ del componente:
+```vue
+<template>
+  ...
+  <p>Precio: {{ precio | currency }}</p>
+  ...
+</template>
+
+<script>
+  export default {
+    data: () => ({
+      precio: '',
+    }).
+    filter: {
+      currency(value) {
+        if (!value) return '';
+        return value.toFixed(2)+' €';
+      },
+    },
+```
+
+## Transiciones
+Vue permite controlar transiciones en nuestra aplicación poniendo el código CSS correspondiente y añadiéndole al elemento el atributo _transition_. Podemos encontrar más información en la [documentación oficial de Vue](https://vuejs.org/v2/guide/transitions.html).
