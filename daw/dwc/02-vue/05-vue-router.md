@@ -116,6 +116,8 @@ Se puede hacer (aunque no es lo normal) una opción de menú a una ruta dinámic
 En este caso es necesario que la ruta dinámica tenga un _name_.
 
 ## Saltar a una ruta
+Al hacer `Vue.use` en el fichero del router hacemos que esté disponible para todos los componentes desde `this.$router`. Esto nos permite manipular al router e un componente, por ejemplo para cambiar la ruta.
+
 Podemos cargar la ruta que queramos desde JS con
 ```[javascrip]
 this.$router.push(ruta)
@@ -143,21 +145,21 @@ También podemos obtener toda la ruta con `this.$route.fullPath`.
 ## Cambio de parámetros en una ruta
 Si cambiamos a la misma ruta pero con distintos parámetros Vue reutiliza la instancia del componente y no vuelve a lanzar sus _hooks_ (created, mounted, ...). Esto hará que no se ejecute el código que tengamos allí. Por ejemplo supongamos que en una ruta '/edit/5' al cargar el componente se pide el registro 5 y se muestra en la página. Si a continuación cargamos la ruta '/edit/8' seguiremos viendo los datos del registro 5).
 
-La forma de solucionar esto es usar el elemento 'beforeRouteUpdate' (a partir de la versión 2.2 de vue-router) y realizar allí la carga de los datos:
+La forma de solucionar esto es usar el elemento 'beforeRouteUpdate' y realizar allí la carga de los datos:
 ```[javascrip]
 beforeRouteUpdate (to, from, next) {
-    // Código que responde al cambio. En to tenemos la ruta anterior y en from la nueva
+    // Código que responde al cambio. En 'to' tenemos la ruta anterior y en 'from' la nueva
     // antes de acabar hay que llamar a next()
+    // Aquí cargamos los nuevos datos
     next();
 } 
 ```
 
-
-o forzar la detección del cambio en la ruta:
+También podríamos usar un _watcher_ para detectar el cambio en la ruta:
 ```[javascrip]
 watch: {
     '$route' (to, from) {
-        // Código que responde al cambio. En to tenemos la ruta anterior y en from la nueva
+        // Aquí cargamos los nuevos datos
     }
 } 
 ```
@@ -210,4 +212,28 @@ Definiremos la ruta del siguiente modo:
 }
 ```
 
+## Redireccionamiento. Not found
+En una ruta podemos poner una redirección a otroa en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
+
+En primer lugar haremos una ruta para el componente CompNoFound y luego una ruta genérica (\*) que redirija a la anterior:
+```javascript
+  routes: [
+    ...
+    {
+      path: '/not-found',
+      name: '404',
+      component: CompNotFound,
+    },
+    {
+      path: '*',
+      redirect: {
+        name: '404',
+      },
+    }
+  ]
+```
+
+La ruta genérica siempre debe ser la última.
+
 Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
+
