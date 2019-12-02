@@ -36,37 +36,12 @@ Como segundo parámetro se le puede pasar un objeto con opciones a montar en el 
 
 Además de `shallowMount` podemos usar (si lo importamos) el método `mount` que hace lo mismo pero también renderiza los subcomponentes que tenga el componente.
 
-Por último se comprueba que el texto renderizado por el _template_ del componente incluye el mensaje pasado.
+Por último se comprueba que el texto renderizado por el _template_ del componente incluye el mensaje pasado. La variable _wrapper_ es el nodo DOM raíz del componente y podemos obtener su _textContent_ (`.text()`), su _innerHTML_ (`.html()`), sus atributos (`.attributes()`, y para acceder a uno, por ejemplo la id haríamos `.attributes().id` ), sus clases (`.classes()`), etc.
 
 También podríamos haber hecho la siguiente comprobación:
 ```javascript
     expect(wrapper.html()).toMatch('<h1>'+msg+'</h1>')
 ```
-
-### Primer test: TodoItem.vue
-En primer lugar vamos a testear que la propiedad 'done' tiene el valor que se le pasa y que cambia al llamar a la función 'toogleDone':
-```javascript
-import { shallowMount } from '@vue/test-utils'
-import Usuario from '@/components/Usuario.vue'
-
-describe('componente Usuario.vue', () => {
- it('debe cambiar el valor a true', () => {
-  /// Crea una instancia del componente
-  const wrapper = shallowMount(Usuario);
-
-  /// Evalúa que el valor por defecto sea "false"
-  expect(wrapper.vm.usuarioActivo).toBe(false);
-
-  /// Ejecuta el metodo que cambia el valor de la variable a "true"
-  wrapper.vm.activarUsuario();
-
-  /// Evalúa que el nuevo valor usuarioActivo sea "true"
-  expect(wrapper.vm.usuarioActivo).toBe(true);
- })
-})
-```
-
-En primer lugar importamos Vue y el componente a testear:
 
 ### Comprobar atributos, clases y estilos en línea
 ```javascript
@@ -163,6 +138,30 @@ describe('Testing native dom events', () => {
 ```
 Fuente: [Testing Dom events in Vue.js using Jest and vue-test-utils. Sai gowtham](https://reactgo.com/vue-test-dom-events/)
 
+### Nuestro primer test: TodoItem.vue
+En primer lugar vamos a testear que la propiedad 'done' tiene el valor que se le pasa y que cambia al llamar a la función 'toogleDone':
+```javascript
+import { shallowMount } from '@vue/test-utils'
+import Usuario from '@/components/Usuario.vue'
+
+describe('componente Usuario.vue', () => {
+ it('debe cambiar el valor a true', () => {
+  /// Crea una instancia del componente
+  const wrapper = shallowMount(Usuario);
+
+  /// Evalúa que el valor por defecto sea "false"
+  expect(wrapper.vm.usuarioActivo).toBe(false);
+
+  /// Ejecuta el metodo que cambia el valor de la variable a "true"
+  wrapper.vm.activarUsuario();
+
+  /// Evalúa que el nuevo valor usuarioActivo sea "true"
+  expect(wrapper.vm.usuarioActivo).toBe(true);
+ })
+})
+```
+
+En primer lugar importamos Vue y el componente a testear:
 
 
 Fuentes:
