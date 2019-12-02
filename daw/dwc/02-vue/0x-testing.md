@@ -11,8 +11,6 @@ npm run test:unit
 
 El projecto está configurado para ejecutar los ficheros de pruebas cuyo nombre acabe por **.spec.js**. Por defecto se guardan en la carpeta **/tests**.
 
-Dado que Vue realiza las actualizaciones de DOM de forma asíncrona, las comprobaciones sobre las actualizaciones de DOM resultantes del cambio de estado, deberán realizarse en un callback `Vue.nextTick`.
-
 ### Primer test: HelloWorld.vue
 En primer lugar vamos a analizar el test que hay hecho en **@/tests/exemple.spec.js** para testear el componente HelloWorld.vue:
 ```javascript
@@ -36,15 +34,22 @@ Como segundo parámetro se le puede pasar un objeto con opciones a montar en el 
 
 Además de `shallowMount` podemos usar (si lo importamos) el método `mount` que hace lo mismo pero también renderiza los subcomponentes que tenga el componente.
 
-Por último se comprueba que el texto renderizado por el _template_ del componente incluye el mensaje pasado. La variable _wrapper_ es el nodo DOM raíz del componente y podemos obtener su _textContent_ (`.text()`), su _innerHTML_ (`.html()`), sus atributos (`.attributes()`, y para acceder a uno, por ejemplo la id haríamos `.attributes().id` ), sus clases (`.classes()`), etc.
+Por último se comprueba que el texto renderizado por el _template_ del componente incluye el mensaje pasado. La variable _wrapper_ es el nodo DOM raíz del componente y podemos obtener su _textContent_ (`.text()`), su _innerHTML_ (`.html()`), sus atributos (`.attributes()`, y para acceder a uno, por ejemplo la id haríamos `.attributes().id` ), sus clases (`.classes()`), etc.Podemos ver todos sus métodos en la [documentación oficial de Vue test utils](https://vue-test-utils.vuejs.org/).
 
 También podríamos haber hecho la siguiente comprobación:
 ```javascript
     expect(wrapper.html()).toMatch('<h1>'+msg+'</h1>')
 ```
 
-### Comprobar atributos, clases y estilos en línea
+o bien comprobar directamente el valor de _prop_:
 ```javascript
+    expect(wrapper.props().msg).toBe(msg)
+```
+
+
+### Comprobar atributos, clases y estilos en línea
+El componente que vamos a probar es:
+```vue
 <template>
   <div>
     <h1>Testing dom attributes</h1>
@@ -88,6 +93,43 @@ describe('Testing style', () => {
         const wrapper = shallowMount(App);
         const a = wrapper.find('a'); //finds an `a` element
         expect(a.style.color).toBe('green')
+    })
+})
+```
+
+### Comprobar un método de un componente
+El componente que vamos a probar es:
+```vue
+<template>
+  <div>
+    <h1>{{title}}</h1>    <button @click="changeTitle">Change title</button>  </div>
+</template>
+
+<script>
+export default {
+  data: function() {
+    return {
+      title: "Hello"    };
+  },
+  methods: {
+    changeTitle() {
+      this.title = "Hi";    }
+  }
+};
+</script>
+```
+
+Y el test es:
+```javascript
+import { shallowMount } from '@vue/test-utils';
+import Post from '../src/components/Welcome.vue'
+describe('Testing Component Methods', () => {
+    const wrapper = shallowMount(Post);
+
+    it('correctly updates the title when changeTitle is called', () => {
+        expect(wrapper.vm.title).toBe('Hello'); //initial title Hello
+        wrapper.vm.changeTitle();  // calling component method
+        expect(wrapper.vm.title).toBe('Hi'); // title updates to Hi
     })
 })
 ```
@@ -138,6 +180,22 @@ describe('Testing native dom events', () => {
 ```
 Fuente: [Testing Dom events in Vue.js using Jest and vue-test-utils. Sai gowtham](https://reactgo.com/vue-test-dom-events/)
 
+### Comprobar que el DOM reaaciona a cambios en una variable reactiva
+Dado que Vue realiza las actualizaciones de DOM de forma asíncrona, las comprobaciones sobre las actualizaciones de DOM resultantes del cambio de estado, deberán realizarse en un callback `Vue.nextTick`.
+```javascript
+it('button click should increment the count text', async () => {
+  expect(wrapper.text()).toContain('0')
+  const button = wrapper.find('button')
+  button.trigger('click')
+  await Vue.nextTick()
+  expect(wrapper.text()).toContain('1')
+})
+```
+
+### Comprobar peticiones asíncronas a servicios ajenos a Vue
+En muchos casos hacemos peticiones asíncronas, como peticiones a una API.
+[Doc Vue test utils](https://vue-test-utils.vuejs.org/guides/testing-async-components.html)
+
 ### Nuestro primer test: TodoItem.vue
 En primer lugar vamos a testear que la propiedad 'done' tiene el valor que se le pasa y que cambia al llamar a la función 'toogleDone':
 ```javascript
@@ -161,7 +219,6 @@ describe('componente Usuario.vue', () => {
 })
 ```
 
-En primer lugar importamos Vue y el componente a testear:
 
 
 Fuentes:
