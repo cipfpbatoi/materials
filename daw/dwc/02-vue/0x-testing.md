@@ -1,17 +1,8 @@
 # Testear nuestros componentes
-Usaremos [_karma_](https://karma-runner.github.io/latest/index.html). Lo instalaremos para desarrollo:
-```bash
-npm i -D karma
-```
-
-Dentro del directorio _test_ tenemos otros 2: _e2e_ y _unit_.
-
-El _test runner_ para pasar los tests unitarios es [_Jest_](https://jestjs.io/) o _Karma_, que se apoya en [_Mocha_](https://mochajs.org/) y [_Chai_](https://www.chaijs.com/).
+La librería que incluye Vue para testear las aplicaciones el **vue-test_utils** que proporciona herramientas para montar e interactuar con componentes. Para los tests unitarios usaremos [_Jest_](https://jestjs.io/).
 
 ## Tests unitarios
-Podemos ver cómo hacer un test básico en la [documentación oficial de Vue](https://es.vuejs.org/v2/guide/unit-testing.html) o leer el _cookbook_ de VUe [Unit Testing Vue Components](https://vuejs.org/v2/cookbook/unit-testing-vue-components.html). 
-
-A la hora de crear el proyecto no escogeremos _preset_ sino que seleccionaremos manualmente las características a instalar y marcaremos la de tests unitarios con _Jesst_ que es la librería que usamos en el bloque de Javascript.
+A la hora de crear el proyecto no escogeremos _preset_ sino que seleccionaremos manualmente las características a instalar y marcaremos la de tests unitarios con _Jest_ que es la librería que usamos en el bloque de Javascript.
 
 Para ejecutar los tests ejecutaremos en la terminal
 ```bash
@@ -19,6 +10,38 @@ npm run test:unit
 ```
 
 El projecto está configurado para ejecutar los ficheros de pruebas cuyo nombre acabe por **.spec.js**. Por defecto se guardan en la carpeta **/tests**.
+
+Dado que Vue realiza las actualizaciones de DOM de forma asíncrona, las comprobaciones sobre las actualizaciones de DOM resultantes del cambio de estado, deberán realizarse en un callback `Vue.nextTick`.
+
+### Primer test: HelloWorld.vue
+En primer lugar vamos a analizar el test que hay hecho en **@/tests/exemple.spec.js** para testear el componente HelloWorld.vue:
+```javascript
+import { shallowMount } from '@vue/test-utils'
+import HelloWorld from '@/components/HelloWorld.vue'
+
+describe('HelloWorld.vue', () => {
+  it('renders props.msg when passed', () => {
+    const msg = 'new message'
+    const wrapper = shallowMount(HelloWorld, {
+      propsData: { msg }
+    })
+    expect(wrapper.text()).toMatch(msg)
+  })
+})
+```
+
+Lo primero que hay que hacer es importar el plugin de tests de vue y el componente a testear. Dentro de la prueba se monta el componente (`shallowMount`) y se le pasan las props que necesite (msg). A esta función se le pasa un componente y devuelve la instancia de Vue creada para él y su nodo del DOM. 
+
+Como segundo parámetro se le puede pasar un objeto con opciones a montar en el componente (por ejemplo un _data_ que sustituirá al del componente) o, como en el ejemplo anterior, los parámetros que se le pasan al componente (en _propsData_). 
+
+Además de `shallowMount` podemos usar (si lo importamos) el método `mount` que hace lo mismo pero también renderiza los subcomponentes que tenga el componente.
+
+Por último se comprueba que el texto renderizado por el _template_ del componente incluye el mensaje pasado.
+
+También podríamos haber hecho la siguiente comprobación:
+```javascript
+    expect(wrapper.html()).toMatch('<h1>'+msg+'</h1>')
+```
 
 ### Primer test: TodoItem.vue
 En primer lugar vamos a testear que la propiedad 'done' tiene el valor que se le pasa y que cambia al llamar a la función 'toogleDone':
@@ -45,8 +68,106 @@ describe('componente Usuario.vue', () => {
 
 En primer lugar importamos Vue y el componente a testear:
 
+### Comprobar atributos, clases y estilos en línea
+```javascript
+<template>
+  <div>
+    <h1>Testing dom attributes</h1>
+    <a href="https://google.com" class="link" style="color:green">Google</a>  </div>
+</template>
+
+<script>
+export default {};
+</script>
+```
+
+Y el test es:
+```javascript
+import App from '../src/App.vue'
+import { shallowMount } from '@vue/test-utils';
+
+describe('Testing dom attributes', () => {
+    it('checks href to google ', () => {
+        const wrapper = shallowMount(App);
+        const a = wrapper.find('a'); //finds an `a` element
+        expect(a.attributes().href).toBe('https://google.com')
+    })
+})
+```
+
+Si lo que queremos comprobar son las clases, estas tienen su propio método:
+```javascript
+describe('Testing class', () => {
+    it('checks the class to be link', () => {
+        const wrapper = shallowMount(App);
+        const a = wrapper.find('a'); //finds an `a` element
+        expect(a.classes()).toContain('link')
+    })
+})
+```
+
+Y lo mismo ocurre para comprobar un estilo:
+```javascript
+describe('Testing style', () => {
+    it('checks the inline style color to be green', () => {
+        const wrapper = shallowMount(App);
+        const a = wrapper.find('a'); //finds an `a` element
+        expect(a.style.color).toBe('green')
+    })
+})
+```
+
+### Comprobar que un método es llamado al producirse un evento
+El componente que vamos a probar es:
+```vue
+<template>
+  <div>
+    <h1>{{count}}</h1>
+    <button @click="increment">Increment</button>  </div>
+</template>
+
+<script>
+export default {
+  data: function() {
+    return {
+      count:0
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+    }
+  }
+};
+</script>
+```
+
+Y el test es:
+```javascript
+import { shallowMount } from '@vue/test-utils';
+import Post from '../src/components/Counter.vue'
+
+describe('Testing native dom events', () => {
+    const wrapper = shallowMount(Post);
+
+    it('calls increment method when button is clicked', () => {
+        const increment = jest.fn(); // mock function
+        // updating method with mock function
+        wrapper.setMethods({ increment });
+        //find the button and trigger click event
+        wrapper.find('button').trigger('click');
+        expect(increment).toBeCalled();
+    })
+
+})
+```
+Fuente: [Testing Dom events in Vue.js using Jest and vue-test-utils. Sai gowtham](https://reactgo.com/vue-test-dom-events/)
+
+
 
 Fuentes:
+- [Vue test utils](https://vue-test-utils.vuejs.org/)
 - [Documentación oficial de Vue](https://es.vuejs.org/v2/guide/unit-testing.html)
+- [ReactGo: Vue tutorials](https://reactgo.com/vue-test-dom-events/)
 - [Pruebas unitarias en Vue.js: Setup y primeros pasos. Carlos Solis](https://carlossolis.mobi/pruebas-unitarias-en-vue-js-setup-y-primeros-pasos-7255788f3e3b)
 - 
