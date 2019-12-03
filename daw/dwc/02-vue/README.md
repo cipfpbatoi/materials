@@ -16,10 +16,10 @@ Contenidos:
     1. [Single File Components](./03_2-single_file_components.md)
     1. [Vue-cli](./03_3-vue-cli.md)
 1. [Peticiones Ajax: axios](./04-axios.md)
-1. [Profundizando en Vue](./04-profundizando.md)
 1. [SPA: vue-router](./05-vue-router.md)
-1. [Testeando componentes](./0x-testing.md)
+1. [Profundizando en Vue](./06-profundizando.md)
 1. [Formularios](./06-forms.md)
+1. [Testeando componentes](./0x-testing.md)
 1. [Y más...](./09-cosas.md)
 
 Podemos encontrar infinidad de documentación en Internet para ampliar lo que veremos en este bloque. Hay que destacar especialmente la [documentación oficial de Vue](https://vuejs.org/) que es muy completa. También podemos encontrar páginas, tutoriales o libros como:
