@@ -7,6 +7,7 @@
 - [Ajax](#ajax)
   - [Introducción](#introducci%C3%B3n)
   - [Métodos HTTP](#m%C3%A9todos-http)
+  - [Json Server](#json-server)
   - [Realizar peticiones Ajax con XMLHttpRequest](#realizar-peticiones-ajax)
   - [Eventos de XMLHttpRequest](#eventos-de-xmlhttprequest)
   - [Ejemplos de envío de datos](#ejemplos-de-env%C3%ADo-de-datos)
@@ -45,6 +46,26 @@ Hay diferentes tipos de petición que podemos hacer:
 * **PUT**: es similar al _POST_ pero suele usarse para actualizar datos del servidor (como un UPDATE de SQL). Los datos se envían en el cuerpo de la petición (como en el POST) y la información para identificar el objeto a modificar en la url (como en el GET)
 * **DELETE**: se usa para eliminar un dato del servidor (como un DELETE de SQL). La información para identificar el objeto a eliminar se envía en la url (como en el GET)
 * existen otros tipos que no veremos aquí (como _HEAD_, etc)
+
+## Json Server
+Las peticiones Ajax se hacen a un servidor que proporcione una API. Como ahora no tenemos ninguno podemos utilizar Json Server que es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
+
+Para instalarlo en nuestra máquina ejecutamos:
+```[bash]
+npm install json-server -g
+```
+
+Para que sirva un fichero datos.json:
+```[bash]
+json-server --watch datos.json 
+```
+La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
+
+Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definidos en el fichero _.json_. Por ejemplo:
+* https://localhost:3000/users: devuelve todos los elementos del array _users_ del fichero _.json_
+* https://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
+
+Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
 
 ## Realizar peticiones Ajax
 Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest** que es el que controlará todo el proceso. Los pasos a seguir son:
