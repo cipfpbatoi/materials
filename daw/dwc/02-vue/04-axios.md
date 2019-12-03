@@ -171,24 +171,26 @@ Vamos a crear un fichero que será donde estén las peticiones a axios de forma 
 import axios from 'axios';
 const API_URL = 'http://localhost:3000';
 
-getTodos() {
+export default {
+  getTodos() {
     return axios.get(API_URL+'/todos')
-}
+  },
 
-delTodo(id){
+  delTodo(id){
     return axios.delete(API_URL+'/todos/'+id)
-}
+  },
 
-addTodo(newTodo) {
+  addTodo(newTodo) {
     return axios.post(API_URL+'/todos', newTodo)
-}
+  },
 
-toogleDone(todo) {
+  toogleDone(todo) {
     return axios.put(API_URL+'/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
     })
+  },
 }
 ```
 
