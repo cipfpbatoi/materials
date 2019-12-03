@@ -166,7 +166,52 @@ Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servido
 Si lo probáis con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
 
 ## Solución mejor organizada
-Vamos a crear un fichero que será donde estén las peticiones a axios de forma que nuestro código quede más limpio en los componentes. Podemos llamar al fichero APIService.js y allí creamos una clase que se ocupe de todo:
+Vamos a crear un fichero que será donde estén las peticiones a axios de forma que nuestro código quede más limpio en los componentes. Podemos llamar al fichero APIService.js y allí creamos las funciones que laman a la API:
+```javascript
+import axios from 'axios';
+const API_URL = 'http://localhost:3000';
+
+getTodos() {
+    return axios.get(API_URL+'/todos')
+}
+
+delTodo(id){
+    return axios.delete(API_URL+'/todos/'+id)
+}
+
+addTodo(newTodo) {
+    return axios.post(API_URL+'/todos', newTodo)
+}
+
+toogleDone(todo) {
+    return axios.put(API_URL+'/todos/'+todo.id, {
+      id: todo.id, 
+      title: todo.title, 
+      done: !todo.done
+    })
+}
+```
+
+En cada componente que tenga que hacer una llamada a la API se importa este fichero y se llama a sus funciones:
+```javascript
+import APIService from '../APIService';
+
+export default {
+  ...
+  methods: {
+    getData() {
+      getTodos()
+      .then(response=>response.data.forEach(todo=>this.todos.push(todo)))
+      .catch(error=>console.error('Error: '+(error.statusText || error.message || error))
+    },
+    ...
+  },
+  mounted() {
+    this.getData();
+  },
+```
+
+También podríamos construir una clase que se ocupe de todo:
 ```javascript
 import axios from 'axios';
 const API_URL = 'http://localhost:3000';
@@ -175,16 +220,16 @@ export class APIService{
   constructor(){
   }
   getTodos() {
-    return axios.get(url+'/todos')
+    return axios.get(API_URL+'/todos')
   }
   delTodo(id){
-    return axios.delete(url+'/todos/'+id)
+    return axios.delete(API_URL+'/todos/'+id)
   },
   addTodo(newTodo) {
-    return axios.post(url+'/todos', newTodo)
+    return axios.post(API_URL+'/todos', newTodo)
   },
   toogleDone(todo) {
-    return axios.put(url+'/todos/'+todo.id, {
+    return axios.put(API_URL+'/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
@@ -192,7 +237,8 @@ export class APIService{
   },
 }
 ```
-Y en los componentes donde queramos usarlo importamos ela clase y creamos una instacia de la misma:
+
+Y en los componentes donde queramos usarlo importamos la clase y creamos una instacia de la misma:
 ```javascript
 import { APIService } from '../APIService';
 
@@ -201,7 +247,7 @@ const apiService=new APIService();
 export default {
   ...
   methods: {
-    getTodos() {
+    getData() {
       apiService.getTodos()
       .then(response=>response.data.forEach(todo=>this.todos.push(todo)))
       .catch(error=>console.error('Error: '+(error.statusText || error.message || error))
@@ -209,7 +255,7 @@ export default {
     ...
   },
   mounted() {
-    this.getTodos();
+    this.getData();
   },
 ```
 
