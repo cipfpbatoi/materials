@@ -227,3 +227,8 @@ Fuentes:
 - [ReactGo: Vue tutorials](https://reactgo.com/vue-test-dom-events/)
 - [Pruebas unitarias en Vue.js: Setup y primeros pasos. Carlos Solis](https://carlossolis.mobi/pruebas-unitarias-en-vue-js-setup-y-primeros-pasos-7255788f3e3b)
 - 
+
+## Test e2e
+No comprueban un componente sino un _workflow_ completo, por ejemplo, que el usuario introduce algo como nombre de nueva tarea, pulsa enviar y se añade la tarea a la lista.
+
+Al pasar los tests arranca un servidor de tests (_selenium_) y un navegador donde hace las pruebas y luego los cierra.
