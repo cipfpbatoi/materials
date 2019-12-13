@@ -68,3 +68,13 @@ Per a afegir-la al domini executem:
 ```bash
 ldbadd -H /var/lib/samba/private/sam.ldb ouAula.ldif 
 ```
+
+Podem veure objectes ja creats en el domini amb `ldbsearch`. Per exemple per a veure la informació de l'OU Aula creada abans farem:
+```bash
+ldbsearch -H /var/lib/samba/private/sam.ldb 'OU=Aula' 
+```
+
+Si volem el llistat de tots els objectes posarem l'opció `--all`:
+```bash
+ldbsearch -H /var/lib/samba/private/sam.ldb --all
+```
