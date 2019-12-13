@@ -66,5 +66,5 @@ objectClass: organizationalunit
 
 Per a afegir-la al domini executem:
 ```bash
-ldbadd --url=/var/lib/samba/private/sam.ldb ouAula.ldif 
+ldbadd -H /var/lib/samba/private/sam.ldb ouAula.ldif 
 ```
