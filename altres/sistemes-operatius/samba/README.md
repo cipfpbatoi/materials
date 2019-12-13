@@ -1,4 +1,11 @@
 # Samba
+- [Introducción](#introducci%C3%B3n)
+- [Instalación y configuración del servidor](#instalaci%C3%B3n-y-configuraci%C3%B3n-del-servidor)
+  - [Creación del dominio](#creaci%C3%B3n-del-dominio)
+  - [Configuración adicional en sistemas con systemd-resolved](#configuraci%C3%B3n-adicional-en-sistemas-con-systemd-resolved)
+  - [Crear el dominio en un servidor DNS](#crear-el-dominio-en-un-servidor-dns)
+- [Samba4 en CentOS](#samba4-en-centos)
+
 
 ## Introducción
 Samba es una implementación en software libre del protocolo de red **SMB/CIFS** de Microsoft para la compartición de ficheros e impresoras en redes Windows. Desde la versión 3 de Samba además de proporcionar servicios de impresión y compartición de ficheros para clientes Windows, puede gestionar un dominio de Windows Server NT4 como DC (_Domain Controller_) o como miembro del dominio. A partir de Samba 4 también puede actuar como un controlador de dominio de un dominio _Active Directory_.
