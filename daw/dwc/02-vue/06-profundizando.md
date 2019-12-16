@@ -220,6 +220,6 @@ export default router
 
 En un componente también puedo definir los _hooks_:
 - **beforeRouteEnter(to, from, next)**
-- **beforeRouteEnter(to, from, next)**
+- **beforeRouteUpdate(to, from, next)**
 - **beforeRouteLeave(to, from, next)**
 
