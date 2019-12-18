@@ -5,6 +5,7 @@
   - [Configuración adicional en sistemas con systemd-resolved](#configuraci%C3%B3n-adicional-en-sistemas-con-systemd-resolved)
   - [Crear el dominio en un servidor DNS](#crear-el-dominio-en-un-servidor-dns)
 - [Samba4 en CentOS](#samba4-en-centos)
+- [Gestió del domini: samba-tools](./samba-tools.md)
 
 
 ## Introducción
