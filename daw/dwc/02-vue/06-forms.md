@@ -361,7 +361,7 @@ props: ['value'],
 ```vue
 <template>
   <div class="control-group">
-    <label class="control-label" :for="nombre">{{ titulo }}</label>
+    <label class="control-label" :for="nombre">{ { titulo }}</label>
     <div class="controls">
       <input :value="value" @input="updateValue($event.target.value)" type="text" :id="nombre" :name="nombre" placeholder="" class="form-control">
     </div>
