@@ -17,7 +17,7 @@ Vuex centraliza la forma en que nuestros componentes se comunican entre ellos. C
 
 ![Vuex data flow](https://vuex.vuejs.org/vuex.png)
 
-Los componentes de Vue peden emitir (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción emite una confirmación (**commit**) que **muta** el _Estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza el componente para mostrar el nuevo estado. En el estado almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
+Los componentes de Vue peden renderizar datos de Vuex y es reactivo frente a ellos (si se modifican se volverá arenderizar el componente). Si el componente quiere modificar estos datos debe emitir (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción emite una confirmación (**commit**) que **muta** el _Estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza de nuevo el componente para mostrar el nuevo estado. En el estado almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
 
 El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande. Para aplicacioes pequeñas normalmente es suficiente con soluciones más simples como el _eventBus_ o un _store  pattern_ hecho por nosotros. Como dijo _Dan Abramov_, el creador de _Redux_ 
 > Las librerías _Flux_ son como las gafas: lo sabrás cuando las necesites
@@ -28,19 +28,12 @@ Para usar Vuex debemos instalarlo como cualquier otro paquete:
 npm install -S vuex
 ```
 
-Además en el fichero principal de nuestra aplicación hay que registrarlo con
-```javascript
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-```
-
 ## Usar Vuex
-El corazón de Vuex es el **_store_** que es un contenedor donde almacenar el estado de la aplicación pero se diferencia de un objeto normal en que:
+El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states_** (datos globales) de la aplicación pero se diferencia de un objeto normal en que:
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
-Al crear el almacén especificaremos en _state_ nuestras variables y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
+Al crear el almacén especificaremos en _state_ nuestras variables globales
 ```javascript
 const store = new Vuex.Store({
   state: {
@@ -55,6 +48,35 @@ const store = new Vuex.Store({
     },
   }
 })
+export default store
+```
+
+Para que sea accesible a los componentes debemos importarlo y registrarlo en el _main.js_:
+```javascript
+import store from '@/store'
+
+new Vue({
+  router,
+  store,
+  ...
+```
+
+y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
+```javascript
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    },
+    decrement (state) {
+      state.count--
+    },
+  }
+})
+export default store
 ```
 
 Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
