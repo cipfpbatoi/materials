@@ -1,4 +1,15 @@
 # Profundizando en Vue
+Tabla de contenidos
+- [Computed y watchers](#computed-y-watchers)
+- [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
+- [Componentes asíncronos](#componentes-asíncronos)
+- [Custom Directives](#custom-directives)
+- [Filtros](#filtros)
+- [Transiciones](#transiciones)
+- [Entornos](#entornos)
+- [Guards del router](#guards-del-router)
+
+
 ## Computed y watchers
 Las variables disponibles las tengo en:
 - props
