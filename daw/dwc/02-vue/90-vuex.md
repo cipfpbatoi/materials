@@ -1,5 +1,5 @@
 # Vuex
-Está basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. En Vuex la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
+Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. En Vuex la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
 
 Vuex proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada. Además se integra con las _DevTools_. No debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
@@ -33,7 +33,7 @@ El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
-Al crear el almacén especificaremos en _state_ nuestras variables globales
+Al crear el almacén especificaremos en _state_ nuestras variables globales y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
 ```javascript
 const store = new Vuex.Store({
   state: {
@@ -51,7 +51,9 @@ const store = new Vuex.Store({
 export default store
 ```
 
-Para que sea accesible a los componentes debemos importarlo y registrarlo en el _main.js_:
+Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
+
+Podemos importarlo y registrarlo en cada componente que lo vaya a usar o, para que sea accesible a todos los componentes, importarlo y registrarlo en el _main.js_:
 ```javascript
 import store from '@/store'
 
@@ -61,54 +63,27 @@ new Vue({
   ...
 ```
 
-y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
-```javascript
-const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    },
-    decrement (state) {
-      state.count--
-    },
-  }
-})
-export default store
-```
-
 Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
 ```javascript
   computed: {
     count () {
-      return store.state.count
+      return $store.state.count
   },
 ```
 
-Para evitar tener que importar en _store_ en cada componente podemos hacerlo activando la propiedad _store_ de la instancia de Vue, tal y como se hace con el _router_:
-```javascript
-const app = new Vue({
-  el: '#app',
-  store,
-  ...
-```
-
-En ese caso en la propiedad _computed_ en lugar de `return store.state.count` deberemos poner `return $store.state.count`.
+NOTA: en ese caso en la propiedad _computed_ ponemos `return $store.state.count` en lugar de `return store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `store.status.count`.
 
 Si queremos usar varias propedades del _store_ en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
 import { mapState } from 'vuex'
 
   computed: mapState([
-    // map this.count to store.state.count
-    'count'
+    'count'	    // map this.count to store.state.count
   ])
 ```
 
 ### Getters
-En el almacén podemos crear métodos que devuelvan información sobre nuestros datos. Estos métodos son en realidad _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen) y se declaran dentro de _getters_:
+Los componentes, además de modificar los datos del almacén, necesitan verlos por lo que debemos crear métodos que devuelvan información sobre nuestros datos. Estos métodos son en realidad _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen) y se declaran dentro de _getters_:
 ```javascript
 const store = new Vuex.Store({
   state: {
@@ -211,7 +186,7 @@ export default {
 ```
 
 ### Actions
-Son métodos del almacén como las mutaciones pero el lugar de cambiar los datos lanzan mutaciones (_commit_). Además pueden incluir llamadas asíncronas. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
+Son métodos del almacén como las mutaciones pero en lugar de cambiar los datos lanzan mutaciones (_commit_). Además pueden incluir llamadas asíncronas. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
 - lanzar una mutación con `context.commit('`
 - acceder a los datos con `context.state.`
 - acceder a los getters con `context.getters.`
