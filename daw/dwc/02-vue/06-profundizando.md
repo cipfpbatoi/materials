@@ -1,5 +1,3 @@
-Sin publicar aún
-
 # Profundizando en Vue
 ## Computed y watchers
 Las variables disponibles las tengo en:
