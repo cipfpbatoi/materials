@@ -35,8 +35,15 @@ El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
+Un buen sitio para crearlo es el fichero **src/store/index.js**.
+
 Al crear el almacén especificaremos en _state_ nuestras variables globales y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
 ```javascript
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
 const store = new Vuex.Store({
   state: {
     count: 0
@@ -69,11 +76,11 @@ Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La
 ```javascript
   computed: {
     count () {
-      return $store.state.count
+      return this.$store.state.count
   },
 ```
 
-NOTA: en ese caso en la propiedad _computed_ ponemos `return $store.state.count` en lugar de `return store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `store.status.count`.
+NOTA: en ese caso en la propiedad _computed_ ponemos `return this.$store.state.count` en lugar de `return this.store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `this.store.status.count`.
 
 Si queremos usar varias propedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
@@ -170,6 +177,11 @@ store.commit({
 })
 ```
 
+Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mmutaciones. Para llamar a la mutación hacemos:
+```javascript
+`this.$store.commit('increment')`:
+```
+
 Al igual con con el estado o los _getters_ podemos _mapear_ las mutaciones a métodos locales para poder hacer `this.increment` en lugar de `this.$store.commit('increment')` con el _helper_ _mapMutatios_:
 ```javascript
 import { mapMutations } from 'vuex'
@@ -214,6 +226,13 @@ const store = new Vuex.Store({
 })
 ```
 
+Para llamarla desde un componente hacemos:
+```javascript
+`this.$store.dispatch('increment')`:
+```
+
+Al igual que a las mutaciones les podemos pasar un _payload_.
+
 También podemos usar la desestructuración de objetos de ES2015 para obtener sólo la parte del contexto que nos interesa:
 ```javascript
   actions: {
@@ -223,7 +242,7 @@ También podemos usar la desestructuración de objetos de ES2015 para obtener s�
   }
 ```
 
-Igual que antes podemos usar el _helper_ _mapActions_ para mapear acciones y no tener que llamarlas en el componente con `this.$store.dispatc h('...')`:
+Igual que antes podemos usar el _helper_ _mapActions_ para mapear acciones y no tener que llamarlas en el componente con `this.$store.dispatch('...')`:
 ```javascript
 import { mapActions } from 'vuex'
 
@@ -254,6 +273,7 @@ actions: {
   }
 }
 ```
+(recuerda que una llamada a _axios_ ya es una promesa)
 
 Y la llamamos desde el componente con:
 ```javascript
