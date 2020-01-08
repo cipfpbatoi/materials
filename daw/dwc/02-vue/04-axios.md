@@ -83,7 +83,7 @@ import axios from 'axios'
 const url='http://localhost:3000'
 ```
 
-* Dentro del objeto añadimos el _hook_ **monted** para hacer la petición Ajax al montar el componente:
+* Dentro del objeto añadimos el _hook_ **mounted** para hacer la petición Ajax al montar el componente:
 
 ```javascript
 ...
@@ -138,7 +138,7 @@ Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamo
         :key="item.id"
         :todo="item"
         @delItem="delTodo(index)"
-        @doneChanged="changeTodo(item)">
+        @doneChanged="toogleDone(item)">
        </todo-item>
 ```
 
@@ -154,7 +154,7 @@ A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue*
         .catch(response => alert('Error: no se ha modificado el registro. '+response.message))
     },
 ```
-Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. EN el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no inlcuidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
+Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. En el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no inlcuidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
 
 ### Borrar todas las tareas
 Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servidor no tiene una llamada para borrar todos los datos podemos recorrer el array _todos_ y borrar cada tarea usando el método **delTodo** que ya tenemos hecho:
@@ -213,7 +213,7 @@ export default {
   },
 ```
 
-También podríamos construir una clase que se ocupe de todo:
+Otra forma sería construir una clase que se ocupe de las peticiones a la API:
 ```javascript
 import axios from 'axios';
 const API_URL = 'http://localhost:3000';
