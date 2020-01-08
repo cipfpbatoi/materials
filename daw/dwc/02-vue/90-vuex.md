@@ -1,5 +1,7 @@
 # Vuex
-Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. En Vuex la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
+Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. 
+
+En Vue la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
 
 Vuex proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada. Además se integra con las _DevTools_. No debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
