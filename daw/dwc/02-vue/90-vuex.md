@@ -75,7 +75,7 @@ Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La
 
 NOTA: en ese caso en la propiedad _computed_ ponemos `return $store.state.count` en lugar de `return store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `store.status.count`.
 
-Si queremos usar varias propedades del _store_ en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
+Si queremos usar varias propedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
 import { mapState } from 'vuex'
 
@@ -85,7 +85,7 @@ import { mapState } from 'vuex'
 ```
 
 ### Getters
-Los componentes, además de modificar los datos del almacén, necesitan verlos por lo que debemos crear métodos que devuelvan información sobre nuestros datos. Estos métodos son en realidad _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen) y se declaran dentro de _getters_:
+Podemos crear métodos que devuelvan información sobre nuestros datos. Estos métodos son en realidad _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen) y se declaran dentro de _getters_:
 ```javascript
 const store = new Vuex.Store({
   state: {
@@ -132,6 +132,8 @@ export default {
   }
 }
 ```
+
+Si queremos podemos hacer getters también para los states y así no necesitamos mapState sino que accedemos a todo con mapGetters.
 
 Los getters pueden recibir parámetros, por ejemplo, para hacer búsquedas:
 ```javascript
@@ -291,6 +293,14 @@ const store = new Vuex.Store({
 Podemos ver el ejemplo completo en el _fiddle_ siguiente:
 <script async src="//jsfiddle.net/awolf2904/n8d44bh3/embed/js,html,result/"></script>
 
+### state en formularios
+Si queremos usar un formulario para modificar un state del pattern lo asociamos al input con la directiva **v-model** pero eso plantea un problema: cuando el usuario cambie el valor del input estamos escribiendo directamente sobre un state, lo que no puede hacerse más que por medio de una mutación.
+
+Tenemos 2 soluciones al problema:
+- podemos no usar el v-model sino descomponerlo en un _:value_ y un _@input_ como vimos al hablar de poner un input en un subcomponente
+- podemos ponerle a computed de ese state un setter y un getter como vimos en el capítulo de [Profundizando en Vue](./06-profundizando.md)
+
+Más información en la [documentación oficial](https://vuex.vuejs.org/guide/forms.html) de Vuex.
 
 ### Saber más
 * [Vuex](https://vuex.vuejs.org/)
