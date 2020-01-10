@@ -8,6 +8,7 @@
     - [Crear el layout](#crear-el-layout)
     - [Saber más](#saber-m%C3%A1s)
   - [Vuex](#vuex)
+  - [Paso a producción](#paso-a-producci%C3%B3n)
   - [Vue con Laravel](#vue-con-laravel)
     - [Creación del proyecto](#creaci%C3%B3n-del-proyecto)
     - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
@@ -71,6 +72,14 @@ El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es re
 > Las librerías Flux son como las gafas: lo sabrás cuando las necesites
 
 Para usar _Vuex_ en tu aplicación sigue lo indicado en el [capítulo sobre Vuex](./90-vuex.md).
+
+## Paso a producción
+Una vez acabada nuestra aplicación debemos preparala para pasarla a producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
+```bash
+npm run build
+```
+
+Crea u
 
 ## Vue con Laravel
 Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para crear el Back-end que sirva la API.
@@ -153,7 +162,7 @@ Route::get('/{any}', 'SpaController@index')->where('any', '.*');
 para lo que creamos el controlador:
 ```bash
 php artisan make:controller SpaController
-```
+https://vuex.vuejs.org/guide/forms.html```
 y lo editamos:
 ```php
 <?php
