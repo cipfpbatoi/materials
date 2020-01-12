@@ -18,6 +18,7 @@
     - [Saber más](#saber-m%C3%A1s-2)
   - [Autenticación](#autenticaci%C3%B3n)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
+  - [Nuxt](#nuxt)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -298,3 +299,10 @@ SSR hace que la primera vez que un usuario accede a la web se sirve entera desde
 Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 
 Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.getresponse.com/click.html?x=a62b&lc=BmvXkb&mc=CL&s=mh7Vjl&u=B71jy&y=T&)
+
+## Nuxt
+[Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Vuex_,...) lo que nos facilita el desarrollo de nuestros proyectos.
+
+También hay otras librerías que nos pueden ser de utilidad como:
+- _[Framework7](https://framework7.io/)_ para crear una aplicación web que use 
+- _[Weex](https://weex.apache.org/)_ para crear aplicaciones nativas para iOS y Android
