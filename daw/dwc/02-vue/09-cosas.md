@@ -306,3 +306,6 @@ Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.
 También hay otras librerías que nos pueden ser de utilidad como:
 - _[Framework7](https://framework7.io/)_ para crear una aplicación web que use 
 - _[Weex](https://weex.apache.org/)_ para crear aplicaciones nativas para iOS y Android
+
+## Conclusión
+Como vés existen infinidad de librerías alrededor de Vue para ofercernos nuevas fucionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
