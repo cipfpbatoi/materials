@@ -74,12 +74,20 @@ El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es re
 Para usar _Vuex_ en tu aplicación sigue lo indicado en el [capítulo sobre Vuex](./90-vuex.md).
 
 ## Paso a producción
-Una vez acabada nuestra aplicación debemos preparala para pasarla a producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
+Una vez acabada nuestra aplicación debemos general el _build_ que pasaremos a producción. El _build_ es el conjunto de ficheros compilados, minificados, etc que subiremos al servidor de producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
 ```bash
 npm run build
 ```
 
-Crea u
+Crea un directorio **_dist_** con lo qie hay que subir a producción:
+- **index.html**: HTML minimizado
+- **ficheros .css** y el _source.map_
+- **imágenes**: las que hay en _static_ y en _assets_ (estas últimas procesadas,  minimizadas y optimizadas)
+- **favicon.ico**
+- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progssive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
+
+Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
+
 
 ## Vue con Laravel
 Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para crear el Back-end que sirva la API.
@@ -282,6 +290,10 @@ Una parte importante de cualquier aplicación es la autenticación de usuarios. 
 
 ## SSR (Server Side Rendering)
 Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 
+
+El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan aíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
+
+SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén en los buscadores.
 
 Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 
