@@ -29,6 +29,7 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
 * [Vue con Laravel / con Lumen](#vue-con-laravel)
 * [Autenticación](#autenticaci%C3%B3n)
 * [ServerSide Rendering](#ssr-server-side-rendering)
+* [Nuxt](#nuxt)
 
 ## Vuetify
 Es un plugin que nos permite utilizar en Vue los elementos de Material Design. Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/es-MX/getting-started/quick-start).
@@ -56,8 +57,7 @@ Para cada elemento que queramos añadir:
 </v-list-tile-title>
 ```
 
-Respecto al _footer_ 
-
+Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ que proporciona componentes Vue basados en _Bulma_.
 
 ### Saber más
 * [VuetifyJS.com](https://vuetifyjs.com/es-MX/getting-started/quick-start)
