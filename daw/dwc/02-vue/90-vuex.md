@@ -80,7 +80,7 @@ Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La
   },
 ```
 
-NOTA: en ese caso en la propiedad _computed_ ponemos `return this.$store.state.count` en lugar de `return this.store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `this.store.status.count`.
+NOTA: en ese caso en la propiedad _computed_ ponemos `return this.$store.state.count` en lugar de `return this.store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `this.store.state.count`.
 
 Si queremos usar varias propedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
