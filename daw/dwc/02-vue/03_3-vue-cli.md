@@ -238,7 +238,9 @@ npm install -S vue-router
 Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
 
 ### bootstrap-vue
-Esta librería es una implementación de **Bootstrap** para Vue de la que se ha eliminado jQuery y otras cosas innecesarias. El aspecto de los elementos varía un poco pero es muy parecido. Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
+Esta librería es una implementación de **Bootstrap** para Vue de la que se ha eliminado jQuery y otras cosas innecesarias. El aspecto de los elementos varía un poco pero es muy parecido. Nosotros la usaremos en nuestros proyectos para mejorar el aspecto de nuestras aplicaciones.
+
+Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
 
 Como es un plugin lo instalamos como hemos visto antes:
 ```bash
