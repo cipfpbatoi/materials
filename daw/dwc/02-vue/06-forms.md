@@ -1,8 +1,10 @@
+
+# Formularios en Vue
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 Tabla de contenidos
 
-- [Formularios en Vue](#formularios-en-vue)
+- [Introducción](#introducción)
   - [Enlazar diferentes inputs](#enlazar-diferentes-inputs)
     - [input normal](#input-normal)
     - [radio button](#radio-button)
@@ -15,10 +17,12 @@ Tabla de contenidos
   - [Validar con VeeValidate](#validar-con-veevalidate)
     - [Instalación](#instalaci%C3%B3n)
     - [Uso básico de VeeValidate](#uso-b%C3%A1sico-de-veevalidate)
+    - [Personalizar el mensaje del validador](#personalizar-el-mensaje-del-validador)
     - [Validación al enviar](#validaci%C3%B3n-al-enviar)
-    - [Reglas de validación](#reglas-de-validaci%C3%B3n)
-    - [Personalizar los mensajes](#personalizar-los-mensajes)
-    - [Validadores personalizados](#validadores-personalizados)
+    - [Crear nuevas reglas de validación](#crear-nuevas-reglas-de-validaci%C3%B3n)
+    - [Parámetros de las reglas](#parámetros-de-las-reglas)
+    - [Estados de validación](#estados-de-validación)
+    - [Validar al enviar el formulario](#validar-al-enviar-el-formulario)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
   - [v-model en subcomponente input](#v-model-en-subcomponente-input)
     - [Ejemplo](#ejemplo-1)
@@ -28,7 +32,7 @@ Tabla de contenidos
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Formularios en Vue
+# Introducción
 Para poder tener sincronizado el formulario con nuestros datos utilizamos la directiva **v-model** en cada campo. Algunos modificadores útiles de _v-model_ son:
 * **.lazy**: hace que _v-model_ sincronice al producirse el evento _change_ en vez del _input_, es decir, que no sincroniza con cada tecla que pulsemos sino cuando acabamos de escribir y salimos del input.
 * **.number**: convierte automáticamente el valor introducido (que se considera siempre String) a Number
@@ -206,7 +210,7 @@ Podemos ver todas las [reglas disponibles](https://logaretm.github.io/vee-valida
 * _is_ compara un campo con otro:
 * ficheros: _mimes_, _image_, _size_
 
-#### Personalizar el mensaje del validador
+### Personalizar el mensaje del validador
 Para personalizar el mensaje simplemente lo indicamos en el _extend_, por ejemplo para personalizar el mensaje de la regla _required_ haremos:
 ```javascript
 // Override the default message.
@@ -226,7 +230,7 @@ Por ejemplo el mensaje del required podría ser:
   message: 'El campo {_field_} es obligatorio según especifica la regla {_rule_}'
 ```
 
-#### Crear nuevas reglas de validación
+### Crear nuevas reglas de validación
 Para crear una nueva regla de validación personalizada simplemente le damos un nombre y definimos la función que devolverá _true_ si el valor es válido o _false_ si no lo es, por ejemplo:
 ```javascript
 extend('positive', value => {
@@ -244,7 +248,7 @@ extend('positive', {
 });
 ```
 
-#### Parámetros de las reglas
+### Parámetros de las reglas
 Algunas reglas de validación reciben parámetros, como _min_ que valida que el valor introducido tenga una longitud mínima. Por ejemplo si queremos que el nombre de usuario sea obligatorio y de al menos 8 caracteres haremos:
 ```html
 <validation-provider v-slot="{ errors }" rules="required|min:8" name="username">
@@ -274,7 +278,7 @@ extend('entre', {
 });
 ```
 
-#### Estados de validación
+### Estados de validación
 Cada _ValidationProvider_ tiene una serie de _flags_ que definen [en qué estado se encuentra](https://logaretm.github.io/vee-validate/guide/state.html#flags) la validación del campo. Algunos de los más comunes son:
 - **valid** / **invalid**: indica que el campo es válido/inválido
 - **touched** / **untouched**: indica si el campo ha tenido o no el foco (si se ha entrado en él)
