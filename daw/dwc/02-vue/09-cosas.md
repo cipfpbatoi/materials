@@ -7,7 +7,6 @@
     - [Instalación](#instalaci%C3%B3n)
     - [Crear el layout](#crear-el-layout)
     - [Saber más](#saber-m%C3%A1s)
-  - [Vuex](#vuex)
   - [Paso a producción](#paso-a-producci%C3%B3n)
   - [Vue con Laravel](#vue-con-laravel)
     - [Creación del proyecto](#creaci%C3%B3n-del-proyecto)
@@ -63,16 +62,6 @@ Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ que propo
 * [VuetifyJS.com](https://vuetifyjs.com/es-MX/getting-started/quick-start)
 * [Vuetify Material Framework in 60 minutes](https://www.youtube.com/watch?v=GeUhmMJUFZQ)
 * [Intro and Overview of Vuetify.js (Build a CRUD client with Vue.js)](https://www.youtube.com/watch?v=5GfpGaHKfyo)
-
-
-## Vuex
-Ya vimos que cuando distintos componentes tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con _event Bus_ y _state management pattern_. Estas soluciones pueden servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios con estos patrones. Para esos casos debemos usar _Vuex_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
-
-El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande (para aplicacioes pequeñas basta _eventBus_ o un store pattern hecho por nosotros). Como dijo Dan Abramov, el creador de Redux
-
-> Las librerías Flux son como las gafas: lo sabrás cuando las necesites
-
-Para usar _Vuex_ en tu aplicación sigue lo indicado en el [capítulo sobre Vuex](./90-vuex.md).
 
 ## Paso a producción
 Una vez acabada nuestra aplicación debemos general el _build_ que pasaremos a producción. El _build_ es el conjunto de ficheros compilados, minificados, etc que subiremos al servidor de producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
