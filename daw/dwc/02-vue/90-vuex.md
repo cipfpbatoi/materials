@@ -1,4 +1,17 @@
 # Vuex
+Tabla de contenidos
+- [Introducción](#introducción)
+- [Instalar Vuex](#instalar-vuex)
+- [Usar Vuex](#usar-vuex)
+  - [State](#state)
+  - [Getters](#getters)
+  - [Mutations](#mutations)
+  - [Actions](#actions)
+- [state en formularios](#state-en-formularios)
+- [Saber más](#saber-más)
+
+
+## Introducción
 Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. 
 
 En Vue la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
@@ -72,7 +85,10 @@ new Vue({
   ...
 ```
 
-Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
+Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. 
+
+### State
+La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
 ```javascript
   computed: {
     count () {
@@ -313,7 +329,7 @@ const store = new Vuex.Store({
 Podemos ver el ejemplo completo en el _fiddle_ siguiente:
 <script async src="//jsfiddle.net/awolf2904/n8d44bh3/embed/js,html,result/"></script>
 
-### state en formularios
+## state en formularios
 Si queremos usar un formulario para modificar un state del pattern lo asociamos al input con la directiva **v-model** pero eso plantea un problema: cuando el usuario cambie el valor del input estamos escribiendo directamente sobre un state, lo que no puede hacerse más que por medio de una mutación.
 
 Tenemos 2 soluciones al problema:
@@ -322,7 +338,7 @@ Tenemos 2 soluciones al problema:
 
 Más información en la [documentación oficial](https://vuex.vuejs.org/guide/forms.html) de Vuex.
 
-### Saber más
+## Saber más
 * [Vuex](https://vuex.vuejs.org/)
 * [Cómo Construir Aplicaciones Complejas y a Gran Escala Vue.js con Vuex](https://code.tutsplus.com/es/tutorials/how-to-build-complex-large-scale-vuejs-applications-with-vuex--cms-30952)
 * [Vuex for Everyone](https://vueschool.io/courses/vuex-for-everyone)
