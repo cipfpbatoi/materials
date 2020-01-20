@@ -10,6 +10,7 @@ Tabla de contenidos
       - [package.json](#packagejson)
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicaci%C3%B3n)
   - [Añadir nuevos plugins y dependencias](#a%C3%B1adir-nuevos-plugins-y-dependencias)
+    - [bootstrap-vue](#bootstrap-vue)
   - [Crear un nuevo componente](#crear-un-nuevo-componente)
   - [Depurar el código en la consola](#depurar-el-c%C3%B3digo-en-la-consola)
 - [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
@@ -219,10 +220,6 @@ Para instalar un nuevo plugin a nuestro proyecto (antes conviene haber hecho un 
 ```bash
 vue add vuetify
 ```
-O para añadir _bootstrap_ ejecutamos:
-```bash
-vue add bootstrap-vue
-```
 
 Esto automáticamente:
 * instala el plugin dentro de _node-modules_
@@ -239,6 +236,21 @@ El comando `npm install` sólo instala el paquete en _node-modules_. Para que lo
 npm install -S vue-router
 ```
 Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
+
+### bootstrap-vue
+Esta librería es una implementación de **Bootstrap** para Vue de la que se ha eliminado jQuery y otras cosas innecesarias. El aspecto de los elementos varía un poco pero es muy parecido. Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
+
+Como es un plugin lo instalamos como hemos visto antes:
+```bash
+vue add bootstrap-vue
+```
+
+Además incluye [iconos](https://bootstrap-vue.js.org/docs/icons) y si queremos usarlos tenemos que modificar el fichero creado dentro de _plugins_ y añadir:
+```bash
+import { BootstrapVueIcons } from 'bootstrap-vue'
+
+Vue.use(BootstrapVueIcons)
+```
 
 ## Crear un nuevo componente
 
