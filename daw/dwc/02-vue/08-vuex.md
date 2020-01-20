@@ -14,9 +14,12 @@ Tabla de contenidos
 ## Introducción
 Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. 
 
-En Vue la comunicación entre componentes se hace hacia abajo me diante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
+En Vue la comunicación entre componentes se hace hacia abajo mediante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
 
-Vuex proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada. Además se integra con las _DevTools_. No debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
+El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande. Para aplicacioes pequeñas normalmente es suficiente con soluciones más simples como el _eventBus_ o un _store  pattern_ hecho por nosotros. Como dijo _Dan Abramov_, el creador de _Redux_ 
+> Las librerías _Flux_ son como las gafas: lo sabrás cuando las necesites
+
+Vuex proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada. Además se integra con las _DevTools_. Sin embargo no debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
 El flujo de datos de una aplicación podemos verlo (de manera muy simplificada) en el siguiente esquema:
 
@@ -33,9 +36,6 @@ Vuex centraliza la forma en que nuestros componentes se comunican entre ellos. C
 ![Vuex data flow](https://vuex.vuejs.org/vuex.png)
 
 Los componentes de Vue peden renderizar datos de Vuex y es reactivo frente a ellos (si se modifican se volverá arenderizar el componente). Si el componente quiere modificar estos datos debe emitir (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción emite una confirmación (**commit**) que **muta** el _Estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza de nuevo el componente para mostrar el nuevo estado. En el estado almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
-
-El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande. Para aplicacioes pequeñas normalmente es suficiente con soluciones más simples como el _eventBus_ o un _store  pattern_ hecho por nosotros. Como dijo _Dan Abramov_, el creador de _Redux_ 
-> Las librerías _Flux_ son como las gafas: lo sabrás cuando las necesites
 
 ## Instalar Vuex
 Para usar Vuex debemos instalarlo como cualquier otro paquete:
