@@ -50,7 +50,7 @@ Hay infinidad de páginas donde podemos aprender cómo crear nuestro propio comp
 
 En resumen debemos crear un fichero donde definimos la clase de nuestro componente que debe heredar de `HTMLElement`. Es conveniente que su nombre (y por tanto el de la etiqueta que usaremos para mostrarlo) tenga al menos 2 palabras para evitar que pueda entrar en conflicto con posibles futuras etiquetas de HTML (por ejemplo podría ser \<social-login> o \<my-weather>). En esta clase definiremos el HTML y el estilo que tendrá nuestro componente, así como su comportamiento.
 
-Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos y que podemos usar en nuestras páginas.
+Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos (más de 2000) y que podemos usar en nuestras páginas.
 
 Por su parte Google ha desarrollado la librería Polymer para ayudarnos a crear nuestros propios componentes basados en WebComponents y los principales frameworks JS como Angular o Vue permiten crear WebComponents de forma sencilla.
 
