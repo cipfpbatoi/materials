@@ -23,9 +23,16 @@ Por ello HTML5 y Javascript siguen su contínuo crecimiento... y su contínua ev
 
 ## WebComponents
 Son distintas tecnologías que podemos usar (todas o alguna de ellas) para crear componentes reutilizables para nuestras páginas HTML. Las tecnologías que hay tras los Web Components son:
-* [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements): permite crear elementos HTML personalizados, es decir, nuevas etiquetas definidas por nosotros con funcionalidad propia
-* [HTML Templates](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template): la etiqueta `<template>` permite definir fragmentos de código HTML que no serán renderizados y que usaremos más adelante
-* [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM): permite asociar un DOM oculto a un elemento
+* [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements): permite crear elementos HTML personalizados, es decir, nuevas etiquetas definidas por nosotros con funcionalidad propia. Por ejemplo
+```html
+<comp-calendar
+    mode="month"
+    date="2020-02-23"
+    on-select="dateSelected()" >
+</comp-calendar>
+```
+* [HTML Templates](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template): la etiqueta `<template>` permite definir fragmentos de código HTML que no serán renderizados y que usaremos más adelante. Pueden incluir **slots** o huecos a los que se pasa un contenido
+* [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM): permite asociar un DOM oculto a un elemento. Esto permite que tenga su propio código JS y estilos CSS aislados del resto del DOM
 * [ES Modules](https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-module-system): Es el estándar de ECMAScript para importar módulos Javascript.
 
 Un WebComponent es un elemento que creamos y que tiene su propia representación (HTML) y funcionalidad (establecida con Javascript). Este elemento es reusable y compartible y se contruye sin librerías externas, sólo con HTML5, ES6 y CSS3.
@@ -45,7 +52,7 @@ En resumen debemos crear un fichero donde definimos la clase de nuestro componen
 
 Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos y que podemos usar en nuestras páginas.
 
-Por su parte Google ha desarrollado la librería Polymer para ayudarnos a crear nuestros propios componentes basados en WebComponents.
+Por su parte Google ha desarrollado la librería Polymer para ayudarnos a crear nuestros propios componentes basados en WebComponents y los principales frameworks JS como Angular o Vue permiten crear WebComponents de forma sencilla.
 
 ## WebSockets
 WebSockets es una tecnología basada en el protocolo **ws** que permite establecer una conexión continua _full-duplex_ entre un cliente (puede ser un navegador) y un servidor. La conexión siempre la abre el cliente pero una vez abierta no se cierra por lo que el servidor puede comunicar en cualquier momento con el cliente y enviarle información.
