@@ -14,12 +14,13 @@ Tabla de contenidos
 ## Introducción
 Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. 
 
-En Vue la comunicación entre componentes se hace hacia abajo mediante _props_ y hacia arriba emitiendo eventos. Si queremos comunicar componentes de otro nivel podemos usar un bus de eventos pero esto plantea problemas en una aplicación grande.
+En Vue la comunicación entre componentes se hace hacia abajo mediante _props_ y hacia arriba emitiendo eventos. Ya vimos que cuando distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con _event Bus_ y _state management pattern_. Estas soluciones pueden servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios con estos patrones. Para esos casos debemos usar _Vuex_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
 
-El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande. Para aplicacioes pequeñas normalmente es suficiente con soluciones más simples como el _eventBus_ o un _store  pattern_ hecho por nosotros. Como dijo _Dan Abramov_, el creador de _Redux_ 
+El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande (para aplicacioes pequeñas basta con un _eventBus_ o un _store  pattern_ hecho por nosotros). Como dijo _Dan Abramov_, el creador de _Redux_ 
+
 > Las librerías _Flux_ son como las gafas: lo sabrás cuando las necesites
 
-Vuex proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada. Además se integra con las _DevTools_. Sin embargo no debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
+Vuex se integra con las _DevTools_ por lo que es muy sencillo depurar los datos del almacén y los cambios que se producen en ellos. Sin embargo no debemos almacenar todos los datos en Vuex, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
 El flujo de datos de una aplicación podemos verlo (de manera muy simplificada) en el siguiente esquema:
 
