@@ -18,7 +18,6 @@ Tabla de contenidos
     - [Instalación](#instalaci%C3%B3n)
     - [Uso básico de VeeValidate](#uso-b%C3%A1sico-de-veevalidate)
     - [Personalizar el mensaje del validador](#personalizar-el-mensaje-del-validador)
-    - [Validación al enviar](#validaci%C3%B3n-al-enviar)
     - [Crear nuevas reglas de validación](#crear-nuevas-reglas-de-validaci%C3%B3n)
     - [Parámetros de las reglas](#parámetros-de-las-reglas)
     - [Estados de validación](#estados-de-validación)
