@@ -320,6 +320,8 @@ let a={id:2, name: 'object 2', address: {street: 'C/ Ajo', num: 3} };
 let copiaDeA=JSON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
 
+También podemos copiar objetos usando _rest_ y _spread_.
+
 ## Rest y Spread
 Permiten extraer a parámetros los elementos de un array o string (_spread_) o convertir en un array un grupo de parámetros (_rest_). El operador de ambos es **...** (3 puntos).
 
@@ -338,6 +340,13 @@ let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 let maxNota=Math.max(...arrayNotas);    // maxNota=9.75
 // hacemos Math.max(arrayNotas) devuelve NaN porque arrayNotas es un array y no un número
 ```
+
+Estas funcionalidades nos ofrecen otra manera de copiar objetos:
+```javascript
+let a={id:2, name: 'object 2'};
+let copiaDeA={ ...a};       // ahora ambos objetos contienen lo mismo pero son diferentes
+```
+
 
 ## Desestructuración de arrays
 Similar a _rest_ y _spread_, permiten extraer los elementos del array directamente a variables y viceversa. Ejemplo:
