@@ -18,9 +18,9 @@
 ## Introducción
 Desde ES2015 la POO en Javascript es similar a como se hace en otros lenguajes: clases, herencia, ... 
 
-Se crean con **new** o usando notación **JSON**:
+Se pueden crear con **new** o creando un _literal object_ (usando notación **JSON**). Con _new_::
 ```javascript
-let .getInfo()=new Object();
+let alumno=new Object();
 alumno.nombre='Carlos';     // se crea la propiedad 'nombre' y se le asigna un valor
 alumno['apellidos']='Pérez Ortiz';    // se crea la propiedad 'apellidos'
 alumno.edad=19;
@@ -29,7 +29,7 @@ alumno.getInfo=function() {
 }
 ```
 
-Usando **JSON** (recomendado) el ejemplo anterior sería:
+Creando un _literal object_ (recomendado) el ejemplo anterior sería:
 ```javascript
 let alumno={
     nombre: 'Carlos',
@@ -41,25 +41,13 @@ let alumno={
 };
 ```
 
-En ES6 si el valor de una propiedad es una función podemos ponerlo como:
+Aunque tanto en un caso como en otro lo que se está ahciendo realmente (también se pueden crear así) es:
 ```javascript
-    ...
-    getInfo() {
-        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
-    }
-    ...
+let alumno=Objectcreate({});
+...
 ```
 
-Además si queremos que el valor de una propiedad sea el de una variable que se llama como ella no es necesario ponerlo:
-```javascript
-let nombre='Carlos';
-
-let alumno={
-    nombre,                           // es equivalente a nombre: nombre
-    apellidos: 'Pérez Ortiz',
-    ...
-```
-
+## Propiedades de un objeto
 Podemos acceder a las propiedades con `.` (punto) o `[ ]`:
 ```javascript
 console.log(alumno.nombre);       // imprime 'Carlos'
@@ -74,6 +62,32 @@ Podremos recorrer las propiedades de un objecto con `for..in`:
 for (let prop in alumno) {
     console.log(prop+': '+alumno[prop]);
 }
+```
+
+En ES6 si el valor de una propiedad es una función podemos ponerlo como:
+```javascript
+    ...
+    getInfo() {
+        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+    }
+    ...
+```
+
+o en forma de _arrow function_:
+```javascript
+    ...
+    getInfo: () => 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+    ...
+```
+
+Además si queremos que el valor de una propiedad sea el de una variable que se llama como ella no es necesario ponerlo:
+```javascript
+let nombre='Carlos';
+
+let alumno={
+    nombre,                           // es equivalente a nombre: nombre
+    apellidos: 'Pérez Ortiz',
+    ...
 ```
 
 ## Clases
@@ -192,7 +206,7 @@ let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
 console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
-Cada objeto tiene un prototipo del que hereda sus propiedades y métodos (es el equivalente a su clase). Si añadimos una propiedad o método al prototipo se añade a todos los objetos creados a partir de él.
+Cada objeto tiene un prototipo del que hereda sus propiedades y métodos (es el equivalente a su clase, pero en realidad es un objeto que está instanciado). Si añadimos una propiedad o método al prototipo se añade a todos los objetos creados a partir de él lo que ahorra mucha memoria.
 
 ## Bibliografía
 * Curso 'Programación con JavaScript'. CEFIRE Xest. Arturo Bernal Mayordomo
