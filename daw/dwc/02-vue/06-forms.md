@@ -172,7 +172,7 @@ Cada input a validar los envolveremos en una etiqueta `<validation-provider>`:
 ```javascript
 <ValidationProvider v-slot="{ errors }">
   <input v-model="value" type="text">
-  <span>{{ errors[0] }}</span>
+  <span>{ { errors[0] }}</span>
 </ValidationProvider>
 ```
 
