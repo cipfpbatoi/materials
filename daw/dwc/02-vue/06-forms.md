@@ -220,7 +220,7 @@ extend('required', {
 ```
 
 En el mensaje podemos usar 3 variables:
-- \_field\_: el nombre del campo (definido por el atributo _name_ del ValidationProvider)
+- \_field\_: el nombre del campo (definido por el atributo _name_ del ValidationProvider o, si no lo tiene, por el atributo _name_ o _id_ del input que contiene)
 - \_value\_: el valor actual del campo
 - \_rule\_: el nombre de la regla de validación que se está aplicando
 
