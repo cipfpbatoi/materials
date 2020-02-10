@@ -290,13 +290,13 @@ actions: {
   }
 }
 ```
-(recuerda que una llamada a _axios_ ya es una promesa)
+(recuerda que una llamada a _axios_ es una promesa)
 
 Y la llamamos desde el componente con:
 ```javascript
 store.dispatch('actionA')
-.then(//...)
-.catch(//...)
+.then(...)	// se ejecutará si la acción ha hecho un resolve()
+.catch(...)	// se ejecutará si la acción ha hecho un reject()
 ```
 
 Si es una llamada a _axios_ hacemos el _commit_ cuando se haya resuelto:
@@ -310,9 +310,13 @@ const store = new Vuex.Store({
   },
   actions: {
   	loadData({commit}) {
-    	axios.get(URL).then((response) => {
-        commit('updatePosts', response.data)
-        commit('changeLoadingState', false)
+	return new Promise((resolve, reject) => {
+	    axios.get(URL)
+	    .then((response) => {
+		commit('updatePosts', response.data);
+	   	commit('changeLoadingState', false);
+		resolve(response.data);
+	    }).catch(err => reject(err))
     	})
     }
   },
@@ -325,6 +329,15 @@ const store = new Vuex.Store({
     },
   }
 })
+```
+
+**NOTA**: _loadData()_ no tiene que devolver una promesa si quien la llama no necesita saber el resultado de la acción (simplemente haría el `axios.get...`). Debe devolverla, por ejemplo, en un formulario donde, si todo ha ido bien, nos lleve a otra página. En ese caso la llamada sería:
+```javascript
+addData() {
+    this.$store.dispatch('addItem', this.newItem).
+    .then(()=>this.$router.push('/items'))
+    .catch(err=>alert('Error: '+err.message || err))
+}
 ```
 
 Podemos ver el ejemplo completo en el _fiddle_ siguiente:
