@@ -62,8 +62,15 @@ json-server --watch datos.json
 La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
 
 Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definidos en el fichero _.json_. Por ejemplo:
-* https://localhost:3000/users: devuelve todos los elementos del array _users_ del fichero _.json_
-* https://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
+* http://localhost:3000/users: devuelve todos los elementos del array _users_ del fichero _.json_
+* http://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
+
+Si queremos acceder a la API desde otro equipo (no desde _localhost_) tenemos que indicar la IP de la máquina que ejecuta _json-server_ y que se usará apra acceder, por ejemplo si vamos a ejecutarlo en la máquina 192.168.0.10 pondremos:
+```[bash]
+json-server --host 192.168.0.10 datos.json 
+```
+
+Y la ruta para acceder a la API será `http://192.168.0.10:3000`.
 
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
 
