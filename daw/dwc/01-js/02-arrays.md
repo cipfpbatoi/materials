@@ -341,7 +341,7 @@ let maxNota=Math.max(...arrayNotas);    // maxNota=9.75
 // hacemos Math.max(arrayNotas) devuelve NaN porque arrayNotas es un array y no un número
 ```
 
-Estas funcionalidades nos ofrecen otra manera de copiar objetos:
+Estas funcionalidades nos ofrecen otra manera de copiar objetos (pero sólo a partir de ES-2018):
 ```javascript
 let a={id:2, name: 'object 2'};
 let copiaDeA={ ...a};       // ahora ambos objetos contienen lo mismo pero son diferentes
