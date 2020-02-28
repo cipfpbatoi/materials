@@ -17,4 +17,4 @@ sudo apt-get install obs-studio
 Això ens crea un npu enllaç dins de 'Só i vídeo' anomenat **OBS Studio**.
 
 ## Configuració
-La primera vegada que obrim el programa ens pregunta si executar l'Assistent de configuració automàtica' i li diguem que sí (podem tornar-ho a executar des del menú 'Eines'.
+La primera vegada que obrim el programa ens pregunta si executar l'Assistent de configuració automàtica' i li diguem que sí (podem tornar-ho a executar des del menú 'Eines').
