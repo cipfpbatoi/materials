@@ -39,15 +39,17 @@ Se trata de una herramienta que incluye Vue que nos ayuda en:
 La versión actual es la 3.0 (lanzada en 2018) que ha cambiado de una arquitectura basada en plantillas a una basada en plugins lo que mejora enormemente su rendimiento. Podemos encontrar todoa la documentación en [Vue CLI](https://cli.vuejs.org/).
 
 ## Instalación
-Para usar **vue-cli** necesitamos tener instalado **npm** (el gestor de paquetes de Node.js). Si no lo tenemos instalaremos **node.js** de una de las siguientes maneras:
-* Si nuestra dsitribución es muy actual podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`)
-* Podemos [descargarlo desde NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombrepaquete_`)
-* O bien [instalarlo desde NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu)_ con
+Para usar **vue-cli** necesitamos tener instalado **npm** (el gestor de paquetes de Node.js). Si no lo tenemos instalaremos **node.js**. 
+
+Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero posiblemente nos instalará una versión poco actualizada por lo que es mejor [instalarlo desde NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu)_ siguiendo las instrucciones que se indican y que básicamente son:
 ```bash
 curl -sL https://deb.nodesource.com/setup_X.y | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
+
 (cambiaremos _X.y_ por la versión que queramos, vue-cli requiere al menos la 8.10.0).
+
+También podemos [descargarlo desde NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombrepaquete_`).
 
 Una vez instalado **npm** Vue-cli se instala con
 ```bash
