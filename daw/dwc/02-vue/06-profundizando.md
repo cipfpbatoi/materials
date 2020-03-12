@@ -23,7 +23,7 @@ data: ()=>({
   apellido: 'Segura', 
 }),
 computed: {
-  nombreCompleto() {
+  nombreCompleto: {
       get() {
         return this.nombre+' '+this.apellido;
       },
