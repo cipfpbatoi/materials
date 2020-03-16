@@ -1,5 +1,5 @@
-# Bloc 1: Javascript. UT 7: Objetos globales
-## Práctica 7.1 - Notas
+# Bloc 1: Javascript. UT 2: Arrays
+## Práctica 2.1 - Notas
 Vamos a hacer un programa que va pidiendo al usuario que introduzca las notas de un examen y las va guardando en un array. El usuario cada vez puede introducir una sóla nota o varias separadas por coma (ej. 4.5, 6, 8.75) y se le continuará pidiendo notas hasta que pulse ‘Cancelar’. Recuerda que en Javascript el símbolo decimal es el punto y no la coma.
 
 Cada nota introducida se almacenará en un array y una vez que estén todas se mostrará por la consola:
