@@ -107,17 +107,23 @@ console.log( Math.sqrt(2) );         // imprime 1.4142135623730951
 ```
 
 ## Objeto Date
-Es la clase que usremos siempre que vayamos a trabajar con fechas. Al crear una instancia de la clase le pasamos la fecha que queremos crear o lo dejamos en blanco para que nos cree la fecha actual:
+Es la clase que usaremos siempre que vayamos a trabajar con fechas. Al crear una instancia de la clase le pasamos la fecha que queremos crear o lo dejamos en blanco para que nos cree la fecha actual. Si le pasamos la fecha podemos pasarle:
+- milisegundos, desde la fecha EPOC
+- cadena de fecha
+- valor para año, mes (entre 0 y 11), día, hora, minutos, segundos, milisegundos
+
+Ejemplos:
 ```javascript
 let date1=new Date();    // Mon Jul 30 2018 12:44:07 GMT+0200 (CEST) (es cuando he ejecutado la instrucción)
+let date7=new Date(1532908800000);    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (miliseg. desde 1/1/1070)
 let date2=new Date('2018-07-30');    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST) (la fecha pasada a las 0h. GMT)
 let date3=new Date('2018-07-30 05:30');  // Mon Jul 30 2018 05:30:00 GMT+0200 (CEST) (la fecha pasada a las 05:300h. local)
-let date4=new Date(2018,7,30);    // Thu Ago 30 2018 00:00:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb... y a las 0h. local)
-let date5=new Date(2018,7,30,5,30);    // Thu Ago 30 2018 05:30:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb,...)
 let date6=new Date('07-30-2018');    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (OJO: formato MM-DD-AAAA)
 let date7=new Date('30-Jul-2018');    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (tb. podemos poner 'Julio')
-let date7=new Date(1532908800000);    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (miliseg. desde 1/1/1070)
+let date4=new Date(2018,7,30);    // Thu Ago 30 2018 00:00:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb... y a las 0h. local)
+let date5=new Date(2018,7,30,5,30);    // Thu Ago 30 2018 05:30:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb,...)
 ```
+
 Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o ` ` (espacio). Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
 ```javascript
 let date=new Date(2018,7,41);    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10Sep
