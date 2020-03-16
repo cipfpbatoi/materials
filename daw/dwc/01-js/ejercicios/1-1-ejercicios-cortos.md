@@ -29,3 +29,13 @@ Debes controlar:
 - el intervalo de minutos deben ser un número entero mayor que 0
 - si un valor introducido no es correcto se muestra al usuario un mensaje informando del error (un alert) y se le vuelve a pedir el valor
 - en la consola las horas y los minutos se deben mostrar siempre con 2 números (09:03 y no 9:3)
+
+### Ejercicio 1.1.d: contraseña
+Crea un programa que pida al usuario que introduzca una contraseña y compruebe si es o no segura. Para ello comprobará:
+- que su longitud sea mayor o igual de 8 caracteres
+- que contiene alguna mayúscula
+- que contiene alguna minúscula
+- que contiene algún número
+- que contiene alguno de estos caracteres: guión, barra baja, igual, asterisco, mas, dólar, arroba o almohadilla
+
+Si cumple todos los requisitos se informará por consola que la contraseña introducida es segura. Si no cumple 1 o 2 se le dirá que es poco segura y si no cumple más de 2 se le dirá que es una contraseña débil.
