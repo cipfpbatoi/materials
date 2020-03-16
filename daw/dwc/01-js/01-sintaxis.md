@@ -39,29 +39,40 @@ miVariable=[3, 45, 2];  // y ahora un array
 miVariable=undefined;   // para volver a valer el valor especial undefined
 ```
 
-Ni siquiera estamos obligados a declarar una variable antes de usarla, aunque es recomendable para evitar errores que nos costará depurar. Para que se produzca un error si no declaramos una variable debemos incluir al principio de nuestro código la instrucción
+Ni siquiera estamos obligados a declarar una variable antes de usarla, aunque es recomendable para evitar errores que nos costará depurar. Podemos hacer que se produzca un error si no declaramos una variable incluyendo al principio de nuestro código la instrucción
 ```javascript
 'use strict'
 ```
 
-Las variables de declaran con **let** (lo recomendado desde ES2015), aunque también pueden declararse con **var**. La diferencia es que con _let_ la variable sólo existe en el bloque en que se declara mientras que con _var_ la variable existe en toda la función en que se declara. Cualquier variable que no se declara dentro de una función (o si se usa sin declarar) es _global_.
+Las variables de declaran con **let** (lo recomendado desde ES2015), aunque también pueden declararse con **var**. La diferencia es que con _let_ la variable sólo existe en el bloque en que se declara mientras que con _var_ la variable existe en toda la función en que se declara:
+```javascript
+if (edad < 18) {
+  let textoLet = 'Eres mayor de edad';
+  var textoVar = 'Eres mayor de edad';
+} else {
+  let textoLet = 'Eres menor de edad';
+  var textoVar = 'Eres menor de edad';
+}
+console.log(textoLet);  // mostrará undefined porque fuera del if no existe la variable
+console.log(textoVar);  // mostrará la cadena
+```
+
+Cualquier variable que no se declara dentro de una función (o si se usa sin declarar) es _global_. Debemos siempre intentar NO usar variables globales.
 
 Se recomenda que Los nombres de las variables sigan la sintaxis _camelCase_ (ej.: _miPrimeraVariable_).
 
-Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error. Se aconseja que el nombre de las constantes globales sea en mayúsculas.
+Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error.
 
 NOTA: en la página de [Babel](https://babeljs.io/) podemos teclear código en ES2015 y ver cómo quedaría una vez transpilado a ES5.
 
 ## Funciones
 Se declaran con **function** y se les pasan los parámetros entre paréntesis. La función puede devolver un valor usando **return** (si no tiene _return_ es como si devolviera _undefined_). 
 
-Puede usarse una función antes de haberla declarado por el _hoisting_ de Javascript (el navegador primero carga todas las funciones y mueve las declaraciones de las variables al principio y luego ejecuta el código).
+Puede usarse una función antes de haberla declarado por el comportamiento de Javscript llamado _hoisting_: el navegador primero carga todas las funciones y mueve las declaraciones de las variables al principio y luego ejecuta el código.
 
 ### Parámetros
 Si se llama una función con menos parámetros de los declarados el valor de los parámetros no pasados será _undefined_:
 ```javascript
-potencia(4);
-
 function potencia(base, exponente) {
     console.log(base);            // muestra 4
     console.log(exponente);       // muestra undefined
@@ -71,15 +82,15 @@ function potencia(base, exponente) {
     }
     return valor;
 }
+
+potencia(4);    // devolverá 1 ya que no se ejecuta el for
 ```
 
 Podemos dar un **valor por defecto** a los parámetros por si no los pasan asignándoles el valor al definirlos:
 ```javascript
-potencia(4);
-
 function potencia(base, exponente=2) {
     console.log(base);            // muestra 4
-    console.log(exponente);       // muestra 2
+    console.log(exponente);       // muestra 2 la primera vez y 5 la segunda
     let valor=1;
     for (let i=1; i<=exponente; i++) {
       valor=valor*base;
@@ -88,10 +99,10 @@ function potencia(base, exponente=2) {
 }
 
 console.log(potencia(4));         // mostrará 16 (4^2)
-console.log(potencia(4,3));         // mostrará 64 (4^3)
+console.log(potencia(4,5));       // mostrará 1024 (4^5)
 ```
 
-> NOTA: En ES5 para hacer esto se hacía
+> NOTA: En ES5 para dar un valor por defecto a una variable se hacía
 > ```javascript
 > function potencia(base, exponente) {
 >     exponente = exponente || 2;       // si exponente vale undefined se la asigna el valor 2
@@ -133,11 +144,11 @@ let potencia = function(base, exponente) {
 }
 ```
 
-Lo que hacemos es:
+Al escribirla con la sintaxis de una _arrow function_ lo que hacemos es:
 * Eliminamos la palabra _function_
 * Si sólo tiene 1 parámetro podemos eliminar los paréntesis de los parámetros
 * Ponemos el símbolo _=>_
-* Si la función sólo tiene 1 línea eliminamos las { } y la palabra _return_
+* Si la función sólo tiene 1 línea podemos eliminamr las { } y la palabra _return_
 
 El ejemplo con _arrow function_:
 ```javascript
@@ -187,7 +198,7 @@ if (edad < 18) {
 
 Se puede usar el operador **? :** que es como un _if_ que devuelve un valor:
 ```javascript
-let esMayor = (edad>18)?true:false;
+let esMayorDeEdad = (edad>18)?true:false;
 ```
 
 ### Estructura condicional: switch
@@ -205,7 +216,7 @@ switch(color) {
         colorFondo='negro';
 }
 ```
-Javascript permite que el _switch_ en vez de evaluar valores pueda evaluar expresiones. EN este caso se pone como condición _true_:
+Javascript permite que el _switch_ en vez de evaluar valores pueda evaluar expresiones. En este caso se pone como condición _true_:
 ```javascript
 switch(true) {
     case age < 18:
@@ -253,7 +264,7 @@ do {
 Tenemos muchos _for_ que podemos usar.
 
 ### Bucle: for con contador
-Creamos una variable contador que controla las veces que seejecuta el for:
+Creamos una variable contador que controla las veces que se ejecuta el for:
 ```javascript
 let datos=[5, 23, 12, 85]
 let sumaDatos=0;
@@ -317,7 +328,12 @@ En Javascript hay 2 valores especiales:
 * **undefined**: es lo que vale una variable a la que no se ha asignado ningún valor
 * **null**: es un tipo de valor especial que podemos asignar a una variable. Es como un objeto vacío (`typeof null` devuelve _object_)
 
-Como hemos dicho las variables pueden contener cualquier tipo de valor y, en las operaciones, Javascript realiza automáticamente la conversión necesaria para, si es posible, realizar la operación y no devolver **NaN** (_Not a Number_, el valor devuelto es erróneo). Por ejemplo:
+También hay otros valores especiales relacionados con operaciones con números:
+- **NaN** (_Not a Number_): indica que el resultado de la operación no puede ser convertido a un número (ej. `'Hola'*2`, aunque `'2'*2` daría 4 ya que se convierte la cadena '2' al número 2)
+- **Infinity** y **-Infinity**: indica que el resultado es demasiado grande o demasiado pequeño (ej. `1/0` o `-1/0`)
+
+### _Casting_ de variables
+Como hemos dicho las variables pueden contener cualquier tipo de valor y, en las operaciones, Javascript realiza **automáticamente** las conversiones necesarias para, si es posible, realizar la operación. Por ejemplo:
 * `"4" / 2` devuelve 2 (convierte "4" en 4 y realiza la operación)
 * `"23" - null` devuelve 0 (hace 23 - 0)
 * `"23" - undefined` devuelve _NaN_ (no puede convertir undefined a nada así que no puede hacer la operación)
@@ -329,20 +345,39 @@ Como hemos dicho las variables pueden contener cualquier tipo de valor y, en las
 Además comentar que en Javascript todo son ojetos por lo que todo tiene métodos y propiedades. Veamos brevemente los tipos de datos básicos.
 
 ### Number
-Sólo hay 1 tipo de números, no existen enteros y decimales. El tipo de dato para cualquier número es **number**. EL carácter para la coma decimal es el **.** (como en inglés, así que 23,12 debemos escribirlo como 23.12).
+Sólo hay 1 tipo de números, no existen enteros y decimales. El tipo de dato para cualquier número es **number**. El carácter para la coma decimal es el **.** (como en inglés, así que 23,12 debemos escribirlo como 23.12).
 
-Tenemos los operadores aritméticos **+**, **-**, **\***, **/** y **%** y los unarios **++** y **--** y existen los valores especiales **Infinity** y **-Infinity** (`23 / 0` no produce un error sino que devuelve _Infinity_). La función **isFinite()** devuelve _true_ si el núemero es finito (no es _Infinity_ ni _-Infinity_). También esmuy útil la función **isNaN(valor)** que nos dice si el valor pasado es un número (false) o no (true).
+Tenemos los operadores aritméticos **+**, **-**, **\***, **/** y **%** y los unarios **++** y **--** y existen los valores especiales **Infinity** y **-Infinity** (`23 / 0` no produce un error sino que devuelve _Infinity_).
 
-Podemos usar los operadores artmáticos junto al operador de asignación **=** (+=, -=, *=, /= y %=).
+Podemos usar los operadores artméticos junto al operador de asignación **=** (+=, -=, *=, /= y %=).
+
+Algunos métodos útiles de los números son:
+- **.toFixed(num)**: redondea el número a los decimales indicados. Ej. `23.2376.toFixed(2)` devuelve 23.24
+- **.toLocaleString()**: devuelve el número convertido al formato local. Ej. `23.76.toLocaleString()` devuelve '23,76' (convierte el punto decimal en coma)
 
 Podemos forzar la conversión a número con la función **Number(valor)**. Ejemplo `Number("23.12")`devuelve 23.12
 
-También es muy útil el método **.toFixed(num)** que redondea un número a los decimales indicados. Ej.: `23.2376.toFixed(2)` devuelve 23.24
+Otras funciones útiles son:
+- **isNaN(valor)**: nos dice si el valor pasado es un número (false) o no (true)
+- **isFinite(valor)**: devuelve _true_ si el valor es finito (no es _Infinity_ ni _-Infinity_). 
+- **parseInt(valor)**: convierte el valor pasado a un número entero. Siempre que compience por un número la conversión se podrá hacer. Ej.:
+```javascript
+parseInt(3.65)      // Devuelve 3
+parseInt('3.65')    // Devuelve 3
+parseInt('3 manzanas')    // Devuelve 3, Number devolvería NaN
+```
+- **parseFloat(valor)**: como la anterior pero conserva los decimales
+
+**OJO**: al sumar floats podemos tener problemas:
+```javascript
+console.log(0.1 + 0.2)    // imprime 0.30000000000000004
+```
+Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
 
 ### String
 Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `"Hola \"Mundo\""` devuelve _Hola "Mundo"_).
 
-Para forzar la conversión a cadena e usa la función **String(valor)** (ej. `String(23)` devuelve '23')
+Para forzar la conversión a cadena se usa la función **String(valor)** (ej. `String(23)` devuelve '23')
 
 El operador de concatenación de cadenas es **+**. Ojo porque si pedimos un dato con _prompt_ siempre devuelve una cadena así que si le pedimos la edad al usuario (por ejemplo 20) y se sumamos 10 tendremos 2010 ('20'+10).
 
@@ -354,7 +389,7 @@ Algunos métodos y propiedades de las cadenas son:
 * **.substring(desde, hasta)**: `'Hola mundo'.substring(2,4)` devuelve "la"
 * **.substr(desde, num caracteres)**: `'Hola mundo'.substr(2,4)` devuelve "la m"
 * **.replace(busco, reemplaza)**: `'Hola mundo'.replace('Hola', 'Adiós')` devuelve "Adiós mundo"
-* **.toLocaleLowerCase()**: `'Hola mundo'.toLocaleLowerCase()` devuelve "hola mundo" (.toLowerCase no funciona con ñ, á, ç, ...)
+* **.toLocaleLowerCase()**: `'Hola mundo'.toLocaleLowerCase()` devuelve "hola mundo" 
 * **.toLocaleUpperCase()**: `'Hola mundo'.toLocaleUpperCase()` devuelve "HOLA MUNDO"
 * **.localeCompare(cadena)**: devuelve -1 si la cadena a que se aplica el método es anterior alfabéticamente a 'cadena', 1 si es posterior y 0 si ambas son iguales. Tiene en cuenta caracteres locales como acentos ñ, ç, etc
 * **.trim(cadena)**: `'   Hola mundo   '.trim()` devuelve "Hola mundo"
@@ -410,11 +445,12 @@ Si ponemos siempre esta sentencia al principio de nuestro código el intérprete
 ### Variables
 Algunas de las prácticas que deberíamos seguir respecto a las variables son:
 * Evitar en lo posible variables globales
+* Usar _let_ para declararlas
 * Declarar todas las variables al principio
 * Inicializar las variables al declararlas
 * Evitar conversiones de tipo automáticas
 * Usar para nombrarlas la notación _camelCase_
-* Poner los nombres de las constantes en mayúsculas
+* Usar _const_ siempre que una variable no deba cambiar su valor
 
 También es conveniente, por motivos de eficiencia no usar objetos Number, String o Boolean sino los tipos primitivos (no usar `let numero=new Number(5)` sino `let numero=5`) y lo mismo al crear arrays, objetos o expresiones regulares (no usar `let miArray=new Array()` sino `let miArray=[]`).
 
@@ -424,10 +460,4 @@ Algunas reglas más que deberíamos seguir son:
 * También es conveniente para mejorar la legibilidad de nuestro código separar las líneas de más de 80 caracteres.
 * Usar `===` en las comparaciones
 * Si un parámetro puede faltar al llamar a una función darle un valor por defecto
-* Y para acabar: **comentar el código**
-
-**OJO**: al sumar floats podemos tener problemas:
-```javascript
-console.log(0.1 + 0.2)    // imprime 0.30000000000000004
-```
-Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
+* Y para acabar **comentar el código** cuando sea necesario
