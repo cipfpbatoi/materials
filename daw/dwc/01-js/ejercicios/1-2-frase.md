@@ -20,15 +20,17 @@ Para ello crearemos las siguientes funciones en el fichero _main.js_ (deben llam
 Luego escribiremos el programa que pedirá al usuario que introduzca una cadena y, si ha introducido algo, llamará a esas funciones y mostrará en la consola lo que se pide.
 
 Por ejemplo, si el usuario introduce la frase 
-| La ruta nos aporto otro paso natural
+> La ruta nos aporto otro paso natural
 
 se mostraría lo siguiente:
-| 36 letras y 7 palabras
-| LA RUTA NOS APORTO OTRO PASO NATURAL 
-| La Ruta Nos Aporto Otro Paso Natural 
-| larutan osap orto otropa son atur aL 
-| natural paso otro aporto nos ruta La 
-| Sí es un palíndromo
+```
+36 letras y 7 palabras
+LA RUTA NOS APORTO OTRO PASO NATURAL 
+La Ruta Nos Aporto Otro Paso Natural 
+larutan osap orto otropa son atur aL 
+natural paso otro aporto nos ruta La 
+Sí es un palíndromo
+```
 
 Intenta usar en cada caso el bucle más adecuado. Las funciones `split` y `join` (lo opuesto) de _String_ y _Array_ nos pueden ayudar a algunas cosas.
 
