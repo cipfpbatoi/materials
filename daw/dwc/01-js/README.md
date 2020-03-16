@@ -48,13 +48,20 @@ Javascript es un lenguaje interpretado, no compilado y nosotros vamos a ejecutar
 * Validar datos
 * ...
 
+Sin embargo, por razones de seguridad, Javascript no nos permite hacer cosas como:
+* Acceder al sistema de ficheros del cliente
+* Capturar datos de un servidor (puede pedirlo y el servidor se los servirá, o no)
+* Modificar las preferencias del navegador
+* Enviar e-mails de forma invisible o crear ventanas sin que el usuario lo vea
+* ...
+
 Javascript es una implementación del lenguaje **ECMAScript** (el estándar que define sus características). El lenguaje surgió en 1997 y todos los navegadores a partir de 2012 soportan al menos la versión **ES5.1** completamente. En 2015 se lanzó la 6ª versión, inicialmente llamada **ES6** y posteriormente renombrada como **ES2015**, que introdujo importantes mejoras en el lenguaje y que es la versión que usaremos nosotros. Desde entonces van saliendo nuevas versiones cada año que introducen cambios pequeños. La última es la **ES2018** aprobada en Junio de 2018.
 
 Las principales mejoras que introdujo ES2015 son: clases de objetos, let, for..of, Map, Set, Arrow functions, Promesas, spread, destructuring, ...
 
 Los navegadores no se adaptan inmediatamente a las nuevas versiones de Javascript por lo que puede ser un problema usar una versión muy moderna ya que puede haber partes de los programas que no funcionen en los navegadores de muchos usuarios. En la página de [_Kangax_](https://kangax.github.io/compat-table/es6/) podemos ver la compatibilidad de los diferentes navegadores con las distintas versiones de Javascript. También podemos usar [_CanIUse_](https://caniuse.com/) para buscar la compatibilidad de un elemento concreto de Javascript así como de HTML5 o CSS3. 
 
-Si queremos asegurar la máxima compatibilidad debemos usar la versión ES5 (pero nos perdemos muchas mejoras del lenguaje) o mejor, usar la ES6 (o posterior) y después _transpilar_ nestro código a la version ES5. De esto se ocupan los _transpiladores_ (**Babel** es el más conocido) por lo que no suponen un esfuerzo extra para el programador.
+Si queremos asegurar la máxima compatibilidad debemos usar la versión ES5 (pero nos perdemos muchas mejoras del lenguaje) o mejor, usar la ES6 (o posterior) y después _transpilar_ nuestro código a la version ES5. De esto se ocupan los _transpiladores_ (**Babel** es el más conocido) por lo que no suponen un esfuerzo extra para el programador.
 
 ## Herramientas
 ### La consola del navegador
@@ -88,12 +95,12 @@ Algunos de los más conocidos son [Fiddle](https://jsfiddle.net), [Plunker](http
 ## Incluir javascript en una página web
 El código Javascript va entre etiquetas _\<script>_. Puede ponerse en el _\<head>_ o en el _\<body>_. Lo mejor en cuanto a rendimiento es ponerla al final del _\<body>_ para que no se detenga el renderizado de la página mientras se descarga y se ejecuta el código. También podemos ponerlo en el \<head> pero usando los atributos **async** y/o **defer** (en Internet encontraréis mucha información sobre esta cuestión, por ejemplo [aquí](https://somostechies.com/async-vs-defer/)).
 
-Es posible poner el código directamente entre la etiqueta _\<script>_  y su etiqueta de finalización pero lo correcto es que esté en un fichero externo (con extensión **.js**) que cargamos mediante el atributo _src_ de la etiqueta para no mezclar HTML y JS en el mismo fichero:
+Es posible poner el código directamente entre la etiqueta _\<script>_  y su etiqueta de finalización pero lo correcto es que esté en un fichero externo (con extensión **.js**) que cargamos mediante el atributo _src_ de la etiqueta. Así conseguimos que la página HTML cargue más rápido y además no mezclar HTML y JS en el mismo fichero:
 ```html
 <script src="./scripts/main.js"></script>
 ```
 
-Así mejoramos la legibilidad del código y facilitamos su mantenimento.
+Esto mejora la legibilidad del código y facilita su mantenimento.
 
 ## Mostrar información
 Javascript permite mostrar al usuario ventanas modales para pedirle o mostrarle información. Las funciones que lo hacen son:
