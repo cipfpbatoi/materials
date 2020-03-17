@@ -175,7 +175,7 @@ conn _arrow function_:
 let cuadrado = base => base * base;
 ```
 
-> EJERCICIO: Haz una _arrow function_ que devuelva el cubo del parámetro pasado como argumento. Pruébala desde la consola
+> EJERCICIO: Haz una _arrow function_ que devuelva el cubo del parámetro pasado como argumento y pruébala desde la consola. Escríbela primero en la forma habitual y luego la "traduces" a _arrow function_.
 
 ## Estructuras y bucles
 ### Estructura condicional: if
@@ -265,6 +265,7 @@ do {
 } while (nota)
 ```
 
+> EJERCICIO: Modifica la función que pedía que escribas algo y luegolo mostraba para que cuando la llamas continúe pidiendo que escribas hasta que pulses en 'Cancelar'.
 
 ### Bucle: for
 Tenemos muchos _for_ que podemos usar.
@@ -325,6 +326,8 @@ for (let letra of cadena) {
 }  
 ```
 
+> EJERCICIO: Haz 3 funciones a las que se le pasa como parámetro un array de notas y devuelve la nota media. Cada una usará un for de una de las 3 formas vistas. Pruébalas en la consola
+
 ## Tipos de datos básicos
 Para saber de qué tipo es el valor de una variable tenemos el operador **typeof**. Ej.:
 * `typeof 3` devuelve _number_
@@ -349,6 +352,8 @@ Como hemos dicho las variables pueden contener cualquier tipo de valor y, en las
 * `23 + "23"` devuelve 2323 (OJO, convierte 23 a "23", no al revés)
 
 Además comentar que en Javascript todo son ojetos por lo que todo tiene métodos y propiedades. Veamos brevemente los tipos de datos básicos.
+
+> EJERCICIO: Prueba en la consola las operaciones anteriores y alguna más con la que tengas dudas de qué devolverá
 
 ### Number
 Sólo hay 1 tipo de números, no existen enteros y decimales. El tipo de dato para cualquier número es **number**. El carácter para la coma decimal es el **.** (como en inglés, así que 23,12 debemos escribirlo como 23.12).
@@ -379,6 +384,8 @@ parseInt('3 manzanas')    // Devuelve 3, Number devolvería NaN
 console.log(0.1 + 0.2)    // imprime 0.30000000000000004
 ```
 Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
+
+> EJERCICIO: Modifica la funciónque quieras de calcular la nota media para que devuelva la media con 1 decimal
 
 ### String
 Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `"Hola \"Mundo\""` devuelve _Hola "Mundo"_).
