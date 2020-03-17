@@ -39,6 +39,8 @@ miVariable=[3, 45, 2];  // y ahora un array
 miVariable=undefined;   // para volver a valer el valor especial undefined
 ```
 
+> EJERCICIO: Ejecuta en la consola del navegador las instrucciones anteriores y comprueba el valor de miVariable tras cada instrucción (para ver el valor de una variable simplemente ponemos en la consola su nombre: `miVariable`
+
 Ni siquiera estamos obligados a declarar una variable antes de usarla, aunque es recomendable para evitar errores que nos costará depurar. Podemos hacer que se produzca un error si no declaramos una variable incluyendo al principio de nuestro código la instrucción
 ```javascript
 'use strict'
@@ -69,6 +71,8 @@ NOTA: en la página de [Babel](https://babeljs.io/) podemos teclear código en E
 Se declaran con **function** y se les pasan los parámetros entre paréntesis. La función puede devolver un valor usando **return** (si no tiene _return_ es como si devolviera _undefined_). 
 
 Puede usarse una función antes de haberla declarado por el comportamiento de Javscript llamado _hoisting_: el navegador primero carga todas las funciones y mueve las declaraciones de las variables al principio y luego ejecuta el código.
+
+> EJERCICIO: Haz una función que te pida que escribas algo y muestre un alert diciendo 'Has escrito...' y el valor introducido. Pruébala en la consola (pegas allí la función y luego la llamas desde la consola)
 
 ### Parámetros
 Si se llama una función con menos parámetros de los declarados el valor de los parámetros no pasados será _undefined_:
@@ -170,6 +174,8 @@ conn _arrow function_:
 ```javascript
 let cuadrado = base => base * base;
 ```
+
+> EJERCICIO: Haz una _arrow function_ que devuelva el cubo del parámetro pasado como argumento. Pruébala desde la consola
 
 ## Estructuras y bucles
 ### Estructura condicional: if
