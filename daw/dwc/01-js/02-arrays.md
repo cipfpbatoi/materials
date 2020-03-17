@@ -103,9 +103,9 @@ borrado=a.splice(1, 3, 45, 56);   // ahora a=['Lunes', 45, 56, 6] y borrado=['Ma
 ```
 
 > EJERCICIO: Gurada en un array la lista de la compra con Peras, Manzanas, Kiwis, Plátanos y Mandarinas. Haz los siguiente con splice:
-> Elimina las manzanas (debe quedar Peras, Kiwis, Plátanos y Mandarinas)
-> Añade detrás de los Plátanos Naranjas y Sandía (debe quedar Peras, Kiwis, Plátanos, Naranjas, Sandía y Mandarinas)
-> Quita los Kiwis y pon en su lugar Cerezas y Nísperos (debe quedar Peras, Cerezas, Nísperos, Plátanos, Naranjas, Sandía y Mandarinas)
+> - Elimina las manzanas (debe quedar Peras, Kiwis, Plátanos y Mandarinas)
+> - Añade detrás de los Plátanos Naranjas y Sandía (debe quedar Peras, Kiwis, Plátanos, Naranjas, Sandía y Mandarinas)
+> - Quita los Kiwis y pon en su lugar Cerezas y Nísperos (debe quedar Peras, Cerezas, Nísperos, Plátanos, Naranjas, Sandía y Mandarinas)
 
 ### slice
 Devuelve un subarray con los elementos indicados pero sin modificar el array original (sería como hacer un `substr` per de un array en vez de una cadena). Sintaxis:
@@ -148,8 +148,7 @@ Ordena **alfabéticamente** los elementos del array
 let a=['hola','adios','Bien','Mal',2,5,13,45]
 let b=a.sort();       // b=[13, 2, 45, 5, "Bien", "Mal", "adios", "hola"]
 ```
-> También podemos pasarle una función que le indique cómo ordenar que devolverá un valor negativo si el primer elemento es mayor, positivo si es mayor el segundo o 0 si son iguales.
-> Ejemplo: ordenar un array de cadenas sin tener en cuenta si son mayúsculas o minúsculas:
+También podemos pasarle una función que le indique cómo ordenar que devolverá un valor negativo si el primer elemento es mayor, positivo si es mayor el segundo o 0 si son iguales. Ejemplo: ordenar un array de cadenas sin tener en cuenta si son mayúsculas o minúsculas:
 ```javascript
 let a=['hola','adios','Bien','Mal']
 let b=a.sort(function(elem1, elem2) {
@@ -160,17 +159,20 @@ let b=a.sort(function(elem1, elem2) {
   return 0
 });       // b=["adios", "Bien", "hola", "Mal"]
 ```
-> Como más se utiliza esta función es para ordenar arrays de objetos. Por ejemplo si tenemos un objeto _persona_ con los campos _nombre_ y _edad_, para ordenar un array de objetos persona por su edad haremos:
+
+Como más se utiliza esta función es para ordenar arrays de objetos. Por ejemplo si tenemos un objeto _persona_ con los campos _nombre_ y _edad_, para ordenar un array de objetos persona por su edad haremos:
 ```javascript
 let personasOrdenado=personas.sort(function(persona1, persona2) {
   return persona1.edad-persona2.edad;
 });
 ```
-> Usando _arrow functions_ quedaría más sencillo:
+
+Usando _arrow functions_ quedaría más sencillo:
 ```javascript
 let personasOrdenado=personas.sort((persona1, persona2) => persona1.edad-persona2.edad);
 ```
-> Si lo que queremos es ordenar por n campo de texto podemos usar la función _toLocaleCompare_:
+
+Si lo que queremos es ordenar por n campo de texto podemos usar la función _toLocaleCompare_:
 ```javascript
 let personasOrdenado=personas.sort((persona1, persona2) => persona1.nombre.localeCompare(persona2.nombre));
 ```
