@@ -41,7 +41,7 @@ Podemos crearlos como instancias del objeto Array:
 let a=new Array();        // a = []
 let b=new Array(2,4,6);   // b = [2, 4, 6]
 ```
-o mejor aún usando notación JSON (recomendado):
+pero lo recomendado es crearlos usando notación JSON (recomendado):
 ```javascript
 let a=[];
 let b=[2,4,6);
@@ -102,21 +102,26 @@ a=['Lunes', 'Martes', 2, 4, 6];
 borrado=a.splice(1, 3, 45, 56);   // ahora a=['Lunes', 45, 56, 6] y borrado=['Martes', 2, 4];
 ```
 
+> EJERCICIO: Gurada en un array la lista de la compra con Peras, Manzanas, Kiwis, Plátanos y Mandarinas. Haz los siguiente con splice:
+> Elimina las manzanas (debe quedar Peras, Kiwis, Plátanos y Mandarinas)
+> Añade detrás de los Plátanos Naranjas y Sandía (debe quedar Peras, Kiwis, Plátanos, Naranjas, Sandía y Mandarinas)
+> Quita los Kiwis y pon en su lugar Cerezas y Nísperos (debe quedar Peras, Cerezas, Nísperos, Plátanos, Naranjas, Sandía y Mandarinas)
+
 ### slice
-Devuelve un subarray con los elementos indicados pero sin modificar el array original. Sintaxis:
+Devuelve un subarray con los elementos indicados pero sin modificar el array original (sería como hacer un `substr` per de un array en vez de una cadena). Sintaxis:
 ```javascript
 Array.slice(posicion, num. de elementos a devolver)
 ```
 Ejemplo:
 ```javascript
 let a=['Lunes', 'Martes', 2, 4, 6];
-let borrado=a.slice(1, 3);       // ahora a=['Lunes', 'Martes', 2, 4, 6] y borrado=['Martes', 2, 4];
+let subArray=a.slice(1, 3);       // ahora a=['Lunes', 'Martes', 2, 4, 6] y subArray=['Martes', 2, 4];
 ```
 
 Es muy útil para hacer una copia de un array:
 ```javascript
 let a=[2, 4, 6];
-let copiaDeA=a.slice();       // ahora ambos arrays contienen lo mismo pero son diferentes
+let copiaDeA=a.slice();       // ahora ambos arrays contienen lo mismo pero son diferentes arrays
 ```
 
 ### Arrays y Strings
@@ -169,6 +174,8 @@ let personasOrdenado=personas.sort((persona1, persona2) => persona1.edad-persona
 ```javascript
 let personasOrdenado=personas.sort((persona1, persona2) => persona1.nombre.localeCompare(persona2.nombre));
 ```
+
+> EJERCICIO: Haz una función que ordene las notas de un array pasado como parámetro. Si le pasamos [4,8,3,10,5] debe devolver [3,4,5,8,10]. Pruébalo en la consola
 
 ### Otros métodos comunes
 Otros métodos que se usan a menudo con arrays son:
@@ -284,6 +291,8 @@ let arrayParrafos=Array.from(parrafos);
 // y ya podemos usar los métodos que queramos:
 arrayParrafos.filter(parrafo => parrafo.startsWith('NOTA:').forEach(parrafo => console.log(parrafo));
 ```
+
+**IMPORTANTE: desde este momento se han acabado los bucles _for_ en nuestro código para trabajar con arrays. Usaremos siempre estas funciones!!!**
 
 ## Referencia vs Copia
 Cuando copiamos una variable de tipo _boolean_, _string_ o _number_ o se pasa como parámetro a una función se hace una copia de la misma y si se modifica la variable original no es modificada. Ej.:
