@@ -172,7 +172,7 @@ Usando _arrow functions_ quedaría más sencillo:
 let personasOrdenado=personas.sort((persona1, persona2) => persona1.edad-persona2.edad);
 ```
 
-Si lo que queremos es ordenar por n campo de texto podemos usar la función _toLocaleCompare_:
+Si lo que queremos es ordenar por un campo de texto podemos usar la función _toLocaleCompare_:
 ```javascript
 let personasOrdenado=personas.sort((persona1, persona2) => persona1.nombre.localeCompare(persona2.nombre));
 ```
@@ -214,6 +214,8 @@ let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 let aprobados=arrayNotas.filter(nota => nota>=5);
 ```
 
+> EJERCICIO: Dado un array con los días de la semana obtén todos los días que empiezan por 'M'
+
 #### find
 Como _filter_ pero devuelve el primer elemento que cumpla la condición (o _undefined_ si no la cumple nadie). Ejemlplo:
 let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
@@ -227,8 +229,12 @@ Este método tiene más sentido con objetos. Por ejemplo, si queremos encontrar 
 let personaBuscada=personas.find(persona => persona.dni=='21345678Z');    // devolverá el objeto completo
 ```
 
+> EJERCICIO: Dado un array con los días de la semana obtén el primer día que empieza por 'M'
+
 #### findIndex
 Como _find_ pero en vez de devolver el elemento devuelve su posición (o -1 si nadie cumple la condición). En el ejemplo anterior el valor devuelto sería 0 (ya que el primer elemento cumple la condición). Al igual que el anterior tiene más sentido con arrays de objetos.
+
+> EJERCICIO: Dado un array con los días de la semana obtén la posición en el array del primer día que empieza por 'M'
 
 #### every / some
 La primera devuelve **true** si **TODOS** los elementos del array cumplen la condición y **false** en caso contrario. La segunda devuelve **true** si **ALGÚN** elemento del array cumple la condición. Ejemplo:
@@ -238,8 +244,10 @@ let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
 let algunAprobado=arrayNotas.some(nota => nota>=5);     // true
 ```
 
+> EJERCICIO: Dado un array con los días de la semana indica si algún día empieza por 'S'. Dado un array con los días de la semana indica si todos los días acaban por 's'
+
 #### reduce
-Devuelve un valor calculado a partir de los elementos del array. En este caso la función recibe como primer parámetro el valor calculado hasta ahora y el método tiene como 1º parámetro la función y como 2º parámetro al valor calculado inicial (si no se indica será el primer alemento del array).
+Devuelve un valor calculado a partir de los elementos del array. En este caso la función recibe como primer parámetro el valor calculado hasta ahora y el método tiene como 1º parámetro la función y como 2º parámetro al valor calculado inicial (si no se indica será el primer elemento del array).
 
 Ejemplo: queremos obtener la suma de las notas:
 ```javascript
@@ -253,6 +261,8 @@ Ejemplo: queremos obtener la nota más alta:
 let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 let maxNota=arrayNotas.reduce((max,nota) => nota>max?nota:max);    // max=9.75
 ```
+
+> EJERCICIO: Dado el array de notas anterior devuelve la nota media
 
 #### map
 Permite modificar cada elemento de un array y devuelve un nuevo array con los elementos del original modificados. Ejemplo: queremos subir un 10% cada nota:
@@ -276,6 +286,8 @@ Devuelve **true** si el array incluye el elemento pasado como parámetro. Ejempl
 let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
 arrayNotas.includes(7.5);     // true
 ```
+
+> EJERCICIO: Dado un array con los días de la semana indica si algún día es el 'Martes'
 
 #### Array.from
 Devuelve un array a partir de otro al que aplica una función de transformación (es similar a _map_). Ejemplo: queremos subir un 10% cada nota:
@@ -330,6 +342,8 @@ Sin embargo si el objeto tiene como propiedades otros objetos estos se continúa
 let a={id:2, name: 'object 2', address: {street: 'C/ Ajo', num: 3} };
 let copiaDeA=JSON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
+
+> EJERCICIO: Dado el array arr1 con los días de la semana haz un array arr2 que sea igual al arr1. Elimina de arr2 el último día y comprueba quá ha pasado con arr1. Repita la operación con un array llamado arr3 pero que crearás haciendo una copia de arr1.
 
 También podemos copiar objetos usando _rest_ y _spread_.
 
