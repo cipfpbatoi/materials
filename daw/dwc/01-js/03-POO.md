@@ -18,7 +18,7 @@
 ## Introducción
 Desde ES2015 la POO en Javascript es similar a como se hace en otros lenguajes: clases, herencia, ... 
 
-Se pueden crear con **new** o creando un _literal object_ (usando notación **JSON**). Con _new_::
+Se pueden crear con **new** o creando un _literal object_ (usando notación **JSON**). Con _new_:
 ```javascript
 let alumno=new Object();
 alumno.nombre='Carlos';     // se crea la propiedad 'nombre' y se le asigna un valor
@@ -29,7 +29,7 @@ alumno.getInfo=function() {
 }
 ```
 
-Creando un _literal object_ (recomendado) el ejemplo anterior sería:
+Creando un _literal object_ (es la forma recomendada) el ejemplo anterior sería:
 ```javascript
 let alumno={
     nombre: 'Carlos',
@@ -41,7 +41,7 @@ let alumno={
 };
 ```
 
-Aunque tanto en un caso como en otro lo que se está ahciendo realmente (también se pueden crear así) es:
+Aunque tanto en un caso como en otro lo que se está haciendo realmente (también se pueden crear así) es:
 ```javascript
 let alumno=Objectcreate({});
 ...
@@ -90,6 +90,8 @@ let alumno={
     ...
 ```
 
+> EJERCICIO: Crea un objeto llamado tvSamsung con las propiedades nombre (TV Samsung 42"), categoria (Televisores), unidades (4), precio (345.95) y con un método llamado importe que devuelve el valor total de las unidades (nº de unidades * precio)
+
 ## Clases
 Desde ES2015 funcionan como en la mayoría de lenguajes:
 ```javascript
@@ -107,6 +109,8 @@ class Alumno {
 let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
 console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
+
+> EJERCICIO: Crea una clase Productos con las propiedades y métodos del ejercicio anterior. Además tendrá un método getInfo que devolverá: 'Nombre (categoría): unidades uds x precio € = importe €'. Crea 3 productos diferentes.
 
 ### Herencia
 Una clase puede heredar de otra utilizando la palabra reservada **extends** y heredará todas sus propiedades y métodos. Podemos sobrescribirlos en la clase hija (seguimos pudiendo llamar a los métodos de la clase padre utilizando la palabra reservada **super** -es lo que haremos si creamos un constructor en la clase hija-).
@@ -129,6 +133,8 @@ class AlumnInf extends Alumno{
 let cpo=new AlumnInf('Carlos', 'Pérez Ortiz', 19, 'DAW');
 console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años y estudia el Grado Superior de DAW'
 ```
+
+> EJERCICIO: crea una clase Televisores que hereda de Productos y que tiene una nueva propiedad llamada tamaño. El método getInfo mostrará el tamaño junto al nombre
 
 ### Métodos estáticos
 En ES2015 podemos declarar métodos estáticos, pero no propiedades estáticas. Estos métodos se llaman directamente utilizando el nombre de la clase y no tienen acceso al objeto _this_ (ya que no hay objeto instanciado).
@@ -173,6 +179,7 @@ como vimos en el tema de [Arrays](./02-arrays.md) sino que podemos hacer directa
 ```javascript
 misAlumnos.sort();   
 ```
+
 Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.toString()_ pero si sobrecargamos el método **_.valueOf()_** será este el que se usará en comparaciones:
 ```javascript
 class Alumno {
@@ -186,6 +193,10 @@ let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
 let cpo2=new Alumno('Ana', 'Abad Tudela', 23);
 console.log(cpo<cpo2);     // imprime true ya que 19<23
 ```
+
+> EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
+
+> EJERCICIO: Crea 5 productos y guárdalos en un array. Crea una función a la que se le pasa ese array y devuelve un array ordenado alfabéticamente y otra a la que se le pasa el array y lo devuelve ordenado por importe.
 
 ## POO en ES5
 Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia por lo que había que emularlas. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
