@@ -175,7 +175,7 @@ conn _arrow function_:
 let cuadrado = base => base * base;
 ```
 
-> EJERCICIO: Haz una _arrow function_ que devuelva el cubo del parámetro pasado como argumento y pruébala desde la consola. Escríbela primero en la forma habitual y luego la "traduces" a _arrow function_.
+> EJERCICIO: Haz una _arrow function_ que devuelva el cubo del número pasado como parámetro y pruébala desde la consola. Escríbela primero en la forma habitual y luego la "traduces" a _arrow function_.
 
 ## Estructuras y bucles
 ### Estructura condicional: if
@@ -386,6 +386,8 @@ console.log(0.1 + 0.2)    // imprime 0.30000000000000004
 Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
 
 > EJERCICIO: Modifica la funciónque quieras de calcular la nota media para que devuelva la media con 1 decimal
+
+> EJERCICIO: Modifica la función que devuelve el cubo de un número para que compruebe si el parámetro pasado es un número entero. Si no es un entero o no es un número mostrará un alert indicando cuál es el problema yndevolverá false.
 
 ### String
 Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `"Hola \"Mundo\""` devuelve _Hola "Mundo"_).
