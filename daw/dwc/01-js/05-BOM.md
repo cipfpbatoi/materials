@@ -84,6 +84,12 @@ Sus principales propiedades y métodos son:
 * Otros métodos: `.back()`, `.forward()`, `.home()`, `.stop()`, `.focus()`, `.blur()`, `.find()`, `.print()`, …
 NOTA: por seguridad no se puede mover una ventana fuera de la pantalla ni darle un tamaño menor de 100x100 px ni tampoco se puede mover una ventana no abierta con .open() o si tiene varias pestañas
 
+> EJERCICIO: Ejecuta desde la consola:
+> - abre una nueva ventana de dimensiones 500x200px en la posición (100,200)
+> - escribe en ella (con document.write) un título h1 que diga 'Hola'
+> - muévela 300 px hacia abajo y 100 a la izquierda
+> - ciérrala
+
 #### Diálogos
 Hay 3 métodos del objeto _window_ que ya conocemos y que nos permiten abrir ventanas de diálogo con el usuario:
 * `window.alert(mensaje)`: muestra un diálogo con el mensaje indicado y un botón de 'Aceptar'
@@ -99,12 +105,19 @@ Contiene información sobre la URL actual del navegador y podemos modificarla. S
 * `.assign(url)`: carga la página pasada como parámetro
 * `.replace(url)`: ídem pero sin guardar la actual en el historial
 
+> EJERCICIO: Ejecuta en la consola
+> - muestra la ruta completa de la página actual
+> - muestra el servidor de esta página
+> - carga la página de Google usando el objeto _location_
+
 ### Objeto [history](http://www.w3schools.com/jsref/obj_history.asp)
 Permite acceder al historial de páginas visitadas y navegar por él:
 * `.length`: muestra el número de páginas almacenadas en el historial
 * `.back()`: vuelve a la página anterior
 * `.forward()`: va a la siguiente página
 * `.go(num)`: se mueve _num_ páginas hacia adelante o hacia atrás (si _num_ es negativo) en el historial
+
+> EJERCICIO: desde la consola vuelve a la página anterior
 
 ### Otros objetos
 Los otros objetos que incluye BOM son:
@@ -118,3 +131,4 @@ Los otros objetos que incluye BOM son:
     * `.availWidth`/`.availHeight`: igual pero excluyendo la barra del S.O.
     * ...
 
+> EJERCICIO: obtén desde la consola todas las propiedades width/height y availWidth/availHeight del objeto _scrren_. Compáralas con las propiedades innerWidth/innerHeight y outerWidth/outerHeight de _window_.
