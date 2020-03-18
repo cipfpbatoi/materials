@@ -101,7 +101,16 @@ También tenemos 'atajos' para obtener algunos elementos comunes:
 * `document.form`: devuelve una colección con todos los formularios del documento
 * `document.images`: devuelve una colección con todas las imágenes del documento
 * `document.scripts`: devuelve una colección con todos los scripts del documento
-  
+
+> EJERCICIO: Para hacer los ejercicios de este tema descárgate [esta página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) y ábrela en tu navegador. Obten por consola, al meos de 2 formas diferentes:
+> - El elemento con id 'input2'
+> - La colección de párrafos
+> - Lo mismo pero sólo de los párrafos que hay dentro del div 'lipsum'
+> - El formulario (ojo, no la colección con el formulario sino sólo el formulario)
+> - Todos los inputs
+> - Sólo los inputs con nombre 'sexo'
+> - Los items de lista de la clase 'important' (sólo los LI)
+
 ## Acceso a nodos a partir de otros
 En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para ello tenemos los siguientes métodos que se aplican sobre un elemento del árbol DOM:
 * `elemento.parentElement`: devuelve el elemento padre de _elemento_
@@ -119,6 +128,12 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 **IMPORTANTE**: a menos que me interesen comantarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
 
 ![Recorrer el árbol DOM](./img/domRelaciones.png)
+
+> EJERCICIO: Siguiento con la [página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) obtén desde la consola, al menos de 2 formas diferentes:
+> - El primér párrafo que hay dentro del div 'lipsum'
+> - El segundo párrafo de 'lipsum'
+> - El último item de la lista
+> - La label de 'Escoge sexo'
 
 ### Propiedades de un nodo
 Las principales propiedades de un nodo son:
@@ -143,6 +158,12 @@ Otras propiedades:
 * `elemento.offsetHeight` / `elemento.offsetWidth`: devuelve el alto / ancho total del _elemento_
 * `elemento.clientLeft` / `elemento.clientTop`: devuelve la distancia de _elemento_ al borde izquierdo / superior
 * `elemento.offsetLeft` / `elemento.offsetTop`: devuelve los píxels que hemos desplazado _elemento_ a la izquierda / abajo
+
+> EJERCICIO: Obten desde la consola, al menos de 2 formas:
+> - El innerHTML de la etiqueta de 'Escoge sexo'
+> - El textContent de esa etiqueta
+> - El valor del primer input de sexo 
+> - El valor del sexo que esté seleccionado (difíil, búscalo por Internet)
 
 ## Manipular el árbol DOM
 Vamos a ver qué métodos nos permiten cambiar el árbol DOM, y por tanto modificar la página:
@@ -234,11 +255,11 @@ let clases=elemento.classList;   // clases=['destacado', 'direccion'], OJO es un
 ```
 
 Además dispone de los métodos:
-* **.add(clase)**: añade a l elemento la clase pasada, si no la tiene ya. Ej.:
+* **.add(clase)**: añade al elemento la clase pasada (si ya la tiene no hace nada). Ej.:
 ```javascript
 elemento.classList.add('primero');   // ahora elemento será <p class="destacado direccion primero">...
 ```
-* **.remove(clase)**: elimina del elemento la clase pasada, si la tiene ya. Ej.:
+* **.remove(clase)**: elimina del elemento la clase pasada (si no la tiene no hace nada). Ej.:
 ```javascript
 elemento.classList.remove('direccion');   // ahora elemento será <p class="destacado primero">...
 ```
