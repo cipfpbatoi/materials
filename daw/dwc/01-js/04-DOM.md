@@ -213,6 +213,14 @@ Si utilizamos la propiedad **innerHTML** el código a usar es mucho más simple:
 
 <script async src="//jsfiddle.net/juansegura/x9s7v8kn/embed/js,html,result/"></script>
 
+**OJO**: La forma de añadir el último párrafo (línea #3: `miDiv.innerHTML+='<p>Párrafo añadido al final</p>';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a pintar TODO el contenido de miDIV. La forma correcta de hacerlo sería:
+```javascript
+let ultimoParrafo=document.createElement('p');
+ultimoParrafo.innerHTML='Párrafo añadido al final';
+miDiv.appendChild(ultimoParrafo);
+```
+Así sólo debe repintar el párrafo añadido, conservando todo lo demás que tenga _miDiv_.
+
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 
 ### Modificar el DOM con [ChildNode](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode)
