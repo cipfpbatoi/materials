@@ -195,8 +195,13 @@ console.log(cpo<cpo2);     // imprime true ya que 19<23
 ```
 
 > EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
-
-> EJERCICIO: Crea 5 productos y guárdalos en un array. Crea una función a la que se le pasa ese array y devuelve un array ordenado alfabéticamente y otra a la que se le pasa el array y lo devuelve ordenado por importe.
+es
+> EJERCICIO: Crea 5 productos y guárdalos en un array. Crea las siguientes funciones (todas reciben ese array como parámetro):
+> - prodsSortByName: devuelve un array con los productos ordenados alfabéticamente
+> - prodsSortByPrice: devuelve un array con los productos ordenados por importe
+> - prodsTotalPrice: devuelve el importe total del los productos del array, con 2 decimales
+> - prodsWithLowUnits: además del array recibe como segundo parámetro un nº y devuelve un array con todos los productos de los que quedan menos de los unidades indicadas
+> - prodsList: devuelve una cadena que dice 'Listado de productos:' y en cada línea un guión y la información de un producto del array
 
 ## POO en ES5
 Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia por lo que había que emularlas. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
