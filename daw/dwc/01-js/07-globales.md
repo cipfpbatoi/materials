@@ -174,7 +174,7 @@ Para mostrar la fecha tenemos varios métodos diferentes:
 * **.toLocaleDateString()**: "30/7/2018"
 * **.toLocaleTimeString()**: "2:00:00"
 
-**NOTA**: recuerda que las fchas son objetos y que se copian y se pasan como parámetro por refrencia:
+**NOTA**: recuerda que las fechas son objetos y que se copian y se pasan como parámetro por refrencia:
 ```javascript
 let fecha=new Date('2018-07-30');    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 let otraFecha=fecha;
@@ -184,11 +184,11 @@ console.log( fecha.getDate() );      // imprime 28 porque fecha y otraFecha son 
 Una forma sencilla de copiar una fecha es crear una nueva pasándole el tiempo Epoch de la que queremos copiar:
 ```javascript
 let fecha=new Date('2018-07-30');    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
-let otraFecha=nre Date(fecha.getTime());
+let otraFecha=new Date(fecha.getTime());
 otraFecha.setDate(28);               // Thu Jun 28 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDate() );      // imprime 30
 ```
-**NOTA**: la comparación entre fechas funciona correctamente con los operadores `>`, `>=`, `<` y `<=` pero NO con `==`, `===`, `!==` y `!===` ya que compara los objetos y ve que son objetos diferentes. Si queremos saber si 2 fechas son iguales (siendo diferentes objetos) el código que pondremos NO es `fecha1==fecha2` sino `fecha1.getTime()==fecha2.getTime()`.
+**NOTA**: la comparación entre fechas funciona correctamente con los operadores `>`, `>=`, `<` y `<=` pero NO con `==`, `===`, `!=` y `!==` ya que compara los objetos y ve que son objetos diferentes. Si queremos saber si 2 fechas son iguales (siendo diferentes objetos) el código que pondremos NO es `fecha1 === fecha2` sino `fecha1.getTime() === fecha2.getTime()`.
 
 Podemos probar los distintos métodos de las fechas en la página de [w3schools](http://www.w3schools.com/jsref/jsref_obj_date.asp).
 
