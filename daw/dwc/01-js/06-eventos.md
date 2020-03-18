@@ -88,6 +88,8 @@ Los produce el usuario con el ratón:
 
 NOTA: si hacemos doble click sobre un elemento la secuencia de eventos que se produciría es: _mousedown_ -> _mouseup_ -> _click_ -> _mousedown_ -> _mouseup_ -> _click_ -> _dblclick_
 
+> EJERCICIO: Pon un escuchador desde la consola al botón 1 de la [página de ejemplo de DOM](./ejercicios/ejemplos/ejemploDOM.html) para que al hacer click se muestre el un alert con 'Click sobre botón 1'. Ponle otro para que al pasar el ratón sobre él se muestre 'Entrando en botón 1'.
+
 ### Eventos de teclado
 Los produce el usuario al usar el teclado:
 * **keydown**: se produce al presionar una tecla y se repite continuamente si la tecla se mantiene pulsada
@@ -144,6 +146,8 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
       
 Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejemplos de w3schools](https://www.w3schools.com/js/js_events_examples.asp).
 
+> EJERCICIO: Pon desde la consola un escuchador al BODY de la página de ejemplo para que al pulsar cualquier tecla nos muestre en un alert el _key_ y el _keyCode_ de la tecla pulsada. Pruébalo con diferentes teclas
+
 ### _Bindeo_ del objeto _this_
 En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función escuchadora. Por ejemplo la función escuchadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función perdemos esa referencia.
 
@@ -152,12 +156,11 @@ El método _.bind()_ nos permite pasarle a una función el valor que queremos da
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(variable));
 ```
 
-En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_. EN el ejemplo que habíamos comentado de un escuchador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
+En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_. En el ejemplo que habíamos comentado de un escuchador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
 ```javascript
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(this));
 ```
 por lo que el valor de _this_ dentro de la función _aceptado_ será el mismo que tenía fuera, es decir, el objeto.
-
 
 ## Propagación de eventos (bubbling)
 Normalmente en una página web los elementos HTML se solapan unos con otros, por ejemplo, un \<span> está en un \<p> que está en un \<div> que está en el \<body>. Si ponemos un escuchador del evento _click_ a todos ellos se ejecutarán todos ellos, pero ¿en qué orden?.
@@ -194,3 +197,5 @@ nuevaFila.innerHTML = `<td>${dato1}</td><td>${dato2}...</td>`;
 nuevaFila.addEventListener('dblclick', mostraId);
 miTabla.appendChild(nuevaFila);
 ```
+
+De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que pintar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a pintar todas las filas de la tabla (todo lo que hay dentro de miTabla).
