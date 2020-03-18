@@ -51,6 +51,8 @@ let idInterval=setInterval(function() {
 }, 3000);
 ```
 
+> EJERCICIO: Ejecuta en la consola cada una de esas funciones
+
 ## Objetos del BOM
 Al contrario que para el DOM, no existe un estándar de BOM pero es bastante parecido en los diferentes navegadores. 
 
