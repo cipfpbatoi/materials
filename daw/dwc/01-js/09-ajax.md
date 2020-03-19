@@ -165,6 +165,23 @@ function muestraError() {
 }
 ```
 
+Recuerda que tratamos con peticiones asíncronas: tras la línea
+```javascript
+peticion.addEventListener('load', function() {
+```
+
+no se ejecuta la línea siguiente
+```javascript
+    if (peticion.status===200) {
+```
+
+sino la de
+```javascript
+peticion.addEventListener('error', muestraError);
+```
+
+Una petición asíncrona es como pedir una pizza: tras llamar por teléfono lo siguiente no es ir a la puerta a recogerla sino que seguimos haciendo cosas por casa y cuando suena el timbre de casa entonces vamos a la puerta a por ella.
+
 ## Ejemplos de envío de datos
 Vamos a ver algunos ejemplos de envío de datos al servidor con POST. Supondremos que tenemos una página con un formulario para dar de alta nuevos productos:
 ```html
@@ -242,7 +259,7 @@ O añadir manualmente los campos que queramos enviar:
 let formData=new FormData();
 formData.append("name", document.getElementById("name").value);
 formData.append("descrip", document.getElementById("descrip").value);
-formData.append("photo", document.getElementById("photo").fles[0]);
+formData.append("photo", document.getElementById("photo").files[0]);
 
 let peticion=new XMLHttpRequest();
 peticion.open('POST', 'https://localhost/products');
@@ -252,18 +269,18 @@ peticion.addEventListener('load', function() {
 ```
 
 ## Single Page Application
-Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin 'esperas' con la página en blanco mientras se recarga desde el servidor).
+Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin 'esperas' que dejen la página en blanco o no funcional mientras se recarga desde el servidor).
 
 En una SPA sólo se carga la página de inicio (es la única página que existe) que se va modificando y cambiando sus datos como respuesta a la interacción del usuario. Para obtener los nuevos datos se realizan peticiones al servidor (normalmente Ajax). La respuesta son trozos de HTML que se cargan en determinadas partes o datos (JSON, XML, …) que modifican la página mostrada.
 
 Un buen lugar para obtener más información de Ajax o ver ejemplos más complejos es la página del [IES San Clemente](https://manuais.iessanclemente.net/index.php/MediaWiki:Libros/Introduccion-Ajax).
 
 ## Promesas
-Son una forma más limpia de resolver una función asíncrona. Dentro de la función que devuelve la promesa se hace la llamada a la función asíncorna. Cuando esta se resuelva satisfactoriamente se llama a una función **_resolve()_** y los datos estarán disponibles para quien llamó a la promesa. Si se produce algún error se rechaza la promesa llamando a su función **_reject()_** y quien la llamó tendrá la informaciónde que ha fallado la llamada y por qué.
+Son una forma más limpia de resolver una función asíncrona. Dentro de la función que devuelve la promesa se hace la llamada a la función asíncorna. Cuando esta se resuelva satisfactoriamente se llama a una función **_resolve()_** y los datos estarán disponibles para quien llamó a la promesa. Si se produce algún error se rechaza la promesa llamando a su función **_reject()_** y quien la llamó tendrá la información de que ha fallado la llamada y por qué.
 
-Desde donde llamamos a la promesa nos suscribimos a ella usando sus métodos:
-* **_.then(datos)_**: se ejecuta al resolverse la promesa. Recibe como parámetro lo que se pase al llamar al _resolve_ de la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
-* **_.catch(error)_**: se produce si se rechaza la promesa llamando al _reject_ de la misma
+Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos:
+* **_.then(función)_**: al resolverse la promesa satisfactoriamente se ejecuta la función pasada como parámetro. Esta recibe como parámetro lo que se pasa al llamar al _resolve_ de la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
+* **_.catch(función)_**: se ejecuta si se rechaza la promesa llamando al _reject_ de la misma y recibe como parámetro lo que se le haya pasado al _reject_
 
 Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se pide esos datos y no en una función escuchadora como sucede ahora. 
 
@@ -274,7 +291,7 @@ Vamos a ver esto con un ejemplo de una llamada a Ajax (asíncorna). Vamos a hace
   1. Cuando recibe los datos se encarga de pintarlos en la tabla
   1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
   
-Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página:
+Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página sin usar promesas:
 
 <script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
@@ -296,11 +313,12 @@ Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/
 La [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) proporciona una interfaz para realizar peticiones Ajax mediante el protocolo HTTP, que devuelve como promesas. Ej.:
 ```javascript
 fetch('http://example.com/movies.json')
-  .then(response => response.json())
-  .then(myJson => console.log(myJson));
+  .then(response => response.json())    
+  // los datos recibidos en json se obtienen llamando al método json() que a su vez devuelve una promesa
+  .then(myData => console.log(myData));
 ```
 
-El código anterior hace una petición al servidor 'http://example.com/movies.json'. Cuando se resuelva devolverá una promesa con el resultado, que obtenemos en el objeto response. Dicha promesa tiene unas propiedades (_status_, _statusText_, _ok_, ...) y unos métodos como _json()_. Este método devuelve una promesa que cuando se resuelve contiene los datos JSON de la respuesta pasada.
+El código anterior hace una petición al servidor 'http://example.com/movies.json'. Cuando se resuelva devolverá una promesa con el resultado, que obtenemos en el objeto response. Dicha promesa tiene unas propiedades (_status_, _statusText_, _ok_, ...) y unos métodos como _json()_. Este método devuelve una promesa que cuando se resuelve contiene los datos JSON de la respuesta pasada. Usando _fetch_ nos ahorramos toda la parte de crear la petición y gestionarla.
 
 ### Propiedades y métodos de la respuesta
 La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
@@ -308,6 +326,10 @@ La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
 - **ok**: booleano que vale _true_ si el status está entre 200 y 299 y _false_ en caso contrario
 - **json()**: devuelve una promesa que se resolverá con los datos JSON de la respuesta convertidos a un objeto (les hace automáticamente un _JSON.parse()_) 
 - otros métodos de obtener los datos: **text()**, **blob()**, **formData()**, ... Todos devuelven una promesa con los datos convertidos a distintos formatos.
+
+El ejemplo que hemos visto con las promesas, usando _fetch_ quedaría:
+
+<script async src="//jsfiddle.net/juansegura/wr5ah769/2/embed/js,html,result/"></script>
 
 ### Cabeceras de la petición
 El método _fetch()_ admite como segundo parámetro un objeto con la información a enviar en la petición HTTP. Ej.:
