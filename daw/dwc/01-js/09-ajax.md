@@ -409,11 +409,3 @@ Para evitar esto surgieron las **_promesas_** que permiten evitar las funciones 
 Aún así el código no es muy limpio. Para mejorarlo, el futuro de las llamadas asíncronas lo constituyen **_async_ y _await_** como vemos en [este ejemplo](https://repl.it/DhMa/0). Estas funciones forman parte del estándard ES2017 por lo que sólo están soportadas por los últimos navegadores (aunque siempre podemos transpilar con _Babel_).
 
 Fuente: [todoJs: Controlar la ejecución asíncrona](https://www.todojs.com/controlar-la-ejecucion-asincrona/)
-
-Vamos a ver cómo usaríamos _async/await_ para hacer que el código que llama al fetch quede tan limpio como con las promesas:
-
-<script async src="https://jsfiddle.net/juansegura/df1rL85v/embed/js,html/"></script>
-
-Con este código capturamos correctamente cualquier error que devuelva el servidor pero no un error de la red o si el servidor está caído (ya que lo que fllaría en ese caso es el _fetch_). Para hacerlo podríamos llamar al _fetch_ dentro de un _try/catch_:
-
-<script async src="https://jsfiddle.net/juansegura/Lg4ca6v7/embed/js,html/"></script>
