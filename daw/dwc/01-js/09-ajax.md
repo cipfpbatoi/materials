@@ -41,11 +41,19 @@ _Fuente Uniwebsidad_
 Las peticiones Ajax usan el protocolo HTTP (el mismo que utiliza el navegador para cargar una página). Este protocolo envía al servidor unas cabeceras HTTP (con información como el _userAgent_ del navegador, el idioma, etc), el tipo de petición y, opcionalmente, datos o parámetros (por ejemplo en la petición que procesa un formulario se envían los datos del mismo).
 
 Hay diferentes tipos de petición que podemos hacer:
-* **GET**: suele usarse para obtener datos sin modificar nada (equivale a un SELECT en SQL). Si enviamos datos (ej. la ID del registro a obtener) suelen ir en la url de la petición (formato URIEncoded). Ej.: locahost/users/3 o www.google.es?search=js
+* **GET**: suele usarse para obtener datos sin modificar nada (equivale a un SELECT en SQL). Si enviamos datos (ej. la ID del registro a obtener) suelen ir en la url de la petición (formato URIEncoded). Ej.: locahost/users/3, [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) o [www.google.es?search=js](www.google.es?search=js)
 * **POST**: suele usarse para añadir un dato en el servidor (equivalente a un INSERT). Los datos enviados van en el cuerpo de la petición HTTP (igual que sucede al enviar desde el navegador un formulario por POST)
 * **PUT**: es similar al _POST_ pero suele usarse para actualizar datos del servidor (como un UPDATE de SQL). Los datos se envían en el cuerpo de la petición (como en el POST) y la información para identificar el objeto a modificar en la url (como en el GET)
 * **DELETE**: se usa para eliminar un dato del servidor (como un DELETE de SQL). La información para identificar el objeto a eliminar se envía en la url (como en el GET)
 * existen otros tipos que no veremos aquí (como _HEAD_, etc)
+
+> EJERCICIO: Vamos a realizr diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podemos hacerlas directamente desde el navegador pero para el resto debemos usar cualquiera de las extensiones de cliente REST que tiene nuestro navegador. Lo que haremos es:
+> - obtener todas las tareas
+> - obtener la tarea con id 55
+> - obtener la tarea con id 201 (como no existe devolverá un código de error 404 - Not found)
+> - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se añade la id, de eso se encarga la BBDD. La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos ucluyendo la id. Como es una API de prueba e realidad no lo está añadiendo a la BBDD
+> - modificar la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
+> - eliminar la tarea con id 55. Como veis esta API devuelve un objeto vacío al eliminar; otras devuelven el objeto eliminado
 
 ## Json Server
 Las peticiones Ajax se hacen a un servidor que proporcione una API. Como ahora no tenemos ninguno podemos utilizar Json Server que es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
@@ -73,6 +81,8 @@ json-server --host 192.168.0.10 datos.json
 Y la ruta para acceder a la API será `http://192.168.0.10:3000`.
 
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
+
+> EJERCICIO: instalar json-server en tu máquina. Ejecútalo indicando un nombre de fichero que no existe: como verás crea un fichero json de rpueba con 3 tablas: _posts_, _comments_ y _profiles_. Ábrelo en tu navegador para ver los datos
 
 ## Realizar peticiones Ajax
 Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest** que es el que controlará todo el proceso. Los pasos a seguir son:
@@ -120,7 +130,7 @@ Fijaos cuándo cambia de estado (_readyState_) la petición:
 * vale 1 cuando abrimos la conexión con el servidor
 * luego se envía al servidor y es éste el que va informando al cliente de cuándo cambia su estado
 
-Además notad que la última línea ('Petición acabada') se ejecuta antes que las de 'Estado de la petición' porque es una petición asíncrona y la ejecución del programa continúa sin esperar a que responda el servidor.
+**MUY IMPORTANTE**: Notad que la última línea ('Petición acabada') se ejecuta antes que las de 'Estado de la petición'. Recordad que es una petición asíncrona y la ejecución del programa continúa sin esperar a que responda el servidor.
 
 Hay otros eventos que nos pueden ser de utilidad:
 * **load**: se produce cuando se recibe la respuesta del servidor. Equivale a _readyState===4_. En _status_ tendremos el estado de la respuesta
@@ -175,11 +185,12 @@ let newProduct={
 }    
 let peticion=new XMLHttpRequest();
 peticion.open('GET', 'https://localhost/products');
-peticion.setRequestHeader('Content-type', 'application/json');
-peticion.send(JSON.stringify(newProduct));
+peticion.setRequestHeader('Content-type', 'application/json');  // Siempre tiene que estar esta línea si se envían datos
+peticion.send(JSON.stringify(newProduct));                      // Hay que convertr el objeto a cadena para enviarlo
 peticion.addEventListener('load', function() {
 ...
 ```
+
 Para enviar el objeto hay que convertirlo a una cadena JSON con la función **JSON.stringify()** (es la opuesta a **JSON.parse()**). Y siempre que enviamos datos al servidor debemos decirle el formato que tienen en la cabecera de _Content-type_:
 ```javascript
 peticion.setRequestHeader('Content-type', 'application/json');
@@ -199,6 +210,7 @@ peticion.send('name='+encodeURIComponent(name)+'&descrip='+encodeURIComponent(de
 peticion.addEventListener('load', function() {
 ...
 ```
+
 En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_**.
 
 ### Enviar ficheros al servidor con FormData
