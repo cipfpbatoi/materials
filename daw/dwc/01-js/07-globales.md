@@ -1,10 +1,10 @@
-# Objetos y Funciones globales. Expresiones regulares. Validación de formularios
+# Objetos y Funciones globales. Manejo de errores
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Objetos y Funciones globales. Expresiones regulares. Validación de formularios](#objetos-y-funciones-globales-expresiones-regulares-validaci%C3%B3n-de-formularios)
+- [Objetos y Funciones globales. Manejo de errores](#objetos-y-funciones-globales-manejo-de-errores)
   - [Introducción](#introducci%C3%B3n)
   - [Funciones globales](#funciones-globales)
   - [Objetos del lenguaje](#objetos-del-lenguaje)
@@ -14,15 +14,14 @@
     - [Patrones](#patrones)
     - [Métodos](#m%C3%A9todos)
   - [Manejo de errores: try / catch](#manejo-de-errores)
-  - [Validación de formularios](#validaci%C3%B3n-de-formularios)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introducción
 En este tema vamos a ver 3 cosas fiferentes:
 * las funciones globales de Javascript, muchas de las cuales ya hemos visto como _Number()_ o _String()_
-* objetos globales que incorpora Javascript y que nos facilitarán mucho el trabajo (especialmente a la hora de trabajar con fechas)
-* expresiones regulares, que son iguales que en otros lenguajes, y que nos serán de gran ayuda, sobre todo a la hora de validar formularios
+* objetos globales que incorpora Javascript y que nos facilitarán mucho el trabajo (especialmente a la hora de trabajar con fechas). Dentro de ellos veremos tambien el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios
+* manejo de errores
 
 ## Funciones globales
 * `parseInt(valor)`: devuelve el valor pasado como parámetro convertido a entero o _NaN_ si no es posible la conversión. Este método es mucho más permisivo que _Number_ y convierte cualquier cosa que comience por un número (si encuentra un carácter no numérico detiene la conversión y devuelve lo convertido hasta el momento). Ejemplos:
@@ -70,7 +69,7 @@ console.log( isFinite(3.84 / 0) );            // imprime false
 * `encodeURI(string)` / `decodeURI(string)`: transforma la cadena pasada a una URL codificada válida transformando los caracteres especiales que contenga, excepto , / ? : @ & = + $ #. Debemos usarla siempre que vayamos a pasar una URL. Ejemplo:
   * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
   * Encoded: “http://domain.com?val=1%202%203&val2=r+y%256”
-* `encodeURIComponent(string)` / `decodeURIComponent(string)`: transforma también os caracteres que no transforma la anterior. Debemos usarla para codificar parámetros pero no una URL entera. Ejemplo:
+* `encodeURIComponent(string)` / `decodeURIComponent(string)`: transforma también los caracteres que no transforma la anterior. Debemos usarla para codificar parámetros pero no una URL entera. Ejemplo:
   * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
   * Encoded: “http%3A%2F%2Fdomain.com%3Fval%3D1%202%203%26val2%3Dr%2By%256”
   
@@ -124,6 +123,8 @@ let date4=new Date(2018,7,30);    // Thu Ago 30 2018 00:00:00 GMT+0200 (CEST) (O
 let date5=new Date(2018,7,30,5,30);    // Thu Ago 30 2018 05:30:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb,...)
 ```
 
+> EJERCICIO: Crea en la consola dos variables fecNac1 y fecNac2 que contengan tu fecha de nacimiento. La primera la creas pasandole una cadena y la segunda pasándole año, mes y día
+
 Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o ` ` (espacio). Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
 ```javascript
 let date=new Date(2018,7,41);    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10Sep
@@ -164,6 +165,12 @@ console.log( fecha.getTime() );      // imprime 1532908800000
 fecha.setTime(1000*60*60*24*25);     // Fri Jan 02 1970 01:00:00 GMT+0100 (CET) (le hemos añadido 25 días a Epoch)
 ```
 
+> EJERCICIO: Realiza en la consola los siguientes ejercicios (usa las variables que creaste antes)
+> - muestra el día de la semana en que naciste
+> - modifica fecNac1 para que contenga la fecha de tu cumpleaños de este año (cambia sólo el año)
+> - muestra el día de la semana de tu cumpleaños de este año
+> - calcula el nº de días que han pasado desde que naciste hasta hoy
+
 Para mostrar la fecha tenemos varios métodos diferentes:
 * **.toString()**: "Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)"
 * **.toUTCString()**: "Mon, 30 Jul 2018 00:00:00 GMT"
@@ -173,6 +180,8 @@ Para mostrar la fecha tenemos varios métodos diferentes:
 * **.toLocaleString()**: "30/7/2018 2:00:00"
 * **.toLocaleDateString()**: "30/7/2018"
 * **.toLocaleTimeString()**: "2:00:00"
+
+> EJERCICIO: muestra en distintos formatos la fecha y la hora de hoy
 
 **NOTA**: recuerda que las fechas son objetos y que se copian y se pasan como parámetro por refrencia:
 ```javascript
@@ -190,10 +199,12 @@ console.log( fecha.getDate() );      // imprime 30
 ```
 **NOTA**: la comparación entre fechas funciona correctamente con los operadores `>`, `>=`, `<` y `<=` pero NO con `==`, `===`, `!=` y `!==` ya que compara los objetos y ve que son objetos diferentes. Si queremos saber si 2 fechas son iguales (siendo diferentes objetos) el código que pondremos NO es `fecha1 === fecha2` sino `fecha1.getTime() === fecha2.getTime()`.
 
+> EJERCICIO: comprueba si es mayor tu fecha de nacimiento o el 1 de enero de este año
+
 Podemos probar los distintos métodos de las fechas en la página de [w3schools](http://www.w3schools.com/jsref/jsref_obj_date.asp).
 
 ## RegExp
-Las expresiones regulres permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean ponién solas entre `/` o instanciándolas de la clase _RegExp_:
+Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean ponién solas entre `/` o instanciándolas de la clase _RegExp_:
 ```javascript
 let cadena='Hola mundo';
 let expr=/mundo/;
@@ -230,7 +241,12 @@ La potencia de las expresiones regulares es que podemos usar patrones para const
   * `/i`: que no distinga entre Maysc y minsc (Ej. `/html/i` = buscará html, Html, HTML, ...)
   * `/g`: búsqueda global, busca todas las coincidencias y no sólo la primera
   * `/m`: busca en más de 1 línea (para cadenas con saltos de línea)
-  
+
+> EJERCICIO: contruye una expresión regular para lo que se pide a continuación y pruébala con distintas cadenas:
+> - un código postal
+> - un NIF formado por 8 números, un guión y una letra mayúscula o minúscula
+> - un número de teléfono y aceptamos 2 formatos: XXX XX XX XX o XXX XXX XXX. EL primer número debe ser un 6, un 7, un 8 o un 9
+
 ### Métodos
 Los usaremos para saber si la cadena coincide con determinada expresión o para buscar y reemplazar texto:
 * `expr.test(cadena)`: devuelve **true** si la cadena coincide con la expresión. Con el modificador _/g_ hará que cada vez que se llama busque desde la posición de la última coincidencia. Ejemplo:
@@ -298,67 +314,6 @@ catch(error) {
 }
 ```
 
-Cualquier error producido enel bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemo tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
+Cualquier error producido en el bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
 
-POdemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
-
-## Validación de formularios
-Es una de las principales tareas para las que usaremos expresiones regulares. Los datos introducidos por los usuarios en un formulario SIEMPRE deben ser validados en el servidor pero una validación previa en el cliente es muy útil por:
-* el usuario obtiene inmediatamente la información sobre el error producido, sin tener que esperar la respuesta del servidor
-* no cargamos de trabajo al servidor haciéndole procesar un formulario no válido
-
-Sin embargo la validación en el cliente NO puede sustituir a la del servidor ya que en el navegador podemos manipular los datos que enviamos o deshabilitar javascript.
-
-HTML5 incorpora la posibilidad de validar los formularios añadiendo a los elementos los atributos:
-* **required**: indica que el campo es obligatorio y no se puede dejar vacío
-* **pattern**: nos permite poner una expresión regular con la que debe concordar lo introducid en ese campo. Este atribito sólo puede aplicarse a \<input>, no a \<textarea>. Los \<input> de tipo _mail_ o _url_ ya tienen incorporado internamente el pattern correspondiente por lo que no es necesario indicarlo
-* **maxlength**: permite indicar el número máximo de caracteres de un elemento. Normalmente el navegador no permite seguir escribiendo al llegar al máximo indicado
-* **min**, **max**: permiten especificar un rango dentro del cual tiene que estar el valor proporcionado en el elemento
-
-Si un elemento no es válido recibe automáticamente la pseudoclase CSS **:invalid** y si es válido la pseudoclase CSS **:valid**.
-
-Una opción para validar formularios es dejar que sea el navegador quien se encargue de ello, pero no tenemos apenas control sobre cuándo se informa de los errores y qué mensaje se muestra.
-
-Otra opción es no validar nada con HTML5 y hacerlo todo mediante Javascript, en cuyo caso tenemos el control absoluto de lo que se haga, pero es un trabajo laborioso.
-
-Y una tercera opción es aprovechar la **API de validación de formularios** del navegador pero encargándonos desde Javascript de controlar qué mensajes se dan y cuándo se muestran. Si optamos por esta solución (igual que la de que lo valide el navegador) debemos comprobar el soporte de esta API por los navegadores (podemos consultar el soporte en [caniuse](https://caniuse.com/#feat=constraint-validation)). 
-
-En la página de [MDN web docs](https://developer.mozilla.org/es/docs/Learn/HTML/Forms/Validacion_formulario_datos) de Mozilla podemos aprender las diferentes formas de validar formularios.
-
-Para usar la API de validación de formularios debemos poner en el HTML los atributos correspondientes a los inputs que queramos controlar (required, type, maxlength, min, pattern, ...) pero deshabilitar la validación por parte del navegador (poniendo en la etiqueta\<form> el atribito **novalidate**). 
-
-Podemos ver un ejemplo de cómo funciona:
-
-<script async src="//jsfiddle.net/juansegura/Lfoeqc7b/embed/"></script>
-
-La propiedad `.validationMessage` recoge el mensaje de error generado por la API al no cumplir alguno de los atributos. Este mensaje depende del navegador por lo que variará de un navegador a otro y aparecerá en el idioma del navegador y no en el de nuestra página.
-
-Podemos personalizarlo con el método `.setCustomValidity()`. Este método lo que hace es 'colocarle' al input un error cuyo mensaje es lo que le pasemos como parámetro. Por tanto el input ya es erróneo y el mensaje es lo indicado:
-
-<script async src="//jsfiddle.net/juansegura/p0ycgt3w/embed/"></script>
-
-El método `.checkValidity()` devuelve **true** si el input es válido y **false** si no lo es. Antes de llamarlo debemos 'quitarle' el error que le podamos haber colocado anteriormente con _.setCustomValidity()_.
-
-Si queremos personalizar distintos mensajes de error para diferentes requisitos que estén fallando haremos:
-
-<script async src="//jsfiddle.net/juansegura/5cuq17y6/embed/"></script>
-
-Podéis ver los distintos [métodos que incluye esta API](https://html.spec.whatwg.org/dev/form-control-infrastructure.html#the-constraint-validation-api) y un [completo ejemplo](https://css-tricks.com/form-validation-part-2-constraint-validation-api-javascript/) de cómo usarla para validar formularios. ALgunos de los métodos más útiles que incluye la API son:
-* `_form_.checkValidity()`: devuelve **true** si todos los valores del formulario son válidos y **false** si alguno no lo es
-* `_element_.checkValidity()`: devuelve **true** si el valor del elemento es válido y **false** si no lo es
-* `_element_.validationMessage`: devuelve una cadena con el texto del error de validación del elemento
-* `_element_.validaty.valueMissing`: devuelve **true** si el elemento no tiene valor pero tiene el atributo **required**
-* `_element_.validaty.typeMismatch`: devuelve **true** si el valor del elemento no es del tipo correcto (el especificado en **type**)
-* `_element_.validaty.patternMismatch`: devuelve **true** si el valor del elemento no cumple con lo indicado en su **pattern**
-* `_element_.validaty.tooLong / tooShort`: devuelve **true** si la longitud del valor del elemento es mayor de lo especificado en **maxlength** / es menor de lo especificado en **minlength** 
-* `_element_.validaty.rangeOverflow / rangeUnderflow`: devuelve **true** si el valor del elemento es mayor de lo especificado en **max** / es menor de lo especificado en **min** 
-* `_element_.validaty.stepMismatch`: devuelve **true** si el valor del elemento no cumple con lo indicado en su **step**
-* `_element_.validaty.customError`: devuelve **true** si al elemento le hemos puesto mediante código un error personalizado
-* `_element_.setCustomValidity(msg)`: le pone al elemento un error personalizado y su propiedad _validationMessage_ será el mensaje pasado como parámetro. Este elemento ya no será válido hasta que le quitemos el error personalizado llamando a esta función con un mensaje vacío: `_element_.setCustomValidity('')`
-
-En cualquier caso, debemos ser conscientes que los formularios son normalmente una carga que soportan los usuarios por lo que debemos ayudarles lo máximo posible a introducir los datos que les pedimos de forma fácil y clara. Para validar el formulario deberemos preguntarnos:
-* Qué hacer si el formulario no es válído: normalmente no querré que se envíe al servidor. Además deberé decidir si quiero resaltar esos campos, mostrar mensajes de error (y en ese caso dónde: junto al alemento, al final del formulario, ...)
-* Cómo ayudar al usuario a introducir los datos correctamente: si hay un error debemos mostrar un mensaje claro de qué ha hecho mal e incluso sugerencias o ejemplos de cómo debería hacerlo
-* Usar validación remota cuando sea conveniente:en un formulario de registro no es agradable para el usuario rellenar todos los campos para que tras enviarse al servidor le conteste que el usuario escogido ya existe o algo similar. En este caso es conveniente hacer una petición Ajax (ya las veremos más adelante) para que el servidor nos diga si el usuario escogido está dsponible mientras se están rellenando los campos
-
-Podéis ver ejemplos de cómo validar un formulario en [MDN](https://developer.mozilla.org/es/docs/Learn/HTML/Forms/Validacion_formulario_datos)
+Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
