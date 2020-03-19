@@ -70,6 +70,8 @@ Es la herramienta que más nos va a ayudar a la hora de depurar nuestro código.
 
 Allí podemos escribir instrucciones Javascript que se ejecutarán y veremos su resultado inmediatamente. También la usaremos para inspeccionar el valor de nuestras variables y para probar código que, una vez que funcione correctamente, lo copiaremos a nuestro programa.
 
+> EJERCICIO: abre la consola y prueba las funciones _alert_, _confirm_ y _prompt_.
+
 Además en ella vemos los errores y advertencias que genera nuestro código y todos los mensajes que pongamos en el código para ayudarnos a depurarlo (cusando los comandos **console.log** y **console.error**).
 
 Siempre depuraremos los programas desde aquí (ponemos puntos de interrupción, vemos el valor de las variables, ...).
