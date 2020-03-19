@@ -70,7 +70,9 @@ document.getElementById('zonaDrop').addEventListener('drop', function(event) {
 
 NOTA: si hacemos _draggable_ un elemento, por ejemplo un párrafo, ya no se puede seleccionar con el ratón ya que a pinchar y arrastrar se muevo, no se selecciona. Para poder seleccionarlo debemos pinchar y arrastrar el ratón con la tecla _Alt_ pulsada o hacerlo con el teclado.
 
-Podemos obtener más información de esta API [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) y ver y modificar ejemplos en [w3schhols](https://www.w3schools.com/html/html5_draganddrop.asp) y muchas otras páginas.
+Podemos obtener más información de esta API [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
+
+> EJERCICIO: mira y modifica el ejemplo de [w3schhols](https://www.w3schools.com/html/html5_draganddrop.asp) para entender bien el funcionamiento del Drag&Drop (ten en cuenta que en vez de .addEventListener() las llamadas a los escuchadores están puestas como atributos del HTML pero el funcionamiento es el mismo).
 
 ## Almacenamiento en el cliente: API Storage
 Antes de HTML5 la única manera que tenían los programadores de guardar algo en el navegador del cliente (como sus preferencias, su idioma predeterminado para nuestra web, etc) era utilizando _cookies_. Las cookies tienen muchas limitaciones y es engorroso trabajar con ellas. 
@@ -100,6 +102,8 @@ window.addEventListener(“storage”, actualizaDatos);
 ```
 
 y la función 'actualizaDatos' podrá leer de nuevo lo que hay y actuar en consecuencia.
+
+> EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. GUarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStrage? ¿Y las de sessionStorage?
 
 ### A tener en cuenta
 _localStorage_, _sessionStorage_ y _cookies_ almacenan información en un navegador específico del cliente, y por tanto:
