@@ -290,6 +290,7 @@ let marker = new google.maps.Marker({
 ```
 
 Aquí tenéis el ejemplo anterior:
+
 <script async src="//jsfiddle.net/juansegura/pqzhd2vm/embed/"></script>
 
 Podemos obtener más información de esta API en [Google Maps Plataform](https://developers.google.com/maps/documentation/javascript/tutorial), en el tutorial de [w3schhols](https://www.w3schools.com/graphics/google_maps_intro.asp) y en muchas otras páginas.
