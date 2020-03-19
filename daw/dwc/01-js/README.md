@@ -82,10 +82,12 @@ Son muy útiles porque permiten ver el código y el resultado a la vez. Normalme
 
 Algunos de los más conocidos son [Fiddle](https://jsfiddle.net), [Plunker](https://plnkr.co), [CodePen](https://codepen.io/pen/), ...aunque hay muchos más.
 
-| Ejemplo de 'Hello World' en Fiddle:
+> Ejemplo de 'Hello World' en Fiddle:
+
 <script async src="//jsfiddle.net/afabbro/vrVAP/embed/"></script>
 
-| Ejemplo de 'Hello World' en CodePen:
+> Ejemplo de 'Hello World' en CodePen:
+
 <p class="codepen" data-height="265" data-theme-id="0" data-default-tab="js,result" data-user="kscatcensus" data-slug-hash="XedLvZ" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Hello World Codepen">
   <span>See the Pen <a href="https://codepen.io/kscatcensus/pen/XedLvZ/">
   Hello World Codepen</a> by Kevin Schweickhardt (<a href="https://codepen.io/kscatcensus">@kscatcensus</a>)
