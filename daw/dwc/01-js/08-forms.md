@@ -1,4 +1,9 @@
 # Validación de formularios
+Índice:
+- [Introducción](#introducción)
+- [Validación incorporada en HTML5](#validación-incorporada-en-html5)
+- [Validación mediante Javascript](#validación-mediante-javascript)
+- [Ejemplo](#ejemplo)
 
 ## Introducción
 En este tema vamos a ver cómo realizar una de las acciones principales de Javascript que es la validación de formularios en el lado cliente.
@@ -57,6 +62,7 @@ Esta API nos proporciona estas propiedades y métodos:
 
 Para validar un formulario nosotros pero usando esta API debemos añadir al FORM el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
+### Ejemplo
 Un ejemplo sencillo de validación de un formulario podría ser:
 - index.html
 
