@@ -226,13 +226,13 @@ Javascript permite que el _switch_ en vez de evaluar valores pueda evaluar expre
 ```javascript
 switch(true) {
     case age < 18:
-        console.log("Eres muy joven para entrar");
+        console.log('Eres muy joven para entrar');
         break;
     case age < 65:
-        console.log("Puedes entrar");
+        console.log('Puedes entrar');
         break;
     default:
-        console.log("Eres muy mayor para entrar");
+        console.log('Eres muy mayor para entrar');
 }
 ```
 ### Bucle _while_
@@ -265,7 +265,7 @@ do {
 } while (nota)
 ```
 
-> EJERCICIO: Modifica la función que pedía que escribas algo y luegolo mostraba para que cuando la llamas continúe pidiendo que escribas hasta que pulses en 'Cancelar'.
+> EJERCICIO: Modifica la función que pedía que escribas algo y luego lo mostraba para que cuando la llamas continúe pidiendo que escribas hasta que pulses en 'Cancelar'.
 
 ### Bucle: for
 Tenemos muchos _for_ que podemos usar.
@@ -295,22 +295,22 @@ for (let indice in datos) {
 También sirve para recorrer las propiedades de un objeto:
 ```javascript
 let profe={
-    nom:”Juan”, 
-    ape1=”Pla”, 
-    ape2=”Pla”
+    nom:'Juan', 
+    ape1='Pla', 
+    ape2='Pla'
 }
 let nombre='';
 
 for (var campo in profe) {
    nombre += profe.campo + ' '; // o profe[campo];
 }  
-// El valor de nombre será “Juan Pla Pla ”
+// El valor de nombre será 'Juan Pla Pla '
 ```
 #### Bucle: for...of
 Es similar al _for...in_ pero la variable contador en vez de tomar como valor cada índice toma cada elemento. Es nuevo en ES2015:
 ```javascript
-let datos=[5, 23, 12, 85]
-let sumaDatos=0;
+let datos = [5, 23, 12, 85]
+let sumaDatos = 0;
 
 for (let valor of datos) {
     sumaDatos += valor;       // los valores que toma valor son 5, 23, 12, 85
@@ -319,7 +319,7 @@ for (let valor of datos) {
 ```
 También sirve para recorrer los caracteres de una cadena de texto:
 ```javascript
-let cadena='Hola';
+let cadena = 'Hola';
 
 for (let letra of cadena) {
     console.log(letra);     // los valores de letra son 'H', 'o', 'l', 'a'
@@ -343,13 +343,13 @@ También hay otros valores especiales relacionados con operaciones con números:
 
 ### _Casting_ de variables
 Como hemos dicho las variables pueden contener cualquier tipo de valor y, en las operaciones, Javascript realiza **automáticamente** las conversiones necesarias para, si es posible, realizar la operación. Por ejemplo:
-* `"4" / 2` devuelve 2 (convierte "4" en 4 y realiza la operación)
-* `"23" - null` devuelve 0 (hace 23 - 0)
-* `"23" - undefined` devuelve _NaN_ (no puede convertir undefined a nada así que no puede hacer la operación)
-* `"23" * true` devuelve 23 (23 * 1)
-* `"23" * "Hello"` devuelve _NaN_ (no puede convertir "Hello")
-* `23 + "Hello"` devuelve "23Hello" (+ es el operador de concatenación así que convierte 23 a "23" y los concatena)
-* `23 + "23"` devuelve 2323 (OJO, convierte 23 a "23", no al revés)
+* `'4' / 2` devuelve 2 (convierte '4' en 4 y realiza la operación)
+* `'23' - null` devuelve 0 (hace 23 - 0)
+* `'23' - undefined` devuelve _NaN_ (no puede convertir undefined a nada así que no puede hacer la operación)
+* `'23' * true` devuelve 23 (23 * 1)
+* `'23' * 'Hello'` devuelve _NaN_ (no puede convertir 'Hello')
+* `23 + 'Hello'` devuelve '23Hello' (+ es el operador de concatenación así que convierte 23 a '23' y los concatena)
+* `23 + '23'` devuelve 2323 (OJO, convierte 23 a '23', no al revés)
 
 Además comentar que en Javascript todo son ojetos por lo que todo tiene métodos y propiedades. Veamos brevemente los tipos de datos básicos.
 
@@ -366,7 +366,7 @@ Algunos métodos útiles de los números son:
 - **.toFixed(num)**: redondea el número a los decimales indicados. Ej. `23.2376.toFixed(2)` devuelve 23.24
 - **.toLocaleString()**: devuelve el número convertido al formato local. Ej. `23.76.toLocaleString()` devuelve '23,76' (convierte el punto decimal en coma)
 
-Podemos forzar la conversión a número con la función **Number(valor)**. Ejemplo `Number("23.12")`devuelve 23.12
+Podemos forzar la conversión a número con la función **Number(valor)**. Ejemplo `Number('23.12')`devuelve 23.12
 
 Otras funciones útiles son:
 - **isNaN(valor)**: nos dice si el valor pasado es un número (false) o no (true)
@@ -390,7 +390,7 @@ Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
 > EJERCICIO: Modifica la función que devuelve el cubo de un número para que compruebe si el parámetro pasado es un número entero. Si no es un entero o no es un número mostrará un alert indicando cuál es el problema yndevolverá false.
 
 ### String
-Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `"Hola \"Mundo\""` devuelve _Hola "Mundo"_).
+Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `'Hola \'Mundo\''` devuelve _Hola 'Mundo'_).
 
 Para forzar la conversión a cadena se usa la función **String(valor)** (ej. `String(23)` devuelve '23')
 
@@ -398,21 +398,21 @@ El operador de concatenación de cadenas es **+**. Ojo porque si pedimos un dato
 
 Algunos métodos y propiedades de las cadenas son:
 * **.length**: devuelve la longitud de una cadena. Ej.: `'Hola mundo'.length` devuelve 10
-* **.charAt(posición)**: `'Hola mundo'.charAt(0)` devuelve "H"
+* **.charAt(posición)**: `'Hola mundo'.charAt(0)` devuelve 'H'
 * **.indexOf(carácter)**: `'Hola mundo'.indexOf('o')` devuelve 1. Si no se encuentra devuelve -1
 * **.lastIndexOf(carácter)**: `'Hola mundo'.lastIndexOf('o')` devuelve 9
-* **.substring(desde, hasta)**: `'Hola mundo'.substring(2,4)` devuelve "la"
-* **.substr(desde, num caracteres)**: `'Hola mundo'.substr(2,4)` devuelve "la m"
-* **.replace(busco, reemplaza)**: `'Hola mundo'.replace('Hola', 'Adiós')` devuelve "Adiós mundo"
-* **.toLocaleLowerCase()**: `'Hola mundo'.toLocaleLowerCase()` devuelve "hola mundo" 
-* **.toLocaleUpperCase()**: `'Hola mundo'.toLocaleUpperCase()` devuelve "HOLA MUNDO"
+* **.substring(desde, hasta)**: `'Hola mundo'.substring(2,4)` devuelve 'la'
+* **.substr(desde, num caracteres)**: `'Hola mundo'.substr(2,4)` devuelve 'la m'
+* **.replace(busco, reemplaza)**: `'Hola mundo'.replace('Hola', 'Adiós')` devuelve 'Adiós mundo'
+* **.toLocaleLowerCase()**: `'Hola mundo'.toLocaleLowerCase()` devuelve 'hola mundo'
+* **.toLocaleUpperCase()**: `'Hola mundo'.toLocaleUpperCase()` devuelve 'HOLA MUNDO'
 * **.localeCompare(cadena)**: devuelve -1 si la cadena a que se aplica el método es anterior alfabéticamente a 'cadena', 1 si es posterior y 0 si ambas son iguales. Tiene en cuenta caracteres locales como acentos ñ, ç, etc
-* **.trim(cadena)**: `'   Hola mundo   '.trim()` devuelve "Hola mundo"
+* **.trim(cadena)**: `'   Hola mundo   '.trim()` devuelve 'Hola mundo'
 * **.startsWith(cadena)**: `'Hola mundo'.startsWith('Hol')` devuelve _true_
 * **.endsWith(cadena)**: `'Hola mundo'.endsWith('Hol')` devuelve _false_
 * **.includes(cadena)**: `'Hola mundo'.includes('mun')` devuelve _true_
-* **.repeat(veces)**: `'Hola mundo'.repeat(3)` devuelve "Hola mundoHola mundoHola mundo"
-* **.split(sepadaror)**: `'Hola mundo'.split(' ')` devuelve el array \['Hola', 'mundo']. `'Hola mundo'.split('')` devuelve el array \['H','o',l','a',' ','m','u','n','d','o']
+* **.repeat(veces)**: `'Hola mundo'.repeat(3)` devuelve 'Hola mundoHola mundoHola mundo'
+* **.split(sepadaror)**: `'Hola mundo'.split(' ')` devuelve el array \['Hola', 'mundo']. `'Hola mundo'.split('')` devuelve el array \['H', 'o', 'l', 'a', ' ', 'm', 'u', 'n', 'd', 'o']
 
 Podemos probar los diferentes métodos en la página de [w3schools](https://www.w3schools.com/jsref/jsref_obj_string.asp).
 
@@ -437,16 +437,16 @@ Los valores booleanos son **true** y **false**. Para convertir algo a booleano s
 Los operadores lógicos son ! (negación), && (and), || (or).
 
 Para comparar valores tenemos **==** y **===**. La triple igualdad devuelve _true_ si son igual valor y del mismo tipo. Como Javascript hace conversiones de tipos automáticas conviene usar la **===** para evitar cosas como:
-* `'3'==3` true
-* `0==false` true
-* `''==false` true
-* `null==false` false
-* `undefined==false` false
-* `undefined==null` true
+* `'3' == 3` true
+* `0 == false` true
+* `'' == false` true
+* `null == false` false
+* `undefined == false` false
+* `undefined == null` true
 
 También tenemos 2 operadores de _diferente_: **!=** y **!==** que se comportan como hemos dicho antes.
 
-Los operadores relacionales son >, >=, <, <=. Cuando se compara un número y una cadena ésta se convierte a número y no al revés (`23>'5'` devuelve _true_, aunque `'23'>'5'` devuelve _false_)  
+Los operadores relacionales son >, >=, <, <=. Cuando se compara un número y una cadena ésta se convierte a número y no al revés (`23 > '5'` devuelve _true_, aunque `'23' > '5'` devuelve _false_)  
 
 ## Buenas prácticas
 Javascript nos permite hacer muchas cosas que otros lenguajes no nos dejan por lo que debemos ser cuidadosos para no cometer errores de los que no se nos va a avisar.
@@ -469,7 +469,7 @@ Algunas de las prácticas que deberíamos seguir respecto a las variables son:
 * Usar para nombrarlas la notación _camelCase_
 * Usar _const_ siempre que una variable no deba cambiar su valor
 
-También es conveniente, por motivos de eficiencia no usar objetos Number, String o Boolean sino los tipos primitivos (no usar `let numero=new Number(5)` sino `let numero=5`) y lo mismo al crear arrays, objetos o expresiones regulares (no usar `let miArray=new Array()` sino `let miArray=[]`).
+También es conveniente, por motivos de eficiencia no usar objetos Number, String o Boolean sino los tipos primitivos (no usar `let numero = new Number(5)` sino `let numero = 5`) y lo mismo al crear arrays, objetos o expresiones regulares (no usar `let miArray = new Array()` sino `let miArray = []`).
 
 ### Otras
 Algunas reglas más que deberíamos seguir son:
