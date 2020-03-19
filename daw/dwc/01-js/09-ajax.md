@@ -100,22 +100,23 @@ El evento más importante para gestionar la petición Ajax es **readystatechange
   * 3: se está procesando la petición
   * 4: petición finalizada y respuesta lista 
 A nosotros sólo nos interesa cuando su valor sea 4 que significa que ya están los datos. En ese momento la propiedad **status** contiene el estado de la petición HTTP (200: Ok, 404: Not found, 500: Server error, ...) que ha devuelto el servidor. Cuando _readyState_ vale 4 y _status_ vale 200 tenemos los datos en la propiedad **responseText** (o **responseXML** si el servidor los envía en formato XML). Ejemplo:
+
 ```javascript
-let peticion=new XMLHttpRequest();
-console.log("Estado inicial de la petición: "+peticion.readyState);
+let peticion = new XMLHttpRequest();
+console.log("Estado inicial de la petición: " + peticion.readyState);
 peticion.open('GET', 'https://jsonplaceholder.typicode.com/users');
-console.log("Estado de la petición tras el 'open': "+peticion.readyState);
+console.log("Estado de la petición tras el 'open': " + peticion.readyState);
 peticion.send();
 console.log("Petición hecha");
 peticion.addEventListener('readystatechange', function() {
-    console.log("Estado de la petición: "+peticion.readyState);
-    if (peticion.readyState===4) {
-        if (peticion.status===200) {
+    console.log("Estado de la petición: " + peticion.readyState);
+    if (peticion.readyState === 4) {
+        if (peticion.status === 200) {
             console.log("Datos recibidos:");
-            let usuarios=JSON.parse(peticion.responseText);  // Convertirmos los datos JSON a un objeto
+            let usuarios = JSON.parse(peticion.responseText);  // Convertirmos los datos JSON a un objeto
             console.log(usuarios);
         } else {
-            console.log("Error "+peticion.status+" ("+peticion.statusText+") en la petición");
+            console.log("Error " + peticion.status + " (" + peticion.statusText + ") en la petición");
         }
     }
 })
@@ -268,6 +269,26 @@ peticion.addEventListener('load', function() {
 ...
 ```
 
+## Ejemplo de petición Ajax
+Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
+1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
+1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
+  1. Se encarga de hacer la petición Ajax al servidor
+  1. Cuando recibe los datos se encarga de pintarlos en la tabla
+  1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
+  
+Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página sin usar promesas:
+
+<script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
+
+Esta forma de programar tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos.
+
+Esto se podría evitar usando una función **_callback_** que le pasamos a getPosts para que la llame cuando tenga los datos:
+
+<script async src="//jsfiddle.net/juansegura/cob8m3zx/embed/js,html,result/"></script>
+
+Hemos creado una función que se ocupa de renderizar los datos y se la pasamos a la función que gestiona la petición para que la llame cuando los datos están disponibles. Utilizando la función _callback_ hemos conseguido que _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los pasa a la encargada de pintarlos en la tabla.
+
 ## Single Page Application
 Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin 'esperas' que dejen la página en blanco o no funcional mientras se recarga desde el servidor).
 
@@ -282,30 +303,13 @@ Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos:
 * **_.then(función)_**: al resolverse la promesa satisfactoriamente se ejecuta la función pasada como parámetro. Esta recibe como parámetro lo que se pasa al llamar al _resolve_ de la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
 * **_.catch(función)_**: se ejecuta si se rechaza la promesa llamando al _reject_ de la misma y recibe como parámetro lo que se le haya pasado al _reject_
 
-Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se pide esos datos y no en una función escuchadora como sucede ahora. 
+Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se pide esos datos y no en una función escuchadora o en una función _callback_. 
 
-Vamos a ver esto con un ejemplo de una llamada a Ajax (asíncorna). Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
-1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
-1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
-  1. Se encarga de hacer la petición Ajax al servidor
-  1. Cuando recibe los datos se encarga de pintarlos en la tabla
-  1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
-  
-Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página sin usar promesas:
+Utilizando promesas vamos a conseguir que la función que pide los datos sea quien los obtiene y los trate 0 que informe si hay un error.
 
-<script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
+El código del ejemplo de pos posts usando promesas sería el siguiente:
 
-Utilizando promesas vamos a conseguir que la función _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los devuelve a quien la llamó que será el encargado de pintar los datos en la tabla o informar si hay un error:
-1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
-1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
-  1. Se encarga de hacer la petición Ajax al servidor y devuelve una promesa
-1. Cuando se resuelve la promesa:
-  1. Si se reciben los datos se encarga de pintarlos en la tabla
-  1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
-
-El código usando promesas sería el siguiente:
-
-<script async src="https://jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
+<script async src="//jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
@@ -329,7 +333,7 @@ La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
 
 El ejemplo que hemos visto con las promesas, usando _fetch_ quedaría:
 
-<script async src="//jsfiddle.net/juansegura/wr5ah769/2/embed/js,html,result/"></script>
+<script async src="//jsfiddle.net/juansegura/wr5ah769/embed/js,html,result/"></script>
 
 ### Cabeceras de la petición
 El método _fetch()_ admite como segundo parámetro un objeto con la información a enviar en la petición HTTP. Ej.:
@@ -364,6 +368,8 @@ fetch(url, {
 })
 ```
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
+
+## async/await
 
 # Otras llamadas asíncronas
 Una llamada Ajax es un tipo de llamada asíncrona fácil de entender que podemos hacer en Javascript aunque hay muchos más, como un setTimeout(). Para la gestión de las llamadas asíncronas tenemos varios métodos y los más comunes son:
