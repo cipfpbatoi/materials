@@ -59,6 +59,7 @@ Para validar un formulario nosotros pero usando esta API debemos añadir al FORM
 
 Un ejemplo sencillo de validación de un formulario podría ser:
 - index.html
+
 ```html
 <form novalidate>
   <p>
@@ -78,6 +79,7 @@ Un ejemplo sencillo de validación de un formulario podría ser:
 ```
 
 - main.js
+
 ```javascript
 const form  = document.getElementsByTagName('form')[0];
 
@@ -100,6 +102,7 @@ form.addEventListener('submit', (event) => {
 ```
 
 - style.css
+
 ```css
 .error {
   color: red;
