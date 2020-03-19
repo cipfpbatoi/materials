@@ -14,6 +14,7 @@
     - [Enviar datos al servidor en formato JSON](#enviar-datos-al-servidor-en-formato-json)
     - [Enviar datos al servidor en formato URIEncoded](#enviar-datos-al-servidor-en-formato-uriencoded)
     - [Enviar ficheros al servidor con FormData](#enviar-ficheros-al-servidor-con-formdata)
+  - [Ejemplo de petición Ajax](#ejemplo-de-petición-ajax)
   - [Single Page Application](#single-page-application)
   - [Promesas](#promesas)
   - [Ajax con fetch()](#ajax-con-fetch)
@@ -369,7 +370,27 @@ fetch(url, {
 ```
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
 
-## async/await
+# async/await
+Estas nuevas instrucciones introducidas en ES2016 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que no están soportadas por navegadores antiguos.
+
+La palabra **async** indica que una función va a hacer una llamada asíncrona. Al declarar esa función le anteponemos _async_. La palabra **await** provocará que la ejecución se "espere" a que se complete esa instrucción antes de seguir. La anteponemos antes de la llamada asíncrona. Siguiendo con el ejemplo de _fetch_:
+```javascript
+async function pideDatos() {
+  let response = await fetch('http://example.com/movies.json');
+  let myData = await response.json();
+  console.log(myData);
+}
+```
+
+Con esto conseguimos que llamadas asíncronas se comporten como instrucciones síncronas.
+
+El ejemplo de los posts quedaría:
+
+<script async src="//jsfiddle.net/juansegura/zghq5dt6/2/embed/js,html,result/"></script>
+
+Con este código no estamos tratando los posibles errores que se pueden producir. Lo haremos con _try ... catch_:
+
+<script async src="//jsfiddle.net/juansegura/vh65d409/embed/js,html,result/"></script>
 
 # Otras llamadas asíncronas
 Una llamada Ajax es un tipo de llamada asíncrona fácil de entender que podemos hacer en Javascript aunque hay muchos más, como un setTimeout(). Para la gestión de las llamadas asíncronas tenemos varios métodos y los más comunes son:
@@ -381,7 +402,7 @@ Cuando se produce una llamada asíncrona el orden de ejecución del código no e
 
 Además, si hacemos varias llamadas tampoco sabemos el qué orden se ejecutarán sus respuestas ya que depende de cuándo finalice cada una como podemos ver en [este otro ejemplo](https://repl.it/DhLA/0).
 
-Si necesitamos que cada función no se ejecute hasta que haya terminado la anterior debemos llamarla en la respuesta a la función anterior lo que provoca un tipo de código difícil de leer llamado [_callback hell_](https://repl.it/DhLN/0).
+Si usamos funciones _callback_ y necesitamos que cada función no se ejecute hasta que haya terminado la anterior debemos llamarla en la respuesta a la función anterior lo que provoca un tipo de código difícil de leer llamado [_callback hell_](https://repl.it/DhLN/0).
 
 Para evitar esto surgieron las **_promesas_** que permiten evitar las funciones _callback_ tan difíciles de leer. Podemos ver [el primer ejemplo](https://repl.it/DhMA/1) usando promesas. Y si neceitamos ejecutar secuencialmente las funciones evitaremos la pirámide de llamadas _callback_ como vemos en [este ejemplo](https://repl.it/DhMK/0).
 
