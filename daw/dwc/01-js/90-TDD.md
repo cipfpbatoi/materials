@@ -163,6 +163,34 @@ Permiten ejecutar código antes o depués de pasar cada test o el conjunto de el
 - **beforeEach()**: Antes de cada prueba.
 - **beforeAll()**: Antes de todas las pruebas.
 
+Por ejemplo podemos querer inicializar la base de datos antes de pasar cada test:
+```javascript
+beforeAll(() => {
+  initializeCityDatabase();
+});
+```
+
+Si se trata de una función asíncrona habrá que añadirle un 'return' igual que hacíamos con las promesas:
+```javascript
+beforeAll(() => {
+  return initializeCityDatabase();
+});
+
+afterAll(() => {
+  return clearCityDatabase();
+});
+
+test('city database has Vienna', () => {
+  expect(isCity('Vienna')).toBeTruthy();
+});
+
+test('city database has San Juan', () => {
+  expect(isCity('San Juan')).toBeTruthy();
+});`
+```
+
+## Funciones mock
+Permiten sustituir el código de ciertas funciones externas usadas en el código que queremos testear. Puedes ver cómo funcionan en la [documentación oficial de Jest](https://jestjs.io/docs/en/mock-functions).
 
 [ver](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
