@@ -170,7 +170,7 @@ Permiten ejecutar código antes o depués de pasar cada test o el conjunto de el
 Es una forma de programar que consiste en escribir primero las pruebas que deba pasar el código (Test Dirve Development) y después refactorizarlo ([Refactoring](https://es.wikipedia.org/wiki/Refactorizaci%C3%B3n)). Para escribir las pruebas generalmente se utilizan las [pruebas unitarias](https://es.wikipedia.org/wiki/Prueba_unitaria) (unit test en inglés). 
 
 El ciclo de programación usando TDD tiene tres fases:
-1. Fase _roja_: escribimos el test que cumpla los requerimientos y lo pasamos. Fallará ya que nuestro código no pasa el est (de hecho la primera vez no tenemos ni código)
+1. Fase _roja_: escribimos el test que cumpla los requerimientos y lo pasamos. Fallará ya que nuestro código no pasa el test (de hecho la primera vez no tenemos ni código)
 1. Fase _verde_: conseguimos que nuestro código pase el test. Ya funciona aunque seguramente no estará muy bien escrito
 1. _Refactorización_: mejoramos nuestro código
 
@@ -191,7 +191,7 @@ Tener un único repositorio universal de pruebas facilita complementar TDD con o
 (Fuente [Wikipedia](https://es.wikipedia.org/wiki/Desarrollo_guiado_por_pruebas)).
 
 ## Usar TDD en Javascript
-Lo más sencillo es usar alguna librería como **Mocha**. Se trata de un gramework que se ejecuta sobre _Node.js_ y permite crear tests tanto síncronos como asíncronos. Para usarlo necesitaremos tener **npm** instalado. Luego creamos una carpeta para nuestro proyecto y dentro ejecutamos:
+Lo más sencillo es usar alguna librería como **Jest** o **Mocha**. Se trata de librerías que se ejecutan sobre _Node.js_ y permiten crear tests tanto síncronos como asíncronos. Para usarlo necesitaremos tener **npm** instalado. Luego creamos una carpeta para nuestro proyecto y dentro ejecutamos:
 
 ```bash
 npm install -g mocha    # lo instalamos globalmente para que esté disponible para todos los proyectos
