@@ -11,7 +11,7 @@ Cada nota introducida se almacenará en un array y una vez que estén todas se m
 - las notas finales: serán cada nota aumentada un 10% por buena actitud y redondeada a un entero
 
 Organizaremos el código en 2 ficheros:
-1. _main.js_: tendrá el código para mostrar los mensajes anteriormente indicados. Sólo contendrá el código para pedir las notas al usuario, sentencias `console.log` y llamadas a funciones del fichero functions.js
+1. _index.js_: tendrá el código para pedir los datos al usuario y mostrar los mensajes anteriormente indicados. Sólo contendrá el código de pedir las notas, sentencias `console.log` y llamadas a funciones del fichero functions.js
 1. _functions.js_: sólo contendrá las funciones llamadas por main.js (deben llamarse **EXACTAMENTE** como os digo). Son:
 -	addItem(notas,item): se le pasa el array actual de notas y un nuevo valor y devuelve el nuevo array con todas las notas, sin modificar
 -	clearItems(notas): devuelve el array "limpio" y con sus elementos convertidos a números
@@ -34,4 +34,6 @@ module.exports = {
 
 En el fichero _index.html_ deberemos enlazar los 2 scripts: primero el _functions.js_ y luego el _main.js_.
 
-**RECUERDA**: seguir haciendo todas las buenas prácticas que se indicaban en el ejercicio anterior
+**RECUERDA**: seguir haciendo todas las buenas prácticas que se indicaban en el ejercicio anterior. Además no usaremos ningún for para recorrer los arrays
+
+Recuerda pasar los tests como se explicó en el ejercicio de la frase para asegurarte el APTO en este ejercicio.
