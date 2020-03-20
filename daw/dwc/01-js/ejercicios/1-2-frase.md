@@ -10,9 +10,9 @@ Vamos a pedir al usuario que introduzca una frase y a continuación mostraremos 
 
 Para hacer más sencillo el pasar los tests a nuestro programa para comprobar si funciona crearemos (e incluiremos en el fichero HTML) 2 ficheros JS distintos:
 - _functions.js_: este fichero sólo incluye las funciones indicadas más abajo
-- _main.js_: contiene el código que pide la frase al usuario y, si ha introducido algo, la muestra y llama a las distintas funciones y muotrando por consola la información devuelta por las mismas.
+- _index.js_: es el programa principal que contiene el código que pide la frase al usuario y, si ha introducido algo, la muestra y llama a las distintas funciones y muotrando por consola la información devuelta por las mismas.
 
-En el HTML deberás incluir cada fichero en su etiqueta _script_ (en primer lugar el de las funciones).
+En el _index.html_ deberás incluir cada fichero en su etiqueta _script_ (en primer lugar el de las funciones).
 
 Las funciones que contendrá el fichero _functions.js_ (deben llamarse **EXACTAMENTE** como os digo) son:
 -	letras: devuelve el número de letras de la cadena pasada como parámetro (sólo un número)
@@ -26,7 +26,7 @@ Las funciones que contendrá el fichero _functions.js_ (deben llamarse **EXACTAM
 Por ejemplo, si el usuario introduce la frase 
 > La ruta nos aporto otro paso natural
 
-el programa de _main.js_ mostraría en la consola lo siguiente:
+el programa de _index.js_ mostraría en la consola lo siguiente:
 ```
 Frase: "La ruta nos aporto otro paso natural"
 36 letras y 7 palabras
