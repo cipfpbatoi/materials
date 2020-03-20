@@ -156,6 +156,14 @@ En este caso esperamos que devuelva un error que contenga '404'. Hay que poner l
 
 En la [documentación oficial de Jest](https://jestjs.io/docs/en/asynchronous) podemos encontrar información de cómo probar todo tipo de llamadas asíncronas (_callback_, _async/await_, ...).
 
+## Hooks de Jest
+Permiten ejecutar código antes o depués de pasar cada test o el conjunto de ellos. Son:
+- **afterEach()**: Después de cada prueba.
+- **afterAll()**: Después de todas las pruebas.
+- **beforeEach()**: Antes de cada prueba.
+- **beforeAll()**: Antes de todas las pruebas.
+
+
 [ver](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
 # Desarrollo guiado por pruebas (TDD)
