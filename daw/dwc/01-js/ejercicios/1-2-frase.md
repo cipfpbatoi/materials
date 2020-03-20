@@ -62,7 +62,7 @@ module.exports = {
 }
 ```
 
-(para que funcione en el navegador deberás comentar esta instrucción).
+(a partir de ahora, a menos que comentes esta instrucción, cuando lo ejecutes en el navegador mostrará en la consola el error de Javascript 'ReferenceError: module is not defined' pero continuará funcionando correctamente).
 
 Ahora debes inicializar el proyecto _npm_ con el comando `npm init`. Cuando pregunte por el comando para ejecutar los tests indicaremos que es **jest**. Una vez hecho podemos pasar los test escribiendo en la terminal:
 ```bash
