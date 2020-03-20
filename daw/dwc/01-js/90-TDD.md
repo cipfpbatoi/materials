@@ -28,17 +28,17 @@ test('wordCount() returns 2 when the input is "Hello world", () => {
 });
 ```
 
-## Testing en Javascript
+# Testing en Javascript
 Tenemos muchas herramientas para hacer tests unitarios. Usaremos una llamada **_Jest_**. Para instalarla usaremos el gestor de paquetes **_npm_** que es el más utlizado para usar bibliotecas y sus dependencias en el FrontEnd. 
 
-### Instalar npm
+## Instalar npm
 **npm** es el gestor de paquetes de **_nodejs_** por lo que debemos instalarlo para tener npm. Podemos hacerlo desde el repositorio de nuestra distribución pero no se instalará la última versión. Es mejor seguir las indicaciones de la [página oficial](https://nodejs.org/es/download/package-manager/) que, para el caso de [distribuciones basadas en Debian/Ubuntu](https://github.com/nodesource/distributions/blob/master/README.md#debinstall), son (para la versión 12):
 ```javascript
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-### Instalar jest
+## Instalar jest
 Una vez instalado npm crearemos una carpeta para nuestro proyecto y dentro de ella ejecutaremos:
 ```javascript
 npm init
@@ -51,7 +51,111 @@ npm install --save-dev jest
 
 Estamos instalando jest sólo como dependencia de desarrollo ya que no lo necesitaremos en producción (lo mismo abreviado sería `npm i -D jest`).
 
-## Usar jest
+Como vamos a utilizar _jest_ en muchos mini-proyectos distintos podemos instalarlo globalmente con `npm i -g jest` de forma que en cada nuevo proyecto no tengamos que instalar nada, sólo hacer el `npm init`. 
+
+# Usar jest
+La [documentación oficial]() proporciona muy buena información de cóo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
+```javascript
+function suma(a, b) {
+  return a + b;
+}
+module.exports = suma;
+```
+
+Si tenemos varias funciones podemos exportar un objeto con todas ellas:
+`module.exports`:
+```javascript
+function suma(a, b) {
+  return a + b;
+}
+module.exports = { suma, resta, multiplica, divide };
+```
+
+En el fichero de test (que normalmente se llamará como el original más _test_ antes de la extensión, por ejemplo _funciones.test.js_) importamos esas funciones con un `require`:
+```javascript
+const suma = require('./funciones');
+```
+ y ya podemos acceder llamar a la función 'suma' desde el fichero de test. Si queremos importar varias funciones haremos:
+```javascript
+const funciones = require('./funciones');
+```
+y accederemos a cada una como 'funciones.suma', ...
+
+Ya podemos crear nuestro primer test para probar la función suma:
+```javascript
+test('Suma 1 + 1 devuelve 2', () => {
+  expect(funciones.suma(1, 1)).toBe(2);
+});
+```
+
+Para crear un test usamos la instrucción `test` a la que le pasamos como primer parámetro un nombre descriptivo de lo que hace y como segundo parámetro la función que realiza el test. En general usaremos `expect` y le pasamos como parámetro la llamada a la función a testear y comparamos el resultado devuelto usando un _matcher_. 
+
+## Matchers
+Los más comunes son:
+- toBe(): compara el resultado del _expect_ con lo que le pasamos como parámetro. Sólo sirve para valores primitivos (number, string, boolean, ...) no para arrays ni objetos
+- toBeCLoseTo(): se usa para números de punto flotante. `expect(0.1 + 0.2).toBe(0.3)` fallaría por el error de redondeo
+- toEqual(): como el anterior pero para objetos y arrays. Comprueba cada uno de los elementos el objeto o array
+- toBeLessThan, toBeLessThanOrEqual, toBeGreaterThan, toBeGreaterThanOrEqual: para comparaciones <, <=, >, >=
+- toBeTruthy: el valor devuelvo es verdadero o asimilable a verdadero (si fuera la condición de un _if_ se ejecutaría el _then_)
+- toBeFalsy: el valor devuelvo es falso o asimilable a falso (si fuera la condición de un _if_ se ejecutaría el _else_)
+- toBeUndefined: el valor es _undefined_
+- toBeDefined: el valor NO es _undefined_
+- toBeNull: el valor devuelto es _null_
+- toMatch: el valor devuelto debe cumplir con la expresión regular pasada
+- toContain: el array devuelto debe contener el elemento pasado como parámetro
+- toHaveLength: el array o el string devueltos debe tener la longitud indicada
+
+Para comprobar si una función ha lanzado una excepción se usa `toThrow`. Podemos comprobar sólo que haya lanzado un error, que sea de un tipo determinado, el mensaje exacto que tiene o si el mensaje cumple con una expresión regular:
+```javascript
+function compileAndroidCode() {
+  throw new Error('you are using the wrong JDK');
+}
+
+test('compiling android goes as expected', () => {
+  expect(compileAndroidCode).toThrow();
+  expect(compileAndroidCode).toThrow(Error);
+  expect(compileAndroidCode).toThrow('you are using the wrong JDK');
+  expect(compileAndroidCode).toThrow(/JDK/);
+});
+```
+
+Podemos obtener la lsita completa de _matchers_ en al [documentación oficial de Jest](https://jestjs.io/docs/es-ES/expect).
+
+## Test suites
+En muchas ocasiones no vamos a pasar un único test sino un conjunto de ellos. En ese caso podemos agruparlos en un _test suite_ que definimos con ñas instruacción `describe` a la que pasamos un nombre que la describa y una función que contiene todos los tests a pasar:
+```javascript
+describe('Funciones aritméticas', () => {
+  test('Suma 1 + 1 devuelve 2', () => {
+    expect(funciones.suma(1, 1)).toBe(2);
+  });
+
+  test('Resta 2 - 1 devuelve 1', () => {
+    expect(funciones.resta(2, 1)).toBe(1);
+  });
+});
+```
+
+## Testear promesas
+Para testear una función que devuelve una promesa debemos hacerlo de diferente manera. Por ejemplo tenemos una función 'getData' que devuelve una promesa. Para testearla:
+```javascript
+test('getData devuelve un arrya de 3 elementos', () => {
+  return getData().then(data => expect(data).toHaveLength(3) );
+});
+```
+
+No olvidéis poner el 'return', si no el test acabará sin esperar a que se resuelva la promesa. Si lo que queremos es comprobar que la promesa es rechazada haremos:
+```javascript
+test('getData devuelve un arrya de 3 elementos', () => {
+  expect.assertions(1);
+  return getData().catch(err => expect(err).toMatch('404');
+  });
+});
+```
+
+En este caso esperamos que devuelva un error que contenga '404'. Hay que poner la línea de `expect.assertions` para evitar que una promesa cumplida no haga que falle el test.
+
+En la [documentación oficial de Jest](https://jestjs.io/docs/en/asynchronous) podemos encontrar información de cómo probar todo tipo de llamadas asíncronas (_callback_, _async/await_, ...).
+
 [ver](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
 # Desarrollo guiado por pruebas (TDD)
