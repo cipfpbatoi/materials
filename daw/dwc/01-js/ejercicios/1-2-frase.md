@@ -12,6 +12,8 @@ Para hacer más sencillo el pasar los tests a nuestro programa para comprobar si
 - _functions.js_: este fichero sólo incluye las funciones indicadas más abajo
 - _main.js_: contiene el código que pide la frase al usuario y, si ha introducido algo, la muestra y llama a las distintas funciones y muotrando por consola la información devuelta por las mismas.
 
+En el HTML deberás incluir cada fichero en su etiqueta _script_ (en primer lugar el de las funciones).
+
 Las funciones que contendrá el fichero _functions.js_ (deben llamarse **EXACTAMENTE** como os digo) son:
 -	letras: devuelve el número de letras de la cadena pasada como parámetro (sólo un número)
 -	palabras: devuelve el número de palabras de la cadena pasada como parámetro (sólo un número)
