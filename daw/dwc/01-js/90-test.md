@@ -53,6 +53,18 @@ Estamos instalando jest sólo como dependencia de desarrollo ya que no lo necesi
 
 Como vamos a utilizar _jest_ en muchos mini-proyectos distintos podemos instalarlo globalmente con `npm i -g jest` de forma que en cada nuevo proyecto no tengamos que instalar nada, sólo hacer el `npm init`. 
 
+## Usar webpack
+[Webpack](https://webpack.js.org/) el un _bundler_ o empaquetador de código que además puede usar transpiladores para convertir nuestro código que usa versiones modernas de ECMAscript en otro soportado por la mayoría de navegadores.
+
+Por tanto nos va a permitir, entre otras cosas:
+- Tener en nuestro _index.html_ una sóla entrada de script (`\<script src="./dist/main.js'\>`) en lugar de una para cada archivo que estemos utilizando (index.js, functions.js, ...)
+- Además podremos usar instrucciones como `module.exports` para exportar funciones o `require` para importarlas en otro fichero Javascript, que sin traspilar provocarías errores en el navegador
+
+Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _webpack_, pero nosotros por ahora sólo necesitamos hacer los siguiente:
+- instalar webpack y webpack-cli (`npm i -D webpack webpack-cli`)
+- ejecutar webpack indicándole cuál es nuestro archivo JS principal. El archivo de salida, si no le indicamos otra cosa, será _./dist/main.js_. Para ejecutar webpack haremos `npx webpack ./scripts/index.js`
+- en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack
+
 # Usar jest
 La [documentación oficial]() proporciona muy buena información de cóo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
 ```javascript
