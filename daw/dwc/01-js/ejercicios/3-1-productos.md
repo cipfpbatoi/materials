@@ -27,8 +27,8 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
   - orderByUnits: devuelve el array de productos ordenado por unidades de forma descendente
   - orderByName: devuelve el array de productos ordenado por el nombre del producto
   - además tendrá un método para que si se intenta imprimir el almacén devuelva HTML con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto, como en el siguiente ejemplo:
-```
-<p>Almacén 1 => 2 productos: 2174,75 €
+```html
+<p>Almacén 1 => 2 productos: 2174,75 €</p>
 <ul>
   <li>TV Samsung MP45: 5 uds. x 235,95 €/u = 1179.75 €</li>
   <li>USB Kingston 16 GB: 100 uds. x 19,95 €/u = 1995,00 €</li>
