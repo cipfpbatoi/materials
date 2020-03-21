@@ -37,16 +37,24 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
 
 Antes de añadir o modificar productos del almacén deberás asegurarte de que tienen id y nombre y de que las unidades y el precio son números y no son negativos (además las unidades deben ser un número entero).
 
-Para poder pasar los tests añade al final cada fichero de clase un **module.exports** con la clase:
-```javascript
-module.exports = Product;
-```
+Para probar las clases crearemos un nuevo almacén, le añadiremos productos y mostraremos por consola su contenido.
 
-NOTA: en _store.class.js_ hay al principio una línea comentada:
-```javascript
-const Product = require('./product.class');
-```
-Esta línea debe estar comentada para que funcione en el navegador y descomentada para pasar los tests.
+## Organizar el código
+Lo correcto es no tener todo el código en un único fichero javascript sino cada cosa en su fichero correspondiente:
+- **product.class.js**: la clase _Product_ con sus propiedades y métodos
+- **store.class.js**: la clase _Store_ con sus propiedades y métodos
+- **main.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
+
+En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _main.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_.
+
+Esto ya empieza a ser incómodo así que vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero _./dist/main.js_ que sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../90.test.md) para hacerlo.
+
+Para que la clase _Store_ pueda usar los métodos de _Product_ debeos hacer:
+- añadir al final de _product.class.js_ el código `module.exports = Product;`
+- añadir al principio de _store.class.js el código `const Product = require('./product.class');`
+
+Lo mismo habrá que hacer para que _main.js_ pueda llamar a métodos de _Store_.
+Para que la clase _Store_ pueda usar los métodos de la clase _Product_ si se encuentran en diferentes poder pasar los tests añade 
 
 Para probar que funciona en el navegador crearemos un fichero _index.js_ con código para:
 - crear un almacén
