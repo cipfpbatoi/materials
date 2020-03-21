@@ -56,7 +56,13 @@ Para que la clase _Store_ pueda usar los métodos de _Product_ debeos hacer:
 Lo mismo habrá que hacer para que _main.js_ pueda llamar a métodos de _Store_.
 Para que la clase _Store_ pueda usar los métodos de la clase _Product_ si se encuentran en diferentes poder pasar los tests añade 
 
-Para probar que funciona en el navegador crearemos un fichero _index.js_ con código para:
+## Probar el código
+En lo que te has decargado de _moodle_ tienes los test que debes pasar para comprobar tu código. Recuerda que simplemente debes hacer:
+```javascript
+npm run test
+```
+
+Para probar que funciona en el navegador añade al fichero _index.js_ código para:
 - crear un almacén
 - añadirle 4 productos:
   - 'TV Samsung MP45', 345.95 €, 3 uds. 
@@ -67,11 +73,12 @@ Para probar que funciona en el navegador crearemos un fichero _index.js_ con có
   - Ábaco de madera: + 12 uds
   - TV Samsung MP45: - 5 uds
   - TV Samsung MP45: + 3 uds
-- elimina los productos TV Samsung MP45 (no debería dejarte) y impresora Epson LX-455
-- muestra por consola:
-  - listado alfabético del almacén
-  - listado por unidades del almacén
-  - listado de productos con menos de 10 uds.
+- eliminar los productos TV Samsung MP45 (no debería dejarte) y impresora Epson LX-455
+- mostrar por consola:
+  - el almacén
+  - el listado alfabético del almacén
+  - el listado por unidades del almacén
+  - el listado de productos con menos de 10 uds.
 
 Al abrir la página en el navegador la consola deberá mostrar:
 ```
