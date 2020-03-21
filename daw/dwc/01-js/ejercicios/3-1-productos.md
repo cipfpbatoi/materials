@@ -68,31 +68,39 @@ Para probar que funciona en el navegador añade al fichero _index.js_ código pa
   - 'TV Samsung MP45', 345.95 €, 3 uds. 
   - 'Ábaco de madera', 245.95 €
   - 'impresora Epson LX-455', 45.95 €
-  - 'USB Kingston 16GB', 5.95 €, 50 uds.
-- cambiar unidades:
-  - Ábaco de madera: + 12 uds
-  - TV Samsung MP45: - 5 uds
-  - TV Samsung MP45: + 3 uds
-- eliminar los productos TV Samsung MP45 (no debería dejarte) y impresora Epson LX-455
-- mostrar por consola:
-  - el almacén
-  - el listado alfabético del almacén
-  - el listado por unidades del almacén
-  - el listado de productos con menos de 10 uds.
+  - 'USB Kingston 16GB', 5.95 €, 45 uds.
+- cambiar productos:
+  - a la TV le cambiamos el precio por 325.90 y le sumamos 5 uds
+  - al ábaco le sumamos 15 uds
+  - a la TV le cambiamos el precio por 325.90 y le sumamos 5 uds
+  - a la impresora le cambiamos el precio por 55.90 y le restamos 2 uds
+  - al ábaco le cambiamos el nombre por 'Ábaco de madera (nuevo modelo)'
+- mostramos por consola el almacén
+- mostramos por consola 'LISTADO DEL ALMACÉN alfabético'
+- mostramos por consola el almacén ordenado alfabéticamente
+- eliminamos la TV
+- eliminamos la impresora
+- mostramos por consola 'LISTADO DEL ALMACÉN por existencias'
+- mostramos por consola el almacén ordenado por existencias
+- mostramos por consola 'LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS'
+- mostramos por consola los productos del almacén con menos de 10 unidades
 
 Al abrir la página en el navegador la consola deberá mostrar:
 ```
-LISTADO DEL ALMACÉN alfabético
-* Ábaco de madera (3): 245.95 €/u => 737.85 €
-* impresora Epson LX-455 (0): 45.95 €/u => 0.00 €
-* USB Kingston 16GB (40): 5.95 €/u => 238.00 €
-Total: 975.85 €
-LISTADO DEL ALMACÉN por existencias
-* USB Kingston 16GB (40): 5.95 €/u => 238.00 €
-* Ábaco de madera (3): 245.95 €/u => 737.85 €
-* impresora Epson LX-455 (0): 45.95 €/u => 0.00 €
-Total: 975.85 €
-LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS
-* Ábaco de madera (3): 245.95 €/u => 737.85 €
-* impresora Epson LX-455 (0): 45.95 €/u => 0.00 €
+Almacén 1 => 4 productos: 6564.2.toFixed(2) €
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
+- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 €
+- impresora Epson LX-455: 0 uds. x 45.95 €/u = 0.00 €
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1407
+LISTADO DEL ALMACÉN alfabético main.js:1:1433
+- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 € main.js:1:1506
+- impresora Epson LX-455: 0 uds. x 45.95 €/u = 0.00 € main.js:1:1506
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1506
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1506
+LISTADO DEL ALMACÉN por existencias main.js:1:1565
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1644
+- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 € main.js:1:1644
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1644
+LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS main.js:1:1665
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1751
 ```
