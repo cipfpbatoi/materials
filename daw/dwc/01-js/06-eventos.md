@@ -24,39 +24,61 @@
 ## Introducción
 Nos permiten detectar acciones que realiza el usuario o cambios que suceden en la página y reaccionar en respuesta a ellas. Existen muchos eventos diferentes (podéis ver la lista en [w3schools](https://www.w3schools.com/jsref/dom_obj_event.asp)) aunque nosotros nos centraremos en los más comunes.
 
-## Escuchadores de eventos
-Podemos ejecutar código cuando se produce un evento (por ejemplo el evento _click_ del ratón) asociando al mismo una función. Hay varias formas de hacerlo.
+Javascript nos permite ejecutar código cuando se produce un evento (por ejemplo el evento _click_ del ratón) asociando al mismo una función. Hay varias formas de hacerlo.
 
-### Forma clásica
-La forma tradicional (no recomendada) es añadir el elemento HTML un atributo que se llama como el evento precedido de _on_ al que le indicamos el código a ejecutar:
+## Cómo escuchar un evento
+La primera manera "estándar" de asociar código a un evento era añadiendo un atributo con el nombre del evento a escuchar (con 'on' delante) en el elemento HTML. Por ejemplo, para ejecutar código al producirse el evento 'click' sobre un botón se escribía:
 ```html
-<button id="acepto" onclick="alert('Se ha aceptado')">Aceptar</button>
+<input type="button" id="boton1" onclick="alert('Se ha pulsado');" />
 ```
 
-Una mejora es sacar el código Javascript del HTML:
+Una mejora era llamar a una función que contenía el código:
+```html
+<input type="button" id="boton1" onclick="clicked()" />
+```
 
-<script async src="//jsfiddle.net/juansegura/x9gmrckq/embed/js,html,result/"></script>
-
-NOTA: hay que tener cuidado porque si se ejecuta el código antes de que se haya creado el botón estaremos asociando la función al evento _click_ de un elemento que aún no existe así que no hará nada. Para evitarlo siempre es conveniente poner el código que atiende a los eventos dentro de una función que se ejecute al producirse el evento _load_. Este evento se produce cuando se han cargado todos los elementos HTML de la página y se ha creado el árbol DOM. Lo mismo habría que hacer con cualquier código que modifique el árbol DOM. El código correcto sería:
 ```javascript
-window.onload=function() {
-  document.getElementById('acepto').onclick=function() {
-    alert('Se ha aceptado');
+function clicked() {
+  alert('Se ha pulsado');
+}
+```
+
+Esto "ensuciaba" con código la página HTML por lo que se creó el modelo de registro de eventos tradicional que permitía asociar a un elemento HTML una propiedad con el nombre del evento a escuchar (con 'on' delante). En el caso anterior:
+
+```javascript
+document.getElementById('boton1').onclick = funnction () {
+  alert('Se ha pulsado');
+}
+...
+```
+
+NOTA: hay que tener cuidado porque si se ejecuta el código antes de que se haya creado el botón estaremos asociando la función al evento _click_ de un elemento que aún no existe así que no hará nada. Para evitarlo siempre es conveniente poner el código que atiende a los eventos dentro de una función que se ejecute al producirse el evento _load_ de la ventana. Este evento se produce cuando se han cargado todos los elementos HTML de la página y se ha creado el árbol DOM. Lo mismo habría que hacer con cualquier código que modifique el árbol DOM. El código correcto sería:
+```javascript
+window.onload = function() {
+  document.getElementById('boton1').onclick = function() {
+    alert('Se ha pulsado');
   }
 }
 ```
 
 ### Event listeners
-La forma recomendada de hacerlo es usando escuchadores de eventos. El método `addEventListener` recibe como primer parámetro el nombre del evento a escuchar y como segundo parámetro la función a ejecutar (OJO, sin paréntesis) cuando se produzca:
+La forma recomendada de hacerlo es usando el modelo avanzado de registro de eventos del W3C. Se usa el método `addEventListener` que recibe como primer parámetro el nombre del evento a escuchar (sin 'on') y como segundo parámetro la función a ejecutar (OJO, sin paréntesis) cuando se produzca:
 ```javascript
-document.getElementById('acepto').addEventListener('click', aceptado);
+document.getElementById('boton1').addEventListener('click', aceptado);
 ...
 function aceptado() {
-  alert('Se ha aceptado');
+  alert('Se ha pulsado');
 })
 ```
 
-Si queremos pasarle algún parámetro a la función escuchadora (cosa bastante poco usual) debemos usar funciones anónimas como escuchadores de eventos. Es bastante habitual usar este tipo de funciones ya que lo normal es que sólo se vayan a llamar al producirse el evento:
+En muchas ocasiones se usan funciones anónimas ya que no necesitan ser llamadas desde fuera del escuchador:
+```javascript
+document.getElementById('boton1').addEventListener('click', function() {
+  alert('Se ha pulsado');
+});
+```
+
+Si queremos pasarle algún parámetro a la función escuchadora (cosa bastante poco usual) debemos usar funciones anónimas como escuchadores de eventos:
 
 <script async src="//jsfiddle.net/juansegura/L5pkg93w/1/embed/js,html,result/"></script>
 
