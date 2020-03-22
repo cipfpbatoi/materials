@@ -2,15 +2,18 @@
 Siguiendo con la práctica de POO vamos a mostrar en una tabla los productos de nuestro almacén. Cada fila corresponderá a un producto y se mostrará su código, nombre, unidades, precio por unidad e importe. En el fichero index.html tenemos una tabla vacía con id almacen donde pintaremos ese almacén. Dicha tabla usa **_bootstrap_** para mejorar la presentación. Debajo de la misma mostraremos el importe total del almacén.
 
 Ya tenemos creadas las clases por lo que la lógica de negocio de nuestra aplicación la tenemos ya hecha. Ahora nos falta crear funciones con las que interactuará el usuario y que se encargarán de modificar los datos usando las clases ya creadas y reflejar los cambios hechos en la página para que los vea el usuario. Necesitaremos funciones para:
-* Añadir productos al almacén: deberemos pasarle el nombre del producto y su precio por unidad. Como código tomará automáticamente el siguiente al mayor del almacén (como si fuera un campo autonumérico)
-* Eliminar productos del almacén: debemos pasarle el código del producto a eliminar. Deberá pedir confirmación (mostraremos al usuario su código y su nombre) y, si el producto tiene unidades, volverá a pedirla indicando las unidades que tenemos del mismo
-* Cambiar stock: recibe un código de producto y el nº de unidades (positivo o negativo) a modificar
+* Añadir productos al almacén: deberemos pasarle el nombre del producto y su precio por unidad. Opcionalmente podemos pasarle un nº inicial de unidades
+* Eliminar productos del almacén: debemos pasarle el código del producto a eliminar. Deberá pedir confirmación (mostraremos al usuario la id del producto a eliminar y su nombre) y, si el producto tiene unidades, volverá a pedirla indicando las unidades que aún tenemos del mismo y que desaparecerán
+* Cambiar stock: recibe una id de producto y el nº de unidades (positivo o negativo) a modificar
+* Cambiar producto: recibe un objeto con la id del producto a modificar y las propiedades que deseamos modificar (las no incluidas permanecerán inalteradas)
 
-Para introducir estos datos tenemos unos formularios vacíos sobre la tabla que deberemos completar (sólo tenemos el título). Para mejorar su presentación usaremos también _bootstrap_ por lo que cada input del formulario tendrá la siguiente estructura básica (añadiremos estas 4 líneas de código al _index.html_ para cada input que queramos poner:
+Para introducir estos datos crearemos unos formularios vacíos sobre la tabla que deberemos completar (sólo tenemos el título). Para mejorar su presentación usaremos también _bootstrap_ por lo que cada input del formulario tendrá la siguiente estructura básica (añadiremos estas 4 líneas de código al _index.html_ para cada input que queramos poner:
 ```html
 <div class="form-group">
-  <label for="new-name">Nombre:</label>
-  <input type="text" class="form-control" id="new-name">
+  <label for="new-name">
+    <span>Nombre: </span>
+    <input type="text" class="form-control" id="new-name">
+  </label>
 </div>
 ```
 
@@ -23,16 +26,6 @@ Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 
 ATENCIÓN: En la etiqueta de cada formulario hemos puesto un atributo, _onsubmit_, que hará que se ejecute la función indicada en dicho atributo cuando se envíe el formulario. Por tanto deberemos crear esa función en nuestro código, quien se encargará de obtener los datos del formulario, validarlos y llamar a las funciones correspondientes.
 
-En el fichero _index.html_ crearemos debajo de la tabla otros 2 formularios nuevos:
-* Listado del almacén: hemos de indicar si lo queremos alfabético o por nº descendente de unidades
-* Productos bajo stock: indicamos el número de unidades y si lo queremos ordenado alfabéticamente o por nº ascendente de unidades
+Podéis modificar lo que necesitéis del _index.html_. De hecho como mínimo tenemos que añadir los inputs de los formularios existentes.
 
-Debajo de ellos crearemos una zona en la que mostraremos el resultado de estos listados en una lista desordenada. Los datos a mostrar de cada producto son su nombre, sus unidades entre paréntesis, su precio y el importe total, como en el siguiente ejemplo:
-```
- * TV Samsung MP45 (5): 235,95 €/u => 1179.75 €
-```
-
-Podéis modificar lo que necesitéis del _index.html_. De hecho como mínimo tenemos que añadir los inputs de los formularios existentes así como los 2 formularios nuevos y el sitio donde mostrar los listados.
-
-NOTA: es importante no mezclar la lógica del negocio (el modelo) con la presentación (la vista). Nuestras clases deben ocuparse de los datos pero NO de cómo los vamos a presentar en la pantalla. De eso se ocuparan otras funciones de manera que si decidimos que la información se vea de otra forma eso no debe afectar al modelo.
-
+NOTA: es importante no mezclar la lógica del negocio (el modelo) con la presentación (la vista). Las clases que tenemos creadas deben ocuparse de los datos pero NO de cómo los vamos a presentar en la pantalla. De eso se ocuparan otras funciones de manera que si decidimos que la información se vea de otra forma eso no debe afectar al modelo. Lo ideal sería usar el patrón MVC (con o sin clases para el controlador y la vista, como prefiráis).
