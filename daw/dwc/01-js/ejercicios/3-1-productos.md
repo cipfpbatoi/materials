@@ -7,7 +7,7 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
   - units: argumento opcional (si no le pasamos unidades al constructor su número por defecto será 0).
   
   Esta clase tendrá los siguientes **métodos**:
-  - changeProduct: recibe un objeto con los datos a cambiar del producto. Las propiedades que no reciba se quedarán con los valores que tiene ahora. Al menos debe recibir la id del producto a cambiar. Devolerá el producto modificado. Si hay algún error en los datos pasados devolerá _false_.
+  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará anda y devolerá _false_.
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales), como en el siguiente ejemplo:
 ```
@@ -21,6 +21,7 @@ En este ejercicio vamos a trabajar con los productos de un almacén, para lo que
   - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id o _undefined_ si ese código no existe en el almacén
   - newProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Devolverá el producto añadido al almacén o _false_ si no ha podido hacerse por algún motivo.   
   - delProduct: recibe como parámetro el código de un producto y lo elimina del almacén si no tiene unidades devolviendo _true_. Si sus unidades no están a 0 no hace nada y devuelve _false_.
+  - changeProductUnits: recibe un objeto con la id de un producto y el número de unidades a increamentar (o disminuir si el número es negativo). Devuelve el producto modificado si ha podido hacerse o _false_ en caso contrario
   - changeProduct: recibe un objeto con la id de un producto y los campos a modificar (los que no estén permanecerán sin cambios). Devuelve el objeto modificado si ha podido hacerse o _false_ en caso contrario
   - totalImport: devuelve el valor total de los productos del almacén (su precio por sus uds)
   - underStock: recibe un nº de unidades y devuelve los productos que tengan menos de dichas unidades
@@ -70,10 +71,10 @@ Para probar que funciona en el navegador añade al fichero _index.js_ código pa
   - 'impresora Epson LX-455', 45.95 €
   - 'USB Kingston 16GB', 5.95 €, 45 uds.
 - cambiar productos:
-  - a la TV le cambiamos el precio por 325.90 y le sumamos 5 uds
+  - a la TV le cambiamos el precio por 325.90 y sus unidades pasarán a ser 8
   - al ábaco le sumamos 15 uds
-  - a la TV le cambiamos el precio por 325.90 y le sumamos 5 uds
-  - a la impresora le cambiamos el precio por 55.90 y le restamos 2 uds
+  - a la impresora le cambiamos el precio por 55.90 y le ponemos -2 uds
+  - a la TV le restamos 10 unidades
   - al ábaco le cambiamos el nombre por 'Ábaco de madera (nuevo modelo)'
 - mostramos por consola el almacén
 - mostramos por consola 'LISTADO DEL ALMACÉN alfabético'
