@@ -2,9 +2,7 @@
 
 Siguiendo con la práctica del almacén vamos a mejorar nuestra aplicación.
 
-Por un lado vamos a refactorizar nuestro código para que siga el patrón MVC, de manera que tengamos en ficheros separados el código que se encarga del modelo, el que se encarga de cómo se muestran los datos (vista) y el que interactúa con el usuario (controlador). Dentro del controlador es donde incluiremos los manejadores de eventos.
-
-A continuación vamos a gestionar correctamente todos los eventos de la aplicación usando el método **_.addEventListener_**.
+Por un lado vamos a gestionar correctamente todos los eventos de la aplicación usando el método **_.addEventListener_**.
 
 También eliminaremos los formularios de eliminar producto y cambiar unidades ya que eso lo haremos desde la celda de acciones de la tabla añadiendo iconos. Nosotros vamos a usar los [iconos de Material Design](https://google.github.io/material-design-icons/) de Google para lo que debemos enlazar la librería añadiendo a nuestro _index.html_ la línea:
 ```html
@@ -20,11 +18,11 @@ En la página de Material Design podemos ver cómo cambiar el estilo o el tamañ
 
 Añadiremos iconos para aumentar en 1 las unidades, para disminuirlas en 1 y para eliminar el producto. Si las unidades están a 0 deshabilitaremos el icono de restar unidades.
 
-Por último vamos a ofrecer al usuario la posibilidad de modificar un producto. Podrá cambiar cualquier campo del mismo excepto su _id_. Para ello crearemos un nuevo formulario junto al de añadir productos y un icono en la tabla y cuando se pulse dicho icono se cargarán en el formulario los datos de dicho producto y ya podrá modificarse.
+Por último vamos a ocultar el formlario de modificar un producto y añadiremos otro icono en la celda de acciones para modificar. Al pulsarlo se mostrará el formulario y se rellenará automáticamente con los datos del producto sobre el que hemos pinchado. La id no se debe poder modificar (la deshabilitaremos). Al pulsar en 'Cambiar', si todo es correcto borramos el formulario y lo ocultamos. AL pulsar en 'Reset' volvermos a cargar el formulario con los datos del producto en la tabla..
 
-**Posibles mejoras**:
-* Podríamos hacer que no se vea todo junto en la página sino que al cargarla sólo se vea la tabla de productos con un botón para crear nuevos productos y otro para mostrar los listados. Al pulsar sobre 'Nuevo producto' o 'Editar' se oculta la tabla y se muestra el formulario correspondiente. Lo mismo al pulsar sobre 'Listados' que se mostrarían los 2 formularios de listados junto a la lista de debajo
+## Mejoras de nuestra aplicación
+* Podríamos hacer que al cargar la página no se vea tampoco el formulario de 'Añadir productos' sino que sólo se vea la tabla de productos con un botón para añadir nuevos productos. Al pulsarlo se oculta la tabla y se muestra el formulario. También debemos ocultar la tabla al mostrar el formulario de 'MCambiar productos'
 
-* Podríamos usar el mismo formulario para añadir productos y para editarlos porque es casi igual
+* Podríamos usar el mismo formulario para añadir productos y para cambiaros porque es casi igual
 
-* Podríamos crear un menú para nuestra aplicación
+* Podríamos crear un menú para nuestra aplicación con las entradas para mostrar los productos (la tabla) y añadir uno nuevo
