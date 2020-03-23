@@ -105,6 +105,8 @@ y la función 'actualizaDatos' podrá leer de nuevo lo que hay y actuar en conse
 
 > EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. GUarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStrage? ¿Y las de sessionStorage?
 
+Puedes ver un ejemplo [en este vídeo](https://www.youtube.com/watch?v=ASQQUSFtr8g&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=65) de cómo almacenar en el _Storage_ datos del usuario.
+
 ### A tener en cuenta
 _localStorage_, _sessionStorage_ y _cookies_ almacenan información en un navegador específico del cliente, y por tanto:
 * No podemos asegurar que permanecen ahí
@@ -184,6 +186,8 @@ function delCookie(cname) {
     return document.cookie = cname + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 ```
+
+Podéis ver en [este vídeo](https://www.youtube.com/watch?v=k7pteU48rpc&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=62) un ejemplo de cómo trabajar con cookies, aunque como ya hemos dicho lo recomendable es trabajar con _Storage_.
 
 ## Geolocation API
 Esta API permite a la aplicación web acceder a la localización del usuario si éste da su permiso. Muchos navegadores sólo permiten usarlo en páginas seguras (https).
