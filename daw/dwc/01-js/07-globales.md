@@ -1,13 +1,13 @@
-# Objetos y Funciones globales. Manejo de errores
+# Objetos nativos. Manejo de errores
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Objetos y Funciones globales. Manejo de errores](#objetos-y-funciones-globales-manejo-de-errores)
+- [Objetos nativos. Manejo de errores](#objetos-y-funciones-globales-manejo-de-errores)
   - [Introducción](#introducci%C3%B3n)
   - [Funciones globales](#funciones-globales)
-  - [Objetos del lenguaje](#objetos-del-lenguaje)
+  - [Objetos nativos del lenguaje](#objetos-nativos-del-lenguaje)
   - [Objeto Math](#objeto-math)
   - [Objeto Date](#objeto-date)
   - [RegExp](#regexp)
@@ -20,7 +20,8 @@
 ## Introducción
 En este tema vamos a ver 3 cosas fiferentes:
 * las funciones globales de Javascript, muchas de las cuales ya hemos visto como _Number()_ o _String()_
-* objetos globales que incorpora Javascript y que nos facilitarán mucho el trabajo (especialmente a la hora de trabajar con fechas). Dentro de ellos veremos tambien el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios
+* objetos nativos que incorpora Javascript y que nos facilitarán mucho el trabajo (especialmente a la hora de trabajar con fechas). 
+  * dentro de ellos veremos tambien el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios
 * manejo de errores
 
 ## Funciones globales
@@ -73,8 +74,31 @@ console.log( isFinite(3.84 / 0) );            // imprime false
   * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
   * Encoded: “http%3A%2F%2Fdomain.com%3Fval%3D1%202%203%26val2%3Dr%2By%256”
   
-## Objetos del lenguaje
-Además de los tipos primitivos de número, cadena, etc (que también se consideran objetos) JS tiene objetos Number, String, Array, Math, Date y RegExp. Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
+## Objetos nativos del lenguaje
+En Javascript casi todo son objetos. Ya hemos visto diferentes objetos:
+- window
+- scrren
+- navigator
+- location
+- history
+- document
+
+Los 5 primeros se corresponden al modelo de objetos del navegador y _document_ se corresponde al modelo de objetos del documento. Todos nos permiten interactuar con el navegador para realizar distintas acciones.
+
+Pero además tenemos los tipos de objetos nativos, que no dependen del navegador. Son:
+- Number
+- String
+- Boolean
+- Array
+- Function
+- Object
+- Math
+- Date
+- RegExp
+
+Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho mñas eficiente usar los tipos primitivos. Pero aunque lo hagamos usando el tipo de dato primitivo se considera u objeto y tenemos acceso a todas sus propiedades y mètodos (`num.toFixed(2)`).
+
+Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
 
 ## Objeto Math
 Proporciona constantes y métodos para trabajar con valores numéricos:
@@ -203,7 +227,7 @@ console.log( fecha.getDate() );      // imprime 30
 
 Podemos probar los distintos métodos de las fechas en la página de [w3schools](http://www.w3schools.com/jsref/jsref_obj_date.asp).
 
-## RegExp
+## Objeto RegExp
 Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean ponién solas entre `/` o instanciándolas de la clase _RegExp_:
 ```javascript
 let cadena='Hola mundo';
