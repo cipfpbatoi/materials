@@ -208,7 +208,7 @@ function renderNewRow(data) {
   let miTabla = document.getElementById('tabla-datos');
   let nuevaFila = `<tr id="${data.id}"><td>${data.dato1}</td><td>${data.dato2}...</td></tr>`;
   miTabla.innerHTML += nuevaFila;
-  document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: ' + event.target.id) );
+  document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: '+ event.target.id));
 ```
 
 Sin embargo esto sólo funcionaría para la última fila añadida ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos asignando a _miTabla_ un código HTML que ya no contiene escuchadores, excepto el de _nuevaFila_ que lo ponemos después de hacer la asignación.
