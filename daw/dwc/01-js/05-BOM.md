@@ -62,9 +62,9 @@ Representa la ventana del navegador y es el objeto principal. De hecho puede omi
 Sus principales propiedades y métodos son:
 * `.name`: nombre de la ventana actual
 * `.status`: valor de la barra de estado
-* `.screenX`/`.screenY`: distancia del elemento a la esquina izquierda/superior pantalla
-* `.outerWidth`/`.outerHeight`: ancho/alto total de la pantalla, sin contar la barra superior del navegador
-* `.innerWidth`/`.innerHeight`: ancho/alto visible del documento
+* `.screenX`/`.screenY`: distancia de la ventana a la esquina izquierda/superior de la pantalla
+* `.outerWidth`/`.outerHeight`: ancho/alto total de la ventana, incluyendo la toolbar y la scrollbar
+* `.innerWidth`/`.innerHeight`: ancho/alto útil del documento, sin la toolbar y la scrollbar
 * `.open(url, nombre, opciones)`: abre una nueva ventana. Devuelve el nuevo objeto ventana. Las principales opciones son:
     * `.toolbar`: si tendrá barra de herramientas
     * `.location`: si tendrá barra de dirección
@@ -75,12 +75,13 @@ Sus principales propiedades y métodos son:
     * `.resizable`: si se puede cambiar su tamaño 
     * `.width=px`/`.height=px`: ancho/alto
     * `.left=px`/`.top=px`: posición izq/sup de la ventana
-* `.opener`: ventana desde a que se abrió
+* `.opener`: referencia a la ventana desde la que se abrió esta ventana (para ventanas abiertas con _open_)
 * `.close()`: la cierra (pide confirmación, a menos que la hayamos abierto con open)
 * `.moveTo(x,y)`: la mueve a las coord indicadas
 * `.moveBy(x,y)`: la desplaza los px indicados
 * `.resizeTo(x,y)`: la da el ancho y alto indicados
 * `.resizeBy(x,y)`: le añade ese ancho/alto
+* `.pageXoffset / pageYoffset`: scroll actual de la ventana horizontal / vertical
 * Otros métodos: `.back()`, `.forward()`, `.home()`, `.stop()`, `.focus()`, `.blur()`, `.find()`, `.print()`, …
 NOTA: por seguridad no se puede mover una ventana fuera de la pantalla ni darle un tamaño menor de 100x100 px ni tampoco se puede mover una ventana no abierta con .open() o si tiene varias pestañas
 
@@ -89,6 +90,8 @@ NOTA: por seguridad no se puede mover una ventana fuera de la pantalla ni darle 
 > - escribe en ella (con document.write) un título h1 que diga 'Hola'
 > - muévela 300 px hacia abajo y 100 a la izquierda
 > - ciérrala
+
+Puedes ver un ejemplo de cómo abrir ventanas en [este vídeo](https://www.youtube.com/watch?v=jkTt6bs2tPo&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=40).
 
 #### Diálogos
 Hay 3 métodos del objeto _window_ que ya conocemos y que nos permiten abrir ventanas de diálogo con el usuario:
