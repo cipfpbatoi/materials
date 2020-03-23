@@ -32,8 +32,10 @@ Tabla de contenidos
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introducción
-En el _front-end_ intervienen 3 elementos básicos:
-- HTML: es lo que estructura la web y proporciona la información de la web, pero es una información estática
+En las páginas web el elemento fundamental es el fichero HTML con la información a mostrar en el navegador. Posteriormente surgió la posibilidad de "decorar" esa información para mejorar su apariencia, lo que dio lugar al CSS. Y también se pensó en dar dinamismo a las páginas y apareció el lenguaje Javascript.
+
+En un primer momento las 3 cosas estaban mezcladas en el fichero HTML pero eso complicaba bastante el poder leer esa página a la hora de mantenerla por lo que se pensó en separar los 3 elementos básicos:
+- HTML: se encarga de estructurar la página y proporciona su información, pero es una información estática
 - CSS: es lo que da forma a dicha información, permite mejorar su apariencia, permite que se adapte a distintos dispositivos, ...
 - Javascript: es el que da vida a un sitio web y le permite reaccionar a las acciones del usuario
 
@@ -42,11 +44,17 @@ Por tanto nuestras aplicaciones tendrán estos 3 elementos y lo recomendable es 
 - El CSS lo tendremos en uno o más ficheros con extensión _.css_ dentro de una carpeta llamada _styles_
 - EL JS estará en ficheros con extensión _.js_ en un directorio llamado _scripts_
 
-Javascript es un lenguaje interpretado, no compilado y nosotros vamos a ejecutarlo en un navegador web (lo más habitual). Lo usaremos para:
+Las características principales de Javascript son:
+- es un lenguaje interpretado, no compilado
+- se ejecuta en el lado cliente (en un navegador web), aunque hay implementaciones como NodeJS para el lado servidor
+- es un lenguaje orientado a objetos (podemos crear e isntanciar objetos y usar objetos predefinidos del lenguaje) pero basado en prototipos (por debajo un objeto es un prototipo y nosotros podemos crear objetos sin instanciarlos, haciendo copias del prototipo)
+- se trata de un lenguaje débilmente tipado, con tipificación dinámica (no se indica el tipo de datos de una variable al declararla e incluso puede cambiarse)
+
+Lo usaremos para:
 * Cambiar el contenido de la página
 * Cambiar los atributos de un elemento
 * Cambiar la apariencia de algo
-* Validar datos
+* Validar datos de formularios
 * ...
 
 Sin embargo, por razones de seguridad, Javascript no nos permite hacer cosas como:
@@ -56,10 +64,12 @@ Sin embargo, por razones de seguridad, Javascript no nos permite hacer cosas com
 * Enviar e-mails de forma invisible o crear ventanas sin que el usuario lo vea
 * ...
 
+### Un poco de historia
 Javascript es una implementación del lenguaje **ECMAScript** (el estándar que define sus características). El lenguaje surgió en 1997 y todos los navegadores a partir de 2012 soportan al menos la versión **ES5.1** completamente. En 2015 se lanzó la 6ª versión, inicialmente llamada **ES6** y posteriormente renombrada como **ES2015**, que introdujo importantes mejoras en el lenguaje y que es la versión que usaremos nosotros. Desde entonces van saliendo nuevas versiones cada año que introducen cambios pequeños. La última es la **ES2018** aprobada en Junio de 2018.
 
 Las principales mejoras que introdujo ES2015 son: clases de objetos, let, for..of, Map, Set, Arrow functions, Promesas, spread, destructuring, ...
 
+### Soporte en los navegadores
 Los navegadores no se adaptan inmediatamente a las nuevas versiones de Javascript por lo que puede ser un problema usar una versión muy moderna ya que puede haber partes de los programas que no funcionen en los navegadores de muchos usuarios. En la página de [_Kangax_](https://kangax.github.io/compat-table/es6/) podemos ver la compatibilidad de los diferentes navegadores con las distintas versiones de Javascript. También podemos usar [_CanIUse_](https://caniuse.com/) para buscar la compatibilidad de un elemento concreto de Javascript así como de HTML5 o CSS3. 
 
 Si queremos asegurar la máxima compatibilidad debemos usar la versión ES5 (pero nos perdemos muchas mejoras del lenguaje) o mejor, usar la ES6 (o posterior) y después _transpilar_ nuestro código a la version ES5. De esto se ocupan los _transpiladores_ (**Babel** es el más conocido) por lo que no suponen un esfuerzo extra para el programador.
@@ -98,14 +108,14 @@ Algunos de los más conocidos son [Fiddle](https://jsfiddle.net), [Plunker](http
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 ## Incluir javascript en una página web
-El código Javascript va entre etiquetas _\<script>_. Puede ponerse en el _\<head>_ o en el _\<body>_. Lo mejor en cuanto a rendimiento es ponerla al final del _\<body>_ para que no se detenga el renderizado de la página mientras se descarga y se ejecuta el código. También podemos ponerlo en el \<head> pero usando los atributos **async** y/o **defer** (en Internet encontraréis mucha información sobre esta cuestión, por ejemplo [aquí](https://somostechies.com/async-vs-defer/)).
+El código Javascript va entre etiquetas _\<script>_. Puede ponerse en el _\<head>_ o en el _\<body>_. Funciona como cualquier otra etiqueta y el navegador la interpreta cuando llega a ella (va leyendo y ejecutando el fichero línea a línea). Podéis ver en [este vídeo](https://www.youtube.com/watch?v=AQn22gjtSWQ&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=2) un ejemplo muy simple de cómo se ejecuta el código en el HEAD y en el BODY.
 
-Es posible poner el código directamente entre la etiqueta _\<script>_  y su etiqueta de finalización pero lo correcto es que esté en un fichero externo (con extensión **.js**) que cargamos mediante el atributo _src_ de la etiqueta. Así conseguimos que la página HTML cargue más rápido y además no mezclar HTML y JS en el mismo fichero:
+Lo mejor en cuanto a rendimiento es ponerla al final del _\<body>_ para que no se detenga el renderizado de la página mientras se descarga y se ejecuta el código. También podemos ponerlo en el \<head> pero usando los atributos **async** y/o **defer** (en Internet encontraréis mucha información sobre esta cuestión, por ejemplo [aquí](https://somostechies.com/async-vs-defer/)).
+
+Como se ve en el primer vídeo, es posible poner el código directamente entre la etiqueta _\<script>_  y su etiqueta de finalización pero lo correcto es que esté en un fichero externo (con extensión **.js**) que cargamos mediante el atributo _src_ de la etiqueta. Así conseguimos que la página HTML cargue más rápido (si lo ponemos al final del BODY o usamos _async_) y además no mezclar HTML y JS en el mismo fichero, lo mejora la legibilidad del código y facilita su mantenimento:
 ```html
 <script src="./scripts/main.js"></script>
 ```
-
-Esto mejora la legibilidad del código y facilita su mantenimento.
 
 ## Mostrar información
 Javascript permite mostrar al usuario ventanas modales para pedirle o mostrarle información. Las funciones que lo hacen son:
