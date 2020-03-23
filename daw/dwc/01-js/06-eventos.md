@@ -64,14 +64,14 @@ window.onload = function() {
 ### Event listeners
 La forma recomendada de hacerlo es usando el modelo avanzado de registro de eventos del W3C. Se usa el método `addEventListener` que recibe como primer parámetro el nombre del evento a escuchar (sin 'on') y como segundo parámetro la función a ejecutar (OJO, sin paréntesis) cuando se produzca:
 ```javascript
-document.getElementById('boton1').addEventListener('click', aceptado);
+document.getElementById('boton1').addEventListener('click', pulsado);
 ...
-function aceptado() {
+function pulsado() {
   alert('Se ha pulsado');
 })
 ```
 
-En muchas ocasiones se usan funciones anónimas ya que no necesitan ser llamadas desde fuera del escuchador:
+Habitualmente se usan funciones anónimas ya que no necesitan ser llamadas desde fuera del escuchador:
 ```javascript
 document.getElementById('boton1').addEventListener('click', function() {
   alert('Se ha pulsado');
@@ -200,24 +200,28 @@ Sin embargo si al método `.addEventListener` le pasamos un tercer parámetro co
 En cualquier momento podemos evitar que se siga propagando el evento ejecutando el método `.stopPropagation()` en el código de cualquiera de los escuchadores.
 
 ## innerHTML y escuchadores de eventos
-Si cambiamos la propiedad _innerHTML_ de un elemento del árbol DOM todos sus escuchadores de eventos desaparecen ya que es como si se volviera a crear ese elemento (y los escuchadores deben ponerse después de crearse). Por ejemplo si tenemos una tabla de datos y queremos que al hacer doble click en cada fila se muestre su id podríamos hacer:
+Si cambiamos la propiedad _innerHTML_ de un elemento del árbol DOM todos sus escuchadores de eventos desaparecen ya que es como si se volviera a crear ese elemento (y los escuchadores deben ponerse después de crearse). 
+
+Por ejemplo, tenemos una tabla de datos y queremos que al hacer doble click en cada fila se muestre su id. La función que añade una nueva fila podría ser:
 ```javascript
-let miTabla = document.getElementById('tabla-datos');
-let nuevaFila = `<tr id="${id}"><td>${dato1}</td><td>${dato2}...</td></tr>`;
-miTabla.innerHTML += nuevaFila;
-document.getElementById(id).addEventListener('dblclick', mostraId);
+function renderNewRow(data) {
+  let miTabla = document.getElementById('tabla-datos');
+  let nuevaFila = `<tr id="${data.id}"><td>${data.dato1}</td><td>${data.dato2}...</td></tr>`;
+  miTabla.innerHTML += nuevaFila;
+  document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: ' + event.target.id) );
 ```
 
-Sin embargo esto sólo funcionaría para la última fila añadida ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos eliminando y volviendo a crear los nodos que hay bajo miTabla por lo que se pierden todos sus escuchadores. Sólo el de la fila añadida que lo ponemos después se mantendría.
+Sin embargo esto sólo funcionaría para la última fila añadida ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos asignando a _miTabla_ un código HTML que ya no contiene escuchadores, excepto el de _nuevaFila_ que lo ponemos después de hacer la asignación.
 
 La forma correcta de hacerlo sería:
 ```javascript
-let miTabla = document.getElementById('tabla-datos');
-let nuevaFila = document.createElement('tr');
-nuevaFila.id = id;
-nuevaFila.innerHTML = `<td>${dato1}</td><td>${dato2}...</td>`;
-nuevaFila.addEventListener('dblclick', mostraId);
-miTabla.appendChild(nuevaFila);
+function renderNewRow(data) {
+  let miTabla = document.getElementById('tabla-datos');
+  let nuevaFila = document.createElement('tr');
+  nuevaFila.id = data.id;
+  nuevaFila.innerHTML = `<td>${data.dato1}</td><td>${data.dato2}...</td>`;
+  nuevaFila.addEventListener('dblclick', event => alert('Id: ' + event.target.id) );
+  miTabla.appendChild(nuevaFila);
 ```
 
-De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que pintar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a pintar todas las filas de la tabla (todo lo que hay dentro de miTabla).
+De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a renderizar todas las filas de la tabla (todo lo que hay dentro de miTabla).
