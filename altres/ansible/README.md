@@ -96,8 +96,8 @@ ansible all -s -m apt -a "name=ntp state=installed"
 ```
 
 Los _state_ que podemos pasarle al módulo son:
-- _installed_: instala el paquete
-- _installed_: instala el paquete
+- _installed_: instala el paquete, si no lo está
+- _latest_: actualiza el paquete a la última versión disponible, si no lo está ya
 - _installed_: instala el paquete
 
 ### service
@@ -167,5 +167,110 @@ ansible all -m file -a "dest=/tmp/fichero state=absent"
 
 Podemos obtener más información sobre este módulo y ver todas sus opciones desde la [documentación oficial](http://docs.ansible.com/ansible/file_module.html).
 
+### cron
+Permite añadir comandos al _crontab_ de los _nodos_ para programar su ejecución:
+```bash
+ansible all -s -m cron -a "name='my-cron' hour=5 job='/script.sh'" 
+```
+
+Ejecuta el script _/script.sh_ todos los días a las 4 de la mañana.
+
 ## Playbooks
-Lo normal no és ejecutar un comando sino guardar en un _playbook_ (una especie de script) lo que queramos ejecutar.
+Lo normal no és ejecutar un comando sino guardar en un _playbook_ (una especie de script) lo que queramos ejecutar. Podemos mantenerlos en _git_ para llevar el control de las distintas versiones.
+
+Cada _playbook_ es un fichero YAML. Se recomienda que la primera línea sean guiones
+```yaml
+---
+```
+
+y la última puntos
+```yaml
+...
+```
+
+### Ficheros YAML
+En YAML tenemos diccionarios (pares _clave: valor_) y istas (un elemento por línea precedido de -). Pueden combinarse, ej.:
+```yaml
+# Empleado 
+mario:
+  nombre: "Mario Pérez"
+  twitter: @marioperest 
+  trabajo: "Desarrollador Backend" 
+  lenguajes: 
+  - PHP 
+  - NodeJS 
+... 
+```
+
+También puede ponerse de forma abreviada:
+```yaml
+# Empleado 
+mario: {nombre: "Mario Pérez", twitter: @marioperest, trabajo: "Desarrollador Backend", lenguajes: [‘PHP’, ‘NodeJS’]} 
+... 
+```
+
+Podemos utilizar variables y su valor se muestra con `{{ variable }}`.
+
+### Estructura de un playbook
+Un playbook se compone de varios _plays_. Cada _play_ se aplica a un grupo de hosts sobre los que se ejecutan tareas (_tasks_), que son llamadas a un determinado módulo de Ansible.
+
+Por ejemplo, para instalar y habilitar apache en todos los _nodos_ crearemos el playbook _apache.yaml_ qu contendrá:
+```yaml
+---  
+hosts: all 
+remote_user: root 
+tasks: 
+- name: Ensure Apache is at the latest version 
+apt: name=apache2 state=latest 
+- name: ensure apache is running 
+service: name=apache2 state=started enabled=yes 
+... 
+```
+
+Para ejecutarlo haremos:
+```bash
+ansible-playbook apache.yaml 
+```
+
+Cada play contiene una lista de tareas, las cuales se ejecutan en orden y solo una al mismo tiempo. Si falla una tarea, se puede volver a ejecutar, ya que los módulos deben ser idempotentes, es decir, que ejecutar un módulo varias veces debe tener el mismo resultado que si se ejecuta una vez.
+
+Todas las tareas deben tener un name, el cual se incluye en la salida del comando al ejecutar el playbook. Su objetivo es que la persona que ejecute Ansible pueda leer con facilidad la ejecución del playbook.
+
+Las tareas se declaran en el formato `module: options` (como antes: `apt: name=apache2 state=latest ` y `service: name=apache2 state=started enabled=yes`).
+
+Los módulos command y shell son los únicos comandos que no utilizan el formato clave=valor, sino que directamente se le pasa como parámetro el comando que deseamos ejecutar:
+```yaml
+--- 
+hosts: all 
+remote_user: root 
+tasks: 
+- name: Run a command 
+shell: /usr/bin/command 
+...
+```
+
+Un playbook puede contener varias tareas:
+```yaml
+---  
+- hosts: all 
+remote_user: root 
+tasks: 
+- name: Ensure Apache is at the latest version 
+apt: name=apache2 state=latest 
+- hosts: primera-fila 
+remote_user: root 
+tasks: 
+- name: Ensure MariaDB is at the latest version 
+apt: name=mariadb state=latest . 
+...
+```
+
+Podemos hacer que una tarea se ejecute con un usuario diferente al que se conecta al ssh con _become_:
+```yaml
+---  
+- hosts: webservers 
+remote_user: yourname 
+become: yes 
+become_user: mati 
+...
+```
