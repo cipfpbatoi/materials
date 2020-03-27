@@ -233,6 +233,8 @@ peticion.addEventListener('load', function() {
 En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_**.
 
 ### Enviar ficheros al servidor con FormData
+[FormData](https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/FormData) es una nueva interfaz de XMLHttpRequest que permite construir fácilmente pares de "clave"="valor" para enviar los datos de un formulario. Se envían en el mismo formato en que se enviarían directamente desde un formulario ("multipart/form-data") por lo que no hay que poner encabezado de 'Content-type'.
+
 Vamos a añadir al formulario un campo donde el usuario pueda subir la foto del producto:
 ```html
 <form id="addProduct">
@@ -249,16 +251,23 @@ Podemos enviar al servidor todo el contenido del formulario:
 ...
 // esta sería la función manejadora del 'submit' de 'addProduct'
 let peticion=new XMLHttpRequest();
+let datosForm = new FormData(document.getElementById("addProduct"));
+// Automáticamente ha añadido todos los inputs, incluyendo tipo 'file', blob, ...
+// Si quisiéramos añadir algún dato más haríamos:
+formData.append("otrodato", 12345);
+// Y lo enviamos
 peticion.open('POST', 'https://localhost/products');
-peticion.send(new FormData(document.getElementById("addProduct")));
+peticion.send(datosForm);
+//
 peticion.addEventListener('load', function() {
 ...
 ```
-O añadir manualmente los campos que queramos enviar:
+
+También podemos enviar sólo los campos que queramos:
 ```javascript
 ...
 // esta sería la función manejadora del 'submit' de 'addProduct'
-let formData=new FormData();
+let formData=new FormData();  // creamos un formData vacío
 formData.append("name", document.getElementById("name").value);
 formData.append("descrip", document.getElementById("descrip").value);
 formData.append("photo", document.getElementById("photo").files[0]);
@@ -269,6 +278,8 @@ peticion.send(formData);
 peticion.addEventListener('load', function() {
 ...
 ```
+
+Podéis ver más información de cómo usar formData en [MDN web docs](https://developer.mozilla.org/es/docs/Web/Guide/Usando_Objetos_FormData).
 
 ## Ejemplo de petición Ajax
 Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
