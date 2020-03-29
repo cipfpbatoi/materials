@@ -21,9 +21,14 @@ En los clientes sólo necesitamos que root pueda entrar por ssh, para lo que nec
 ssh-copy-id root@192.168.33.11 
 ```
 
+NOTA: en el _controller_ la clave ssh se crea con
+```bash
+ssh-keygen -t rsa 
+```
+
 ## Inventarios
 Para decirle a _ansible_ qué máquinas va a gestionar tenemos los inventarios. El inventario por defecto es **/etc/ansible/hosts** donde añadimos las IPs de los nodos a gestionar, ej.:
-```bash
+```ini
 192.168.224.11  # pc11-t224
 192.168.224.12  # pc12-t224
 ...
@@ -32,31 +37,45 @@ Para decirle a _ansible_ qué máquinas va a gestionar tenemos los inventarios. 
 Podemos poner las IP o los nombres de los hosts, siempre que alguien los resuelva.
 
 Podemos crear grupos de equipos en el inventario y un equipo puede pertenecer a varios grupos, ej.:
-```bash
+```ini
 [aula-224]
 192.168.224.11  # pc11-t224
 192.168.224.12  # pc12-t224
 ...
 [primera-fila]
-192.168.225.11  # pc11-t224
-192.168.225.12  # pc12-t224
+192.168.224.11  # pc11-t224
+192.168.224.12  # pc12-t224
 ...
 [segunda-fila]
-192.168.225.21  # pc21-t224
-192.168.225.22  # pc22-t224
+192.168.224.21  # pc21-t224
+192.168.224.22  # pc22-t224
 ...
 ```
 
 También se pueden usar patrones:
-```bash
+```ini
 [aula-224]
 192.168.224.[11-51]
 ...
+[primera-fila]
+192.168.224.[11-16]
+...
+[segunda-fila]
+192.168.224.[21-26]
+...
+```
+
+Un grupo puede contener otros grupos indicándolo con `:children`:
+```ini
 [primera-fila]
 192.168.225.[11-16]
 ...
 [segunda-fila]
 192.168.225.[21-26]
+...
+[aula-224:children]
+primera-fila
+segunda-fila
 ...
 ```
 
@@ -75,12 +94,12 @@ ansible all -a "hostname"
 ```
 
 Los parámetros que le pasamos al comando `ansible` son:
-- all: indica que se aplicará a todos los nodos del inventario. Si queremos sólo a uno o varios grupos haremos
+- all: indica que se aplicará a todos los nodos del inventario. Si queremos sólo a uno o varios equipos o grupos pondremos su nombre o si IP, si son varios separados por coma
 - -a: indica que lo que sigue es el comando a ejecutar en cada nodo
 
 Si queremos que un comando se ejecute con privilegios podemos añadir el parámetro:
 - `-s` que equivale a anteponerle un sudo
-- `-user root` (o cualquier otro usuario) que hará que se ejecute como si lo hiciera el usuario indicado
+- `-u root` (o cualquier otro usuario) que hará que se ejecute como si lo hiciera el usuario indicado
 
 Si la red se resiente por acceder a todos los nodos en paralelo podemos poner el parámetrp `-f num` siendo _num_ el número de nodos sobre los que se actuará a la vez (ej. `-f 1` hará que lso comandos se ejecuten en un nodo y cuando este acabe en el siguiente).
 
@@ -98,7 +117,7 @@ ansible all -s -m apt -a "name=ntp state=installed"
 Los _state_ que podemos pasarle al módulo son:
 - _installed_: instala el paquete, si no lo está
 - _latest_: actualiza el paquete a la última versión disponible, si no lo está ya
-- _installed_: instala el paquete
+- _absent_: desinstala el paquete, si está instalado
 
 ### service
 Gestiona servicios. Por ejemplo, para arrancar el servicio _npt_ haremos:
@@ -108,6 +127,8 @@ ansible all -s -m service -a "name=ntp state=started enabled=yes"
 
 Los posibles valores de _state_ son:
 - _started_: arraca el servicio (si no está ya arrancado)
+- _status_: muestra el estado del servicio
+- ...
 
 El parámetro `enabled=yes` hace un `systemctl enable servicio`.
 
@@ -119,11 +140,18 @@ ansible all -s -m group -a "name=admin state=present"
 
 Los posibles valores de _state_ son:
 - _present_: crea el grupo (si no existe)
+- _absent_: elimina el grupo
+
+Se le puede pasar el GID que queremos que tenga con `gid=[gid]` o podemos decir que es un grupo del sistema con `system=yes`.
 
 ### user
 Se encarga de la gestión de usuarios. Por ejemplo, para crear el usuario _mario_ cuyo grupo principal sea _admin_ y que se cree su _home_ ejecutamos:
 ```bash
 ansible all -s -m user -a "name=mario group=admin createhome=yes" 
+```
+Si queremos eliminarlo pondremos _state absent_:
+```bash
+ansible all -s -m user -a "name=mario state=absent" 
 ```
 
 Podemos obtener más información sobre este módulo y ver todas sus opciones desde la [documentación oficial](http://docs.ansible.com/ansible/user_module.html).
@@ -175,6 +203,12 @@ ansible all -s -m cron -a "name='my-cron' hour=5 job='/script.sh'"
 
 Ejecuta el script _/script.sh_ todos los días a las 4 de la mañana.
 
+### setup
+Muestra la configuraciónd e cada nodo:
+```bash
+ansible all -m setup 
+```
+
 ## Playbooks
 Lo normal no és ejecutar un comando sino guardar en un _playbook_ (una especie de script) lo que queramos ejecutar. Podemos mantenerlos en _git_ para llevar el control de las distintas versiones.
 
@@ -217,13 +251,13 @@ Un playbook se compone de varios _plays_. Cada _play_ se aplica a un grupo de ho
 Por ejemplo, para instalar y habilitar apache en todos los _nodos_ crearemos el playbook _apache.yaml_ qu contendrá:
 ```yaml
 ---  
-hosts: all 
-remote_user: root 
-tasks: 
-- name: Ensure Apache is at the latest version 
-apt: name=apache2 state=latest 
-- name: ensure apache is running 
-service: name=apache2 state=started enabled=yes 
+- hosts: all 
+  remote_user: root 
+  tasks: 
+  - name: Ensure Apache is at the latest version 
+    apt: name=apache2 state=latest 
+  - name: ensure apache is running 
+    service: name=apache2 state=started enabled=yes 
 ... 
 ```
 
@@ -231,6 +265,15 @@ Para ejecutarlo haremos:
 ```bash
 ansible-playbook apache.yaml 
 ```
+
+Si queremos que use un fichero de inventario distinto de _/etc/ansible/hosts_ le añadimos `-i`:
+```bash
+ansible-playbook -i nombre_fichero apache.yaml 
+```
+
+Podemos cambiar lo que se muestra con la opción `--verbose`. Podemos poner `-v`, `-vv`, `-vvv` o `-vvvv`. También le podemos indicar el nº de _forks_ a usar con `-f` como ya vimos al ejecutar un comando. 
+
+Hay también una opción útil que es `--check` que prueba todas las tareas pero sin llegar a ejecutarlas.
 
 Cada play contiene una lista de tareas, las cuales se ejecutan en orden y solo una al mismo tiempo. Si falla una tarea, se puede volver a ejecutar, ya que los módulos deben ser idempotentes, es decir, que ejecutar un módulo varias veces debe tener el mismo resultado que si se ejecuta una vez.
 
@@ -241,11 +284,11 @@ Las tareas se declaran en el formato `module: options` (como antes: `apt: name=a
 Los módulos command y shell son los únicos comandos que no utilizan el formato clave=valor, sino que directamente se le pasa como parámetro el comando que deseamos ejecutar:
 ```yaml
 --- 
-hosts: all 
-remote_user: root 
-tasks: 
-- name: Run a command 
-shell: /usr/bin/command 
+- hosts: all 
+  remote_user: root 
+  tasks: 
+  - name: Run a command 
+    shell: /usr/bin/command 
 ...
 ```
 
@@ -253,24 +296,50 @@ Un playbook puede contener varias tareas:
 ```yaml
 ---  
 - hosts: all 
-remote_user: root 
-tasks: 
-- name: Ensure Apache is at the latest version 
-apt: name=apache2 state=latest 
+  remote_user: root 
+  tasks: 
+  - name: Ensure Apache is at the latest version 
+    apt: name=apache2 state=latest 
 - hosts: primera-fila 
-remote_user: root 
-tasks: 
-- name: Ensure MariaDB is at the latest version 
-apt: name=mariadb state=latest . 
+  remote_user: root 
+  tasks: 
+  - name: Ensure MariaDB is at the latest version 
+    apt: name=mariadb state=latest . 
 ...
 ```
 
 Podemos hacer que una tarea se ejecute con un usuario diferente al que se conecta al ssh con _become_:
 ```yaml
 ---  
-- hosts: webservers 
-remote_user: yourname 
-become: yes 
-become_user: mati 
+- hosts: primera-fila
+  remote_user: yourname 
+  become: yes 
+  become_user: mati 
 ...
 ```
+
+### Obtener un parámetro
+En ocasiones nos interesará crear un playbook genérico (por ejemplo 'instala un paquete' o 'copia un fichero') que nos pregunte el paquete o fichero a instalar. Podemos hacer que se pida un dato por el prompt y que se guarde en una variable con _vars_prompt_:
+```yaml
+---  
+- hosts: all
+  vars_prompt:
+    - name: fich
+      prompt: "Escribe el nombre (con ruta) del fichero a copiar"
+    - name: usuario
+      prompt: "Escribe el nombre del usuario remoto al que copiar el fichero"
+  tasks:
+    - name: Copiar un fichero a los clientes
+    - copy: src={{ name }} dest=/home/{{ usuario }}/Downloads
+...
+```
+
+## Gestión de las aulas
+Para no tener que cambiar cosas entre los distintos servidores de aula podríamos crear un inventario para cada aula en todos y al ejecutar un playbook le decimos que use el inventario del aula donde estamos.
+
+Vamos a crear en cada inventario los grupos:
+[primera-fila]
+
+[aula:children]
+192.168.
+
