@@ -1,4 +1,4 @@
-# Ejercicio 1: registrarr usuarios
+# Ejercicio 1: registrar usuarios
 Vamos a hacer un formulario de registro de usuarios para nuestra web. LOs campos que tendrá són:
 - usuario: entre 6 y 15 caracteres, sólo letras y números
 - contraseña: entre 6 y 15 caracteres. Debe tener mayúsculas, minúsculas y números. Pediremos que la repita para asegurarnos que la ha puesto bien
@@ -94,4 +94,26 @@ Queremos implementar la posibildad de jugar contra el ordenador.
 
 ## Código
 Se valorará que el código sea lo más claro y breve posible. Recordad que para tratar con arrays usamos _functional programming_ (filter, find, forEach, ...) y no _for_. Nunca deben producirse errores Javascript
+
+# Ejercicio 4: Buscaminas
+Haz la aplicación del 'Buscaminas'. Recuerda que se destapa pulsando el botón izquierdo del ratón y se marca una mina pulsando el derecho. El juego tendrá 4 niveles:
+- Fácil: tablero de 8x8 casillas con 10 minas
+- Intermedio: 16x16 con 40 minas
+- Experto: 16x30 con 99 minas
+- Personalizado: el usuario introduce las dimensiones del tablero (máximo 20x40) y las minas (máximo el nº de casillas -1)
+
+Opcionalmente puede mejorar el aspecto e introducir sonidos al pinchar.
+
+# Ejercicio 5: 3 en raya “autóctono”
+Haremos una página para poder jugar con un compañero a las 3 en raya. La página tendrá 2 juegos de 3 fichas (uno para cada jugador) situados en algún sitio desde el que podremos arrastrarlas al tablero para jugar. 
+
+A tener en cuenta:
+- Puedo ir situando las fichas en el tablero y moverlas entre las distintas casillas del mismo
+- No puedo colocar una ficha en una casilla del tablero ya ocupada
+- Las fichas se mueven por turnos.
+- Un jugador no puede mover las fichas del tablero hasta que las haya colocado todas
+- Se debe mostrar un mensaje y detener el juego cuando alguien gane.
+
+## Mejora
+Puedo jugar contra el ordenador sin ganarle
 
