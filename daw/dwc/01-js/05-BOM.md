@@ -93,6 +93,8 @@ NOTA: por seguridad no se puede mover una ventana fuera de la pantalla ni darle 
 
 Puedes ver un ejemplo de cómo abrir ventanas en [este vídeo](https://www.youtube.com/watch?v=jkTt6bs2tPo&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=40).
 
+> EJERCICIO: Haz que a los 2 segundos de abrir la página se abra un _popup_ con un mensaje de bienvenida. Esta ventana tendrá en su interior un botón Cerrar que permitirá que el usuario la cierre haciendo clic en él. Tendrá el tamaño justo para visualizar el mensaje y no tendrá barras de scroll, ni de herramientas, ni de dirección... únicamente el mensaje.
+
 #### Diálogos
 Hay 3 métodos del objeto _window_ que ya conocemos y que nos permiten abrir ventanas de diálogo con el usuario:
 * `window.alert(mensaje)`: muestra un diálogo con el mensaje indicado y un botón de 'Aceptar'
