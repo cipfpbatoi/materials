@@ -281,6 +281,9 @@ for (let i=0; i<datos.length; i++) {
 }  
 // El valor de sumaDatos será 125
 ```
+
+> EJERCICIO: El factorial de un número entero n es una operación matemática que consiste en multiplicar ese número por todos los enteros menores que él: **n x (n-1) x (n-2) x ... x 1**. Así, el factorial de 5 (se escribe 5!) vale **5! = 5 x 4 x 3 x 2 x 1 = 120**. Haz un script que calcule el factorial de un número entero.
+
 #### Bucle: for...in
 El bucle se ejecuta una vez para cada elemento del array (o propiedad del objeto) y se crea una variable contador que toma como valores la posición del elemento en el array:
 ```javascript
