@@ -120,3 +120,14 @@ A tener en cuenta:
 ## Mejora
 Puedo jugar contra el ordenador sin ganarle
 
+# Ejercicio 5: Pinturetes
+Te hen encargado que hagas una página donde los niños puedan pintar. En la parte izquierda habrá una paleta de colores (una tabla con los colores que se pueden usar) y a su derecha estará el tablero de pintura formado por casillas. Se puede elegir tres tamaños de tablero:
+- pequeño: 10x25 casillas
+- medio: 20x50
+- grande: 40x100
+
+El tablero debería ocupar todo el espacio disponible sin que sean necesarias barras de scroll (deberás redimensionarlo al redimensionar la ventana del navegador).
+
+Para pintar le pincha sobre el color deseado de la paleta y se hace click sobre la casilla a pintar. Si arrastramos mientras hacemos click se pintarán todas las casillas por las que pasamos.
+
+Debajo de la paleta incluiremos un botón de 'Borrar' que borrará todo el tablero después de pedir confimación.
