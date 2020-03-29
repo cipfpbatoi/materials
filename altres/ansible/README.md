@@ -38,15 +38,15 @@ Podemos poner las IP o los nombres de los hosts, siempre que alguien los resuelv
 
 Podemos crear grupos de equipos en el inventario y un equipo puede pertenecer a varios grupos, ej.:
 ```ini
-[aula-224]
+[aula224]
 192.168.224.11  # pc11-t224
 192.168.224.12  # pc12-t224
 ...
-[primera-fila]
+[primerafila]
 192.168.224.11  # pc11-t224
 192.168.224.12  # pc12-t224
 ...
-[segunda-fila]
+[segundafila]
 192.168.224.21  # pc21-t224
 192.168.224.22  # pc22-t224
 ...
@@ -54,28 +54,28 @@ Podemos crear grupos de equipos en el inventario y un equipo puede pertenecer a 
 
 También se pueden usar patrones:
 ```ini
-[aula-224]
+[aula224]
 192.168.224.[11-51]
 ...
-[primera-fila]
+[primerafila]
 192.168.224.[11-16]
 ...
-[segunda-fila]
+[segundafila]
 192.168.224.[21-26]
 ...
 ```
 
 Un grupo puede contener otros grupos indicándolo con `:children`:
 ```ini
-[primera-fila]
+[primerafila]
 192.168.225.[11-16]
 ...
-[segunda-fila]
+[segundafila]
 192.168.225.[21-26]
 ...
-[aula-224:children]
-primera-fila
-segunda-fila
+[aula224:children]
+primerafila
+segundafila
 ...
 ```
 
@@ -300,7 +300,7 @@ Un playbook puede contener varias tareas:
   tasks: 
   - name: Ensure Apache is at the latest version 
     apt: name=apache2 state=latest 
-- hosts: primera-fila 
+- hosts: primerafila 
   remote_user: root 
   tasks: 
   - name: Ensure MariaDB is at the latest version 
@@ -311,7 +311,7 @@ Un playbook puede contener varias tareas:
 Podemos hacer que una tarea se ejecute con un usuario diferente al que se conecta al ssh con _become_:
 ```yaml
 ---  
-- hosts: primera-fila
+- hosts: primerafila
   remote_user: yourname 
   become: yes 
   become_user: mati 
@@ -334,11 +334,29 @@ En ocasiones nos interesará crear un playbook genérico (por ejemplo 'instala u
 ...
 ```
 
+También podemos declarar directamente las variables en el playbook usando `vars:` en vez de _vars_prompt_. O podemos definirlas en un fichero YAML externo e importarlas en el playbook con `vars_files:`. Ej.:
+```yaml
+---  
+- hosts: all
+  vars_files:
+    - /vars/external_vars.yaml
+...
+```
+
+Y el fichero **external_vars.yaml** tendría:
+```yaml
+---  
+var1: "su valor"
+var2: otroValor
+...
+```
+
+
 ## Gestión de las aulas
 Para no tener que cambiar cosas entre los distintos servidores de aula podríamos crear un inventario para cada aula en todos y al ejecutar un playbook le decimos que use el inventario del aula donde estamos.
 
 Vamos a crear en cada inventario los grupos:
-[primera-fila]
+[primerafila]
 
 [aula:children]
 192.168.
