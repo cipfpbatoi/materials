@@ -1,3 +1,6 @@
+# Ejercicio: números primos
+Haz una página que calcule todos los números primos que hay hasta el número que introduzca el usuario. Por ejemplo, si introduce 20 la respuesta sería: 2, 3, 5, 7, 11, 13, 17, 19. El código debe ser lo más eficiente posible.
+
 # Ejercicio 1: registrar usuarios
 Vamos a hacer un formulario de registro de usuarios para nuestra web. LOs campos que tendrá són:
 - usuario: entre 6 y 15 caracteres, sólo letras y números
