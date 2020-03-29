@@ -33,7 +33,7 @@ Cada cartón tiene 15 números distintos distribuidos en 3 filas de 5 números c
 - un botón o imagen o zona de 'Bingo' para que un jugador pueda cantar bingo cuando lo tenga
 - las cuentas de cada jugador (el dinero que lleva ganado o perdido)
 
-Se canta línea arrastrando la línea que queramos sobre el botón y bingo arrastrando el cartón sobre el botón. Si un jugador se equivoca y canta sin tener premio ese cartón queda eliminado de la partida.
+El usuario podrá marcar en su cartón los números que ya han salido. Se canta línea arrastrando la línea que queramos sobre el botón y bingo arrastrando el cartón sobre el botón. Si un jugador se equivoca y canta sin tener premio ese cartón queda eliminado de la partida.
 
 Queremos que se guarden nuestras ganancias/pérdidas para que la próxima vez que juguemos comencemos con ese dinero.
 
