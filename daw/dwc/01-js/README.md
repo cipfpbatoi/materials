@@ -90,7 +90,7 @@ Siempre depuraremos los programas desde aquí (ponemos puntos de interrupción, 
 Podemos usar el que más nos guste, desde editores tan simples como NotePad++ hasta complejos IDEs. La mayoría soportan las últimas versiones de la sintaxis de Javascript (Netbeans, Eclipse, Visual Studio, Sublime, Atom, Kate, Notepad++, ...). Yo voy a utilizar [[**Visual Studio Code**]](https://code.visualstudio.com/) o [**Sublime text**](https://www.sublimetext.com/) por su sencillez y por los plugins que incorpora para hacer más cómodo mi trabajo.
 
 Yo usaré _Visual Studio Code_ y le instalaré algún _plugin_ como:
-- SonarLint: es más que un _linter_ y me informa de todo tipo de errores pero también del código que no cumple las recomendaciones (incluye gran número de reglas)
+- SonarLint: es más que un _linter_ y me informa de todo tipo de errores pero también del código que no cumple las recomendaciones (incluye gran número de reglas). Marca el código mientras lo escribimos y además podemos ver todas las advertencias en el panel de Problemas (Ctrl+
 - Vetur: lo instaalremos en el segundo bloque. Necesario para trabajar con los ficheros de _Vue_
 
 ### Editores on-line
