@@ -196,37 +196,51 @@ let b=a.reverse();       // b=[6, 4, 2]
 * `.lastIndexOf()`: devuelve la última posición del elemento pasado como parámetro o -1 si no se encuentra en el array
 
 ### Functional Programming
-Desde la versión 5.1 javascript incorpora métodos de FP en el lenguaje, especialmente para trabajar con arrays:
+Se trata de un paradigma de programación (una forma de programar) donde se intenta que el código se centre más en qué debe hacer una función que en cómo debe hacerlo. El ejemplo más claro es que intenta evitar los bucles _for_ y _while_ sobre arrays o  listas de elementos. Normalmente cuando hacemos un bucle es para recorrer la lista y realizar alguna acción con cada uno de sus elementos. Lo que hace _functional programing_ es que a la función que debe hacer eso además de pasarle como parámetro la lista sobre la que debe actuar se le pasa como segundo parámetro la función que debe aplicarse a cada elemento de la lista.
+
+Desde la versión 5.1 javascript incorpora métodos de _functional programing_ en el lenguaje, especialmente para trabajar con arrays:
 
 #### filter
-Devuelve un nuevo array con los elementos que cumplen determinada condición del array al que se aplica. Su parámetro es una función, habitualmente anónima, que va interactuando con los elementos del array. Esta función recibe como primer parámetro el elemento actual, como segundo parámetro su índice y como tercer parámetro el array completo y devuelve **true** para los elementos que se incluirán en el array a devolver y **false** para el resto.
+Devuelve un nuevo array con los elementos que cumplen determinada condición del array al que se aplica. Su parámetro es una función, habitualmente anónima, que va interactuando con los elementos del array. Esta función recibe como primer parámetro el elemento actual del array (sobre el que debe actuar). Opcionalmente puede tener como segundo parámetro su índice y como tercer parámetro el array completo. La función devuelve un _Boolean_: **true** para los elementos que se incluirán en el array a devolver y **false** para el resto.
 
-Ejemplo: dado un array con todas devolver un array con las notas de los aprobados:
+Ejemplo: dado un array con notas devolver un array con las notas de los aprobados:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let aprobados=arrayNotas.filter(function(nota) {
-  return nota>=5;
-});       // aprobados=[5, 6, 9.75, 7.5]
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let aprobados = arrayNotas.filter(function(nota) {
+  if (nota >= 5) {
+    return true;
+  } else {
+    return false;
+ } 
+});       // aprobados = [5, 6, 9.75, 7.5]
 ```
-Usando funciones lambda la sintaxis queda mucho más simple:
+
+Podemos refactorizar esta función para que sea más compacta:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let aprobados=arrayNotas.filter(nota => nota>=5);
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let aprobados = arrayNotas.filter(function(nota) {
+  return nota >= 5;     // nota>=5 se evalúa a 'true' si es cierto o 'false' si no lo es
+});
+```
+
+Y usando funciones lambda la sintaxis queda mucho más simple:
+```javascript
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let aprobados = arrayNotas.filter(nota => nota >= 5);
 ```
 
 > EJERCICIO: Dado un array con los días de la semana obtén todos los días que empiezan por 'M'
 
 #### find
-Como _filter_ pero devuelve el primer elemento que cumpla la condición (o _undefined_ si no la cumple nadie). Ejemlplo:
-let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
+Como _filter_ pero NO devuelve un **array** sino el primer **elemento** que cumpla la condición (o _undefined_ si no la cumple nadie). Ejemlplo:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let primerAprobado=arrayNotas.find(nota => nota>=5);    // primerAprobado=5
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let primerAprobado = arrayNotas.find(nota => nota >= 5);    // primerAprobado = 5
 ```
 
 Este método tiene más sentido con objetos. Por ejemplo, si queremos encontrar la persona con DNI '21345678Z' dentro de un array llamado personas cuyos elementos son objetos con un campo 'dni' haremos:
 ```javascript
-let personaBuscada=personas.find(persona => persona.dni=='21345678Z');    // devolverá el objeto completo
+let personaBuscada = personas.find(persona => persona.dni === '21345678Z');    // devolverá el objeto completo
 ```
 
 > EJERCICIO: Dado un array con los días de la semana obtén el primer día que empieza por 'M'
@@ -239,69 +253,74 @@ Como _find_ pero en vez de devolver el elemento devuelve su posición (o -1 si n
 #### every / some
 La primera devuelve **true** si **TODOS** los elementos del array cumplen la condición y **false** en caso contrario. La segunda devuelve **true** si **ALGÚN** elemento del array cumple la condición. Ejemplo:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let todosAprobados=arrayNotas.every(nota => nota>=5);   // false
-let algunAprobado=arrayNotas.some(nota => nota>=5);     // true
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let todosAprobados = arrayNotas.every(nota => nota >= 5);   // false
+let algunAprobado = arrayNotas.some(nota => nota >= 5);     // true
 ```
 
 > EJERCICIO: Dado un array con los días de la semana indica si algún día empieza por 'S'. Dado un array con los días de la semana indica si todos los días acaban por 's'
+
+#### map
+Permite modificar cada elemento de un array y devuelve un nuevo array con los elementos del original modificados. Ejemplo: queremos subir un 10% cada nota:
+```javascript
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotasSubidas = arrayNotas.map(nota => nota + nota * 10%);
+```
+
+> EJERCICIO: Dado un array con los días de la semana devuelve otro array con los días en mayúsculas
 
 #### reduce
 Devuelve un valor calculado a partir de los elementos del array. En este caso la función recibe como primer parámetro el valor calculado hasta ahora y el método tiene como 1º parámetro la función y como 2º parámetro al valor calculado inicial (si no se indica será el primer elemento del array).
 
 Ejemplo: queremos obtener la suma de las notas:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let total=arrayNotas.reduce((total,nota) => total+=nota, 0);    // total=35.15
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let total = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 35.15
 // podríamos haber omitido el valor inicial 0 para total
-let total=arrayNotas.reduce((total,nota) => total+=nota);    // total=35.15
+let total = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.15
 ```
+
 Ejemplo: queremos obtener la nota más alta:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let maxNota=arrayNotas.reduce((max,nota) => nota>max?nota:max);    // max=9.75
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let maxNota = arrayNotas.reduce((max,nota) => nota > max ? nota : max);    // max=9.75
 ```
 
 > EJERCICIO: Dado el array de notas anterior devuelve la nota media
 
-#### map
-Permite modificar cada elemento de un array y devuelve un nuevo array con los elementos del original modificados. Ejemplo: queremos subir un 10% cada nota:
-```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let arrayNotasSubidas=arrayNotas.map(nota => nota+nota*10%);
-```
-
 #### forEach
 Es el método más general de los que hemos visto. No devuelve nada sino que permite realizar algo con cada elemento del array.
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
 arrayNotas.forEach((nota, indice) => {
-  console.log('El elemento de la posición '+indice+' es: '+nota);
+  console.log('El elemento de la posición ' + indice + ' es: ' + nota);
 });
 ```
 
 #### includes
 Devuelve **true** si el array incluye el elemento pasado como parámetro. Ejemplo:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
 arrayNotas.includes(7.5);     // true
 ```
 
 > EJERCICIO: Dado un array con los días de la semana indica si algún día es el 'Martes'
 
 #### Array.from
-Devuelve un array a partir de otro al que aplica una función de transformación (es similar a _map_). Ejemplo: queremos subir un 10% cada nota:
+Devuelve un array a partir de otro al que se puede aplicar una función de transformación (es similar a _map_). Ejemplo: queremos subir un 10% cada nota:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let arrayNotasSubidas=Array.from(arrayNotas, nota => nota+nota*10%);
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotasSubidas = Array.from(arrayNotas, nota => nota + nota * 10%);
 ```
+
 Se utiliza mucho para convertir colecciones en arrays y así poder usar los métodos de arrays que hemos visto. Por ejemplo si queremos mostrar por consola cada párrafo de la página que comience por la palabra 'NOTA:' en primer lugar obtenemos todos los párrafos con:
 ```javascript
-let parrafos=document.getElementsByTagName('p');
+let parrafos = document.getElementsByTagName('p');
 ```
+
 Esto nos devuelve una colección con todos los párrafos de la página (lo veremos más adelante al ver DOM). Podríamos hacer un **for** para recorrer la colección y mirar los que empiecen por lo indicado pero no podemos aplicarle los métodos vistos aquí porque son sólo para arrays así que hacemos:
 ```javascript
-let arrayParrafos=Array.from(parrafos);
+let arrayParrafos = Array.from(parrafos);
 // y ya podemos usar los métodos que queramos:
 arrayParrafos.filter(parrafo => parrafo.startsWith('NOTA:').forEach(parrafo => console.log(parrafo));
 ```
@@ -311,36 +330,36 @@ arrayParrafos.filter(parrafo => parrafo.startsWith('NOTA:').forEach(parrafo => c
 ## Referencia vs Copia
 Cuando copiamos una variable de tipo _boolean_, _string_ o _number_ o se pasa como parámetro a una función se hace una copia de la misma y si se modifica la variable original no es modificada. Ej.:
 ```javascript
-let a=54;
-let b=a;      // a=54; b=54
-b=86;         // a=54; b=86
+let a = 54;
+let b = a;      // a=54; b=54
+b = 86;         // a=54; b=86
 ```
 Sin embargo al copiar objetos (y los arrays son un tipo de objeto) la nueva variable apunta a la misma posición de memoria que la antigua por lo que los datos de ambas son los mismos:
 ```javascript
-let a=[54, 23, 12];
-let b=a;      // a=[54, 23, 12]; b=[54, 23, 12]
-b[0]=3;       // a=[3, 23, 12]; b=[3, 23, 12]
-let fecha1=new Date('2018-09-23');
-let fecha2=fecha1;          // fecha1='2018-09-23';   fecha2='2018-09-23';
+let a = [54, 23, 12];
+let b = a;      // a = [54, 23, 12]; b=[54, 23, 12]
+b[0] = 3;       // a = [3, 23, 12]; b=[3, 23, 12]
+let fecha1 = new Date('2018-09-23');
+let fecha2 = fecha1;          // fecha1='2018-09-23';   fecha2='2018-09-23';
 fecha2.setFullYear(1999);   // fecha1='1999-09-23';   fecha2='1999-09-23';
 ```
 
 Si queremos obtener una copia de un array que sea independiente del original podemos obtenerla con `slice`:
 ```javascript
-let a=[2, 4, 6];
-let copiaDeA=a.slice();       // ahora ambos arrays contienen lo mismo pero son diferentes
+let a = [2, 4, 6];
+let copiaDeA = a.slice();       // ahora ambos arrays contienen lo mismo pero son diferentes
 ```
 
 En el caso de objetos es algo más complejo. ES6 incluye [`Object assing`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) que hace una copia de un objeto:
 ```javascript
-let a={id:2, name: 'object 2'};
-let copiaDeA=Object.assign({}, a);       // ahora ambos objetos contienen lo mismo pero son diferentes
+let a = {id:2, name: 'object 2'};
+let copiaDeA = Object.assign({}, a);       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
 
 Sin embargo si el objeto tiene como propiedades otros objetos estos se continúan pasando por referencia. Es ese caso lo más sencillo sería hacer:
 ```javascript
-let a={id:2, name: 'object 2', address: {street: 'C/ Ajo', num: 3} };
-let copiaDeA=JSON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
+let a = {id: 2, name: 'object 2', address: {street: 'C/ Ajo', num: 3} };
+let copiaDeA= J SON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
 
 > EJERCICIO: Dado el array arr1 con los días de la semana haz un array arr2 que sea igual al arr1. Elimina de arr2 el último día y comprueba quá ha pasado con arr1. Repita la operación con un array llamado arr3 pero que crearás haciendo una copia de arr1.
@@ -353,7 +372,7 @@ Permiten extraer a parámetros los elementos de un array o string (_spread_) o c
 Para usar _rest_ como parámetro de una función debe ser siempre el último parámetro:
 ```javascript
 function notaMedia(...notas) {
-  let total=notas.reduce((total,nota) => total+=nota);
+  let total = notas.reduce((total,nota) => total += nota);
   return total/notas.length;
 }
 
@@ -361,35 +380,35 @@ console.log(notaMedia(5, 3.9, 6, 9.75, 7.5, 3));    // le pasamos un número var
 ```
 Si lo que queremos es convertir un array en un grupo de elementos haremos _spread_. Por ejemplo el objeto _Math_ porporciona métodos para trabajar con números como _.max_ que devuelve el máximo de los números pasados como parámetro. Para saber la nota máxima en vez de _.reduce_ como hicimos en el ejemplo anterior podemos hacer:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let maxNota=Math.max(...arrayNotas);    // maxNota=9.75
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let maxNota = Math.max(...arrayNotas);    // maxNota=9.75
 // hacemos Math.max(arrayNotas) devuelve NaN porque arrayNotas es un array y no un número
 ```
 
 Estas funcionalidades nos ofrecen otra manera de copiar objetos (pero sólo a partir de ES-2018):
 ```javascript
-let a={id:2, name: 'object 2'};
-let copiaDeA={ ...a};       // ahora ambos objetos contienen lo mismo pero son diferentes
+let a = {id: 2, name: 'object 2'};
+let copiaDeA = { ...a};       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
 
 
 ## Desestructuración de arrays
 Similar a _rest_ y _spread_, permiten extraer los elementos del array directamente a variables y viceversa. Ejemplo:
 ```javascript
-let arrayNotas=[5, 3.9, 6, 9.75, 7.5, 3];
-let [primera, segunda, tercera]=arrayNotas;   // primera=5, segunda=3.9, tercera=6
-let [primera, , , cuarta]=arrayNotas;         // primera=5, cuarta=9.75
-let [primera, ...resto]=arrayNotas;           // primera=5, resto=[3.9, 6, 9.75, 3]
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let [primera, segunda, tercera] = arrayNotas;   // primera=5, segunda=3.9, tercera=6
+let [primera, , , cuarta] = arrayNotas;         // primera=5, cuarta=9.75
+let [primera, ...resto] = arrayNotas;           // primera=5, resto=[3.9, 6, 9.75, 3]
 ```
 También se pueden asignar valores por defecto:
 ```javascript
-let preferencias=['Javascript', 'NodeJS'];
-let [lenguaje, backend='Laravel', frontend='VueJS']=preferencias;  // lenguaje='Javascript', backend='NodeJS', frontend='VueJS'
+let preferencias = ['Javascript', 'NodeJS'];
+let [lenguaje, backend = 'Laravel', frontend = 'VueJS'] = preferencias;  // lenguaje='Javascript', backend='NodeJS', frontend='VueJS'
 ```
 
 La desestructuración también funciona con objetos. Es normal pasar un objeto como parámetro para una función pero si sólo nos interesan algunas propiedades del mismo podemos desestructurarlo:
 ```javascript
-const miProducto={
+const miProducto = {
     id: 5,
     name: 'TV Samsung',
     units: 3,
@@ -405,8 +424,8 @@ function miProducto({name: nanme, units: units}) {        // Mejor pondríamos f
 
 También podemos asignar valores por defecto:
 ```javascript
-function miProducto({name, units=0}) {
-    console.log('Del producto '+name+' hay '+units+' unidades');
+function miProducto({name, units = 0}) {
+    console.log('Del producto ' + name + ' hay ' + units + ' unidades');
 }
 
 muestraNombre({name: 'USB Kingston');
@@ -416,7 +435,7 @@ muestraNombre({name: 'USB Kingston');
 ## Map
 Es una colección de parejas de \[clave,valor]. Un objeto en Javascript es un tipo particular de _Map_ en que las claves sólo pueden ser texto o números. Se puede acceder a una propiedad con **.** o **\[propiedad]**. Ejemplo:
 ```javascript
-let persona={
+let persona = {
   nombre: 'John',
   apellido: 'Doe',
   edad: 39
@@ -432,8 +451,8 @@ Es como un _Map_ pero que no almacena los valores sino sólo la clave. Podemos v
 
 Una forma sencilla de eliminar los duplicados de un array es crear con él un _Set_:
 ```javascript
-let ganadores=['Márquez', 'Rossi', 'Márquez', 'Lorenzo', 'Rossi', 'Márquez', 'Márquez'];
-let ganadoresNoDuplicados=new Set(ganadores);    // {'Márquez, 'Rossi', 'Lorenzo'}
+let ganadores = ['Márquez', 'Rossi', 'Márquez', 'Lorenzo', 'Rossi', 'Márquez', 'Márquez'];
+let ganadoresNoDuplicados = new Set(ganadores);    // {'Márquez, 'Rossi', 'Lorenzo'}
 // o si lo queremos en un array:
-let ganadoresNoDuplicados=Array.from(new Set(ganadores));    // ['Márquez, 'Rossi', 'Lorenzo']
+let ganadoresNoDuplicados = Array.from(new Set(ganadores));    // ['Márquez, 'Rossi', 'Lorenzo']
 ```
