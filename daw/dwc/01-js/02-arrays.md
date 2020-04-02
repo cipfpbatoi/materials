@@ -286,6 +286,8 @@ let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
 let maxNota = arrayNotas.reduce((max,nota) => nota > max ? nota : max);    // max=9.75
 ```
 
+En el siguiente ejemplo gráfico tenemos un "array" de verduras al que le aplicamos una función _map_ para que las corte y al resultado le aplicamos un _reduce_ para que obtenga un valor (el sandwich) con todas ellas:
+
 ![Functional Programming Sandwich](https://miro.medium.com/max/1268/1*re1sGlEEm1C95_Luq3cJbw.png)
 
 > EJERCICIO: Dado el array de notas anterior devuelve la nota media
