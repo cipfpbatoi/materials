@@ -280,6 +280,8 @@ let total = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 3
 let total = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.15
 ```
 
+![Functional Programming Sandwich](https://miro.medium.com/max/1268/1*re1sGlEEm1C95_Luq3cJbw.png)
+
 Ejemplo: queremos obtener la nota más alta:
 ```javascript
 let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
