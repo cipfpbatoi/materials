@@ -18,6 +18,7 @@
   - [Autenticación](#autenticaci%C3%B3n)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Nuxt](#nuxt)
+  - [Angular](#angular)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -303,3 +304,9 @@ También hay otras librerías que nos pueden ser de utilidad como:
 
 ## Conclusión
 Como vés existen infinidad de librerías alrededor de Vue para ofercernos nuevas fucionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
+
+## Angular
+Aunque el cecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
+- [Documentación oficial de Angular](https://angular.io/)
+- [Ejemplo de CRUD con Angular](https://www.djamware.com/post/5e435e84a8d0ef4300ffc5f6/angular-9-tutorial-learn-to-build-a-crud-angular-app-quickly)
+- ...
