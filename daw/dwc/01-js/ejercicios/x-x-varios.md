@@ -3,8 +3,11 @@ Haz una página que calcule todos los números primos que hay hasta el número q
 
 El código debe ser lo más eficiente posible ya que si no no podrá calcular números primos grandes (de más de 5 cifras). Estaría muy bien que fuera capaz de sacar los primos hasta el 500000 en menos de 10 segundos (mi solución los saca en 5).
 
-Para mejorar la eficacia debes reducir las divisiones: piensa que no es necesario dividir un número entre todos los que son más pequeños que él para saber si es divisible, basta por dividirlo entre los números primos inferiores a él. Por ejemplo, para saber que 19 es primo no hace falta dividirlo entre 2, 3, 4, 5, 6...18. Si no es divisible por 2 tampoco puede serlo por 4, por 6, ...
-Bastaría con dividir 19 entre 2, 3, 5, 7, 11, 13, 17. Y ni siquiera entre todos esos...
+Para mejorar la eficacia debes reducir las divisiones: piensa que no es necesario dividir un número entre todos los que son más pequeños que él para saber si es divisible, basta por dividirlo entre los números primos inferiores a él. Por ejemplo, para saber que 19 es primo no hace falta dividirlo entre 2, 3, 4, 5, 6...18. Si no es divisible por 2 tampoco puede serlo por 4, por 6, por 8, ... Bastaría con dividir 19 entre los números primos menores que él (2, 3, 5, 7, 11, 13, 17). 
+
+Y ni siquiera entre todos esos...
+
+Conceptos a utilizar: prompt, console, arrays, bucles (for, for...of).
 
 # Ejercicio 1: registrar usuarios
 Vamos a hacer un formulario de registro de usuarios para nuestra web. LOs campos que tendrá són:
