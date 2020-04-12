@@ -441,8 +441,11 @@ Los operadores lógicos son ! (negación), && (and), || (or).
 
 Para comparar valores tenemos **==** y **===**. La triple igualdad devuelve _true_ si son igual valor y del mismo tipo. Como Javascript hace conversiones de tipos automáticas conviene usar la **===** para evitar cosas como:
 * `'3' == 3` true
+* `3 == 3.0` true
 * `0 == false` true
 * `'' == false` true
+* `' ' == false` true
+* `[] == false` true
 * `null == false` false
 * `undefined == false` false
 * `undefined == null` true
