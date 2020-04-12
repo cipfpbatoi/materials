@@ -204,9 +204,11 @@ es
 > - prodsList: devuelve una cadena que dice 'Listado de productos:' y en cada línea un guión y la información de un producto del array
 
 ## POO en ES5
-Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia por lo que había que emularlas. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
+Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
 
-Para crear el constructor se creaba una función con el nombre del objeto y para crear los métodos se aconsejaba hacerlo en el _prototipo_ del objeto para que no se creara una copia del mismo por cada instancia que creemos:
+En Javascript un objeto se crea a partir de otro (al que se llama _prototipo_). Así se crea una cadena de prototipos, el último de los cuales es el objeto _null_.
+
+Si queremos emular el comportamiento de las clases, para crear el constructor se crea una función con el nombre del objeto y para crear los métodos se aconseja hacerlo en el _prototipo_ del objeto para que no se cree una copia del mismo por cada instancia que creemos:
 ```javascript
 function Alumno(nombre, apellidos, edad) {
     this.nombre=nombre;
