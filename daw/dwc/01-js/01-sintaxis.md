@@ -126,6 +126,15 @@ console.log(suma(4, 2));                    // mostrará 6
 console.log(suma(4, 2, 5, 3, 2, 1, 3));     // mostrará 20
 ```
 
+En Javascript las funciones son un tipo de datos más por lo que podemos hacer cosas como pasarlas por argumento o asignarlas a una variable:
+```javascript
+function aplica_fn(dato, funcion_a_aplicar) {
+    return funcion_a_aplicar(dato);
+}
+
+aplica_fn(3, potencia);     // devolverá 9 (3^2)
+```
+
 ### Funciones anónimas
 Podemos definir una función sin darle un nombre. Dicha función puede asignarse a una variable, autoejecutarse o asignasrse a un manejador de eventos. Ejemplo:
 ```javascript
@@ -135,6 +144,8 @@ let holaMundo = function() {
 
 holaMundo();        // se ejecuta la función
 ```
+
+Como vemos asignamos una función a una variable de forma que podamos "ejecutar" dicha variable.
 
 ### Arrow functions (funciones _labda_)
 ES2015 permite declarar una función anónima de forma más corta. Ejemplo sin _arrow function_:
