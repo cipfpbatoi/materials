@@ -112,7 +112,7 @@ console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene
 
 > EJERCICIO: Crea una clase Productos con las propiedades y métodos del ejercicio anterior. Además tendrá un método getInfo que devolverá: 'Nombre (categoría): unidades uds x precio € = importe €'. Crea 3 productos diferentes.
 
-**OJO con _this_**
+### OJO con _this_
 Dentro de una función se crea un nuevo contexto y la variable _this_ hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
 ```javascript
 class Alumno {
@@ -159,6 +159,7 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
 
 4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos
 
+Esto nos puede ocurrir en las funciones manejadoras de eventos que veremos en próximos temas.
 
 ### Herencia
 Una clase puede heredar de otra utilizando la palabra reservada **extends** y heredará todas sus propiedades y métodos. Podemos sobrescribirlos en la clase hija (seguimos pudiendo llamar a los métodos de la clase padre utilizando la palabra reservada **super** -es lo que haremos si creamos un constructor en la clase hija-).
