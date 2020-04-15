@@ -18,6 +18,7 @@
   - [Single Page Application](#single-page-application)
   - [Promesas](#promesas)
   - [Ajax con fetch()](#ajax-con-fetch)
+  - [Async/await](#async-await)
 - [Otras llamadas asíncornas](#otras-llamadas-as%C3%ADncronas)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
