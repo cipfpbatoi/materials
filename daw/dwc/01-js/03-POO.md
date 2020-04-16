@@ -112,8 +112,8 @@ console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene
 
 > EJERCICIO: Crea una clase Productos con las propiedades y métodos del ejercicio anterior. Además tendrá un método getInfo que devolverá: 'Nombre (categoría): unidades uds x precio € = importe €'. Crea 3 productos diferentes.
 
-### OJO con _this_
-Dentro de una función se crea un nuevo contexto y la variable _this_ hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
+### Ojo con _this_
+Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
 ```javascript
 class Alumno {
     ...
@@ -126,7 +126,7 @@ class Alumno {
 }
 ```
 
-Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace referencia al objeto Alumno sino al contexto de la función. Este caso no tiene mucho sentido pero si debemos llamar a una función dentro de un método tenemos varias formas de pasarle el valor de _this_:
+Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace referencia al objeto Alumno sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
 1. Pasárselo como parámetro
 ```javascript
     getInfo() {
@@ -136,7 +136,6 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
         }
     }
 ```
-
 
 2. Guardando el valor en otra variable (como _that_)
 ```javascript
@@ -153,11 +152,11 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
 ```javascript
     getInfo() {
         return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años';
-        let nomAlum = (alumno) => this.nombre + ' ' + this.apellidos; 
+        let nomAlum = () => this.nombre + ' ' + this.apellidos; 
     }
 ```
 
-4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos
+4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos)
 
 Esto nos puede ocurrir en las funciones manejadoras de eventos que veremos en próximos temas.
 
