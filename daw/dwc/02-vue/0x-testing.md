@@ -221,8 +221,62 @@ describe('componente Usuario.vue', () => {
 })
 ```
 
-## Ejemplo
+### Testear Vuex
+Normalmente nuestros componentes usaran Vuex para:
+- hacer un _commit_ a una _mutation_
+- hacer un _dispatch_ a una _action_
+- acceder a los datos mediante _state_ o _getters_
+
+#### Testear mutations
+Es sencillo porque sólo son llamadas Javascript. Ejemplo:
+```javascript
+// store.js
+...
+mutations: {
+      addPost(state, post) {
+        state.posts.push(post);
+      },
+}
+...
+```
+
+```javascript
+// store.spec.js
+import { mutations } from "@/store/index.js"
+
+describe("addPost", () => {
+  it("adds a post to the state", () => {
+    const post = { id: 1, title: "Primer post" }
+    const state = {
+      posts: [],
+    }
+
+    mutations.addPost(state, post)
+
+    expect(state).toEqual({
+      posts: [ { id: 1, title: 'Primer post' } ]
+    })
+  })
+})
+
+```
+
+#### Testear actions
+
+```javascript
+```
+
+
+
+
+### Ejemplo
 Podéis encontrar un completo ejemplo de cómo testear una aplicación _ToDo_ en [Adictos al trabajo - Testing en componentes de Vue.js](https://www.adictosaltrabajo.com/2018/10/25/testing-en-componentes-de-vue-js/).
+
+Podéis encontrar ejemplos más completos en muchas páginas, como:
+- [Testing Vue]
+- [Vue Testing Handbook](https://lmiller1990.github.io/vue-testing-handbook/): completo tutorial de cómo testear todo en nuestros componentes Vue (props, computed, Vuex, router, ...)
+- [Testing Vuex](https://lmiller1990.github.io/vue-testing-handbook/testing-vuex.html#testing-vuex)
+- []
 
 Fuentes:
 - [Vue test utils](https://vue-test-utils.vuejs.org/)
