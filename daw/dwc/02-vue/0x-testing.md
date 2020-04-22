@@ -221,7 +221,8 @@ describe('componente Usuario.vue', () => {
 })
 ```
 
-
+## Ejemplo
+Podéis encontrar un completo ejemplo de cómo testear una aplicación _ToDo_ en [Adictos al trabajo - Testing en componentes de Vue.js](https://www.adictosaltrabajo.com/2018/10/25/testing-en-componentes-de-vue-js/).
 
 Fuentes:
 - [Vue test utils](https://vue-test-utils.vuejs.org/)
