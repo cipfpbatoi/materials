@@ -180,7 +180,7 @@ describe('Testing native dom events', () => {
 ```
 Fuente: [Testing Dom events in Vue.js using Jest and vue-test-utils. Sai gowtham](https://reactgo.com/vue-test-dom-events/)
 
-### Comprobar que el DOM reaaciona a cambios en una variable reactiva
+### Comprobar que el DOM reacciona a cambios en una variable reactiva
 Dado que Vue realiza las actualizaciones de DOM de forma asíncrona, las comprobaciones sobre las actualizaciones de DOM resultantes del cambio de estado, deberán realizarse en un callback `Vue.nextTick`.
 ```javascript
 it('button click should increment the count text', async () => {
@@ -193,8 +193,10 @@ it('button click should increment the count text', async () => {
 ```
 
 ### Comprobar peticiones asíncronas a servicios ajenos a Vue
-En muchos casos hacemos peticiones asíncronas, como peticiones a una API.
-[Doc Vue test utils](https://vue-test-utils.vuejs.org/guides/testing-async-components.html)
+En muchos casos hacemos peticiones asíncronas, como peticiones a una API. Podéis obtener información en:
+- [Doc Vue test utils](https://vue-test-utils.vuejs.org/guides/testing-async-components.html)
+- [Jest: Mock Functions](https://jestjs.io/docs/es-ES/mock-functions)
+- ...
 
 ### Nuestro primer test: TodoItem.vue
 En primer lugar vamos a testear que la propiedad 'done' tiene el valor que se le pasa y que cambia al llamar a la función 'toogleDone':
