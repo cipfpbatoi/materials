@@ -1,6 +1,15 @@
 # Testear nuestros componentes
 La librería que incluye Vue para testear las aplicaciones el **vue-test_utils** que proporciona herramientas para montar e interactuar con componentes. Para los tests unitarios usaremos [_Jest_](https://jestjs.io/).
 
+Tras instalar la librería con npm (será una dependencia de desarrollo) indicaremos al _linter_ que vamos a usar jest para que no genere advertencias al usar sus comandos para lo que modificaremos el fichero _.eslintrc.js_ y añadiremos al apartado _env_ una línea indicando que vamos a usar jest. Dicho apartado quedará:
+```json
+  env: {
+    node: true,
+    jest: true,
+  },
+```
+
+
 ## Tests unitarios
 A la hora de crear el proyecto no escogeremos _preset_ sino que seleccionaremos manualmente las características a instalar y marcaremos la de tests unitarios con _Jest_ que es la librería que usamos en el bloque de Javascript.
 
