@@ -9,6 +9,16 @@ Tras instalar la librería con npm (será una dependencia de desarrollo) indicar
   },
 ```
 
+Si usamos librerías como Vue-Material o Vuetify y debemos importar ficheros .css de las mismas en nuestros componentes es posible que falle Jest a la hora de pasar los test y nos dará un error de que no puede procesar el fichero porque no es Javascript. Podemos solucionarlo instalando para desarrollo el paquete _identuty-obj-proxy_ y añadiendo una entrada para _moduleNameMapper_ al fichero de configuración de Jest **jest.config.js** que quedará:
+```javascript
+module.exports = {
+  preset: '@vue/cli-plugin-unit-jest',
+  moduleNameMapper: {
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+  },
+}
+```
+(fuente: https://stackoverflow.com/questions/46177148/how-to-exclude-css-module-files-from-jest-test-suites)
 
 ## Tests unitarios
 A la hora de crear el proyecto no escogeremos _preset_ sino que seleccionaremos manualmente las características a instalar y marcaremos la de tests unitarios con _Jest_ que es la librería que usamos en el bloque de Javascript.
