@@ -276,6 +276,7 @@ Podéis encontrar ejemplos más completos en muchas páginas, como:
 - [Testing Vue]
 - [Vue Testing Handbook](https://lmiller1990.github.io/vue-testing-handbook/): completo tutorial de cómo testear todo en nuestros componentes Vue (props, computed, Vuex, router, ...)
 - [Testing Vuex](https://lmiller1990.github.io/vue-testing-handbook/testing-vuex.html#testing-vuex)
+- [Testing Vue.js Applications](https://livebook.manning.com/book/testing-vue-js-applications/about-this-book/)
 - []
 
 Fuentes:
