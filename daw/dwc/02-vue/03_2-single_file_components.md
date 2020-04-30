@@ -115,20 +115,17 @@ Crearemos un fichero _.vue_ para cada uno de los componentes y otro para el comp
 
 ### TodoApp.vue
 
-#### \<template>
-```html
+```vue
+<template>
   <div id="app">
     <todo-list title="Tengo que aprender:"></todo-list>
     <todo-add></todo-add>
     <br>
     <todo-del-all></todo-del-all>
   </div>
-```
+</template>
 
-Este componente renderiza un componente _todo-list_ al que le pasa como parámetro el título a mostrar, un componente _todo_add_ y otro _todo-del-all_.
-
-#### \<script>
-```javascript
+<script>
 import TodoList from './components/TodoList.vue'
 import TodoAdd from './components/TodoAdd.vue'
 import TodoDelAll from './components/TodoDelAll.vue'
@@ -141,12 +138,9 @@ export default {
     TodoDelAll,
   }
 }
-```
+</script>
 
-Simplemente se importan los 3 componentes y se registran.
-
-#### \<style>
-```css
+<style>
 #app {
   padding: 20px;
 }
@@ -163,7 +157,12 @@ h2 {
 del {
   color: rgba(0, 0, 0, 0.3);
 }
+</style>
 ```
+
+Este componente renderiza un componente _todo-list_ al que le pasa como parámetro el título a mostrar, un componente _todo_add_ y otro _todo-del-all_.
+
+En el código (\<script>) simplemente se importan los 3 componentes y se registran.
 
 ### TodoList.vue
 ```vue
@@ -313,3 +312,12 @@ export default {
 }  
 </script>
 ```
+
+### EventBus.js
+```javascript
+import Vue from "vue";
+
+export const EventBus = new Vue;
+```
+
+Simplemente se exporta una nueva instancia de Vue con el nombre de EventBus.
