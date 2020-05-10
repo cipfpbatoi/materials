@@ -1,26 +1,30 @@
 # Bloc 1: Javascript. Práctica 3.1 - POO
-En este ejercicio vamos a trabajar con los productos de un almacén, para lo que crearemos las clases:
-- **Product**: la guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propiedades**:
+En este ejercicio vamos a trabajar con los productos de un almacén, para lo que crearemos las clases **Product** y **Store**.
+
+## Clase Product
+La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propiedades**:
   - id
   - name
   - price
   - units: argumento opcional (si no le pasamos unidades al constructor su número por defecto será 0).
   
-  Esta clase tendrá los siguientes **métodos**:
+Esta clase tendrá los siguientes **métodos**:
   - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará anda y devolerá _false_.
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales), como en el siguiente ejemplo:
 ```
         TV Samsung MP45: 5 uds. x 235,95 €/u = 1179.75 €
 ```
-- **Store**: es el almacén de productos (podríamos tener más de uno) que guardaremos en _store.class.js_. Tendrá las **propiedades**:
+
+## Clase Store
+Es el almacén de productos (podríamos tener más de uno) que guardaremos en _store.class.js_. Tendrá las **propiedades**:
   -  id: código numérico que nos pasan al crear el almacén
   -  products: array de productos. No se le pasa al constructor ya que al crear un almacén el array estará vacío.
   
-  La clase tendrá los **métodos**:
+La clase tendrá los **métodos**:
   - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id o _undefined_ si ese código no existe en el almacén
-  - newProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Devolverá el producto añadido al almacén o _false_ si no ha podido hacerse por algún motivo.   
-  - delProduct: recibe como parámetro el código de un producto y lo elimina del almacén si no tiene unidades devolviendo _true_. Si sus unidades no están a 0 no hace nada y devuelve _false_.
+  - newProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Si no se le pasa _units_ lo creará con 0 unidades. Devolverá el producto añadido al almacén o _false_ si no ha podido hacerse por algún motivo.   
+  - delProduct: recibe como parámetro la id de un producto y lo elimina del almacén si no tiene unidades devolviendo el producto eliminado. Si sus unidades no están a 0 no hace nada y devuelve _false_, igual que si no se puede eliminar.
   - changeProductUnits: recibe un objeto con la id de un producto y el número de unidades a increamentar (o disminuir si el número es negativo). Devuelve el producto modificado si ha podido hacerse o _false_ en caso contrario
   - changeProduct: recibe un objeto con la id de un producto y los campos a modificar (los que no estén permanecerán sin cambios). Devuelve el objeto modificado si ha podido hacerse o _false_ en caso contrario
   - totalImport: devuelve el valor total de los productos del almacén (su precio por sus uds)
@@ -50,12 +54,11 @@ En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (prod
 
 Esto ya empieza a ser incómodo así que vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero _./dist/main.js_ que sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../90.test.md) para hacerlo.
 
-Para que la clase _Store_ pueda usar los métodos de _Product_ debeos hacer:
+Para que la clase _Store_ pueda usar los métodos de _Product_ debemos hacer:
 - añadir al final de _product.class.js_ el código `module.exports = Product;`
 - añadir al principio de _store.class.js el código `const Product = require('./product.class');`
 
 Lo mismo habrá que hacer para que _main.js_ pueda llamar a métodos de _Store_.
-Para que la clase _Store_ pueda usar los métodos de la clase _Product_ si se encuentran en diferentes poder pasar los tests añade 
 
 ## Probar el código
 En lo que te has decargado de _moodle_ tienes los test que debes pasar para comprobar tu código. Recuerda que simplemente debes hacer:
