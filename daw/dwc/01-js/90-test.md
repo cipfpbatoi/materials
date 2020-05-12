@@ -44,7 +44,14 @@ Una vez instalado npm crearemos una carpeta para nuestro proyecto y dentro de el
 npm init
 ```
 
-Se nos pedirá información sobre el proyecto y cuando nos pregunten por al herramienta para hacer tests escribiremos **jest**. Tras ello tendremos ya creado el fichero **package.json** de nuestra aplicación. Ahora falta instalar jest, lo que haremos con:
+Se nos pedirá información sobre el proyecto y cuando nos pregunten por al herramienta para hacer tests escribiremos **jest**. Tras ello tendremos ya creado el fichero **package.json** de nuestra aplicación. En el apartado de _scripts_ encontramos uno llamado _test_ que lo que hace es ejecutar _jest_:
+```json
+"scripts": {
+   "test": "jest"
+},
+```
+
+Ahora falta instalar jest, lo que haremos con:
 ```javascript
 npm install --save-dev jest
 ```
@@ -53,7 +60,67 @@ Estamos instalando jest sólo como dependencia de desarrollo ya que no lo necesi
 
 Como vamos a utilizar _jest_ en muchos mini-proyectos distintos podemos instalarlo globalmente con `npm i -g jest` de forma que en cada nuevo proyecto no tengamos que instalar nada, sólo hacer el `npm init`. 
 
+Las dependencias que instalemos están en el directorio _node_modules_. Si estamos usando _git_ debemos asegurarnos de incluir este directorio en nuestro fichero _.gitignore_ (si no tenemos ese fichero podemos crearlo simplemente con `echo "node_modules" > .gitignore`).
+
+## Usar Babel
+Como se explica en el apartado de [Usar Jest](#usar-jest) crearemos las funciones en un fichero js que las exportará y el fichero de test deberá importarlas con un _require_. Ejemplo, **index.js** contiene la función _suma_:
+```javascript
+function Add(a, b) {
+  return a + b;
+}
+module.exports = Add;
+```
+
+El fichero de test, **index.test.js** contiene los test a ejecutar:
+```javascript
+const Add = require('./index')
+
+describe('Addition', () => {
+    it('given 3 and 7 as inputs, should return 10', () => {
+        const expected = 10;
+        const actual = Add(3,7);
+        expect(actual).toEqual(expected)
+    });
+
+    it('given 4 and 2 as inputs, should return 6', () => {
+        const expected = 6;
+        const actual = Add(4,2);
+        expect(actual).toEqual(expected)
+    });
+});
+```
+
+Lo que hace es:
+- importa la función que exporta _index.js_ y la almacena en la constante Add
+- el bloque _describe_ permite agrupar varios tests relacionados
+- cada _it_ es un test que se realizará
+
+Si ejecutamos los tests en la terminal (`npm run test`) muestra un error ya que Jest no sabe cómo gestionar las sentencias ECMAScript _import_ y _export_. Para solucionarlo debemos instalar el transpilador Babel:
+```bash
+npm add jest babel-jest @babel/core @babel/preset-env
+```
+
+Y crear 2 ficheros para configurarlo y que sepa trabajar junto a Jest:
+- **jest.config.json**
+```json
+{
+    "transform": {
+        "^.+\\.jsx?$": "babel-jest"
+    }
+}
+```
+- **.babelrc**
+```json
+{
+    "presets": ["@babel/preset-env"]
+}
+```
+
+Ahora ya podemos ejecutar los test y comprobar que nuestro código los pasa.
+
 ## Usar webpack
+Con Babel nuestro código ya es transpilado antes de ejecutar los tests, pero dará error si intentamos ejecutarlo en el navegador porque no está transpilado. Podemos solucionarlo usando _webpack_ que ya incluye Babel (por tanto no sería necesario realizar lo indicado en al apartado anterior).
+
 [Webpack](https://webpack.js.org/) el un _bundler_ o empaquetador de código que además puede usar transpiladores para convertir nuestro código que usa versiones modernas de ECMAscript en otro soportado por la mayoría de navegadores.
 
 Por tanto nos va a permitir, entre otras cosas:
@@ -69,7 +136,7 @@ En la siguiente página explica cómo configurar npm y jest con babel (sin usar 
 - [Automate NPM releases with Jest, codecov.io, Semantic Release, and TravisCI](https://levelup.gitconnected.com/automate-npm-releases-with-jest-codecov-io-semantic-release-and-travisci-eff812e97541)
 
 # Usar jest
-La [documentación oficial]() proporciona muy buena información de cóo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
+La [documentación oficial](https://jestjs.io/docs/en/getting-started.html) proporciona muy buena información de cómo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
 ```javascript
 function suma(a, b) {
   return a + b;
