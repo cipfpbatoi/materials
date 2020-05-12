@@ -118,6 +118,9 @@ Y crear 2 ficheros para configurarlo y que sepa trabajar junto a Jest:
 
 Ahora ya podemos ejecutar los test y comprobar que nuestro código los pasa.
 
+En la siguiente página explica cómo configurar npm y jest con babel (sin usar webpack) e integrarlo con Travis-CI:
+- [Automate NPM releases with Jest, codecov.io, Semantic Release, and TravisCI](https://levelup.gitconnected.com/automate-npm-releases-with-jest-codecov-io-semantic-release-and-travisci-eff812e97541)
+
 ## Usar webpack
 Con Babel nuestro código ya es transpilado antes de ejecutar los tests, pero dará error si intentamos ejecutarlo en el navegador porque no está transpilado. Podemos solucionarlo usando _webpack_ que ya incluye Babel (por tanto no sería necesario realizar lo indicado en al apartado anterior).
 
@@ -131,9 +134,6 @@ Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _
 - instalar webpack y webpack-cli (`npm i -D webpack webpack-cli`)
 - ejecutar webpack indicándole cuál es nuestro archivo JS principal. El archivo de salida, si no le indicamos otra cosa, será _./dist/main.js_. Para ejecutar webpack haremos `npx webpack ./scripts/index.js`
 - en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack
-
-En la siguiente página explica cómo configurar npm y jest con babel (sin usar webpack) e integrarlo con Travis-CI:
-- [Automate NPM releases with Jest, codecov.io, Semantic Release, and TravisCI](https://levelup.gitconnected.com/automate-npm-releases-with-jest-codecov-io-semantic-release-and-travisci-eff812e97541)
 
 # Usar jest
 La [documentación oficial](https://jestjs.io/docs/en/getting-started.html) proporciona muy buena información de cómo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
