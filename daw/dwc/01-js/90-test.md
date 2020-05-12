@@ -65,6 +65,9 @@ Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _
 - ejecutar webpack indicándole cuál es nuestro archivo JS principal. El archivo de salida, si no le indicamos otra cosa, será _./dist/main.js_. Para ejecutar webpack haremos `npx webpack ./scripts/index.js`
 - en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack
 
+En la siguiente página explica cómo configurar npm y jest con babel (sin usar webpack) e integrarlo con Travis-CI:
+- [Automate NPM releases with Jest, codecov.io, Semantic Release, and TravisCI](https://levelup.gitconnected.com/automate-npm-releases-with-jest-codecov-io-semantic-release-and-travisci-eff812e97541)
+
 # Usar jest
 La [documentación oficial]() proporciona muy buena información de cóo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
 ```javascript
