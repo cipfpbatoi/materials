@@ -13,7 +13,7 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [9-Ajax. Promesas. SPA](./09-ajax.md)
 * [10-APIs HTML5](./10-apis.md): Drag and drop. API Storage. Geolocalización. API de Google Maps
 * [11-Más cosas a aprender...](./11-mas.md): WebComponents. WebSockets. WebWorkers. Typescript.
-* Herramientas: npm y webpack
+* [12-Tests](./12-tests.md): Testear JS con Jest
 
 # Introducción a Javascript
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
