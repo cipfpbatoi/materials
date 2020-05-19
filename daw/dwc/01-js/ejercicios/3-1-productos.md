@@ -46,12 +46,12 @@ Antes de añadir o modificar productos del almacén deberás asegurarte de que t
 Para probar las clases crearemos un nuevo almacén, le añadiremos productos y mostraremos por consola su contenido.
 
 ## Organizar el código
-Lo correcto es no tener todo el código en un único fichero javascript sino cada cosa en su fichero correspondiente:
+Lo correcto es no tener todo el código en un único fichero javascript sino cada cosa en su fichero correspondiente. Así que dentro de la carpeta **src/** crearemos los ficheros:
 - **product.class.js**: la clase _Product_ con sus propiedades y métodos
 - **store.class.js**: la clase _Store_ con sus propiedades y métodos
-- **main.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
+- **index.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
 
-En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _main.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_.
+En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _index.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_.
 
 Esto ya empieza a ser incómodo así que vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero _./dist/main.js_ que sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
 - para pasar los test: `npm run test`
@@ -61,7 +61,7 @@ Fijaos que para que la clase _Store_ pueda usar los métodos de _Product_ debemo
 - añadir al final de _product.class.js_ el código `module.exports = Product;`
 - añadir al principio de _store.class.js el código `const Product = require('./product.class');`
 
-Lo mismo habrá que hacer para que _main.js_ pueda llamar a métodos de _Store_.
+Lo mismo habrá que hacer para que _index.js_ pueda llamar a métodos de _Store_.
 
 ## Probar el código
 En lo que te has decargado de _moodle_ tienes los test que debes pasar para comprobar tu código. Recuerda que simplemente debes hacer:
