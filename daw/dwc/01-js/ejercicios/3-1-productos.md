@@ -9,7 +9,7 @@ La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propie
   - units: argumento opcional (si no le pasamos unidades al constructor su número por defecto será 0).
   
 Esta clase tendrá los siguientes **métodos**:
-  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará anda y devolerá _false_.
+  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y devolerá _false_.
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales), como en el siguiente ejemplo:
 ```
@@ -32,6 +32,7 @@ La clase tendrá los **métodos**:
   - orderByUnits: devuelve el array de productos ordenado por unidades de forma descendente
   - orderByName: devuelve el array de productos ordenado por el nombre del producto
   - además tendrá un método para que si se intenta imprimir el almacén devuelva HTML con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto, como en el siguiente ejemplo:
+
 ```html
 <p>Almacén 1 => 2 productos: 2174,75 €</p>
 <ul>
