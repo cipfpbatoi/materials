@@ -17,6 +17,8 @@
     - [Saber más](#saber-m%C3%A1s-2)
   - [Autenticación](#autenticaci%C3%B3n)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
+  - [Quasar](#quasar)
+  - [Vue Native](#vue-native)
   - [Nuxt](#nuxt)
   - [Angular](#angular)
 
@@ -268,8 +270,6 @@ class AlumnosController extends Controller {
 }
 ```
 
-
- 
 ### Saber más
 * [Building a Vue SPA with Laravel](https://laravel-news.com/using-vue-router-laravel)
 * [Laravel 5.7 + Vue + Vue Router = SPA](https://medium.com/@weehong/laravel-5-7-vue-vue-router-spa-5e07fd591981). Igual pero usando la librería Vuetify
@@ -289,6 +289,11 @@ SSR hace que la primera vez que un usuario accede a la web se sirve entera desde
 Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 
 Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.getresponse.com/click.html?x=a62b&lc=BmvXkb&mc=CL&s=mh7Vjl&u=B71jy&y=T&)
+
+## Quasar
+[Quasar](https://quasar.dev/) es un framework basado en VueJS que te permite generar la aplicación de escritorio y la aplicación móvil tanto para Android como para iOS.
+
+Tiene licencia MIT y su UI sigue las guías de Material.
 
 ## Vue Native
 [Vue native](https://vue-native.io/) es un framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
