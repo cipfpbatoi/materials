@@ -9,7 +9,7 @@ La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propie
   - units: argumento opcional (si no le pasamos unidades al constructor su número por defecto será 0).
   
 Esta clase tendrá los siguientes **métodos**:
-  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y devolerá _false_.
+  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y generará un error.
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
   - además si se intenta imprimir el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales), como en el siguiente ejemplo:
 ```
@@ -22,11 +22,14 @@ Es el almacén de productos (podríamos tener más de uno) que guardaremos en _s
   -  products: array de productos. No se le pasa al constructor ya que al crear un almacén el array estará vacío.
   
 La clase tendrá los **métodos**:
-  - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id o _undefined_ si ese código no existe en el almacén
-  - newProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Si no se le pasa _units_ lo creará con 0 unidades. Devolverá el producto añadido al almacén o _false_ si no ha podido hacerse por algún motivo.   
-  - delProduct: recibe como parámetro la id de un producto y lo elimina del almacén si no tiene unidades devolviendo el producto eliminado. Si sus unidades no están a 0 no hace nada y devuelve _false_, igual que si no se puede eliminar.
-  - changeProductUnits: recibe un objeto con la id de un producto y el número de unidades a increamentar (o disminuir si el número es negativo). Devuelve el producto modificado si ha podido hacerse o _false_ en caso contrario
-  - changeProduct: recibe un objeto con la id de un producto y los campos a modificar (los que no estén permanecerán sin cambios). Devuelve el objeto modificado si ha podido hacerse o _false_ en caso contrario
+  - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id. Si ese código no existe en el almacén generará un error
+  - addProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Si no se le pasa _units_ lo creará con 0 unidades. Devolverá el producto añadido al almacén. Generará un error si
+    - no se le pasa _name_
+    - no se le pasa _price_ o el precio no es un número positivo
+    - se le pasa _units_ pero no es n número entero positivo
+  - delProduct: recibe como parámetro la id de un producto y lo elimina del almacén si no tiene unidades devolviendo el producto eliminado. Si no existe el producto o sus unidades no están a 0 no hace nada y generará un error.
+  - changeProductUnits: recibe un objeto con la id de un producto y el número de unidades a increamentar (o disminuir si el número es negativo). Devuelve el producto modificado si ha podido hacerse o generará un error en caso contrario
+  - changeProduct: recibe un objeto con la id de un producto y los campos a modificar (los que no estén permanecerán sin cambios). Devuelve el objeto modificado si ha podido hacerse o genera un error en caso contrario
   - totalImport: devuelve el valor total de los productos del almacén (su precio por sus uds)
   - underStock: recibe un nº de unidades y devuelve los productos que tengan menos de dichas unidades
   - orderByUnits: devuelve el array de productos ordenado por unidades de forma descendente
@@ -51,9 +54,7 @@ Lo correcto es no tener todo el código en un único fichero javascript sino cad
 - **store.class.js**: la clase _Store_ con sus propiedades y métodos
 - **index.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
 
-En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _index.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_.
-
-Esto ya empieza a ser incómodo así que vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero _./dist/main.js_ que sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
+En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _index.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_. Como esto ya empieza a ser incómodo vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero que se llamará _./dist/main.js_ y sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
 - para pasar los test: `npm run test`
 - para probarlo en el navegador: `npx webpack`
 
@@ -111,3 +112,5 @@ LISTADO DEL ALMACÉN por existencias main.js:1:1565
 LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS main.js:1:1665
 - TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1751
 ```
+
+Recuerda que siempre que vayamos a ejecutar código que pueda generar un error debemos hacerlo dentro de un `try...catch`.
