@@ -13,7 +13,6 @@
   - [RegExp](#regexp)
     - [Patrones](#patrones)
     - [Métodos](#m%C3%A9todos)
-  - [Manejo de errores: try / catch](#manejo-de-errores)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -327,17 +326,3 @@ No vamos a profundizar más sobre las expresiones regulares. Es muy fácil encon
 
 También, hay páginas que nos permiten probar expresiones regulares con cualquier texto, como [regexr](http://regexr.com/).
 
-## Manejo de errores
-En javascript el manejo de errores se realiza con sentencias
-```javascript
-try {
-    ...
-} 
-catch(error) {
-    ...
-}
-```
-
-Cualquier error producido en el bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
-
-Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
