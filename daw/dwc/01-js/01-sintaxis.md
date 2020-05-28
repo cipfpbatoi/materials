@@ -148,7 +148,7 @@ holaMundo();        // se ejecuta la función
 
 Como vemos asignamos una función a una variable de forma que podamos "ejecutar" dicha variable.
 
-### Arrow functions (funciones _labda_)
+### Arrow functions (funciones _lambda_)
 ES2015 permite declarar una función anónima de forma más corta. Ejemplo sin _arrow function_:
 ```javascript
 let potencia = function(base, exponente) {
@@ -479,6 +479,41 @@ catch(error) {
 
 Cualquier error producido en el bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
 
+Para lanzar un error desde nuestro código lo haremos con `throw`:
+```javascript
+if (valorNoValido) {
+    throw 'Error: valor no válido';
+} 
+```
+
+También podemos lanzar un objeto de tipo _Error_
+```javascript
+if (valorNoValido) {
+    throw new Error('Error: valor no válido');
+} 
+```
+
+
+e incluso uno personalizado
+```javascript
+function MyException(mensaje) {
+   this.mensaje = mensaje;
+   this.nombre = "Error de usuario";
+   this.toString = () => this.nombre + ': ' + this.mensaje;
+}
+
+function getNombreMes(mes) {
+   mes = mes - 1; // Ajustar el número de mes al índice del array (1 = Ene, 12 = Dic)
+   var meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
+   if (meses[mes] != null) {
+      return meses[mes];
+   } else {
+      throw new MyException("Numero de Mes No Valido");
+   }
+}
+
+```
+
 Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
 
 ## Buenas prácticas
@@ -494,15 +529,59 @@ Si ponemos siempre esta sentencia al principio de nuestro código el intérprete
 
 ### Variables
 Algunas de las prácticas que deberíamos seguir respecto a las variables son:
+* Elegir un buen nombre es fundamental. Evitar abreviaturas o nombres sin significado (a, b, c, ...)
 * Evitar en lo posible variables globales
 * Usar _let_ para declararlas
+* Usar _const_ siempre que una variable no deba cambiar su valor
 * Declarar todas las variables al principio
 * Inicializar las variables al declararlas
 * Evitar conversiones de tipo automáticas
 * Usar para nombrarlas la notación _camelCase_
-* Usar _const_ siempre que una variable no deba cambiar su valor
 
 También es conveniente, por motivos de eficiencia no usar objetos Number, String o Boolean sino los tipos primitivos (no usar `let numero = new Number(5)` sino `let numero = 5`) y lo mismo al crear arrays, objetos o expresiones regulares (no usar `let miArray = new Array()` sino `let miArray = []`).
+
+### Errores
+No se debería estar comprobando lo devuelto por una función para ver si se ha ejecutado correctamente o ha devuelto algún código de error. Si algo es erróneo no debemos devolver un código sino lanzar un error y quien ha llamado a esa función debería hacerlo dentro de un `try...catch` para capturar dicho error. Por ejemplo:
+
+- Mal
+```javascript
+function muestraDatos(datos) {
+   ...
+   const nombreMes = getNombreMes(datos.mes);
+   if (nombreMes === null) {
+       alert('El mes ' + datos.mes + ' es erróneo');
+   }
+   ...
+}
+
+function getNombreMes(mes) {
+   mes = mes - 1; // Ajustar el número de mes al índice del array (1 = Ene, 12 = Dic)
+   var meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
+   return meses[mes];
+}
+```
+
+- Bien
+```javascript
+function muestraDatos(datos) {
+   ...
+   try {
+      const nombreMes = getNombreMes(datos.mes);
+   } catch(err) {
+      alert(err)
+   }
+   ...
+}
+
+function getNombreMes(mes) {
+   mes = mes - 1; // Ajustar el número de mes al índice del array (1 = Ene, 12 = Dic)
+   var meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
+   if (meses[mes] === null) {
+       throw 'El mes ' + mes + ' es erróneo';
+   }
+   return meses[mes];
+}
+```
 
 ### Otras
 Algunas reglas más que deberíamos seguir son:
