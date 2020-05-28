@@ -22,6 +22,7 @@ Tabla de contenidos
   - [String](#string)
     - [Template literals](#template-literals)
   - [Boolean](#boolean)
+- [Manejo de errores: try / catch](#manejo-de-errores)
 - [Buenas prácticas](#buenas-pr%C3%A1cticas)
   - ['use strict'](#use-strict)
   - [Variables](#variables-1)
@@ -464,6 +465,21 @@ Para comparar valores tenemos **==** y **===**. La triple igualdad devuelve _tru
 También tenemos 2 operadores de _diferente_: **!=** y **!==** que se comportan como hemos dicho antes.
 
 Los operadores relacionales son >, >=, <, <=. Cuando se compara un número y una cadena ésta se convierte a número y no al revés (`23 > '5'` devuelve _true_, aunque `'23' > '5'` devuelve _false_)  
+
+## Manejo de errores
+En javascript el manejo de errores se realiza con sentencias
+```javascript
+try {
+    ...
+} 
+catch(error) {
+    ...
+}
+```
+
+Cualquier error producido en el bloque _try_ será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no.
+
+Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
 
 ## Buenas prácticas
 Javascript nos permite hacer muchas cosas que otros lenguajes no nos dejan por lo que debemos ser cuidadosos para no cometer errores de los que no se nos va a avisar.
