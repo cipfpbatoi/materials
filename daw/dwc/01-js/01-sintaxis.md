@@ -562,6 +562,7 @@ function getNombreMes(mes) {
 ```
 
 - Bien
+
 ```javascript
 function muestraDatos(datos) {
    ...
