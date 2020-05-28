@@ -542,8 +542,8 @@ También es conveniente, por motivos de eficiencia no usar objetos Number, Strin
 
 ### Errores
 No se debería estar comprobando lo devuelto por una función para ver si se ha ejecutado correctamente o ha devuelto algún código de error. Si algo es erróneo no debemos devolver un código sino lanzar un error y quien ha llamado a esa función debería hacerlo dentro de un `try...catch` para capturar dicho error. Por ejemplo:
-
 - Mal
+
 ```javascript
 function muestraDatos(datos) {
    ...
