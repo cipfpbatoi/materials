@@ -54,7 +54,9 @@ Lo correcto es no tener todo el código en un único fichero javascript sino cad
 - **store.class.js**: la clase _Store_ con sus propiedades y métodos
 - **index.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
 
-En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y main) para que desde _index.js_ se pueda llamar a métodos del almacén y desde _store.js_ a métodos de _Product_. Como esto ya empieza a ser incómodo vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero que se llamará _./dist/main.js_ y sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
+En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y index) para que desde _index.js_ se pueda llamar a métodos de _Store_ y desde _store.js_ a métodos de _Product_. Como esto ya empieza a ser incómodo vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero que se llamará _./dist/main.js_ y sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. 
+
+En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
 - para pasar los test: `npm run test`
 - para probarlo en el navegador: `npx webpack --mode=development`
 
