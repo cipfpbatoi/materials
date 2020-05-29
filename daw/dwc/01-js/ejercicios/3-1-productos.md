@@ -95,22 +95,27 @@ Para probar que funciona en el navegador añade al fichero _index.js_ código pa
 
 Al abrir la página en el navegador la consola deberá mostrar:
 ```
-Almacén 1 => 4 productos: 6564.2.toFixed(2) €
+Almacén 1 => 4 productos: 6564.20 €
 - TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
 - Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 €
 - impresora Epson LX-455: 0 uds. x 45.95 €/u = 0.00 €
-- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1407
-LISTADO DEL ALMACÉN alfabético main.js:1:1433
-- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 € main.js:1:1506
-- impresora Epson LX-455: 0 uds. x 45.95 €/u = 0.00 € main.js:1:1506
-- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1506
-- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1506
-LISTADO DEL ALMACÉN por existencias main.js:1:1565
-- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 € main.js:1:1644
-- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 € main.js:1:1644
-- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1644
-LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS main.js:1:1665
-- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 € main.js:1:1751
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 €
+LISTADO DEL ALMACÉN alfabético
+- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 €
+- impresora Epson LX-455: 0 uds. x 45.95 €/u = 0.00 €
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 €
+LISTADO DEL ALMACÉN por existencias
+- USB Kingston 16GB: 45 uds. x 5.95 €/u = 267.75 €
+- Ábaco de madera (nuevo modelo): 15 uds. x 245.95 €/u = 3689.25 €
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
+LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS
+- TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
 ```
+
+además de 3 mensajes de error:
+- se pasan unidades negativas (-2) a _changeProduct_
+- se intentan restar más unidades (10) de las que quedan (8)
+- se intanta borrar el producto 1 y le quedan 8 unidades
 
 Recuerda que siempre que vayamos a ejecutar código que pueda generar un error debemos hacerlo dentro de un `try...catch`.
