@@ -143,7 +143,7 @@ Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _
 ## Testear la UI
 Si queremos hacer tests unitarios de los cambios que produce nuestro código en la página web hay varios frameworks que podemos usar, pero también podemos hacerlo sin usar ninguno, usando sólo los módulos de Node que ya tenemos instalados y _Jest_, en concreto su herramienta _jsdom_ que usa para emular un navegador.
 
-Lo que debemos hacer para que funcione es, tras configurar nuestro proyecto con _Babel_ como hemos visto antes, instalar para desarrollo los paquetes **@testing-library/dom** y **@testing-library/jest-dom**:
+Para usarlo debemos instalar la librería [Testing Library](https://testing-library.com/). Para ello, tras configurar nuestro proyecto con _Babel_ como hemos visto antes, instalaremos para desarrollo los paquetes **@testing-library/dom** y **@testing-library/jest-dom**:
 ```bash
 npm i -D @testing-library/dom @testing-library/jest-dom
 ```
@@ -193,6 +193,7 @@ describe('index.html', () => {
   })
 })
 ```
+Además de _getByText_ para comprobar los elementos de la página tenemos otras [queries](https://testing-library.com/docs/dom-testing-library/api-queries) que podemos utilizar.
 
 Fuente: [How to Unit Test HTML and Vanilla JavaScript Without a UI Framework](https://levelup.gitconnected.com/how-to-unit-test-html-and-vanilla-javascript-without-a-ui-framework-c4c89c9f5e56)
 
