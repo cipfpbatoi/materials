@@ -140,6 +140,62 @@ Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _
 - ejecutar webpack indicándole cuál es nuestro archivo JS principal. El archivo de salida, si no le indicamos otra cosa, será _./dist/main.js_. En el ejemplo anterior crearemos un fichero **index.js** dentro de _scripts/_ que importará el fichero _suma.js_ (con el _require_ como en el fichero de tests) y contendrá el resto de código de la aplicación (como pedir al usuario los números a sumar, mostrar el resultado, ...). Para que webpack empaquete y transpile esos 2 ficheros (index.js y suma.js) ejecutaremos en la terminal `npx webpack ./scripts/index.js`
 - por último, en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack `<script src="dist/main.js"></script>`
 
+## Testear la UI
+Si queremos hacer tests unitarios de los cambios que produce nuestro código en la página web hay varios frameworks que podemos usar, pero también podemos hacerlo sin usar ninguno, usando sólo los módulos de Node que ya tenemos instalados y _Jest_, en concreto su herramienta _jsdom_ que usa para emular un navegador.
+
+Lo que debemos hacer para que funcione es, tras configurar nuestro proyecto con _Babel_ como hemos visto antes, instalar para desarrollo los paquetes **@testing-library/dom** y **@testing-library/jest-dom**:
+```bash
+npm i -D @testing-library/dom @testing-library/jest-dom
+```
+
+En el fichero de test debemos poner al principio:
+```javascript
+const { fireEvent, getByText } = require('@testing-library/dom')
+import '@testing-library/jest-dom/extend-expect'
+import { JSDOM } from 'jsdom'
+import fs from 'fs'
+import path from 'path'
+```
+
+y antes de ejecutar cada test cargamos nuestra página HTML con:
+```javascript
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+```
+
+OJO: sólo debemos cargar así la página si confiamos totalmente en el código que vamos a probar (en este caso es nuestro código) y no deberíamos hacerlo para código de terceros.
+
+Luego ya podemos acceder al HTML y mirar si existen ciertas etiquetas o su contenido, como en este ejemplo:
+```javascript
+const { fireEvent, getByText } = require('@testing-library/dom')
+import '@testing-library/jest-dom/extend-expect'
+import { JSDOM } from 'jsdom'
+import fs from 'fs'
+import path from 'path'
+
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+
+let dom
+let container
+
+describe('index.html', () => {
+  beforeEach(() => {
+    // Constructing a new JSDOM with this option is the key
+    // to getting the code in the script tag to execute.
+    // This is indeed dangerous and should only be done with trusted content.
+    // https://github.com/jsdom/jsdom#executing-scripts
+    dom = new JSDOM(html, { runScripts: 'dangerously' })
+    container = dom.window.document.body
+  })
+
+  it('renders a heading element', () => {
+    expect(container.querySelector('h1')).not.toBeNull()
+    expect(getByText(container, 'Almacén central - ACME SL')).toBeInTheDocument()
+  })
+})
+```
+
+Fuente: [How to Unit Test HTML and Vanilla JavaScript Without a UI Framework](https://levelup.gitconnected.com/how-to-unit-test-html-and-vanilla-javascript-without-a-ui-framework-c4c89c9f5e56)
+
 # Usar jest
 La [documentación oficial](https://jestjs.io/docs/en/getting-started.html) proporciona muy buena información de cómo usarlo. En resumen, en los ficheros con las funciones que vayamos a testear debemos '_exportar_' esas funciones para que las pueda importar el fichero de test. Lo haremos con `module.exports`:
 ```javascript
