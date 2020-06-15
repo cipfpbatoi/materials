@@ -25,8 +25,6 @@ Respecto a los botones de cada formulario tendrán el siguiente aspecto:
 
 ![Almacén](./img/ejer4-1.png)
 
-ATENCIÓN: En la etiqueta de cada formulario hemos puesto un atributo, _onsubmit_, que hará que se ejecute automáticamente la función indicada en dicho atributo cuando se envíe el formulario. Por tanto deberemos crear esa función en nuestro código y hacer que se encargue de obtener los datos del formulario, validarlos y llamar a las funciones correspondientes (añadir, eliminar, ...).
-
 Podéis modificar lo que necesitéis del _index.html_. De hecho como mínimo tenemos que añadir los inputs de los formularios existentes y seguramente convendrá ponerle _id_ a algunos elementos.
 
 ## MVC
@@ -38,15 +36,15 @@ Por ello vamos a usar el patrón MVC (con o sin clases para el controlador y la 
   - si son correctos, llamar al modelo (la clase Store) para modificar los datos en respuesta a la acción del cliente
   - si todo ha ido bien llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
   - si ha habido algún problema se debe llamar a la vista para mostrar el error al usuario
-- vista: tendrá funciones para pintar los datos iniciales (la tabla vacía) y pintar los nuevos productos y los productos modificados. También habrá una función que muestre un mensaje al usuario, para evitar usar alerts.
+- vista: tendrá funciones para pintar los nuevos productos y las modificaciones que hagamos en ellos. También habrá una función que muestre un mensaje al usuario, para evitar usar alerts.
 
-Además en el fichero principal de la aplicación deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envía cada formulario. Dichas funciones se ocupan de enviar los datos del formulario a la función correspondiente del controlador. Recibirán como parámetro un objeto _event_ con información sobre el evento producido. La primera línea de cada función será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). Tenéis hecho en el fichero **index.js** un ejemplo para el formulario _form-prod_. Debéis completar esa función y hacer otras para los otros 2 formularios.
+Además en el fichero principal de la aplicación deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envía cada formulario. Dichas funciones se ocupan de enviar los datos del formulario a la función correspondiente del controlador. Recibirán como parámetro un objeto _event_ con información sobre el evento producido. La primera línea de cada función será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). Tenéis hecho en el fichero **index.js** un ejemplo para el formulario _form-prod_. Debéis completar esa función (que llame a la función _addProductToStore_ del controlador pasándole los datos del formulario) y hacer otras para los otros 2 formularios.
 
 ### Controller
-La clase controller tendrá como propiedades un almacén donde guardar los datos y una instancia de la clase _View_ a la que llamar para renderizarlos. Sus métodos serán:
+La clase controller tendrá como propiedades un almacén (una instancia de la clase _Store_) donde guardar los datos y una instancia de la clase _View_ a la que llamar para renderizarlos. Sus métodos serán:
 - **addProductToStore**: recibe de la función manejadora del formulario _form-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y, tras comprobar que son correctos, hace que se añada al almacén y se muestre en la tabla
 - **deleteProductFromStore**: recibe de la función manejadora del formulario _form-del-prod_ la id del producto a eliminar y hace que se borre del almacén y de la tabla
-- **changeProductStock**: recibe de la función manejadora del formulario _form-stock-prod_  la id del producto y las unidades a sumarle (número positivo o negativo) y se encarga de que se cambien en el almacén y se muestre en la tabla
+- **changeProductStock**: recibe de la función manejadora del formulario _form-stock-prod_  la id del producto y las unidades a sumarle (número entero positivo o negativo) y se encarga de que se cambien en el almacén y se muestre en la tabla
 
 ### View
 La clase _View_ se encarga de mostrar en la página la información que recibe. Los métodos que contendrá son:
@@ -60,17 +58,17 @@ Tenéis que tener en cuenta:
 - por tanto en ningún momento podemos cambiar el innerHTML de la tabla ni de su BODY. Sólo podemos añadir o elimnr TR o mdificar TD en el caso de renderStockChange
 - recordad que bajo la tabla hay un TOTAL del importe que siempre debe estar actualizado, para lo que hemos creado la función _renderStoreImport_
 
-Además tendrá un método llamado **renderErrorMessage** al que se le pasa un texto y añade dentro del DIV **messages** un nuevo DIV con el mensaje a mostrar al usuario, cuyo HTML será
+Además tendrá un método llamado **renderErrorMessage** al que se le pasa un texto y añade dentro del DIV con _id_ **messages** un nuevo DIV con el mensaje a mostrar al usuario, cuyo HTML será
 ```html
 <div class="col-sm-12 alert alert-danger">
-    <span>Aquí pondremos el texto que nos han pasado</span>
+    <span>Aquí pondremos el texto que queramos mostrar</span>
     <button type="button" class="close" aria-label="Close" onclick="this.parentElement.remove()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 ```
 
-Como valor del atributo _onclick_ tenemos el código JS que borra este DIV. No es lo más correcto pero de momento lo haremos así.
+Como valor del atributo _onclick_ tenemos el código JS que borra este DIV. No es muy correcto pero de momento lo haremos así.
 
 ## Organizar el código
 Dentro de la carpeta **src/** tendremos los ficheros:
@@ -92,7 +90,7 @@ npm init
 npm i -D webpack webpack-cli jest
 ```
 
-3. Cada vez que modifiques tu código debes ejecutar _webpack_ para que vuelva a generarse el fichero **dist/main.js** que es el que tenemos enlazado en _index.html_
+3. Cada vez que modifiques tu código, si quieres ver esos cambios en el navegador, debes ejecutar _webpack_ para que vuelva a generarse el fichero **dist/main.js** que es el que tenemos enlazado en _index.html_
 ```bash
 npx webpack --mode=development
 ```
