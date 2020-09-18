@@ -25,6 +25,7 @@ Tabla de contenidos
     - [La consola del navegador](#la-consola-del-navegador)
     - [Editores](#editores)
     - [Editores on-line](#editores-on-line)
+    - [npm](#npm)
   - [Incluir javascript en una página web](#incluir-javascript-en-una-p%C3%A1gina-web)
   - [Mostrar información](#mostrar-informaci%C3%B3n)
 - [Bibliografía](#bibliograf%C3%ADa)
@@ -108,6 +109,26 @@ Algunos de los más conocidos son [Fiddle](https://jsfiddle.net), [Plunker](http
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+### npm
+**npm** es el gestor de paquetes del framework Javascrip **Node.js** y suele utilizarse en programación *frontend* como gestor de dependencias de la aplicación. Esto significa que será la herramienta que se encargará de descargar y poner a disposición de nuestra aplicación todas las librerías Javascript que vayamos a utilizar, por ejemplo para hacer los tests de nuestros programas (en algunas prácticas haremos o pasaremos tests unitarios ya hechos para comprobar que nuestros programas funcionan correctamente y, sobre todo, que continúan haciéndolo tras realizar alguna modificación en ellos).
+
+Para instalar _npm_ tenemos que instalar _NodeJS_. Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero posiblemente nos instalará una versión poco actualizada por lo que es mejor instalarlo desde [NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu) siguiendo las instrucciones que allí se indican y que básicamente son ejecutar:
+
+```bash
+curl -sL https://deb.nodesource.com/setup_X.y | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+
+(cambiaremos X.y por la versión que queramos, normalmente la últma versión estable).
+
+También podemos descargarlo directamente desde [NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombre_del_paquete_`).
+
+Con eso ya tendremos _npm_ en nuestro equipo. Podemos comprovar la versión que tenemos con:
+```bash
+npm -v
+```
 
 ## Incluir javascript en una página web
 El código Javascript va entre etiquetas _\<script>_. Puede ponerse en el _\<head>_ o en el _\<body>_. Funciona como cualquier otra etiqueta y el navegador la interpreta cuando llega a ella (va leyendo y ejecutando el fichero línea a línea). Podéis ver en [este vídeo](https://www.youtube.com/watch?v=AQn22gjtSWQ&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=2) un ejemplo muy simple de cómo se ejecuta el código en el HEAD y en el BODY.
