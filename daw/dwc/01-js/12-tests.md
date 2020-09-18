@@ -16,7 +16,7 @@ Tabla de contenidos
   - [Testear promesas](#testear-promesas)
   - [Hooks de Jest](#hooks-de-jest)
   - [Funciones mock](#funciones-mock)
-- [Desarrollo guiado por pruebas (TDD)](#Desarrollo guiado por pruebas (TDD))
+- [Desarrollo guiado por pruebas (TDD)](#desarrollo-guiado-por-pruebas-tdd)
   
 ## Introducción al testing
 Es fundamental que nuestro código tenga un cierto nivel de calidad para minimizar los fallos del programa, más cuanto más compleja es la aplicación que estamos desarrollando. Para ello debemos testearlo y dicho testeo seguramente incluirá test automáticos. Dichos test nos permiten:
