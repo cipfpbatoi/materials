@@ -356,7 +356,7 @@ it('city database has San Juan', () => {
 ## Funciones mock
 Permiten sustituir el código de ciertas funciones externas usadas en el código que queremos testear. Puedes ver cómo funcionan en la [documentación oficial de Jest](https://jestjs.io/docs/en/mock-functions).
 
-[ver](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
+[Ver ejemplos](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
 # Desarrollo guiado por pruebas (TDD)
 Es una forma de programar que consiste en escribir primero las pruebas que deba pasar el código (Test Dirve Development) y luego el código que las pase. Por último deberíamos refactorizarlo ([Refactoring](https://es.wikipedia.org/wiki/Refactorizaci%C3%B3n)). Para escribir las pruebas generalmente se utilizan las [pruebas unitarias](https://es.wikipedia.org/wiki/Prueba_unitaria) (unit test en inglés). 
