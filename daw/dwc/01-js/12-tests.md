@@ -1,4 +1,24 @@
 # Testing
+
+Tabla de contenidos
+
+- [Introducción al testing](#introducción-al-testing)
+- [Testing en Javascript](#testing-en-javascript)
+  - [Instalar npm](#instalar-npm)
+  - [Instalar jest](#instalar-jest)
+  - [Transpilar nuestro código](#transpilar-nuestro-código)
+    - [Usar Babel](#usar-babel)
+  - [Usar webpack](#usar-webpack)
+  - [Testear la UI](#testear-la-ui)
+- [Usar jest](#usar-jest)
+  - [Matchers](#matchers)  
+  - [Test suites](#test-suites)
+  - [Testear promesas](#testear-promesas)
+  - [Hooks de Jest](#hooks-de-jest)
+  - [Funciones mock](#funciones-mock)
+- [Desarrollo guiado por pruebas (TDD)](#Desarrollo guiado por pruebas (TDD))
+  
+## Introducción al testing
 Es fundamental que nuestro código tenga un cierto nivel de calidad para minimizar los fallos del programa, más cuanto más compleja es la aplicación que estamos desarrollando. Para ello debemos testearlo y dicho testeo seguramente incluirá test automáticos. Dichos test nos permiten:
 * comprobar que nuestro código responde como e espera de él
 * evitar los _errores de regresión_ (fallos en cosas que funcionaban tras incluir una nueva funcioalidad en nuestro programa) 
