@@ -8,8 +8,8 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
   * [4.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
 * [5-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, location, history, otros objetos)
 * [6-Eventos](./06-eventos.md): Escuchadores. Tipos de eventos. Los objetos _this_ y _event_. Propagación de eventos (_bubbling_)
-* [7-Objetos nativos. Manejo de errores](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, Expresiones regulares, ...
-* [8-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios
+* [7-Objetos nativos. Manejo de errores](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
+* [8-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
 * [9-Ajax. Promesas. SPA](./09-ajax.md)
 * [10-APIs HTML5](./10-apis.md): Drag and drop. API Storage. Geolocalización. API de Google Maps
 * [11-Más cosas a aprender...](./11-mas.md): WebComponents. WebSockets. WebWorkers. Typescript.
