@@ -127,7 +127,7 @@ input:invalid {
 
 ## Expresiones regulares
 
-Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean ponién solas entre `/` o instanciándolas de la clase _RegExp_:
+Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean poniéndolas entre caracteres `/` (o instanciándolas de la clase _RegExp_, aunque es mejor de la otra forma):
 ```javascript
 let cadena='Hola mundo';
 let expr=/mundo/;
