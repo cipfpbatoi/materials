@@ -1,9 +1,13 @@
 # Validación de formularios
 Índice:
 - [Introducción](#introducción)
-- [Validación incorporada en HTML5](#validación-incorporada-en-html5)
-- [Validación mediante Javascript](#validación-mediante-javascript)
-- [Ejemplo](#ejemplo)
+  - [Validación incorporada en HTML5](#validación-incorporada-en-html5)
+  - [Validación mediante Javascript](#validación-mediante-javascript)
+  - [Ejemplo](#ejemplo)
+- [Expresiones regulares](#expresiones-regulares)
+  - [Patrones](#patrones)
+  - [Métodos](#m%C3%A9todos)
+
 
 ## Introducción
 En este tema vamos a ver cómo realizar una de las acciones principales de Javascript que es la validación de formularios en el lado cliente.
@@ -20,6 +24,8 @@ La ventaja de la primera opción es que no tenemos que escribir código sino sim
 - el navegador valida campo a campo: cuando encuentra un error en un campo lo muestra y hasta que no se soluciona no valida el siguiente lo que hace que el proceso sea molesto apra el usuario que no ve todo lo que hay mal de una vez
 - los mensajes son los predeterminados del navegador y en ocasiones pueden no ser muy claros para el usuario
 - los mensajes se muestran en el idioma en que está configurado el navegador, no en el de nuestra página
+
+Además, al final de este tema, veremos una pequeña introducción a las expresiones regulares en Javascript.
 
 ### Validación incorporada en HTML5
 Funciona añadiendo atributos a los campos del formulario que queremos validar. Los más usados son:
@@ -118,3 +124,105 @@ input:invalid {
   border: 2px dashed red;
 }
 ```
+
+## Expresiones regulares
+
+Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean ponién solas entre `/` o instanciándolas de la clase _RegExp_:
+```javascript
+let cadena='Hola mundo';
+let expr=/mundo/;
+expr.test(cadena);      // devuelve true porque en la cadena se encuentra la expresión 'mundo'
+```
+
+### Patrones
+La potencia de las expresiones regulares es que podemos usar patrones para construir la expresión. Los más comunes son:
+* **\[..]** (corchetes): dentro se ponen varios caracteres o un rango y permiten comprobar si el carácter de esa posición de la cadena coincide con alguno de ellos. Ejemplos:
+  * `[abc]`: cualquier carácter de los indicados ('a' o 'b' o 'c')
+  * `[^abc]`: cualquiera excepto los indicados
+  * `[a-z]`: cualquier minúscula (el carácter '-' indica el rango entre 'a' y 'z', incluidas)
+  * `[a-zA-Z]`: cualquier letra
+* **( | )** (_pipe_): debe coincidir con una de las opciones indocadas:
+  * `(x|y)`: la letra x o la y (sería equivalente a `[xy]`
+  * `(http|https)`: cualquiera de las 2 palabras
+* **Metacaracteres**:
+  * `.` (punto): un único carácter, sea el que sea
+  * `\d`: un dígito (`\D`: cualquier cosa menos dígito)
+  * `\s`: espacio en blanco (`\S`: lo opuesto)
+  * `\w`: una palabra o carácter alfanumérico (`\W` lo contrario)
+  * `\b`: delimitador de palabra (espacio, ppio, fin)
+  * `\n`: nueva línea
+* **Cuantificadores**:
+  * `+`: al menos 1 vez (ej. `[0-9]+` al menos un dígito)
+  * `*`: 0 o más veces
+  * `?`: 0 o 1 vez
+  * `{n}`: n caracteres (ej. `[0-9]{5}` = 5 dígitos)
+  * `{n,}`: n o más caracteres
+  * `{n,m}`: entre n y m caracteres
+  * `^`: al ppio de la cadena (ej.: `^[a-zA-Z]` = empieza por letra)
+  * `$`: al final de la cadena (ej.: `[0-9]$` = que acabe en dígito)
+* **Modificadores**:
+  * `/i`: que no distinga entre Maysc y minsc (Ej. `/html/i` = buscará html, Html, HTML, ...)
+  * `/g`: búsqueda global, busca todas las coincidencias y no sólo la primera
+  * `/m`: busca en más de 1 línea (para cadenas con saltos de línea)
+
+> EJERCICIO: contruye una expresión regular para lo que se pide a continuación y pruébala con distintas cadenas:
+> - un código postal
+> - un NIF formado por 8 números, un guión y una letra mayúscula o minúscula
+> - un número de teléfono y aceptamos 2 formatos: XXX XX XX XX o XXX XXX XXX. EL primer número debe ser un 6, un 7, un 8 o un 9
+
+### Métodos
+Los usaremos para saber si la cadena coincide con determinada expresión o para buscar y reemplazar texto:
+* `expr.test(cadena)`: devuelve **true** si la cadena coincide con la expresión. Con el modificador _/g_ hará que cada vez que se llama busque desde la posición de la última coincidencia. Ejemplo:
+
+```javascript
+let str = "I am amazed in America";
+let reg = /am/g;
+console.log(reg.test(str)); // Imprime true
+console.log(reg.test(str)); // Imprime true
+console.log(reg.test(str)); // Imprime false, hay solo dos coincidencias
+
+let reg2 = /am/gi;          // ahora no distinguirá mayúsculas y minúsculas
+console.log(reg.test(str)); // Imprime true
+console.log(reg.test(str)); // Imprime true
+console.log(reg.test(str)); // Imprime true. Ahora tenemos 3 coincidencias con este nuevo patrón
+```
+
+* `expr.exec(cadena)`: igual pero en vez de _true_ o _false_ devuelve un objeto con la coincidencia encontrada, su posición y la cadena completa:
+
+```javascript
+let str = "I am amazed in America";
+let reg = /am/gi;
+console.log(reg.exec(str)); // Imprime ["am", index: 2, input: "I am amazed in America"]
+console.log(reg.exec(str)); // Imprime ["am", index: 5, input: "I am amazed in America"]
+console.log(reg.exec(str)); // Imprime ["Am", index: 15, input: "I am amazed in America"]
+console.log(reg.exec(str)); // Imprime null
+```
+
+* `cadena.match(expr)`: igual que _exec_ pero se aplica a la cadena y se le pasa la expresión. Si ésta tiene el modificador _/g_ devolverá un array con todas las coincidencis:
+
+```javascript
+let str = "I am amazed in America";
+let reg = /am/gi;
+console.log(str.match(reg)); // Imprime ["am", "am", "Am"}
+```
+
+* `cadena.search(expr)`: devuelve la posición donde se encuentra la coincidencia buscada o -1 si no aparece
+* `cadena.replace(expr, cadena2)`: devuelve una nueva cadena xon las coincidncias de la cadena reemplazadas por la cedena pasada como 2º parámetro:
+
+```javascript
+let str = "I am amazed in America";
+console.log(str.replace(/am/gi, "xx")); // Imprime "I xx xxazed in xxerica"
+
+console.log(str.replace(/am/gi, function(match) {
+  return "-" + match.toUpperCase() + "-";
+})); // Imprime "I -AM- -AM-azed in -AM-erica"
+```
+
+No vamos a profundizar más sobre las expresiones regulares. Es muy fácil encontrar por internet la que necesitemos (para validar un e-mail, un NIF, un CP, ...). Podemos aprender más en:
+* [w3schools](http://www.w3schools.com/jsref/jsref_obj_regexp.asp)
+* [regular-expressions.info](http://www.regular-expressions.info/)
+* [html5pattern](http://html5pattern.com/) atributo
+* y muchas otras páginas
+
+También, hay páginas que nos permiten probar expresiones regulares con cualquier texto, como [regexr](http://regexr.com/).
+
