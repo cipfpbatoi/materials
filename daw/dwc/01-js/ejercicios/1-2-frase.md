@@ -66,5 +66,5 @@ module.exports = {
 
 Ahora debes inicializar el proyecto _npm_ con el comando `npm init`. Cuando pregunte por el comando para ejecutar los tests indicaremos que es **jest**. Una vez hecho podemos pasar los test escribiendo en la terminal:
 ```bash
-npm run tests
+npm run test
 ```
