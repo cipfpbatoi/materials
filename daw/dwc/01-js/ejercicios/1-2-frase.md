@@ -1,7 +1,7 @@
 # Bloc 1: Javascript. UT 1: Sintaxis
 ## Práctica 1.2 - Frase
 Vamos a pedir al usuario que introduzca una frase y a continuación mostraremos en la consola:
-- el número de letras y de palabras que tiene
+- el número de caracteres (incluyendo espacios) y de palabras que tiene
 - la frase en mayúsculas
 - la frase con la primera letra de cada palabra en mayúsculas
 - la frase escrita con las letras al revés
@@ -15,7 +15,7 @@ Para hacer más sencillo el pasar los tests a nuestro programa para comprobar si
 En el _index.html_ deberás incluir cada fichero en su etiqueta _script_ (en primer lugar el de las funciones).
 
 Las funciones que contendrá el fichero _functions.js_ (deben llamarse **EXACTAMENTE** como os digo) son:
--	letras: devuelve el número de letras de la cadena pasada como parámetro (sólo un número)
+-	letras: devuelve el número de caracteres (incluyendo espacios) de la cadena pasada como parámetro (sólo un número)
 -	palabras: devuelve el número de palabras de la cadena pasada como parámetro (sólo un número)
 -	maysc: devuelve la cadena pasada como parámetro convertida a mayúsculas
 -	titulo: devuelve la cadena pasada como parámetro con la primera letra de cada pañabra convertida a mayúsculas
