@@ -48,6 +48,8 @@ module.exports = {
 
 En el fichero _index.html_ deberemos enlazar los 2 scripts: primero el _functions.js_ y luego el _main.js_.
 
-**RECUERDA**: seguir haciendo todas las buenas prácticas que se indicaban en el ejercicio anterior. Además no usaremos ningún for para recorrer los arrays
+**IMPORTANTE**: no usaremos ningún for para recorrer los arrays. Siempre que sea posible usaremos _Functional Programming_.
+
+**RECUERDA**: seguir haciendo todas las buenas prácticas que se indicaban en el ejercicio anterior.Alacant
 
 Recuerda pasar los tests como se explicó en el ejercicio de la frase para asegurarte el APTO en este ejercicio.
