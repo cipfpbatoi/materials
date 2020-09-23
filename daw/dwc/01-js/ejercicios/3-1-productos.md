@@ -54,11 +54,11 @@ Lo correcto es no tener todo el código en un único fichero javascript sino cad
 - **store.class.js**: la clase _Store_ con sus propiedades y métodos
 - **index.js**: el programa principal que crea el almacém, lo modifica (añade, elimina y modifica productos) y muestra por consola su contenido
 
-En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y index) para que desde _index.js_ se pueda llamar a métodos de _Store_ y desde _store.js_ a métodos de _Product_. Como esto ya empieza a ser incómodo vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero que se llamará _./dist/main.js_ y sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html) para hacerlo. 
+En el _index.html_ habría que enlazar los 3 ficheros en el orden correcto (productos, almacén y index) para que desde _index.js_ se pueda llamar a métodos de _Store_ y desde _store.js_ a métodos de _Product_. Como esto ya empieza a ser incómodo vamos a hacer uso de _webpack_ para que se empaqueten todos nuestros ficheros en un único fichero que se llamará _./dist/main.js_ y sera el que enlazaremos en el _index.html_. Puedes consultar [cómo usar webpack](../12-tests.html#usar-webpack) para hacerlo. 
 
 En este ejercicio ya lo tienes todo configurado y lo único que tienes que hacer es instalar las dependencias (`npm install`):
 - para pasar los test: `npm run test`
-- para probarlo en el navegador: `npx webpack --mode=development`
+- para probarlo en el navegador: `npx webpack --mode=development` (deberás ejecutarlo cada vez que quieras probar los cambios hechos en tu código)
 
 Fijaos que para que la clase _Store_ pueda usar los métodos de _Product_ debemos hacer:
 - añadir al final de _product.class.js_ el código `module.exports = Product;`
@@ -67,12 +67,12 @@ Fijaos que para que la clase _Store_ pueda usar los métodos de _Product_ debemo
 Lo mismo habrá que hacer para que _index.js_ pueda llamar a métodos de _Store_.
 
 ## Probar el código
-En lo que te has decargado de _moodle_ tienes los test que debes pasar para comprobar tu código. Recuerda que simplemente debes hacer:
+En la carpeta _test_ ya tienes hechos los test que debes pasar para comprobar tu código. Recuerda que simplemente debes hacer:
 ```javascript
 npm run test
 ```
 
-Para probar que funciona en el navegador añade al fichero _index.js_ código para:
+Para probar que funciona en el navegador añade al fichero _index.js_ el código necesario para:
 - crear un almacén
 - añadirle 4 productos:
   - 'TV Samsung MP45', 345.95 €, 3 uds. 
@@ -85,17 +85,17 @@ Para probar que funciona en el navegador añade al fichero _index.js_ código pa
   - a la impresora le cambiamos el precio por 55.90 y le ponemos -2 uds
   - a la TV le restamos 10 unidades
   - al ábaco le cambiamos el nombre por 'Ábaco de madera (nuevo modelo)'
-- mostramos por consola el almacén
-- mostramos por consola 'LISTADO DEL ALMACÉN alfabético'
-- mostramos por consola el almacén ordenado alfabéticamente
-- eliminamos la TV
-- eliminamos la impresora
-- mostramos por consola 'LISTADO DEL ALMACÉN por existencias'
-- mostramos por consola el almacén ordenado por existencias
-- mostramos por consola 'LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS'
-- mostramos por consola los productos del almacén con menos de 10 unidades
+- mostrar por consola el almacén
+- mostrar por consola 'LISTADO DEL ALMACÉN alfabético'
+- mostrar por consola el almacén ordenado alfabéticamente
+- eliminar la TV
+- eliminar la impresora
+- mostrar por consola 'LISTADO DEL ALMACÉN por existencias'
+- mostrar por consola el almacén ordenado por existencias
+- mostrar por consola 'LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS'
+- mostrar por consola los productos del almacén con menos de 10 unidades
 
-Al abrir la página en el navegador la consola deberá mostrar:
+Cuando lo hayas hecho, al abrir la página en el navegador la consola deberá mostrar lo siguiente:
 ```
 Almacén 1 => 4 productos: 6564.20 €
 - TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
