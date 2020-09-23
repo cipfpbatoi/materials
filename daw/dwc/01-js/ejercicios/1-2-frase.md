@@ -64,7 +64,13 @@ module.exports = {
 
 (a partir de ahora, a menos que comentes esta instrucción, cuando lo ejecutes en el navegador mostrará en la consola el error de Javascript 'ReferenceError: module is not defined' pero continuará funcionando correctamente).
 
-Ahora debes inicializar el proyecto _npm_ con el comando `npm init`. Cuando pregunte por el comando para ejecutar los tests indicaremos que es **jest**. Una vez hecho podemos pasar los test escribiendo en la terminal:
+NOTA: si aún no lo has hecho, [instala ahora _npm_](../12-tests.html#instalar-npm)
+
+En el repositorio ya tienes el proyecto inicializado (ya está el fichero _package.json_) por lo que no tienes que hacerlos tú. SI por algún motivo lo quieres volver a inicializar debes hacerlo con el comando `npm init`. Cuando pregunte por el comando para ejecutar los tests indicaremos que es **jest**. 
+
+Si aún no has [instalado _jest_](../12-tests.html#instalar-jest) en tu equipo debes hacerlo antes de pasar los test.
+
+Para pasar los test escribimos en la terminal:
 ```bash
 npm run test
 ```
