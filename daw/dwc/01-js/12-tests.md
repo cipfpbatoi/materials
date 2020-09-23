@@ -52,14 +52,10 @@ test('wordCount() returns 2 when the input is "Hello world", () => {
 Tenemos muchas herramientas para hacer tests unitarios. Usaremos una llamada **_Jest_**. Para instalarla usaremos el gestor de paquetes **_npm_** que es el más utlizado para usar bibliotecas y sus dependencias en el FrontEnd. 
 
 ## Instalar npm
-**npm** es el gestor de dependencias de **_nodejs_** y aprenderemos más de él en el bloque de **Vue**. De momento debemos instalar _NodeJS_ para tener npm. Podemos hacerlo desde el repositorio de nuestra distribución pero no se instalará la última versión. Es mejor seguir las indicaciones de la [página oficial](https://nodejs.org/es/download/package-manager/) que, para el caso de [distribuciones basadas en Debian/Ubuntu](https://github.com/nodesource/distributions/blob/master/README.md#debinstall), son (para la versión 12, sigue las instrucciondes de la página anterior y instala la última versión):
-```javascript
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
+**npm** es el gestor de dependencias de **_nodejs_** y aprenderemos más de él en el bloque de **Vue**. Debemos instalar _NodeJS_ para tener npm. Esto podemos hacerlo desde el repositorio de nuestra distribución (con `apt install nodejs`) pero no se instalará la última versión. Es mejor seguir las indicaciones de la [página oficial de NodeJS](https://nodejs.org/es/download/package-manager/). Aquí tenéis cómo hacerlo para [distribuciones basadas en Debian/Ubuntu](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
 
 ## Instalar jest
-Una vez instalado npm crearemos una carpeta para nuestro proyecto y dentro de ella ejecutaremos:
+Una vez instalado npm crearemos una carpeta para cada proyecto que vayamos a hacer y lo inicializamos ejecutando dentro de ella:
 ```javascript
 npm init
 ```
@@ -78,12 +74,18 @@ npm install --save-dev jest
 
 Estamos instalando jest sólo como dependencia de desarrollo ya que no lo necesitaremos en producción (lo mismo abreviado sería `npm i -D jest`).
 
-Como vamos a utilizar _jest_ en muchos mini-proyectos distintos podemos instalarlo globalmente con `npm i -g jest` de forma que en cada nuevo proyecto no tengamos que instalar nada, sólo hacer el `npm init`. 
+Como vamos a utilizar _jest_ en muchos proyectos distintos podemos instalarlo globalmente con 
+
+```javascript
+npm i -g jest
+```
+
+De esta forma no tendremos que instalar _jest_  en cada nuevo proyecto, sólo hacer el `npm init`. 
 
 Las dependencias que instalemos están en el directorio _node_modules_. Si estamos usando _git_ debemos asegurarnos de incluir este directorio en nuestro fichero _.gitignore_ (si no tenemos ese fichero podemos crearlo simplemente con `echo "node_modules" > .gitignore`).
 
 ## Transpilar nuestro código
-Vamos a crear las funciones de nuestro código en un fichero JS que las exportará para que el fichero de test pueda importarlas con un _require_ (se explica más adelante, en el apartado de [Usar Jest](#usar-jest)). Por ejemplo, tenemos un fichero llamado **suma.js** que contiene la función _add_ que suma 2 números pasados por parámetro:
+Vamos a crear las funciones de nuestro código en un fichero JS y para que se puedan usar el otro fichero Javascript (el de los tests) debemos exportarlas con `module.exports`. El fichero de test deberá importarlas con `require` (se explica más adelante, en el apartado de [Usar Jest](#usar-jest)). Por ejemplo, tenemos un fichero llamado **suma.js** que contiene la función _add_ que suma 2 números pasados por parámetro:
 ```javascript
 function add(a, b) {
   return a + b;
@@ -102,17 +104,17 @@ describe('Addition', () => {
         expect(actual).toEqual(expected)
     });
 
-    it('given 4 and 2 as inputs, should return 6', () => {
-        const expected = 6;
-        const actual = add(4,2);
+    it('given -4 and 2 as inputs, should return -2', () => {
+        const expected = -2;
+        const actual = add(-4,2);
         expect(actual).toEqual(expected)
     });
 });
 ```
 
 Lo que hace es:
-- importa la función que exporta _suma.js_ y la almacena en la constante **add**
-- el bloque _describe_ permite agrupar varios tests relacionados
+- importa la función que exporta _suma.js_ y la almacena en la constante **add**. Ya pude llamar a esa función
+- el bloque _describe_ permite agrupar varios tests relacionados bajo un mismo nombre
 - cada _it_ es un test que se realizará
 
 Si ejecutamos los tests en la terminal (`npm run test`) muestra un error ya que Jest no sabe cómo gestionar las sentencias ECMAScript _import_ y _export_. Para solucionarlo debemos transpilar nuestro código de manera que Jest pueda entenderlo. Podemos hacerlo de 2 maneras:
@@ -155,10 +157,27 @@ Por tanto nos va a permitir, entre otras cosas:
 - Tener en nuestro _index.html_ una sóla entrada de script (`\<script src="./dist/main.js'\>`) en lugar de una para cada archivo que estemos utilizando (index.js, functions.js, ...)
 - Además podremos usar instrucciones como `module.exports` para exportar funciones o `require` para importarlas en otro fichero Javascript, que sin traspilar provocarían errores en el navegador
 
-Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _webpack_, pero nosotros por ahora sólo necesitamos hacer los siguiente:
-- instalar webpack y webpack-cli (`npm i -D webpack webpack-cli`)
-- ejecutar webpack indicándole cuál es nuestro archivo JS principal. El archivo de salida, si no le indicamos otra cosa, será _./dist/main.js_. En el ejemplo anterior crearemos un fichero **index.js** dentro de _scripts/_ que importará el fichero _suma.js_ (con el _require_ como en el fichero de tests) y contendrá el resto de código de la aplicación (como pedir al usuario los números a sumar, mostrar el resultado, ...). Para que webpack empaquete y transpile esos 2 ficheros (index.js y suma.js) ejecutaremos en la terminal `npx webpack ./scripts/index.js`
-- por último, en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack `<script src="dist/main.js"></script>`
+Existen infinidad de páginas que nos enseñan las mil posibilidades que tiene _webpack_, pero nosotros por ahora sólo necesitamos:
+
+### Instalar webpack
+Tenemos que instalar webpack y webpack-cli. Como son dependencias de desarrollo (en producción no las necesitaremos) ejecutamos:
+```bash
+npm i -D webpack webpack-cli
+```
+
+### Ejecutar webpack
+Se ejecuta con el comando `npx webpack` y hay que indicarle:
+- cuál es nuestro archivo Javascript principal de nuestro código (si no lo ponemos supondrá que es **./src/index.js**)
+- cuál será el archivo que creará de salida (por defecto **./dist/main.js**)
+- si estamos en desarrollo o en producción, para permitir o no depurar el código generado
+
+Siguiendo con el ejemplo anterior de la suma crearemos un fichero **index.js** dentro de _src/_ que importará el fichero _suma.js_ (con el comando `require`como se hace en el fichero de tests) y que contendrá el resto de código de la aplicación (como pedir al usuario los números a sumar, mostrar el resultado, ...). Para que webpack empaquete y transpile esos 2 ficheros (index.js y suma.js) ejecutaremos en la terminal:
+```bash
+npx webpack --mode=development
+```
+
+### Enlazar el fichero generado en el HTML
+Por último, en nuestro _index.html_ debemos incluir sólo el _main.js_ generado por webpack `<script src="dist/main.js"></script>`
 
 ## Testear la UI
 Si queremos hacer tests unitarios de los cambios que produce nuestro código en la página web hay varios frameworks que podemos usar, pero también podemos hacerlo sin usar ninguno, usando sólo los módulos de Node que ya tenemos instalados y _Jest_, en concreto su herramienta _jsdom_ que usa para emular un navegador.
