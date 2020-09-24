@@ -44,7 +44,7 @@ let b=new Array(2,4,6);   // b = [2, 4, 6]
 pero lo recomendado es crearlos usando notación JSON (recomendado):
 ```javascript
 let a=[];
-let b=[2,4,6);
+let b=[2,4,6];
 ```
 
 Sus elementos pueden ser de cualquier tipo, incluso podemos tener elementos de tipos distintos en un mismo array. Si no está definido un elemento su valor será _undefined_. Ej.:
@@ -102,7 +102,7 @@ a=['Lunes', 'Martes', 2, 4, 6];
 borrado=a.splice(1, 3, 45, 56);   // ahora a=['Lunes', 45, 56, 6] y borrado=['Martes', 2, 4];
 ```
 
-> EJERCICIO: Gurada en un array la lista de la compra con Peras, Manzanas, Kiwis, Plátanos y Mandarinas. Haz los siguiente con splice:
+> EJERCICIO: Guarda en un array la lista de la compra con Peras, Manzanas, Kiwis, Plátanos y Mandarinas. Haz los siguiente con splice:
 > - Elimina las manzanas (debe quedar Peras, Kiwis, Plátanos y Mandarinas)
 > - Añade detrás de los Plátanos Naranjas y Sandía (debe quedar Peras, Kiwis, Plátanos, Naranjas, Sandía y Mandarinas)
 > - Quita los Kiwis y pon en su lugar Cerezas y Nísperos (debe quedar Peras, Cerezas, Nísperos, Plátanos, Naranjas, Sandía y Mandarinas)
@@ -275,9 +275,9 @@ Devuelve un valor calculado a partir de los elementos del array. En este caso la
 Ejemplo: queremos obtener la suma de las notas:
 ```javascript
 let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
-let total = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 35.15
+let sumaNotas = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 35.15
 // podríamos haber omitido el valor inicial 0 para total
-let total = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.15
+let sumaNotas = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.15
 ```
 
 Ejemplo: queremos obtener la nota más alta:
