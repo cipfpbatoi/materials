@@ -449,7 +449,7 @@ Mostrará en la consola:
 ### Boolean
 Los valores booleanos son **true** y **false**. Para convertir algo a booleano se usar **Boolean(valor)** aunque también puede hacerse con la doble negación (**!!**). Cualquier valor se evaluará a _true_ excepto 0, NaN, null, undefined o una cadena vacía ('') que se evaluarán a _false_.
 
-Los operadores lógicos son ! (negación), && (and), || (or).
+Los operadores lógicos son ! (negación), && (and), \|| (or).
 
 Para comparar valores tenemos **==** y **===**. La triple igualdad devuelve _true_ si son igual valor y del mismo tipo. Como Javascript hace conversiones de tipos automáticas conviene usar la **===** para evitar cosas como:
 * `'3' == 3` true
