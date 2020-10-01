@@ -80,12 +80,12 @@ Como se explica en la teoría,la clase controller tendrá como propiedades un al
 - si ha habido algún problema debe llamar a la vista para mostrar el error al usuario
 
 Sus métodos serán:
-- **addProductToStore**: recibe de la función manejadora del formulario new-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y, tras comprobar que son correctos, hace que se añada al almacén y se muestre en la tabla
+- **addProductToStore**: recibe de la función manejadora del formulario new-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
 - **deleteProductFromStore**: recibe de la función manejadora del formulario _del-prod_ la id del producto a eliminar y hace que se borre del almacén y de la tabla. Deberá pedir **confirmación** (le mostraremos al usuario la id del producto a eliminar y su nombre). Si el producto tiene unidades en stock, pedirá una **segunda confirmación** donde le indicaremos las unidades que aún tiene y le diremos que desaparecerán
 - **changeProductStock**: recibe de la función manejadora del formulario _stock-prod_  la id del producto a modificar y las unidades a sumarle (número entero positivo o negativo) y se encarga de que se cambien en el almacén y se muestren los cambios en la tabla
 - **changeProductInStore**: recibe un objeto con la id del producto a modificar y las propiedades del mismo que deseamos modificar (las no incluidas permanecerán inalteradas). Se encarga de modificar el producto en el almacén y que se muestren en la tabla esos cambios
 
-El código de cada método sólo se encargará de validar los datos, llamar a métodos del modelo para cambiar el almacén y a métodos de la vista para reflejar dichso cambios y manejar los errores que puedan producirse.
+El código de cada método sólo se encargará de validar los datos (los que ya valida el modelo no haría falta), llamar a métodos del modelo para cambiar el almacén y a métodos de la vista para reflejar dichos cambios y manejar los errores que puedan producirse.
 
 ### Hacer la vista _view.class.js_
 Esta clase se encarga de mostrar en la página la información que recibe para lo que tendrá métodos para mostrar los productos así como un método para mostrar mensajes al usuario sin tener que usar alerts.
