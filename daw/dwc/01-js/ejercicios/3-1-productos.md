@@ -22,7 +22,7 @@ Es el almacén de productos (podríamos tener más de uno) que guardaremos en _s
   -  products: array de productos. No se le pasa al constructor ya que al crear un almacén el array estará vacío.
   
 La clase tendrá los **métodos**:
-  - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id. Si ese código no existe en el almacén generará un error
+  - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id (si no existe devolverá _undefined_)
   - addProduct: recibe un objeto con los datos del producto a añadir (name, price y, opcionalmente, units; no tendrá id), crea el producto y lo añade al almacén. Si no se le pasa _units_ lo creará con 0 unidades. Devolverá el producto añadido al almacén. Generará un error si
     - no se le pasa _name_
     - no se le pasa _price_ o el precio no es un número positivo
