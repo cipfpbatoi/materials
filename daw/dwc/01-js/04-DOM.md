@@ -70,24 +70,24 @@ se convierte en el siguiente árbol DOM:
 Los principales métodos para acceder a los diferentes nodos son:
 * **.getElementById(id)**: devuelve el nodo con la _id_ pasada. Ej.:
 ```javascript
-let nodo=document.getElementById('main');   // nodo contendrá el nodo cuya id es _main_
+let nodo = document.getElementById('main');   // nodo contendrá el nodo cuya id es _main_
 ```
 * **.getElementsByClassName(clase)**: devuelve una colección (similar a un array) con todos los nodos de la _clase_ indicada. Ej.:
 ```javascript
-let nodos=document.getElementsByClassName('error');   // nodos contendrá todos los nodos cuya clase es _error_
+let nodos = document.getElementsByClassName('error');   // nodos contendrá todos los nodos cuya clase es _error_
 ```
 NOTA: las colecciones son similares a arrays (se accede a sus elementos con _\[indice]_) pero no se les pueden aplicar sus métodos _filter_, _map_, ... a menos que se conviertan a arrays con _Array.from()_
 * **.getElementsByTagName(etiqueta)**: devuelve una colección con todos los nodos de la _etiqueta_ HTML indicada. Ej.:
 ```javascript
-let nodos=document.getElementsByTagName('p');   // nodos contendrá todos los nodos de tipo  _<p>_
+let nodos = document.getElementsByTagName('p');   // nodos contendrá todos los nodos de tipo  _<p>_
 ```
 * **.querySelector(selector)**: devuelve el primer nodo seleccionad por el _selector_ CSS indicado. Ej.:
 ```javascript
-let nodo=document.querySelector('p.error');   // nodo contendrá el primer párrafo de clase _error_
+let nodo = document.querySelector('p.error');   // nodo contendrá el primer párrafo de clase _error_
 ```
 * **.querySelectorAll(selector)**: devuelve una colección con todos los nodos seleccionados por el _selector_ CSS indicado. Ej.:
 ```javascript
-let nodos=document.querySelectorAll('p.error');   // nodos contendrá todos los párrafos de clase _error_
+let nodos = document.querySelectorAll('p.error');   // nodos contendrá todos los párrafos de clase _error_
 ```
 NOTA: al aplicar estos métodos sobre _document_ se seleccionará sobre la página pero podrían también aplicarse a cualquier nodo y en ese caso la búsqueda se realizaría sólo entre los descendientes de dicho nodo.
 
@@ -139,16 +139,16 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 Las principales propiedades de un nodo son:
 * `elemento.innerHTML`: todo lo que hay entre la etiqueta que abre _elemento_ y la que lo cierra, incluyendo otras etiquetas HTML. Por ejemplo si _elemento_ es el nodo `<p>Esta página es <strong>muy simple</strong></p>`
 ```javascript
-let contenido=elemento.innerHTML;   // contenido='Esta página es <strong>muy simple</strong>'
+let contenido = elemento.innerHTML;   // contenido='Esta página es <strong>muy simple</strong>'
 ```
 * `elemento.textContent`: todo lo que hay entre la etiqueta que abre _elemento_ y la que lo cierra, pero ignorando otras etiquetas HTML. Siguiendo con el ejemplo anterior:
 ```javascript
-let contenido=elemento.textContent;   // contenido='Esta página es muy simple'
+let contenido = elemento.textContent;   // contenido='Esta página es muy simple'
 ```
 * `elemento.value`: devuelve la propiedad 'value' de un \<input> (en el caso de un \<input> de tipo text devuelve lo que hay escrito en él). Como los \<inputs> no tienen etiqueta de cierre (\</input>) no podemos usar _.innerHTML_ ni _.textContent_.  Por ejemplo si _elem1_ es el nodo `<input name="nombre">` y _elem2_ es el nodo `<input tipe="radio" value="H">Hombre`
 ```javascript
-let cont1=elem1.value;   // cont1 valdría lo que haya escrito en el <input> en ese momento
-let cont2=elem2.value;   // cont2="H"
+let cont1 = elem1.value;   // cont1 valdría lo que haya escrito en el <input> en ese momento
+let cont2 = elem2.value;   // cont2="H"
 ```
 
 Otras propiedades:
@@ -169,36 +169,36 @@ Otras propiedades:
 Vamos a ver qué métodos nos permiten cambiar el árbol DOM, y por tanto modificar la página:
 * `document.createElement('etiqueta')`: crea un nuevo elemento HTML con la etiqueta indicada, pero aún no se añade a la página. Ej.:
 ```javascript
-let nuevoLi=document.createElement('li');
+let nuevoLi = document.createElement('li');
 ```
 * `document.createTextNode('texto')`: crea un nuevo nodo de texto con el texto indicado, que luego tendremos que añadir a un nodo HTML. Ej.:
 ```javascript
-let textoLi=document.createTextNode('Nuevo elemento de lista');
+let textoLi = document.createTextNode('Nuevo elemento de lista');
 ```
 * `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_. Ahora ya se ha añadido a la página. Ej.:
 ```javascript
 nuevoLi.appendChild(textoLi);     // añade el texto creado al elemento LI creado
-let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
+let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
 miPrimeraLista.appendChild(nuevoLi);    // añade LI como último hijo de UL, es decir al final de la lista
 ```
 * `elemento.insertBefore(nuevoNodo, nodo)`: añade _nuevoNodo_ como hijo de _elemento_ antes del hijo _nodo_. Ej.:
 ```javascript
-let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-let primerElementoDeLista=miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
-miPrimeraLista.insertBefore(nuevoLi, primerElementoDeLista);    // añade LI al principio de la lista
+let miPrimeraLista = document.getElementsByTagName('ul')[0];                // selecciona el 1º UL de la página
+let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];   // selecciona el 1º LI de miPrimeraLista
+miPrimeraLista.insertBefore(nuevoLi, primerElementoDeLista);                // añade LI al principio de la lista
 ```
 * `elemento.removeChild(nodo)`: borra _nodo_ de _elemento_ y por tanto se elimina de la página. Ej.:
 ```javascript
-let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-let primerElementoDeLista=miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
+let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
+let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.removeChild(primerElementoDeLista);    // borra el primer elemento de la lista
 // También podríamos haberlo borrado sin tener el padre con:
 primerElementoDeLista.parentElement.removeChild(primerElementoDeLista);
 ```
 * `elemento.replaceChild(nuevoNodo, viejoNodo)`: reemplaza _viejoNodo_ con _nuevoNodo_ como hijo de _elemento_. Ej.:
 ```javascript
-let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-let primerElementoDeLista=miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
+let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
+let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.replaceChild(nuevoLi, primerElementoDeLista);    // reemplaza el 1º elemento de la lista con nuevoLi
 ```
 * `elementoAClonar.cloneNode(boolean)`: devuelve un clon de _elementoAClonar_ o de _elementoAClonar_ con todos sus descendientes según le pasemos como parámetro _false_ o _true_. Luego podremos insertarlo donde queramos.
@@ -215,8 +215,8 @@ Si utilizamos la propiedad **innerHTML** el código a usar es mucho más simple:
 
 **OJO**: La forma de añadir el último párrafo (línea #3: `miDiv.innerHTML+='<p>Párrafo añadido al final</p>';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a pintar TODO el contenido de miDIV. La forma correcta de hacerlo sería:
 ```javascript
-let ultimoParrafo=document.createElement('p');
-ultimoParrafo.innerHTML='Párrafo añadido al final';
+let ultimoParrafo = document.createElement('p');
+ultimoParrafo.innerHTML = 'Párrafo añadido al final';
 miDiv.appendChild(ultimoParrafo);
 ```
 Así sólo debe repintar el párrafo añadido, conservando todo lo demás que tenga _miDiv_.
@@ -238,10 +238,10 @@ Podemos ver y modificar los valores de los atributos de cada elemento HTML y tam
 * `elemento.setAttribute('nombreAtributo', 'valor')`: establece _valor_ como nuevo valor del atributo _nombreAtributo_ de _elemento_. También puede cambiarse el valor directamente con `elemento.atributo=valor`.
 * `elemento.removeAttribute('nombreAtributo')`: elimina el atributo _nombreAtributo_ de _elemento_
 
-Algunos atributos comunes se pueden acceder y cambiar como una propiedad del elemento como `id`, `title` o `className` (para el atributo **class**). Ejemplo:
+A algunos atributos comunes como `id`, `title` o `className` (para el atributo **class**) se puede acceder y cambiar como si fueran una propiedad del elemento (`elemento.atributo`). Ejemplos:
 ```javascript
-let miPrimeraLista=document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-miPrimeraLista.id='primera-lista';
+let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
+miPrimeraLista.id = 'primera-lista';
 // es equivalente ha hacer:
 miPrimeraLista.setAttribute('id', 'primera-lista');
 ```
@@ -249,7 +249,7 @@ miPrimeraLista.setAttribute('id', 'primera-lista');
 ### Estilos de los nodos
 Los estilos están accesibles como el atributo **style**. Cualquier estilo es una propiedad de dicho atributo pero con la sintaxis _camelCase_ en vez de _kebab-case_. Por ejemplo para cambiar el color de fondo (propiedad background-color) y ponerle el color _rojo_ al elemento _miPrimeraLista_ haremos:
 ```javascript
-miPrimeraLista.style.backgroundColor='red';
+miPrimeraLista.style.backgroundColor = 'red';
 ```
 
 De todas formas normalmente **NO CAMBIAREMOS ESTILOS** a los elementos sino que les pondremos o quitaremos clases que harán que se le apliquen o no los estilos definidos para ellas en el CSS.
@@ -289,6 +289,6 @@ Tened en cuenta que NO todos los navegadores soportan _classList_ por lo que si 
 ```javascript
 let clases = elemento.className.split(" ");
 if (clases.indexOf('rojo') == -1) {
-  elemento.className += " " + 'rojo';
+  elemento.className += ' ' + 'rojo';
 }
 ```
