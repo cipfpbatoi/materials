@@ -1,5 +1,13 @@
 # Bloc 1: Javascript. Práctica 4.1 - DOM
-Siguiendo con la práctica de 'Productos de un almacén' vamos a crear una página donde mostrar en una tabla los productos de nuestro almacén. Cada fila corresponderá a un producto y se mostrará su id, nombre, unidades, precio por unidad e importe. En el fichero index.html tenéis una tabla vacía con id _almacen_ donde pintaremos ese almacén. Dicha tabla usa **_bootstrap_** para mejorar la presentación. Debajo de la misma mostraremos el importe total del almacén.
+Siguiendo con la práctica de 'Productos de un almacén' vamos a crear una página donde mostrar en una tabla los productos de nuestro almacén. Cada fila corresponderá a un producto y se mostrará su id, nombre, unidades, precio por unidad e importe. En el fichero index.html tenéis el esqueleto de nuestra vista, que usa **_bootstrap_** para mejorar la presentación. La página está dividida en 3 zonas:
+- Una tabla vacía con id _almacen_ donde pintaremos ese almacén. Debajo de la misma mostraremos el importe total del almacén.
+- Un div para modificar el almacén, que contiene 3 formularios:
+    - **new-prod**: formulario para añadir nuevos productos al almacén. Debéis modificarlo para que sea obligatorio introducir el nombre (al menos 3 caracteres) y el precio (número mayor o igual que 0 y con 2 decimales)
+    - **del-prod**: formulario para borrar un producto. Obligatorio introducir su id que debe ser un número entero positivo
+    - **stock-prod**: formulario para modificar el stock de un producto (cuando se da de alta será de 0 uds.). Obligatorio introducir su id (número entero positivo) y el nº de uds. a añadir o eliminar (número entero)
+- un div para mostrar listados del almacén con 2 formularios más:
+    - **list-prod**: para mostrar el listado de productos del almacen. Hay que indicar si lo queremos por unidades o alfabético y pulsar el botón
+    - **low-prod**: para mostrar el listado de productos con menos uds. de las indicadas en este formulario. En ambos es obligatorio rellenar os datos que se piden
 
 Ya tenemos creadas las clases por lo que la lógica de negocio de nuestra aplicación (el modelo) la tenemos ya hecha. Ahora nos falta crear funciones con las que interactuará el usuario y que se encargarán de modificar los datos usando las clases ya creadas y reflejar los cambios hechos en la página para que los vea el usuario. Necesitaremos funciones para:
 * Añadir productos al almacén: deberemos pasarle el nombre del nuevo producto, su precio por unidad y, opcionalmente, sus unidades (si no recibe unidades estas serán 0)
