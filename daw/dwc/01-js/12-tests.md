@@ -308,15 +308,38 @@ Podemos obtener la lsita completa de _matchers_ en al [documentación oficial de
 En muchas ocasiones no vamos a pasar un único test sino un conjunto de ellos. En ese caso podemos agruparlos en un _test suite_ que definimos con la instruacción `describe` a la que pasamos un nombre que la describa y una función que contiene todos los tests a pasar:
 ```javascript
 describe('Funciones aritméticas', () => {
-  it('Suma 1 + 1 devuelve 2', () => {
+  test('Suma 1 + 1 devuelve 2', () => {
     expect(funciones.suma(1, 1)).toBe(2);
   });
 
-  it('Resta 2 - 1 devuelve 1', () => {
+  test('Resta 2 - 1 devuelve 1', () => {
     expect(funciones.resta(2, 1)).toBe(1);
   });
 });
 ```
+
+## Mocks
+Muchas veces debemos testear partes del código que llaman a otras funciones pero no nos interesa que se ejecuten esas funciones sino simplemente saber si se han llamado o no y con qué parámetros. Para eso se definen las fuciones _mock_. Consiste en declarar en nuestro fichero de test una función a la que llama el código como función de _jest_. 
+
+Por ejemplo, tenemos un método de un controlador llamado _addProduct_ que llama a otro de la vista llamado _renderProduct_ para renderizar algo. Nosotros sólo queremos testear que se llama a la vista y que el parámetro que se le pasa es el adecuado. En nuestro test haremos:
+```javascript
+renderProduct = jest.fn();
+
+test('renderProduct called once with product {id: 1, name: "Prod 1", price: 49.99}', () => {
+  const product = {id: 1, name: "Prod 1", price: 49.99};
+  
+  renderProduct(product);
+  renderProduct({});
+  
+	expect(renderProduct.mock.calls.length).toBe(2);
+	expect(renderProduct.mock.calls[0][0]).toEqual(newProd);
+	expect(renderProduct.mock.calls[1][0]).toEqual({});
+})
+```
+
+En realidad no se llama a la función real sino a la definida por el mock y podemos ver las veces que ha sido llamada (`fn.mock.calls.length`) o el primer parámetro pasado en la primera llamada (`fn.mock.calls[0][0]`) o en la segunda (`fn.mock.calls[1][0]`).
+
+Podéis obtener toda la información en la [documentación de jest](https://jestjs.io/docs/en/mock-functions).
 
 ## Testear promesas
 Para testear una función que devuelve una promesa debemos hacerlo de diferente manera. Por ejemplo tenemos una función 'getData' que devuelve una promesa. Para testearla:
