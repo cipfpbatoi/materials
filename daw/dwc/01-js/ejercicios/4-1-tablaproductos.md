@@ -5,7 +5,7 @@ Siguiendo con la práctica de 'Productos de un almacén' vamos a crear una pági
     - **new-prod**: formulario para añadir nuevos productos al almacén. Debéis modificarlo para que tenga un input para introducir el nombre (obligatorio, al menos 3 caracteres) y otro para el precio (número mayor o igual que 0 y con 2 decimales) además de los botones de 'Enviar' y 'Reset'
     - **del-prod**: formulario para borrar un producto. Tendrá un inpit para introducir su id (obligatorio, debe ser un número entero positivo)
     - **stock-prod**: formulario para modificar el stock de un producto (cuando se da de alta será de 0 uds.). Tendrá un input para introducir su id (obligatorio, número entero positivo) y otro para el nº de uds. a añadir o eliminar (obligatorio, número entero)
-- un div para mostrar listados del almacén con 2 formularios más (ya los tenemos hechos):
+- un div para mostrar listados del almacén. De momento NO haremos la funcionalidad de esta parte. Contiene 2 formularios más (ya los tenemos hechos):
     - **list-prod**: para mostrar el listado de productos del almacen. Hay que indicar si lo queremos por unidades o alfabético y pulsar el botón
     - **low-prod**: para mostrar el listado de productos con menos uds. de las indicadas en este formulario. En ambos es obligatorio rellenar os datos que se piden
 
@@ -73,19 +73,21 @@ Además deberemos crear funciones manejadoras de eventos que se ejecutarán auto
 Tenéis hecha la función para el formulario _form-prod_. Debéis completarla (que coja los datos y llame a la función del controlador pasándoselos) y hacer otras para los otros 2 formularios siguiendo ese ejemplo.
 
 ### Hacer el controlador _controller.class.js_
-Como se explica en la teoría,la clase controller tendrá como propiedades un almacén (una instancia de la clase _Store_) donde guardar los datos y una instancia de la clase _View_ a la que llamar para renderizarlos, además de métodos para responder a las distintas acciones del usuario. Lo que debe hacer cada método es:
-- validar los datos que se le pasan
+Como se explica en la teoría,la clase controller tendrá 2 propiedades:
+- **store**: será un almacén (una instancia de la clase _Store_) donde guardar los datos. En uestro caso crearemos un almacén con id 1.
+- **view**: será una instancia de la clase _View_ a la que llamar para renderizarlos
+
+Además tendrá métodos para responder a las distintas acciones del usuario. Lo que debe hacer cada método es:
+- validar los datos que se le pasan (en nuestro caso ya los valida el modelo así que no hace falta validarlos aquí también)
 - si son correctos, llamar al modelo (la clase Store) para modificar los datos en respuesta a la acción del usuario
-- si se ha cambiado el modelo llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
+- si ha cambiado el modelo llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
 - si ha habido algún problema debe llamar a la vista para mostrar el error al usuario
 
 Sus métodos serán:
-- **addProductToStore**: recibe de la función manejadora del formulario new-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
+- **addProductToStore**: recibe de la función manejadora del formulario _new-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
 - **deleteProductFromStore**: recibe de la función manejadora del formulario _del-prod_ la id del producto a eliminar y hace que se borre del almacén y de la tabla. Deberá pedir **confirmación** (le mostraremos al usuario la id del producto a eliminar y su nombre). Si el producto tiene unidades en stock, pedirá una **segunda confirmación** donde le indicaremos las unidades que aún tiene y le diremos que desaparecerán
 - **changeProductStock**: recibe de la función manejadora del formulario _stock-prod_  la id del producto a modificar y las unidades a sumarle (número entero positivo o negativo) y se encarga de que se cambien en el almacén y se muestren los cambios en la tabla
 - **changeProductInStore**: recibe un objeto con la id del producto a modificar y las propiedades del mismo que deseamos modificar (las no incluidas permanecerán inalteradas). Se encarga de modificar el producto en el almacén y que se muestren en la tabla esos cambios
-
-El código de cada método sólo se encargará de validar los datos (los que ya valida el modelo no haría falta), llamar a métodos del modelo para cambiar el almacén y a métodos de la vista para reflejar dichos cambios y manejar los errores que puedan producirse.
 
 ### Hacer la vista _view.class.js_
 Esta clase se encarga de mostrar en la página la información que recibe para lo que tendrá métodos para mostrar los productos así como un método para mostrar mensajes al usuario sin tener que usar alerts.
