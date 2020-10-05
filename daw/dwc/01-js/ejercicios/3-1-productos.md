@@ -34,14 +34,12 @@ La clase tendrá los **métodos**:
   - underStock: recibe un nº de unidades y devuelve los productos que tengan menos de dichas unidades
   - orderByUnits: devuelve el array de productos ordenado por unidades de forma descendente
   - orderByName: devuelve el array de productos ordenado por el nombre del producto
-  - además tendrá un método para que si se intenta imprimir el almacén devuelva HTML con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto, como en el siguiente ejemplo:
+  - además tendrá un método para que si se intenta imprimir el almacén devuelva una cadena con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto, como en el siguiente ejemplo:
 
 ```html
-<p>Almacén 1 => 2 productos: 2174,75 €</p>
-<ul>
-  <li>TV Samsung MP45: 5 uds. x 235,95 €/u = 1179.75 €</li>
-  <li>USB Kingston 16 GB: 100 uds. x 19,95 €/u = 1995,00 €</li>
-</ul>
+Almacén 1 => 2 productos: 2174,75 €
+- TV Samsung MP45: 5 uds. x 235,95 €/u = 1179.75 €
+- USB Kingston 16 GB: 100 uds. x 19,95 €/u = 1995,00 €
 ```
 
 Antes de añadir o modificar productos del almacén deberás asegurarte de que tienen id y nombre y de que las unidades y el precio son números y no son negativos (además las unidades deben ser un número entero).
