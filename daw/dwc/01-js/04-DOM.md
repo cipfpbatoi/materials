@@ -13,6 +13,7 @@
     - [Modificar el DOM con ChildNode](#modificar-el-dom-con-childnode)
   - [Atributos de los nodos](#atributos-de-los-nodos)
     - [Estilos de los nodos](#estilos-de-los-nodos)
+    - [Atributos de clase](#atributos-de-clase)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
