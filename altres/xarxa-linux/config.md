@@ -179,3 +179,5 @@ o si el nom de les nostrres targetes és enpXsY
 dmesg | grep enp
 ```
 
+# [<- La Xarxa en GNU/Linux](./#la-xarxa-en-gnulinux)
+# [-> Enrutament](./enrutament.html#enrutament)
