@@ -114,5 +114,5 @@ Tant els comandos `ifconfig` com `ip` ens permeten canviar al nostra configuraci
 
 Podeu consultar més comandos en [aquesta pàgina](https://www.tecmint.com/ifconfig-vs-ip-command-comparing-network-configuration/).
 
-# [Configurar la xarxa](./config.html#configurar-la-xarxa)
-# [Enrutament](./enrutament.html#enrutament)
+# [-> Configurar la xarxa](./config.html#configurar-la-xarxa)
+# [-> Enrutament](./enrutament.html#enrutament)
