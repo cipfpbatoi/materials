@@ -47,12 +47,12 @@ Les principals diferències entre els dos sistemes són, entre uns altres:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-04.png)
 
-Si li poem el nom d'una targeta ens dona la informació de la mateixa:
+Si li posem el nom d'una targeta ens dona la informació de la mateixa:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-05.png)
 
 ## Veure la configuració amb ifupdown
-El comando per a veure la configuració de la xarxa és `ifconfig` (en Debian si no som root hem de posar la ruta sencera del comando `/sbin/ifconfig`):
+El comando per a veure la configuració de la xarxa és `ifconfig` (en Debian si no som _root_ hem de posar la ruta sencera del comando `/sbin/ifconfig`):
 
 ![ifconfig](./img/ifconfig3.png)
 
@@ -61,10 +61,10 @@ Per a veure les rutes configurades i la porta d'enllaç tenim el comando `route`
 ![route](./img/route3.png)
 
 Ens indica que:
-* tots els paquets amb destinació la xarxa 192.168.101.0/24 eixiran per la targeta enp0s8
-* tots els paquets amb destinació la xarxa 192.168.102.0/24 eixiran per la targeta enp0s9
-* tots els paquets amb destinació la xarxa 10.0.2.0/24 eixiran per la targeta enp0s3
-* la resta de paquets aniran a la porta d'enllaç (10.0.2.2) per a targeta enp0s3
+* tots els paquets amb destinació la xarxa 192.168.101.0/24 eixiran per la targeta **enp0s8**
+* tots els paquets amb destinació la xarxa 192.168.102.0/24 eixiran per la targeta **enp0s9**
+* tots els paquets amb destinació la xarxa 10.0.2.0/24 eixiran per la targeta **enp0s3**
+* la resta de paquets aniran a la porta d'enllaç (10.0.2.2) per a targeta **enp0s3**
 
 I per a veure el DNS mostrem el contingut del fitxer `/etc/resolv.conf`:
 
@@ -90,7 +90,7 @@ Per a veure la porta d'enllaç el comando és:
 ```bash
 ip route show
 ```
-(o simplement ip r)
+(o simplement `ip r`)
 
 ![ip r](./img/ip-route.png)
 
@@ -113,3 +113,6 @@ Tant els comandos `ifconfig` com `ip` ens permeten canviar al nostra configuraci
   * ip: `ip route add default via 192.168.1.1`
 
 Podeu consultar més comandos en [aquesta pàgina](https://www.tecmint.com/ifconfig-vs-ip-command-comparing-network-configuration/).
+
+# [Configurar la xarxa](./config.html#configurar-la-xarxa)
+# [Enrutament](./enrutament.html#enrutament)
