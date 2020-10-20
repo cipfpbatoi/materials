@@ -225,4 +225,4 @@ Podemos probar los distintos métodos de las fechas en la página de [w3schools]
 ## Objeto RegExp
 Otro objeto incorporado en el lenguaje Javascript es el objeto RegExp que nos permite construir expresiones regualres. Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. 
 
-Las veremos en detalle [dentro del siguiente tema](./08-forms.html#expresiones-regulares).
+Las veremos en detalle [dentro del siguiente tema](./08-forms.md#expresiones-regulares).
