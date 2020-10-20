@@ -4,21 +4,17 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Objetos nativos. Manejo de errores](#objetos-y-funciones-globales-manejo-de-errores)
+- [Objetos nativos](#objetos-nativos)
   - [Introducción](#introducci%C3%B3n)
   - [Funciones globales](#funciones-globales)
   - [Objetos nativos del lenguaje](#objetos-nativos-del-lenguaje)
-  - [Objeto Math](#objeto-math)
-  - [Objeto Date](#objeto-date)
+    - [Objeto Math](#objeto-math)
+    - [Objeto Date](#objeto-date)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introducción
-En este tema vamos a ver 3 cosas fiferentes:
-* las funciones globales de Javascript, muchas de las cuales ya hemos visto como _Number()_ o _String()_
-* objetos nativos que incorpora Javascript y que nos facilitarán mucho el trabajo (especialmente a la hora de trabajar con fechas). 
-  * dentro de ellos veremos tambien el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios
-* manejo de errores
+En este tema vamos a ver las funciones globales de Javascript (muchas de las cuales ya hemos visto como _Number()_ o _String()_) y los objetos nativos que incorpora Javascript y que nos facilitarán el trabajo proporcionándonos métodos y propiedades útiles para no tener que "reinventar la rueda" en nuestras aplicaciones. Dentro de ellos está el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios y que por eso veremos en la siguiente unidad.
 
 ## Funciones globales
 * `parseInt(valor)`: devuelve el valor pasado como parámetro convertido a entero o _NaN_ si no es posible la conversión. Este método es mucho más permisivo que _Number_ y convierte cualquier cosa que comience por un número (si encuentra un carácter no numérico detiene la conversión y devuelve lo convertido hasta el momento). Ejemplos:
@@ -92,9 +88,9 @@ Pero además tenemos los tipos de objetos nativos, que no dependen del navegador
 - Date
 - RegExp
 
-Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho mñas eficiente usar los tipos primitivos. Pero aunque lo hagamos usando el tipo de dato primitivo se considera u objeto y tenemos acceso a todas sus propiedades y mètodos (`num.toFixed(2)`).
+Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho mñas eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera u objeto y tenemos acceso a todas sus propiedades y mètodos (`num.toFixed(2)`).
 
-Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
+Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string), [Boolean](./01-sintaxis.html#boolean) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
 
 ## Objeto Math
 Proporciona constantes y métodos para trabajar con valores numéricos:
@@ -132,6 +128,7 @@ Es la clase que usaremos siempre que vayamos a trabajar con fechas. Al crear una
 - valor para año, mes (entre 0 y 11), día, hora, minutos, segundos, milisegundos
 
 Ejemplos:
+
 ```javascript
 let date1=new Date();    // Mon Jul 30 2018 12:44:07 GMT+0200 (CEST) (es cuando he ejecutado la instrucción)
 let date7=new Date(1532908800000);    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (miliseg. desde 1/1/1070)
@@ -146,6 +143,7 @@ let date5=new Date(2018,7,30,5,30);    // Thu Ago 30 2018 05:30:00 GMT+0200 (CES
 > EJERCICIO: Crea en la consola dos variables fecNac1 y fecNac2 que contengan tu fecha de nacimiento. La primera la creas pasandole una cadena y la segunda pasándole año, mes y día
 
 Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o ` ` (espacio). Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
+
 ```javascript
 let date=new Date(2018,7,41);    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10Sep
 let date=new Date(2018,7,0);     // Tue Jul 31 2018 00:00:00 GMT+0200 (CEST) -> 0=0Ago=31Jul (el anterior)
@@ -217,6 +215,7 @@ let otraFecha=new Date(fecha.getTime());
 otraFecha.setDate(28);               // Thu Jun 28 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDate() );      // imprime 30
 ```
+
 **NOTA**: la comparación entre fechas funciona correctamente con los operadores `>`, `>=`, `<` y `<=` pero NO con `==`, `===`, `!=` y `!==` ya que compara los objetos y ve que son objetos diferentes. Si queremos saber si 2 fechas son iguales (siendo diferentes objetos) el código que pondremos NO es `fecha1 === fecha2` sino `fecha1.getTime() === fecha2.getTime()`.
 
 > EJERCICIO: comprueba si es mayor tu fecha de nacimiento o el 1 de enero de este año
