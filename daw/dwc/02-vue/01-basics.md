@@ -22,7 +22,7 @@ Vue es un framework progresivo para la construcción de interfaces de usuario y 
 
 Un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
 
-Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y veremos además los servicios de vue-router y axios entre otros.
+Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y la de [Vue3](https://v3.vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router y axios entre otros.
 
 **¿Qué framework es mejor?**
 Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis algunos enlaces al respecto:
@@ -37,19 +37,23 @@ Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis
 Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 * **Sencillez**: aunque Angular es el framework más demandado hoy en el mercado su curva de aprendizaje es muy pronunciada. Vue es mucho más sencillo de aprender pero su forma de trabajar es muy similar a Angular por lo que el paso desde Vue a Angular es relativamente sencillo
 * **Uso del framework**: React es también muy sencillo ya que es simplemente Javascript en el que podemos codificar la vista con JSX, pero la forma de trabajar de Vue es más pàrecida a otros frameworks, especialmente a Angular por lo que lo aprendido nos servirá a la hora de aprender otros framework
-* **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece buen rendimiento
-* **Popularidad**: es el framwork cyua popularidad más está creciendo y ya ha superado incluso a React. Como muestra en 2016 los proyectos desarrollados con Vue obtuvieron 7600 estrellas en GitHub, en 2017 fueron 36700 estrellas y en Junio de 2018 ya han superado las 100000.
+* **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece muy buen rendimiento
 
 ## Usar Vue
 Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN:
 ```html
 <!-- development version, includes helpful console warnings -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 ```
 o
 ```html
 <!-- production version, optimized for size and speed -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+```
+
+Si queremos usar la nueva versión Vue 3 (aún no recomendado para producción) usaremos el CDN:
+```html
+<script src="https://unpkg.com/vue@next"></script>
 ```
 
 Más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
