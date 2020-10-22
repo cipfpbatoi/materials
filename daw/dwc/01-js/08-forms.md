@@ -101,12 +101,12 @@ const email = document.getElementById('mail');
 const emailError = document.querySelector('#mail + span.error');
 
 form.addEventListener('submit', (event) => {
-  nombreError.textContent = nombre.validationMessege;
+  nombreError.textContent = nombre.validationMessage;
   if(!nombre.validity.valid) {
     event.preventDefault();
   }
 
-  emailError.textContent = email.validationMessege;
+  emailError.textContent = email.validationMessage;
   if(!email.validity.valid) {
     event.preventDefault();
   }
