@@ -15,7 +15,7 @@
     - [Eventos de teclado](#eventos-de-teclado)
     - [Eventos de toque](#eventos-de-toque)
     - [Eventos de formulario](#eventos-de-formulario)
-  - [Los objetos _this_ y _event_](#los-objetos-_this_-y-_event_)
+  - [Los objetos _this_ y _event_](#los-objetos-_this-y-event_)
   - [Propagación de eventos (bubbling)](#propagaci%C3%B3n-de-eventos-bubbling)
   - [innerHTML y escuchadores de eventos)](#innerHTML-y-escuchadores-de-eventos)
 
