@@ -383,9 +383,9 @@ fetch(url, {
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
 
 # async/await
-Estas nuevas instrucciones introducidas en ES2016 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que no están soportadas por navegadores antiguos.
+Estas nuevas instrucciones introducidas en ES2016 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que NO están soportadas por navegadores antiguos.
 
-La palabra **async** indica que una función va a hacer una llamada asíncrona. Al declarar esa función le anteponemos _async_. La palabra **await** provocará que la ejecución se "espere" a que se complete esa instrucción antes de seguir. La anteponemos antes de la llamada asíncrona. Siguiendo con el ejemplo de _fetch_:
+La palabra **async** indica que una función va a hacer una llamada asíncrona. Al declarar esa función le anteponemos _async_. La palabra **await** provocará que la ejecución se "espere" a que se complete esa instrucción antes de seguir. La anteponemos antes de llamar a la funcióm asíncrona. Siguiendo con el ejemplo de _fetch_:
 ```javascript
 async function pideDatos() {
   let response = await fetch('http://example.com/movies.json');
