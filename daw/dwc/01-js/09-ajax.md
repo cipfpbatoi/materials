@@ -204,7 +204,7 @@ let newProduct={
     descrip: document.getElementById("descrip").value,
 }    
 let peticion=new XMLHttpRequest();
-peticion.open('GET', 'https://localhost/products');
+peticion.open('POST', 'https://localhost/products');
 peticion.setRequestHeader('Content-type', 'application/json');  // Siempre tiene que estar esta línea si se envían datos
 peticion.send(JSON.stringify(newProduct));                      // Hay que convertr el objeto a cadena para enviarlo
 peticion.addEventListener('load', function() {
