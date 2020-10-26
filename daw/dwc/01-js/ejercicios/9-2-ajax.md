@@ -23,14 +23,14 @@ Para familiarizarnos con esta API (o con cualquier otra) vamos a instalar una ex
 
 Una vez hecho probaremos a hacer peticiones a nuestro servidor JSON para añadir, modificar o borrar datos del mismo y familiarizarnos así con la API.
 
-## Ejercicio 8.2
+## Ejercicio 9.2
 Ahora vamos a hacer que los productos del almacén se guarden de forma persistente. Al cargar la página cargaremos todos los productos del almacén y cada vez que añadamos un nuevo producto éste se guardará en el servidor (de momento no vamos a implementar ni modificaciones ni eliminaciones).
 
 Como no queremos hacer grandes cambios en nuestra aplicación conservaremos el modelo que tenemos (tendremos un 'Store' en memoria con los datos) pero además:
 * Al cargar la página haremos una petición al servidor pidiendo los productos a la API, los añadiremos al 'Store' que tenemos y los pintaremos
 * Al añadir un nuevo producto haremos una petición a la API para que lo añada y, si todo va bien, lo añadiremos a nuestro 'Store' y lo mostraremos.
 
-## Pràctica 8.3
+## Pràctica 9.3
 En el ejercicio anterior hemos visto el problema que plantea que Ajax sea asíncrono: cuando el usuario quiere añadir un nuevo producto se hace la petición Ajax pero hasta que el servidor no contesta no puede añadirse a los datos locales ni pintarse en la página. Por tanto tenemos que llamar al código que pinta el producto dentro de la función de la API o bien crear una función a la que llamar desde allí que lo haga.
 
 La solución es implementar la API con promesas y así nuestro código vuelve a quedar bien estructurado.
@@ -39,8 +39,8 @@ En esta práctica debes hacer las modificaciones necesarias para que nuestros da
 
 Si lo prefieres puedes hacerlo usando  _async/await_.
 
-## Ejercicio OPCIONAL 8.4
+## Ejercicio OPCIONAL 9.4
 Reescribe el código utilizando la utilidad _fetch_. 
 
-## Ejercicio OPCIONAL 8.5
+## Ejercicio OPCIONAL 9.5
 Reescribe el código utilizando _async/await_. Si lo haces junto con _fetch_ quedará mucho más claro.
