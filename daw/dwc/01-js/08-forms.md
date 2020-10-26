@@ -66,6 +66,10 @@ Esta API nos proporciona estas propiedades y métodos:
 - **checkValidity()**: indica si el campo al que se aplica es o no válido. Si no lo es lanza además un evento **invalid** sobre el campo
 - **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Nos va a permitir sustituir el mensaje del navegador por uno personalizado
 
+Podéis ver un ejemplo simple de cómo validar un campo que es obligatorio y que su tamaño debe estar entre 5 y 50 caracteres:
+
+<script async src="//jsfiddle.net/juansegura/vbdrxjsz/embed/"></script>
+
 Para validar un formulario nosotros pero usando esta API debemos añadir al FORM el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
 ### Ejemplo
