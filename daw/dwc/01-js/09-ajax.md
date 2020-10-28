@@ -49,11 +49,11 @@ Hay diferentes tipos de petición que podemos hacer:
 * **DELETE**: se usa para eliminar un dato del servidor (como un DELETE de SQL). La información para identificar el objeto a eliminar se envía en la url (como en el GET)
 * existen otros tipos que no veremos aquí (como _HEAD_, etc)
 
-> EJERCICIO: Vamos a realizr diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podemos hacerlas directamente desde el navegador pero para el resto debemos usar cualquiera de las extensiones de cliente REST que tiene nuestro navegador. Lo que haremos es:
+> EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podemos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Lo que queremos hacer en este ejercicio es:
 > - obtener todas las tareas
 > - obtener la tarea con id 55
 > - obtener la tarea con id 201 (como no existe devolverá un código de error 404 - Not found)
-> - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se añade la id, de eso se encarga la BBDD. La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos ucluyendo la id. Como es una API de prueba e realidad no lo está añadiendo a la BBDD
+> - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se añade la id, de eso se encarga la BBDD. La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos incluyendo la id. Como es una API de prueba en realidad no lo está añadiendo a la BBDD
 > - modificar la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
 > - eliminar la tarea con id 55. Como veis esta API devuelve un objeto vacío al eliminar; otras devuelven el objeto eliminado
 
@@ -71,7 +71,15 @@ json-server --watch datos.json
 ```
 La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
 
-Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definidos en el fichero _.json_. Por ejemplo:
+El fichero _datos.json_ será un fichero que contenga un objeto JSON con una propiedad para cada "_tabla_" de nuestra BBDD. Por ejemplo, si queremos simular una BBDD con las tablas _users_ y _posts_ (vacías) el contenido del fichero será:
+```[json]
+{
+  "users": [],
+  "posts": []
+}
+```
+
+La API escucha en el puerto 3000 y servirá los diferentes objetos definidos en el fichero _.json_. Por ejemplo:
 * http://localhost:3000/users: devuelve todos los elementos del array _users_ del fichero _.json_
 * http://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
 
@@ -84,7 +92,7 @@ Y la ruta para acceder a la API será `http://192.168.0.10:3000`.
 
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
 
-> EJERCICIO: instalar json-server en tu máquina. Ejecútalo indicando un nombre de fichero que no existe: como verás crea un fichero json de rpueba con 3 tablas: _posts_, _comments_ y _profiles_. Ábrelo en tu navegador para ver los datos
+> EJERCICIO: instalar json-server en tu máquina. Ejecútalo indicando un nombre de fichero que no existe: como verás crea un fichero json de prueba con 3 tablas: _posts_, _comments_ y _profiles_. Ábrelo en tu navegador para ver los datos
 
 ## Realizar peticiones Ajax
 Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest** que es el que controlará todo el proceso. Los pasos a seguir son:
@@ -133,12 +141,12 @@ Fijaos cuándo cambia de estado (_readyState_) la petición:
 * vale 1 cuando abrimos la conexión con el servidor
 * luego se envía al servidor y es éste el que va informando al cliente de cuándo cambia su estado
 
-**MUY IMPORTANTE**: Notad que la última línea ('Petición acabada') se ejecuta antes que las de 'Estado de la petición'. Recordad que es una petición asíncrona y la ejecución del programa continúa sin esperar a que responda el servidor.
+**MUY IMPORTANTE**: notad que la última línea ('Petición acabada') se ejecuta antes que las de 'Estado de la petición'. Recordad que es una petición asíncrona y la ejecución del programa continúa sin esperar a que responda el servidor.
 
-Hay otros eventos que nos pueden ser de utilidad:
+Como normalmente no nos interesa cada cambio en el estado de la petición sino que sólo queremos saber cuándo ha terminado de procesarse tenemos otros eventos que nos pueden ser de utilidad:
 * **load**: se produce cuando se recibe la respuesta del servidor. Equivale a _readyState===4_. En _status_ tendremos el estado de la respuesta
 * **error**: se produce si sucede algún error al procesar la petición (de red, de servidor, ...)
-* **timeout**: si ha transcurrido el tiempo indicado y no se ha recibido respuesta del servidor. Podemos cambiar el tiempo por defecto modificando la propiedad **timeout** antes de enviar la petición
+* **timeout**: si ha transcurrido el tiempo indicado y no se ha recibido respuesta del servidor. Podemos cambiar el tiempo por defecto modificando la propiedad _timeout_ antes de enviar la petición
 * **abort**: si se cancela la petición (se hace llamando al método **.abort()** de la petición)
 * **loadend**: se produce siempre que termina la petición, independiantemente de si se recibe respuesta o sucede algún error (incluyendo un _timeout_ o un _abort_)
 
@@ -197,18 +205,21 @@ Vamos a ver algunos ejemplos de envío de datos al servidor con POST. Supondremo
 ```
 ### Enviar datos al servidor en formato JSON
 ```javascript
-...
-// esta sería la función manejadora del 'submit' de 'addProduct'
-let newProduct={
-    name: document.getElementById("name").value,
-    descrip: document.getElementById("descrip").value,
-}    
-let peticion=new XMLHttpRequest();
-peticion.open('POST', 'https://localhost/products');
-peticion.setRequestHeader('Content-type', 'application/json');  // Siempre tiene que estar esta línea si se envían datos
-peticion.send(JSON.stringify(newProduct));                      // Hay que convertr el objeto a cadena para enviarlo
-peticion.addEventListener('load', function() {
-...
+document.getElementById('addProduct').addEEventListener('submit', (event) => {
+  ...
+  let newProduct={
+      name: document.getElementById("name").value,
+      descrip: document.getElementById("descrip").value,
+  }    
+  let peticion=new XMLHttpRequest();
+  peticion.open('POST', 'https://localhost/products');
+  peticion.setRequestHeader('Content-type', 'application/json');  // Siempre tiene que estar esta línea si se envían datos
+  peticion.send(JSON.stringify(newProduct));                      // Hay que convertr el objeto a cadena para enviarlo
+  peticion.addEventListener('load', function() {
+    // procesamos los datos
+    ...
+  })
+})
 ```
 
 Para enviar el objeto hay que convertirlo a una cadena JSON con la función **JSON.stringify()** (es la opuesta a **JSON.parse()**). Y siempre que enviamos datos al servidor debemos decirle el formato que tienen en la cabecera de _Content-type_:
@@ -218,17 +229,19 @@ peticion.setRequestHeader('Content-type', 'application/json');
 
 ### Enviar datos al servidor en formato URIEncoded
 ```javascript
-...
-// esta sería la función manejadora del 'submit' de 'addProduct'
-let name=document.getElementById("name").value;
-let descrip=document.getElementById("descrip").value;
+document.getElementById('addProduct').addEEventListener('submit', (event) => {
+  ...
+  let name=document.getElementById("name").value;
+  let descrip=document.getElementById("descrip").value;
 
-let peticion=new XMLHttpRequest();
-peticion.open('GET', 'https://localhost/products');
-peticion.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-peticion.send('name='+encodeURIComponent(name)+'&descrip='+encodeURIComponent(descrip));
-peticion.addEventListener('load', function() {
-...
+  let peticion=new XMLHttpRequest();
+  peticion.open('GET', 'https://localhost/products');
+  peticion.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  peticion.send('name='+encodeURIComponent(name)+'&descrip='+encodeURIComponent(descrip));
+  peticion.addEventListener('load', function() {
+    ...
+  })
+})
 ```
 
 En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_**.
@@ -249,35 +262,38 @@ Vamos a añadir al formulario un campo donde el usuario pueda subir la foto del 
 
 Podemos enviar al servidor todo el contenido del formulario:
 ```javascript
-...
-// esta sería la función manejadora del 'submit' de 'addProduct'
-let peticion=new XMLHttpRequest();
-let datosForm = new FormData(document.getElementById("addProduct"));
-// Automáticamente ha añadido todos los inputs, incluyendo tipo 'file', blob, ...
-// Si quisiéramos añadir algún dato más haríamos:
-formData.append("otrodato", 12345);
-// Y lo enviamos
-peticion.open('POST', 'https://localhost/products');
-peticion.send(datosForm);
-//
-peticion.addEventListener('load', function() {
-...
+document.getElementById('addProduct').addEEventListener('submit', (event) => {
+  ...
+  let peticion=new XMLHttpRequest();
+  let datosForm = new FormData(document.getElementById("addProduct"));
+  // Automáticamente ha añadido todos los inputs, incluyendo tipo 'file', blob, ...
+  // Si quisiéramos añadir algún dato más haríamos:
+  formData.append("otrodato", 12345);
+  // Y lo enviamos
+  peticion.open('POST', 'https://localhost/products');
+  peticion.send(datosForm);
+  peticion.addEventListener('load', function() {
+    ...
+  })
+})
 ```
 
 También podemos enviar sólo los campos que queramos:
 ```javascript
-...
-// esta sería la función manejadora del 'submit' de 'addProduct'
-let formData=new FormData();  // creamos un formData vacío
-formData.append("name", document.getElementById("name").value);
-formData.append("descrip", document.getElementById("descrip").value);
-formData.append("photo", document.getElementById("photo").files[0]);
+document.getElementById('addProduct').addEEventListener('submit', (event) => {
+  ...
+  let formData=new FormData();  // creamos un formData vacío
+  formData.append("name", document.getElementById("name").value);
+  formData.append("descrip", document.getElementById("descrip").value);
+  formData.append("photo", document.getElementById("photo").files[0]);
 
-let peticion=new XMLHttpRequest();
-peticion.open('POST', 'https://localhost/products');
-peticion.send(formData);
-peticion.addEventListener('load', function() {
-...
+  let peticion=new XMLHttpRequest();
+  peticion.open('POST', 'https://localhost/products');
+  peticion.send(formData);
+  peticion.addEventListener('load', function() {
+    ...
+  })
+})
 ```
 
 Podéis ver más información de cómo usar formData en [MDN web docs](https://developer.mozilla.org/es/docs/Web/Guide/Usando_Objetos_FormData).
@@ -310,36 +326,98 @@ En una SPA sólo se carga la página de inicio (es la única página que existe)
 Un buen lugar para obtener más información de Ajax o ver ejemplos más complejos es la página del [IES San Clemente](https://manuais.iessanclemente.net/index.php/MediaWiki:Libros/Introduccion-Ajax).
 
 ## Promesas
-Son una forma más limpia de resolver una función asíncrona. Dentro de la función que devuelve la promesa se hace la llamada a la función asíncorna. Cuando esta se resuelva satisfactoriamente se llama a una función **_resolve()_** y los datos estarán disponibles para quien llamó a la promesa. Si se produce algún error se rechaza la promesa llamando a su función **_reject()_** y quien la llamó tendrá la información de que ha fallado la llamada y por qué.
+Son una forma más limpia de resolver una función asíncrona. El código del ejemplo de la petición Ajax estaría más claro si hicera algo como:
+```javascript
+    ...
+    let idUser = document.getElementById('id-usuario').value;
+    if (isNaN(idUser) || idUser == '') {
+      alert('Debes introducir un número');
+    } else {
+      const data = getPosts(idUser);
+      // usamos los datos recibidos
+    }
+    ...
+```
 
-Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos:
-* **_.then(función)_**: al resolverse la promesa satisfactoriamente se ejecuta la función pasada como parámetro. Esta recibe como parámetro lo que se pasa al llamar al _resolve_ de la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
-* **_.catch(función)_**: se ejecuta si se rechaza la promesa llamando al _reject_ de la misma y recibe como parámetro lo que se le haya pasado al _reject_
+En lugar de eso los datos los usamos donde los recibimos del servidor (dentro de `peticion.addEventListener('load' ...`) lo que hace más confuso el código.
 
-Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se pide esos datos y no en una función escuchadora o en una función _callback_. 
+Con la función _callback_ se mejora esto pero sigue sin ser demasiado organizado. Una mejor forma de tratar una llamada asíncrona es mediante el uso de _promesas_. Una llamada a una promesa cuenta con 2 métodos:
+- **.then(_function(datos) { ... }_)**: al resolverse la promesa satisfactoriamente se ejecuta la función pasada como parámetro del _then_. Esta recibe como parámetro los datos que se pasan al resolver la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
+- **.catch(_function(datos) { ... }_)**: la función apsada como parámentro se ejecuta si se rechaza la promesa (normalmente porque ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (normalmente información sobre el error producido).
 
-Utilizando promesas vamos a conseguir que la función que pide los datos sea quien los obtiene y los trate 0 que informe si hay un error.
+De esta manera nuestro código quedaría:
+```javascript
+    ...
+    let idUser = document.getElementById('id-usuario').value;
+    if (isNaN(idUser) || idUser == '') {
+      alert('Debes introducir un número');
+    } else {
+      getPosts(idUser)
+        .then((posts) => {
+          tbody.innerHTML = ''; // borramos el contenido de la tabla
+          posts.forEach((post) => {
+            const newPost = document.createElement('tr');
+            newPost.innerHTML = `
+                <td>${post.userId}</td>
+                <td>${post.id}</td>
+                <td>${post.title}</td>
+                <td>${post.body}</td>`;
+            tbody.appendChild(newPost);
+          })
+          document.getElementById('num-posts').textContent = posts.length;
+        })
+        .catch(function(error) {
+          console.error(error);
+        })
+    }
+```
 
-El código del ejemplo de pos posts usando promesas sería el siguiente:
+La llamada a la función asíncorna se hace desde dentro de una función que devuelve una promesa. Cuando la promesa se resuelva satisfactoriamente se llama a una función **_resolve()_** a la que se le pasan los datos que recibirá quien llamó a la promesa. Si se produce algún error se rechaza la promesa llamando a su función **_reject()_** pasando como parámetro la información de que ha fallado la llamada y por qué, que le llegará a quien la llamó.
+
+```javascript
+function getPosts(idUser) {
+  return new Promise((resolve, reject) => {
+    let peticion = new XMLHttpRequest();
+    peticion.open('GET', SERVER + '/posts?userId=' + idUser);
+    peticion.send();
+    peticion.addEventListener('load', () => {
+      if (peticion.status === 200) {
+        resolve(JSON.parse(peticion.responseText));
+      } else {
+        reject("Error " + this.status + " (" + this.statusText + ") en la petición");
+      }
+    })
+    peticion.addEventListener('error', () => reject('Error en la petición HTTP'));
+  })
+}
+```
+
+Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos **_.then()_** y * **_.catch()_** que hemos visto anteriormente.
+
+Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se piden esos datos y no en una función escuchadora o en una función _callback_. 
+
+Utilizando promesas vamos a conseguir que la función que pide los datos sea quien los obtiene y los trate o quien informa si hay un error.
+
+El código del ejemplo de los posts usando promesas sería el siguiente:
 
 <script async src="//jsfiddle.net/juansegura/t4o8vq10/embed/js,html,result/"></script>
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
 ## Ajax con fetch
-La [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) proporciona una interfaz para realizar peticiones Ajax mediante el protocolo HTTP, que devuelve como promesas. Ej.:
+La [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) proporciona una interfaz para realizar peticiones Ajax mediante el protocolo HTTP, que devuelve en forma de promesas. Ej.:
 ```javascript
-fetch('http://example.com/movies.json')
-  .then(response => response.json())    
-  // los datos recibidos en json se obtienen llamando al método json() que a su vez devuelve una promesa
-  .then(myData => console.log(myData));
+fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
+  .then(response => response.json())    // los datos recibidos en json se obtienen llamando al método json() que es a su vez una promesa
+  .then(myData => console.log(myData))  // ya tenemos los datos en _myData_
+  .catch(err => console.error(err));
 ```
 
 El código anterior hace una petición al servidor 'http://example.com/movies.json'. Cuando se resuelva devolverá una promesa con el resultado, que obtenemos en el objeto response. Dicha promesa tiene unas propiedades (_status_, _statusText_, _ok_, ...) y unos métodos como _json()_. Este método devuelve una promesa que cuando se resuelve contiene los datos JSON de la respuesta pasada. Usando _fetch_ nos ahorramos toda la parte de crear la petición y gestionarla.
 
 ### Propiedades y métodos de la respuesta
 La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
-- **status**, **statusText**: el código y el texto del estado devuelto por el servidor (200/Ok, 404/Not found, ...)
+- **status**, **statusText**: el código y el texto del estado devuelto por el servidor (200 / Ok, 404 / Not found, ...)
 - **ok**: booleano que vale _true_ si el status está entre 200 y 299 y _false_ en caso contrario
 - **json()**: devuelve una promesa que se resolverá con los datos JSON de la respuesta convertidos a un objeto (les hace automáticamente un _JSON.parse()_) 
 - otros métodos de obtener los datos: **text()**, **blob()**, **formData()**, ... Todos devuelven una promesa con los datos convertidos a distintos formatos.
@@ -382,30 +460,37 @@ fetch(url, {
 ```
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
 
-# async/await
+# async / await
 Estas nuevas instrucciones introducidas en ES2016 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que NO están soportadas por navegadores antiguos.
 
-La palabra **async** indica que una función va a hacer una llamada asíncrona. Al declarar esa función le anteponemos _async_. La palabra **await** provocará que la ejecución se "espere" a que se complete esa instrucción antes de seguir. La anteponemos antes de llamar a la funcióm asíncrona. Siguiendo con el ejemplo de _fetch_:
+La palabra **async** se antepone a _function_ al declarar una función e indica que esa función va a hacer una llamada asíncrona. Al anteponerle _async_ se 'envuelve' a esa función en una promesa. 
+
+Cuando queramos llamar a esa función anteponemos **await** a la llamada, lo que provocará que la ejecución se "espere" a que se complete esa instrucción antes de seguir. Podéis ver algunos ejemplos del uso de _async / await_ en la [página de MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/funcion_asincrona).
+
+Siguiendo con el ejemplo de _fetch_:
 ```javascript
 async function pideDatos() {
-  let response = await fetch('http://example.com/movies.json');
+  let response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser');
   let myData = await response.json();
-  console.log(myData);
+  return myData;
 }
+...
+// Y la llamaremos con
+const myData = await pideDatos();
 ```
 
-Con esto conseguimos que llamadas asíncronas se comporten como instrucciones síncronas.
+Con esto conseguimos que llamadas asíncronas se comporten como instrucciones síncronas lo que aporta claridad al código.
 
 El ejemplo de los posts quedaría:
 
-<script async src="//jsfiddle.net/juansegura/zghq5dt6/2/embed/js,html,result/"></script>
+<script async src="//jsfiddle.net/juansegura/zghq5dt6/embed/js,html,result/"></script>
 
-Con este código no estamos tratando los posibles errores que se pueden producir. Lo haremos con _try ... catch_:
+En este código no estamos tratando los posibles errores que se pueden producir. Con _async / await_ los errores se tratan como ya sabemos, con _try ... catch_:
 
-<script async src="//jsfiddle.net/juansegura/vh65d409/embed/js,html,result/"></script>
+<script async src="//jsfiddle.net/juansegura/sojvq7r0/embed/js,html,result/"></script>
 
 # Otras llamadas asíncronas
-Una llamada Ajax es un tipo de llamada asíncrona fácil de entender que podemos hacer en Javascript aunque hay muchos más, como un setTimeout(). Para la gestión de las llamadas asíncronas tenemos varios métodos y los más comunes son:
+Una llamada Ajax es un tipo de llamada asíncrona fácil de entender que podemos hacer en Javascript aunque hay muchas más, como un setTimeout(). Para la gestión de las llamadas asíncronas tenemos varios métodos y los más comunes son:
 - funciones _callback_
 - _promesas_
 - _async / await_
