@@ -5,7 +5,7 @@ Siguiendo con la práctica de 'Productos de un almacén' vamos a crear una pági
     - **new-prod**: formulario para añadir nuevos productos al almacén. Debéis modificarlo para que tenga un input para introducir el nombre (obligatorio, al menos 3 caracteres) y otro para el precio (número mayor o igual que 0 y con 2 decimales) además de los botones de 'Enviar' y 'Reset'
     - **del-prod**: formulario para borrar un producto. Tendrá un inpit para introducir su id (obligatorio, debe ser un número entero positivo)
     - **stock-prod**: formulario para modificar el stock de un producto (cuando se da de alta será de 0 uds.). Tendrá un input para introducir su id (obligatorio, número entero positivo) y otro para el nº de uds. a añadir o eliminar (obligatorio, número entero)
-- un div para mostrar listados del almacén. De momento NO haremos la funcionalidad de esta parte. Contiene 2 formularios más (ya los tenemos hechos):
+- Un div para obtener listados del almacén, que se mostrarán en una nueva ventana. De momento NO haremos la funcionalidad de esta parte. Contiene 2 formularios más (ya los tenemos hechos):
     - **list-prod**: para mostrar el listado de productos del almacen. Hay que indicar si lo queremos por unidades o alfabético y pulsar el botón
     - **low-prod**: para mostrar el listado de productos con menos uds. de las indicadas en este formulario. En ambos es obligatorio rellenar os datos que se piden
 
@@ -66,28 +66,32 @@ npm run test
 Debemos crear los inputs necesarios en los formularios así como los botones de enviar el formulario (tipo 'submit') y borrarlo (tipo 'reset'). Recordad añadir los atributos necesarios para que se validen por HTML. También es conveniente ponerle una _id_ a cada campo para que sea más sencillo acceder a ellos desde el código.
 
 ### Hacer el fichero principal _index.js_
-Aquí importaremos la clase del controlador (`require`) e instanciaremos el controlador de nuestra aplicación.
-
-Además deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envíe cada formulario. Dichas funciones se ocupan de recoger los datos del formulario y enviarlos a la función correspondiente del controlador. Reciben como parámetro un objeto _event_ con información sobre el evento producido y su primera línea será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). 
-
-Tenéis hecha la función para el formulario _form-prod_. Debéis completarla (que coja los datos y llame a la función del controlador pasándoselos) y hacer otras para los otros 2 formularios siguiendo ese ejemplo.
+Aquí importaremos la clase del controlador (`require`) y crearemos la instancia del controlador de nuestra aplicación y la inicializaremos.
 
 ### Hacer el controlador _controller.class.js_
-Como se explica en la teoría,la clase controller tendrá 2 propiedades:
+Como se explica en la teoría,la clase controller tendrá 2 propiedades (deben llamarse así para pasar los tests):
 - **store**: será un almacén (una instancia de la clase _Store_) donde guardar los datos. En uestro caso crearemos un almacén con id 1.
 - **view**: será una instancia de la clase _View_ a la que llamar para renderizarlos
 
-Además tendrá métodos para responder a las distintas acciones del usuario. Lo que debe hacer cada método es:
-- validar los datos que se le pasan (en nuestro caso ya los valida el modelo así que no hace falta validarlos aquí también)
-- si son correctos, llamar al modelo (la clase Store) para modificar los datos en respuesta a la acción del usuario
-- si ha cambiado el modelo llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
+En el controlador deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envíe cada formulario. Dichas funciones se ocupan de recoger los datos del formulario, validarlos y enviarlos a la función correspondiente del controlador. Reciben como parámetro un objeto _event_ con información sobre el evento producido y su primera línea será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). 
+
+Tenéis hecha la función para el formulario _form-prod_ que debéis completar para que:
+- coja los datos  del forulario
+- los valide (podemos quitar las comprobaciones del modelo y traerlas aquí, junto con otras que sean necesarias)
+- y se los pase al método del controlador encargado de añadir un nuevo producto (_addProductToStore_)
+
+Tenéis que crear otras 2 funciones para manejar los formularios de eliminar productos y cambiar unidades siguiendo ese ejemplo.
+
+Además el controlador tendrá métodos para responder a las distintas acciones del usuario: añadir productos, eliminarlos y cambiar sus unidades. Lo que debe hacer cada método es:
+- llamar al modelo (la clase Store) para modificar los datos en respuesta a la acción del usuario
+- si el modelo cambia los datos, llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
 - si ha habido algún problema debe llamar a la vista para mostrar el error al usuario
 
-Sus métodos serán:
-- **addProductToStore**: recibe de la función manejadora del formulario _new-prod_ un objeto con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
+Estos métodos serán:
+- **addProductToStore**: recibe de la función manejadora del formulario _new-prod_ **un objeto** con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
 - **deleteProductFromStore**: recibe de la función manejadora del formulario _del-prod_ la id del producto a eliminar y hace que se borre del almacén y de la tabla. Deberá pedir **confirmación** (le mostraremos al usuario la id del producto a eliminar y su nombre). Si el producto tiene unidades en stock, pedirá una **segunda confirmación** donde le indicaremos las unidades que aún tiene y le diremos que desaparecerán
-- **changeProductStock**: recibe de la función manejadora del formulario _stock-prod_  la id del producto a modificar y las unidades a sumarle (número entero positivo o negativo) y se encarga de que se cambien en el almacén y se muestren los cambios en la tabla
-- **changeProductInStore**: recibe un objeto con la id del producto a modificar y las propiedades del mismo que deseamos modificar (las no incluidas permanecerán inalteradas). Se encarga de modificar el producto en el almacén y que se muestren en la tabla esos cambios
+- **changeProductStock**: recibe de la función manejadora del formulario _stock-prod_ **un objeto** con la id del producto a modificar y las unidades a sumarle (número entero positivo o negativo) y se encarga de que se cambien en el almacén y se muestren los cambios en la tabla
+- **changeProductInStore**: recibe **un objeto** con la id del producto a modificar y las propiedades del mismo que deseamos modificar (las no incluidas permanecerán inalteradas). Se encarga de modificar el producto en el almacén y que se muestren en la tabla esos cambios
 
 ### Hacer la vista _view.class.js_
 Esta clase se encarga de mostrar en la página la información que recibe para lo que tendrá métodos para mostrar los productos así como un método para mostrar mensajes al usuario sin tener que usar alerts.
@@ -104,7 +108,7 @@ Tenéis que tener en cuenta que:
 - por tanto en ningún momento podemos cambiar el innerHTML de la tabla ni de su BODY. Sólo podemos añadir o elimnar TR o mdificar TD en el caso de renderStockChange
 - recordad que bajo la tabla hay un TOTAL del importe del almacén que siempre debe estar actualizado
 
-Además de os anteriores tendrá un método llamado **renderErrorMessage** al que se le pasa un texto y añade dentro del DIV con _id_ **messages** un nuevo DIV con el mensaje a mostrar al usuario, cuyo HTML será
+Además de los anteriores tendrá un método llamado **renderErrorMessage** al que se le pasa un texto y añade dentro del DIV con _id_ **messages** un nuevo DIV con el mensaje a mostrar al usuario, cuyo HTML será
 ```html
 <div class="col-sm-12 alert alert-danger">
     <span>Aquí pondremos el texto que queramos mostrar</span>
@@ -114,4 +118,4 @@ Además de os anteriores tendrá un método llamado **renderErrorMessage** al qu
 </div>
 ```
 
-Como valor del atributo _onclick_ tenemos el código JS que borra este DIV. No es muy correcto pero de momento lo haremos así.
+Fijaos que el botón tien un atributo _onclick_ cuyo valor es el código Javascript que borra este DIV. No es lo más correcto pero de momento lo haremos así.
