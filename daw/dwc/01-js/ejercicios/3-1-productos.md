@@ -6,7 +6,7 @@ La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propie
   - id
   - name
   - price
-  - units: argumento opcional (si no le pasamos unidades al constructor su número por defecto será 0).
+  - units: argumento opcional (si no le pasamos este parámetro al constructor su número por defecto será 0).
   
 Esta clase tendrá los siguientes **métodos**:
   - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo, o negativo para restar unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y generará un error.
@@ -19,7 +19,7 @@ Esta clase tendrá los siguientes **métodos**:
 ## Clase Store
 Es el almacén de productos (podríamos tener más de uno) que guardaremos en _store.class.js_. Tendrá las **propiedades**:
   -  id: código numérico que nos pasan al crear el almacén
-  -  products: array de productos. No se le pasa al constructor ya que al crear un almacén el array estará vacío.
+  -  products: array de productos. No se le pasa al constructor sino que al crear un almacén su valor será un array vacío.
   
 La clase tendrá los **métodos**:
   - findProduct: recibe una id de producto y devuelve el producto que tiene dicha id (si no existe devolverá _undefined_)
