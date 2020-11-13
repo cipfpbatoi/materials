@@ -73,19 +73,17 @@ Como se explica en la teoría,la clase controller tendrá 2 propiedades (deben l
 - **store**: será un almacén (una instancia de la clase _Store_) donde guardar los datos. En uestro caso crearemos un almacén con id 1.
 - **view**: será una instancia de la clase _View_ a la que llamar para renderizarlos
 
-En el controlador deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envíe cada formulario. Dichas funciones se ocupan de recoger los datos del formulario, validarlos y enviarlos a la función correspondiente del controlador. Reciben como parámetro un objeto _event_ con información sobre el evento producido y su primera línea será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). 
+En el controlador deberemos crear funciones manejadoras de eventos que se ejecutarán automáticamente cuando se envíe cada formulario. Dichas funciones se ocupan de recoger los datos del formulario y enviarlos a la función correspondiente del controlador. Reciben como parámetro un objeto _event_ con información sobre el evento producido y su primera línea será `event.preventDefault()` para que no se recargue la página al enviar el formulario (en el tema de _Eventos_ veremos el por qué de todo esto). 
 
-Tenéis hecha la función para el formulario _form-prod_ que debéis completar para que:
-- coja los datos  del forulario
-- los valide (podemos quitar las comprobaciones del modelo y traerlas aquí, junto con otras que sean necesarias)
-- y se los pase al método del controlador encargado de añadir un nuevo producto (_addProductToStore_)
+Tenéis hecha la función para el formulario _form-prod_ que debéis completar para que coja los datos  del forulario y se los pase al método del controlador encargado de añadir un nuevo producto (_addProductToStore_)
 
 Tenéis que crear otras 2 funciones para manejar los formularios de eliminar productos y cambiar unidades siguiendo ese ejemplo.
 
 Además el controlador tendrá métodos para responder a las distintas acciones del usuario: añadir productos, eliminarlos y cambiar sus unidades. Lo que debe hacer cada método es:
-- llamar al modelo (la clase Store) para modificar los datos en respuesta a la acción del usuario
+- validar los datos que le han pasado (podemos quitar las comprobaciones del modelo y traerlas aquí, junto con otras que sean necesarias). Esto podría hacerlo la función manejadora al coger los datos del formulario pero vamos a hacerlo aquí para que sea más sencillo hacer los tests
+- si los datos recibimos son correctos, llamar al modelo (la clase Store) para modifique la información en respuesta a la acción del usuario
 - si el modelo cambia los datos, llamar a la vista para que modifique la tabla de productos en función de los cambios hechos
-- si ha habido algún problema debe llamar a la vista para mostrar el error al usuario
+- si ha habido algún problema o hay algún error debe llamar a la vista para mostrar el error al usuario
 
 Estos métodos serán:
 - **addProductToStore**: recibe de la función manejadora del formulario _new-prod_ **un objeto** con los datos del producto a añadir (_name_, _price_ y _units_) y hace que se añada al almacén y se muestre en la tabla
