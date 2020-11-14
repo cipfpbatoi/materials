@@ -47,7 +47,51 @@ Hay diferentes tipos de petición que podemos hacer:
 * **POST**: suele usarse para añadir un dato en el servidor (equivalente a un INSERT). Los datos enviados van en el cuerpo de la petición HTTP (igual que sucede al enviar desde el navegador un formulario por POST)
 * **PUT**: es similar al _POST_ pero suele usarse para actualizar datos del servidor (como un UPDATE de SQL). Los datos se envían en el cuerpo de la petición (como en el POST) y la información para identificar el objeto a modificar en la url (como en el GET)
 * **DELETE**: se usa para eliminar un dato del servidor (como un DELETE de SQL). La información para identificar el objeto a eliminar se envía en la url (como en el GET)
-* existen otros tipos que no veremos aquí (como _HEAD_, etc)
+* existen otros tipos que no veremos aquí (como _HEAD_, _PATCH_, etc)
+
+El servidor acepta la petición, la procesa y le envía una respuesta al cliente con el recurso solicitado y además unas cabeceras de respuesta (con el tipo de contenido enviado, el idioma, etc) y el código de estado. Los códigos de estado más comunes son:
+- 2xx: son peticiones procesadas correctamente. Las más usuales son 200 (_ok_) o 201 (_created_, como respuesta a una petición POST satisfactoria)
+- 3xx: son códigos de redirección que indican que la petición se redirecciona a otro recurso del servidor, como 301 (el recurso se ha movido permanentemente a otra URL) o 304 (el recurso no ha cambiado desde la última pertición por lo que se puede recuperar desde la caché)
+- 4xx: indican un error por parte del cliente, como 404 (_Not found_, no existe el recurso solicitado) o 401 (_Not authorized_, el cliente no está autorizado a acceder al recurso solicitado)
+- 5xx: indican un error por parte del servidor, como 500 (error interno del servidor) o 504 (_timeout_).
+
+En cuanto a la información enviada al cliente, ésta puede estar en HTML (como ocurre cuando solicitamos una página web desde el navegador) o pueden ser datos, normalmente en formato JSON o XML (cada vez menos usado).
+
+El formato JSON es una forma de convertir un objeto Javascript en una cadena de texto para poderla enviar, por ejemplo el objeto
+```javascript
+let alumno = {
+  id: 5,
+  nombre: Marta,
+  apellidos: Pèrez Rodríguez
+}
+```
+
+se transformaría en la cadena
+```javascript
+{ "id": 5, "nombre": "Marta", "apellidos": "Pèrez Rodríguez" }
+```
+
+y el array
+```javascript
+let alumnos = [
+  {
+    id: 5,
+    nombre: "Marta",
+    apellidos: "Pèrez Rodríguez"
+  },
+  {
+    id: 7,
+    nombre: "Joan",
+    apellidos: "Reig Peris"
+  },
+]
+```
+
+en la cadena:
+```javascript
+[{ "id": 5, "nombre": Marta, "apellidos": Pèrez Rodríguez }, { "id": 7, "nombre": "Joan", "apellidos": "Reig Peris" }]
+```
+
 
 > EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podemos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Lo que queremos hacer en este ejercicio es:
 > - obtener todas las tareas
@@ -67,11 +111,12 @@ npm install json-server -g
 
 Para que sirva un fichero datos.json:
 ```[bash]
-json-server --watch datos.json 
+json-server datos.json 
 ```
-La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
 
-El fichero _datos.json_ será un fichero que contenga un objeto JSON con una propiedad para cada "_tabla_" de nuestra BBDD. Por ejemplo, si queremos simular una BBDD con las tablas _users_ y _posts_ (vacías) el contenido del fichero será:
+Le podemos poner la opción _--watch_ para que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
+
+El fichero _datos.json_ será un fichero que contenga un objeto JSON con una propiedad para cada "_tabla_" de nuestra BBDD. Por ejemplo, si queremos simular una BBDD con las tablas _users_ y _posts_ vacías el contenido del fichero será:
 ```[json]
 {
   "users": [],
