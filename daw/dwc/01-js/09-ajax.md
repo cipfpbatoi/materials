@@ -39,7 +39,7 @@ Sin Ajax cada vez que necesitamos nuevos datos del servidor la página deja de e
 ![Uniwebsidad: Introducción a Ajax](https://uniwebsidad.com/static/libros/imagenes/ajax/f0103.gif)
 _Fuente Uniwebsidad_
 
-## Métodos HTTP
+### Métodos HTTP
 Las peticiones Ajax usan el protocolo HTTP (el mismo que utiliza el navegador para cargar una página). Este protocolo envía al servidor unas cabeceras HTTP (con información como el _userAgent_ del navegador, el idioma, etc), el tipo de petición y, opcionalmente, datos o parámetros (por ejemplo en la petición que procesa un formulario se envían los datos del mismo).
 
 Hay diferentes tipos de petición que podemos hacer:
@@ -101,7 +101,7 @@ en la cadena:
 > - modificar la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
 > - eliminar la tarea con id 55. Como veis esta API devuelve un objeto vacío al eliminar; otras devuelven el objeto eliminado
 
-## Json Server
+### Json Server
 Las peticiones Ajax se hacen a un servidor que proporcione una API. Como ahora no tenemos ninguno podemos utilizar Json Server que es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
 
 Para instalarlo en nuestra máquina ejecutamos:
@@ -138,6 +138,11 @@ Y la ruta para acceder a la API será `http://192.168.0.10:3000`.
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
 
 > EJERCICIO: instalar json-server en tu máquina. Ejecútalo indicando un nombre de fichero que no existe: como verás crea un fichero json de prueba con 3 tablas: _posts_, _comments_ y _profiles_. Ábrelo en tu navegador para ver los datos
+
+### REST client
+Para probar las peticiones GET podemos poner la URL en la barra de direccioes del navegador pero para probar el resto de peticiones debemos isntalar en nuestro navegador una extensión que nos permita realizar las peticiones indicando el método a usar, las cabeceras a enviar y los datos que enviaremos a servidor, además de la URL.
+
+Existen multitud de aplicaciones para poder hacer esto, como [Advanced REST client](https://install.advancedrestclient.com/install).
 
 ## Realizar peticiones Ajax
 Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest** que es el que controlará todo el proceso. Los pasos a seguir son:
