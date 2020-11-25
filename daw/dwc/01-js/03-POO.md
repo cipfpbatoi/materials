@@ -243,7 +243,7 @@ console.log(cpo<cpo2);     // imprime true ya que 19<23
 ```
 
 > EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
-es
+
 > EJERCICIO: Crea 5 productos y guárdalos en un array. Crea las siguientes funciones (todas reciben ese array como parámetro):
 > - prodsSortByName: devuelve un array con los productos ordenados alfabéticamente
 > - prodsSortByPrice: devuelve un array con los productos ordenados por importe
