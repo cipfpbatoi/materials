@@ -94,7 +94,7 @@ COMMIT
 Només queda reiniciar el Firewall (`ufw reload`). Per a comprovar les regles que estan aplicant-se executem el comando `iptables`:
 
 ```bash
-iptables -t nat - L
+iptables -t nat -L
 ```
 
 ![iptables](./img/iptables1.png)
