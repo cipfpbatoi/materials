@@ -67,7 +67,7 @@ Esta directiva captura un evento y ejecuta un método como respuesta al mismo.
 
 <iframe width="100%" height="300" src="//jsfiddle.net/juansegura/255u8f1j/embedded/js,html,result/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-El evento que queremos capturar se pone tras ':' y se indica el método que se ejecutará.
+El evento que queremos capturar se pone tras el carácter `:` y se indica el método que se ejecutará.
 
 Fijaos en el método _delTodos()_ que para hacer referencia desde el objeto Vue a alguna variable o método se le antepone *this.*
 
@@ -81,7 +81,7 @@ Se puede pasar un parámetro a la función escuchadora:
   }
 ```
 
-Esta directiva se usa mucho así que se puede abreviar con '@'. El código equivalente sería:
+Esta directiva se usa mucho así que se puede abreviar con **`@`**. El código equivalente sería:
 ```html
 <button @click="pulsado('prueba')">Pulsa</button>
 ```
@@ -91,7 +91,7 @@ A un evento gestionado por una directiva _v-on_ podemos añadirle (separado por 
 * _.prevent_: equivale a hacer un preventDefault()
 * _.stop_: como stopPropagation()
 * _.self_: sólo se lanza si el evento se produce en este elemento y no en alguno de sus hijos
-* _.once_: sólo se lanza la primera vez que se produce el evento
+* _.once_: sólo se lanza la primera vez que se produce el evento (sería como hacer un _addEventListener_ y tras ejecutarse la primera vez hacer un _removeEventListener_)
 
 Ejemplo:
 ```html
