@@ -86,7 +86,7 @@ Ahora ya podemos usar el componente en nuestro HTML:
 >  </li>
 ></ul>
 
-Podemos utilizar la etiqueta tal cual (_<todo-item>_) o ponerla como valor del atributo _is_:
+Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta estándar y poner la nuestra como valor de su atributo _is_:
 ```html
 <ul>
   <li is="todo-item"></li>
@@ -153,7 +153,7 @@ NOTA: al usar _v-for_ con un componente debemos indicarle en la propiedad _key_ 
 ## A tener en cuenta
 A la hora de definir componentes hay un par de cosa que debemos tener en cuenta
 
-### _template_ debe contener un único elemento
+### En Vue2 _template_ debe contener un único elemento
 El template de un componente debe tener un único elemento raíz por lo que, si queremos tener más de uno hay que englobarlos en un elemento (normalmente un <div>):
 
 ```javascript
@@ -171,6 +171,8 @@ Vue.component('my-comp', {
              </div>`,
 })
 ```
+
+NOTA: Vue3 no tiene esta limitación y podemos poner más de un elemento en su _template_.
 
 ### _data_ debe ser una función
 Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas, definidas en _data_ y sus propios métodos, _hooks_, etc.
