@@ -22,7 +22,7 @@ Vue es un framework progresivo para la construcción de interfaces de usuario y 
 
 Un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
 
-Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y la de [Vue3](https://v3.vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router y axios entre otros.
+Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y la de [Vue3](https://v3.vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router, axios y vuex entre otros.
 
 **¿Qué framework es mejor?**
 Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis algunos enlaces al respecto:
@@ -36,7 +36,7 @@ Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis
 
 Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 * **Sencillez**: aunque Angular es el framework más demandado hoy en el mercado su curva de aprendizaje es muy pronunciada. Vue es mucho más sencillo de aprender pero su forma de trabajar es muy similar a Angular por lo que el paso desde Vue a Angular es relativamente sencillo
-* **Uso del framework**: React es también muy sencillo ya que es simplemente Javascript en el que podemos codificar la vista con JSX, pero la forma de trabajar de Vue es más pàrecida a otros frameworks, especialmente a Angular por lo que lo aprendido nos servirá a la hora de aprender otros framework
+* **Uso del framework**: React es también muy sencillo ya que es simplemente Javascript en el que podemos codificar la vista con JSX, pero la forma de trabajar de Vue es más parecida a otros frameworks, especialmente a Angular por lo que lo aprendido nos será de gran ayuda si queremos pasar a ese framework
 * **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece muy buen rendimiento
 
 ## Usar Vue
@@ -56,7 +56,7 @@ Si queremos usar la nueva versión Vue 3 (aún no recomendado para producción) 
 <script src="https://unpkg.com/vue@next"></script>
 ```
 
-Más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
+Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
 
 ## La primera aplicación Vue
 Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación
@@ -91,13 +91,13 @@ data: {
 },
 computed: {
     nombreCompleto() {
-        return this.nombre+' '+this.apellido;
+        return this.nombre + ' ' + this.apellido;
     }
 }
 ```
 
 * **methods**: objeto con métodos a los que podemos llamar desde la vista
-* _Eventos del ciclo de vida de la instancia_: para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
+* eventos del ciclo de vida de la instancia (_hooks_): para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
 
 ```javascript
 created() {
@@ -129,7 +129,7 @@ Fichero HTML:
 </body>
 </html>
 ```
-Nuestro código debemos cargarlo después de cargar la librería y de crear el elemento HTML que cnotenga la aplicación.
+Nuestro código debemos cargarlo después de cargar la librería y de crear el elemento HTML que contenga la aplicación.
 
 Fichero JS:
 ```javascript
@@ -157,21 +157,22 @@ Para mostrar un dato en el DOM usamos **{\{  }}** pero si queremos nostrarlo com
     to see my dynamically bound title!
   </p>
 ```
-Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que se llaman **directivas**. Todas las directivas comienzan por `v-`. Como la directiva `v-bind` se utiliza mucho se puede abreviar símplemente como `:`. El siguiente código es equivalente al de antes:
+Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que se llaman **directivas**. Todas las directivas comienzan por **`v-`** (en Angular es igual pero el prefijo es _ng-_). Como la directiva `v-bind` se utiliza mucho se puede abreviar símplemente como `:` (el carácter 'dos puntos'). El siguiente código es equivalente al de antes:
 ```html
   <p :title="message">
 ```
+
 ### Enlace bidireccional: v-model
 Tanto **{\{ }}** como `v-bind` son un enlace unidireccional: muestran en el DOM el valor de un dato y reaccionan ante cualquier cambio en dicho valor. 
 
-Tenemos además está la directiva `v-model` que es un enlace bidireccional que enlace un dato a un campo de formulario y permite cambiar el valor del campo al cambiar el dato pero también cambia el dato si se modifica lo introducido en el input. 
+Tenemos además está la directiva `v-model` que es un enlace bidireccional que enlaza un dato a un campo de formulario y permite cambiar el valor del campo al cambiar el dato pero también cambia el dato si se modifica lo introducido en el input. 
 ```html
   <input v-model="message">
 ```
 
 <script async src="//jsfiddle.net/juansegura/psk853hL/24/embed/"></script>
 
-Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos (cosa que no tiene por ejemplo la librería jQuery).
+Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos.
 
 NOTA: toda la apliación debe estar dentro del elemento _app_ para que funcione.
 
@@ -180,16 +181,16 @@ Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro obj
 
 Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
-* Vuex: esla herramienta de gestión de estado para aplicaciones medias/grandes
+* Vuex: es la herramienta de gestión de estado para aplicaciones medias/grandes
 * Eventos: permite ver todos los eventos emitidos
 * Refrescar: refresca la herramienta
 
 ![DevTools](./img/DevTools.png)
 
-Junto al componente que estamos inspeccionando aparece **= $vm0** que indica que DevTools ha creado una variable con ese nombre que contiene el componente por si queremos inspeccionarlo usando la consola.
+Junto al componente que estamos inspeccionando aparece **= $vm0** que indica que DevTools ha creado una variable con ese nombre que contiene el componente por si queremos inspeccionarlo desde la consola.
 
-Cuando inspeccinamos nuestros componentes, bajo la barra de botones aparece otra barra con 3 herramientas:
-* Buscar: permite buscar el componente con el ombre introducido aquí
+Cuando inspeccionamos nuestros componentes, bajo la barra de botones aparece otra barra con 3 herramientas:
+* Buscar: permite buscar el componente con el nombre introducido aquí
 * Seleccionar componente en la página: al pulsarlo (se dibuja un punto en su interior) hace que al pulsar sobre un componente en nuestra página se seleccione en la herramienta de inspeccionar componentes
 * Formatear nombre de componentes: muestra los nombres de componentes en el modo _camelCase_ o _kebab-case_
 
