@@ -16,7 +16,7 @@ Tabla de contenidos
 # Componentes
 El sistema de componentes es un concepto importante en Vue y en cualquier framework moderno. En lugar de separar nuestra aplicación en ficheros según el tipo de información que contienen (ficheros html, css o js) es más lógico separarla según su funcionalidad. Una página web muestra una UI donde se pueden distinguir diferentes partes. En el siguiente ejemplo tenemos:
 
-![Ejemplo de págna web](../img/borsaTreball.png)
+![Ejemplo de págna web](./img/borsaTreball.png)
 
 - un menú que es una lista de elementos del menú, cada uno formado por un logo y un texto
 - un título
