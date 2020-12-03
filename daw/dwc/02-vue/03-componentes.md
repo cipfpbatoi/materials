@@ -18,24 +18,25 @@ El sistema de componentes es un concepto importante en Vue y en cualquier framew
 
 ![Ejemplo de págna web](./img/borsaTreball.png)
 
-- un menú que es una lista de elementos del menú, cada uno formado por un logo y un texto
+- un menú que es una lista que contiene
+  - (repetido) un elemento del menú, cada uno formado por un logo y un texto
 - un título
 - una tabla con la información a mostrar, formada por
   - un elemento para filtrar la información formado por un input y un botón de buscar
   - un botón para añadir nuevos elementos a la tabla
   - una cabecera con los nombres de cada campo
-  - una fila para mostrar cada elemento de información, con botones para realizar acciones
+  - (repetido) una fila para mostrar cada elemento de información, con botones para realizar diferentes acciones
   - un pie de tabla con información sobre los datos mostrados
 - un pie de página
 
-Pues estos elementos podrían constituir diferentes componentes: nuestras aplicaciones estarán compuestas de pequeños componentes independiantes y reusables en diferentes partes de nuestra aplicación o en otras aplicaciones (podemos usar el elemento de buscar para otras páginas de nuestra web o incluso para otras aplicaciones). También es habitual que un componente contenga otros subcomponentes, estableciéndose relaciones padre-hijo (por ejemplo en componente fila contendrá un subcomponente por cada botón que queramos poner en ella).
+Pues estos elementos podrían constituir diferentes componentes: nuestras aplicaciones estarán compuestas de pequeños componentes independientes y reusables en diferentes partes de nuestra aplicación o en otras aplicaciones (podemos usar el elemento de buscar para otras páginas de nuestra web o incluso para otras aplicaciones). También es habitual que un componente contenga otros subcomponentes, estableciéndose relaciones padre-hijo (por ejemplo en componente fila contendrá un subcomponente por cada botón que queramos poner en ella).
 
 Para sabér qué debe ser un componente y que no podemos considerar un componente como un elemento que tiene entidad propia, tanto a nivel funcional como visual, es decir, que puede ponerse en el lugar que queramos de la aplicación y se verá y funcionará correctamente. Además es algo que es muy posible que pueda aparecer en más de un lugar de la aplicación. En definitiva un componente:
 - es una parte de la UI
 - debe poder reutilizarse y combinarse con otros componentes para formar componentes mayores
 - son objetos JS
 
-El componete tendrá una parte de HTML donde definimos su estructura y una parte JS que le da su funcionalidad. Puede además tener o no CSS para establecer su apariencia.
+El componente tendrá una parte de HTML donde definimos su estructura y una parte JS que le da su funcionalidad. Puede además tener o no CSS para establecer su apariencia.
 
 Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 * encapsulamos el código de la aplicación en elementos más sencillos
@@ -57,10 +58,10 @@ Vue.component('todo-item', {
     <li>
       <input type="checkbox" v-model="elem.done">
       <del v-if="elem.done">
-        { { elem.title }}
+        {{ elem.title }}
       </del>
       <span v-else>
-        { { elem.title }}
+        {{ elem.title }}
       </span>
     </li>`,
   data: ()=>({
@@ -68,7 +69,7 @@ Vue.component('todo-item', {
   })
 })
 ```
-El nombre de un componente puede estar el kebab-case (my-component-name) o en PascalCase (MyComponentName). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
+El nombre de un componente puede estar en PascalCase (MyComponentName) o en kebab-case (my-component-name). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
 
 Ahora ya podemos usar el componente en nuestro HTML:
 ```html
