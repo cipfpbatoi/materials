@@ -114,7 +114,7 @@ Vue.component('todo-item', {
       ...
 })
 ```
-NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebeb-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`Vue.component('todo-item',{ props: ['todoElem'],...})`).
+NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`Vue.component('todo-item',{ props: ['todoElem'],...})`).
 
 >**Resultado:**
 ><ul>
@@ -132,6 +132,7 @@ En nuestro caso queremos un componente _todo-item_ para cada elemento del array 
   <todo-item v-for="item in todos" :key="item.id" :todo="item"></todo-item>
 </ul>
 ```
+
 >**Resultado:**
 ><ul>
 >  <li>
@@ -149,7 +150,13 @@ En nuestro caso queremos un componente _todo-item_ para cada elemento del array 
 >  ...
 ></ul>
 
-NOTA: al usar _v-for_ con un componente debemos indicarle en la propiedad _key_ la clave de cada elemento.
+**IMPORTANTE**: al usar _v-for_ en un componente debemos indicarle en la propiedad _key_ la clave de cada elemento. Si no tuviera ninguna podemos usar como clave su índice en el array:
+
+```html
+<ul>
+  <todo-item v-for="(item, index) in todos" :key="index" :todo="item"></todo-item>
+</ul>
+```
 
 ## A tener en cuenta
 A la hora de definir componentes hay un par de cosa que debemos tener en cuenta
@@ -176,9 +183,9 @@ Vue.component('my-comp', {
 NOTA: Vue3 no tiene esta limitación y podemos poner más de un elemento en su _template_.
 
 ### _data_ debe ser una función
-Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas, definidas en _data_ y sus propios métodos, _hooks_, etc.
+Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas (definidas en _data_) y sus propios métodos, _hooks_, etc.
 
-Pero _data_ en la instancia de Vue es un objeto pero en un componente es una función que devuelve ese objeto:
+Pero mientras que _data_ en la instancia de Vue es un objeto en un componente debe ser una función que devuelve ese objeto:
 
 ```javascript
 // En la instancia Vue
@@ -204,7 +211,6 @@ Vue.component('my-comp', {
 
 También podemos ponerlo en notación de _arrow function_:
 ```javascript
-// BIEN
 Vue.component('my-comp', {
   data: ()=>({
       message: 'Hello',
@@ -212,7 +218,8 @@ Vue.component('my-comp', {
   })
 })
 ```
-NOTA: hay que poner el objeto devuelto entre paréntesis para que se sepa que es un objeto y no las llaves que abren la función a ejecutar.
+
+NOTA: he puesto el objeto devuelto entre paréntesis para que se sepa que es un objeto y no las llaves que abren la función a ejecutar.
 
 ### Registrar un componente localmente
 Un componente registrado como hemos visto es _global_ y puede usarse en cualquier instancia raíz de Vue creada posteriormente (con _new Vue()_ ) y también dentro de subcomponentes de dicha instancia.
@@ -241,7 +248,7 @@ var ComponentB={
   }
 }
 ```
-Si estamos usando ES2015 (que es lo normal) loque se hace es guardar cada componente en un fichero con extensión _.vue_ e importarlo donde vaya a usarse:
+En realidad lo que se hace es guardar cada componente en un fichero con extensión _.vue_ e importarlo donde vaya a usarse:
 ```javascript
 // fichero ComponentB.vue
 import ComponentA from './ComponentA.vue'
@@ -260,7 +267,7 @@ Para empezar a ver el uso de componentes vamos a seguir con la aplicación de la
 La decisión de qué componentes crear es subjetiva pero en principio cuanto más descomponamos más posibilidades tendremos de reutilizar componentes. Nosotros haremos los siguientes componentes:
 * todo-list: muestra la lista de tareas a realizar. Dentro tendrá:
   * todo-item: cada una de las tareas a hacer
-* add-item: incluye el input para introducir una nueva tarea y el botón de añadirla
+* add-item: incluye el formulario para añadir una nueva tarea (el input y el botón)
 * del-all: el botón para borrar toda la lista
   
 **Solución**:
