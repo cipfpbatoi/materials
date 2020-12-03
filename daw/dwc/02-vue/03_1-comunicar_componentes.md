@@ -47,7 +47,7 @@ Podemos pasar varios parámetros en un atributo _v-bind_ sin nombre:
   <todo-item v-bind="{ todo: 'Aprender Vue', done: false }" ></todo-item>
 </ul>
 ```
-y en e componente se reciben sus propiedades separadamente:
+y en el componente se reciben sus propiedades separadamente:
 ```javascript
 Vue.component('todo-item, {
   props: ['todo', 'done'],
@@ -57,7 +57,7 @@ Vue.component('todo-item, {
 ### No cambiar el valor de una prop
 Al pasar un parámetro mediante una _prop_ su valor se mantendrá actualizado en el hijo si su valor cambiara en el padre, pero no al revés por lo que no debemos cambiar su valor en el componente hijo.
 
-Si debemos cambiar su valor porque lo que nos pasan es sólo un valor inicial asignaremos el parámetro a otra variable:
+Si tenemos que cambiar su valor porque lo que nos pasan es sólo un valor inicial asignaremos el parámetro a otra variable:
 ```javascript
 props: ['initialValue'],
 data(): {
@@ -67,7 +67,7 @@ data(): {
 }
 ```
 
-Si debemos darle determinado formato también lo haremos sobre otra variable que es con la que trabajaremos:
+Igualmente si debemos darle determinado formato también lo haremos sobre la otra variable, que es con la que trabajaremos:
 ```javascript
 props: ['cadenaSinFormato'],
 computed(): {
@@ -77,7 +77,7 @@ computed(): {
 }
 ```
 
-**OJO**: Si el parámetro es un objeto o un array éste se pasa por referencia por lo que si lo cambiamos en el componente hijo  SÍ se cambiará en el padre, lo que debemos evitar.
+**OJO**: Si el parámetro es un objeto o un array éste se pasa por referencia por lo que si lo cambiamos en el componente hijo  **sí** se cambiará en el padre, lo que debemos evitar.
 
 ### Validación de props
 Al pasar un parámetro podemos indicar algunas cosas como:
@@ -102,7 +102,7 @@ props: {
     default(): { return {id:0, units: 0} }   # Si es un objeto o array _default_ debe devolver el valor
   },
   nifGestor: {
-    validator: function(value) {
+    validator(value): {
       return /^[0-9]{8}[A-Z]$/.test(value);              // Si devuelve *true* será válido
     }
   }
@@ -149,7 +149,7 @@ Vue.component('todo-list', {
 '      <h2>{{ title }}</h2>'+
 '     <ul>'+
 '       <todo-item '+
-'         v-for="item in todos" '+
+'         v-for="(item, index) in todos" '+
 '         :key="item.id"'+
 '         :todo="item"'+
 '         @delItem="delTodo(index)">'+
@@ -174,7 +174,7 @@ Vue.component('todo-list', {
 '      <h2>{{ title }}</h2>'+
 '     <ul>'+
 '       <todo-item '+
-'         v-for="item in todos" '+
+'         v-for="(item, index) in todos" '+
 '         :key="item.id"'+
 '         :todo="item"'+
 '         @dblclick.native="delTodo(index)">'+
@@ -271,9 +271,9 @@ Vue.component('comp-b', {
 
 Tanto desde _comp-a_ como desde _comp-b_ podemos modificar el contenido de **store** y esos cambios se reflejarán automáticamente tanto en la vista de _comp-a_ como en la de _comp-b_. Fijaos que declaro el objeto como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
 
-Esto tiene un grave inconveniente y es que el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación, lo que es una pesadilla a la hora de depurarel código y encontrar errores.
+Esto tiene un grave inconveniente y es que el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación, lo que es una pesadilla a la hora de depurar el código y encontrar errores.
 
-Para evitar esto podemos usar un patrón de almacén (store pattern) que veremos en el siguiente apartado.
+Para evitar esto podemos usar un patrón de almacén (_store pattern_) que veremos en el siguiente apartado.
 
 ### $root y $parent
 Además todos los componentes tienen acceso a los datos y métodos definidos en la instancia de Vue (donde hacemos el `new Vue`). Por ejemplo:
@@ -361,7 +361,7 @@ Vue.component('comp-b', {
 ## Vuex
 Es un patrón y una librería para gestionar los estados en una aplicación Vue. Ofrece un almacenamiento centralizado para todos los componentes con unas reglas para asegurar que un estado sólo cambia de determinada manera.
 
-Es el método a utilizar en aplicaciones medias y grandes y lo veremos con más detalle más adelante.
+Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante.
 
 ## Slots
 Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://vuejs.org/v2/guide/components-slots.html). 
@@ -462,18 +462,23 @@ Ahora en el _template_ del componente padre capturaremos el evento _delAll_ (pod
 
 Con el botón de añadir haremos lo mismo pero en este caso al emitir el evento le pasaremos el texto a añadir:
 ```javascript
-this.$emit('newl', this.newTodo);
+this.$emit('addTodo', this.newTodo);
 ```
 Y la función manejadora lo recibe como parámetro (pero no se pone en el HTML):
 ```javascript
 addTodo(title) {
-  this.todos.push({title: title, done: false});
+    let maxId=this.todos.reduce((max,item)=>(item.id>max)?item.id:max, 0);
+    this.todos.push({
+      id: maxId+1,
+      title: newTitle,
+      done: newDone
+    })
 },
 ```
 
 Lo mismo hacemos con el _dblclick_ sobre cada elemento de la lista para borrarlos.
 
-Por último vemos que en el checkbos del componente _todo-item_ estamos modificando el valor de un parámetro (cambiamos el _done_ de la tarea). Esto funciona porque lo que nos están pasando es un objeto (que se pasa por referencia) y no las propiedades independientemente (que se pasarían por copia) pero no debemos hacerlo así.
+Por último vemos que en el checkbox del componente _todo-item_ estamos modificando el valor de un parámetro (cambiamos el _done_ de la tarea). Esto funciona porque lo que nos están pasando es un objeto (que se pasa por referencia) y no las propiedades independientemente (que se pasarían por copia) pero no debemos hacerlo así.
 
 Para evitarlo cambiamos el _v-model_ que es bidireccional (al modificar el checkbox se modifica la propiedad _done_) por un _v-bind_ es es unidireccional más una función que avisará al componente padre al cambiar el valor del checkbox para que cambie el valor de la tarea.
 
