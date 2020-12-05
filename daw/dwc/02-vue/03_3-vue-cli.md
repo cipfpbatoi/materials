@@ -55,7 +55,14 @@ Una vez instalado **npm** Vue-cli se instala con
 ```bash
 npm install -g @vue/cli
 ```
+
 La opción -g es para que lo instale globalmente en el sistema y no instale una copia para cada proyecto.
+
+Si queremos usar Vue3 debemos tener al menos instalada la versión 4.5 de @vue/cli y desde dentro de cada proyecto en que queramos usar Vue3 ejecutar 
+
+```bash
+vue upgrade --next
+```
 
 ## Creación de un nuevo proyecto
 Para crear un nuevo proyecto haremos:
