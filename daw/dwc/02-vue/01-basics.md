@@ -125,6 +125,8 @@ En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cu
 
 ![Ciclo de vida de Vue](https://vuejs.org/images/lifecycle.png)
 
+IMPORTANTE: En **Vue3** los métodos _beforeDestroyed_ y _destroyed_ se llaman _**beforeUnmounted**_ y _**unmounted**_.
+
 ## _Binding_ de variables
 Para probar su funcionamiento conviene que nos descarguemos los ficheros y los abramos en local.
 
