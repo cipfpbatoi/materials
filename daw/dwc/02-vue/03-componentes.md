@@ -68,7 +68,11 @@ Vue.component('todo-item', {
     elem: { title: 'Cosa a hacer', done: true }
   })
 })
+
+const app = new Vue({
+...
 ```
+
 El nombre de un componente puede estar en PascalCase (MyComponentName) o en kebab-case (my-component-name). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
 
 Ahora ya podemos usar el componente en nuestro HTML:
@@ -94,6 +98,33 @@ Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta est�
 </ul>
 ```
 De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un \<ul> deben ser \<li> o los de un \<tr> deben ser \<td>).
+
+### Componentes en Vue3
+Funcionan exactamente igual que en Vue2 sólo que se declaran como componentes de la instancia creada y no de Vue y, al contrario que en Vue2, se declaran después de crear la instancia:
+
+```javascript
+const app = new Vue({
+...
+})
+
+app.component('todo-item', {
+  template: `
+    <li>
+      <input type="checkbox" v-model="elem.done">
+      <del v-if="elem.done">
+        {{ elem.title }}
+      </del>
+      <span v-else>
+        {{ elem.title }}
+      </span>
+    </li>`,
+  data: ()=>({
+    elem: { title: 'Cosa a hacer', done: true }
+  })
+})
+
+app.mount('#app')
+```
 
 ## Parámetros: _props_
 Podemos pasar parámetros a un componente anñadiendo atributos a su etiqueta:
