@@ -176,8 +176,10 @@ Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el pr
 
 NOTA: toda la apliación debe estar dentro del elemento _app_ para que funcione.
 
-## [Vue devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?utm_source=chrome-app-launcher-info-dialog)
-Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Conviene instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
+## [Vue devtools]
+Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
+
+Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [documentación de Vue](https://v3.vuejs.org/guide/installation.html#vue-devtools).
 
 Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
