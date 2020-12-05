@@ -79,10 +79,27 @@ es _message_. A cada variable le debemos dar un valor inicial.
 * pueden haber más como *methods* (objeto con métodos que podemos llamar desde la vista), *props* (array de variables que se 
 pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremmos más adelante.
 
+En **Vue3** la sintaxis para crear la aplicación es ligeramente diferente:
+```javascript
+var app = VuecreateApp({
+  data() {
+    return {
+      message: 'Hello Vue!'
+    }
+  }
+})
+app.mount('#app')
+```
+
+Las principales diferencias son:
+- la instancia se crea con el método _createApp_ en vez de con el constructor de Vue
+- el elemento en que se montará la aplicación no se incluye en el objeto que se pasa al crear la aplicación sino que se indica en el método _mount_
+- la propiedad _data_ no es un objeto sino una función que devuelve ese objeto (esto sucede igual en los componenetes de Vue2 como veremos más adelante).
+
 ## La instancia _Vue_
 La instancia que hemos creado (y cada componente) recibe un objeto de opciones con las siguientes propiedades:
 * **el**: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista (las variables que sólo uemos en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas son accesibles desde la vista poniendo *{\{ su_nombre }}* y desde el código JS poniendo *this.su_nombre*.
+* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista (las variables que sólo uemos en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas son accesibles desde la vista poniendo *{\{ su_nombre }}* y desde el código JS poniendo *this.su_nombre*. En los componentes (lo veremos más adelante) y en Vue3 en lugar de ser un objeto es una función que devuelve ese objeto.
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
 ```javascript
 data: {
