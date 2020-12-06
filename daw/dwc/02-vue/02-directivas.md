@@ -18,25 +18,25 @@ Las directivas son atributos especiales que se ponen en las etiquetas HTML y que
 
 ## Directivas básicas
 Las más comunes son:
-* `v-text`: es equivalente a hacer una interpolación (` { { ... }} `). Muestra el valor en la etiqueta
+* `v-text`: es equivalente a hacer una interpolación (` {{ ... }} `). Muestra el valor en la etiqueta
 * `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra
 * `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas)
 * `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que se muestre dentro de un _span_ ese valor pero que también tenga una clase con ese valor haremos:
 ```html
-<span v-bind:class="estado">{ { estado }}</span>
+<span v-bind:class="estado">{{ estado }}</span>
 ```
-El resultado será: `<span class="error">error</span>`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">{ { estado }}</span>`)
+El resultado será: `<span class="error">error</span>`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">{{ estado }}</span>`)
 * `v-model`: permite enlazar un input a una variable (la hemos visto en el capítulo anterior)
 * `v-if`: renderiza o no el elemento que la contiene en función de una condición
-* `v-show`: similar al _v-if_ pero siempre renderiza el elemento (está en el DOM) y lo que hace es mostrarlo u ocultarlo (`display: none`) en función de la condición
+* `v-show`: similar al _v-if_ pero siempre renderiza el elemento (está en el DOM) y lo que hace es mostrarlo u ocultarlo (`display: none`) en función de la condición. Es mejor si el elemento va a mostrarse y ocultarse a menudo porque no tiene que volver a renderizarlo cada vez
 * `v-for`: repite el elemento HTML que contiene esta etiqueta para cada elemento de un array
 * `v-on`: le pone al elemento HTML un escuchador de eventos (ej `<button v-on:click="pulsado">Pulsa</button>`. La directiva `v-on:` se puede abreviar como `@` (`<button @click="pulsado">Pulsa</button>`).
 
 Lo que enlazamos en una directiva o una interpolación puede ser una variable o una expresión javascript. Ej.:
 ```html
-<p>{ { name }}</p>
-<p>{ { 'Cómo estás ' + name }}</p>
-<p>{ { name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario '+name+' puedes cambiar tus datos' }}</p>
+<p>{{ name }}</p>
+<p>{{ 'Cómo estás ' + name }}</p>
+<p>{{ name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario '+name+' puedes cambiar tus datos' }}</p>
 ```
 
 ## Condicionales: v-if
@@ -46,7 +46,23 @@ Esta directiva permite renderizar o no un elemento HTML en función de una varia
 
 El checkbox está enlazado a la variable _marcado_ (a la que al inicio le hemos dado el valor true, por eso aparece marcado por defecto) y los párrafos se muestran o no en función del valor de dicha variable.
 
-La directiva v-else es opcional (puede haber sólo un v-if).
+La directiva `v-else` es opcional (puede haber sólo un `v-if`) pero si la ponemos el elemento con el `v-else` debe ser el inmediatamente siguiente al del `v-if`.
+
+También se pueden enlazar varios con `v-else-if`:
+```html
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+```
 
 ## Bucles: v-for
 Esta directiva repite el elemento HTML en que se encuentra una vez por cada elemento del array al que se enlaza.
@@ -59,8 +75,15 @@ Además del elemento nos puede devolver su índice en el array: `v-for="(elem,in
 
 Vue es más eficiente a la hora de renderizar si cada elemento que crea *v-for* tiene su propia clave, lo que se consigue con el atributo *key*. Podemos indicar como clave algún campo único del elemento o el índice:
 ```html
-\<... v-for="(elem,index) in todos" :key="index" ...>
+<... v-for="(elem,index) in todos" :key="index" ...>
 ```
+
+También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0;i<...)`):
+```html
+<span v-for="n in 10">{{ n }}</span>
+```
+
+NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. SI se hace siempre se ejecuta primero el `v-if`.
 
 ## Eventos: v-on
 Esta directiva captura un evento y ejecuta un método como respuesta al mismo.
