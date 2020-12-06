@@ -18,7 +18,7 @@ Contenidos:
 1. [Peticiones Ajax: axios](./04-axios.md)
 1. [SPA: vue-router](./05-vue-router.md)
 1. [Profundizando en Vue](./06-profundizando.md)
-1. [Formularios](./06-forms.md)
+1. [Formularios](./07-forms.md)
 1. [Vuex](./08-vuex.md)
 1. [Testeando componentes](./0x-testing.md)
 1. [Y más...](./09-cosas.md)
