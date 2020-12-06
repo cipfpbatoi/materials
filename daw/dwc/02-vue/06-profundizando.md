@@ -1,6 +1,7 @@
 # Profundizando en Vue
 Tabla de contenidos
-- [Computed y watchers](#computed-y-watchers)
+- [Computed](#computed)
+- [Watchers](#watchers)
 - [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
 - [Componentes asíncronos](#componentes-asíncronos)
 - [Custom Directives](#custom-directives)
@@ -10,48 +11,111 @@ Tabla de contenidos
 - [Guards del router](#guards-del-router)
 
 
-## Computed y watchers
-Las variables disponibles las tengo en:
-- props
-- data
-- computed
+## Computed
+Cuando se crea un componente de Vue (o el componente raíz) se le pasa como parámetro un objeto con las opciones con que se creará. Entre ellas tenemos _props_, _ data_, _methods_, y también otras como _computed_ y _watch_.
 
-En computed puedo poner _setter_ y _getter_. Ej:
+Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo:
+
 ```javascript
-data: ()=>({
-  nombre: 'Juan',
-  apellido: 'Segura', 
-}),
-computed: {
-  nombreCompleto: {
-      get() {
-        return this.nombre+' '+this.apellido;
-      },
-      set(value) {
-        [this.nombre, this.apellido] = value.split('-');
-      },
+Vue.component('author-item', {
+  template: `<p>Autor: {{ author.name + ' ' + author.surname }}</p>
+      <p>Ha publicado libros: {{ author.books.length > 0 ? 'Sí' : 'No' }}</p>
+  `,
+  data() {
+    return {
+      author: {
+        name: 'John',
+        surname: 'Doe',
+        books: [
+          'Vue 2 - Advanced Guide',
+          'Vue 3 - Basic Guide',
+          'Vue 4 - The Mystery'
+        ]
+      }
+    }
   }
-}
+})
 ```
 
-Esto me permitiría hacer cosas como:
-- `console.log(this.nombreCompleto)     // imprimiría 'Juan Segura'
-- this.nombreCompleto='Pere-Martí Pascual'   // ahora nombre valdría 'Pere' y apellido 'Martí Pascual'
+La solución a esas expresiones sería crear propiedades calculadas:
 
-Si queremos hacer algo si cambia el valor de una variable definida en _data_ o _computed_ definiremos un **watcher** para ella:
 ```javascript
-data: ()=>({
-  nombre: 'Juan',
-  apellido: 'Segura', 
-}),
-watch: {
-    nombre(newValue) {
-        console.log('Nombre cambiado. Nuevo valor: '+newValue);
+Vue.component('author-item', {
+  template: `<p>Autor: {{ fullName }}</p>
+      <p>Ha publicado libros: {{ hasPublished }}</p>
+  `,
+  data() {
+    return {
+      author: {
+        name: 'John',
+        surname: 'Doe',
+        books: [
+          'Vue 2 - Advanced Guide',
+          'Vue 3 - Basic Guide',
+          'Vue 4 - The Mystery'
+        ]
+      }
+    }
+  },
+  computed: {
+    fullName() {
+      return this.name + ' ' + this.surname;
     },
-}
+    hasPublished() {
+      // `this` points to the vm instance
+      return this.author.books.length > 0 ? 'Sí' : 'No'
+    }
+  }
+})
 ```
 
-Cada vez que cambie de valor esa variable se ejecutará la función asociada. 
+En lugar de definir _computed_ podríamos haber obtenido el mismo resultado usando métodos, pero la ventaja de las propiedades calculadas es que se cachean por lo que si se vuelven a tener que renderizar en el DOM no vuelven a evaluarse, a menos que cambie el valor de alguna de las variables reactivas que use.
+
+Por defecto las propiedades _computed_ sólo hacen un _getter_, por lo que no se puede cambiar su valor. Pero podemos si queremos hacerlo definir métodos _getter_ y _setter_:
+
+```javascript
+  computed: {
+    fullName:
+      // getter
+      get() {
+        return this.name + ' ' + this.surname;
+      },
+      // setter
+      set(newValue) {
+        const names = newValue.split(' ');
+        this.name = names[0];
+        this.surname = names[names.length - 1];
+      }
+    },
+  },
+})
+```
+
+Si hacemos `this.fullName = 'John Doe'` estaremos asignando los valores adecuados a las variables _name_ y _surname_.
+
+## Watchers
+Vue proporciona una forma genérica de controlar cuándo cambia el valor de una variable reactiva para poder ejecutar código en ese momento poniéndole un _watch_:
+
+```javascript
+  data() {
+    return {
+      name: 'John',
+      surname: 'Doe',
+      fullName: 'John Doe',
+    }
+  },
+  watch: {
+    name(newValue, oldValue) {
+      this.fullName = newValue + ' ' + this.surname;
+    },
+    surname(newValue, oldValue) {
+      this.fullName = this.name + ' ' + newValue;
+    },
+  },
+})
+```
+
+En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Veremos su utilidad cuando trabajemos con _vue-router_.
 
 NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
 
@@ -63,8 +127,8 @@ Un componente pasa por distintos estados a lo largo de su cilo de vida y podemos
 - **mounted**: ahora ya tenemos acceso a todas las propiedades del componete. Es el sitio donde hacer una patición externa si el valor devuelto queremos asignarlo a una variable del componente
 - **beforeUpdate**: se ha modificado el componente pero aún no se han renderizado los cambios
 - **updated**: los cambios ya se han renderizado en la página
-- **beforeDestroy**: antes de que se destruya el componente
-- **destroyed**: ya se ha destruido el componente
+- **beforeUnmount**: antes de que se destruya el componente (en versiones anteriores a Vue3 **beforeDestroy**)
+- **unmounted**: ya se ha destruido el componente (en versiones anteriores a Vue3 **destroyed**)
 
 ## Componentes asíncronos
 En proyectos grandes con centenares de componentes podemos hacer que en cada momento se carguen sólo los componentes necesarios de manera que se ahorra mucho tiempo de carga de la página.
