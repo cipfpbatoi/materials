@@ -2,6 +2,7 @@
 Tabla de contenidos
 - [Computed](#computed)
 - [Watchers](#watchers)
+- [Clases](#clases)
 - [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
 - [Componentes asíncronos](#componentes-asíncronos)
 - [Custom Directives](#custom-directives)
@@ -118,6 +119,102 @@ Vue proporciona una forma genérica de controlar cuándo cambia el valor de una 
 En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Veremos su utilidad cuando trabajemos con _vue-router_.
 
 NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
+
+## Clases
+Ya hemos visto que en Javascript usamos las clases con mucha frecuencia, normalmente para asignar a elementos estilos definidos en el CSS, pero también para identificar elementos sin usar una _id_ (como hacíamos poniendo a los botones de acciones de los productos las clases _subir_, _bajar_, _editar_ o _borrar_).
+
+En Vue tenemos diferentes formas de asignar clases. La más simple sería _bindear_ el atributo _class_ y gestionarlas directamente en el código, pero no es lo más cómodo:
+```html
+<div :class="clasesDelDiv"></div>
+```
+
+En este caso tendríamos que asignar a la variables _clasesDelDiv_ las diferentes clases separadas por espacio, lo que es engorroso de mantener.
+
+### Sintaxis de objeto
+Una forma más sencilla es _bindear_ un objeto donde cada propiedad es el nombre de una posible clase y su valor es un booleano que indica si tendrá o no dicha clase, por ejemplo:
+```html
+<div 
+    class="static"
+    :class="{ active: isActive, 'text-danger': hasError }"
+></div>
+```
+
+En este caso el \<DIV> tendrá las clases:
+- static: siemrpe tendrá esta clase. Como véis puede coexistir la directiva _:class_ con el atributo _class_ y se suman ambos
+- active: tendrá esta clase si el valor de la variable _isActive_ es _true_
+- text-danger: ídem para la variable _hasError_. Si el nombre de una clase tiene más de una palabra hay que entrecomillarla
+
+Para mejorar la legibilidad del HTML podemos poner el objeto de las clases en el Javascript
+```html
+<div 
+    class="static"
+    :class="classObject"
+></div>
+```
+
+```javascript
+data() {
+  return {
+    classObject: {
+      active: true,
+      'text-danger': false
+    }
+  }
+}
+```
+
+### Sintaxis de array
+Podemos indicar las clases en forma de array de variables que contienen la clase a asignar:
+```html
+<div :class="[activeClass, errorClass]"></div>
+```
+
+```javascript
+data() {
+  return {
+    activeClass: 'active',
+    errorClass: 'text-danger'
+  }
+}
+```
+
+En este caso el \<DIV> tendrá las clases `active` y `text-danger`. 
+
+Y es posible incluir sintaxis de objeto dentro de la sintaxis de array:
+```html
+<div :class="[{ active: isActive}, errorClass]"></div>
+```
+
+### Asignar clases a un componente
+En la etiqueta de un componente podemos ponerle un atributo _class_ que le asignará las clases incluidas y que se sumaran a las que se le asignen dentro del propio componente. Por ejemplo, si el \<DIV> del ejemplo anterior es el _template_ de un componente llamado MyComponent puedo poner:
+```html
+<my-component class="main highligth"></my-component>
+```
+
+En este caso el \<DIV> tendrá las clases `main`, `highligth`, `active` si la variable _isActive_ vale _true_ y `text-danger`. 
+
+En Vue3 el _template_ de un componente puede tener varios elementos raíz. En ese caso para indicar a cuál se aplicarán las clases definidas en el padre se usa la propiedad `$attr.class`:
+```javascript
+  template: `
+    <p :class="$attrs.class">Hi!</p>
+    <span>This is a child component</span>
+  `
+```
+
+### Asignar estilso directamente
+Aunque no es lo recomendable, podemos asignar directamente estilos CSS igual que asignamos clases y también podemos usar la sintaxis de objeto o la de array.
+```html
+<div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+```
+
+```javascript
+data() {
+  return {
+    activeColor: 'red',
+    fontSize: 30'
+  }
+}
+```
 
 ## Ciclo de vida del componente
 Un componente pasa por distintos estados a lo largo de su cilo de vida y podemos poner _hooks_ para ejecutar una función cuando alcanza ese estado. Los principales _hooks_ son:
