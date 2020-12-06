@@ -26,7 +26,7 @@ Pero vimos que hay otras opciones que podemos definir.
 ## computed
 Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo:
 
-```javascript
+```vue
 Vue.component('author-item', {
   template: `<p>Autor: {{ author.name + ' ' + author.surname }}</p>
       <p>Ha publicado libros: {{ author.books.length > 0 ? 'Sí' : 'No' }}</p>
