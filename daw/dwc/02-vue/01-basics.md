@@ -121,11 +121,23 @@ created() {
     console.log('instancia creada'); 
 }
 ```
+
+### El ciclo de vida de un componente
+Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida.
+
 En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
 
-![Ciclo de vida de Vue](https://vuejs.org/images/lifecycle.png)
+![Ciclo de vida de Vue](https://v3.vuejs.org/images/lifecycle.png)
 
-IMPORTANTE: En **Vue3** los métodos _beforeDestroyed_ y _destroyed_ se llaman _**beforeUnmounted**_ y _**unmounted**_.
+**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlace en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
+```javascript
+// MAL, NO HACER ASÍ
+created: () => {
+    console.log('instancia creada'); 
+}
+```
+
+**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
 
 ## _Binding_ de variables
 Para probar su funcionamiento conviene que nos descarguemos los ficheros y los abramos en local.
@@ -140,7 +152,7 @@ Fichero HTML:
 <body>
 
   <div id="app">
-    <p>{ { message }}</p>
+    <p>{{ message }}</p>
   </div>
 
   <script src="https://unpkg.com/vue"></script>
@@ -150,7 +162,7 @@ Fichero HTML:
 ```
 Nuestro código debemos cargarlo después de cargar la librería y de crear el elemento HTML que contenga la aplicación.
 
-Fichero JS:
+Fichero JS en Vue2:
 ```javascript
 var miApp = new Vue({
   el: '#app',
@@ -159,23 +171,38 @@ var miApp = new Vue({
   }
 })
 ```
+
+Fichero JS en Vue3:
+```javascript
+var miApp = Vue.createApp({
+  data() {
+    return {
+      message: 'Hello Vue.js!'
+    }
+  }
+}).mount('#app');
+```
+
 ### Enlace unidireccional: interpolación {\{...}}
 Hemos creado una variable _miApp_ que contiene nuestro objeto Vue y que podemos ver y manipular desde la consola. Si cambiamos el valor de la variable _message_
+
 ```javascript
 miApp.message = "Hola Vue2!";
 ```
+
 vemos que cambia lo que muestra nuestra página.
 
 Esto es porque Vue (al igual que Angular o React) enlazan el DOM y los datos de forma que cualquier cambio en uno se refleja automáticamente en el otro.
 
 ### Enlazar a un atributo: v-bind
-Para mostrar un dato en el DOM usamos **{\{  }}** pero si queremos nostrarlo como atributo de una etiqueta debemos usar `v-bind`:
+Para mostrar un dato en el DOM usamos la interpolación **{\{  }}** pero si queremos nostrarlo como atributo de una etiqueta debemos usar `v-bind`:
 ```html
   <p v-bind:title="message">
     Hover your mouse over me for a few seconds
     to see my dynamically bound title!
   </p>
 ```
+
 Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que se llaman **directivas**. Todas las directivas comienzan por **`v-`** (en Angular es igual pero el prefijo es _ng-_). Como la directiva `v-bind` se utiliza mucho se puede abreviar símplemente como `:` (el carácter 'dos puntos'). El siguiente código es equivalente al de antes:
 ```html
   <p :title="message">
@@ -193,7 +220,7 @@ Tenemos además está la directiva `v-model` que es un enlace bidireccional que 
 
 Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos.
 
-NOTA: toda la apliación debe estar dentro del elemento _app_ para que funcione.
+NOTA: toda la apliación se monta en el elemento _app_ por lo que las directivas o interpolaciones que pongamos fuera del mismo no se interpretarán.
 
 ## [Vue devtools]
 Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
