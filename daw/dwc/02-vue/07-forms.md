@@ -40,6 +40,8 @@ Para poder tener sincronizado el formulario con nuestros datos utilizamos la dir
 Vamos a ver cómo usar los diferentes tipos de campos con Vue.
 
 ## Enlazar diferentes inputs
+Podemos probar el resultado en la [documentación de Vue](https://v3.vuejs.org/guide/forms.html).
+
 ### input normal
 En este caso simplemente añadimos la directiva **v-model** al input:
 ```html
