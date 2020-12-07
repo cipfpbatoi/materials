@@ -6,6 +6,7 @@ Tabla de contenidos
   - [Props (de padre a hijo)](#props-de-padre-a-hijo)
     - [No cambiar el valor de una prop](#no-cambiar-el-valor-de-una-prop)
     - [Validación de props](#validaci%C3%B3n-de-props)
+    - [Pasar atributos de padre a hijo](#pasar-atributos-de-padre-a-hijo)
   - [Emitir eventos (de hijo a padre)](#emitir-eventos-de-hijo-a-padre)
     - [Capturar el evento en el padre: .native](#capturar-el-evento-en-el-padre-native)
     - [sync](#sync)
@@ -114,7 +115,7 @@ Saber más sobre validación de props: [Validar Props con Vuejs 2. Uno de Piera]
 Además de los parámetros, que se reciben en _props_, el componente padre puede poner cualquier otro atributo que recibirá el hijo y que se aplicará a su elemento raíz y a los que puede acceder a través de `$attr`. Por ejemplo:
 ```html
 <!-- componente padre -->
-<date-picker id="now" data-status="activated"></date-picker>
+<date-picker id="now" data-status="activated" class="fecha"></date-picker>
 ```
 
 ```javascript
@@ -131,7 +132,42 @@ app.component('date-picker', {
 })
 ```
 
-A veces no queremos que esos atributos se apliquen al elemento raíz del subcomponente sino a alguno interno (habitual si le pasamos escuchadores de eventos). En ese caso podemos deshabilitar la herencia de parámetros con  
+El subcomponente se renderizará como:
+```html
+<div class="fecha date-picker" id="now" data-status="activated">
+  <input type="datetime" />
+</div>
+```
+
+A veces no queremos que esos atributos se apliquen al elemento raíz del subcomponente sino a alguno interno (habitual si le pasamos escuchadores de eventos). En ese caso podemos deshabilitar la herencia de parámetros definiendo el atributo del componente `inheritAttrs` a _false_ y aplicándolos nosotros manualmente:
+```html
+<!-- componente padre -->
+<date-picker id="now" data-status="activated" @input="dataChanged"></date-picker>
+```
+
+```javascript
+// Componente hijo
+app.component('date-picker', {
+  inheritAttrs: false,
+  template: `
+    <div class="date-picker">
+      <input type="datetime" v-bind="$attrs" />
+    </div>
+  `,
+})
+```
+
+En este caso se renderizará como:
+```html
+<div class="date-picker">
+  <input type="datetime" class="fecha" id="now" data-status="activated" @input="dataChanged" />
+</div>
+```
+
+El componente padre está escuchando el evento _input_ sobre el \<INPUT> del componente hijo.
+
+En Vue3, si el componente hijo tiene varios elementos raíz deberemos _bindear_ los _attrs_ a uno de ellos.
+
 ## Emitir eventos (de hijo a padre)
 Si un componente hijo debe pasarle un dato a su padre o informarle de algo puede emitir un evento que el padre capturará y tratará convenientemente. Para emitir el evento el hijo hace:
 ```javascript
@@ -187,6 +223,8 @@ Vue.component('todo-list', {
     },
     ...
 ``` 
+
+NOTA: En componentes y _props_ se hace la conversión automáticamente entre los nombres en Javascript escritos en camelCase y los usados en HTML en kebab-case pero esto no sucede con los eventos, por lo que en el código deberemos nombrarlos también en kebeb-case.
 
 ### Capturar el evento en el padre: .native
 En ocasiones (como en este caso) el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. En estos casos podemos hacer que el evento se capture directamente en el padre en lugar de en el hijo con el modificador **[.native](https://vuejs.org/v2/guide/components-custom-events.html#Binding-Native-Events-to-Components)** que permite que un evento se escuche en el elemento que llama al componente y no en el componente:
