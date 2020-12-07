@@ -41,7 +41,7 @@ Cualquier parámetro que pasemos sin _v-bind_ se considera texto. Si queremos pa
 </ul>
 ```
 
-Podemos pasar varios parámetros en un atributo _v-bind_ sin nombre:
+Si pasamos un objeto en un atributo _v-bind_ sin nombre lo que estamos pasando son sus propiedades:
 ```html
 <ul>
   <todo-item v-bind="{ todo: 'Aprender Vue', done: false }" ></todo-item>
@@ -67,7 +67,7 @@ data(): {
 }
 ```
 
-Igualmente si debemos darle determinado formato también lo haremos sobre la otra variable, que es con la que trabajaremos:
+Igualmente si debemos darle determinado formato también lo haremos sobre la otra variable (en este caso mejor una _computed_), que es con la que trabajaremos:
 ```javascript
 props: ['cadenaSinFormato'],
 computed(): {
@@ -80,8 +80,8 @@ computed(): {
 **OJO**: Si el parámetro es un objeto o un array éste se pasa por referencia por lo que si lo cambiamos en el componente hijo  **sí** se cambiará en el padre, lo que debemos evitar.
 
 ### Validación de props
-Al pasar un parámetro podemos indicar algunas cosas como:
-* **type**: su tipo (String, Boolean, Number, Object, ...). Puede ser un array con varios tipos: `type: [Boolean, Number]`
+Al recibir los parámetros podemos usar sintaxis de objeto en lugar de sintaxis de array y en ese caso podemos indicar algunas cosas como:
+* **type**: su tipo (String, Number, Boolean, Array, Object, Date, Function, Symbol o una clase propia). Puede ser un array con varios tipos: `type: [Boolean, Number]`
 * **default**: su valor por defecto si no se pasa ese parámetro
 * **required**: si es o no obligatorio
 * **validator**: una función que recibe como parámetro el valor del parámetro y devolverá true o false en función de si el valor es o no válido
@@ -110,6 +110,28 @@ props: {
 
 Saber más sobre validación de props: [Validar Props con Vuejs 2. Uno de Piera](https://www.uno-de-piera.com/validar-props-vuejs-2/)
 
+### Pasar atributos de padre a hijo
+Además de los parámetros, que se reciben en _props_, el componente padre puede poner cualquier otro atributo que recibirá el hijo y que se aplicará a su elemento raíz y a los que puede acceder a través de `$attr`. Por ejemplo:
+```html
+<!-- componente padre -->
+<date-picker id="now" data-status="activated"></date-picker>
+```
+
+```javascript
+// Componente hijo
+app.component('date-picker', {
+  template: `
+    <div class="date-picker">
+      <input type="datetime" />
+    </div>
+  `,
+  mounted() {
+    console.log('Id: ' + this.$attrs.id + ', Data: ' + this.$attrs['data-status']);
+  }
+})
+```
+
+A veces no queremos que esos atributos se apliquen al elemento raíz del subcomponente sino a alguno interno (habitual si le pasamos escuchadores de eventos). En ese caso podemos deshabilitar la herencia de parámetros con  
 ## Emitir eventos (de hijo a padre)
 Si un componente hijo debe pasarle un dato a su padre o informarle de algo puede emitir un evento que el padre capturará y tratará convenientemente. Para emitir el evento el hijo hace:
 ```javascript
