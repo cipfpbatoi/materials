@@ -454,7 +454,7 @@ Es un patrón y una librería para gestionar los estados en una aplicación Vue.
 Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante.
 
 ## Slots
-Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://vuejs.org/v2/guide/components-slots.html). 
+Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. El _slot_ tienen acceso al contexto del componente padre, no al del componente donde se renderiza. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://vuejs.org/v2/guide/components-slots.html). 
 
 Ejemplo:
 Tenemos un componente llamado _my-component_ con un slot:
