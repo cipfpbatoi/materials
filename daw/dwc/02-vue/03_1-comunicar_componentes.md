@@ -10,6 +10,7 @@ Tabla de contenidos
   - [Emitir eventos (de hijo a padre)](#emitir-eventos-de-hijo-a-padre)
     - [Capturar el evento en el padre: .native](#capturar-el-evento-en-el-padre-native)
     - [sync](#sync)
+    - [Definir y validar eventos](#definir-y-validar-eventos)
   - [Bus de comunicaciones](#bus-de-comunicaciones)
   - [Compartir datos](#compartir-datos)
     - [$root y $parent](#root-y-parent)
@@ -202,7 +203,7 @@ El componente hijo puede emitir cualquiera de los eventos estàndar de JS ('clic
 ``` 
 donde lo escuchamos y llamamos al método que borre el item:
 ```javascript
-Vue.component('todo-list', {
+app.component('todo-list', {
   template: '<div>'+
 '      <h2>{{ title }}</h2>'+
 '     <ul>'+
@@ -229,7 +230,7 @@ NOTA: En componentes y _props_ se hace la conversión automáticamente entre los
 ### Capturar el evento en el padre: .native
 En ocasiones (como en este caso) el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. En estos casos podemos hacer que el evento se capture directamente en el padre en lugar de en el hijo con el modificador **[.native](https://vuejs.org/v2/guide/components-custom-events.html#Binding-Native-Events-to-Components)** que permite que un evento se escuche en el elemento que llama al componente y no en el componente:
 ```javascript
-Vue.component('todo-list', {
+app.component('todo-list', {
   template: '<div>'+
 '      <h2>{{ title }}</h2>'+
 '     <ul>'+
@@ -244,13 +245,12 @@ Vue.component('todo-list', {
 
 Le estamos indicando a Vue que el evento _click_ se capture en _todo-list_ directamente por lo que el componente _todo-item_ no tiene que capturarlo ni hacer nada:
 ```javascript
-Vue.component('todo-item', {
+app.component('todo-item', {
   props: ['todo'],
   template: '    <li>'+
 '      <label>'+
     ...
 ``` 
-
 
 ### sync
 Una alternativa a emitir eventos es "sincronizar" un parámetro pasado por el padre para que se actualice si se modifica en el hijo, lo que se hace con el modificador _.sync_, pero no es muy recomendable porque hace el código más difícil de mantener:
@@ -260,6 +260,36 @@ Una alternativa a emitir eventos es "sincronizar" un parámetro pasado por el pa
 </ul>
 ```
 Si cambia el valor de _done_ en el hijo también cambiará en el padre.
+
+### Definir y validar eventos
+Los eventos que emite un componente pueden (y se recomienda por claridad) definirse en la opción _emits_:
+```javascript
+app.component('todo-item', {
+  emits: ['toogle-done', 'dblclick'],
+  props: ['todo'],
+...
+``` 
+
+También podemos validar los argumentos que emite usando sintaxis de objeto en vez de array, similar a como hacemos con las _props_. Para ello el evento se asigna a una función que recibe como parámetro los aprámetros del evento y devuelve _true_ si es válido o _false_ si no lo es:
+```javascript
+app.component('custom-form', {
+  emits: {
+    // No validation
+    click: null,
+
+    // Validate submit event
+    submit: ({ email, password }) => {
+      if (email && password) {
+        return true
+      } else {
+        console.warn('Invalid submit event payload!')
+        return false
+      }
+    }
+  },
+```
+
+En este ejemplo el componente emite _click_ que no se valida y _submit_ donde se valida que debe recibir 2 parámetros.
 
 ## Bus de eventos
 Si queremos pasar información entre varios componentes que no tienen por qué ser padres/hijos podemos crear un componente que haga de canal de comunicación y que incluiremos en cada componente que queramos comunicar:
