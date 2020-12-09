@@ -128,6 +128,7 @@ Modificamos el método _addTodo_ del fichero **Todo-List.vue**:
         .catch(response => alert('Error: no se ha añadido el registro. '+response.message))
     },
 ```
+
 Al servidor hay que pasarle como parámetro el objeto a añadir. E el caso del json-server devolverá en el **response.data** el nuevo objeto añadido al completo. Otros servidores devuelven sólo la _id_ del nuevo registro o pueden no devolver nada. 
 
 ### Actualizar el campo _done_
@@ -154,6 +155,7 @@ A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue*
         .catch(response => alert('Error: no se ha modificado el registro. '+response.message))
     },
 ```
+
 Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. En el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no inlcuidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
 
 ### Borrar todas las tareas
@@ -163,6 +165,7 @@ Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servido
       this.todos.forEach((todo, index) => this.delTodo(index));
     }
 ```
+
 Si lo probáis con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
 
 ## Solución mejor organizada
