@@ -49,11 +49,11 @@ En definitiva nuestra aplicación será como un árbol de componentes con la ins
 ![Árbol de componentes](https://vuejs.org/images/components.png)
 
 ## Usar un componente
-Para usarlo basta con crearlo con `Vue.component`, darle un nombre y definir el objeto con sus propiedades _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
+Para usarlo basta con crearlo con `app.component` (`Vue.component` en versiones anteriores a Vue3), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```javascript
-Vue.component('todo-item', {
+app.component('todo-item', {
   template: `
     <li>
       <input type="checkbox" v-model="elem.done">
@@ -137,7 +137,7 @@ NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una 
 
 El parámetro lo recibimos en el componente en _props_:
 ```javascript
-Vue.component('todo-item', {
+app.component('todo-item', {
   props: ['todo'],
   template: `
     <li>
@@ -145,7 +145,7 @@ Vue.component('todo-item', {
       ...
 })
 ```
-NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`Vue.component('todo-item',{ props: ['todoElem'],...})`).
+NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`).
 
 >**Resultado:**
 ><ul>
@@ -220,7 +220,7 @@ Pero mientras que _data_ en la instancia de Vue es un objeto en un componente de
 
 ```javascript
 // En la instancia Vue
-new Vue({
+const app = Vue.createApp({
   data: {
     message: 'Hello',
     counter: 0
@@ -230,8 +230,21 @@ new Vue({
 
 ```javascript
 // En un componente
-Vue.component('my-comp', {
+app.component('my-comp', {
   data: function() {
+    return {
+      message: 'Hello',
+      counter: 0
+    }
+  }
+})
+```
+
+o con la notación ES2015
+```javascript
+// Componente
+app.component('my-comp', {
+  data() {
     return {
       message: 'Hello',
       counter: 0
@@ -242,7 +255,7 @@ Vue.component('my-comp', {
 
 También podemos ponerlo en notación de _arrow function_:
 ```javascript
-Vue.component('my-comp', {
+app.component('my-comp', {
   data: ()=>({
       message: 'Hello',
       counter: 0
