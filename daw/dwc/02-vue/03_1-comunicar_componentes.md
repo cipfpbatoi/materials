@@ -51,7 +51,7 @@ Si pasamos un objeto en un atributo _v-bind_ sin nombre lo que estamos pasando s
 ```
 y en el componente se reciben sus propiedades separadamente:
 ```javascript
-Vue.component('todo-item, {
+app.component('todo-item, {
   props: ['todo', 'done'],
   ...
 ```
@@ -324,7 +324,7 @@ const store={
   ...
 }
 
-Vue.component('comp-a', {
+app.component('comp-a', {
   ...
   data() {
     return {
@@ -341,7 +341,7 @@ Vue.component('comp-a', {
   ...
 })
 
-Vue.component('comp-b', {
+app.component('comp-b', {
   ...
   data() {
     return {
@@ -411,7 +411,7 @@ const store={
   }
 }
 
-Vue.component('comp-a', {
+app.component('comp-a', {
   ...
   data() {
     return {
@@ -429,7 +429,7 @@ Vue.component('comp-a', {
   ...
 })
 
-Vue.component('comp-b', {
+appcomponent('comp-b', {
   ...
   data() {
     return {
