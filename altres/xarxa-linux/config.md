@@ -11,9 +11,9 @@
   - [Detectar problemes](#detectar-problemes)
 - [Enrutament](./enrutament.md#enrutament)
   - [Habilitar l’enrutament](./enrutament.md#habilitar-lenrutament)
+  - [Configurar NAT en sistemes netplan (Ubuntu 17.10 i posteriors)](./enrutament.md#configurar-nat-en-sistemes-netplan)
   - [Configurar NAT en sistemes amb ifupdown](./enrutament.md#configurar-nat-en-sistemes-amb-ifupdown)
     - [Configurar NAT en sistemes amb ifupdown i nftables (Debian 10 i posteriors)](./enrutament.md#configurar-nat-en-sistemes-amb-ifupdown-i-nftables)
-  - [Configurar NAT en sistemes netplan (Ubuntu 17.10 i posteriors)](./enrutament.md#configurar-nat-en-sistemes-netplan)
   - [Configurar NAT en CentOS](./enrutament.md#configurar-nat-en-centos)
 
 ## Configurar la xarxa
