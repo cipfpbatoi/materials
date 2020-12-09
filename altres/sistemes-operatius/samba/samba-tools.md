@@ -28,6 +28,8 @@ Podem veure totes les opcions a l'hora de crear un grup amb:
 samba-tool group add -h
 ```
 
+Per exemple trobem l'opció `list` per a vore tots els grups creats o `listmembers` per a vore els membres del grup que l'indiquem.
+
 ## Gestió d'usuaris
 Ho farem amb el comando `samba-tool user`. A l'hora de crear un nou usuari haurem d'especificar moltes opcions. Les podem veure totes amb:
 
@@ -45,6 +47,11 @@ Per a afegir-ho al grup creat abans farem:
 
 ```bash
 samba-tool group addmembers gProfes jsegura
+```
+
+Igual que en els grups podem vore totes les opcions amb els usuaris executant l'ordre:
+```bash
+samba-tool user -h
 ```
 
 Per veure més comandes relacionades amb samba, es poden accedir a la seguent web:
