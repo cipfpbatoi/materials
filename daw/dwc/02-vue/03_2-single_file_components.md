@@ -18,7 +18,7 @@ Tabla de contenidos
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Single File Components
-Declarar los componentes como hemos visto con `Vue.component()` en el fichero JS de la instancia genera varios problemas:
+Declarar los componentes como hemos visto con `app.component()` en el fichero JS de la instancia genera varios problemas:
 * Los componentes así declarados son globales a la aplicación por lo que sus nombres deben ser únicos
 * El HTML del template está en ese fichero en medio del JS lo que lo hace menos legible y el editor no lo resalta adecuadamente (ya que espera encontrar códgo JS no HTML)
 * El HTML y el JS del componente están juntos pero no su CSS
