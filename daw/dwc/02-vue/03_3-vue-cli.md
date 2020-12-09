@@ -58,20 +58,12 @@ npm install -g @vue/cli
 
 La opción -g es para que lo instale globalmente en el sistema y no instale una copia para cada proyecto.
 
-Si queremos usar Vue3 debemos tener al menos instalada la versión 4.5 de @vue/cli y desde dentro de cada proyecto en que queramos usar Vue3 ejecutar 
-
-```bash
-vue upgrade --next
-```
-
 ## Creación de un nuevo proyecto
 Para crear un nuevo proyecto haremos:
 ```bash
 vue create _<directorio_proyecto>_
 ```
-Vue nos ofrece 2 opciones:
-* **default**: prouecto básico con los plugins para _Babel_ y _esLint_, Mäs adelante podremos añadir más si los necesitamos.
-* **manual**: escogemos que plugins instalar para el proyecto de entre los siguientes:
+Vue nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3 por defecto con los plugins para _Babel_ y _esLint_ (mäs adelante podremos añadir más si los necesitamos) o bien la opción **manual** donde escogemos que plugins instalar para el proyecto de entre los siguientes:
 
 ![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
 
@@ -111,7 +103,7 @@ Los principales ficheros y directorios creados son:
     * main.js: JS principal que carga componentes y crea la instancia de Vue que 'pinta' el App.vue 
     * App.vue: página de inicio del proyecto. Aquí cargaremos la cabecera, el menú,... y los diferentes componentes
     * components/: carpeta que contendrá los ficheros .vue de los diferentes componentes
-        * HelloWorld.vue: componente llamado por App.vue
+        * HelloWorld.vue: componente de ejemplo llamado por App.vue
 
 #### package.json
 Aquí se configura nuestra aplicación:
@@ -129,11 +121,17 @@ Aquí se configura nuestra aplicación:
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>miapp-webpack-simple</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <div id="app"></div>
-    <script src="/dist/build.js"></script>
+    <!-- built files will be auto injected -->
   </body>
 </html>
 ```
@@ -141,19 +139,13 @@ Simplemente tiene el \<div> _app_ que es el que contendrá la aplicación.
 
 **Fichero main.js:**
 ```javascript
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+createApp(App).mount('#app')
 
 ```
-Es el fichero JS principal. Importa la librería _Vue_ y el componente _App.vue_, crea la instancia de Vue y renderiza el componente _App_.
-
-Además indica que no estamos en modo producción lo que hace que en la consola aparezca un mensaje indicando que se está en modo desarrollo.
+Es el fichero JS principal. Importa la utilidad _createApp_ de la librería _Vue_ y el componente _App.vue_. Crea la instancia de Vue con el componente definido en _App.vue_ y la renderiza en el elemento _#app_.
 
 **Fichero App.vue:**
 Es el componente principal de la aplicación, el que contiene el _layout_ de la página. Lo que contiene el apartado _template_ es lo que se renderizará en el div _app_ que hay en _index.html_. Si contiene algún otro componente se indica aquí dónde renderizarlo (en este caso <HelloWorld>).
@@ -187,7 +179,7 @@ export default {
 Importa y registra el componente _HelloWorld_ que se muestra en el template.
 
 _style_
-Aquí se definen los estilos de este componente. Si la etiqueta tiene el atributo _scoped_ (`<style scoped>`) significa que los estilos incluidos se aplicarán sólo a este componente.
+Aquí se definen los estilos de este componente. Como la etiqueta NO tiene el atributo _scoped_ (`<style scoped>`) significa que los estilos incluidos se aplicarán a TODOS los componentes.
 
 **Fichero components/HelloWorld.vue:**
 Es el componente que muestra el texto que aparece bajo la imagen. Recibe como parámetro el título a mostrar. Veamos qué contiene cada sección:
@@ -223,6 +215,8 @@ export default {
 ```
 Recibe el parámetro _msg_ que es de tipo String.
 
+_style_
+Aquí la etiqueta SÍ tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos incluidos se aplicarán sólo a este componente.
 
 ## Añadir nuevos plugins y dependencias
 Para instalar un nuevo plugin a nuestro proyecto (antes conviene haber hecho un _commit_) usamos `vue add` desde la carpeta del proyecto, por ejemplo para añadir el plugin _vuetify_ ejecutamos:
@@ -240,10 +234,12 @@ Si queremos instalar un paquete que no funciona como plugin lo haremos desde _np
 ```bash
 npm install nombre-paquete
 ```
+
 El comando `npm install` sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
 ```bash
 npm install -S vue-router
 ```
+
 Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
 
 ### bootstrap-vue
@@ -264,7 +260,6 @@ Vue.use(BootstrapVueIcons)
 ```
 
 ## Crear un nuevo componente
-
 Creamos un nuevo fichero en **/src/components** (o en alguna subcarpeta dentro) con extensión _.vue_. Donde queramos usar ese componente debemos importarlo y registrarlo como hemos visto con _HelloWorld_ (y como se explica en el artículo de los _Single File Components_). 
 ```javascript
 import CompName from './CompName.vue'
