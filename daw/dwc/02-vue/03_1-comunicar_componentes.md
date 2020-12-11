@@ -314,6 +314,8 @@ Cada componente que queramos que emita al bus deberá también tener importado e
 EventBus.$emit('nombreevento', param)
 ```
 
+**NOTA IMPORTANTE**: esta implementación sólo funciona en Vue2. Para usar este método en Vue3 debemos instalar alguna librería externa como mitt o tiny-emiter tal y como se indica en la [Guía de migración a Vue3](https://v3.vuejs.org/guide/migration/events-api.html#_2-x-syntax). Podéis encontrar información de cómo hacerlo en Internet, por ejemplo en [stackoverflow](https://stackoverflow.com/questions/63471824/vue-js-3-event-bus).
+
 ## Compartir datos
 Una forma más sencilla de modificar datos de un componente desde otros es compartendo los datos. Definimos fuera de la instancia Vue y de cualquier componente un objeto que contendrá todos los datos a compartir entre componentes y lo registramos en el _data_ de cada componente que tenga que acceder a él. Ejemplo:
 
@@ -389,10 +391,10 @@ this.$root.getInfo();
 
 También es posible acceder a los datos y métodos del componente padre del actual usando `$parent` en lugar de `$root`.
 
-De esta manera podríamos acceder directamente a datos del padre o usar la instancia de Vue como almacén (evitando crear el objeto **store** para compartir datos) pero, aunque esto puede ser útil en aplicaciones pequeñas, es difícil de mantener cuando nuestra aplicación crece por lo que se recomienda usar el **EventBus** que hemos visto antes, el **Store pattern**  que veremos a continuación o **Vuex** si nuestra aplicación va a ser grande.
+De esta manera podríamos acceder directamente a datos del padre o usar la instancia de Vue como almacén (evitando crear el objeto **store** para compartir datos) pero, aunque esto puede ser útil en aplicaciones pequeñas, es difícil de mantener cuando nuestra aplicación crece por lo que se recomienda usar un **_Store pattern_** como veremos a continuación o **Vuex** si nuestra aplicación va a ser grande.
 
 ### Store pattern
-Es el mismo caso de antes pero las acciones que modifiquen los datos del almacén están incluidas dentro del propio almacén, lo que facilita su seguimiento:
+Es una mejora sobre lo que hemos visto de compartir datos donde las acciones que modifican los datos del almacén están incluidas dentro del propio almacén, lo que facilita su seguimiento:
 
 ```javascript
 const store={
@@ -454,7 +456,7 @@ Es un patrón y una librería para gestionar los estados en una aplicación Vue.
 Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante.
 
 ## Slots
-Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. El _slot_ tienen acceso al contexto del componente padre, no al del componente donde se renderiza. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://vuejs.org/v2/guide/components-slots.html). 
+Otrqa forma en que un componente hijo puede mostrar información del padre es usando _slots_. Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. El _slot_ tienen acceso al contexto del componente padre, no al del componente donde se renderiza. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://v3.vuejs.org/guide/component-slots.html#slot-content). 
 
 Ejemplo:
 Tenemos un componente llamado _my-component_ con un slot:
@@ -582,4 +584,5 @@ Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde v
 En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su data. El resto de componentes no necesitan acceder al array, por lo que no lo incluimos e su data, pero sí llamarán a los métodos para cambiarlo.
 
 **Solución**:
+
 <script async src="//jsfiddle.net/juansegura/o0951fzr/embed/"></script>
