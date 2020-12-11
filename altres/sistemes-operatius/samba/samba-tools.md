@@ -43,10 +43,15 @@ Per exemple anem a crear l'usuari _jsegura_ amb contrasenya _Batoi@1234_ el nom 
 samba-tool user create jsegura Batoi@1234 --given-name=Juan --surname=Segura --must-change-at-next-login --userou=OU=Aula,OU=Batoi --uid-number=10001
 ```
 
-Per a afegir-ho al grup creat abans farem:
+Per a afegir-lo al grup creat abans, farem:
 
 ```bash
 samba-tool group addmembers gProfes jsegura
+```
+Si volem afegir més usuaris a un grup o grups dins d'altres, hem de separar per comes (sense espais):
+
+```bash
+samba-tool group addmembers g_empresa00 g_administratiu00,g_SAT00
 ```
 
 Igual que en els grups podem vore totes les opcions amb els usuaris executant l'ordre:
