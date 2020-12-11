@@ -48,6 +48,17 @@ El checkbox está enlazado a la variable _marcado_ (a la que al inicio le hemos 
 
 La directiva `v-else` es opcional (puede haber sólo un `v-if`) pero si la ponemos el elemento con el `v-else` debe ser el inmediatamente siguiente al del `v-if`.
 
+NOTA: Los ejemplos de esta página son todos de Vue2. Recordad que en Vue3 es todo igual excepto la forma de crear la instancia Vue que sería:
+```javascript
+const app = Vue.createApp({
+  data() {
+    return {
+      marcado: true,
+    }
+  }
+}).mount('#app');
+```
+
 También se pueden enlazar varios con `v-else-if`:
 ```html
 <div v-if="type === 'A'">
