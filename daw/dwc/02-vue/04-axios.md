@@ -172,23 +172,23 @@ Si lo probáis con muchos registros es posible que no se borren todos correctame
 Vamos a crear un fichero que será donde estén las peticiones a axios de forma que nuestro código quede más limpio en los componentes. Podemos llamar al fichero APIService.js y allí creamos las funciones que laman a la API:
 ```javascript
 import axios from 'axios';
-const API_URL = 'http://localhost:3000';
+const baseURL = 'http://localhost:3000';
 
 export default {
   getTodos() {
-    return axios.get(API_URL+'/todos')
+    return axios.get(baseURL+'/todos')
   },
 
   delTodo(id){
-    return axios.delete(API_URL+'/todos/'+id)
+    return axios.delete(baseURL+'/todos/'+id)
   },
 
   addTodo(newTodo) {
-    return axios.post(API_URL+'/todos', newTodo)
+    return axios.post(baseURL+'/todos', newTodo)
   },
 
   toogleDone(todo) {
-    return axios.put(API_URL+'/todos/'+todo.id, {
+    return axios.put(baseURL+'/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
@@ -216,25 +216,58 @@ export default {
   },
 ```
 
-Otra forma sería construir una clase que se ocupe de las peticiones a la API:
+Si nuestra APIService tiene que acceder a varias tablas el código va haciéndose más largo. Podemos escribir lo mismo de antes pero de forma más concisa:
 ```javascript
 import axios from 'axios';
-const API_URL = 'http://localhost:3000';
+const baseURL = 'http://localhost:3000';
+
+const todos = {
+    getAll: () => axios.get(`${baseURL}/todos`),
+    getOne: (id) => axios.get(`${baseURL}/todos/${id}`),
+    create: (item) => axios.post(`${baseURL}/todos`, item),
+    modify: (item) => axios.put(`${baseURL}/todos/${item.id}`, item),
+    delete: (id) => axios.delete(`${baseURL}/todos/${id}`),
+    toogleDone: (item) => axios.put(`${baseURL}/categories/${item.id}`, {
+      id: item.id,
+      title: item.title, 
+      done: !item.done
+    }),
+};
+
+const categories = {
+    getAll: () => axios.get(`${baseURL}/categories`),
+    getOne: (id) => axios.get(`${baseURL}/categories/${id}`),
+    create: (item) => axios.post(`${baseURL}/categories`, item),
+    modify: (item) => axios.put(`${baseURL}/categories/${item.id}`, item),
+    delete: (id) => axios.delete(`${baseURL}/categories/${id}`),
+};
+
+
+export default {
+    todos,
+    categories,
+};
+```
+
+También podemos usar programación orientada a objetos para hacer nuestra ApiService y construir una clase que se ocupe de las peticiones a la API:
+```javascript
+import axios from 'axios';
+const baseURL = 'http://localhost:3000';
 
 export class APIService{
   constructor(){
   }
   getTodos() {
-    return axios.get(API_URL+'/todos')
+    return axios.get(baseURL+'/todos')
   }
   delTodo(id){
-    return axios.delete(API_URL+'/todos/'+id)
+    return axios.delete(baseURL+'/todos/'+id)
   },
   addTodo(newTodo) {
-    return axios.post(API_URL+'/todos', newTodo)
+    return axios.post(baseURL+'/todos', newTodo)
   },
   toogleDone(todo) {
-    return axios.put(API_URL+'/todos/'+todo.id, {
+    return axios.put(baseURL+'/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
@@ -263,6 +296,18 @@ export default {
     this.getData();
   },
 ```
+
+Es preferible no poner la ruta en el código sino en el fichero _.env_ que es un fichero donde guardar las configuraciones de la aplicación. Vue puede acceder a todas las variables definidas en el mismo que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
+```javascript
+const baseURL = process.env.VUE_APP_RUTA_API;
+```
+
+Y en el fichero _,env_ ponemos
+```bash
+VUE_APP_RUTA_API=http://localhost:3000
+```
+
+Recordad que este fichero no se sube al repositorio por lo que podemos poner información sensible (como usuarios o contraseñas). Si lo usamos es conveniente tener un fichero _.env.exemple_ que sí se sube con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción.
 
 ## json-server
 Es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
