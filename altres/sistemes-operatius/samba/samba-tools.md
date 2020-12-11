@@ -30,7 +30,7 @@ samba-tool group add -h
 
 Per exemple trobem l'opció `list` per a vore tots els grups creats o `listmembers` per a vore els membres del grup que l'indiquem.
 
-``bash
+```bash
 samba-tool group listmembers "g_Empresa"
 ```
 
