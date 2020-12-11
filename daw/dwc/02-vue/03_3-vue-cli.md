@@ -230,6 +230,8 @@ Esto automáticamente:
 * crea un fichero JS dentro de la carpeta **_plugins_** que importa y registra la librería
 * importa dicho fichero al **_main.js_**
 
+NOTA: actualmente Vuetify no soporta Vue3 por lo que esto sólo funcionará en Vue2
+
 Si queremos instalar un paquete que no funciona como plugin lo haremos desde _npm_:
 ```bash
 npm install nombre-paquete
