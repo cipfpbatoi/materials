@@ -53,7 +53,8 @@ Para usarlo basta con crearlo con `app.component` (`Vue.component` en versiones 
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```javascript
-app.component('todo-item', {
+// sintaxis de Vue2
+Vue.component('todo-item', {
   template: `
     <li>
       <input type="checkbox" v-model="elem.done">
@@ -73,7 +74,7 @@ const app = new Vue({
 ...
 ```
 
-El nombre de un componente puede estar en PascalCase (MyComponentName) o en kebab-case (my-component-name). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
+El nombre de un componente puede estar en PascalCase (MyComponentName) o en kebab-case (my-component-name). Lo recomendado es que en Javascript lo pongamos en PascalCase y en el HTML en kebeb-case (Vue hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
 
 Ahora ya podemos usar el componente en nuestro HTML:
 ```html
@@ -100,10 +101,10 @@ Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta est�
 De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un \<ul> deben ser \<li> o los de un \<tr> deben ser \<td>).
 
 ### Componentes en Vue3
-Funcionan exactamente igual que en Vue2 sólo que se declaran como componentes de la instancia creada y no de Vue y, al contrario que en Vue2, se declaran después de crear la instancia:
+Funcionan exactamente igual que en Vue2 sólo que se declaran como componentes de la instancia creada y no del objeto _Vue_ y, al contrario que en Vue2, se declaran después de crear la instancia:
 
 ```javascript
-const app = new Vue({
+const app = Vue.createApp({
 ...
 })
 
@@ -137,7 +138,7 @@ NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una 
 
 El parámetro lo recibimos en el componente en _props_:
 ```javascript
-app.component('todo-item', {
+app.component('todo-item', {      // En Vue2: Vue.component('todo-item', {
   props: ['todo'],
   template: `
     <li>
@@ -145,7 +146,7 @@ app.component('todo-item', {
       ...
 })
 ```
-NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`).
+NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`). Vue hace la traducción automáticamente.
 
 >**Resultado:**
 ><ul>
@@ -216,7 +217,7 @@ NOTA: Vue3 no tiene esta limitación y podemos poner más de un elemento en su _
 ### _data_ debe ser una función
 Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas (definidas en _data_) y sus propios métodos, _hooks_, etc.
 
-Pero mientras que _data_ en la instancia de Vue es un objeto en un componente debe ser una función que devuelve ese objeto:
+Pero mientras que en Vue2 _data_ en la instancia de Vue es un objeto en un componente debe ser una función que devuelve ese objeto (en Vue3 ya es así incluso en la instancia de Vue):
 
 ```javascript
 // En la instancia Vue
@@ -272,7 +273,7 @@ Pero a veces queremos registrar un componente _localmente_ de forma que sólo se
 
 En ese caso el componente a registrar se guarda en un objeto
 ```javascript
-var ComponentA={ /* .... */ }
+const ComponentA={ /* .... */ }
 ```
 y se registra en cada instancia o subcomponente en que quiera usarse:
 ```javascript
@@ -292,7 +293,15 @@ var ComponentB={
   }
 }
 ```
-En realidad lo que se hace es guardar cada componente en un fichero con extensión _.vue_ e importarlo donde vaya a usarse:
+
+NOTA: al ser igual el nombre de la propiedad (_component-a_) y su valor (_ComponentA_) no es necesario poner los _:_ y el valor:
+```javascript
+  components: {
+    ComponentA,
+  }
+```
+
+Cuando trabajamos con componente no están todos en el mismo fichero sino que cada componente se guarda en un fichero con extensión _.vue_ y se importar donde vaya a usarse:
 ```javascript
 // fichero ComponentB.vue
 import ComponentA from './ComponentA.vue'
@@ -315,6 +324,8 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 * del-all: el botón para borrar toda la lista
   
 **Solución**:
+NOTA: está en sintaxis Vue2.
+
 <script async src="//jsfiddle.net/juansegura/3yoLvmnt/embed/"></script>
 
 **Pasos que he hecho**:
