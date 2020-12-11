@@ -1,5 +1,5 @@
 # samba-tool
-Samba inclou l'eina samba-tool per a gestionar objectes del domini. Pode obtenir ajuda d'aquest comando amb:
+Samba inclou l'eina samba-tool per a gestionar objectes del domini. Podem obtenir ajuda d'aquesta ordre amb:
 
 ```bash
 samba-tool -h
@@ -30,6 +30,10 @@ samba-tool group add -h
 
 Per exemple trobem l'opció `list` per a vore tots els grups creats o `listmembers` per a vore els membres del grup que l'indiquem.
 
+``bash
+samba-tool group listmembers "g_Empresa"
+```
+
 ## Gestió d'usuaris
 Ho farem amb el comando `samba-tool user`. A l'hora de crear un nou usuari haurem d'especificar moltes opcions. Les podem veure totes amb:
 
@@ -37,7 +41,7 @@ Ho farem amb el comando `samba-tool user`. A l'hora de crear un nou usuari haure
 samba-tool user create -h
 ```
 
-Per exemple anem a crear l'usuari _jsegura_ amb contrasenya _Batoi@1234_ el nom de la qual és _Juan_ i cognom _Segura_, volem que tinga com UID la _10001_ i que haja de canviar la contrasenya en el pròxim inici de sessió i ho volem crear dins de la OU _smx_ que està en la OU _Aula_. EL comando serà el següent:
+Per exemple anem a crear l'usuari _jsegura_ amb contrasenya _Batoi@1234_ el nom de la qual és _Juan_ i cognom _Segura_, volem que tinga com UID la _10001_ i que haja de canviar la contrasenya en el pròxim inici de sessió i ho volem crear dins de la OU _smx_ que està en la OU _Aula_. El comando serà el següent:
 
 ```bash
 samba-tool user create jsegura Batoi@1234 --given-name=Juan --surname=Segura --must-change-at-next-login --userou=OU=Aula,OU=Batoi --uid-number=10001
