@@ -6,7 +6,7 @@ Tabla de contenidos
   - [Instalación](#instalaci%C3%B3n)
   - [Creación de un nuevo proyecto](#creaci%C3%B3n-de-un-nuevo-proyecto)
     - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
-    - [_Scaffolding_ creado](#_scaffolding_-creado)
+    - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicaci%C3%B3n)
   - [Añadir nuevos plugins y dependencias](#a%C3%B1adir-nuevos-plugins-y-dependencias)
@@ -14,12 +14,6 @@ Tabla de contenidos
   - [Crear un nuevo componente](#crear-un-nuevo-componente)
   - [Depurar el código en la consola](#depurar-el-c%C3%B3digo-en-la-consola)
 - [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
-  - [Solución](#soluci%C3%B3n)
-    - [comp-todo/TodoItem.vue](#comp-todotodoitemvue)
-    - [comp-todo/AddItem.vue](#comp-todoadditemvue)
-    - [comp-todo/DelAll.vue](#comp-tododelallvue)
-    - [comp-todo/TodoList.vue](#comp-todotodolistvue)
-    - [App.vue](#appvue)
 - [Comunicación entre componentes en Vue-cli](#comunicaci%C3%B3n-entre-componentes-en-vue-cli)
   - [Event Bus](#event-bus)
   - [Store pattern](#store-pattern)
@@ -294,9 +288,11 @@ La aplicación que estamos haciendo  tendrá los componentes indicados en el [ca
 # Comunicación entre componentes en Vue-cli
 Como ya hemos visto los componentes tienen sus propios datos que son **datos de nivel de componente**. Pero hay ocasiones en que varios componentes necesitan acceder a los mismos datos. Estos datos se consideran **datos de nivel de aplicación** y hay varias formas de tratarlos.
 
-Entre padres e hijos ya hemos visto que se puede intercambiar información mediante _props_ (aunque no debemos modificar en el hijo los datos pasados como _prop_) y emitiendo eventos del hijo al padre. Además tenemos otras 2 maneras de comunicación:
-* Event Bus
+Entre padres e hijos ya hemos visto que se puede intercambiar información mediante _props_ (aunque no debemos modificar en el hijo los datos pasados como _prop_) y emitiendo eventos del hijo al padre. Para comunicarse componentes que no son padre/hijo tenemos 2 maneras de comunicación:
+* Event Bus (no soportado en Vue3, a menos que usemos alguna librería como _mitt_ o _tiny emiter_)
 * Pattern Store
+
+Y si nuestra aplicación es media-grande lo recomendado es usar Vuex.
 
 ## Event Bus
 Creamos un fichero **event-bus.js** donde declaramos el objeto que usaremos como bus de comunicaciones:
