@@ -17,6 +17,7 @@ Tabla de contenidos
 - [Comunicación entre componentes en Vue-cli](#comunicaci%C3%B3n-entre-componentes-en-vue-cli)
   - [Event Bus](#event-bus)
   - [Store pattern](#store-pattern)
+  - [Store pattern en Vue3](#store-pattern-en-vue3)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -336,3 +337,19 @@ export default {
       storeState: store.state
       ...
 ```
+
+## Store pattern en Vue3
+En Vue3 el funcionamiento es exactamente el mismo sólo que para que niestro _state_ sea reactivo hay que indicarlo explícitamente:
+```javascript
+import { reactive } from 'vue';
+
+export const store = {
+  state: reactive({
+    todos: []
+  }),
+  addTodoAction(newTodo) {
+    this.state.todos.push(newTodo);
+  }
+};
+```
+
