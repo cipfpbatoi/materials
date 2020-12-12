@@ -111,9 +111,9 @@ Además de estos 3 bloques un SFC puede tener otros bloques definidos por el pro
 ```
 
 ## TodoList con Single File Components
-Crearemos un fichero _.vue_ para cada uno de los componentes y otro para el componente principal de la aplicacioón que llamaremos **TodoApp.vue** y que incluye los otros componentes. Veamos cada fichero.
+Crearemos un fichero _.vue_ para cada uno de los componentes y otro para el componente principal de la aplicacioón que llamaremos **App.vue** y que incluye los otros componentes. Veamos cada fichero.
 
-### TodoApp.vue
+### App.vue
 
 ```vue
 <template>
