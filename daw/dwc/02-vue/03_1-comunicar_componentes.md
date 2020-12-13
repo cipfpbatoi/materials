@@ -449,6 +449,32 @@ appcomponent('comp-b', {
 })
 ```
 
+**IMPORTANTE**: no podemos machacar ninguna variable del _state_ si es un objeto o un array, por ejemplo para cargar los datos de un array de productos:
+```javascript
+// Esto está MAL
+loadProductsAction (products) {
+ this.state.products = products;
+}
+```
+
+ni para borrarlos todos podemos hacer
+```javascript
+// Esto está MAL
+clearProductsAction () {
+ this.state.products = [];
+}
+```
+
+porque entonces el array _products_ dejaría de ser reactivo (lo estamos machacando con otro). Debemos usar métodos como _push_, _splice_, ...
+```javascript
+// Esto está BIEN
+loadProductsAction (products) {
+ products.forEach(product => this.state.products.push(product));
+}
+clearProductsAction () {
+ this.state.products.splice(0, this.state.products.length);
+}
+```
 
 ## Vuex
 Es un patrón y una librería para gestionar los estados en una aplicación Vue. Ofrece un almacenamiento centralizado para todos los componentes con unas reglas para asegurar que un estado sólo cambia de determinada manera.
