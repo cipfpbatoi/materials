@@ -249,12 +249,19 @@ Como es un plugin lo instalamos como hemos visto antes:
 vue add bootstrap-vue
 ```
 
-Además incluye [iconos](https://bootstrap-vue.js.org/docs/icons) y si queremos usarlos tenemos que modificar el fichero creado dentro de _plugins_ y añadir:
+Además incluye [iconos](https://bootstrap-vue.js.org/docs/icons#icons) y si queremos usarlos tenemos que modificar el fichero creado dentro de _plugins_ y añadir:
 ```bash
 import { BootstrapVueIcons } from 'bootstrap-vue'
 
 Vue.use(BootstrapVueIcons)
 ```
+
+Para usarlos ponemos en el HTML la etiqueta `<b-icon-nombre-icono>`, por ejemplo:
+```html
+<b-icon-trash-fill></b-icon-trash-fill>
+```
+
+Para más información consulta la página de [Bootstrap-vue Icons](https://bootstrap-vue.js.org/docs/icons).
 
 ## Crear un nuevo componente
 Creamos un nuevo fichero en **/src/components** (o en alguna subcarpeta dentro) con extensión _.vue_. Donde queramos usar ese componente debemos importarlo y registrarlo como hemos visto con _HelloWorld_ (y como se explica en el artículo de los _Single File Components_). 
