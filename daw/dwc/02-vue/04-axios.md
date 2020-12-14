@@ -119,11 +119,7 @@ Modificamos el método _addTodo_ del fichero **Todo-List.vue**:
 ```javascript
     addTodo(title) {
       axios.post(url+'/todos', {title: title, done: false})
-        .then(response => this.todos.push({
-            id: response.data.id,
-            title: title, 
-            done: false
-          })
+        .then(response => this.todos.push(response.data)
         )
         .catch(response => alert('Error: no se ha añadido el registro. '+response.message))
     },
