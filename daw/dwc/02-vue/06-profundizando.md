@@ -17,11 +17,15 @@ Cuando se crea un componente de Vue (o el componente raíz) se le pasa como par�
 
 Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo:
 
-```javascript
-Vue.component('author-item', {
-  template: `<p>Autor: {{ author.name + ' ' + author.surname }}</p>
-      <p>Ha publicado libros: {{ author.books.length > 0 ? 'Sí' : 'No' }}</p>
-  `,
+```vue
+<template>
+  <p>Autor: {{ author.name + ' ' + author.surname }}</p>
+  <p>Ha publicado libros: {{ author.books.length > 0 ? 'Sí' : 'No' }}</p>
+</template>
+
+<script>
+export default {
+  name: 'author-item',
   data() {
     return {
       author: {
@@ -35,7 +39,8 @@ Vue.component('author-item', {
       }
     }
   }
-})
+}
+</script>
 ```
 
 La solución a esas expresiones sería crear propiedades calculadas:
