@@ -45,11 +45,15 @@ export default {
 
 La solución a esas expresiones sería crear propiedades calculadas:
 
-```javascript
-Vue.component('author-item', {
-  template: `<p>Autor: {{ fullName }}</p>
-      <p>Ha publicado libros: {{ hasPublished }}</p>
-  `,
+```vue
+<template>
+  <p>Autor: {{ fullName }}</p>
+  <p>Ha publicado libros: {{ hasPublished }}</p>
+</template>
+
+<script>
+export default {
+  name: 'author-item',
   data() {
     return {
       author: {
@@ -68,7 +72,6 @@ Vue.component('author-item', {
       return this.name + ' ' + this.surname;
     },
     hasPublished() {
-      // `this` points to the vm instance
       return this.author.books.length > 0 ? 'Sí' : 'No'
     }
   }
@@ -199,14 +202,14 @@ En la etiqueta de un componente podemos ponerle un atributo _class_ que le asign
 En este caso el \<DIV> tendrá las clases `main`, `highligth`, `active` si la variable _isActive_ vale _true_ y `text-danger`. 
 
 En Vue3 el _template_ de un componente puede tener varios elementos raíz. En ese caso para indicar a cuál se aplicarán las clases definidas en el padre se usa la propiedad `$attr.class`:
-```javascript
-  template: `
+```html
+<template>
     <p :class="$attrs.class">Hi!</p>
     <span>This is a child component</span>
-  `
+</template>
 ```
 
-### Asignar estilso directamente
+### Asignar estilos directamente
 Aunque no es lo recomendable, podemos asignar directamente estilos CSS igual que asignamos clases y también podemos usar la sintaxis de objeto o la de array.
 ```html
 <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
@@ -303,11 +306,10 @@ import focus from './focus.js'
 Si queremos utilizarla en muchos componentes podemos importarla en el _main.js_ y así estará disponible para todos los componentes.
 
 Los estados de la directiva en los que podemos actuar son:
-- **inserted**: cuando se inserte la directiva
-- : cuando se actualice la directiva
-- : cuando se actualice el componente que contiene la directiva
-- : cuando se enganche la directiva al _template_
-- : cuando se desenganche la directiva del _template_
+- **inserted** (en Vue3 **mounted**): cuando se inserte la directiva
+- **componentUpdated** (en Vue3 **updated**): cuando se actualice el componente que contiene la directiva
+- **bind** (en Vue3 **beforeMount**): cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
+- ...
 
 
 ## Filtros
@@ -332,6 +334,8 @@ Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para 
         return value.toFixed(2)+' €';
       },
     },
+  }
+</script>	
 ```
 
 ## Transiciones
