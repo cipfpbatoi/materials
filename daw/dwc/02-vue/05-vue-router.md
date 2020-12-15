@@ -24,12 +24,21 @@ Como esta librería vamos a usarla en producción la instalaremos como dependenc
 npm install vue-router -S
 ```
 
+NOTA: Para instalar _vue-router_ en _Vue3_ ejecutamos:
+```[bash]
+npm install vue-router@next -S
+```
+
 ## Crear las rutas
 Podemos hacerlo en el fichero principal de nuestra aplicación, _main.js_, pero para que el código quede más legible conviene hacerlo en un fichero diferente (por ejemplo en _router/index.js_). Allí importamos _Vue-router_, lo declaramos (`Vue.use`), creamos una instancia para nuestras rutas (`new Router`, que es el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
 ```vue
+// En Vue 2
 import Vue from 'vue'
 import Router from 'vue-router'
+// En Vue 3
+import { createWebHistory, createRouter } from 'vue-router'
 
+// Importamos los componentes que se carguen en alguna ruta
 import AppHome from './components/AppHome.vue'
 import AppAbout from './components/AppAbout.vue'
 import UsersTable from './components/UsersTable.vue'
@@ -38,30 +47,32 @@ import UserEdit from './components/UserEdit.vue'
 
 Vue.use(Router)
 
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: AppHome
+  },{
+    path: '/about',
+    name: about,
+    component: AppAbout
+  },{
+    path: '/users',
+    component: UsersTable
+  },{
+    path: '/new',
+    component: UserNew
+  },{
+    path: '/edit/:id',
+    component: UserEdit
+    props: true
+  }
+];
+
 export default new Router({
-  mode: 'history',
-  routes: [
-	{
-		path: '/',
-		name: 'home',
-		component: AppHome
-	},{
-		path: '/about',
-		name: about,
-		component: AppAbout
-	},{
-		path: '/users',
-		component: UsersTable
-	},{
-		path: '/new',
-		component: UserNew
-	},{
-		path: '/edit/:id',
-		component: UserEdit
-		props: true
-	}
-  ],
-})
+  mode: 'history',	// en Vue3 cambiaremos esta línea por 	history: createWebHistory(),
+  routes,
+});
 ```
 
 El valor 'history' de la propiedad _mode_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (ya que en realidad no se están cargando diferentes páginas sino partes de una única página -es una SPA-). Esta es la opción que escogeremos siempre en las aplicaciones SPA.
@@ -77,7 +88,7 @@ Además de esas propiedades podemos indicar:
 * props: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se pone el componente tendrá que acceder al parámetro _id_ desde `this.$route.params.id` 
 
 Ahora en el fichero _main.js_ importamos el objeto router que hemos creado y lo declaramos en la instancia de Vue:
-```vue
+```javascript
 ...
 import router from './router'
 ...
@@ -86,6 +97,15 @@ new Vue({
   router,		// En ES6 esto es equivalente a router: router
   render: h => h(App)
 })
+```
+
+EL fichero _main.js_ en _Vue3_ quedaría:
+```javascript
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router' // <---
+
+createApp(App).use(router).mount('#app')
 ```
 
 Cada vez que cambiemos de ruta no cambiará todo el layout sino que algunas partes de la página se conservan (el título, el menú, el _footer_, ...). En la parte del HTML en que queramos que se carguen los diferentes componentes de nuestra SPA incluiremos la etiqueta:
