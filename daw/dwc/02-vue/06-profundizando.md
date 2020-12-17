@@ -19,8 +19,8 @@ Hemos visto que en una interpolación o directiva podemos poner una expresión j
 
 ```vue
 <template>
-  <p>Autor: {{ author.name + ' ' + author.surname }}</p>
-  <p>Ha publicado libros: {{ author.books.length > 0 ? 'Sí' : 'No' }}</p>
+  <p>Autor: { { author.name + ' ' + author.surname }}</p>
+  <p>Ha publicado libros: { { author.books.length > 0 ? 'Sí' : 'No' }}</p>
 </template>
 
 <script>
@@ -47,8 +47,8 @@ La solución a esas expresiones sería crear propiedades calculadas:
 
 ```vue
 <template>
-  <p>Autor: {{ fullName }}</p>
-  <p>Ha publicado libros: {{ hasPublished }}</p>
+  <p>Autor: { { fullName }}</p>
+  <p>Ha publicado libros: { { hasPublished }}</p>
 </template>
 
 <script>
