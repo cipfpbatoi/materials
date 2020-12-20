@@ -144,7 +144,7 @@ En este caso es necesario que la ruta dinámica tenga un _name_.
 Al hacer `Vue.use` en el fichero del router hacemos que esté disponible para todos los componentes desde `this.$router`. Esto nos permite acceder al router desde un componente para, por ejemplo, cambiar a una ruta.
 
 Podemos cargar la ruta que queramos desde JS con
-```[javascrip]
+```javascrip
 this.$router.push(ruta)
 ```
 Tenemos varios métodos para navegar por código:
@@ -155,7 +155,7 @@ Tenemos varios métodos para navegar por código:
 Estos métodos son equivalentes a los métodos _history.push()_, _history.replace()_ y _history.go()_ de JS.
 
 Además podemos pasar a push() y replace() funciones _callback_ que se ejecutarán al cambiar la ruta si todo va bien o si hay algún error.
-```[javascrip]
+```javascrip
 this.$router.push(location, onComplete?, onAbort?)
 ```
 
@@ -180,7 +180,7 @@ También podemos obtener toda la ruta con `this.$route.fullPath`.
 Si cambiamos a la misma ruta pero con distintos parámetros Vue reutiliza la instancia del componente y no vuelve a lanzar sus _hooks_ (created, mounted, ...). Esto hará que no se ejecute el código que tengamos allí. Por ejemplo supongamos que en una ruta '/edit/5' al cargar el componente se pide el registro 5 y se muestra en la página. Si a continuación cargamos la ruta '/edit/8' seguiremos viendo los datos del registro 5).
 
 La forma de solucionar esto es usar el elemento 'beforeRouteUpdate' y realizar allí la carga de los datos:
-```[javascrip]
+```javascrip
 beforeRouteUpdate (to, from, next) {
     // Código que responde al cambio. En 'to' tenemos la ruta anterior y en 'from' la nueva
     // antes de acabar hay que llamar a next()
@@ -190,7 +190,7 @@ beforeRouteUpdate (to, from, next) {
 ```
 
 También podríamos usar un _watcher_ para detectar el cambio en la ruta:
-```[javascrip]
+```javascrip
 watch: {
     '$route' (to, from) {
         // Aquí cargamos los nuevos datos
