@@ -160,8 +160,17 @@ this.$router.push(location, onComplete?, onAbort?)
 ```
 
 También se puede una _query_ a la ruta o parámetros. Ejemplos:
-* this.$router.push({ path: 'register', query: { plan: 'private' }})	// Se obtiene '/register?plan=private
-* this.$router.push({ name: 'users', params: { id: 123 }})	// Salta a una ruta por su _name_
+```javascript
+this.$router.push({ path: '/register', query: { plan: 'private' }})
+```
+
+la URL cargada será `/register?plan=private`
+
+```javascript
+this.$router.push({ name: 'users', params: { id: 123 }})
+```
+
+salta a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123 (si la ruta definida en _users_ fuera _/usuarios_ la URL cargada será `/usuarios/123`).
 
 En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos el objeto, en el ejemplo `{ plan: 'private' }`) y el parámetro con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.param.id` obtenemos el valor `123`).
 
