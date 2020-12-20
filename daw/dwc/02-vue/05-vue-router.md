@@ -21,7 +21,9 @@ En resumen en nuestra aplicación (normalmente en el _App.vue_) tendremos una et
 Lo que hacemos para configurar _vue-router_ es definir rutas que _mapean_ componentes de nuestra aplicación a rutas URL de forma que cuando se pone determinada ruta en el navegador se carga en nuestra página el componente indicado. También permite tener subrutas que mapeen subcomponentes dentro de otros.
 
 ## Instalación
-Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. Si lo que queremos es añadir _vue-router_ a un proyecto ya existente debemos añadir el paquete y configurarlo como se indica a continuación.
+Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. En el _scaffolding_ que se crea aparece una nueva carpeta _Views_ que es donde se recomienda guardar las distintas vistas de nuestra aplicación, que serán componentes que renderizan una "_página_" de la aplicación.
+
+Si lo que queremos es añadir _vue-router_ a un proyecto ya existente debemos añadir el paquete y configurarlo como se indica a continuación.
 
 Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
 ```bash
