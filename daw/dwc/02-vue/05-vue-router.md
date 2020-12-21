@@ -222,8 +222,8 @@ Para que se carguen los 3 componentes lo debemos indicar al definir las rutas:
     path: '/',  
     components: {
         default: CompMain,		// CompMain se cargará en el <router-view> sin nombre
-        cabecera: CompCabecera,
-        b: CompAside
+        top: CompCabecera,
+        aside: CompAside
     }
 }
 ```
