@@ -19,6 +19,7 @@
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Quasar](#quasar)
   - [Vue Native](#vue-native)
+  - [Ionic Vue](#ionic-vue)
   - [Nuxt](#nuxt)
   - [Angular](#angular)
 
@@ -299,6 +300,9 @@ Tiene licencia MIT y su UI sigue las guías de Material.
 [Vue native](https://vue-native.io/) es un framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
 
 Con ella podemos acceder a los diferentes [dispositivos](https://vue-native.io/docs/device-apis.html) del móvil como la cámara, la geolocalización, el acelerómetro, ... Podemos encontrar en Internet muchos ejemplos de cómo hacer nuestra App con este framework, como [este](https://scotch.io/tutorials/how-to-setup-build-and-deploy-native-apps-with-vue) de scotch.io.
+
+## Ionic Vue
+[Ionic](https://ionicframework.com/) es posiblemente el Framework más utilizado para crear aplicaciones móviles nativas a partir de nuestra aplicación web. Está basado en Angular y Cordova pero desde diciembre de 2020 puede usarse directamente en Vue, y es compatible con Vue3 y su _Composition API_.
 
 ## Nuxt
 [Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Vuex_,...) lo que nos facilita el desarrollo de nuestros proyectos.
