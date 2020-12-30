@@ -86,7 +86,7 @@ ciclos: [
 
 ```html
 <div v-for="ciclo in ciclos" :key="ciclo.cod">
-  <input type="checkbox" v-model="user.ciclosImparte" :value="ciclo.cod">{{ ciclo.desc }}<br>
+  <input type="checkbox" v-model="user.ciclosImparte" :value="ciclo.cod">{ { ciclo.desc }}<br>
 </div>
 ```
 ### select
@@ -105,7 +105,7 @@ También podemos generar las opciones automáticamente:
 <select v-model="user.tutor">
   <option value=''>No es tutor</option>
   <option  v-for="ciclo in ciclos" :key="ciclo.cod" :value="ciclo.cod">
-    {{ ciclo.desc }}
+    { { ciclo.desc }}
   </option>
 </select>
 ```
@@ -129,7 +129,7 @@ Todo esto es incómodo y poco productivo. Para mejorarlo podemos usar una de las
 * ...
 
 ## Validar con VeeValidate
-VeeValidate es una librería que permite validar formularios simplemente añadiendo a los inputs la directiva **v-validate**. 
+Para facilitar la ardua tarea de validar nuestros formularios encontramos multitud de librerías. En Vue las más utilizadas son _VueValidate_ y [_VeeValidate_](https://vee-validate.logaretm.com/v3/). Aquí vamos a ver esta última que es una librería que permite validar formularios simplemente añadiendo a los inputs la directiva **v-validate**. 
 
 Para validar el formulario ejecutaremos `this.$validator.validateAll()` que ejecuta el form y, si existen errores, los muestra. Genera el objeto **Errors** donde se almacenan las validaciones que hemos definido y que tiene métodos como:
 * errors.any(): si queda alguna validación pendiente
@@ -138,14 +138,27 @@ Para validar el formulario ejecutaremos `this.$validator.validateAll()` que ejec
 * ...
 
 ### Instalación
+Vamos a ver cómo usar este librería en Vue2. En Vue3 es incluso más sencillo (tenéis todo explicado en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
+
 Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
 ```[bash]
 npm install vee-validate -S
 ```
 
-Para usarla en el componente que contenga un formulario debemos importar el objeto _ValidationProvider_ y registrarlo:
+Para usarla en el componente que contenga un formulario debemos importar el componente _ValidationProvider_ y registrarlo. Además deberemos importar y configurar cada regla que queramos aplicar a nuestros INPUT:
 ```javascript
 import { ValidationProvider } from 'vee-validate';
+// Ahora importamos las reglas que queramos usar, en este caso 'required'
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
+
+// Registramos las reglas a usar:
+// extend('required', required);
+// o podemos 'personalizarlas, en este caso, personalizamos el mensaje de error
+extend('required', {
+  ...required,
+  message: 'Este campo es obligatorio'
+});
 
 export default {
   components: {
@@ -154,14 +167,14 @@ export default {
   ...
 ```
 
-o bien lo importaremos en el fichero principal de nuestra aplicación, _main.js_ para usarlo en cualquier componente:
+También podemos importarlo en el fichero principal de nuestra aplicación, _main.js_ para usarlo en cualquier componente:
 ```javascript
 import { ValidationProvider } from 'vee-validate';
 
 Vue.component('ValidationProvider', ValidationProvider);
 ```
 
-También es posible usarlo directamente desde un CDN:
+y es posible usarlo directamente desde un CDN:
 ```html
 <script src="https://unpkg.com/vee-validate@latest"></script>
 <script>
@@ -170,26 +183,13 @@ También es posible usarlo directamente desde un CDN:
 ```
 
 ### Uso básico de VeeValidate
-Cada input a validar los envolveremos en una etiqueta `<validation-provider>`:
+Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a la que aplicamos las reglas que deba cumplir:
 ```javascript
-<ValidationProvider v-slot="{ errors }">
+<validation-provider rules="required" v-slot="{ errors }" name="myinput">
   <input v-model="value" type="text">
   <span>{ { errors[0] }}</span>
-</ValidationProvider>
-```
+</validation-provider>
 
-Este componente no incluye ninguna regla por defecto sino que debemos añadirlas usando la API _extend_:
-```javascript
-import { ValidationProvider } from 'vee-validate';
-import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
-
-extend('required', required);
-extend('email', email);
-```
-
-y en el _ValidationProvider_ indicamos las reglas a aplicar a este validador:
-```html
 <validation-provider v-slot="{ errors }" rules="required|email" name="mail">
     <label>e-mail: </label>
     <input type="text" v-model="mail">
