@@ -361,6 +361,7 @@ Si el nombre de la variable comienza por `VUE_APP_` será accesible desde el có
 console.log(process.env.VUE_APP_API);
 ```
 
+Podemos saber en qué entorno se está ejecutando la aplicación consultando el valor de la variable `process.env.NODE_ENV`.
 
 ## Guards del router
 Son _hooks_ que podemos controlar en distintos momentos, algunos desde el componente y otros desde el _router_. Podemos ponerlos para todas las rutas, para una ruta en concreto o en el componente.
