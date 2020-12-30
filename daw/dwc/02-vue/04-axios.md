@@ -14,6 +14,7 @@ Tabla de contenidos
     - [Borrar todas las tareas](#borrar-todas-las-tareas)
   - [Solución mejor organizada](#soluci%C3%B3n-mejor-organizada)
   - [json-server](#json-server)
+- [Axios Interceptors](#axios-interceptors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -309,12 +310,12 @@ Recordad que este fichero no se sube al repositorio por lo que podemos poner inf
 Es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
 
 Para instalarlo en nuestra máquina ejecutamos:
-```[bash]
+```bash
 npm install json-server -g
 ```
 
 Para que sirva un fichero datos.json:
-```[bash]
+```bash
 json-server --watch datos.json 
 ```
 La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
@@ -324,3 +325,60 @@ Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definid
 * https://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
 
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
+
+# Axios Interceptors
+Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Esto es útil, por ejemplo, para enviar un token que nos autentifique ante una API sin tener que ponerlo en el cṕdigo de cada petición.
+
+Para interceptar las peticiones usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para las respuestas `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
+
+Veamos un ejemplo en que queremos enviar en las cabeceras de cada petición el token que tenemos almacenado en el LocalStorage y queremos mostrar un alert siempre que se produzca un error en la respuesta que no sea de tipo 400. Además mostraremos por consola las peticiones y las respuestas si acticamos el modo DEBUG:
+
+```javascript
+import axios from 'axios';
+const baseURL = 'http://localhost:3000';
+const DEBUG = true;
+
+axios.interceptors.request.use((config) => {
+    if (DEBUG) {
+        console.info('Request: ', config);
+    }
+
+    const token = localStorage.token;
+    if (token) {
+        config.headers['Authorization'] = 'Bearer ' + store.getters.token;
+    }
+    return config;
+}, (error) => {
+    if (DEBUG) {
+        console.error('Request error: ', error);
+    }
+    return Promise.reject(error);
+});
+
+axios.interceptors.response.use((response) => {
+    if (DEBUG) {
+        console.info('Response: ', response);
+    }
+    return response;
+}, (error) => {
+    if (error.response && error.response.status !== 400) {
+        alert('Response error ' + error.response.status + '(' + error.response.statusText + ')'
+    }
+    if (DEBUG) {
+        console.info('Response error: ', error);
+    }
+    return Promise.reject(error);
+});
+
+const categories = {
+    getAll: () => axios.get(`${baseURL}/categories`),
+    getOne: (id) => axios.get(`${baseURL}/categories/${id}`),
+    create: (item) => axios.post(`${baseURL}/categories`, item),
+    modify: (item) => axios.put(`${baseURL}/categories/${item.id}`, item),
+    delete: (id) => axios.delete(`${baseURL}/categories/${id}`),
+};
+
+export default {
+    categories,
+};
+```
