@@ -129,13 +129,7 @@ Todo esto es incómodo y poco productivo. Para mejorarlo podemos usar una de las
 * ...
 
 ## Validar con VeeValidate
-Para facilitar la ardua tarea de validar nuestros formularios encontramos multitud de librerías. En Vue las más utilizadas son _VueValidate_ y [_VeeValidate_](https://vee-validate.logaretm.com/v3/). Aquí vamos a ver esta última que es una librería que permite validar formularios simplemente añadiendo a los inputs la directiva **v-validate**. 
-
-Para validar el formulario ejecutaremos `this.$validator.validateAll()` que ejecuta el form y, si existen errores, los muestra. Genera el objeto **Errors** donde se almacenan las validaciones que hemos definido y que tiene métodos como:
-* errors.any(): si queda alguna validación pendiente
-* errors.has('name'): si el input 'name' tiene validaciones fallidas
-* errors.first('name'): primer mensaje de error asociado al input 'name'
-* ...
+_VeeValidate_ es una librería que permite validar formularios simplemente envolviendo los inputs en un componente llamado **ValidationProvider**. 
 
 ### Instalación
 Vamos a ver cómo usar este librería en Vue2. En Vue3 es incluso más sencillo (tenéis todo explicado en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
@@ -280,7 +274,7 @@ extend('entre', {
 ```
 
 ### Estados de validación
-Cada _ValidationProvider_ tiene una serie de _flags_ que definen [en qué estado se encuentra](https://logaretm.github.io/vee-validate/guide/state.html#flags) la validación del campo. Algunos de los más comunes son:
+Cada _ValidationProvider_ tiene una serie de _flags_ que definen [en qué estado se encuentra](https://vee-validate.logaretm.com/v3/guide/state.html) la validación del campo. Algunos de los más comunes son:
 - **valid** / **invalid**: indica que el campo es válido/inválido
 - **touched** / **untouched**: indica si el campo ha tenido o no el foco (si se ha entrado en él)
 - **pristine** / **dirty**: indica que el valor del campo no/sí se ha cambiado
@@ -301,12 +295,11 @@ configure({
 
 
 ### Validar al enviar el formulario
-El componente _ValidationProvider_ se encarga de validar cada input individualmente. El componente _ValidationObserver_
-controla el estado de todos los _ValidationProvider_ que se encuentren dentro de él.
+El componente _ValidationProvider_ se encarga de validar cada input individualmente. El componente _ValidationObserver_ controla el estado de todos los _ValidationProvider_ que se encuentren dentro de él.
 
 Nunca debemos enviar un formulario inválido y para evitarlo podemos deshabilitar el botón de 'Enviar' hasta que el formulario sea válido o forzar la validación del mismo al eviarlo.
 
-Encontramos la información de [cómo hacer ambas cosas](https://logaretm.github.io/vee-validate/guide/forms.html) en la documentación de Vee Validate.
+Encontramos la información de [cómo hacer ambas cosas](https://vee-validate.logaretm.com/v3/guide/forms.html) en la documentación de Vee Validate.
 
 # Inputs en subcomponentes
 La forma enlazar cada input con su variable correspondiente es mediante la directiva _v-model_ que hace un enlace bidireccional: al cambiar la variable Vue cambia el valor del input y si el usuario cambia el input Vue actualiza la variable automáticamente.
