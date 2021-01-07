@@ -129,7 +129,11 @@ Todo esto es incómodo y poco productivo. Para mejorarlo podemos usar una de las
 * ...
 
 ## Validar con VeeValidate
-_VeeValidate_ es una librería que permite validar formularios simplemente envolviendo los inputs en un componente llamado **ValidationProvider**. 
+_VeeValidate_ es una librería que permite validar formularios de una manera más sencilla. Para ello incluye 2 componentes:
+- **ValidationProvider**: para validar cada \<INPUT> lo pondremos dentro de este componente, así como el elemento en el que se mostrarán los mensajes del validador
+- **ValidationObserver**: este componente valida un formulario completo y dentro de él es donde pondremos el elemento \<FORM> a validar
+
+Por tanto cada INPUT estará dentro de su _ValidationProvider_ y el formulario entero dentro de un _ValidationObserver_.
 
 ### Instalación
 Vamos a ver cómo usar este librería en Vue2. En Vue3 es incluso más sencillo (tenéis todo explicado en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
@@ -139,7 +143,7 @@ Como esta librería vamos a usarla en producción la instalaremos como dependenc
 npm install vee-validate -S
 ```
 
-Para usarla en el componente que contenga un formulario debemos importar el componente _ValidationProvider_ y registrarlo. Además deberemos importar y configurar cada regla que queramos aplicar a nuestros INPUT:
+Para usarla en el componente que contenga un formulario debemos importar los componentes que vayamos a usar (_ValidationProvider_ y, si es necesario, _ValidationObserver_) y registrarlo. Además deberemos importar y configurar cada regla que queramos aplicar a nuestros INPUT:
 ```javascript
 import { ValidationProvider } from 'vee-validate';
 // Ahora importamos las reglas que queramos usar, en este caso 'required'
@@ -147,11 +151,11 @@ import { extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 
 // Registramos las reglas a usar:
-// extend('required', required);
-// o podemos 'personalizarlas, en este caso, personalizamos el mensaje de error
-extend('required', {
-  ...required,
-  message: 'Este campo es obligatorio'
+extend('required', required);
+// o podemos 'personalizarlas (en este ejemplo estamos personalizando el mensaje de error)
+extend('max', {
+  ...max,
+  message: 'Has superado el máximo de caracteres permitidos para este campo'
 });
 
 export default {
@@ -161,14 +165,14 @@ export default {
   ...
 ```
 
-También podemos importarlo en el fichero principal de nuestra aplicación, _main.js_ para usarlo en cualquier componente:
+Otra opción es importarlo en el fichero principal de nuestra aplicación, _main.js_ para poder usarlo en cualquier componente:
 ```javascript
 import { ValidationProvider } from 'vee-validate';
 
 Vue.component('ValidationProvider', ValidationProvider);
 ```
 
-y es posible usarlo directamente desde un CDN:
+y también es posible usarlo directamente desde un CDN:
 ```html
 <script src="https://unpkg.com/vee-validate@latest"></script>
 <script>
@@ -191,11 +195,11 @@ Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a 
 </validation-provider>
 ```
 
-OJO: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter | pero SIN ESPACIOS entre ellas.
+**OJO**: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter **|** pero SIN ESPACIOS entre ellas.
 
 La validación se efectúa tras cada modificación del campo (es decir, tras pulsar cada tecla). Si queremos que no se haga hasta salir del campo le añadiremos al _ValidationProvider_ el atributo `mode="lazy"`.
 
-NOTA: para que se apliquen las reglas los inputs deben tener **v-model**.
+**NOTA**: para que se apliquen las reglas los inputs deben tener **v-model**.
 
 Podemos ver todas las [reglas disponibles](https://logaretm.github.io/vee-validate/guide/rules.html#rules) en la documentación de Vee Validate. Algunas de las más comunes son:
 * _required_: no puede estar vacío ni valer _undefined_ o _null_
@@ -213,7 +217,7 @@ Para personalizar el mensaje simplemente lo indicamos en el _extend_, por ejempl
 // Override the default message.
 extend('required', {
   ...required,
-  message: 'This field is required'
+  message: 'Este campo es obligatorio'
 });
 ```
 
@@ -228,7 +232,7 @@ Por ejemplo el mensaje del required podría ser:
 ```
 
 ### Crear nuevas reglas de validación
-Para crear una nueva regla de validación personalizada simplemente le damos un nombre y definimos la función que devolverá _true_ si el valor es válido o _false_ si no lo es, por ejemplo:
+Para crear una nueva regla de validación personalizada simplemente le damos un nombre y definimos la función validadora, que devolverá _true_ si el valor es válido o _false_ si no lo es, por ejemplo:
 ```javascript
 extend('positive', value => {
   return value >= 0;
@@ -267,7 +271,7 @@ extend('min', {
 Podríamos crear una regla personalizada a la que tengamos que pasarle parámetros, por ejemplo haremos un _entre_ a la que le pasamos la longitud mínima y máxima de un campo (`rules="entre:4:12"`):
 ```javascript
 extend('entre', {
-  validate(value, { min, max} ) {
+  validate: (value, { min, max}) => {
       return value.length >= min && value.length <= max;
   },
   params: ['min', 'max'],
@@ -281,7 +285,7 @@ Cada _ValidationProvider_ tiene una serie de _flags_ que definen [en qué estado
 - **touched** / **untouched**: indica si el campo ha tenido o no el foco (si se ha entrado en él)
 - **pristine** / **dirty**: indica que el valor del campo no/sí se ha cambiado
 
-Podemos hacer que se le pongan autimáticamente al input cuertas clases en función de su estado:
+Podemos hacer que se le pongan automáticamente al input ciertas clases en función de su estado:
 ```javascript
 import { configure } from 'vee-validate';
 
@@ -299,9 +303,97 @@ configure({
 ### Validar al enviar el formulario
 El componente _ValidationProvider_ se encarga de validar cada input individualmente. El componente _ValidationObserver_ controla el estado de todos los _ValidationProvider_ que se encuentren dentro de él.
 
-Nunca debemos enviar un formulario inválido y para evitarlo podemos deshabilitar el botón de 'Enviar' hasta que el formulario sea válido o forzar la validación del mismo al eviarlo.
+Nunca debemos enviar un formulario inválido y para evitarlo podemos deshabilitar el botón de 'Enviar' hasta que el formulario sea válido y/o forzar la validación del mismo al eviarlo.
 
-Encontramos la información de [cómo hacer ambas cosas](https://vee-validate.logaretm.com/v3/guide/forms.html) en la documentación de Vee Validate.
+Para deshabilitar el botón de enviar obtendremos del componente _ValidationObserver_ información sobre la validez del formulario:
+```html
+<template>
+  <ValidationObserver v-slot="{ invalid }">
+    <form @submit.prevent="onSubmit">
+      <ValidationProvider name="E-mail" rules="required|email" v-slot="{ errors }">
+        <input v-model="email" type="email">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider name="First Name" rules="required|alpha" v-slot="{ errors }">
+        <input v-model="firstName" type="text">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <button type="submit" :disabled="invalid">Submit</button>
+    </form>
+  </ValidationObserver>
+</template>
+```
+
+Si lo que queremos es que no se ejecute la función del _submit_ si el formulario no es válido haremos:
+```html
+<template>
+  <ValidationObserver v-slot="{ handleSubmit }">
+    <form @submit.prevent="handleSubmit(onSubmit)">
+      <ValidationProvider name="E-mail" rules="required|email" v-slot="{ errors }">
+        <input v-model="email" type="email">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider name="First Name" rules="required|alpha" v-slot="{ errors }">
+        <input v-model="firstName" type="text">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <button type="submit">Submit</button>
+    </form>
+  </ValidationObserver>
+</template>
+```
+
+Encontramos más información de cómo hacer validar formularios en la [documentación de vee-validate](https://vee-validate.logaretm.com/v3/guide/forms.html) en la documentación de Vee Validate.
+
+### Validación del lado del servidor
+En ocasiones hay validaciones que obligatoriamente debe hacer el servidor, como comprobar si un nombre de usuario ya existe. Podemos integrar fácilmente los errores devueltos por el servidor en _VeeValidate_. Para ello sólo necesitamos que el servidor devuelva los errores deontro de un objeto cuyas propiedades deben coincidir con el _name_ o el _vid_ de los campos del formulario ya que _VeeValidate_ proporciona el método _setErrors_ que automáticamente asigna cada error del objeto devuelto por el servidor al campo correspondiente. Ejemplo:
+
+```html
+<template>
+  <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+    <form @submit.prevent="handleSubmit(onSubmit)">
+      <ValidationProvider vid="email" name="E-mail" rules="required|email" v-slot="{ errors }">
+        <input v-model="email" type="email">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider vid="password" name="Password" rules="required" v-slot="{ errors }">
+        <input v-model="password" type="password">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <button type="submit">Sign up</button>
+    </form>
+  </ValidationObserver>
+</template>
+```
+
+```javascript
+<script>
+export default {
+  data: () => ({
+    email: '',
+    password: ''
+  }),
+  methods: {
+    onSubmit () {
+      axios.post('http://localhost:3000/users', { email, password }
+      .then(response => {
+        if (response.errors) {
+	  this.$refs.form.setErrors(response.errors);
+	} else {
+	  // todo ha ido bien
+	}
+      })
+    }
+  }
+};
+</script>
+```
+
+Podéis encontrar toda la información y ejemplos en ela [documentación de _VeeValidate_](https://vee-validate.logaretm.com/v3/advanced/server-side-validation.html).
 
 # Inputs en subcomponentes
 La forma enlazar cada input con su variable correspondiente es mediante la directiva _v-model_ que hace un enlace bidireccional: al cambiar la variable Vue cambia el valor del input y si el usuario cambia el input Vue actualiza la variable automáticamente.
@@ -314,7 +406,7 @@ Para solucionar este problema tenemos 2 opciones: imitar nosotros en el subcompo
 Como los cambios en el subcomponente no se transmiten al componente padre hay que emitir un evento desde el subcomponente que escuche el padre y que proceda a hacer el cambio en la variable.
 
 La solución es imitar lo que hace un _v-model_ que en realidad está formado por:
-* un _v-bind_ para mostrar el vlor inicial en el input
+* un _v-bind_ para mostrar el valor inicial en el input
 * un _v-on:input que se encarga de avisar para que se modifique la variable al cambiar el valor del _input_
 
 Así que lo que haremos es:
@@ -382,9 +474,7 @@ export default {
 ```
 
 ### Validación con Vee Validate
-Si queremos utilizar Vee Validate en un formulario con los \<input> en componentes hijos la cosa se complica un poco porque la validación se hace en el componente padre mientras que los valores a validar y los errores se muestran en los hijos.
-
-Podéis consultar [este ejemplo](https://codesandbox.io/s/2wyrp5z000?from-embed) para ver cómo hacerlo o leer [este articulo](https://medium.com/@logaretm/authoring-validatable-custom-vue-input-components-1583fcc68314) donde se explica detaladamente qué hacer.
+Esto mismo podemos hacer si estamos usando _VeeValidate_ para validar nuestro formulario. Tenemos toda la información en la [documentación oficial](https://vee-validate.logaretm.com/v3/advanced/refactoring-forms.html).
 
 ## Slots
 Ya vimos al hablar de la [comunicación entre componentes](./03_1-comunicar_componentes.html#slots) que un _slot_ es una ranura en un subcomponente que, al renderizarse, se rellena con lo que le pasa el padre.
