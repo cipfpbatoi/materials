@@ -5,7 +5,7 @@
 Tabla de contenidos
 
 - [Introducción](#introducción)
-  - [Enlazar diferentes inputs](#enlazar-diferentes-inputs)
+  - [Validar diferentes tipos de inputs](#validar-diferentes-tipos-de-inputs)
     - [input normal](#input-normal)
     - [radio button](#radio-button)
     - [checkbox](#checkbox)
@@ -22,6 +22,7 @@ Tabla de contenidos
     - [Parámetros de las reglas](#parámetros-de-las-reglas)
     - [Estados de validación](#estados-de-validación)
     - [Validar al enviar el formulario](#validar-al-enviar-el-formulario)
+    - [Validación del lado del servidor](#validaci%C3%B3n-del-lado-del-servidor)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
   - [v-model en subcomponente input](#v-model-en-subcomponente-input)
     - [Ejemplo](#ejemplo-1)
@@ -39,7 +40,7 @@ Para poder tener sincronizado el formulario con nuestros datos utilizamos la dir
 
 Vamos a ver cómo usar los diferentes tipos de campos con Vue.
 
-## Enlazar diferentes inputs
+## Validar diferentes tipos de inputs
 Podemos probar el resultado en la [documentación de Vue](https://v3.vuejs.org/guide/forms.html).
 
 ### input normal
