@@ -18,6 +18,7 @@ Tabla de contenidos
     - [Instalación](#instalaci%C3%B3n)
     - [Uso básico de VeeValidate](#uso-b%C3%A1sico-de-veevalidate)
     - [Personalizar el mensaje del validador](#personalizar-el-mensaje-del-validador)
+    - [Idioma de los mensajes](#idioma-de-los-mensajes)
     - [Crear nuevas reglas de validación](#crear-nuevas-reglas-de-validaci%C3%B3n)
     - [Parámetros de las reglas](#parámetros-de-las-reglas)
     - [Estados de validación](#estados-de-validación)
@@ -212,6 +213,8 @@ Podemos ver todas las [reglas disponibles](https://logaretm.github.io/vee-valida
 * _is_ compara un campo con otro:
 * ficheros: _mimes_, _image_, _size_
 
+Las más comunes de estas reglas (required, min, max, email, ...) pueden ser registradas por Vee directamente desde los atributos del INPUT (required, minlength, ...) sin necesidad de definir un atributo `rules` en el ValidatorProvider.
+
 ### Personalizar el mensaje del validador
 Para personalizar el mensaje simplemente lo indicamos en el _extend_, por ejemplo para personalizar el mensaje de la regla _required_ haremos:
 ```javascript
@@ -231,6 +234,33 @@ Por ejemplo el mensaje del required podría ser:
 ```javascript
   message: 'El campo {_field_} es obligatorio según especifica la regla {_rule_}'
 ```
+
+### Idioma de los mensajes
+Por defecto los mensajes aparecen en inglés pero podemos usar otro de los más de 40 idiomas que incluye Vee o crear nuestros propios mensajes. Para incluir otro fichero de idioma haremos:
+```javascript
+import { localize } from 'vee-validate';
+import es from 'vee-validate/dist/locale/es.json';
+
+localize(es);
+```
+
+Podemos usar varios ficheros importando cada uno y declarándolos con `localize({es, en});`.
+
+Y si queremos podemos personalizar fácilmente esos mensajes:
+```javascript
+import { localize } from 'vee-validate';
+
+localize({
+  es: {
+    messages: {
+      required: 'Debes introducir algo en este campo',
+      min: 'El mínimo de caracteres de este campo es de {length}',
+    }
+  }
+});
+```
+
+Tenéis toda la información en la [documentación de VeeValidate](https://logaretm.github.io/vee-validate/guide/localization.html).
 
 ### Crear nuevas reglas de validación
 Para crear una nueva regla de validación personalizada simplemente le damos un nombre y definimos la función validadora, que devolverá _true_ si el valor es válido o _false_ si no lo es, por ejemplo:
@@ -264,8 +294,8 @@ Para personalizar el mensaje indicando la longitud mínima obtenemos los argumen
 ```javascript
 extend('min', {
   ...min,
-  params: ['longitud'],
-  message: 'El campo {_field_} debe tener al menos {longitud} caracteres'
+  params: ['length'],
+  message: 'El campo {_field_} debe tener al menos {length} caracteres'
 });
 ```
 
@@ -299,7 +329,6 @@ configure({
   }
 })
 ```
-
 
 ### Validar al enviar el formulario
 El componente _ValidationProvider_ se encarga de validar cada input individualmente. El componente _ValidationObserver_ controla el estado de todos los _ValidationProvider_ que se encuentren dentro de él.
