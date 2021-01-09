@@ -423,6 +423,8 @@ export default {
 </script>
 ```
 
+NOTA: `this.$refs.form` hace referencia al ValidationObserver, para lo que se le ha añadido `ref=form`
+
 Podéis encontrar toda la información y ejemplos en ela [documentación de _VeeValidate_](https://vee-validate.logaretm.com/v3/advanced/server-side-validation.html).
 
 # Inputs en subcomponentes
