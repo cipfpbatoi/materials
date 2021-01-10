@@ -14,7 +14,8 @@ Tabla de contenidos
     - [Borrar todas las tareas](#borrar-todas-las-tareas)
   - [Solución mejor organizada](#soluci%C3%B3n-mejor-organizada)
   - [json-server](#json-server)
-- [Axios Interceptors](#axios-interceptors)
+- [Añadir cabeceras a la petición](#añadir-cabeceras-a-la-peticion)
+  - [Axios Interceptors](#axios-interceptors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -326,8 +327,37 @@ Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definid
 
 Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
 
-# Axios Interceptors
-Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Esto es útil, por ejemplo, para enviar un token que nos autentifique ante una API sin tener que ponerlo en el cṕdigo de cada petición.
+# Añadir cabeceras a la petición
+Muchas veces necesitamos añadir cabeceras a una petición _axios_, por ejemplo para enviar un token que nos autentifique ante una API. Axios permite pasar como tercer parámetro un objeto con una configuración personalizada, que puede incluir esas cabeceras:
+
+```javascript
+import axios from 'axios';
+const baseURL = 'http://localhost:3000';
+
+const config = {
+  headers: {
+    'Authorization' = 'Bearer ' + localStorage.token;
+  }
+}
+
+const data = ...
+
+axios.post(baseURL, data, config)
+.then(...)
+```
+
+Si queremos añadir una cabecera a todas las peticiones POST que realicemos podemos hacerlo con:
+```javascript
+axios.defaults.headers.post['header1'] = 'value'
+```
+
+Y si queremos añadir una cabecera a TODAS las peticiones de cualquier tipo:
+```javascript
+axios.defaults.headers.common['header1'] = 'value'
+```
+
+## Axios interceptors
+Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Es otra forma de enviar un token que nos autentifique ante una API sin tener que ponerlo en el cṕdigo de cada petición, pero también nos permite hacer cualquier cosa que necesitemos.
 
 Para interceptar las peticiones usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para las respuestas `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
 
@@ -345,7 +375,7 @@ axios.interceptors.request.use((config) => {
 
     const token = localStorage.token;
     if (token) {
-        config.headers['Authorization'] = 'Bearer ' + store.getters.token;
+        config.headers['Authorization'] = 'Bearer ' + localStorage.token;
     }
     return config;
 }, (error) => {
