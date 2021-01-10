@@ -14,7 +14,7 @@ Tabla de contenidos
     - [Borrar todas las tareas](#borrar-todas-las-tareas)
   - [Solución mejor organizada](#soluci%C3%B3n-mejor-organizada)
   - [json-server](#json-server)
-- [Añadir cabeceras a la petición](#añadir-cabeceras-a-la-peticion)
+- [Añadir cabeceras a la petición](#añadir-cabeceras-a-la-petición)
   - [Axios Interceptors](#axios-interceptors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
