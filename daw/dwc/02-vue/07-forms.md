@@ -241,7 +241,7 @@ Por defecto los mensajes aparecen en inglés pero podemos usar otro de los más 
 import { localize } from 'vee-validate';
 import es from 'vee-validate/dist/locale/es.json';
 
-localize(es);
+localize('es', es);
 ```
 
 Podemos usar varios ficheros importando cada uno y declarándolos con `localize({es, en});`.
