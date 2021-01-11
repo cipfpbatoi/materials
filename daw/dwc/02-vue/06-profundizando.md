@@ -319,7 +319,7 @@ Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para 
 ```vue
 <template>
   ...
-  <p>Precio: {{ precio | currency }}</p>
+  <p>Precio: { { precio | currency }}</p>
   ...
 </template>
 
