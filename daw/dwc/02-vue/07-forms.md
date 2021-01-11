@@ -193,7 +193,7 @@ Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a 
 <validation-provider v-slot="{ errors }" rules="required|email" name="mail">
     <label>e-mail: </label>
     <input type="text" v-model="mail">
-    <span> {{ errors[0] }}</span>
+    <span> { { errors[0] }}</span>
 </validation-provider>
 ```
 
