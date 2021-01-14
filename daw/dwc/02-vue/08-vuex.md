@@ -3,7 +3,7 @@ Tabla de contenidos
 - [Introducción](#introducción)
 - [Instalar Vuex](#instalar-vuex)
 - [Usar Vuex](#usar-vuex)
-  - [State](#state)
+  - [Acceder al State desde un componente](#acceder-al-state-desde-un-componente)
   - [Getters](#getters)
   - [Mutations](#mutations)
   - [Actions](#actions)
@@ -76,7 +76,33 @@ export default store
 
 Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
 
-Podemos importarlo y registrarlo en cada componente que lo vaya a usar o, para que sea accesible a todos los componentes, importarlo y registrarlo en el _main.js_:
+Lo usaremos en un componente que muestra ese contador:
+```html
+<p>Valor del contador: {{ contador }}</p>
+<button @click="incrementa">Incrementar</button>
+<button @click="decrementa">Decrementar</button>
+```
+
+Podemos importar el store en cad componente que lo vaya a usar:
+```javascript
+import store from '@/store'
+
+export default {
+  computed: {
+    return store.state.count
+  },
+  methods: {
+    incrementa() {
+      store.commit('increment')
+    },
+    decrementa() {
+      store.commit('decrement')
+    },
+  }
+}
+```
+
+O, si lo van a usar muchos componentes que es lo más normal, podemos importarlo y registrarlo en el _main.js_:
 ```javascript
 import store from '@/store'
 
@@ -86,9 +112,9 @@ new Vue({
   ...
 ```
 
-Ya podemos llamar a las mutaciones y acceder al estado desde los componentes. 
+Y entondes en el componente no hay que importar nada y se llamaría con `this.$store.state.count` o `this.$store.commit('increment')`
 
-### State
+### Acceder al State desde un componente
 La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
 ```javascript
   computed: {
