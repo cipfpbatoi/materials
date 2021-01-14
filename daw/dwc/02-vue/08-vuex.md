@@ -80,7 +80,7 @@ Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para 
 
 Lo usaremos en un componente que muestra ese contador:
 ```html
-<p>Valor del contador: {{ contador }}</p>
+<p>Valor del contador: {\{ contador }}</p>
 <button @click="incrementa">Incrementar</button>
 <button @click="decrementa">Decrementar</button>
 ```
