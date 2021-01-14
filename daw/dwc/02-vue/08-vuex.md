@@ -74,7 +74,7 @@ const store = new Vuex.Store({
 export default store
 ```
 
-Cada mutación recibe como parámetro el almacén para que pueda modificarlo.
+Cada mutación recibe como parámetro el _state_ del almacén para que pueda modificarlo.
 
 Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
 
@@ -155,7 +155,7 @@ const store = new Vuex.Store({
 })
 ```
 
-Cada _getter_ recibe como primer parámetro el almacén.
+Cada _getter_ recibe como primer parámetro el _state_ del almacén.
 
 Dentro de los componentes se usan como cualquier variable:
 ```javascript
@@ -220,7 +220,7 @@ store.commit({
 })
 ```
 
-Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mmutaciones. Para llamar a la mutación hacemos:
+Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mutaciones. Para llamar a la mutación hacemos:
 ```javascript
 `this.$store.commit('increment')`:
 ```
