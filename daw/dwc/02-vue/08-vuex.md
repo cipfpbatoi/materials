@@ -74,6 +74,8 @@ const store = new Vuex.Store({
 export default store
 ```
 
+Cada mutación recibe como parámetro el almacén para que pueda modificarlo.
+
 Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
 
 Lo usaremos en un componente que muestra ese contador:
@@ -122,8 +124,6 @@ La mejor forma de acceder a propiedades del almacén es creando métodos _comput
       return this.$store.state.count
   },
 ```
-
-NOTA: en ese caso en la propiedad _computed_ ponemos `return this.$store.state.count` en lugar de `return this.store.state.count` porque el _store_ es una variable de la instancia raíz (la registramos en el _main.js_). Si la hubiéramos registrado en el componente sí que pondríamos `this.store.state.count`.
 
 Si queremos usar varias propedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
@@ -197,7 +197,7 @@ getters: {
 Y lo llamaremos con `store.getters.getTodoById(2)`.
 
 ### Mutations
-RECUERDA: el código de las mutaciones debe ser síncrono.
+RECUERDA: el código de las mutaciones **NO puede ser asíncrono**.
 
 La única manera de cambiar los datos del almacén es llamando a las mutaciones que hayamos definido, pero no se llaman como si fueran métodos sino que se lanzan (como si fueran eventos) con **commit**: `store.commit('increment')`.
 
