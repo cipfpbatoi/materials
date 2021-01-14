@@ -330,28 +330,29 @@ Si es una llamada a _axios_ hacemos el _commit_ cuando se haya resuelto:
 const URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const store = new Vuex.Store({
-	state: {
-  	posts: [],
+  state: {
+    posts: [],
     loading: true,
   },
   actions: {
-  	loadData({commit}) {
-	return new Promise((resolve, reject) => {
-	    axios.get(URL)
-	    .then((response) => {
-		commit('updatePosts', response.data);
-	   	commit('changeLoadingState', false);
-		resolve(response.data);
-	    }).catch(err => reject(err))
-    	})
+    loadData({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get(URL)
+       .then((response) => {
+         commit('updatePosts', response.data);
+         commit('changeLoadingState', false);
+         resolve(response.data);
+       })
+       .catch(err => reject(err))
+    })
     }
   },
   mutations: {
-  	updatePosts(state, posts) {
-    	state.posts = posts
+    updatePosts(state, posts) {
+      state.posts = posts
     },
     changeLoadingState(state, loading) {
-    	state.loading = loading
+      state.loading = loading
     },
   }
 })
@@ -360,9 +361,9 @@ const store = new Vuex.Store({
 **NOTA**: _loadData()_ no tiene que devolver una promesa si quien la llama no necesita saber el resultado de la acción (simplemente haría el `axios.get...`). Debe devolverla, por ejemplo, en un formulario donde, si todo ha ido bien, nos lleve a otra página. En ese caso la llamada sería:
 ```javascript
 addData() {
-    this.$store.dispatch('addItem', this.newItem).
-    .then(()=>this.$router.push('/items'))
-    .catch(err=>alert('Error: '+err.message || err))
+  this.$store.dispatch('addItem', this.newItem).
+  .then(()=>this.$router.push('/items'))
+  .catch(err=>alert('Error: '+err.message || err))
 }
 ```
 
