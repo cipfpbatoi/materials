@@ -295,7 +295,7 @@ export default {
   },
 ```
 
-Es preferible no poner la ruta en el código sino en el fichero _.env_ que es un fichero donde guardar las configuraciones de la aplicación. Vue puede acceder a todas las variables definidas en el mismo que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
+No es recomandable poner la ruta del servidor en el código como hemos hecho nosotros sino que sería mejor ponerla en el fichero _.env_ que es un fichero donde guardar las configuraciones de la aplicación. Vue puede acceder a todas las variables definidas en el mismo que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
 ```javascript
 const baseURL = process.env.VUE_APP_RUTA_API;
 ```
@@ -305,7 +305,7 @@ Y en el fichero _,env_ ponemos
 VUE_APP_RUTA_API=http://localhost:3000
 ```
 
-Recordad que este fichero no se sube al repositorio por lo que podemos poner información sensible (como usuarios o contraseñas). Si lo usamos es conveniente tener un fichero _.env.exemple_ que sí se sube con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción.
+El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero _.env.local_ que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API sería "http://localhost:3000" mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
 ## json-server
 Es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
