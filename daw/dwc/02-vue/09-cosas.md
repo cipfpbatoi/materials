@@ -8,6 +8,14 @@
     - [Crear el layout](#crear-el-layout)
     - [Saber más](#saber-m%C3%A1s)
   - [Paso a producción](#paso-a-producci%C3%B3n)
+  - [Autenticación](#autenticaci%C3%B3n)
+  - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
+  - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-Vue)
+    - [Quasar](#quasar)
+    - [Vue Native](#vue-native)
+    - [Ionic Vue](#ionic-vue)
+  - [Nuxt](#nuxt)
+  - [Angular](#angular)
   - [Vue con Laravel](#vue-con-laravel)
     - [Creación del proyecto](#creaci%C3%B3n-del-proyecto)
     - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
@@ -15,13 +23,6 @@
     - [Compilamos Vue](#compilamos-vue)
     - [Creamos la API](#creamos-la-api)
     - [Saber más](#saber-m%C3%A1s-2)
-  - [Autenticación](#autenticaci%C3%B3n)
-  - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
-  - [Quasar](#quasar)
-  - [Vue Native](#vue-native)
-  - [Ionic Vue](#ionic-vue)
-  - [Nuxt](#nuxt)
-  - [Angular](#angular)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -84,6 +85,57 @@ Crea un directorio **_dist_** con lo qie hay que subir a producción:
 
 Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
 
+## Autenticación
+Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
+
+Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
+* [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
+* [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
+
+## SSR (Server Side Rendering)
+Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 
+
+El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan aíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
+
+SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén en los buscadores.
+
+Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
+
+Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.getresponse.com/click.html?x=a62b&lc=BmvXkb&mc=CL&s=mh7Vjl&u=B71jy&y=T&)
+
+## Crear aplicaciones móviles con Vue
+Diferentes librerías nos permiten que nuestras aplicaciones puedan ejecutarse en móviles tanto Andriod como iOS. La mayoría utilizan la librería **_Cordova_** de Apache2 para tener acceso a los elementos del móvil como notificaciones, cámara, geolocalización, ...
+
+Existen muchos pero las más utilizadas hoy en día son _Quasar_, _Vue native_ e _Ionic_.
+
+### Quasar
+[Quasar](https://quasar.dev/) es un framework basado en VueJS que te permite generar la aplicación de escritorio y la aplicación móvil tanto para Android como para iOS.
+
+Tiene licencia MIT y su UI sigue las guías de Material. Su ventaja sobre los otros es que está creado en Vue y pensado para este framework.
+
+### Vue Native
+[Vue native](https://vue-native.io/) es otro framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
+
+Con ella podemos acceder a los diferentes [dispositivos](https://vue-native.io/docs/device-apis.html) del móvil como la cámara, la geolocalización, el acelerómetro, ... Podemos encontrar en Internet muchos ejemplos de cómo hacer nuestra App con este framework, como [este](https://scotch.io/tutorials/how-to-setup-build-and-deploy-native-apps-with-vue) de scotch.io.
+
+### Ionic Vue
+[Ionic](https://ionicframework.com/) es posiblemente el Framework más utilizado para crear aplicaciones móviles nativas a partir de nuestra aplicación web. Está basado en Angular pero desde diciembre de 2020 puede usarse directamente en Vue, y es compatible con Vue3 y su _Composition API_.
+
+## Nuxt
+[Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Vuex_,...) lo que nos facilita el desarrollo de nuestros proyectos.
+
+También hay otras librerías que nos pueden ser de utilidad como:
+- _[Framework7](https://framework7.io/)_ para crear una aplicación web que use 
+- _[Weex](https://weex.apache.org/)_ para crear aplicaciones nativas para iOS y Android
+
+## Conclusión
+Como vés existen infinidad de librerías alrededor de Vue para ofercernos nuevas fucionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
+
+## Angular
+Aunque el cecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
+- [Documentación oficial de Angular](https://angular.io/)
+- [Ejemplo de CRUD con Angular](https://www.djamware.com/post/5e435e84a8d0ef4300ffc5f6/angular-9-tutorial-learn-to-build-a-crud-angular-app-quickly)
+- ...
 
 ## Vue con Laravel
 Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para crear el Back-end que sirva la API. Podemos hacerlo como dos proyectos independientes o integrando Vue en Laravel.
@@ -282,49 +334,3 @@ class AlumnosController extends Controller {
 * [Building a Vue SPA with Laravel](https://laravel-news.com/using-vue-router-laravel)
 * [Laravel 5.7 + Vue + Vue Router = SPA](https://medium.com/@weehong/laravel-5-7-vue-vue-router-spa-5e07fd591981). Igual pero usando la librería Vuetify
 
-## Autenticación
-Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
-
-Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
-* [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
-* [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
-
-## SSR (Server Side Rendering)
-Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 
-
-El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan aíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
-
-SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén en los buscadores.
-
-Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
-
-Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.getresponse.com/click.html?x=a62b&lc=BmvXkb&mc=CL&s=mh7Vjl&u=B71jy&y=T&)
-
-## Quasar
-[Quasar](https://quasar.dev/) es un framework basado en VueJS que te permite generar la aplicación de escritorio y la aplicación móvil tanto para Android como para iOS.
-
-Tiene licencia MIT y su UI sigue las guías de Material.
-
-## Vue Native
-Al igual que _Quasar_ o _Ionic_ que veremos a continuación, [Vue native](https://vue-native.io/) es un framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
-
-Con ella podemos acceder a los diferentes [dispositivos](https://vue-native.io/docs/device-apis.html) del móvil como la cámara, la geolocalización, el acelerómetro, ... Podemos encontrar en Internet muchos ejemplos de cómo hacer nuestra App con este framework, como [este](https://scotch.io/tutorials/how-to-setup-build-and-deploy-native-apps-with-vue) de scotch.io.
-
-## Ionic Vue
-[Ionic](https://ionicframework.com/) es posiblemente el Framework más utilizado para crear aplicaciones móviles nativas a partir de nuestra aplicación web. Está basado en Angular y Cordova pero desde diciembre de 2020 puede usarse directamente en Vue, y es compatible con Vue3 y su _Composition API_.
-
-## Nuxt
-[Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Vuex_,...) lo que nos facilita el desarrollo de nuestros proyectos.
-
-También hay otras librerías que nos pueden ser de utilidad como:
-- _[Framework7](https://framework7.io/)_ para crear una aplicación web que use 
-- _[Weex](https://weex.apache.org/)_ para crear aplicaciones nativas para iOS y Android
-
-## Conclusión
-Como vés existen infinidad de librerías alrededor de Vue para ofercernos nuevas fucionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
-
-## Angular
-Aunque el cecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
-- [Documentación oficial de Angular](https://angular.io/)
-- [Ejemplo de CRUD con Angular](https://www.djamware.com/post/5e435e84a8d0ef4300ffc5f6/angular-9-tutorial-learn-to-build-a-crud-angular-app-quickly)
-- ...
