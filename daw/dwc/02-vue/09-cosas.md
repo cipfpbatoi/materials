@@ -283,7 +283,9 @@ class AlumnosController extends Controller {
 * [Laravel 5.7 + Vue + Vue Router = SPA](https://medium.com/@weehong/laravel-5-7-vue-vue-router-spa-5e07fd591981). Igual pero usando la librería Vuetify
 
 ## Autenticación
-Una parte importante de cualquier aplicación es la autenticación de usuarios. Para ver cómo gestionarla podemos consultar cualquiera de estos enlaces:
+Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
+
+Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
 * [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
 * [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
 
