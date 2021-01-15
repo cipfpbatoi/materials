@@ -35,7 +35,9 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
 * [Nuxt](#nuxt)
 
 ## Vuetify
-Es un plugin que nos permite utilizar en Vue los elementos de Material Design. Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/es-MX/getting-started/quick-start).
+Es una librería para Vue que nos facilita enormemente la creación de nuestros componentes ya que nos da el código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Para ver la utilidad de esto podemos consultar, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/). Vuetify sigue el diseño de _Material Design_. 
+
+Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/es-MX/getting-started/quick-start).
 
 ### Instalación
 Vue se instala como cualquier otro plugin:
@@ -84,13 +86,18 @@ Los _source.map_ son útiles para compilar pero no hay que subirlos a producció
 
 
 ## Vue con Laravel
-Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para crear el Back-end que sirva la API.
+Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para crear el Back-end que sirva la API. Podemos hacerlo como dos proyectos independientes o integrando Vue en Laravel.
 
-El funcionamiento es el siguiente:
+Como proyectos independientes es la forma más sencilla. Simplemente nuestro proyecto Vue hará peticiones a la API desarrollada en Laravel.
+
+Si wueremos integrar Vue dentro del proyecto Laravel el funcionamiento es el siguiente:
 * La primera petición le llega al router de Laravel que renderiza el diseño de la SPA
 * Las demás peticiones usan la API _history.pushState_ para navegar sin recargar la página y las gestiona el enrutador Vue
 
+Vamos a ver en detalle cómo gestionarlo.
+
 ### Creación del proyecto
+Creamos el proyecto Laravel. Dentro del mismo instalamos los paquetes que necesitemos para Vue:
 ```bash
 laravel new laravue
 cd laravue
