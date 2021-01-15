@@ -357,11 +357,11 @@ axios.defaults.headers.common['header1'] = 'value'
 ```
 
 ## Axios interceptors
-Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Es otra forma de enviar un token que nos autentifique ante una API sin tener que ponerlo en el cṕdigo de cada petición, pero también nos permite hacer cualquier cosa que necesitemos.
+Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Es otra forma de enviar un token que nos autentifique ante una API sin tener que ponerlo en el código de cada petición, pero también nos permite hacer cualquier cosa que necesitemos.
 
 Para interceptar las peticiones usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para las respuestas `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
 
-Veamos un ejemplo en que queremos enviar en las cabeceras de cada petición el token que tenemos almacenado en el LocalStorage y queremos mostrar un alert siempre que se produzca un error en la respuesta que no sea de tipo 400. Además mostraremos por consola las peticiones y las respuestas si acticamos el modo DEBUG:
+Veamos un ejemplo en que queremos enviar en las cabeceras de cada petición el token que tenemos almacenado en el LocalStorage y queremos mostrar un alert siempre que el servidor devuelva en su respuesta un error que no sea de tipo 400. Además mostraremos por consola las peticiones y las respuestas si activamos el modo DEBUG:
 
 ```javascript
 import axios from 'axios';
