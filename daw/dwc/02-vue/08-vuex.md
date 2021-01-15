@@ -124,6 +124,7 @@ La mejor forma de acceder a propiedades del almacén es creando métodos _comput
   computed: {
     count () {
       return this.$store.state.count
+    },
   },
 ```
 
@@ -334,38 +335,80 @@ const URL = 'https://jsonplaceholder.typicode.com/posts';
 const store = new Vuex.Store({
   state: {
     posts: [],
-    loading: true,
+    waitingServer: false,
   },
   actions: {
-    loadData({commit}) {
+    addItem({commit}, item) {
       return new Promise((resolve, reject) => {
-        axios.get(URL)
-       .then((response) => {
-         commit('updatePosts', response.data);
-         commit('changeLoadingState', false);
-         resolve(response.data);
-       })
-       .catch(err => reject(err))
-    })
+        commit('changeWaitingServerState', true); /per a indicar que estem esperant al servidor
+        axios.post(URL, item)
+        .then((response) => {
+          commit('addPost', response.data);
+          commit('changeWaitingServerState', false);
+          resolve(response.data);
+         })
+        .catch(err => reject(err))
+      })
     }
   },
   mutations: {
-    updatePosts(state, posts) {
-      state.posts = posts
+    addPost(state, post) {
+      state.posts.push(post)
     },
-    changeLoadingState(state, loading) {
-      state.loading = loading
+    changeWaitingServerState(state, waiting) {
+      state.waitingServer = waiting
+    },
+    loadPosts(state, posts) {
+      state.posts = posts
     },
   }
 })
 ```
 
-**NOTA**: _loadData()_ no tiene que devolver una promesa si quien la llama no necesita saber el resultado de la acción (simplemente haría el `axios.get...`). Debe devolverla, por ejemplo, en un formulario donde, si todo ha ido bien, nos lleve a otra página. En ese caso la llamada sería:
+Ahora en el componente que utiliza esta acción la llamamos con _dispatch_ y tendremos un _.then_ para saber cuándo ha acabado:
 ```javascript
-addData() {
-  this.$store.dispatch('addItem', this.newItem).
-  .then(()=>this.$router.push('/items'))
-  .catch(err=>alert('Error: '+err.message || err))
+addPost() {
+  this.$store.dispatch('addItem', this.newPost).
+  .then(() => {
+    alert('El post se ha añadido correctamente')
+    this.$router.push('/items')
+  })
+  .catch((err) => alert('Error: '+err.message || err))
+}
+```
+
+**NOTA**: si quien llama a una acción no necesita saber cuándo termina la acción ni su resultado la acción no es necesario que devuelva una promesa. En ese caso la llamada sería:
+```javascript
+const URL = 'https://jsonplaceholder.typicode.com/posts';
+
+const store = new Vuex.Store({
+  state: {
+    posts: [],
+    waitingServer: false,
+  },
+  actions: {
+    loadItems({commit}) {
+        commit('changeWaitingServerState', true); /per a indicar que estem esperant al servidor
+        axios.get(URL)
+        .then((response) => {
+          commit('loadPosts', response.data);
+          commit('changeWaitingServerState', false);
+         })
+      })
+    }
+  },
+  mutations: {
+    loadPosts(state, posts) {
+      state.posts = posts
+    },
+  }
+})
+```
+
+Y desde el componente simplemente lo llamamos (sin posibilidad de hacer _.then_):
+```javascript
+loadData() {
+  this.$store.dispatch('loadItems').
 }
 ```
 
