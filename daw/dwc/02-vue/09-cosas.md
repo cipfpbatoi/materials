@@ -306,7 +306,7 @@ Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.
 Tiene licencia MIT y su UI sigue las guías de Material.
 
 ## Vue Native
-[Vue native](https://vue-native.io/) es un framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
+Al igual que _Quasar_ o _Ionic_ que veremos a continuación, [Vue native](https://vue-native.io/) es un framework que permite generar aplicaciones móviles nativas usando Vue. En realidad es una capa sobre **_React Native_** que permite a Vue usar su API.
 
 Con ella podemos acceder a los diferentes [dispositivos](https://vue-native.io/docs/device-apis.html) del móvil como la cámara, la geolocalización, el acelerómetro, ... Podemos encontrar en Internet muchos ejemplos de cómo hacer nuestra App con este framework, como [este](https://scotch.io/tutorials/how-to-setup-build-and-deploy-native-apps-with-vue) de scotch.io.
 
