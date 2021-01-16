@@ -36,7 +36,9 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
 * [Nuxt](#nuxt)
 
 ## Vuetify
-Es una librería para Vue que nos facilita enormemente la creación de nuestros componentes ya que nos da el código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Para ver la utilidad de esto podemos consultar, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/). Vuetify sigue el diseño de _Material Design_. 
+Son varias las librerías para Vue que nos facilitan enormemente la creación de nuestros componentes ya que nos dan un código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Entre ellas están [Material Design](https://material.io/design), [ElementUI](https://element.eleme.io/#/es), [Vuetify](https://vuetifyjs.com) y muchas otras.
+
+Podemos ver la utilidad de estas librerías consultando, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/) con Vuetify. Vuetify sigue el diseño de _Material Design_. 
 
 Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/es-MX/getting-started/quick-start).
 
