@@ -97,9 +97,9 @@ Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en n
 ## SSR (Server Side Rendering)
 Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 
 
-El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan aíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
+El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan asíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
 
-SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén en los buscadores.
+SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén bien posicionados en los buscadores.
 
 Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 
