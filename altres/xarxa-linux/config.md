@@ -5,11 +5,13 @@
   - [Veure la configuració amb netplan (Ubuntu 17.10 i posteriors)](./README.md#veure-la-configuraci%C3%B3-amb-netplan)
   - [Accions més comuns](./README.md#accions-m%C3%A9s-comuns)
 - [Configurar la xarxa](#configurar-la-xarxa)
+  - [Configuració de la xarxa amb Network Manager (entorn gràfic)](#configurtació-de-la-xarxa-amb-Network-Manager)
   - [Configuració de la xarxa amb ifupdown](#configuraci%C3%B3-de-la-xarxa-amb-ifupdown)
   - [Configuració de la xarxa amb netplan (Ubuntu 17.10 i posteriors)](#configuraci%C3%B3-de-la-xarxa-amb-netplan)
   - [Configuració de la xarxa en CentOS](#configuraci%C3%B3-de-la-xarxa-en-centos)
+  - [Configuració prèvia de Virtualbox](#configuraci%C3%B3-en-virtualbox)
   - [Detectar problemes](#detectar-problemes)
-- [Enrutament](./enrutament.md#enrutament)
+- [Enrutament](./enrutament.md#enrutament)* [sistemes amb entorn gràfic, amb Network Manager](#configurtació-de-la-xarxa-amb-Network-Manager)
   - [Habilitar l’enrutament](./enrutament.md#habilitar-lenrutament)
   - [Configurar NAT en sistemes netplan (Ubuntu 17.10 i posteriors)](./enrutament.md#configurar-nat-en-sistemes-netplan)
   - [Configurar NAT en sistemes amb ifupdown](./enrutament.md#configurar-nat-en-sistemes-amb-ifupdown)
@@ -20,11 +22,23 @@
 Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **systemd-networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/nom-del-fitxer.yaml` en netplan). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
 
 Ací veurem com configurar la xarxa en:
-* [sistemes amb ifupdown (Ubuntu fins 17.04 i altres distribucions)](#)
-* [sistemes amb netplan (Ubuntu des de 17.10 i altres distribucions)](#)
-* [CentOS](#)
-* [Configuració prèvia de Virtualbox](#)
+* [sistemes amb entorn gràfic, amb Network Manager](#configurtació-de-la-xarxa-amb-Network-Manager)
+* [sistemes amb ifupdown (Ubuntu fins 17.04 i altres distribucions)](#configuraci%C3%B3-de-la-xarxa-amb-ifupdown)
+* [sistemes amb netplan (Ubuntu des de 17.10 i altres distribucions)](#configuraci%C3%B3-de-la-xarxa-amb-netplan)
+* [CentOS](#configuraci%C3%B3-de-la-xarxa-en-centos)
+* [Configuració prèvia de Virtualbox](#configuraci%C3%B3-en-virtualbox)
 
+### Configurtació de la xarxa amb Network Manager
+Per a canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Editar les connexions**. AIxò obri l'editor del Network Manager (també es pot obrir des de la terminal amb `nm-connection-editor`):
+
+[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-2-conn.png)
+
+Al seleccionar la connexió a configurar i prémer el botó **Editar** podem canviar la configuració. En concret anem a la pestanya de **Ajustes de IPv4**. L'opció per defecte és **Automàtica (DHCP)** que ens permet obtindre les dades de la connexió per DHCP sense haver de configurar res. Per a posar nosaltres la IP que vulguem triem el mètode **Manual**:
+
+[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-3-conf.png)
+
+Ací podem configurar la IP, la màscara, la porta d'enllaç i els DNS i ja tenim la nostra targeta configurada.
+ 
 ### Configuració de la xarxa amb ifupdown
 El fitxer de configuració de la xarxa és `/etc/network/interfaces`:
 
