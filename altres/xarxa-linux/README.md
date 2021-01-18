@@ -39,7 +39,7 @@ Si la nostra distribució és Debian o està basada en ell (com Ubuntu, Linux Mi
 
 Per a vore o canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Configuració de la xarxa**. AIxò obri l'editor del Network Manager:
 
-[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-1-conn.png)
+![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-1-conn.png)
 
 ## Netplan vs ifupdown
 Les principals diferències entre els dos sistemes són, entre uns altres:
