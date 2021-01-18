@@ -5,6 +5,7 @@
   - [Veure la configuració amb netplan (Ubuntu 17.10 i posteriors)](#veure-la-configuraci%C3%B3-amb-netplan)
   - [Accions més comuns](#accions-m%C3%A9s-comuns)
 - [Configurar la xarxa](./config.md#configurar-la-xarxa)
+  - [Configuració de la xarxa amb Network Manager (entorn gràfic)](./config.md#configurtació-de-la-xarxa-amb-Network-Manager)
   - [Configuració de la xarxa amb ifupdown](./config.md#configuraci%C3%B3-de-la-xarxa-amb-ifupdown)
   - [Configuració de la xarxa amb netplan (Ubuntu 17.10 i posteriors)](./config.md#configuraci%C3%B3-de-la-xarxa-amb-netplan)
   - [Configuració de la xarxa en CentOS](./config.md#configuraci%C3%B3-de-la-xarxa-en-centos)
@@ -32,6 +33,13 @@ El problema és que el nom que se li assigna depèn de quan es configura la targ
 Moltes configuracions (firewall, etc) depenen del nom que tinguen les targetes pel que si aquest canvia deixaran de funcionar correctament. Per a evitar el problema de no saber com es dirà cada interfície de xarxa, les distribucions GNU/Linux utilitzen **Predictable Network Interface Names** que assigna identificadors estables a les interfícies de xarxa basant-se en el tipus (local Ethernet, WLAN, WWAN, etc).
 
 El nom que reben les targetes depen del tipus (**en...** per a les ethernet amb cable, **wl...** per a les _wireless_ o **lo** per a la interfície _loopback_). La resta del nom depen de on està instal·lada (en placa **enoX**, en un port PCI, USB, ... **enpXsY**, etc). En màquines de VirtualBox la primera sol ser la **emp0s3** i la resta a partir de la **enp0s8**, ...
+
+## Network Manager
+Si la nostra distribució és Debian o està basada en ell (com Ubuntu, Linux Mint, Lliurex, ...) i tenim entorn gràfic el servei responsable de la xarxa serà per defecte el **Network Manager**, encara que podem configurar el sistema per a gestionar la xarxa sense aquest servei, utilitzant _netplan_ o _ifupdown_. 
+
+Per a vore o canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Configuració de la xarxa**. AIxò obri l'editor del Network Manager:
+
+[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-1-conn.png)
 
 ## Netplan vs ifupdown
 Les principals diferències entre els dos sistemes són, entre uns altres:
