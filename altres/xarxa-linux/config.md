@@ -31,11 +31,11 @@ Ací veurem com configurar la xarxa en:
 ### Configurtació de la xarxa amb Network Manager
 Per a canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Editar les connexions**. AIxò obri l'editor del Network Manager (també es pot obrir des de la terminal amb `nm-connection-editor`):
 
-[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-2-conn.png)
+![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-2-conn.png)
 
 Al seleccionar la connexió a configurar i prémer el botó **Editar** podem canviar la configuració. En concret anem a la pestanya de **Ajustes de IPv4**. L'opció per defecte és **Automàtica (DHCP)** que ens permet obtindre les dades de la connexió per DHCP sense haver de configurar res. Per a posar nosaltres la IP que vulguem triem el mètode **Manual**:
 
-[Network Manager - vore connexions](./img/ubunu18-xarxa-nm-3-conf.png)
+![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-3-conf.png)
 
 Ací podem configurar la IP, la màscara, la porta d'enllaç i els DNS i ja tenim la nostra targeta configurada.
  
