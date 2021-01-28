@@ -171,7 +171,7 @@ Kerberos kpasswd | 464 | tcp/udp
 LDAPS ** | 636 | tcp
 Dynamic RPC Ports *** | 49152-65535 | tcp
 Global Catalog | 3268 | tcp
-Global Catalog SSL ** | 3269 | tc
+Global Catalog SSL ** | 3269 | tcp
 
 Como son muchos podemos crear un script donde los anotamos y así sólo tenemos que ejecutar el script o modificarlo cuando lo necesitemos.
 
