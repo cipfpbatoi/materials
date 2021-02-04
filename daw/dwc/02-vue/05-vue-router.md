@@ -7,7 +7,7 @@ Tabla de contenidos
   - [Crear las rutas](#crear-las-rutas)
   - [Crear un menú](#crear-un-men%C3%BA)
   - [Saltar a una ruta](#saltar-a-una-ruta)
-  - [Paso de parámetros](#paso-de-par%C3%A1metros()
+  - [Paso de parámetros](#paso-de-par%C3%A1metros)
   - [this.$route](#thisroute)
   - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
