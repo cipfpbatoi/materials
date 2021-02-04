@@ -7,8 +7,9 @@ Tabla de contenidos
   - [Crear las rutas](#crear-las-rutas)
   - [Crear un menú](#crear-un-men%C3%BA)
   - [Saltar a una ruta](#saltar-a-una-ruta)
-  - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
+  - [Paso de parámetros](#paso-de-par%C3%A1metros()
   - [this.$route](#thisroute)
+  - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -161,22 +162,55 @@ Además podemos pasar a push() y replace() funciones _callback_ que se ejecutar�
 this.$router.push(location, onComplete?, onAbort?)
 ```
 
-También se puede una _query_ a la ruta o parámetros. Ejemplos:
-```javascript
-this.$router.push({ path: '/register', query: { plan: 'private' }})
-```
+También podemos obtener toda la ruta con `this.$route.fullPath`.
 
-la URL cargada será `/register?plan=private`
+## Paso de parámetros
+Se pueden pasar parámetros a la ruta:
 
 ```javascript
 this.$router.push({ name: 'users', params: { id: 123 }})
 ```
 
-salta a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123 (si la ruta definida en _users_ fuera _/usuarios_ la URL cargada será `/usuarios/123`).
+salta a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123 (si la ruta definida en _users_ fuera _/usuarios_ la URL cargada será `/usuarios/123`). En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.params.id` obtenemos el valor `123`). Podemos pasar cualquier objeto como parámetro.
 
-En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos el objeto, en el ejemplo `{ plan: 'private' }`) y el parámetro con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.param.id` obtenemos el valor `123`).
+También se puede pasar una _query_ a la ruta:
+```javascript
+this.$router.push({ path: '/register', query: { plan: 'private' }})
+```
 
-También podemos obtener toda la ruta con `this.$route.fullPath`.
+salta a la URL `/register?plan=private`. En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos el objeto, en el ejemplo `{ plan: 'private' }`).
+
+## this.$route
+Es un objeto que contiene información de la ruta actual. Algunas de sus propiedades son:
+* **params**: los parámetros de la ruta (puede haber más de 1)
+* **query**: si huberia alguna consulta en la ruta (tras '?') se obtiene aquí
+* **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
+* **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
+
+## Redireccionamiento. Not found
+En una ruta podemos poner una redirección a otroa en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
+
+En primer lugar haremos una ruta para el componente CompNoFound y luego una ruta genérica (\*) que redirija a la anterior:
+```javascript
+  routes: [
+    ...
+    {
+      path: '/not-found',
+      name: '404',
+      component: CompNotFound,
+    },
+    {
+      path: '*',
+      redirect: {
+        name: '404',
+      },
+    }
+  ]
+```
+
+La ruta genérica siempre debe ser la última.
+
+Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
 
 ## Cambio de parámetros en una ruta
 Si cambiamos a la misma ruta pero con distintos parámetros Vue reutiliza la instancia del componente y no vuelve a lanzar sus _hooks_ (created, mounted, ...). Esto hará que no se ejecute el código que tengamos allí. Por ejemplo supongamos que en una ruta '/edit/5' al cargar el componente se pide el registro 5 y se muestra en la página. Si a continuación cargamos la ruta '/edit/8' seguiremos viendo los datos del registro 5).
@@ -199,14 +233,6 @@ watch: {
     }
 } 
 ```
-
-## this.$route
-Es un objeto que contiene información de la ruta actual. Algunas de sus propiedades son:
-* **params**: los parámetros de la ruta (puede haber más de 1)
-* **query**: si huberia alguna consulta en la ruta (tras '?') se obtiene aquí
-* **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
-* **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
-
 
 ## Vistas  con nombre y Subvistas
 Podemos cargar más de un componente usando varias etiquetas `<router-view>`. Por ejemplo si nestra página constará de 3  componentes (uno en la cabecera, otro el principal y otro en un _aside_ pondremos en el HTML:
@@ -247,29 +273,3 @@ Definiremos la ruta del siguiente modo:
   ]
 }
 ```
-
-## Redireccionamiento. Not found
-En una ruta podemos poner una redirección a otroa en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
-
-En primer lugar haremos una ruta para el componente CompNoFound y luego una ruta genérica (\*) que redirija a la anterior:
-```javascript
-  routes: [
-    ...
-    {
-      path: '/not-found',
-      name: '404',
-      component: CompNotFound,
-    },
-    {
-      path: '*',
-      redirect: {
-        name: '404',
-      },
-    }
-  ]
-```
-
-La ruta genérica siempre debe ser la última.
-
-Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
-
