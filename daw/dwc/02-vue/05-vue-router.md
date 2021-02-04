@@ -8,7 +8,7 @@ Tabla de contenidos
   - [Crear un menú](#crear-un-men%C3%BA)
   - [Saltar a una ruta](#saltar-a-una-ruta)
   - [Paso de parámetros](#paso-de-par%C3%A1metros)
-  - [this.$route](#thisroute)
+  - [El objeto $route](#el-objeto-route)
   - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
@@ -180,10 +180,10 @@ this.$router.push({ path: '/register', query: { plan: 'private' }})
 
 salta a la URL `/register?plan=private`. En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos el objeto, en el ejemplo `{ plan: 'private' }`).
 
-## this.$route
-Es un objeto que contiene información de la ruta actual. Algunas de sus propiedades son:
-* **params**: los parámetros de la ruta (puede haber más de 1)
-* **query**: si huberia alguna consulta en la ruta (tras '?') se obtiene aquí
+## El objeto $route
+Es un objeto que contiene información de la ruta actual (no confundir con _$router_). Algunas de sus propiedades son:
+* **params**: el objeto con los parámetros pasados a la ruta (puede haber más de uno)
+* **query**: si huberia alguna consulta en la ruta (tras '?') se obtiene aquí un objeto con ellas
 * **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
 * **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
 
