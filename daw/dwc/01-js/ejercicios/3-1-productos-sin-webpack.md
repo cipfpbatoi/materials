@@ -142,4 +142,3 @@ además de 3 mensajes de error debido a que:
 - se pasan unidades negativas (-2) a _changeProduct_
 - se intentan restar más unidades (10) de las que quedan (8)
 - se intanta borrar el producto 1 y le quedan 8 unidades
-
