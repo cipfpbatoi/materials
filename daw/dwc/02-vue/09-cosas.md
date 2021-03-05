@@ -9,6 +9,7 @@
     - [Saber más](#saber-m%C3%A1s)
   - [Paso a producción](#paso-a-producci%C3%B3n)
   - [Autenticación](#autenticaci%C3%B3n)
+  - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-Vue)
     - [Quasar](#quasar)
@@ -93,6 +94,9 @@ Una parte importante de cualquier aplicación es la autenticación de usuarios. 
 Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
 * [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
 * [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
+
+## Typescript
+Es Javascript al que se le ha incorporado tipado de datos. En los [apuntes](./21-typescript.html) puedes ver una introducción a cómo usarlo en Vue y en Internet tienes infinidad de recursos para aprender más.
 
 ## SSR (Server Side Rendering)
 Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 
