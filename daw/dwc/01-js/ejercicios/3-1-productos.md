@@ -10,8 +10,18 @@ La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propie
   
 Esta clase tendrá los siguientes **métodos**:
   - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo para aumentar, o negativo para disminuir unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y generará un error.
+  ```javascrpt
+  changeUnits(units: Integer): Product
+  ```    
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)
-  - ¿qué nombre le deberías dar a este método?: si se intenta **imprimir** el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales), como en el siguiente ejemplo:
+  ```javascrpt
+  productImport(): Number
+  ```  
+  - ¿qué nombre le deberías dar a este método?: si se intenta **imprimir** el producto se mostrará su descripción, sus unidades entre paréntesis, su precio y el importe total (los € siempre con 2 decimales)
+  ```javascrpt
+  xxxx(): String
+  ```  
+   como en el siguiente ejemplo:
 ```
         TV Samsung MP45: 10 uds. x 235,95 €/u = 2359,50 €
 ```
@@ -24,30 +34,54 @@ Es el almacén de productos (podríamos tener más de uno) que guardaremos en _s
 La clase tendrá los **métodos**:
   - findProduct: recibe como parámetro una id de producto y devuelve el producto del almacén que tiene dicha id (si no existe devolverá _undefined_)
   ```javascrpt
-  findProduct(id: integer): object|undefined
+  findProduct(id: Integer): Product|undefined
   ```
   - addProduct: recibe como **único** parámetro **un objeto** con los datos del producto a añadir (propiedades _name_, _price_ y, opcionalmente, _units_, no _id_). Este método crea un nuevo producto (llamará al constructor de la clase _Product_) y lo añade al almacén. Como a la clase _Product_ hay que pasarle una _id_ haremos una función que la calcule buscando la máxima _id_ de los productos que hay en el almacén (debéis usar un _reduce_) y sumándole 1. Este método devuelve el producto añadido al almacén o genera un error si
     - no se le pasa _name_
     - no se le pasa _price_ o no es un número positivo
     - se le pasa _units_ pero no es un número entero positivo
-  - delProduct: recibe como parámetro la id de un producto y lo elimina del almacén si no tiene unidades Devuelve el producto eliminad o genera un error si no existe el producto o si sus unidades no están a 0
+  ```javascrpt
+  addProduct(data: Object): Product
+  ```
+  - delProduct: recibe como parámetro la id de un producto y lo elimina del almacén si no tiene unidades Devuelve el producto eliminado o genera un error si no existe el producto o si sus unidades no están a 0
+  ```javascrpt
+  delProduct(id: Integer): Product
+  ```
   - changeProduct: recibe como **único** parámetro **un objeto** con la id de un producto y los campos a modificar (los que no estén permanecerán sin cambios). Devuelve el objeto modificado si ha podido hacerse o genera un error en caso contrario
+  ```javascrpt
+  changeProduct(data: Object): Product
+  ```
   - changeProductUnits: recibe como parámetros la id de un producto y el número de unidades a incrementar (o disminuir si el número es negativo). Devuelve el producto modificado si ha podido hacerse o generará un error en caso contrario
+  ```javascrpt
+  changeProductUnits(id: Integer, units: Integer): Product
+  ```  
   - totalImport: devuelve el valor total de los productos del almacén (su precio por sus uds). Para ello usa el método _productImport_ de cada producto
+  ```javascrpt
+  totalImport(): number
+  ```    
   - underStock: recibe un nº de unidades y devuelve un array con los productos que tengan menos de dichas unidades
+  ```javascrpt
+  underStock(units: Integer): Array
+  ```    
   - orderByUnits: devuelve el array de productos ordenado por unidades de forma descendente
+  ```javascrpt
+  orderByUnits(): Array
+  ```    
   - orderByName: devuelve el array de productos ordenado por el nombre del producto
-  - ¿qué nombre le deberías dar a este método?: si se intenta imprimir el almacén devuelve una cadena con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto, como en el siguiente ejemplo:
+  ```javascrpt
+  orderByName(): Array
+  ```    
+  - ¿qué nombre le deberías dar a este método?: si se intenta imprimir el almacén devuelve una cadena con la id del almacén, el nº de productos y su importe total con 2 decimales, y debajo una lista con los datos de cada producto
+  ```javascrpt
+  xxxx(): String
+  ```  
+  como en el siguiente ejemplo:
 
 ```html
 Almacén 1 => 2 productos: 2174,75 €
 - TV Samsung MP45: 5 uds. x 235,95 €/u = 1179.75 €
 - USB Kingston 16 GB: 100 uds. x 19,95 €/u = 1995,00 €
 ```
-
-Antes de añadir o modificar productos del almacén deberás asegurarte de que tienen id y nombre y de que las unidades y el precio son números y no son negativos (además las unidades deben ser un número entero).
-
-Para probar las clases crearemos un nuevo almacén, le añadiremos productos y mostraremos por consola su contenido.
 
 ## Organizar el código
 Lo correcto es no tener todo el código en un único fichero javascript sino cada cosa en su fichero correspondiente. Así que dentro de la carpeta **src/** crearemos los ficheros:
@@ -96,9 +130,9 @@ Para probar que funciona en el navegador añade al fichero _index.js_ el código
 - mostrar por consola 'LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS'
 - mostrar por consola los productos del almacén con menos de 10 unidades
 
-Recuerda que siempre que llames a una función que pueda generar un error debes hacer dicha llamada dentro de una sentencia `try...catch`.
+Recuerda que siempre que llames a una función que pueda generar un error debes hacer dicha llamada dentro de una sentencia `try...catch`. Lo que haremos si se produce un error es monstrarlo por consola con el comando `console.error`.
 
-Cuando lo hayas hecho, al abrir la página en el navegador la consola deberá mostrar lo siguiente:
+Al abrir la página en el navegador la consola deberá mostrar lo siguiente:
 
 ```
 Almacén 1 => 4 productos: 6564.20 €
@@ -119,7 +153,7 @@ LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS
 - TV Samsung MP45: 8 uds. x 325.90 €/u = 2607.20 €
 ```
 
-además de 3 mensajes de error:
+además de 3 mensajes de error debido a que:
 - se pasan unidades negativas (-2) a _changeProduct_
 - se intentan restar más unidades (10) de las que quedan (8)
 - se intanta borrar el producto 1 y le quedan 8 unidades
