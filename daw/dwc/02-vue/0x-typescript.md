@@ -86,7 +86,7 @@ type buttonType = 'primary' | 'secondary' | 'success' | 'danger'
 
 let myBtnStyle: buttonType = 'danger'
 ```
-Si le asigno un valor que no es uno de los definidos en su tipo se producirá un error
+Si le asigno un valor que no es uno de los definidos en su tipo se producirá un error.
  
 ### interfaces
 Una interface es la definición de los tipos de datos de un objeto, para evitar definirlo como hemos visto antes que es demasiado _verbose_.
@@ -107,6 +107,20 @@ let futurePupil = {} as Pupil
 
 Esto nos permitirá ahcer cosas como `futurePupil.name = 'Peter Parker'` sin que se produzcan errores de tipo. A esto se llama _type assertions_.
 
+Si se quiere aplicar un tipo propio a una variable pasada por _props_ debemos importar _PropType_:
+```typescript
+import { defineComponent, PropType } from 'vue'
+
+export default defineComponent({
+  props: {
+    pupil: {
+      type: Object as PropType<Pupi>,
+      required: true
+    }
+  },
+})
+```
+
 Para centralizar la definición de tipos se suelen incluir todos los tipos e interfaces en un fichero que llamaremos `src/types.ts`. Deberemos exportar los tipos y/o interfaces.
 
 Visual Studio Code incluye la extensión **VueDX** que nos informa al escribir código si un objeto tiene o no la propiedad que estamos escribiendo.
@@ -123,14 +137,15 @@ function addItemToNumberList(item: number, list: number[]): number[] {
 const numberList = addItemToNumberList(123, [])
 ```
 
-Si queremos  algo similar para listas de cadenas habría que crear otra función pero de tipo _string_. En lugar de eso podemos decir que el tipo de los datos y de la función sea genérico:
+Si queremos  algo similar para listas de cadenas habría que crear otra función pero de tipo _string_. En lugar de eso podemos decir que el tipo de los parámetros y de la función sea genérico:
 ```typescript
-function addItemToList(item: number, list: number[]): number[] {
+function addItemToList<T>(item: T, list: T[]): T[] {
     list.push(item)
   
     return list
 }
 
-const numberList = addItemList(123, [])
+const numberList = addItemList<number>(123, [])
+const stringList = addItemList<string>('manzanas', [])
 ```
 
