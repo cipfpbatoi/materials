@@ -23,6 +23,9 @@ Es el almacén de productos (podríamos tener más de uno) que guardaremos en _s
   
 La clase tendrá los **métodos**:
   - findProduct: recibe como parámetro una id de producto y devuelve el producto del almacén que tiene dicha id (si no existe devolverá _undefined_)
+  ```javascrpt
+  findProduct(id: integer): object|undefined
+  ```
   - addProduct: recibe como **único** parámetro **un objeto** con los datos del producto a añadir (propiedades _name_, _price_ y, opcionalmente, _units_, no _id_). Este método crea un nuevo producto (llamará al constructor de la clase _Product_) y lo añade al almacén. Como a la clase _Product_ hay que pasarle una _id_ haremos una función que la calcule buscando la máxima _id_ de los productos que hay en el almacén (debéis usar un _reduce_) y sumándole 1. Este método devuelve el producto añadido al almacén o genera un error si
     - no se le pasa _name_
     - no se le pasa _price_ o no es un número positivo
