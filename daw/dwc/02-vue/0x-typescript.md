@@ -100,6 +100,37 @@ interface Pupil: {
 }
 ```
 
+A veces definimos un objeto vacío pero que cuando tenga datos será de cierto tipo. En ese caso lo haremos con:
+```typescript
+let futurePupil = {} as Pupil
+```
+
+Esto nos permitirá ahcer cosas como `futurePupil.name = 'Peter Parker'` sin que se produzcan errores de tipo. A esto se llama _type assertions_.
+
 Para centralizar la definición de tipos se suelen incluir todos los tipos e interfaces en un fichero que llamaremos `src/types.ts`. Deberemos exportar los tipos y/o interfaces.
 
-Visual Studio Code incluye la extensión **VueDX** que nos informa al escribir código si unobjeto tiene o no la propiedad que estamos escribiendo.
+Visual Studio Code incluye la extensión **VueDX** que nos informa al escribir código si un objeto tiene o no la propiedad que estamos escribiendo.
+
+## Tipos genéricos
+A veces nos gustaría que una función pudiera trabajar con distintos tipos de datos. Por ejemplo, una función para añadir un item a una lista podría ser:
+```typescript
+function addItemToNumberList(item: number, list: number[]): number[] {
+    list.push(item)
+  
+    return list
+}
+
+const numberList = addItemToNumberList(123, [])
+```
+
+Si queremos  algo similar para listas de cadenas habría que crear otra función pero de tipo _string_. En lugar de eso podemos decir que el tipo de los datos y de la función sea genérico:
+```typescript
+function addItemToList(item: number, list: number[]): number[] {
+    list.push(item)
+  
+    return list
+}
+
+const numberList = addItemList(123, [])
+```
+
