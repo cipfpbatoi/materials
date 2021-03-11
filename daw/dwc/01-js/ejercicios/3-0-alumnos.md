@@ -29,13 +29,13 @@ Para gestionarlos creademos las funciones:
 - delPupil: recibe una id y borra el alumno con esa id del array de grupos. Antes debe pedir confirmación mostrando el nombre del alumno y del grupo al que pertenece. Devuelve el alumno eliminado y si no existe genera un error
 
 Para comprobar que funcionan añadiremos a nuestro fichero código para:
-- crear el grupo
-- crear el grupo
-- añadir al grupo 1 el alumno
-- añadir al grupo 1 el alumno
-- añadir al grupo 3 el alumno
+- crear el grupo: 'DAW', 'Diseño de Aplicaciones Web', 'S', 'Informática'
+- crear el grupo: 'SMX', 'Sistemas Microinformáticos y Redes', 'X', 'Informática' (debe fallar)
+- añadir al grupo 1 el alumno: 'Juan Segura', 'js@gmail.com', '', '', 1
+- añadir al grupo 1 el alumno: 'Carmelo Cotón', 'cc@gmail.com', '20001212', '', 1
+- añadir al grupo 3 el alumno: 'Helen Chufe', 'hc@gmail.com', '', '', 3 (debe fallar)
 - mostrar el mensaje 'Programa finalizado'
 
-Recuerda que si llamamos a una función que puede generar un error debemos llamarla dentro de una sentencia `try...catch`. Si se produce un error lo mostraremos con la instrucción `console.error`. Al cargar la página con este código deben aparecer 2 mensajes de error en la consola (uno porque el grupo no tiene cod y otro por intentar añadir un alumno a un grupo que no existe). Además si ponemos un punto de interrupoción antes de mostrar el mensaje de programa finalizado y miramos en la consola el contenido de los 2 arrays debe mostrar un grupo y 2 alumnos.
+Recuerda que si llamamos a una función que puede generar un error debemos llamarla dentro de una sentencia `try...catch`. Si se produce un error lo mostraremos con la instrucción `console.error`. Al cargar la página con este código deben aparecer 2 mensajes de error en la consola (uno porque el grado del grupo no es 'M' o 'S' y otro por intentar añadir un alumno a un grupo que no existe). Además si ponemos un punto de interrupoción antes de mostrar el mensaje de programa finalizado y miramos en la consola el contenido de los 2 arrays debe mostrar un grupo y 2 alumnos.
 
 Entrega el fichero de código y una captura de la consola donde se vean los errores mostrados y el contenido de los 2 arrays. 
