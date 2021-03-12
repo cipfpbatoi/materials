@@ -47,7 +47,7 @@ Además deberás crear tendrá un método llamado **renderErrorMessage** al que 
 
 Fijaos que el botón tiene un atributo _onclick_ cuyo valor es el código Javascript que borra este DIV. No es lo más correcto pero de momento lo haremos así.
 
-CONSEJO: nuestro fichero index.js está haciéndose muy grande y es difícil encontrar lo que buscamos. Si queremos podemos organizar nuestro código dividiéndolo en varios ficheros distintos. Si seguimos el patrón MVC podemos crear los ficheros:
+**CONSEJO**: nuestro fichero index.js está haciéndose muy grande y es difícil encontrar lo que buscamos. Si queremos podemos organizar nuestro código dividiéndolo en varios ficheros distintos. Esto si queréis podéis hacerlo al final, cuando todo funcione correctamente, o antes de empezar a programar. Si seguimos el patrón MVC podemos crear los ficheros:
 - model.js: aquí definimos los datos y las funciones que los modifican. Sería el contenido del index.js del ejercicio 3.0
 - view: aquí pondremos las funciones que cambian la página (las que modifican el DOM). Necesitaremos una para añadir un grupo, otra para eliminar un grupo, otra para cambiar el total de la tabla y la de _renderErrorMessage_
 - controller: aquí ponemos las funciones que controlan nuestra aplicación, es decir, _formAddGroup_ y _formDelGroup_
