@@ -46,3 +46,17 @@ Además deberás crear tendrá un método llamado **renderErrorMessage** al que 
 ```
 
 Fijaos que el botón tiene un atributo _onclick_ cuyo valor es el código Javascript que borra este DIV. No es lo más correcto pero de momento lo haremos así.
+
+CONSEJO: nuestro fichero index.js está haciéndose muy grande y es difícil encontrar lo que buscamos. Si queremos podemos organizar nuestro código dividiéndolo en varios ficheros distintos. Si seguimos el patrón MVC podemos crear los ficheros:
+- model.js: aquí definimos los datos y las funciones que los modifican. Sería el contenido del index.js del ejercicio 3.0
+- view: aquí pondremos las funciones que cambian la página (las que modifican el DOM). Necesitaremos una para añadir un grupo, otra para eliminar un grupo, otra para cambiar el total de la tabla y la de _renderErrorMessage_
+- controller: aquí ponemos las funciones que controlan nuestra aplicación, es decir, _formAddGroup_ y _formDelGroup_
+- index.js: se quedaría sólo con el código que pone los escuchadores:
+```javascript
+window.addEventListener('load', () => {
+    document.getElementById('new-group').addEventListener('submit', formAddGroup)
+    document.getElementById('del-group').addEventListener('submit', formDelGroup)
+})
+```
+
+De esta manera cada fichero es más corto y tenemos las funciones separadas según el tipo de tarea que realizan. Recordad que en el _index.html_ deberemos cargar todos estos fichero y en el orden adecuado ya que _index.js_ llama a las funciones de _controller.js_ (por lo que _controller_ debe cargarse antes de _index_) y _controller.js_ llama a funciones de _model.js_ y _view.js_ por lo que debe cargarse después de ellos.
