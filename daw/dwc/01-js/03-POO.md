@@ -200,7 +200,7 @@ console.log(user.getRoles()); // Uncaught TypeError: user.getRoles is not a func
 ```
 
 ### toString() y valueOf()
-Al convertir un objeto a string (por ejemplo al hacer un `console.log` o al concatenarlo) se llama al método **_.toString()_** del mismo, que devuelve `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
+Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se llama al método **_.toString()_** del mismo, que devuelve `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
 ```javascript
 class Alumno {
     ...
@@ -210,7 +210,7 @@ class Alumno {
 }
 
 let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
-console.log(cpo);     // imprime 'Pérez Ortíz, Carlos'
+console.log('Alumno:' + cpo);     // imprime 'Alumno: Pérez Ortíz, Carlos'
 ```
 
 Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Ya no es necesario hacer:
@@ -254,7 +254,7 @@ console.log(cpo<cpo2);     // imprime true ya que 19<23
 ## POO en ES5
 Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
 
-En Javascript un objeto se crea a partir de otro (al que se llama _prototipo_). Así se crea una cadena de prototipos, el último de los cuales es el objeto _null_.
+En Javascript un objeto se crea a partir de otro (al que se llama _prototipo_). Así se crea una cadena de prototipos, el primero de los cuales es el objeto _null_.
 
 Si queremos emular el comportamiento de las clases, para crear el constructor se crea una función con el nombre del objeto y para crear los métodos se aconseja hacerlo en el _prototipo_ del objeto para que no se cree una copia del mismo por cada instancia que creemos:
 ```javascript
