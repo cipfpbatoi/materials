@@ -26,21 +26,3 @@ Para editar un producto utilizaremos el mismo formlario de añadir productos per
 
 Además cambiaremos los mensajes que mostramos al usuario de forma que se borren automáticamente pasados 5 segundos.
 
-## Mejoras de nuestra aplicación
-* Podríamos hacer que al cargar la página no se vea el formulario de 'Añadir grupos' sino que sólo se vea la tabla con un botón debajo para añadir nuevos grupos. Al pulsarlo se oculta la tabla y se muestra el formulario.
-
-* Podríamos crear un menú para nuestra aplicación con las entradas para mostrar los grupos (la tabla) y añadir uno nuevo, algo similar a:
-```html
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link active" href="#">Grupos</a>
-                <a class="nav-link" href="#">Nuevo grupo</a>
-            </div>
-        </div>
-    </div>
-</nav>
-```
-
-Asegúrate que el elemento del menú activo en cada momento tenga la clase bootstrap _active_ (al cargar la página será la tabla de grupos).
