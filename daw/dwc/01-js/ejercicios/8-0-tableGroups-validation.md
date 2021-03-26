@@ -5,6 +5,8 @@ Siguiendo con la práctica '6.0 de grupos' vamos a validar el formulario de aña
 - grado: radiobuttons, también obligatorio
 - familia: obligatorio y sólo aceptará los valores 'Informática', 'Sanitaria', 'Hostelería' y 'Peluquería', tanto si se introducen en mayúsculas como en minúsculas
 
+OJO: repasad las restricciones que hay ahora en los input porque habrá que cambiar alguna y añadir otras.
+
 Los mensajes que deberá mostrar en caso de error son:
 - obligatorio: Debe introducir algo en el campo XXX (en lugar de XXX debe aparecer el name del campo)
 - longitud mínima: En el campo XXX debe introducir al menos XX caracteres (XX es el mínimo)
