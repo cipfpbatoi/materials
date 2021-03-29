@@ -56,8 +56,8 @@ Para hacerla más simple podemos usar la [API de validación de formularios](htt
 Esta API nos proporciona estas propiedades y métodos:
 - **checkValidity()**: método que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
 - **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador
-- **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que incluye propiedades booleanas para comprobar los distintos fallos de validación
-  - **valueMissing**: indica si no se cumple la restricción _required_
+- **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que tiene propiedades booleanas para saber qué requisito del campo es el que falla:
+  - **valueMissing**: indica si no se cumple la restricción _required_ (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
   - **typeMismatch**: indica si el contenido del campo no cumple con su atributo _type_ (ej. type="email")
   - **patternMismatch**: indica si no se cumple con el _pattern_ indicado
   - **tooShort** / **tooLong**: indica si no se cumple el atributo _minlength_/_maxlength_
