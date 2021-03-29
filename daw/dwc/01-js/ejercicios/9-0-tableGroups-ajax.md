@@ -16,13 +16,13 @@ A continuación crearemos un fichero de texto con los datos, al que podemos llam
   "groups": [
     {
       "id": 1,
-      "cod": "DAW,
+      "cod": "DAW",
       "nombre": "Diseño de Aplicaciones Web",
       "grado": "S",
       "familia": "Informática"
     }, {
       "id": 2,
-      "cod": "SMX,
+      "cod": "SMX",
       "nombre": "Sistemas Microinformáticos y Redes",
       "grado": "M",
       "familia": "Informática"
