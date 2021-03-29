@@ -54,19 +54,20 @@ Para hacerla más simple podemos usar la [API de validación de formularios](htt
 - automáticamente pone a los campos las clases _:valid_ o _:invalid_ por lo que no tenemos que añadirles clases para desacarlos
 
 Esta API nos proporciona estas propiedades y métodos:
-- **validationMessage**: contiene el texto del error de validación proporcionado por el navegador. Si el campo es válido contiene una cadena vacía
+- **checkValidity()**: método que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
+- **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador
 - **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que incluye propiedades booleanas para comprobar los distintos fallos de validación
-  - **valid**: indica si es campo es válido
   - **valueMissing**: indica si no se cumple la restricción _required_
-  - **typeMismatch**: indica si el contenido del campo no cumple con su atributo _type_
+  - **typeMismatch**: indica si el contenido del campo no cumple con su atributo _type_ (ej. type="email")
   - **patternMismatch**: indica si no se cumple con el _pattern_ indicado
   - **tooShort** / **tooLong**: indica si no se cumple el atributo _minlength_/_maxlength_
   - **rangeUnderflow** / **rangeOverflow**: indica si no se cumple el atributo _min_ / _max_
-  - ...
-- **checkValidity()**: indica si el campo al que se aplica es o no válido. Si no lo es lanza además un evento **invalid** sobre el campo
-- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Nos va a permitir sustituir el mensaje del navegador por uno personalizado
+  - **stepMismatch**: indica si no se cumple el atributo _step_ del campo
+  - **valid**: indica si es campo es válido
+  -   - ...
+- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Nos permite personalizar el mensaje del navegador. Para quitar este error se hace `setCustomValidity('')`
 
-Podéis ver un ejemplo simple de cómo validar un campo que es obligatorio y que su tamaño debe estar entre 5 y 50 caracteres:
+EN la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp) podéis ver algún ejemplo básico de esto. También a continuación tenéis un ejemplo simple de cómo validar un campo que es obligatorio y que su tamaño debe estar entre 5 y 50 caracteres:
 
 <script async src="//jsfiddle.net/juansegura/vbdrxjsz/embed/"></script>
 
@@ -105,15 +106,11 @@ const email = document.getElementById('mail');
 const emailError = document.querySelector('#mail + span.error');
 
 form.addEventListener('submit', (event) => {
+  if(!form.checkValidity()) {
+    event.preventDefault();
+  }
   nombreError.textContent = nombre.validationMessage;
-  if(!nombre.validity.valid) {
-    event.preventDefault();
-  }
-
   emailError.textContent = email.validationMessage;
-  if(!email.validity.valid) {
-    event.preventDefault();
-  }
 });
 ```
 
