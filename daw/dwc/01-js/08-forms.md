@@ -63,6 +63,7 @@ Esta API nos proporciona estas propiedades y métodos:
   - **tooShort** / **tooLong**: indica si no se cumple el atributo _minlength_/_maxlength_
   - **rangeUnderflow** / **rangeOverflow**: indica si no se cumple el atributo _min_ / _max_
   - **stepMismatch**: indica si no se cumple el atributo _step_ del campo
+  - **customError**: indica al campo se le ha puesto un error personalizado con _setCustomValidity_
   - **valid**: indica si es campo es válido
   -   - ...
 - **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Nos permite personalizar el mensaje del navegador. Para quitar este error se hace `setCustomValidity('')`
