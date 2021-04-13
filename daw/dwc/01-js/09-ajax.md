@@ -55,7 +55,7 @@ El servidor acepta la petición, la procesa y le envía una respuesta al cliente
 - 4xx: indican un error por parte del cliente, como 404 (_Not found_, no existe el recurso solicitado) o 401 (_Not authorized_, el cliente no está autorizado a acceder al recurso solicitado)
 - 5xx: indican un error por parte del servidor, como 500 (error interno del servidor) o 504 (_timeout_).
 
-En cuanto a la información enviada al cliente, ésta puede estar en HTML (como ocurre cuando solicitamos una página web desde el navegador) o pueden ser datos, normalmente en formato JSON o XML (cada vez menos usado).
+En cuanto a la información enviada por el servidor al cliente normalmente serán datos en formato JSON o XML (cada vez menos usado) que el cliente procesará y mostrará en la página al usuario. También podría ser HTML, texto plano, ...
 
 El formato JSON es una forma de convertir un objeto Javascript en una cadena de texto para poderla enviar, por ejemplo el objeto
 ```javascript
@@ -66,7 +66,7 @@ let alumno = {
 }
 ```
 
-se transformaría en la cadena
+se transformaría en la cadena de texto
 ```javascript
 { "id": 5, "nombre": "Marta", "apellidos": "Pèrez Rodríguez" }
 ```
@@ -97,7 +97,7 @@ en la cadena:
 > - obtener todas las tareas
 > - obtener la tarea con id 55
 > - obtener la tarea con id 201 (como no existe devolverá un código de error 404 - Not found)
-> - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se añade la id, de eso se encarga la BBDD. La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos incluyendo la id. Como es una API de prueba en realidad no lo está añadiendo a la BBDD
+> - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se le pasa la id (de eso se encarga la BBDD). La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos incluyendo la id. Como es una API de prueba en realidad no lo está añadiendo a la BBDD por lo que si luego hacemos una petición buscando esa id nos dirá que no existe.
 > - modificar la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
 > - eliminar la tarea con id 55. Como veis esta API devuelve un objeto vacío al eliminar; otras devuelven el objeto eliminado
 
