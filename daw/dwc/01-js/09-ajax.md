@@ -45,7 +45,8 @@ Las peticiones Ajax usan el protocolo HTTP (el mismo que utiliza el navegador pa
 Hay diferentes tipos de petición que podemos hacer:
 * **GET**: suele usarse para obtener datos sin modificar nada (equivale a un SELECT en SQL). Si enviamos datos (ej. la ID del registro a obtener) suelen ir en la url de la petición (formato URIEncoded). Ej.: locahost/users/3, [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) o [www.google.es?search=js](www.google.es?search=js)
 * **POST**: suele usarse para añadir un dato en el servidor (equivalente a un INSERT). Los datos enviados van en el cuerpo de la petición HTTP (igual que sucede al enviar desde el navegador un formulario por POST)
-* **PUT**: es similar al _POST_ pero suele usarse para actualizar datos del servidor (como un UPDATE de SQL). Los datos se envían en el cuerpo de la petición (como en el POST) y la información para identificar el objeto a modificar en la url (como en el GET)
+* **PUT**: es similar al _POST_ pero suele usarse para actualizar datos del servidor (como un UPDATE de SQL). Los datos se envían en el cuerpo de la petición (como en el POST) y la información para identificar el objeto a modificar en la url (como en el GET). El servidor hará un UPDATE sustituyendo el objeto actual por el que se le pasa como parámetro
+* **PATCH**: es similar al PUT pero la diferencia es que en el PUT hay que pasar todos los campos del objeto a modificar (los campos no pasdos se eliminan del objeto) mientras que en el PATCH sólo se pasan los campos que se quieren cambiar y en resto permanecen como están 
 * **DELETE**: se usa para eliminar un dato del servidor (como un DELETE de SQL). La información para identificar el objeto a eliminar se envía en la url (como en el GET)
 * existen otros tipos que no veremos aquí (como _HEAD_, _PATCH_, etc)
 
@@ -93,13 +94,26 @@ en la cadena:
 ```
 
 
-> EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podemos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Lo que queremos hacer en este ejercicio es:
-> - obtener todas las tareas
-> - obtener la tarea con id 55
-> - obtener la tarea con id 201 (como no existe devolverá un código de error 404 - Not found)
+> EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podríamos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Por tanto instalaremos dicha extensión (por ejemplo [_Advanced Rest Client_](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo?hl=es) para Chrome o [_RestClient_](https://addons.mozilla.org/es/firefox/addon/restclient/) para Firefox y haremos todas las peticiones desde allí (incluyendo los GET) lo que nos permitirá ver los códigos de estado devueltos, las cabeceras, etc. 
+> 
+> Lo que queremos hacer en este ejercicio es:
+> - obtener todas las tareas (devuelve un array con todas las tareas y el código devuelto será 200 - Ok)
+> ![GET all](./img/Ajax-GETall.png)
+> 
+> - obtener la tarea con id 55 (devuelve el objeto de la tarea 55 y el código devuelto será 200 - Ok)
+> ![GET all](./img/Ajax-GETone.png)
+> 
+> - obtener la tarea con id 201 (como no existe devolverá un objeto vacío y como código de error 404 - Not found)
+> ![GET all](./img/Ajax-GETnonExistent.png)
+> 
 > - crear una nueva tarea. En el cuerpo de la petición le pasaremos sus datos: userID: 1, title: Prueba de POST y completed: false. No se le pasa la id (de eso se encarga la BBDD). La respuesta debe ser un código 201 (created) y el nuevo registro creado con todos sus datos incluyendo la id. Como es una API de prueba en realidad no lo está añadiendo a la BBDD por lo que si luego hacemos una petición buscando esa id nos dirá que no existe.
-> - modificar la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
+> ![GET all](./img/Ajax-POST.png)
+> - modificar con un PUT la tarea con id 55 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis en esta API los campos que no se pasan se eliminan; en otras los campos no pasados se mantienen como estaban
+> ![GET all](./img/Ajax-PUT.png)
+> - modificar con un PATCH la tarea con id 56 para que su title sea 'Tarea modificada'. Devolverá el nuevo registro con un código 200. Como veis al hacer un PATCH los campos que no se pasan se mantienen como estaban
+> ![GET all](./img/Ajax-PATCH.png)
 > - eliminar la tarea con id 55. Como veis esta API devuelve un objeto vacío al eliminar; otras devuelven el objeto eliminado
+> ![GET all](./img/Ajax-DELETE.png)
 
 ### Json Server
 Las peticiones Ajax se hacen a un servidor que proporcione una API. Como ahora no tenemos ninguno podemos utilizar Json Server que es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
