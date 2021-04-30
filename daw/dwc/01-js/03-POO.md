@@ -20,47 +20,41 @@ Desde ES2015 la POO en Javascript es similar a como se hace en otros lenguajes: 
 
 Se pueden crear con **new** o creando un _literal object_ (usando notación **JSON**). Con _new_:
 ```javascript
-let alumno=new Object();
-alumno.nombre='Carlos';     // se crea la propiedad 'nombre' y se le asigna un valor
-alumno['apellidos']='Pérez Ortiz';    // se crea la propiedad 'apellidos'
-alumno.edad=19;
-alumno.getInfo=function() {
-    return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+let alumno = new Object()
+alumno.nombre = 'Carlos'     // se crea la propiedad 'nombre' y se le asigna un valor
+alumno['apellidos'] = 'Pérez Ortiz'    // se crea la propiedad 'apellidos'
+alumno.edad = 19
+alumno.getInfo = function() {
+    return 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + 'años'
 }
 ```
 
 Creando un _literal object_ (es la forma recomendada) el ejemplo anterior sería:
 ```javascript
-let alumno={
+let alumno = {
     nombre: 'Carlos',
     apellidos: 'Pérez Ortiz',
     edad: 19,
     getInfo: function() {
-        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+        return 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + 'años'
     }
 };
-```
-
-Aunque tanto en un caso como en otro lo que se está haciendo realmente (también se pueden crear así) es:
-```javascript
-let alumno=Objectcreate({});
-...
 ```
 
 ## Propiedades de un objeto
 Podemos acceder a las propiedades con `.` (punto) o `[ ]`:
 ```javascript
-console.log(alumno.nombre);       // imprime 'Carlos'
-console.log(alumno['nombre']);    // imprime 'Carlos'
-let prop='nombre';
-console.log(alumno[prop]);        // imprime 'Carlos'
-console.log(alumno.getInfo());    // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
+console.log(alumno.nombre)       // imprime 'Carlos'
+console.log(alumno['nombre'])    // imprime 'Carlos'
+let prop = 'nombre'
+console.log(alumno[prop])        // imprime 'Carlos'
+console.log(alumno.getInfo())    // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
 Podremos recorrer las propiedades de un objecto con `for..in`:
 ```javascript
 for (let prop in alumno) {
-    console.log(prop+': '+alumno[prop]);
+    console.log(prop + ': ' + alumno[prop])
 }
 ```
 
@@ -68,7 +62,7 @@ En ES6 si el valor de una propiedad es una función podemos ponerlo como:
 ```javascript
     ...
     getInfo() {
-        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+        return 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + 'años'
     }
     ...
 ```
@@ -76,15 +70,15 @@ En ES6 si el valor de una propiedad es una función podemos ponerlo como:
 o en forma de _arrow function_:
 ```javascript
     ...
-    getInfo: () => 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+'años';
+    getInfo: () => 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + 'años'
     ...
 ```
 
-Además si queremos que el valor de una propiedad sea el de una variable que se llama como ella no es necesario ponerlo:
+Además si queremos que el valor de una propiedad sea el de una variable que se llama como ella desde ES2015 no es necesario ponerlo:
 ```javascript
-let nombre='Carlos';
+let nombre = 'Carlos'
 
-let alumno={
+let alumno = {
     nombre,                           // es equivalente a nombre: nombre
     apellidos: 'Pérez Ortiz',
     ...
@@ -97,17 +91,17 @@ Desde ES2015 funcionan como en la mayoría de lenguajes:
 ```javascript
 class Alumno {
     constructor(nombre, apellidos, edad) {
-        this.nombre=nombre;
-        this.apellidos=apellidos;
-        this.edad=edad;
+        this.nombre = nombre
+        this.apellidos = apellidos
+        this.edad = edad
     }
     getInfo() {
-        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+' años';
+        return 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + ' años'
     }
 }
 
-let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
-console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
+let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19)
+console.log(cpo.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
 > EJERCICIO: Crea una clase Productos con las propiedades y métodos del ejercicio anterior. Además tendrá un método getInfo que devolverá: 'Nombre (categoría): unidades uds x precio € = importe €'. Crea 3 productos diferentes.
@@ -118,9 +112,9 @@ Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hac
 class Alumno {
     ...
     getInfo() {
-        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años';
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
         function nomAlum() {
-            return this.nombre + ' ' + this.apellidos;      // Aquí this no es el objeto Alumno
+            return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
         }
     }
 }
@@ -130,9 +124,9 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
 1. Pasárselo como parámetro
 ```javascript
     getInfo() {
-        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años';
+        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
         function nomAlum(alumno) {
-            return alumno.nombre + ' ' + alumno.apellidos; 
+            return alumno.nombre + ' ' + alumno.apellidos
         }
     }
 ```
@@ -141,9 +135,9 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
 ```javascript
     getInfo() {
         let that = this;
-        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años';
+        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años'
         function nomAlum() {
-            return that.nombre + ' ' + that.apellidos;      // Aquí this no es el objeto Alumno
+            return that.nombre + ' ' + that.apellidos      // Aquí this no es el objeto Alumno
         }
     }
 ```
@@ -151,8 +145,8 @@ Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace 
 3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
 ```javascript
     getInfo() {
-        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años';
-        let nomAlum = () => this.nombre + ' ' + this.apellidos; 
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
+        let nomAlum = () => this.nombre + ' ' + this.apellidos
     }
 ```
 
@@ -164,22 +158,22 @@ Esto nos puede ocurrir en las funciones manejadoras de eventos que veremos en pr
 Una clase puede heredar de otra utilizando la palabra reservada **extends** y heredará todas sus propiedades y métodos. Podemos sobrescribirlos en la clase hija (seguimos pudiendo llamar a los métodos de la clase padre utilizando la palabra reservada **super** -es lo que haremos si creamos un constructor en la clase hija-).
 ```javascript
 class AlumnInf extends Alumno{
-    constructor(nombre, apellidos, edad, ciclo) {
-        super(nombre, apellidos, edad);
-        this.ciclo=ciclo;
-    }
-    getInfo() {
-        return super.getInfo()+' y estudia el Grado '+(this.getGradoMedio?'Medio':'Superior')+' de '+this.ciclo;
-    }
-    getGradoMedio() {
-        if (this.ciclo.toUpperCase==='SMX')
-            return true;
-        return false;
-    }
+  constructor(nombre, apellidos, edad, ciclo) {
+    super(nombre, apellidos, edad)
+    this.ciclo = ciclo
+  }
+  getInfo() {
+    return super.getInfo() + ' y estudia el Grado ' + (this.getGradoMedio ? 'Medio' : 'Superior') + ' de ' + this.ciclo
+  }
+  getGradoMedio() {
+    if (this.ciclo.toUpperCase === 'SMX')
+      return true
+    return false
+  }
 }
 
-let cpo=new AlumnInf('Carlos', 'Pérez Ortiz', 19, 'DAW');
-console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años y estudia el Grado Superior de DAW'
+let cpo = new AlumnInf('Carlos', 'Pérez Ortiz', 19, 'DAW')
+console.log(cpo.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años y estudia el Grado Superior de DAW'
 ```
 
 > EJERCICIO: crea una clase Televisores que hereda de Productos y que tiene una nueva propiedad llamada tamaño. El método getInfo mostrará el tamaño junto al nombre
@@ -190,13 +184,13 @@ En ES2015 podemos declarar métodos estáticos, pero no propiedades estáticas. 
 class User {
     ...
     static getRoles() {
-        return ["user", "guest", "admin"];
+        return ["user", "guest", "admin"]
     }
 }
 
-console.log(User.getRoles()); // ["user", "guest", "admin"]
-let user = new User("john");
-console.log(user.getRoles()); // Uncaught TypeError: user.getRoles is not a function
+console.log(User.getRoles()) // ["user", "guest", "admin"]
+let user = new User("john")
+console.log(user.getRoles()) // Uncaught TypeError: user.getRoles is not a function
 ```
 
 ### toString() y valueOf()
@@ -205,15 +199,15 @@ Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se l
 class Alumno {
     ...
     toString() {
-        return this.apellidos+', '+this.nombre;
+        return this.apellidos+', '+this.nombre
     }
 }
 
-let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
-console.log('Alumno:' + cpo);     // imprime 'Alumno: Pérez Ortíz, Carlos'
+let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19);
+console.log('Alumno:' + cpo)     // imprime 'Alumno: Pérez Ortíz, Carlos'
 ```
 
-Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Ya no es necesario hacer:
+Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02-arrays.md):
 ```javascript
 misAlumnos.sort(function(alum1, alum2) {
     if (alum1.apellidos > alum2.apellidos)
@@ -223,9 +217,10 @@ misAlumnos.sort(function(alum1, alum2) {
     return alum1.nombre < alum2.nombre
 });   
 ```
-como vimos en el tema de [Arrays](./02-arrays.md) sino que podemos hacer directamente:
+
+Pero con el método _toString_ que hemos definido antes podemos hacer directamente:
 ```javascript
-misAlumnos.sort();   
+misAlumnos.sort() 
 ```
 
 Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.toString()_ pero si sobrecargamos el método **_.valueOf()_** será este el que se usará en comparaciones:
@@ -233,13 +228,13 @@ Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.to
 class Alumno {
     ...
     valueOf() {
-        return this.edad;
+        return this.edad
     }
 }
 
-let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
-let cpo2=new Alumno('Ana', 'Abad Tudela', 23);
-console.log(cpo<cpo2);     // imprime true ya que 19<23
+let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19)
+let aat = new Alumno('Ana', 'Abad Tudela', 23)
+console.log(cpo < aat)     // imprime true ya que 19<23
 ```
 
 > EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
@@ -259,17 +254,17 @@ En Javascript un objeto se crea a partir de otro (al que se llama _prototipo_). 
 Si queremos emular el comportamiento de las clases, para crear el constructor se crea una función con el nombre del objeto y para crear los métodos se aconseja hacerlo en el _prototipo_ del objeto para que no se cree una copia del mismo por cada instancia que creemos:
 ```javascript
 function Alumno(nombre, apellidos, edad) {
-    this.nombre=nombre;
-    this.apellidos=apellidos;
-    this.edad=edad;
+    this.nombre = nombre
+    this.apellidos = apellidos
+    this.edad = edad
 }
-Alumno.prototype.getInfo=function() {
-        return 'El alumno '+this.nombre+' '+this.apellidos+' tiene '+this.edad+' años';
+Alumno.prototype.getInfo = function() {
+        return 'El alumno ' + this.nombre + ' ' + this.apellidos + ' tiene ' + this.edad + ' años'
     }
 }
 
-let cpo=new Alumno('Carlos', 'Pérez Ortiz', 19);
-console.log(cpo.getInfo());     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
+let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19)
+console.log(cpo.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
 Cada objeto tiene un prototipo del que hereda sus propiedades y métodos (es el equivalente a su clase, pero en realidad es un objeto que está instanciado). Si añadimos una propiedad o método al prototipo se añade a todos los objetos creados a partir de él lo que ahorra mucha memoria.
