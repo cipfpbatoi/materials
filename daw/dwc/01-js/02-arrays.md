@@ -201,35 +201,35 @@ Se trata de un paradigma de programación (una forma de programar) donde se inte
 Desde la versión 5.1 javascript incorpora métodos de _functional programing_ en el lenguaje, especialmente para trabajar con arrays:
 
 #### filter
-Devuelve un nuevo array con los elementos que cumplen determinada condición del array al que se aplica. Su parámetro es una función, habitualmente anónima, que va interactuando con los elementos del array. Esta función recibe como primer parámetro el elemento actual del array (sobre el que debe actuar). Opcionalmente puede tener como segundo parámetro su índice y como tercer parámetro el array completo. La función devuelve un _Boolean_: **true** para los elementos que se incluirán en el array a devolver y **false** para el resto.
+Devuelve un nuevo array con los elementos que cumplen determinada condición del array al que se aplica. Su parámetro es una función, habitualmente anónima, que va interactuando con los elementos del array. Esta función recibe como primer parámetro el elemento actual del array (sobre el que debe actuar). Opcionalmente puede tener como segundo parámetro su índice y como tercer parámetro el array completo. La función debe devolver **true** para los elementos que se incluirán en el array a devolver como resultado y **false** para el resto.
 
-Ejemplo: dado un array con notas devolver un array con las notas de los aprobados. Esto usando programación imperativa (_la que se centra en cómo se deben hacer las cosas_) sería algo como:
+Ejemplo: dado un array con notas devolver un array con las notas de los aprobados. Esto usando programación _imperativa_ (la que se centra en _cómo se deben hacer las cosas_) sería algo como:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = [];
 for (let i = 0; i++ i < arrayNotas.length) {
   let nota = arrayNotas[i];
   if (nota >= 5) {
     aprobados.push(nota);
   } 
-};       // aprobados = [5, 6, 9.75, 7.5]
+};       // aprobados = [5.2, 6, 9.75, 7.5]
 ```
 
-Usando _functional programming_ (_la que se centra en qué resultado queremos obtener_) sería:
+Usando _functional programming_ (la que se centra en _qué resultado queremos obtener_) sería:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = arrayNotas.filter(function(nota) {
   if (nota >= 5) {
     return true;
   } else {
     return false;
   } 
-});       // aprobados = [5, 6, 9.75, 7.5]
+});       // aprobados = [5.2, 6, 9.75, 7.5]
 ```
 
 Podemos refactorizar esta función para que sea más compacta:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = arrayNotas.filter(function(nota) {
   return nota >= 5;     // nota >= 5 se evalúa a 'true' si es cierto o 'false' si no lo es
 });
@@ -237,17 +237,19 @@ let aprobados = arrayNotas.filter(function(nota) {
 
 Y usando funciones lambda la sintaxis queda mucho más simple:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = arrayNotas.filter(nota => nota >= 5);
 ```
+
+Las 7 líneas del código usando programación _imperativa_ quedan reducidas a sólo una.
 
 > EJERCICIO: Dado un array con los días de la semana obtén todos los días que empiezan por 'M'
 
 #### find
 Como _filter_ pero NO devuelve un **array** sino el primer **elemento** que cumpla la condición (o _undefined_ si no la cumple nadie). Ejemlplo:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
-let primerAprobado = arrayNotas.find(nota => nota >= 5);    // primerAprobado = 5
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
+let primerAprobado = arrayNotas.find(nota => nota >= 5);    // primerAprobado = 5.2
 ```
 
 Este método tiene más sentido con objetos. Por ejemplo, si queremos encontrar la persona con DNI '21345678Z' dentro de un array llamado personas cuyos elementos son objetos con un campo 'dni' haremos:
@@ -265,7 +267,7 @@ Como _find_ pero en vez de devolver el elemento devuelve su posición (o -1 si n
 #### every / some
 La primera devuelve **true** si **TODOS** los elementos del array cumplen la condición y **false** en caso contrario. La segunda devuelve **true** si **ALGÚN** elemento del array cumple la condición. Ejemplo:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let todosAprobados = arrayNotas.every(nota => nota >= 5);   // false
 let algunAprobado = arrayNotas.some(nota => nota >= 5);     // true
 ```
@@ -275,7 +277,7 @@ let algunAprobado = arrayNotas.some(nota => nota >= 5);     // true
 #### map
 Permite modificar cada elemento de un array y devuelve un nuevo array con los elementos del original modificados. Ejemplo: queremos subir un 10% cada nota:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let arrayNotasSubidas = arrayNotas.map(nota => nota + nota * 10%);
 ```
 
@@ -286,15 +288,15 @@ Devuelve un valor calculado a partir de los elementos del array. En este caso la
 
 Ejemplo: queremos obtener la suma de las notas:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
-let sumaNotas = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 35.15
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
+let sumaNotas = arrayNotas.reduce((total,nota) => total += nota, 0);    // total = 35.35
 // podríamos haber omitido el valor inicial 0 para total
-let sumaNotas = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.15
+let sumaNotas = arrayNotas.reduce((total,nota) => total += nota);    // total = 35.35
 ```
 
 Ejemplo: queremos obtener la nota más alta:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let maxNota = arrayNotas.reduce((max,nota) => nota > max ? nota : max);    // max=9.75
 ```
 
@@ -307,7 +309,7 @@ En el siguiente ejemplo gráfico tenemos un "array" de verduras al que le aplica
 #### forEach
 Es el método más general de los que hemos visto. No devuelve nada sino que permite realizar algo con cada elemento del array.
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 arrayNotas.forEach((nota, indice) => {
   console.log('El elemento de la posición ' + indice + ' es: ' + nota);
 });
@@ -316,7 +318,7 @@ arrayNotas.forEach((nota, indice) => {
 #### includes
 Devuelve **true** si el array incluye el elemento pasado como parámetro. Ejemplo:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 arrayNotas.includes(7.5);     // true
 ```
 
@@ -325,11 +327,11 @@ arrayNotas.includes(7.5);     // true
 #### Array.from
 Devuelve un array a partir de otro al que se puede aplicar una función de transformación (es similar a _map_). Ejemplo: queremos subir un 10% cada nota:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let arrayNotasSubidas = Array.from(arrayNotas, nota => nota + nota * 10%);
 ```
 
-Se utiliza mucho para convertir colecciones en arrays y así poder usar los métodos de arrays que hemos visto. Por ejemplo si queremos mostrar por consola cada párrafo de la página que comience por la palabra 'NOTA:' en primer lugar obtenemos todos los párrafos con:
+Se utiliza mucho para convertir colecciones en arrays y así poder usar los métodos de arrays que hemos visto. Por ejemplo si queremos mostrar por consola cada párrafo de la página que comience por la palabra 'If' en primer lugar obtenemos todos los párrafos con:
 ```javascript
 let parrafos = document.getElementsByTagName('p');
 ```
@@ -338,7 +340,8 @@ Esto nos devuelve una colección con todos los párrafos de la página (lo verem
 ```javascript
 let arrayParrafos = Array.from(parrafos);
 // y ya podemos usar los métodos que queramos:
-arrayParrafos.filter(parrafo => parrafo.startsWith('NOTA:').forEach(parrafo => console.log(parrafo));
+arrayParrafos.filter(parrafo => parrafo.textContent.startsWith('If'))
+.forEach(parrafo => alert(parrafo.textContent));
 ```
 
 **IMPORTANTE: desde este momento se han acabado los bucles _for_ en nuestro código para trabajar con arrays. Usaremos siempre estas funciones!!!**
@@ -375,7 +378,7 @@ let copiaDeA = Object.assign({}, a);       // ahora ambos objetos contienen lo m
 Sin embargo si el objeto tiene como propiedades otros objetos estos se continúan pasando por referencia. Es ese caso lo más sencillo sería hacer:
 ```javascript
 let a = {id: 2, name: 'object 2', address: {street: 'C/ Ajo', num: 3} };
-let copiaDeA= J SON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
+let copiaDeA= JSON.parse(JSON.stringify(a));       // ahora ambos objetos contienen lo mismo pero son diferentes
 ```
 
 > EJERCICIO: Dado el array arr1 con los días de la semana haz un array arr2 que sea igual al arr1. Elimina de arr2 el último día y comprueba quá ha pasado con arr1. Repita la operación con un array llamado arr3 pero que crearás haciendo una copia de arr1.
@@ -392,11 +395,11 @@ function notaMedia(...notas) {
   return total/notas.length;
 }
 
-console.log(notaMedia(5, 3.9, 6, 9.75, 7.5, 3));    // le pasamos un número variable de parámetros
+console.log(notaMedia(5.2, 3.9, 6, 9.75, 7.5, 3));    // le pasamos un número variable de parámetros
 ```
 Si lo que queremos es convertir un array en un grupo de elementos haremos _spread_. Por ejemplo el objeto _Math_ porporciona métodos para trabajar con números como _.max_ que devuelve el máximo de los números pasados como parámetro. Para saber la nota máxima en vez de _.reduce_ como hicimos en el ejemplo anterior podemos hacer:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
 let maxNota = Math.max(...arrayNotas);    // maxNota=9.75
 // hacemos Math.max(arrayNotas) devuelve NaN porque arrayNotas es un array y no un número
 ```
@@ -411,11 +414,12 @@ let copiaDeA = { ...a};       // ahora ambos objetos contienen lo mismo pero son
 ## Desestructuración de arrays
 Similar a _rest_ y _spread_, permiten extraer los elementos del array directamente a variables y viceversa. Ejemplo:
 ```javascript
-let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
-let [primera, segunda, tercera] = arrayNotas;   // primera=5, segunda=3.9, tercera=6
-let [primera, , , cuarta] = arrayNotas;         // primera=5, cuarta=9.75
-let [primera, ...resto] = arrayNotas;           // primera=5, resto=[3.9, 6, 9.75, 3]
+let arrayNotas = [5.2, 3.9, 6, 9.75, 7.5, 3];
+let [primera, segunda, tercera] = arrayNotas;   // primera=5.2, segunda=3.9, tercera=6
+let [primera, , , cuarta] = arrayNotas;         // primera=5.2, cuarta=9.75
+let [primera, ...resto] = arrayNotas;           // primera=5.2, resto=[3.9, 6, 9.75, 3]
 ```
+
 También se pueden asignar valores por defecto:
 ```javascript
 let preferencias = ['Javascript', 'NodeJS'];
