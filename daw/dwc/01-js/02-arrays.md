@@ -203,7 +203,19 @@ Desde la versión 5.1 javascript incorpora métodos de _functional programing_ e
 #### filter
 Devuelve un nuevo array con los elementos que cumplen determinada condición del array al que se aplica. Su parámetro es una función, habitualmente anónima, que va interactuando con los elementos del array. Esta función recibe como primer parámetro el elemento actual del array (sobre el que debe actuar). Opcionalmente puede tener como segundo parámetro su índice y como tercer parámetro el array completo. La función devuelve un _Boolean_: **true** para los elementos que se incluirán en el array a devolver y **false** para el resto.
 
-Ejemplo: dado un array con notas devolver un array con las notas de los aprobados:
+Ejemplo: dado un array con notas devolver un array con las notas de los aprobados. Esto usando programación imperativa (_la que se centra en cómo se deben hacer las cosas_) sería algo como:
+```javascript
+let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
+let aprobados = [];
+for (let i = 0; i++ i < arrayNotas.length) {
+  let nota = arrayNotas[i];
+  if (nota >= 5) {
+    aprobados.push(nota);
+  } 
+};       // aprobados = [5, 6, 9.75, 7.5]
+```
+
+Usando _functional programming_ (_la que se centra en qué resultado queremos obtener_) sería:
 ```javascript
 let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = arrayNotas.filter(function(nota) {
@@ -211,7 +223,7 @@ let aprobados = arrayNotas.filter(function(nota) {
     return true;
   } else {
     return false;
- } 
+  } 
 });       // aprobados = [5, 6, 9.75, 7.5]
 ```
 
@@ -219,7 +231,7 @@ Podemos refactorizar esta función para que sea más compacta:
 ```javascript
 let arrayNotas = [5, 3.9, 6, 9.75, 7.5, 3];
 let aprobados = arrayNotas.filter(function(nota) {
-  return nota >= 5;     // nota>=5 se evalúa a 'true' si es cierto o 'false' si no lo es
+  return nota >= 5;     // nota >= 5 se evalúa a 'true' si es cierto o 'false' si no lo es
 });
 ```
 
