@@ -78,6 +78,21 @@ Cada mutación recibe como parámetro el _state_ del almacén para que pueda mod
 
 Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
 
+Si queremos que esté disponible para todos nuestros componentes lo importamos en el `main.js` igual que hicimos con el router:
+```javascript
+...
+import router from './router'
+import store from './store'
+
+new Vue({
+  router,	
+  store,
+  render: h => h(App)
+}).$mount('#app')
+```
+
+Eso hace que esté disponible en todos los componentes a través de `this.$store`. Si marcamos **Vuex** a la hora de crear nuestro proyecto automáticamente se importa en el `main.js` y se crea el fichero de Vuex.
+
 Lo usaremos en un componente que muestra ese contador:
 ```html
 <p>Valor del contador: { { contador }}</p>
@@ -92,31 +107,35 @@ import store from '@/store'
 export default {
   computed: {
     contador() {
+      return this.$store.state.count
+    }
+  },
+  methods: {
+    incrementa() {
+      this.$store.commit('increment')
+    },
+    decrementa() {
+      this.$store.commit('decrement')
+    },
+  }
+}
+```
+
+Si no queremos importarlo en el `main.js` lo tendremos que importar en cada componente que lo necesite:
+```javascript
+import store from '@/store'
+
+export default {
+  computed: {
+    contador() {
       return store.state.count
     }
   },
   methods: {
     incrementa() {
       store.commit('increment')
-    },
-    decrementa() {
-      store.commit('decrement')
-    },
-  }
-}
+...
 ```
-
-O, si lo van a usar muchos componentes que es lo más normal, podemos importarlo y registrarlo en el _main.js_:
-```javascript
-import store from '@/store'
-
-new Vue({
-  router,
-  store,
-  ...
-```
-
-Y entondes en el componente no hay que importar nada y se llamaría con `this.$store.state.count` o `this.$store.commit('increment')`
 
 ### Acceder al State desde un componente
 La mejor forma de acceder a propiedades del almacén es creando métodos _computed_ que cambiarán al cambiar el estado del mismo:
