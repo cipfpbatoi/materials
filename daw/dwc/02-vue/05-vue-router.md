@@ -9,6 +9,7 @@ Tabla de contenidos
   - [Saltar a una ruta](#saltar-a-una-ruta)
   - [Paso de parámetros](#paso-de-par%C3%A1metros)
   - [El objeto $route](#el-objeto-route)
+  - [Redireccionamiento. Not found](#redireccionamiento-not-found)
   - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
@@ -86,7 +87,7 @@ export default router
 
 La línea de _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (ya que en realidad no se están cargando diferentes páginas sino partes de una única página -es una SPA-). Esta es la opción que escogeremos siempre en las aplicaciones SPA.
 
-_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_. La ruta `/edit/` seguida de algo más hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `id` la parte final de la ruta (por ejemplo /edit/5 hace que el componente reciba en sus _props_ una variable llamada _id_ con valor 5).
+_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_. La ruta `/edit/` seguida de algo más hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `id` la parte final de la ruta (por ejemplo **/edit/5** hace que el componente reciba en sus _props_ una variable llamada _id_ con valor 5).
 
 Para cada ruta que queramos mapear hay que definir:
 * **path**: la url que hará que se cargue el componente
