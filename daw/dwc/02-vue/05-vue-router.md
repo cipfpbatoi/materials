@@ -18,27 +18,71 @@ Tabla de contenidos
 # Vue-router
 Como comentamos al pricipio Vue nos va a permitir crear SPA (_Single Page Applications_) lo que significa que sólo se cargará una pagina: _index.html_. Sin embargo nuestra aplicación estará dividida en diferentes vistas que el usuario percibirá como si fueran páginas diferentes y el encargado de gestionar la navegación entre estas vistas/páginas es **Vue-router** que es otra de las librerías del "ecosistema" de Vue (en este caso realizada por los desarrolladores de Vue).
 
-En resumen en nuestra aplicación (normalmente en el _App.vue_) tendremos una etiqueta `<router-view>` y lo que hará _vue-router_ es cargar en esa etiqueta el componente que le indiquemos en función de la ruta que haya en la barra de direcciones del navegador. Por ejemplo si la URL es **/products** cargará un componente llamado _ProductsTable_ (que mostrará una tabla con todos los productos de la aplicación) y si la URL es **/newprod** cargará un componente llamado _ProductForm_ con un formulario para añadir un nuevo producto.
+En resumen, en nuestra aplicación (normalmente en el _App.vue_) tendremos una etiqueta `<router-view>` y lo que hará _vue-router_ es cargar en esa etiqueta el componente que corresponda en función de la ruta que haya en la barra de direcciones del navegador. Por ejemplo si la URL es **/products** cargará un componente llamado _ProductsTable_ (que mostrará una tabla con todos los productos de la aplicación) y si la URL es **/newprod** cargará un componente llamado _ProductForm_ con un formulario para añadir un nuevo producto.
 
 Lo que hacemos para configurar _vue-router_ es definir rutas que _mapean_ componentes de nuestra aplicación a rutas URL de forma que cuando se pone determinada ruta en el navegador se carga en nuestra página el componente indicado. También permite tener subrutas que mapeen subcomponentes dentro de otros.
 
 ## Instalación
-Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. En el _scaffolding_ que se crea aparece una nueva carpeta _Views_ que es donde se recomienda guardar las distintas vistas de nuestra aplicación, que serán componentes que renderizan una "_página_" de la aplicación.
-
-Si lo que queremos es añadir _vue-router_ a un proyecto ya existente debemos añadir el paquete y configurarlo como se indica a continuación.
-
-Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
+Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. En ese caso lo que hace _vue-cli_ es:
+- se instala el paquete **vue-router**. Si hubiéramos marcado _router_ al crear el proyecto deberíamos instalarlo nosotros manualmente con:
 ```bash
-npm install vue-router -S
+npm install -S vue-router
 ```
 
-NOTA: Para instalar _vue-router_ en _Vue3_ ejecutamos:
+- se crea el fichero de rutas en **/src/router/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
+
+export default router
+```
+
+- se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$router`:
+```javascript
+...
+import router from './router'
+
+new Vue({
+  router,	
+  render: h => h(App)
+}).$mount('#app')
+```
+
+- en el _scaffolding_ del proyecto se crea una nueva carpeta _views_ que es donde se recomienda guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación
+
+Si queremos es añadir _vue-router_ a un proyecto ya existente que no lo tiene debemos añadir manualmente el paquete y configurarlo haciendo los pasos indicados arriba. Si queremos instalarlo en un proyecto  _Vue3_ ejecutamos:
 ```bash
 npm install vue-router@next -S
 ```
 
+EL fichero _main.js_ en _Vue3_ quedaría:
+```javascript
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router' // <---
+
+createApp(App).use(router).mount('#app')
+```
+
 ## Crear las rutas
-Podemos hacerlo en el fichero principal de nuestra aplicación, _main.js_, pero para que el código quede más legible conviene hacerlo en un fichero diferente (por ejemplo en _router/index.js_). Allí importamos _Vue-router_, lo declaramos (`Vue.use`), creamos una instancia para nuestras rutas (`new Router`, que es el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
+Las rutas de nuestra aplicación las definiremos en en fichero **_router/index.js_**. Allí importamos _Vue-router_, lo declaramos (`Vue.use`), creamos una instancia para nuestras rutas (`new Router`, que es el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
 ```javascript
 // En Vue 2:
 import Vue from 'vue'
@@ -85,9 +129,9 @@ const router = new VueRouter({
 export default router
 ```
 
-La línea de _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (ya que en realidad no se están cargando diferentes páginas sino partes de una única página -es una SPA-). Esta es la opción que escogeremos siempre en las aplicaciones SPA.
+El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (ya que en realidad no se están cargando diferentes páginas sino partes de una única página -es una SPA-). Esta es la opción que escogeremos siempre en las aplicaciones SPA.
 
-_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_. La ruta `/edit/` seguida de algo más hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `id` la parte final de la ruta (por ejemplo **/edit/5** hace que el componente reciba en sus _props_ una variable llamada _id_ con valor 5).
+_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_: la ruta `/edit/` seguida de algo más hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `id` la parte final de la ruta (por ejemplo **/edit/5** hace que el componente reciba en sus _props_ una variable llamada _id_ con valor 5).
 
 Para cada ruta que queramos mapear hay que definir:
 * **path**: la url que hará que se cargue el componente
@@ -96,26 +140,6 @@ Para cada ruta que queramos mapear hay que definir:
 Además de esas propiedades podemos indicar:
 * **name**: le damos a la ruta un nombre que luego podemos usar para referirnos a ella
 * **props**: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se pone el componente tendrá que acceder al parámetro _id_ desde `this.$route.params.id` 
-
-Ahora en el fichero _main.js_ importamos el objeto router que hemos creado y lo declaramos en la instancia de Vue para que sea accesible a todos los componentes:
-```javascript
-...
-import router from './router'
-...
-new Vue({
-  router,		// En ES6 esto es equivalente a router: router
-  render: h => h(App)
-}).$mount('#app')
-```
-
-EL fichero _main.js_ en _Vue3_ quedaría:
-```javascript
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router' // <---
-
-createApp(App).use(router).mount('#app')
-```
 
 Cada vez que pongamos una nueva URL en el navegador no cambiará todo el layout sino que sólo se cargará en componente indicado para esa ruta. En el fichero _Aapp.vue_, en la parte del HTML en que queramos que se carguen los diferentes componentes de nuestra SPA incluiremos la etiqueta:
 ```html
