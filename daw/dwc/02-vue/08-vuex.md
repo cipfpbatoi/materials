@@ -38,20 +38,61 @@ Vuex centraliza la forma en que nuestros componentes se comunican entre ellos. C
 
 Los componentes de Vue peden renderizar datos de Vuex y es reactivo frente a ellos (si se modifican se volverá arenderizar el componente). Si el componente quiere modificar estos datos debe emitir (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción emite una confirmación (**commit**) que **muta** el _Estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza de nuevo el componente para mostrar el nuevo estado. En el estado almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
 
-## Instalar Vuex
-Para usar Vuex debemos instalarlo como cualquier otro paquete:
+## Instalar y configurar Vuex
+Si al crear nuestro proyecto Vue marcamos en las opciones que incluya Vuex la instalación y configuración de la herramienta se hará automáticamente:
+- se instala el paquete **vuex**. Si no marcamos _vuex_ al crear el proyecto debemos instalarlo nosotros
 ```bash
 npm install -S vuex
 ```
+
+- se crea el fichero de vuex en **/src/store/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+```javascript
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+  },
+  getters: {
+  },
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
+  },
+})
+export default store
+```
+
+- se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$store`. Es igual que pasaba con _vue-router_:
+```javascript
+...
+import router from './router'
+import store from './store'
+
+new Vue({
+  router,	
+  store,
+  render: h => h(App)
+}).$mount('#app')
+```
+
+Si no hemos seleccionado _vuex_ al crear el proyecto deberemos hacer estos 3 pasos nosotros manualmente. También tenemos la opción de no importar el _store_ en el fichero _main.js_ sino immportarlo únicamente en cada componente que vaya a utilizarlo.
 
 ## Usar Vuex
 El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states_** (datos globales) de la aplicación pero se diferencia de un objeto normal en que:
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
-Un buen sitio para crearlo es el fichero **src/store/index.js**.
+Desde la consola del navegador podemos usar las _devtools_ para ver nuestro almacén. Para ello
 
-Al crear el almacén especificaremos en _state_ nuestras variables globales y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
+Se crea 
+
+Al crear el almacén (normalmente en el fichero **src/store/index.js**) pondremos en _state_ nuestras variables globales y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
+
 ```javascript
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -74,36 +115,23 @@ const store = new Vuex.Store({
 export default store
 ```
 
-Cada mutación recibe como parámetro el _state_ del almacén para que pueda modificarlo.
-
-Acabamos de crear un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_).
-
-Si queremos que esté disponible para todos nuestros componentes lo importamos en el `main.js` igual que hicimos con el router:
+Cada mutación recibe como primer parámetro el _state_ del almacén para que pueda modificarlo y el componente lo llama mediante el método `commit`:
 ```javascript
-...
-import router from './router'
-import store from './store'
-
-new Vue({
-  router,	
-  store,
-  render: h => h(App)
-}).$mount('#app')
+this.$store.commit('increment')
 ```
 
-Eso hace que esté disponible en todos los componentes a través de `this.$store`. Si marcamos **Vuex** a la hora de crear nuestro proyecto automáticamente se importa en el `main.js` y se crea el fichero de Vuex.
-
-Lo usaremos en un componente que muestra ese contador:
+En este ejemplo hemos creado un almacén que tiene un dato (_count_) y dos mutaciones para cambiar su valor (_increment_ y _decrement_). Lo usa un componente que muestra el valor del contador e incluye un botón para incrementar su valor y otro para decrementarlo:
 ```html
-<p>Valor del contador: { { contador }}</p>
-<button @click="incrementa">Incrementar</button>
-<button @click="decrementa">Decrementar</button>
+<template>
+  <div>
+    <p>Valor del contador: { { contador }}</p>
+    <button @click="incrementa">Incrementar</button>
+    <button @click="decrementa">Decrementar</button>
+  </div>
+</template>
 ```
 
-Podemos importar el store en cad componente que lo vaya a usar:
 ```javascript
-import store from '@/store'
-
 export default {
   computed: {
     contador() {
@@ -121,7 +149,7 @@ export default {
 }
 ```
 
-Si no queremos importarlo en el `main.js` lo tendremos que importar en cada componente que lo necesite:
+Si no hemos importado el almacén en el `main.js` lo tendremos que importar en cada componente que lo necesite:
 ```javascript
 import store from '@/store'
 
@@ -134,7 +162,7 @@ export default {
   methods: {
     incrementa() {
       store.commit('increment')
-...
+  ...
 ```
 
 ### Acceder al State desde un componente
@@ -157,7 +185,7 @@ import { mapState } from 'vuex'
 ```
 
 ### Getters
-Podemos crear métodos que devuelvan información sobre nuestros datos. Estos métodos son en realidad _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen) y se declaran dentro de _getters_:
+En ocasiones no necesitamos una varibale del state sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un _getter_ en el almacén que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
 ```javascript
 const store = new Vuex.Store({
   state: {
@@ -167,11 +195,14 @@ const store = new Vuex.Store({
     ]
   },
   getters: {
+    pendingTodos: state => {
+      return state.todos.filter(todo => !todo.done)
+    },
     doneTodos: state => {
       return state.todos.filter(todo => todo.done)
     },
-    doneTodosCount: (state, getters) => {
-      return getters.doneTodos.length
+    pendingTodosCount: (state, getters) => {
+      return getters.pendingTodos.length
     }
   }
 })
@@ -182,8 +213,8 @@ Cada _getter_ recibe como primer parámetro el _state_ del almacén.
 Dentro de los componentes se usan como cualquier variable:
 ```javascript
 computed: {
-  doneTodosCount () {
-    return this.$store.getters.doneTodosCount
+  pendingTodos () {
+    return this.$store.getters.pendingTodos
   }
 }
 ```
@@ -197,8 +228,8 @@ export default {
   computed: {
     // mix the getters into computed with object spread operator
     ...mapGetters([
-      'doneTodosCount',
-      'anotherGetter',
+      'pendingTodos',
+      'pendingTodosCount',
       // ...
     ])
   }
@@ -212,29 +243,31 @@ Los getters pueden recibir parámetros, por ejemplo, para hacer búsquedas:
 getters: {
   // ...
   getTodoById: (state) => (id) => {
-    return state.todos.find(todo => todo.id === id)
+    return state.todos.find((todo) => todo.id === id)
   }
 }
 ```
 Y lo llamaremos con `store.getters.getTodoById(2)`.
 
 ### Mutations
-RECUERDA: el código de las mutaciones **NO puede ser asíncrono**.
+**NOTA**: Una mutación no puede hacer una llamada asíncrona (por ejemplo llamar a _axios_)
 
-La única manera de cambiar los datos del almacén es llamando a las mutaciones que hayamos definido, pero no se llaman como si fueran métodos sino que se lanzan (como si fueran eventos) con **commit**: `store.commit('increment')`.
+La única manera de cambiar los datos del almacén es llamando a las mutaciones que hayamos definido, pero no se llaman como si fueran métodos sino que se lanzan (como si fueran eventos) con **commit**: `this.$store.commit('increment')`.
 
-Las mutaciones reciben como primer parámetro el _store_ pero pueden recibir otro parámetro adicional, llamado **_payload_**:
+Las mutaciones reciben como primer parámetro el _store_ pero pueden recibir otro parámetro adicional, llamado **_payload_**, donde incluyamos los datos a pasarle a la mutación:
 ```javascript
 mutations: {
-  incrementBy (state, n) {
-    state.count += n
+  addTodo (state, toDo) {
+    state.todos.push(toDo)
   }
 }
 ```
 
-Al llamar a la mutación le pasamos el valor esperado: `store.commit('incrementBy', 10)`. 
+Al llamar a la mutación le pasamos el valor esperado: `store.commit('addTodo', this.newTodo)`. 
 
-Si queremos pasar varios parámetros el _payload_ será un objeto: `store.commit('incrementBy',{amount: 10})`. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
+Cada
+
+Si queremos pasar varios parámetros el _payload_ será un objeto. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
 ```javascript
 store.commit({
   type: 'incrementBy',
@@ -242,12 +275,14 @@ store.commit({
 })
 ```
 
-Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mutaciones. Para llamar a la mutación hacemos:
+Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mutaciones. Recuerda que el código de las mutaciones **NO puede ser asíncrono**, por lo que no pueden, por ejemplo, hacer una llamada a _axios_.
+
+Para llamar a la mutación desde un componente hacemos:
 ```javascript
 `this.$store.commit('increment')`:
 ```
 
-Al igual con con el estado o los _getters_ podemos _mapear_ las mutaciones a métodos locales para poder hacer `this.increment` en lugar de `this.$store.commit('increment')` con el _helper_ _mapMutatios_:
+Al igual con con el estado o los _getters_ podemos _mapear_ las mutaciones a métodos locales para poder hacer `this.increment()` en lugar de `this.$store.commit('increment')` con el _helper_ _mapMutatios_:
 ```javascript
 import { mapMutations } from 'vuex'
 
@@ -267,7 +302,7 @@ export default {
 ```
 
 ### Actions
-Son métodos del almacén como las mutaciones pero en lugar de cambiar los datos lanzan mutaciones (_commit_). Además pueden incluir llamadas asíncronas. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
+Son métodos del almacén como las mutaciones pero que **SÍ pueden hacer llamadas asíncronas**.en lugar de cambiar los datos lanzan mutaciones (_commit_). Además pueden incluir llamadas asíncronas. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
 - lanzar una mutación con `context.commit('`
 - acceder a los datos con `context.state.`
 - acceder a los getters con `context.getters.`
