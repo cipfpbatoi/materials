@@ -52,7 +52,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
   },
   getters: {
@@ -64,7 +64,6 @@ const store = new Vuex.Store({
   modules: {
   },
 })
-export default store
 ```
 
 - se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$store`. Es igual que pasaba con _vue-router_:
@@ -87,9 +86,9 @@ El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
-Desde la consola del navegador podemos usar las _devtools_ para ver nuestro almacén. Para ello
+Desde la consola del navegador podemos usar las _devtools_ para ver nuestro almacén. Para ello vamos a Vue y elegmos la segunda opción (Vuex):
 
-Se crea 
+![DevTools - Vuex](./img/DevTools-Vuex.png)
 
 Al crear el almacén (normalmente en el fichero **src/store/index.js**) pondremos en _state_ nuestras variables globales y en _mutations_ los métodos que se pueden usar para cambiarlas, ej.:
 
@@ -99,7 +98,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     count: 0
   },
@@ -112,7 +111,6 @@ const store = new Vuex.Store({
     },
   }
 })
-export default store
 ```
 
 Cada mutación recibe como primer parámetro el _state_ del almacén para que pueda modificarlo y el componente lo llama mediante el método `commit`:
@@ -187,7 +185,7 @@ import { mapState } from 'vuex'
 ### Getters
 En ocasiones no necesitamos una varibale del state sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un _getter_ en el almacén que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
 ```javascript
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     todos: [
       { id: 1, text: '...', done: true },
@@ -265,7 +263,9 @@ mutations: {
 
 Al llamar a la mutación le pasamos el valor esperado: `store.commit('addTodo', this.newTodo)`. 
 
-Cada
+Cada vez que se llama a una mutación se registra en las _DevTools_ y podemos ver la mutación llamada y los datos que se le han pasado:
+
+![DevTools - Mutations](./img/DevTools-Vuex-mutations.png)
 
 Si queremos pasar varios parámetros el _payload_ será un objeto. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
 ```javascript
@@ -302,175 +302,80 @@ export default {
 ```
 
 ### Actions
-Son métodos del almacén como las mutaciones pero que **SÍ pueden hacer llamadas asíncronas**.en lugar de cambiar los datos lanzan mutaciones (_commit_). Además pueden incluir llamadas asíncronas. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
-- lanzar una mutación con `context.commit('`
+Son métodos del almacén como las mutaciones pero que **SÍ pueden hacer llamadas asíncronas**. Por tanto es aquí donde haremos las llamadas a la BBDD y cuando el servidor responda modificaremos los datos en del _store_. Lo mejor es no cambiarlos directamente en la _action_ (aunque podría hacerse) sino que la _action_ debería llamar a una _mutation_ que la cambie y así se registra en las _DevTools_. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
+- lanzar una mutación con `context.commit(`
 - acceder a los datos con `context.state.`
 - acceder a los getters con `context.getters.`
-- llamar a otras acciones con `context.dispatch.`
+- llamar a otras acciones con `context.dispatch(`
 
 ```javascript
-const store = new Vuex.Store({
+...
+import axios from 'axios'
+
+export default new Vuex.Store({
   state: {
-    count: 0
+    todos: []
   },
   mutations: {
-    increment (state) {
-      state.count++
-    }
+    addTodo(state, todo) {
+      state.todos.push(todo);
+    },
   },
   actions: {
-    increment (context) {
-      context.commit('increment')
-    }
-  }
-})
+    addTodo(context, item) {
+      axios.post(`${baseURL}/todos`, item)
+      .then((response) => context.commit('addTodo', response.data))
+      .catch((error) => alert(error))
+    },
+  },
 ```
 
 Para llamarla desde un componente hacemos:
 ```javascript
-`this.$store.dispatch('increment')`:
+this.$store.dispatch('addTodo', this.newTodo)
 ```
-
-Al igual que a las mutaciones les podemos pasar un _payload_.
 
 También podemos usar la desestructuración de objetos de ES2015 para obtener sólo la parte del contexto que nos interesa:
 ```javascript
   actions: {
-    increment ({ commit }) {
-      commit('increment')
-    }
-  }
+    addTodo({ commit }, item) {
+      axios.post(`${baseURL}/todos`, item)
+      .then((response) => commit('addTodo', response.data))
+      .catch((error) => alert(error))
+    },
 ```
 
-Igual que antes podemos usar el _helper_ _mapActions_ para mapear acciones y no tener que llamarlas en el componente con `this.$store.dispatch('...')`:
-```javascript
-import { mapActions } from 'vuex'
+Igual que antes podemos usar el _helper_ _mapActions_ para mapear acciones y no tener que llamarlas en el componente con `this.$store.dispatch('...')`.
 
-export default {
-  // ...
-  methods: {
-    ...mapActions([
-      'increment', // map `this.increment()` to `this.$store.dispatch('increment')`
-      'incrementBy' // map `this.incrementBy(amount)` to `this.$store.dispatch('incrementBy', amount)`
-    ]),
-    ...mapActions({
-      add: 'increment' // map `this.add()` to `this.$store.dispatch('increment')`
-    })
-  }
-}
-```
-
-Si las acciones realizan una llamada asíncrona deben devolver una promesa:
+Si la acción realiza una llamada asíncrona y el componente que la llama tiene que enterarse de cuándo finaliza debe devolver una promesa:
 ```javascript
-actions: {
-  actionA ({ commit }) {
+  actions: {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        commit('someMutation')
-        resolve()
-      }, 1000)
-    })
-  }
-}
-```
-(recuerda que una llamada a _axios_ es una promesa)
-
-Y la llamamos desde el componente con:
-```javascript
-store.dispatch('actionA')
-.then(...)	// se ejecutará si la acción ha hecho un resolve()
-.catch(...)	// se ejecutará si la acción ha hecho un reject()
-```
-
-Si es una llamada a _axios_ hacemos el _commit_ cuando se haya resuelto:
-```javascript
-const URL = 'https://jsonplaceholder.typicode.com/posts';
-
-const store = new Vuex.Store({
-  state: {
-    posts: [],
-    waitingServer: false,
-  },
-  actions: {
-    addItem({commit}, item) {
-      return new Promise((resolve, reject) => {
-        commit('changeWaitingServerState', true); /per a indicar que estem esperant al servidor
-        axios.post(URL, item)
+      addTodo(context, item) {
+        axios.post(`${baseURL}/todos`, item)
         .then((response) => {
-          commit('addPost', response.data);
-          commit('changeWaitingServerState', false);
-          resolve(response.data);
-         })
-        .catch(err => reject(err))
-      })
-    }
+          context.commit('addTodo', response.data)
+          resolve(response.data)
+        })
+        .catch((error) => reject(error))
+      },
   },
-  mutations: {
-    addPost(state, post) {
-      state.posts.push(post)
-    },
-    changeWaitingServerState(state, waiting) {
-      state.waitingServer = waiting
-    },
-    loadPosts(state, posts) {
-      state.posts = posts
-    },
-  }
+```
+
+Y en el componente tenemos los métodos _then_ y _catch_ para saber cuándo ha acabado:
+```javascript
+this.$store.dispatch('addTodo', this.newTodo)
+.then((todo) => {   	              // se ejecutará si la acción ha hecho un resolve()
+  alert('Añadida la tarea ' + todo.id)
+  this.$router.push('/todos')
 })
+.catch((error) => alert(error))	    // se ejecutará si la acción ha hecho un reject()
 ```
 
-Ahora en el componente que utiliza esta acción la llamamos con _dispatch_ y tendremos un _.then_ para saber cuándo ha acabado:
-```javascript
-addPost() {
-  this.$store.dispatch('addItem', this.newPost).
-  .then(() => {
-    alert('El post se ha añadido correctamente')
-    this.$router.push('/items')
-  })
-  .catch((err) => alert('Error: '+err.message || err))
-}
-```
-
-**NOTA**: si quien llama a una acción no necesita saber cuándo termina la acción ni su resultado la acción no es necesario que devuelva una promesa. En ese caso la llamada sería:
-```javascript
-const URL = 'https://jsonplaceholder.typicode.com/posts';
-
-const store = new Vuex.Store({
-  state: {
-    posts: [],
-    waitingServer: false,
-  },
-  actions: {
-    loadItems({commit}) {
-        commit('changeWaitingServerState', true); /per a indicar que estem esperant al servidor
-        axios.get(URL)
-        .then((response) => {
-          commit('loadPosts', response.data);
-          commit('changeWaitingServerState', false);
-         })
-      })
-    }
-  },
-  mutations: {
-    loadPosts(state, posts) {
-      state.posts = posts
-    },
-  }
-})
-```
-
-Y desde el componente simplemente lo llamamos (sin posibilidad de hacer _.then_):
-```javascript
-loadData() {
-  this.$store.dispatch('loadItems').
-}
-```
-
-Podemos ver el ejemplo completo en el _fiddle_ siguiente:
-<script async src="//jsfiddle.net/awolf2904/n8d44bh3/embed/js,html,result/"></script>
+**NOTA**: si quien llama a una acción no necesita saber cuándo termina la acción ni su resultado la acción no es necesario que devuelva una promesa
 
 ## state en formularios
-Si queremos usar un formulario para modificar un state del pattern lo asociamos al input con la directiva **v-model** pero eso plantea un problema: cuando el usuario cambie el valor del input estamos escribiendo directamente sobre un state, lo que no puede hacerse más que por medio de una mutación.
+Si queremos usar un formulario para modificar un state del store no podemos asociarlo al input con la directiva **v-model** porque cuando el usuario cambie el valor del input estaría escribiendo directamente sobre un state, lo que no puede hacerse más que por medio de una mutación.
 
 Tenemos 2 soluciones al problema:
 - podemos no usar el v-model sino descomponerlo en un _:value_ y un _@input_ como vimos al hablar de poner un input en un subcomponente
