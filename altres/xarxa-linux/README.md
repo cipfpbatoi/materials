@@ -32,26 +32,28 @@ El problema és que el nom que se li assigna depèn de quan es configura la targ
 
 Moltes configuracions (firewall, etc) depenen del nom que tinguen les targetes pel que si aquest canvia deixaran de funcionar correctament. Per a evitar el problema de no saber com es dirà cada interfície de xarxa, les distribucions GNU/Linux utilitzen **Predictable Network Interface Names** que assigna identificadors estables a les interfícies de xarxa basant-se en el tipus (local Ethernet, WLAN, WWAN, etc).
 
-El nom que reben les targetes depen del tipus (**en...** per a les ethernet amb cable, **wl...** per a les _wireless_ o **lo** per a la interfície _loopback_). La resta del nom depen de on està instal·lada (en placa **enoX**, en un port PCI, USB, ... **enpXsY**, etc). En màquines de VirtualBox la primera sol ser la **emp0s3** i la resta a partir de la **enp0s8**, ...
+El nom que reben les targetes depen del tipus (**en...** per a les ethernet amb cable, **wl...** per a les _wireless_ o **lo** per a la interfície _loopback_). La resta del nom depen de on està instal·lada (**p** si està _"punxada"_ en un port PCI, USB, etc, la targeta es dirà **enpXsY**; **o** si està en la placa i es dirà **enoX**). En les màquines de VirtualBox la primera sol ser la **emp0s3** i la resta a partir de la **enp0s8**, ...
 
-## Network Manager
+## Network Manager (entorn gràfic)
 Si la nostra distribució és Debian o està basada en ell (com Ubuntu, Linux Mint, Lliurex, ...) i tenim entorn gràfic el servei responsable de la xarxa serà per defecte el **Network Manager**, encara que podem configurar el sistema per a gestionar la xarxa sense aquest servei, utilitzant _netplan_ o _ifupdown_. 
 
 Per a vore o canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Configuració de la xarxa**. AIxò obri l'editor del Network Manager:
 
 ![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-1-conn.png)
 
-## Netplan vs ifupdown
+## Netplan vs ifupdown (_Command Line Interface_)
+Per a configurar la xarxa des de la terminal s'utilitzen diferents sistemes segons la distribució utilitzada: les distribucions _Debian_ utilitzen **ifupdown** i les _Ubuntu_ utilitzen **netplan** (abans de la versió 17.10 també utilitzaven _netplan_)
+
 Les principals diferències entre els dos sistemes són, entre uns altres:
-* el fitxer de configuració que en _ifupdown_ era com tots de text pla (`/etc/network/interfícies`) ara és un fitxer _YAML_ que es troba dins de **`/etc/netplan/`**
-* el servei que gestiona la xarxa ara no és `networking` sino **`systemd-networkd`**
-* per a activar o desactivar una interficie ja no tenim els comandos `ifup` i `ifdown` sinó:
+* el fitxer de configuració en _ifupdown_ es de text pla (**`/etc/network/interfícies`**) i en _netplan_ és un fitxer _YAML_ que es troba dins de **`/etc/netplan/`**
+* el servei que gestiona la xarxa  en _ifupdown_ és **`networking`** i en _netplan_ **`systemd-networkd`**
+* per a activar o desactivar una interficie el  en _ifupdown_ s'utilitzen els comandos `ifup` i `ifdown` i en _netplan_:
 ```bash
     ip link set $targeta up
     ip link set $targeta down
 ```
-* tampoc tenim el comando `ifconfig` que s'ha substituit per **`ip`**
-* hi ha una nova comanda, networkctl, per a veure què dispositius tenim. Amb el paràmetre `status` ens dóna la configuració de cadascun:
+* per a vore o configurar temporalment la xarxa en  en _ifupdown_ tenim el comando **`ifconfig`** i en _netplan_ s'ha substituit per **`ip`**
+* en _netplan_ hi ha una nova comanda, **networkctl**, per a veure què dispositius tenim. Amb el paràmetre `status` ens dóna la configuració de cadascun:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-04.png)
 
@@ -85,7 +87,7 @@ El comando `ifconfig` es troba en el paquet **net-tools** junt a `route` i altre
 ```bash
 ip addr show
 ```
-(o simplement ip a). 
+(o simplement `ip a`). 
 
 ![ifconfig](./img/ifconfig.png)
 ![ip a](./img/ip-addr.png)
