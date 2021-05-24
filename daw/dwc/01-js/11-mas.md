@@ -164,7 +164,7 @@ Saber más:
 * [Typescriptlang](https://www.typescriptlang.org/)
 
 # jQuery
-Se trata de una biblioteca que nos facilita enormemente el trabajo con el DOM ya que tiene "atajos" para muchas isntrucciones, por ejemplo para pone 'Hola mundo' como contenido de un elemento con la id `mensaje`:
+Se trata de una biblioteca que nos facilita enormemente el trabajo con el DOM ya que tiene "atajos" para muchas instrucciones, por ejemplo para poner 'Hola mundo' como contenido de un elemento cuya _id_ es `mensaje`:
 ```javascript
 // Código con Javascript sólo
 document.getElementById('mensaje').textContent = 'Hola mundo'
@@ -173,10 +173,11 @@ document.getElementById('mensaje').textContent = 'Hola mundo'
 $('#mensaje').text('Hola mundo')
 ```
 
-Otra ventaja de jQuery es que permite trabajar con conjuntos de elementos sin tener que hacer un `forEach` (lo hace internamente). Por ejemplo para poner un escuchador que muestre un alert 'Párrafo pinchado' al hacer click sobre cualquier párrafo de la calse 'importante' tendríamos que hacer:
+Otra ventaja de jQuery es que permite trabajar con conjuntos de elementos sin tener que hacer un `forEach` (lo hace internamente). Por ejemplo para poner un escuchador que muestre un alert 'Párrafo pinchado' al hacer click sobre cualquier párrafo de la clase 'importante' tendríamos que hacer:
 ```javascript
 // Código con Javascript sólo
-Array.from(document.querySelectorAll('p.importante')).forEach(parrafo => parrafo.addEventListener('click', () => alert('Párrafo pinchado))
+Array.from(document.querySelectorAll('p.importante'))
+.forEach(parrafo => parrafo.addEventListener('click', () => alert('Párrafo pinchado))
 
 // Código con jQuery
 $('p.importante').click(() => alert('Párrafo pinchado))
@@ -204,11 +205,10 @@ function getPosts() {   // Función que pide los datos al servidor
 }
 
 function renderPosts()    // Función que los muestra en la página
-      
       getPosts(idUser)
         .then((posts) => {
-          document.querySelector('#posts tbody').innerHTML = ''; // borramos el contenido de la tabla
-          posts.forEach(post => {
+          document.querySelector('#posts tbody').innerHTML = ''; // borramos su contenido
+          posts.forEach((post) => {
             const newPost = document.createElement('tr');
             newPost.innerHTML = `
                 <td>${post.userId}</td>
@@ -218,9 +218,7 @@ function renderPosts()    // Función que los muestra en la página
             document.querySelector('#posts tbody').appendChild(newPost);
           })
         })
-        .catch(function(error) {
-          console.error(error);
-        })
+        .catch((error) => console.error(error))
 }
 ```
 
@@ -233,19 +231,17 @@ function renderPosts()    // Función que los muestra en la página
       $.get(SERVER + '/posts')
         .done((posts) => {
           $('#posts tbody').text('');    // borramos el contenido de la tabla
-          posts.forEach(post => {
-            $('#posts tbody').append(`<tr>
+          posts.forEach(post => $('#posts tbody').append(
+              `<tr>
                 <td>${post.userId}</td>
                 <td>${post.id}</td>
                 <td>${post.title}</td>
-                <td>${post.body}</td>`
-              </tr>`);
-          })
+                <td>${post.body}</td>
+              </tr>`
+          ))
         })
-        .fail(function(error) {
-          console.error(error);
-        })
+        .fail((error) => console.error(error))
 }
 ```
 
-En contraréis infinidad de tutoriales por Internet donde aprender jQuery. A mi me gustan mucho unos vídeos de [Didacticode](https://didacticode.com/) que podéis encontrar en [https://didacticode.com/curso/curso-de-jquery/](https://didacticode.com/curso/curso-de-jquery/) (tienes que registrarse y tendrás acceso a muchos cursos de Javascript y "derivados") o directamente en su [canal de Yiutube](https://www.youtube.com/channel/UCPbFiM-HA4lwJH12JXdXxDA).
+Encontraréis infinidad de tutoriales por Internet donde aprender jQuery, por ejemplo unos vídeos de [Didacticode](https://didacticode.com/) que podéis encontrar en [https://didacticode.com/curso/curso-de-jquery/](https://didacticode.com/curso/curso-de-jquery/) (tienes que registraros para tener acceso a muchos cursos de Javascript y "derivados") o directamente en su [canal de Youtube](https://www.youtube.com/channel/UCPbFiM-HA4lwJH12JXdXxDA).
