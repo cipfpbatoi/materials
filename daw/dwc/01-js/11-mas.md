@@ -9,6 +9,7 @@
   - [WebSockets](#websockets)
   - [WebWorkers](#webworkers)
   - [Typescript](#typescript)
+- [y jQuery](#jquery)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -161,3 +162,90 @@ Quizá el inconveniente es que es algo más difícil que JS pero como está basa
 Saber más:
 * [Wikipedia - Typescript](https://en.wikipedia.org/wiki/TypeScript)
 * [Typescriptlang](https://www.typescriptlang.org/)
+
+# jQuery
+Se trata de una biblioteca que nos facilita enormemente el trabajo con el DOM ya que tiene "atajos" para muchas isntrucciones, por ejemplo para pone 'Hola mundo' como contenido de un elemento con la id `mensaje`:
+```javascript
+// Código con Javascript sólo
+document.getElementById('mensaje').textContent = 'Hola mundo'
+
+// Código con jQuery
+$('#mensaje').text('Hola mundo')
+```
+
+Otra ventaja de jQuery es que permite trabajar con conjuntos de elementos sin tener que hacer un `forEach` (lo hace internamente). Por ejemplo para poner un escuchador que muestre un alert 'Párrafo pinchado' al hacer click sobre cualquier párrafo de la calse 'importante' tendríamos que hacer:
+```javascript
+// Código con Javascript sólo
+Array.from(document.querySelectorAll('p.importante')).forEach(parrafo => parrafo.addEventListener('click', () => alert('Párrafo pinchado))
+
+// Código con jQuery
+$('p.importante').click(() => alert('Párrafo pinchado))
+```
+
+Como vemos, básicamente nos permite hacer lo mismo pero escribiendo mucho menos código. También incluye funciones para cosas que en Javascript requieren varias líneas de código como animaciones o Ajax. Por ejemplo una pertición para mostrar en una tabla con id _posts_ todos los posts del servidor _jsonplaceholder_ tendremos que hacer:
+```javascript
+// Código con Javascript sólo
+const SERVER = 'https://jsonplaceholder.typicode.com';
+
+function getPosts() {   // Función que pide los datos al servidor
+  return new Promise(function(resolve, reject) {
+    let peticion = new XMLHttpRequest();
+    peticion.open('GET', SERVER + '/posts');
+    peticion.send();
+    peticion.addEventListener('load', function() {
+      if (peticion.status === 200) {
+        resolve(JSON.parse(peticion.responseText));
+      } else {
+        reject("Error " + this.status + " (" + this.statusText + ") en la petición");
+      }
+    })
+    peticion.addEventListener('error', () => reject('Error en la petición HTTP'));
+  })
+}
+
+function renderPosts()    // Función que los muestra en la página
+      
+      getPosts(idUser)
+        .then((posts) => {
+          document.querySelector('#posts tbody').innerHTML = ''; // borramos el contenido de la tabla
+          posts.forEach(post => {
+            const newPost = document.createElement('tr');
+            newPost.innerHTML = `
+                <td>${post.userId}</td>
+                <td>${post.id}</td>
+                <td>${post.title}</td>
+                <td>${post.body}</td>`;
+            document.querySelector('#posts tbody').appendChild(newPost);
+          })
+        })
+        .catch(function(error) {
+          console.error(error);
+        })
+}
+```
+
+Usando jQuery es mucho más sencillo. En primer lugar no hay que hacer la función que hace la petición al servidor porque hay uns función que hace eso: `$.ajax` y sus derivadas `$.get`, `$.post`, ... Además la parte de pintar los datos es también mucho más corta:
+```javascript
+// Código con jquery
+const SERVER = 'https://jsonplaceholder.typicode.com';
+
+function renderPosts()    // Función que los muestra en la página
+      $.get(SERVER + '/posts')
+        .done((posts) => {
+          $('#posts tbody').text('');    // borramos el contenido de la tabla
+          posts.forEach(post => {
+            $('#posts tbody').append(`<tr>
+                <td>${post.userId}</td>
+                <td>${post.id}</td>
+                <td>${post.title}</td>
+                <td>${post.body}</td>`
+              </tr>`);
+          })
+        })
+        .fail(function(error) {
+          console.error(error);
+        })
+}
+```
+
+En contraréis infinidad de tutoriales por Internet donde aprender jQuery. A mi me gustan mucho unos vídeos de [Didacticode](https://didacticode.com/) que podéis encontrar en [https://didacticode.com/curso/curso-de-jquery/](https://didacticode.com/curso/curso-de-jquery/) (tienes que registrarse y tendrás acceso a muchos cursos de Javascript y "derivados") o directamente en su [canal de Yiutube](https://www.youtube.com/channel/UCPbFiM-HA4lwJH12JXdXxDA).
