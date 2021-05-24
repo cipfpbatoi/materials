@@ -46,16 +46,18 @@ Algunos ejemplos de componentes útiles que podríamos usar son:
 * componente para hacer un modal
 * ...
 
-Hay infinidad de páginas donde podemos aprender cómo crear nuestro propio componente, como:
-* [Octuweb - Web Components: el futuro es ahora… ¿o no?](https://octuweb.com/web-components-el-futuro-es-ahora-o-no/)
+Hay infinidad de páginas donde podemos aprender más sobre WebComponents y cómo crear nuestro propio componente, como:
+* [Web Components | MDN](https://developer.mozilla.org/es/docs/Web/Web_Components)
+* [Introduction - webcomponents.org](https://www.webcomponents.org/introduction)
+* [¿Qué son los WebComponents? - Javascript en español](https://lenguajejs.com/webcomponents/introduccion/que-son-webcomponents/)
 * [Carlos Azaustre - Cómo crear un WebComponent de forma nativa](https://www.youtube.com/watch?v=8bcfgXePHnk&feature=em-subs_digest)
 * ...
 
 En resumen debemos crear un fichero donde definimos la clase de nuestro componente que debe heredar de `HTMLElement`. Es conveniente que su nombre (y por tanto el de la etiqueta que usaremos para mostrarlo) tenga al menos 2 palabras para evitar que pueda entrar en conflicto con posibles futuras etiquetas de HTML (por ejemplo podría ser \<social-login> o \<my-weather>). En esta clase definiremos el HTML y el estilo que tendrá nuestro componente, así como su comportamiento.
 
-Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos (más de 2000) y que podemos usar en nuestras páginas.
+Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos y que podemos usar en nuestras páginas.
 
-Por su parte Google ha desarrollado la librería Polymer para ayudarnos a crear nuestros propios componentes basados en WebComponents y los principales frameworks JS como Angular o Vue permiten crear WebComponents de forma sencilla.
+Por su parte Google ha desarrollado la librería Polymer para ayudarnos a crear nuestros propios componentes basados en WebComponents y los principales frameworks JS como Angular o Vue permiten crear sus propios componentes de forma muy sencilla, com veremos en el bloque de Vue.
 
 ## WebSockets
 WebSockets es una tecnología basada en el protocolo **ws** que permite establecer una conexión continua _full-duplex_ entre un cliente (puede ser un navegador) y un servidor. La conexión siempre la abre el cliente pero una vez abierta no se cierra por lo que el servidor puede comunicar en cualquier momento con el cliente y enviarle información.
@@ -105,6 +107,7 @@ Podemos practicar con [www.websocket.org](https://www.websocket.org/echo.html) q
 
 Saber más:
 * [MDN: Escribiendo aplicaciones con WebSockets](https://developer.mozilla.org/es/docs/WebSockets-840092-dup/Writing_WebSocket_client_applications)
+* [WebSocket - El Tutorial de JavaScript Moderno](https://es.javascript.info/websocket)
 * [Carlos Azaustre: Crear chat con WebSockets](https://www.youtube.com/watch?v=ppiAvvkvAz0)
 
 ## WebWorkers
