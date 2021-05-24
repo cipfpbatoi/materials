@@ -350,15 +350,17 @@ Igual que antes podemos usar el _helper_ _mapActions_ para mapear acciones y no 
 Si la acción realiza una llamada asíncrona y el componente que la llama tiene que enterarse de cuándo finaliza debe devolver una promesa:
 ```javascript
   actions: {
-    return new Promise((resolve, reject) => {
-      addTodo(context, item) {
-        axios.post(`${baseURL}/todos`, item)
-        .then((response) => {
-          context.commit('addTodo', response.data)
-          resolve(response.data)
-        })
-        .catch((error) => reject(error))
-      },
+    addTodo(context, item) {
+      return new Promise((resolve, reject) => {
+        addTodo(context, item) {
+          axios.post(`${baseURL}/todos`, item)
+          .then((response) => {
+            context.commit('addTodo', response.data)
+            resolve(response.data)
+          })
+          .catch((error) => reject(error))
+        }
+    },
   },
 ```
 
