@@ -58,7 +58,11 @@ Un altre exemple amb 2 targetes de xarxa configurades estàticament:
 
 ![interfaces](./img/interfaces2.jpg)
 
-Podem configurar cada interfície de forma estàtica (iface ethX inet static) o per dhcp (iface ethX inet dhcp). Si ho fem estàticament hem d'indicar la IP (address), la màscara (netmask), la porta d'enllaç si fa falta (gateway) i els servidors DNS (dns-nameservers). També es pot indicar la xarxa (network) i l'adreça de broadcast però no és necessari perquè es pot calcular a partir de la IP i la màscara.
+Podem configurar cada interfície de forma:
+- estàtica: `iface ethX inet static`
+- per dhcp `iface ethX inet dhcp`
+
+Si ho fem estàticament hem d'indicar la IP (_address_), la màscara (_netmask_), la porta d'enllaç si fa falta (_gateway_) i els servidors DNS (_dns-nameservers_). També es pot indicar la xarxa (_network_) i l'adreça de _broadcast_ però no és necessari perquè es pot calcular a partir de la IP i la màscara.
 
 Després de modificar el fitxer de configuració hem de reiniciar el servei de xarxa (amb systemctl):
 ```bash
