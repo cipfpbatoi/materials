@@ -467,7 +467,7 @@ También tenemos 2 operadores de _diferente_: **!=** y **!==** que se comportan 
 Los operadores relacionales son >, >=, <, <=. Cuando se compara un número y una cadena ésta se convierte a número y no al revés (`23 > '5'` devuelve _true_, aunque `'23' > '5'` devuelve _false_)  
 
 ## Manejo de errores
-Si sucede un error en nuestro código el programa dejará de ejecutarse por lo que el usuario tendrá la sensación de que no ahce nada (el error sólo se muestra en la consola y el usuario no suele abrirla nunca). Para evitarlo debemos intentar capturar los posibles errores de nuestro código antes de que se produzcan.
+Si sucede un error en nuestro código el programa dejará de ejecutarse por lo que el usuario tendrá la sensación de que no hace nada (el error sólo se muestra en la consola y el usuario no suele abrirla nunca). Para evitarlo debemos intentar capturar los posibles errores de nuestro código antes de que se produzcan.
 
 En javascript (como en muchos otros lenguajes) el manejo de errores se realiza con sentencias
 ```javascript
@@ -479,20 +479,37 @@ catch(error) {
 }
 ```
 
-Dentro del bloque _try_ ponemos el código que queremos proteger y cualquier error producido en él será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no. El parámetro que recibe _catch_ es un objeto con la propiedad _name_ que indica el tipo de error (_SyntaxError_, _RangeError_, ... o el genérico _Error_) y _message_ que indica el texto del error producido.
+Dentro del bloque _try_ ponemos el código que queremos proteger y cualquier error producido en él será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no. El parámetro que recibe _catch_ es un objeto con las propiedades _name_, que indica el tipo de error (_SyntaxError_, _RangeError_, ... o el genérico _Error_), y _message_, que indica el texto del error producido.
 
-En ocasiones podemos querer que nuestro código genere un error. Para lanzar un error desde nuestro código se utiliza la instrucción `throw`:
+En ocasiones podemos querer que nuestro código genere un error. Esto evita que tengamos que comprobar si el valor devuelto por una función es el adecuado o es un código de error. Por ejemplo tenemos una función para retirar dinero de una cuenta que recibe el saldo de la misma y la cantdad de dinero a retirar y devuelve el nuevo saldo, pero si no hay suficiente saldo no debería restar nada sino mostrar un mensaje al usuario. Sin gestión de errores haríamos:
 ```javascript
-if (valorNoValido) {
-    throw 'Valor no válido';
+function retirar(saldo, cantidad) {
+  if (saldo < cantidad) {
+    return false
+  }
+  return saldo - cantidad
 } 
+
+// Y donde se llama a la función_
+...
+resultado = retirar(saldo, importe)
+if (resultado === false
+  alert('Saldo insuficiente')
+} else {
+  saldo = resultado
+...
 ```
 
-Por defecto al lanzar un error este será de clase _Error_ pero (el código anteriro es equivalente a `throw new Error('Valor no válido')`) aunque podemos lanzarlo de cualquier otra clase (`throw new RangeError('Valor no válido')`) o personalizarlo.
+Se trata de un código poco claro que podemos mejorar lanzando un error en la función. Para ello se utiliza la instrucción `throw`:
+```javascript
+  if (saldo < cantidad) {
+    throw 'Saldo insuficiente'
+  }
+```
 
-Siempre que vayamos a ejecutar código que pueda generar un error debemos ponerlo dentro de un bloque _try_ por lo que la llamada a la función que contiene el código anterior debería estar dentro de un _try_.
+Por defecto al lanzar un error este será de clase _Error_ pero (el código anterior es equivalente a `throw new Error('Valor no válido')`) aunque podemos lanzarlo de cualquier otra clase (`throw new RangeError('Saldo insuficiente')`) o personalizarlo.
 
-Veamos un ejemplo de una función para retirar dinero de una cuenta que recibe el saldo de la misma y la cantdad de dinero a retirar y devuelve el nuevo saldo:
+Siempre que vayamos a ejecutar código que pueda generar un error debemos ponerlo dentro de un bloque _try_ por lo que la llamada a la función que contiene el código anterior debería estar dentro de un _try_. El código del ejemplo anterior quedaría:
 ```javascript
 function retirar(saldo, cantidad) {
   if (saldo < cantidad) {
@@ -504,7 +521,7 @@ function retirar(saldo, cantidad) {
 // Siempre debemos llamar a esa función desde un bloque _try_
 ...
 try {
-  nuevoSaldo = retirar(saldo, importe)
+  saldo = retirar(saldo, importe)
 } catch(err) {
   alert(err)
 }
