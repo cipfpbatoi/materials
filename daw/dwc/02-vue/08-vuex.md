@@ -245,7 +245,7 @@ getters: {
   }
 }
 ```
-Y lo llamaremos con `store.getters.getTodoById(2)`.
+Y lo llamaremos con `this.$store.getters.getTodoById(2)`.
 
 ### Mutations
 **NOTA**: Una mutación no puede hacer una llamada asíncrona (por ejemplo llamar a _axios_)
@@ -261,7 +261,7 @@ mutations: {
 }
 ```
 
-Al llamar a la mutación le pasamos el valor esperado: `store.commit('addTodo', this.newTodo)`. 
+Al llamar a la mutación le pasamos el valor esperado: `this.$store.commit('addTodo', this.newTodo)`. 
 
 Cada vez que se llama a una mutación se registra en las _DevTools_ y podemos ver la mutación llamada y los datos que se le han pasado:
 
@@ -269,7 +269,7 @@ Cada vez que se llama a una mutación se registra en las _DevTools_ y podemos ve
 
 Si queremos pasar varios parámetros el _payload_ será un objeto. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
 ```javascript
-store.commit({
+this.$store.commit({
   type: 'incrementBy',
   amount: 10
 })
