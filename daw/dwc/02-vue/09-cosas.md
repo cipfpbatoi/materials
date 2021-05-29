@@ -45,9 +45,12 @@ Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en n
 - interceptaremos todas las respuestas a la API y si en alguna el servidor responde con un error 401 (Unauthenticated) reenviaremos al usuario a la página de login para que se loguee pero pasándole como parámetro la página a la que quería ir para que una vez logueado vaya automáticamente a dicha página
 - el login hará varias cosas
   - si hay token en el _localStorage_ es que ya está logueado (posiblemente se haya recargado la página y al interceptar la respuesta era un 401 porque iba sin token y se ha redireccionado aquí). En este caso simplemente se guarda el token en el _store_ y se vuelve a la página de donde venía la petición. OJO: si el token caduca (que es lo más normal) deberemos mirar si ya ha expirado y en ese caso no se guarda en el _store_ sino que se elimina del _localStorage_ y se hace un login normal
-  - si no hay token es que debemos loguearnos así que se muestra el formulario para que el usuario introduzca sus credenciales y se le envían al servidor. Este contestará con un token que deberemos guardar en el _store_ y en el _localStorage_ antes de redireccionar a la página de la que venía la petición o a la página de inicio.
+  - si no hay token es que debemos loguearnos así que se muestra el formulario para que el usuario introduzca sus credenciales y se le envían al servidor. Este contestará con un token que deberemos guardar en el _store_ y en el _localStorage_ antes de redireccionar a la página de la que venía la petición o a la página de inicio
+- en el _router_ indicaremos para qué rutas hay que estar autentificado y antes de cargar cualquiera de ellas (usaremos el _hook_ _beforeEach_) comprobamos si estamos autenticados y en caso de no estarlo redireccionamos al login, pero pasándole como parámetro la ruta a la que queríamos ir para que se cargue tras loguearse
 
 Veamos el código para hacer todo esto:
+
+### Store
 ```javascript
 // Fichero '@/store/index.js'
 ...
@@ -80,6 +83,7 @@ La acción que envía las credenciales del usuario al servidor es una promesa po
 
 Las _mutaciones_ almacenan el _token_ en el _store_ y también en el _localStorage_.
 
+### API
 ```javascript
 // Fichero '@/services/API.js'
 import axios from 'axios'
@@ -130,9 +134,77 @@ export default {
 
 Interceptamos las peticiones para incluir el _token_ si lo tenemos.Y también las respuestas porque si es un error 401 hay que loguearse por lo que se cambia el router al _login_ pero se le pasa la dirección de la página en la que se estaba para que tras loguearse se cargue esa página y no la de inicio.
 
-```vue
-// Vista 'Login.vue'
 
+### Login.vue
+```vue
+// script de la vista 'Login.vue'
+...
+  mounted() {
+    if (localStorage.token) {
+      // Si el token caduca debemos comprobar que no haya expirado
+      this.$store.commit("login", localStorage.token)
+      this.loadPage()
+    }
+  },
+  methods: {
+    submit() {
+      this.$store.dispatch("login", this.user)
+        .then(() => this.loadPage())
+        .catch((err) => alert(err))
+    },
+    loadPage() {
+      const redirect = decodeURIComponent(this.$route.query.redirect || '/')
+      this.$router.push({ path: redirect })
+    }
+  },
+...
+```
+
+### Router
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '../store'
+
+import Datos from '../views/Datos.vue'
+...
+
+Vue.use(VueRouter)
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (store.token) {
+      next();
+    }
+    else {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    }
+  }
+  else {
+    next();
+  }
+})
+
+const routes = [
+  {
+    path: '/datos',
+    name: 'Datos',
+    component: Datos,
+    meta: {
+      requireAuth: true,
+    },
+  },
+  ...
+]
+
+export default router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
 ```
 
 Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
