@@ -3,12 +3,12 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Siguientes cosas a aprender en Vue](#siguientes-cosas-a-aprender-en-vue)
+  - [Autenticación](#autenticaci%C3%B3n)
+  - [Paso a producción](#paso-a-producci%C3%B3n)
   - [Vuetify](#vuetify)
     - [Instalación](#instalaci%C3%B3n)
     - [Crear el layout](#crear-el-layout)
     - [Saber más](#saber-m%C3%A1s)
-  - [Paso a producción](#paso-a-producci%C3%B3n)
-  - [Autenticación](#autenticaci%C3%B3n)
   - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-Vue)
@@ -35,6 +35,37 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
 * [Autenticación](#autenticaci%C3%B3n)
 * [ServerSide Rendering](#ssr-server-side-rendering)
 * [Nuxt](#nuxt)
+
+## Autenticación
+Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que le hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
+
+Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Por ejemplo vamos a hacer una aplicación que:
+- al loguearnos la API nos pasa un token que guardaremos en el _store_ y también en el _localStorage_ para poder continuar logueados si se recarga la página (recuerda que al recargar se borran todas las variables de nuestro código)
+- interceptaremos todas las peticiones a la API para incluir en las cabeceras el token, si tenemos
+- interceptaremos todas las respuestas a la API y si en alguna el servidor responde con un error 401 (Unauthenticated) reenviaremos al usuario a la página de login para que se loguee pero pasándole como parámetro la página a la que quería ir para que una vez logueado vaya automáticamente a dicha página
+- el login hará varias cosas
+  - si hay token en el _localStorage_ es que ya está logueado (posiblemente se haya recargado la página y al interceptar la respuesta era un 401 porque iba sin token y se ha redireccionado aquí). EN este caso simplemente se guarda el token en el _store_ y se vuelve a la página de donde venía la petición. OJO: si el token caduca (que es lo más normal) deberemos mirar si ya ha expirado y en ese caso no se guarda en el _store_ sino que se elimina del _localStorage_ y se hace un login normal
+- si no hay token es que debemos loguearnos así que se muestra el formulario para que el usuario introduzca sus credenciales y se le envían al servidor. Este contestará con un token que deberemos guardar en el _store_ y en el _localStorage_ antes de redireccionar a la página de la que venía la petición o a la página de inicio.
+
+
+Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
+* [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
+* [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
+
+## Paso a producción
+Una vez acabada nuestra aplicación debemos general el _build_ que pasaremos a producción. El _build_ es el conjunto de ficheros compilados, minificados, etc que subiremos al servidor de producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
+```bash
+npm run build
+```
+
+Crea un directorio **_dist_** con lo qie hay que subir a producción:
+- **index.html**: HTML minimizado
+- **ficheros .css** y el _source.map_
+- **imágenes**: las que hay en _static_ y en _assets_ (estas últimas procesadas,  minimizadas y optimizadas)
+- **favicon.ico**
+- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progssive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
+
+Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
 
 ## Vuetify
 Son varias las librerías para Vue que nos facilitan enormemente la creación de nuestros componentes ya que nos dan un código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Entre ellas están [Material Design](https://material.io/design), [ElementUI](https://element.eleme.io/#/es), [Vuetify](https://vuetifyjs.com) y muchas otras.
@@ -72,28 +103,6 @@ Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ que propo
 * [VuetifyJS.com](https://vuetifyjs.com/es-MX/getting-started/quick-start)
 * [Vuetify Material Framework in 60 minutes](https://www.youtube.com/watch?v=GeUhmMJUFZQ)
 * [Intro and Overview of Vuetify.js (Build a CRUD client with Vue.js)](https://www.youtube.com/watch?v=5GfpGaHKfyo)
-
-## Paso a producción
-Una vez acabada nuestra aplicación debemos general el _build_ que pasaremos a producción. El _build_ es el conjunto de ficheros compilados, minificados, etc que subiremos al servidor de producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
-```bash
-npm run build
-```
-
-Crea un directorio **_dist_** con lo qie hay que subir a producción:
-- **index.html**: HTML minimizado
-- **ficheros .css** y el _source.map_
-- **imágenes**: las que hay en _static_ y en _assets_ (estas últimas procesadas,  minimizadas y optimizadas)
-- **favicon.ico**
-- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progssive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
-
-Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
-
-## Autenticación
-Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
-
-Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
-* [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
-* [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
 
 ## Typescript
 Es Javascript al que se le ha incorporado tipado de datos. En los [apuntes](./21-typescript.html) puedes ver una introducción a cómo usarlo en Vue y en Internet tienes infinidad de recursos para aprender más.
