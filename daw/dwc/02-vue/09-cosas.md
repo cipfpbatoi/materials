@@ -44,9 +44,96 @@ Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en n
 - interceptaremos todas las peticiones a la API para incluir en las cabeceras el token, si tenemos
 - interceptaremos todas las respuestas a la API y si en alguna el servidor responde con un error 401 (Unauthenticated) reenviaremos al usuario a la página de login para que se loguee pero pasándole como parámetro la página a la que quería ir para que una vez logueado vaya automáticamente a dicha página
 - el login hará varias cosas
-  - si hay token en el _localStorage_ es que ya está logueado (posiblemente se haya recargado la página y al interceptar la respuesta era un 401 porque iba sin token y se ha redireccionado aquí). EN este caso simplemente se guarda el token en el _store_ y se vuelve a la página de donde venía la petición. OJO: si el token caduca (que es lo más normal) deberemos mirar si ya ha expirado y en ese caso no se guarda en el _store_ sino que se elimina del _localStorage_ y se hace un login normal
-- si no hay token es que debemos loguearnos así que se muestra el formulario para que el usuario introduzca sus credenciales y se le envían al servidor. Este contestará con un token que deberemos guardar en el _store_ y en el _localStorage_ antes de redireccionar a la página de la que venía la petición o a la página de inicio.
+  - si hay token en el _localStorage_ es que ya está logueado (posiblemente se haya recargado la página y al interceptar la respuesta era un 401 porque iba sin token y se ha redireccionado aquí). En este caso simplemente se guarda el token en el _store_ y se vuelve a la página de donde venía la petición. OJO: si el token caduca (que es lo más normal) deberemos mirar si ya ha expirado y en ese caso no se guarda en el _store_ sino que se elimina del _localStorage_ y se hace un login normal
+  - si no hay token es que debemos loguearnos así que se muestra el formulario para que el usuario introduzca sus credenciales y se le envían al servidor. Este contestará con un token que deberemos guardar en el _store_ y en el _localStorage_ antes de redireccionar a la página de la que venía la petición o a la página de inicio.
 
+Veamos el código para hacer todo esto:
+```javascript
+// Fichero '@/store/index.js'
+...
+mutations: {
+    loginUser(state, token) {
+        state.token = token
+        localStorage.token = token
+    },
+    logoutUser(state) {
+        state.token = null
+        localStorage.removeItem('token')
+    },
+},
+actions: {
+    login(context, user) {
+        return new Promise ((resolve, reject) => {
+            API.users.login(user)
+            .then((response) => {
+                context.commit('login', response.data)
+                resolve(response.data)
+            })
+            .catch((err) => reject(err))
+        })
+    },
+    ...
+},
+```
+
+La acción que envía las credenciales del usuario al servidor es una promesa porque el componente _Login.vue_ tiene que saber cuándo se obtiene el token para redireccionar a la página correspondiente.
+
+Las _mutaciones_ almacenan el _token_ en el _store_ y también en el _localStorage_.
+
+```javascript
+// Fichero '@/services/API.js'
+import axios from 'axios'
+import store from '@/store'
+import router from '@/router'
+
+const API_URL = process.env.VUE_APP_API
+
+const users = {
+    login: (item) => axios.post(`${API_URL}/auth/login`, item),
+    register: (user) => axios.post(`${API_URL}/auth/signup`, user),
+}
+...
+
+axios.interceptors.request.use((config) => {
+    const token = store.state.user.access_token
+    if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error)
+})
+
+axios.interceptors.response.use((response) => {
+    return response
+}, (error) => {
+    if (error.response) {
+        switch (error.response.status) {
+            case 401:
+                store.commit('logout')
+                if (router.currentRoute.path !== 'login') {
+                    router.replace({
+                        path: 'login',
+                        query: { redirect: router.currentRoute.path },
+                    })
+                }
+        }
+    }
+    return Promise.reject(error)
+})
+
+export default {
+    users,
+    ...
+};
+```
+
+Interceptamos las peticiones para incluir el _token_ si lo tenemos.Y también las respuestas porque si es un error 401 hay que loguearse por lo que se cambia el router al _login_ pero se le pasa la dirección de la página en la que se estaba para que tras loguearse se cargue esa página y no la de inicio.
+
+```vue
+// Vista 'Login.vue'
+
+```
 
 Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
 * [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
