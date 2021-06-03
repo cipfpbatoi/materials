@@ -30,6 +30,7 @@ npm install -S vue-router
 ```
 
 - se crea el fichero de rutas en **/src/router/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+
 ```javascript
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -55,6 +56,7 @@ export default router
 ```
 
 - se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$router`:
+
 ```javascript
 ...
 import router from './router'
