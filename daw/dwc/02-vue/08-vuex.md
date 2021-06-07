@@ -46,6 +46,7 @@ npm install -S vuex
 ```
 
 - se crea el fichero de vuex en **/src/store/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+
 ```javascript
 import Vue from 'vue'
 import Vuex from 'vuex'
