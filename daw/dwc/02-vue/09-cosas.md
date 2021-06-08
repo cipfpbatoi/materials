@@ -231,7 +231,7 @@ Son varias las librerías para Vue que nos facilitan enormemente la creación de
 
 Podemos ver la utilidad de estas librerías consultando, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/) con Vuetify. Vuetify sigue el diseño de _Material Design_. 
 
-Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/es-MX/getting-started/quick-start).
+Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/en/).
 
 ### Instalación
 Vue se instala como cualquier otro plugin:
@@ -240,9 +240,9 @@ vue add vuetify
 ```
 
 ### Crear el layout
-En **App.vue** borramos todo su contenido y lo sustituimos por el código de [layout](https://vuetifyjs.com/en/layout/pre-defined) que deseemos de Vuetify. Para ver el código pinchamos en la imagen del layout deseada y lo copiamos.
+En **App.vue** borramos todo su contenido y lo sustituimos por el código de [layout](https://vuetifyjs.com/en/getting-started/wireframes/) que deseemos de Vuetify. Para ver el código pinchamos en la imagen del layout deseada y lo copiamos.
 
-A continuación ponemos el `<router-view>` donde corresponda (en el caso del layout _Baseline_ en sustitución de la etiqueta `<v-flex>` que contiene los botones para ver el código en GitHub o Codepen.
+A continuación ponemos el `<router-view>` donde corresponda.
 
 Cada elemento del menú es una etiqueta `<v-list-tile>` dentro del `<v-navigation-drawer>`. Para modificar el menú vamos a _Vuetify -> UI components -> Navigation drawers_.
 
@@ -256,7 +256,7 @@ Para cada elemento que queramos añadir:
 </v-list-tile-title>
 ```
 
-Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ que proporciona componentes Vue basados en _Bulma_.
+Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ (que proporciona componentes Vue basados en _Bulma_) y muchas otras.
 
 ### Saber más
 * [VuetifyJS.com](https://vuetifyjs.com/es-MX/getting-started/quick-start)
