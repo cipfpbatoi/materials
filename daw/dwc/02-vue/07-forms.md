@@ -197,7 +197,7 @@ Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a 
 </validation-provider>
 ```
 
-**OJO**: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter **|** pero SIN ESPACIOS entre ellas.
+**OJO**: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter **\|** pero SIN ESPACIOS entre ellas.
 
 La validación se efectúa tras cada modificación del campo (es decir, tras pulsar cada tecla). Si queremos que no se haga hasta salir del campo le añadiremos al _ValidationProvider_ el atributo `mode="lazy"`.
 
