@@ -1,0 +1,1 @@
+# Implantació de Sistemes Operatius
