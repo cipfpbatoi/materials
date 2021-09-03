@@ -1,4 +1,8 @@
 # Virtualització
+
+## Introducció
+En informàtica anomenem _virtualitzar_ a crear amb software una representació (versió virtual) d'algun recurs de manera que simula el seu funcionament. Nosaltres así vorem la **virtualització de hardware** (també anomenada _virtualització de plataforma_) que consisteix en simular tot el hardware de manera que es pot executar una instancia d'un sistema operatiu que te la il·lusió d'executar-se sobre un hardware real.
+
 Moltes vegades tenim la necessitat de provar un programa informàtic o fer proves d'un altre sistema operatiu diferent del que estem utilitzant en el nostre ordinador. Quina és la possible solució? Formatar l'equip i instal·lar el nou sistema operatiu? Crear una partició i instal·lar-ho? Buscar un altre equip en què estiga instal·lat?
 
 La solució és més senzilla que tot això: l'única cosa que s'ha de fer és instal·lar un programa que ens permet crear màquines virtuals dins del nostre ordinador.
@@ -7,17 +11,15 @@ La solució és més senzilla que tot això: l'única cosa que s'ha de fer és i
 
 Una màquina virtual és un programari que emula un ordinador. Per tant és com si dins del nostre ordinador crearem més ordenadors “virtuals”.
 
-Cadascun d'aqueixos ordinadors haurà de tindre el seu sistema operatiu i les seues aplicacions instal·lades, que en cap moment saben que estan dins d'una màquina virtual sinó que pensen que estan en un ordinador real. Per a l'ordinador real cada màquina virtual no és mes que un programa executant-se.
+Cadascun d'aqueixos ordinadors virtuals haurà de tindre el seu sistema operatiu i les seues aplicacions instal·lades, que en tot moment funcionen com si estigueren en un ordinador real. Per a l'ordinador real cada màquina virtual no és mes que un programa executant-se.
 
-Els sistemes operatius instal·lats en les màquines virtuals es denominen sistemes convidats o _**guest**_. El sistema operatiu de la màquina real en la qual hem instal·lat el programari de virtualització es denomina sistema amfitrió o _**host**_. 
-
-La virtualització podem definir-la com la capacitat d'executar en un únic equip físic, anomenat amfitrió o host, múltiples sistemes operatius que es diuen convidats o guests. Cada sistema operatiu guest instal·lat en una màquina virtual treballa com si estiguera instal·lat en una màquina real. Per al sistema amfitrió les màquines virtuals són simples aplicacions instal·lades en aquest.
+Els sistemes operatius instal·lats en les màquines virtuals es denominen sistemes convidats o _**guest**_. El sistema operatiu de la màquina real en la qual hem instal·lat el programari de virtualització es denomina sistema amfitrió o _**host**_. El software que realitza la virtualització s'anomena **hipervisor**.
 
 ![Hardware_Virtualization](http://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Hardware_Virtualization_%28copy%29.svg/512px-Hardware_Virtualization_%28copy%29.svg.png)
 
 La tendència actual és un creixement de la virtualització tant a nivell empresarial com domèstic lloc que els actuals processadors són bastant potents com per a permetre aquesta tecnologia.
 
-Tant Intel (amb **VT-x**) com AMD (amb **AMD-V**) han afegit als seus processadors una funcionalitat que permet incrementar el rendiment dels sistemes virtualitzats. _NOTA: abans de crear les nostres màquines virtuals s'asegurarem que tenim activada aquesta funcionaitat en la BIOS del nostre equip_.
+Tant Intel (amb **VT-x**) com AMD (amb **AMD-V**) des de fa molts anys han afegit als seus processadors una funcionalitat que permet incrementar el rendiment dels sistemes virtualitzats. _NOTA: abans de crear les nostres màquines virtuals s'asegurarem que tenim activada aquesta funcionaitat en la BIOS del nostre equip_.
 
 ## Avantatges i inconvenients de virtualitzar
 Utilitzar sistemes virtualitzats té molts avantatges com són:
