@@ -55,3 +55,34 @@ VMWare ha anunciat el seu VMWare Cloud on AWS
 - **Chrome OS**, gratuït
 - **Horbito**, gratuït imultiplataforma
 - i molts altres. Fins i tot podem utilitzar Google Drive com SO en el núvol ja que a banda de espai d'emmagatzemament ofereix programes ofimàtics (documents, fulles de càlcul, presentacions, ...) i la posibilitat d'afegir més programes des de la Google Web Store.
+
+## Quin Sistema operatiu per a PC triar
+El Sistema operatiu és un element bàsic del nostre equip i tenir instal·lat un sistema o un altre tindrà moltes implicacions sobre el programari que podrem instal·lar, el bon aprofitament del maquinari i la funcionalitat del sistema per a l'usuari.
+
+Instal·lar un sistema operatiu és un procés laboriós que hem de fer correctament per a evitar problemes posteriors. Canviar d'un sistema a un altre suposa molt treball, no solament d'instal·lar el nou sistema, sinó de configurar-ho i instal·lar la resta de programari. És per açò que hem de triar el sistema que millor s'adapte a les necessitats de l'usuari.
+
+A més d'açò hem de tenir molt en compte la màquina sobre la qual anem a instal·lar el sistema. D'una banda hem d'assegurar-nos que el sistema operatiu triat és per a l'arquitectura del nostre processador. En el cas dels PCs a un equip amb arquitectura x64 li podem instal·lar un sistema operatiu x32 però no estarem aprofitant tota la seua capacitat i totes les aplicacions que instal·lem hauran de també ser de 32 bits com el sistema. D'altra banda cal tenir molt en compte que l'equip complix àmpliament els requisits de maquinari del sistema triat ja que d'altra forma no podrem instal·lar el sistema o, si els compleix massa justs, el seu funcionament serà excessivament lent.
+
+En el cas de sistemes operatius per a un PC bàsicament hem de triar entre un sistema operatiu **privatiu** (**Windows** o **OS X**) o un sistema **lliure** (possiblement alguna distribució **GNU/Linux**).
+
+### Sistemes operatius privatius
+La majoria del mercat de sistemes operatius privatius està copat per la empresa Microsoft i els seus sistemes **Windows**, encara que també són molt utilitzats els ordinadors Mac de Apple amb el seu propi sistema operatiu, el **Mac OS X**, especialment en alguns àmbits com els relacionats amb disseny gràfic. 
+
+Tant Microsoft com Apple han desenvolupat sistemes operatius diferents per a servidors i per a clients (també anomenats d'**escriptori**).
+
+### Sistemes operatius lliures
+Ací podem parlar de multitud de sistemes i/o distribucions. Per simplificar, veurem principalment Ubuntu, Debian i Fedora, encara que hi han altres molt també molt interessants (OpenSuse, Slax, LliureX, Gentoo, Centos, RedHat, etc). També parlarem d'altres sistemes que no són GNU/Linux com FreeBSD i Andriod.
+
+Com en altres temes veurem, el més important no és conèixer una distribució o unaltra, sinó tenir clar els conceptes principals de funcionament d'un sistema operatiu, en el nostre cas un sistema Gnu/Linux.
+
+### Actividad
+
+En grups de 2 o 3 persones anem a investigar les avantatges dels diferents sistemes operatius i en quins casos els recomanaríem. Cada grup s'encarregarà d'investigar i exposar en classe un sistema. Heu de parlar de les principals característiques i novetats del sistema, les seues diferents versions, els requisits de maquinari i en quins casos el recomanaries explicant per què és millor que els altres.
+
+Els sistemes a triar són:
+
+- Sistemes lliures o sistemes privatius (un grup defensarà els sistemes lliures i altre els privatius)
+- Diferents sistemes Windows: Windows 10, Windows 8 / 8.1, Windows 7, Altres Windows
+- Diferents sistemes lliures: Debian, Ubuntu, RedHat, CentOS, ...
+- Sistemes OS X
+- Altres sistemes operatius: BSD, ...
