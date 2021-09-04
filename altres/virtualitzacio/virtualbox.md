@@ -21,9 +21,9 @@
 ## Introducció
 És un programa de virtualització de hardware que permet crear diferents màquines virtuals en l'ordinador en que s'instal·la. Es tracta d'un hipervisor de tipus 2 per tant funciona com un programa més de la màquina _host_. Hi ha versions de VirtualBox per a GNU/Linux, Windows i Mac oS X (entre altres).
 
-Aquest programa va ser creat per l'empresa _Innotek GmbH_ que va crear també una versió OSE (_Open Source Edition_) amb llicència GPL (software lliure). Aquesta empresa va ser adquirida per _Sun Microsystems_ en 2008 que va ser comprada per _Oracle Corporation_ en 2010 pel que ara el programa es diu _Oracle Virtualbox_. Hi ha una versió amb llicència privativa que és gratis per a ús personal i una versió OSE amb llicència GPL.
+Aquest programa va ser creat per l'empresa _**Innotek GmbH**_ que va crear també una versió OSE (_Open Source Edition_) amb llicència GPL (software lliure). Aquesta empresa va ser adquirida per _Sun Microsystems_ en 2008 que va ser comprada per _**Oracle Corporation**_ en 2010 pel que ara el programa es diu _Oracle Virtualbox_. Hi ha una versió amb llicència privativa que és gratis per a ús personal i una **versió OSE** amb llicència GPL.
 
-Virtualbox permet muntar fitxers ISO com unitats òptiques de les màquines virtuals. Respecte als disc durs, cadascú s'emmagatzema com un fitxer amb extensió `.vdi` (o `.vmdk`).
+Virtualbox permet muntar fitxers `.iso` com unitats òptiques de les màquines virtuals. Respecte als disc durs, cadascú s'emmagatzema com un fitxer amb extensió `.vdi` (o `.vmdk`).
 
 Per a cada màquina virtual es crea un directori amb el nom de la màquina (per defecte dins d'un directori anomenat **VirtualBox VMs**) en el qual es guarden els seus fitxers (incloent els seus discs durs). La seua configuració es guarda en un fitxer XML amb el nom de la màquina i extensió `.vbox`.
 
@@ -40,8 +40,10 @@ En cada màquina virtual que creem poder instal·lar les _Guest Additions_ que s
 - compartir el portapapers entre la màquina real i la virtual
 - etc
 
+Per a instal·lar les _Guest Additions_ les muntem en la unitat òptica de la màquina virtual com si foren un CD (tenim l'opció de muntar-lo en el menú `Dispositius -> Instal·lar Guest Additions`) i executem el programa _**VBoxWindowsAdditions.exe**_ si el S.O. de la màquina virtual és Windows o _**VBoxLinuxAdditions.sh**_ si és GNU/Linux.
+
 ## Compartir carpetes entre la màquina real i la virtual
-Una carpeta compartida és una carpeta del host accesible des d'una màquina virtual. Es crea des de la màquina virtual en el menú `Dispositius -> Carpetes compartides`.
+Una carpeta compartida és una carpeta del host accesible des d'una màquina virtual. Per a compartir carpetes hem de tindre instal·lades les _Guest Additions_ en la màquina virtual. La carpeta compartida es crea des de la màquina virtual en el menú `Dispositius -> Carpetes compartides`.
 
 A continuació seleccionem la carpeta del host a compartir, li donem un nom per al guest i marquem les opcions que vulguem (com _Automuntar_ per a que es munte automàticament o _Fer permanent_ per a continuar tenint la carpeta compartida si reiniciem la màquina virtual).
 
@@ -76,7 +78,7 @@ Si polsem la icona de **Propietats** podem vore en la part inferior de la pantal
 
 Altres accions que podem fer des d'ací son:
 - **Copiar**: permet fer una còpia d'un disc dur (s'explica en detall més avant)
-- **LLiberar**: permet desconnectar un disc dur de la màquina a la que pertany
+- **Alliberar**: permet desconnectar un disc dur de la màquina a la que pertany
 - **Eliminar**: elimina el fitxer del disc dur. Només pot eliminar-se si no està connectat a cap màquina virtual (per tant abans ho hem d'alliberar)
 
 ### Afegir un disc addicional a una màquina
@@ -84,17 +86,17 @@ En la configuració de la nostra màquina virtual, dins de l'apartat d'emmagatze
 
 Igual que en un PC real, quan afegim un disc dur hem de triar entre un disc SATA, IDE, SCSI, ...
 
+Per a afegir un disc a un controlador existent (IDE o SATA) seleccionem el controlador i en les icones que apareixen a la dreta triem si volem afegir un dispositiu de CD/DVD o un nou disc portar al controlador.
+
+![SATA Controller](./img/control-sata.png)
+
+També tenim en la part inferior de l'arbre d'emmagatzematge una icona per a afegir un nou controlador que pot ser SCSI, SAS o de disquette a més de IDE o SATA.
+
 Si optem per un disc SATA no cal configurar res, igual que passa en la realitat, sinó simplement afegir el disc i indicar en quin port SATA es troba (del 0 al 29).
 
 ![Disc SATA](./img/disco-sata.png)
 
 En el cas dels discos IDE hem d'indicar si serà el primari o el secundari i dins de cadascun si és el mestre o l'esclau (recordeu que normalment en un PC hi ha 2 connectors IDE, un anomenat primari i l'altre secundari, i que en cadascun podem connectar fins a 2 dispositius, el mestre i l'esclau).
-
-Per a afegir un disc a un controlador existent (IDE o SATA) seleccionem el controlador i en les icones que apareixen a la dreta triem si volem afegir un dispositiu de CD/DVD o un nou disc portar al controlador.
-
-També tenim en la part inferior de l'arbre d'emmagatzematge una icona per a afegir un nou controlador que pot ser SCSI, SAS o de disquette a més de IDE o SATA.
-
-![SATA Controller](./img/control-sata.png)
 
 NOTA: si en una màquina virtual hem instal·lat un sistema operatiu en un disc configurat com IDE (o SATA) i després l'arranquem en una màquina on està configurat com SATA (o IDE) el sistema podria no arrancar correctament.
 
