@@ -29,6 +29,10 @@ Per a cada màquina virtual es crea un directori amb el nom de la màquina (per 
 
 Una vegada instal·lat VirtualBox en la nostra màquina instal·larem el _**VirtualBox Extension Pack**_ (es descarrega també de la web de VirtualBox) amb millores com suport per a USB 2.0 i 3.0 i altres.
 
+Per a poder instal·lar sistemes operatius de 64 bits (que és el que farem normalment) és necessari tindre habilitada en la BIOS del nostre equip la virtualització com hem comentat abans. Si no ho tenim no podrem obrir cap màquina de 64 bits i obtindrem l'error:
+
+![BIOS no configurada](img/bios.png)
+
 En el [manual de VirtualBox](https://www.virtualbox.org/manual/UserManual.html) podem conèixer més sobre el funcionament d'aquest programa. 
 
 ## VirtualBox Guest Additions
@@ -40,14 +44,26 @@ En cada màquina virtual que creem poder instal·lar les _Guest Additions_ que s
 - compartir el portapapers entre la màquina real i la virtual
 - etc
 
-Per a instal·lar les _Guest Additions_ les muntem en la unitat òptica de la màquina virtual com si foren un CD (tenim l'opció de muntar-lo en el menú `Dispositius -> Instal·lar Guest Additions`) i executem el programa _**VBoxWindowsAdditions.exe**_ si el S.O. de la màquina virtual és Windows o _**VBoxLinuxAdditions.sh**_ si és GNU/Linux.
+Per a instal·lar les _Guest Additions_ les muntem en la unitat òptica de la màquina virtual com si foren un CD (tenim l'opció de muntar-lo en el menú `Dispositius -> Instal·lar Guest Additions`).
+
+![Instal·lar les Guest Additions](img/guestadditions.png)
+
+A continuació obrim el CD i executem el programa _**VBoxWindowsAdditions.exe**_ si el S.O. de la màquina virtual és Windows o _**VBoxLinuxAdditions.sh**_ si és GNU/Linux.
+
+![Instal·lar les Guest Additions](img/guestadd_instal.png)
 
 ## Compartir carpetes entre la màquina real i la virtual
 Una carpeta compartida és una carpeta del host accesible des d'una màquina virtual. Per a compartir carpetes hem de tindre instal·lades les _Guest Additions_ en la màquina virtual. La carpeta compartida es crea des de la màquina virtual en el menú `Dispositius -> Carpetes compartides`.
 
-A continuació seleccionem la carpeta del host a compartir, li donem un nom per al guest i marquem les opcions que vulguem (com _Automuntar_ per a que es munte automàticament o _Fer permanent_ per a continuar tenint la carpeta compartida si reiniciem la màquina virtual).
+A continuació seleccionem la carpeta del host a compartir, li donem un nom per al guest i marquem les opcions que vulguem (com _Automuntar_ per a que es munte automàticament o _Fer permanent_ per a continuar tenint la carpeta compartida si reiniciem la màquina virtual). També indiquem on volem que es munte aquesta carpeta (en una lletra d'unitat en Windows o un directori en GNU/Linux)
 
-Al fer això ja tenim la carpeta accesible en una ubicació dins de **vboxsvr**. Ara faltaria muntar-la per comoditat, per exemple en Windows podríem connectar la unidad de xarxa `\\vboxsvr\compartida`.
+![Compartir carpeta](img/compartircarpetaconfig.png)
+
+Amb això ja tenim la carpeta muntada on hem indicat
+
+![Carpeta muntada](img/carpetacompartida_muntada.png)
+
+Si no indiquem on s'ha de muntar tindrem la carpeta accesible en una ubicació dins de **vboxsvr** i faltaria muntar-la per comoditat, per exemple en Windows podríem connectar la unidad de xarxa `\\vboxsvr\compartida`.
 
 ## Importar i exportar màquines virtuales
 En el menú `Arxiu -> Importar/Exportar servei virtualitzat` de VirtualBox trobem opcions per a importar i exportar màquines virtuals.

@@ -1,11 +1,11 @@
-# Virtualització
-- [Virtualització](#virtualització)
+# Virtualització de hardware
+- [Virtualització de hardware](#virtualització-de-hardware)
   - [Introducció](#introducció)
   - [Avantatges i inconvenients de virtualitzar](#avantatges-i-inconvenients-de-virtualitzar)
   - [Tipus de virtualització](#tipus-de-virtualització)
 
 ## Introducció
-En informàtica anomenem _virtualitzar_ a crear amb software una representació (versió virtual) d'algun recurs de manera que simula el seu funcionament. Nosaltres así vorem la **virtualització de hardware** (també anomenada _virtualització de plataforma_) que consisteix en simular tot el hardware de manera que es pot executar una instancia d'un sistema operatiu que te la il·lusió d'executar-se sobre un hardware real.
+En informàtica anomenem _virtualitzar_ a crear amb software una representació (versió virtual) d'algun recurs de manera que simula el seu funcionament. Nosaltres así vorem la **virtualització de hardware** (també anomenada _virtualització de plataforma_) que consisteix en simular tot el hardware de manera que es pot executar una instancia d'un sistema operatiu que te la il·lusió d'executar-se sobre un hardware real però hi ha més coses que es poden virtualitzar ().
 
 Moltes vegades tenim la necessitat de provar un programa informàtic o fer proves d'un altre sistema operatiu diferent del que estem utilitzant en el nostre ordinador. Quina és la possible solució? Formatar l'equip i instal·lar el nou sistema operatiu? Crear una partició i instal·lar-ho? Buscar un altre equip en què estiga instal·lat?
 
@@ -21,9 +21,11 @@ Els sistemes operatius instal·lats en les màquines virtuals s'anomenen sisteme
 
 ![Hardware_Virtualization](http://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Hardware_Virtualization_%28copy%29.svg/512px-Hardware_Virtualization_%28copy%29.svg.png)
 
-La tendència actual és un creixement de la virtualització tant a nivell empresarial com domèstic ja que els actuals processadors són molt potents i permetren esta tecnologia.
+La tendència actual és un creixement de la virtualització tant a nivell empresarial com domèstic ja que els actuals processadors són molt potents i permeten esta tecnologia.
 
-Tant Intel (amb **VT-x**) com AMD (amb **AMD-V**) des de fa molts anys han afegit als seus processadors una funcionalitat que permet incrementar el rendiment dels sistemes virtualitzats. _NOTA: abans de crear les nostres màquines virtuals s'asegurarem que tenim activada aquesta funcionalitat en la BIOS del nostre equip_.
+Tant Intel (amb **Intel-VT**) com AMD (amb **AMD-V**) des de fa molts anys han afegit als seus processadors una funcionalitat que permet incrementar el rendiment dels sistemes virtualitzats. 
+
+_NOTA: abans de crear les nostres màquines virtuals s'asegurarem que tenim activada aquesta funcionalitat en la BIOS del nostre equip_.
 
 ## Avantatges i inconvenients de virtualitzar
 Utilitzar sistemes virtualitzats té molts avantatges com són:
@@ -53,5 +55,10 @@ La més comuna és la virtualització completa en la qual s'emula completament e
 Ací la virtualització es realitza mitjançant un programa anomenat _**hipervisor**_ i pot ser de 2 tipus:
 * **Hipervisor de tipus 2**: és un programa que s'executa sobre el sistema operatiu de la màquina real (host) com qualsevol altre programa de la màquina. És el que utilitzarem nosaltres en aquest curs i els més coneguts són **Virtualbox, VMWare Player**, etc. Com s'explica en l'enllaç anterior no és la manera més eficient de virtualitzar màquines però ens permet utilitzar el nostre ordinador de classe per a fer altres tasques a part de virtualitzar.
 ![VMM-Type2](https://upload.wikimedia.org/wikipedia/commons/1/1a/VMM-Type2.JPG)
-* **Hipervisor de tipus 1**: l'hipervisor s'executa directament sobre el maquinari de la màquina real (en realitat inclou un mínim SO per a accedir a aquest maquinari) pel que en aqueixa màquina real no es pot fer cap tasca a part de crear màquines virtuals. És la virtualització més eficient i és la que realitzen programes com **Proxmox, VMWare ESX/ESXi**, ...
+* **Hipervisor de tipus 1 o virtualització _nativa_**: l'hipervisor s'executa directament sobre el maquinari de la màquina real (en realitat inclou un mínim SO per a accedir a aquest maquinari) pel que en aqueixa màquina real no es pot fer cap tasca a part de crear màquines virtuals. És la virtualització més eficient i és la que realitzen programes com **Proxmox, VMWare ESX/ESXi**, ...
 ![VMM-Type1](https://upload.wikimedia.org/wikipedia/commons/5/53/VMM-Type1.JPG)
+
+També tenim altres opcions com:
+- _emulació_: un programa anomenat emulador simula un ordinador que pot tindre un joc d'instruccions diferent al de l'ordinador real (cosa que no pot fer-se en la virtualització nativa). Aquest programa captura cada instrucció que es vol executar i la transforma en les instruccions necessàries de la màquina real. És un procés molt lent encara que es pot utilitzar per exemple per a emular ordinadors antics (com consoles dels anys 80) sense problema ja que el hardware actual és molt més potent. Un exemple és l'emulador M.A.M.E. (emula el maquinari utilitzat en les màquines recreatives per a l'execució dels jocs)
+- _virtualització a nivell de sistema operatiu_: les màquines virtuals funcionen sobre el mateix sistema operatiu de la màquina real convenientment aïllades entre sí. El seu avantatge és que només s'executa una instància del sistema operatiu però el problema és que només es poden executar màquines virtuals amb el mateix sistema operatiu del de la màquina real (per exemple, en un ordinador GNU/Linux només podríem virtualitzar màquines GNU/Linux). Un exemple és OpenVZ
+- _Cloud Computing_: podem tindre els nostres equips en el núvol utilitzant eines com AWS, Microsoft Azure, Google Apps Engine, Heroku, ...
