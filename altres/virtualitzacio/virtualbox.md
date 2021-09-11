@@ -4,6 +4,7 @@
   - [VirtualBox Guest Additions](#virtualbox-guest-additions)
   - [Compartir carpetes entre la màquina real i la virtual](#compartir-carpetes-entre-la-màquina-real-i-la-virtual)
   - [Importar i exportar màquines virtuales](#importar-i-exportar-màquines-virtuales)
+  - [Clonar una màquina virtual](#clonar-una-màquina-virtual)
   - [Emmagatzematge en VirtualBox](#emmagatzematge-en-virtualbox)
     - [L'Administrador de mitjans virtuals](#ladministrador-de-mitjans-virtuals)
     - [Afegir un disc addicional a una màquina](#afegir-un-disc-addicional-a-una-màquina)
@@ -23,7 +24,7 @@
 
 Aquest programa va ser creat per l'empresa _**Innotek GmbH**_ que va crear també una versió OSE (_Open Source Edition_) amb llicència GPL (software lliure). Aquesta empresa va ser adquirida per _Sun Microsystems_ en 2008 que va ser comprada per _**Oracle Corporation**_ en 2010 pel que ara el programa es diu _Oracle Virtualbox_. Hi ha una versió amb llicència privativa que és gratis per a ús personal i una **versió OSE** amb llicència GPL.
 
-Virtualbox permet muntar fitxers `.iso` com unitats òptiques de les màquines virtuals. Respecte als disc durs, cadascú s'emmagatzema com un fitxer amb extensió `.vdi` (o `.vmdk`).
+Virtualbox permet muntar fitxers `.iso` com unitats òptiques de les màquines virtuals. Respecte als disc durs, cadascun s'emmagatzema com un fitxer amb extensió `.vdi` (o `.vmdk`).
 
 Per a cada màquina virtual es crea un directori amb el nom de la màquina (per defecte dins d'un directori anomenat **VirtualBox VMs**) en el qual es guarden els seus fitxers (incloent els seus discs durs). La seua configuració es guarda en un fitxer XML amb el nom de la màquina i extensió `.vbox`.
 
@@ -73,6 +74,13 @@ En el menú `Arxiu -> Importar/Exportar servei virtualitzat` de VirtualBox trobe
 L'exportació crea un arxiu comprimit en el qual es guarda tota la informació de configuració de la màquina virtual, així com tots els seus discos durs amb les dades, aplicacions, etc., del sistema operatiu guest. L'extensió d'aquest tipus de fitxer és **`.ova`**.
 
 La importació d'un fitxer ova crea una nova màquina virtual exactament igual a la que es va exportar.
+
+## Clonar una màquina virtual
+Ens permet tndre una nova màquina exactament igual a altra que ja tenim. Aquesta opció la trobem en el menú `Màquina -> Clonar`.
+
+La clonació potser de 2 tipus:
+- **completa**: es fa una còpia de tota la màquina, incloent el seu disc dur. Amb això tenim 2 màquines iguals però independents
+- **enllaçada**: no es còpia el disc dur sencer sinó que es fa una instantània del disc dur original (després vorem què és). AIxò fa que la còpia ocupe molt poc espai però a canvi si eliminem la màquina original (o la portem al altre equip) la màquina clonada deixarà de funcionar perquè el seu disc dur està vinculat al original.
 
 ## Emmagatzematge en VirtualBox
 La part més important del nostre sistema és el disc dur virtual on el tenim instal·lat. Aquest disc dur és un fitxer que es guarda en la màquina real amb extensió **`vdi`** en la carpeta del nostre directori d'inici denominada **VirtualBox VMs**. VirtualBox també pot treballar amb discos de VMware, amb extensió `vmdk` (ens pregunta el format a l'hora de crear un nou disc).
