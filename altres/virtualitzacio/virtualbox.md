@@ -10,7 +10,7 @@
     - [Afegir un disc addicional a una màquina](#afegir-un-disc-addicional-a-una-màquina)
     - [Clonar un disc dur](#clonar-un-disc-dur)
     - [Canviar el CD](#canviar-el-cd)
-  - [La xarxa en Virtualbox](#la-xarxa-en-virtualbox)
+  - [La xarxa en VirtualBox](#la-xarxa-en-virtualbox)
     - [NAT](#nat)
     - [Xarxa NAT](#xarxa-nat)
     - [Adaptador pont](#adaptador-pont)
@@ -136,7 +136,7 @@ Per a copiar un disc dur no podem simplement copiar el fitxer `.vdi` que constit
 ### Canviar el CD
 En qualsevol moment podem canviar el CD que tenim en la unitat de CD sense necessitat d'apagar la màquina virtual, des del menú `Dispositius -> Unitats òptiques` de la màquina virtual.
 
-## La xarxa en Virtualbox
+## La xarxa en VirtualBox
 La nostra màquina virtual, igual que la real, necessita una targeta de xarxa per a connectar-se amb la resta d'ordinadors (reals o virtuals).
 
 VirtualBox ens permet posar fins a 4 targetes de xarxa en cada màquina virtual i podem triar entre diferents models (AMD PC-Net, Intel PRO, etc.). La majoria de sistemes operatius inclouen drivers per a aquestes targetes però si no sempre podem triar un model diferent. També ens assigna una MAC per defecte que nosaltres podem canviar si volem.
@@ -144,27 +144,29 @@ VirtualBox ens permet posar fins a 4 targetes de xarxa en cada màquina virtual 
 ![Targeta de xarxa](./img/xarxa.png)
 
 Però el més important que hem de configurar és com es connectarà la targeta i tenim diverses opcions:
-* No connectat: la nostra targeta no té en cable](#adaptador-pont) connectat
-* **[NAT](#nat)**: és la manera per defecte en el qual no és necessari configurar res. La màquina virtual té accés a Internet i a la xarxa externa però ningú pot accedir a ella.
-* [Xarxa NAT](#xarxa-nat): virtualbox crea un encaminador virtual al qual es connecten totes les màquines virtuals connectades a aqueixa xarxa interna, que poden veure's entre si.
-* **[Adaptador pont](#adaptador-pont)**: la nostra màquina virtual serà una més en la xarxa real. És el que hem d'utilitzar per a virtualizar servidors accessibles des de la xarxa real.
-* **[Xarxa interna](#xarxa-interna)**: per a crear una xarxa entre màquines virtuals, que haurem de configurar nosaltres.
-* [Adaptador sols amfitrió](#adaptador-sols-amfitrió): crea una xarxa únicament entre el host i diferents màquines virtuals, que no tenen accés a Internet
-* Altres tipus de xarxa avançats com a Túnel UDP (per a més informació consulteu l'ajuda de Virtualbox)
+* No connectat: la nostra targeta de xarxa no té en cable connectat
+* **[NAT](#nat)**: és la manera per defecte en el qual no és necessari configurar res. VirtualBox crea un router virtual per a eixa màquina virtual i així la màquina té accés a la xarxa externa (i a Internet) però ningú pot accedir a ella
+* [Xarxa NAT](#xarxa-nat): és similar a l'anterior però en compte de crear VirtualBox un encaminador virtual per a cada màquina crea un (en el nom que li indiquem) al qual podem connectar més màquines virtuals amb xarxa NAT, que podran veure's entre si
+* **[Adaptador pont](#adaptador-pont)**: la nostra màquina virtual serà una més en la xarxa real. És el que hem d'utilitzar per a virtualitzar màquines que hagen de ser accessibles des de la xarxa real
+* **[Xarxa interna](#xarxa-interna)**: per a crear una xarxa entre màquines virtuals, que haurem de configurar nosaltres. VirtualBox crea un switch virtual (amb el nom que li indiquem) al que poder connectar més màquines amb xarxa interna que seran visibles entre sí
+* [Adaptador sols amfitrió](#adaptador-sols-amfitrió): crea una xarxa únicament entre el host i diferents màquines virtuals, que no tenen accés a Internet. Sería equivalent a connectar amb un cable creuat el _host_ amb la màquina virtual
+* Altres tipus de xarxa avançats com el **túnel UDP** que permet fer un túnel entre 2 _hosts_ per a connectar màquines o el **_Cloud Network_** que ens permet connectar-nos a màquines virtualitzades en el núvol d'Oracle. Per a més informació consulteu l'ajuda de VirtualBox.
+
+Anem a vore en detall les que més utilitzarem.
 
 ### NAT
 Aquest és la manera per defecte de la targeta de xarxa quan creguem una nova màquina virtual.
 
-Quan triem aquesta manera la màquina virtual es connecta en una xarxa creada per VirtualBox que fa de porta d'enllaç i s'encarrega de donar eixida a l'exterior. La **porta d'enllaç** és la **`10.0.2.2`** qui disposa d'un servidor DHCP que dóna al client l'adreça `10.0.2.15`.
+Quan triem aquesta xarxa VirtualBox crea un encaminador virtual per a aquesta màquina que fa de porta d'enllaç i s'encarrega de donar-li eixida a l'exterior. La IP d'aquest router (és a dir, la **porta d'enllaç** de la màquina) és la **`10.0.2.2`**. Aquest router disposa d'un servidor DHCP que dóna al client l'adreça `10.0.2.15`.
 
 ![NAT](./img/xarxa-nat.png)
 
-L'avantatge d'aquesta manera és que no hem de configurar res perquè la xarxa funcione en la màquina virtual però l'inconvenient és que la màquina no és accessible des de cap un altre equip (ni des de la màquina real ni des de la resta d'equips de la xarxa real ni des de les altres màquines virtuals) posat que és com si la màquina virtual estiguera més enllà d'un firewall. Per a fer-la visible hauríem de redirigir ports des de la màquina real a la virtual (VirtualBox permet fer-ho).
+L'avantatge d'aquesta manera és que no hem de configurar res perquè la màquina virtual tinga eixida a l'exterior però l'inconvenient és que la màquina no és accessible des de cap altre equip (ni des de la màquina real ni des de la resta d'equips de la xarxa real ni des de altres màquines virtuals). Per a fer-la visible hauríem de redirigir ports des de la màquina real a la virtual (VirtualBox permet fer-ho).
 
-En definitiva és la millor opció per a una màquina virtual que només necessita tindre accés a l'exterior però no que cap altra màquina accedisca a ella.
+En definitiva és la millor opció per a una màquina virtual que només necessita tindre accés a l'exterior i a la que cap altra màquina haja d'accedir.
 
 ### Xarxa NAT
-Aquest mètode imita el que seria una xarxa domèstica amb un encaminador al qual es connecten els equips. Per a usar-ho hem de crear l'encaminador virtual des del `menú Arxiu -> Preferències -> Xarxa`:
+Aquest mètode imita el que seria una xarxa domèstica amb un encaminador al qual es connecten els equips. Per a usar-ho primer hem de crear l'encaminador virtual des del `menú Arxiu -> Preferències -> Xarxa`:
 
 ![Xarxa NAT en VirtualBox](./img/xarxa-xarxanat-vb.png)
 
@@ -176,8 +178,10 @@ Una vegada fet ja podem triar aquest mètode en les nostres màquines virtuals. 
 
 Si volem que una màquina virtual siga visible des de l'exterior hauríem de redirigir ports des de l'encaminador virtual.
 
+Podem tindre diferents xarxes NAT creant diferents encaminadors virtuals.
+
 ### Adaptador pont
-En aquest cas la màquina virtual es connecta directament a la targeta de xarxa de la màquina real (ens pregunta quin si tenim més d'una): és com si en la nostra targeta de xarxa de la màquina real ara tinguérem 2 connectades: la pròpia màquina real més la màquina virtual.
+En aquest cas la màquina virtual es connecta directament a la targeta de xarxa de la màquina real (si el _hosts_ te més d'una pregunta quina utilitzar). És com si en la nostra targeta de xarxa de la màquina real ara tinguérem 2 màquines connectades: la pròpia màquina real més la màquina virtual.
 
 ![Adaptador pont](./img/xarxa-pont.png)
 
@@ -186,30 +190,32 @@ La configuració que haurem de fer és igual que la de la màquina real: la mate
 És la millor opció per a crear màquines virtuals que es comporten com si foren màquines reals en la nostra xarxa (per exemple per a virtualitzar un servidor i que els clients puguen accedir a ell com a la resta d'equips de la xarxa).
 
 ### Xarxa interna
-Aquesta manera permet crear una xarxa interna entre màquines virtuals dins de la màquina real. És com instal·lar un switch virtual (amb el nom que li donem en la xarxa interna) al qual podem connectar totes les màquines virtuals que vulguem (similar a l'opció Xarxa NAT però sense eixida a l'exterior).
+Aquesta opció permet crear una xarxa interna entre màquines virtuals dins de la màquina real. És com instal·lar un switch virtual (amb el nom que li donem en la xarxa interna) al qual podem connectar totes les màquines virtuals que vulguem (similar a l'opció _Xarxa NAT_ però sense eixida a l'exterior).
 
-Les màquines virtuals que estiguen dins de la mateixa xarxa interna seran visibles entre elles però no des de l'exterior (ni des de la màquina host).
+Les màquines virtuals que estiguen dins de la mateixa xarxa interna seran visibles entre elles però no des de l'exterior (ni des de la màquina host) i tampoc tindran eixida a l'exterior.
 
-Com és una nova xarxa nosaltres elegirem els seus paràmetres (direcció de xarxa, màscara, etc) i haurem de configurar adequadament cada màquina virtual connectada a ella.
+Com és una nova xarxa nosaltres triarem els seus paràmetres (direcció de xarxa, màscara, etc) i haurem de configurar adequadament cada màquina virtual connectada a ella.
 
-Podem crear diferents xarxes internes (donant-li a cadascuna d'elles diferent nom) i és com si vam tindre diferents switches en la nostra xarxa. 
+Podem crear diferents xarxes internes (donant-li a cadascuna d'elles diferent nom) i és com si tinguerem diferents switches en la nostra xarxa. 
 És l'opció adequada per a crear una xarxa virtual on es veuen les màquines virtuals creades però que no són accessibles des de fora.
 
-Normalment s'utilitza al costat d'una altra màquina virtual que faça de servidor de la xarxa. Aquest servidor tindrà 2 targetes de xarxa: 
-- una interna en la mateixa xarxa interna que els clients virtuals i que els conecta a ells
-- una externa configurada com NAT o Adaptador pont que proporcione a la xarxa interna eixida a l'exterior.
+Normalment s'inclou en la xarxa una màquina virtual que faça de servidor de comunicacions de la xarxa i que tinga 2 targetes de xarxa: 
+- una interna en la mateixa xarxa interna que els clients virtuals que la conecta a ells
+- una externa configurada com _NAT_ o _Adaptador pont_ que proporcione a la xarxa interna eixida a l'exterior.
 
 ![Xarxa interna](./img/xarxa-interna.png)
 
 ### Adaptador sols amfitrió
-En aquest cas totes les màquines virtuals configurades així es poden veure entre elles i també amb el host però no són accessibles des de fora ni poden eixir fora del host ja que aquest adaptador no te connexió amb cap targeta física del host.
+En aquest cas totes les màquines virtuals configurades així es poden veure entre elles i també amb el _host_ però no són accessibles des de fora ni poden eixir fora del _host_ ja que aquest adaptador no te connexió amb cap targeta física del _host_. El que fa VirtualBox és crear una targeta de xarxa virtual en el _host_ a la que es connecta la màquina virtual.
 
-Per a utilitzar aquesta manera des del `menú Arxiu -> Configuració -> Xarxa` creem un (o més) adaptador que funciona com si fóra una targeta de xarxa afegida al host però incomunicada de les altres. A aquest nou adaptador li donarem una IP (per defecte 192.168.56.1) i li podem configurar un servei DHCP per a donar IP a les màquines virtuals (per defecte les dóna en el rang 192.168.56.101-254).
+Per a utilitzar aquesta opció des del `menú Arxiu -> Configuració -> Xarxa` creem un (o més) adaptador que funciona com si fóra una targeta de xarxa afegida al host però incomunicada de les altres. A aquest nou adaptador li donarem una IP (per defecte 192.168.56.1) i li podem configurar un servei DHCP per a donar IP a les màquines virtuals (per defecte les dóna en el rang 192.168.56.101-254).
 
 ### Canviar el tipus de la xarxa
-Per a afegir o llevar targetes de xarxa hem de parar la màquina virtual però no cal fer-ho per a canviar el tipus d'una targeta. Podem fer-ho amb la màquina funcionant des del menú `Dispositius -> Adaptadors de xarxa`.
+Per a canviar el tipus de xarxa no cal aturar la màquina virtual ja que és equivalent a connectar el cable de la targeta de xarxa en un switch o router diferent.
 
-En realitat canviar el tipus de xarxa és equivalent a connectar el cable de la targeta de xarxa en un switch o router diferent.
+Es fa des del menú `Dispositius -> Adaptadors de xarxa`.
+
+Si cal aturar-la per a afegir o llevar targetes de xarxa.
 
 ## Snapshots o Instantànies
 Ens permeten guardar “instantànies” de l'estat de la nostra màquina i tornar a aquest estat posteriorment. És com fer una còpia de seguretat de la màquina.
@@ -218,6 +224,6 @@ Ens permeten guardar “instantànies” de l'estat de la nostra màquina i torn
 
 ![Snapshot](./img/snapshot.png)
 
-En aquesta finestra apareixeran totes les instantànies i podem tornar a ella en qualsevol moment seleccionant-la i prement el botó de **Restauració** d'una instantània.
+En aquesta finestra apareixeran totes les instantànies i podem tornar a qualsevol d'elles seleccionant-la i prement el botó de **Restauració** d'una instantània.
 
 Les instantànies es guarden en un directori anomenat **Snapshots** dins del directori de la màquina virtual.
