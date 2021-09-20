@@ -4,14 +4,16 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Programación Orientada a Objetos en Javascript](#programaci%C3%B3n-orientada-a-objetos-en-javascript)
-  - [Introducción](#introducci%C3%B3n)
+- [Programación Orientada a Objetos en Javascript](#programación-orientada-a-objetos-en-javascript)
+  - [Introducción](#introducción)
+  - [Propiedades de un objeto](#propiedades-de-un-objeto)
   - [Clases](#clases)
+    - [Ojo con _this_](#ojo-con-this)
     - [Herencia](#herencia)
-    - [Métodos estáticos](#m%C3%A9todos-est%C3%A1ticos)
+    - [Métodos estáticos](#métodos-estáticos)
     - [toString() y valueOf()](#tostring-y-valueof)
   - [POO en ES5](#poo-en-es5)
-  - [Bibliografía](#bibliograf%C3%ADa)
+  - [Bibliografía](#bibliografía)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -217,6 +219,9 @@ misAlumnos.sort(function(alum1, alum2) {
     return alum1.nombre < alum2.nombre
 });   
 ```
+
+(nota: si las cadenas a comparar pueden tener acentos u otros caracteres propios del idioma deberíamos usar el
+método `.localeCompare()` para comparar las cadenas)
 
 Pero con el método _toString_ que hemos definido antes podemos hacer directamente:
 ```javascript
