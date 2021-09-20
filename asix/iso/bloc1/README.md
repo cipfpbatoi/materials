@@ -3,11 +3,12 @@ En este primer bloque del curso vamos a aprender los conceptos básicos sobre si
 
 Así mismo veremos qué es la virtualización y como utilizar el programa Virtualbox para crear las máquinas virtuales que utilizaremos a lo largo del curso.
 
-El bloque está compuesto por 3 unidades de trabajo:
-- UD 1 Introducción a los sistemas operativos: esta es la unidad más teórica de todo el curso y en ella veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay.
-- UD 2 Virtualización: aquí veremos todo lo relacionado con la virtualización para poder trabajar con máquinas virtuales.
-- UD 3 Instalación: en esta unidad instalaremos diferentes sistemas operativos y veremos las cosas básicas a configurar durante el proceso de instalación.
-- UD 4 Sistemas de archivos: en esta unidad conoceremos diferentes sistemas de archivos, la gestión de permisos y la estructura de estos.  
+El bloque está compuesto por 5 unidades de trabajo:
+- [UD 1 Introducción a los sistemas operativos](ud01/ud1.md): esta es la unidad más teórica de todo el curso y en ella veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay.
+- [UD 2 Virtualización](../../../altres/virtualitzacio/): aquí veremos todo lo relacionado con la virtualización para poder trabajar con máquinas virtuales.
+- [UD 3 Instalación](ud03): en esta unidad instalaremos diferentes sistemas operativos y veremos las cosas básicas a configurar durante el proceso de instalación.
+- UD 4 Sistemas de archivos: en esta unidad conoceremos diferentes sistemas de archivos, la gestión de permisos y la estructura de estos.
+- UD 5 Comandos
 
 ## Introducción
 Actualmente cualquier empresa maneja enormes cantidades de información. El **sistema informático** de la empresa es el encargado de tratar toda esa información y está formado por el _hardware_ (todos los elementos físicos del sistema), el _software_ (todos los programas que hacen que funcionen y realicen las tareas que se necesitan) y también los recursos humanos que hacen que el sistema funcione correctamente.

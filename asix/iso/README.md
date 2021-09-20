@@ -29,7 +29,7 @@ Los resultados de aprendizaje relacionados con el módulo son los siguientes:
 - Implanta software específico con estructura cliente/servidor dando respuesta a los requisitos funcionales.
 
 ## Contenidos
-- Bloque 1: Instalación de sistemas operativos libres y propietarios.
+- [Bloque 1: Instalación de sistemas operativos libres y propietarios.](bloc1/README.md)
 - Bloque 2: Administración de dominios con sistemas operativos propietarios.
 - Bloque 3: Administración de dominios con sistemas operativos libres.
 - Bloque 4: Administración de redes heterogéneas.
