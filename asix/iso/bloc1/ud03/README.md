@@ -33,4 +33,4 @@ Los contenidos de esta unidad son los siguientes:
 - [Planificación de la instalación](./planif.md)
 - [Proceso de instalación](instal.md)
 - [Configuración del sistema](config.md)
-- 
+- [Otras acciones](otras.md)
