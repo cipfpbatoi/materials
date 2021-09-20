@@ -9,4 +9,22 @@ IMPORTANT: no volem que els alumnes es descarreguen els fitxers directament des 
 
 El que hem de fer per a pasar-li una ISO o OVA als alumnes es descarregar-la nosaltres des d'aquesta màquina al nostre ordinador del professor i que els alumnes accedeixen allí o, molt millor, li la passem per UDP _multicast_ que ens permetrà pasar-li-la a tots al mateix temps en molt pocs minuts.
 
-Per a transferir arxius per UDP hem de tindre instal·lat el paquet
+Per a transferir arxius per UDP hem de tindre instal·lat el paquet `udpcast`.
+
+Els alumnes han d'obri una terminal i escriure
+
+```bash
+udp-receiver -f _fichero-a-recibir_
+```
+
+La terminal es queda a l'espera de rebre les dades. Quan ho han fet tots per a enviar-ho escrivim:
+
+```bash
+udp-sender -i _nom-de-la-interficie-com-enp0s2_ -f _fichero-a-recibir_
+```
+
+## Resum
+1. Descarreguen la ISO en l'equip del professor amb l'_Explorador d'arxius_ (`sftp://diso@descargaiso.cipfpbatoi.lan/home/diso/REPOSITORI`)
+2. Li canviem el nom per a que siga més fàcil escriure-ho en la terminal (ex. canviem _Win10_20H2_v2_Spanish_x64.iso_ per _Win10.iso_)
+3. Cada alumne escriu en una terminal `udp-receiver -f Win10.iso`
+4. Obrim una terminal i ho enviem amb `udp-sender -i enp0s2 -f Win10.iso`
