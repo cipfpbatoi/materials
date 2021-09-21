@@ -9,20 +9,20 @@ L'usuari és **`diso`** i la contrasenya **`diso-2021`**
 
 **IMPORTANT**: no volem que els alumnes es descarreguen els fitxers directament des d'allí per a no sobrecarregar la xarxa dels servidors de l'institut.
 
-El que hem de fer per a pasar-li una ISO o OVA als alumnes es descarregar-la nosaltres des d'aquesta màquina al nostre ordinador del professor i que els alumnes accedeixen allí o, molt millor, li la passem per UDP _multicast_ que ens permetrà pasar-li-la a tots al mateix temps en molt pocs minuts.
+El que hem de fer per a pasar-li una ISO o OVA als alumnes es descarregar-la nosaltres des d'aquesta màquina al nostre ordinador del professor i que els alumnes accedeixen allí o, molt millor, li la passem per UDP _multicast_ que ens permetrà pasar-li-la a tots al mateix temps en pocs minuts.
 
 Per a transferir arxius per UDP hem de tindre instal·lat el paquet `udpcast`.
 
 Els alumnes han d'obri una terminal i escriure
 
 ```bash
-udp-receiver -f _fichero-a-recibir_
+udp-receiver -f fichero-a-recibir
 ```
 
 La terminal es queda a l'espera de rebre les dades. Quan ho han fet tots, per a enviar-ho escrivim:
 
 ```bash
-udp-sender -i _nom-de-la-interficie-com-enp0s2_ -f _fichero-a-recibir_
+udp-sender -i nom-de-la-interficie-com-enp0s2 -f fichero-a-recibir
 ```
 
 ## Resum
