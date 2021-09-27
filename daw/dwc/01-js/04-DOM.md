@@ -5,11 +5,11 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Document Object Model (DOM)](#document-object-model-dom)
-  - [Introducción](#introducci%C3%B3n)
+  - [Introducción](#introducción)
   - [Acceso a los nodos](#acceso-a-los-nodos)
   - [Acceso a nodos a partir de otros](#acceso-a-nodos-a-partir-de-otros)
     - [Propiedades de un nodo](#propiedades-de-un-nodo)
-  - [Manipular el árbol DOM](#manipular-el-%C3%A1rbol-dom)
+  - [Manipular el árbol DOM](#manipular-el-árbol-dom)
     - [Modificar el DOM con ChildNode](#modificar-el-dom-con-childnode)
   - [Atributos de los nodos](#atributos-de-los-nodos)
     - [Estilos de los nodos](#estilos-de-los-nodos)
@@ -20,7 +20,7 @@
 ## Introducción
 La mayoría de las veces que programamos con Javascript es para que se ejecute en una página web mostrada por el navegador. En este contexto tenemos acceso a ciertos objetos que nos permiten interactuar con la página (DOM) y con el navegador (Browser Object Model, BOM).
 
-El **DOM** es una estructura en árbol que representa todos los elementos HTML de la página y sus atributos. Todo lo que contien la página se representa como nodos del árbol y me diante el DOM podemos acceder a cada nodo, modificarlo, eliminarlo o añadir nuevos nodos de forma que cambiamos dinámicamente la página mostrada al usuario.
+El **DOM** es una estructura en árbol que representa todos los elementos HTML de la página y sus atributos. Todo lo que contiene la página se representa como nodos del árbol y mediante el DOM podemos acceder a cada nodo, modificarlo, eliminarlo o añadir nuevos nodos de forma que cambiamos dinámicamente la página mostrada al usuario.
 
 La raíz del árbol DOM es **document** y de este nodo cuelgan el resto de elementos HTML. Cada uno constituye su propio nodo y tiene subnodos con sus _atributos_, _estilos_ y elementos HTML que contiene. 
 
@@ -99,11 +99,11 @@ También tenemos 'atajos' para obtener algunos elementos comunes:
 * `document.title`: devuelve el nodo del elemento _\<title>_
 * `document.link`: devuelve una colección con todos los hiperenlaces del documento
 * `document.anchor`: devuelve una colección con todas las anclas del documento
-* `document.form`: devuelve una colección con todos los formularios del documento
+* `document.forms`: devuelve una colección con todos los formularios del documento
 * `document.images`: devuelve una colección con todas las imágenes del documento
 * `document.scripts`: devuelve una colección con todos los scripts del documento
 
-> EJERCICIO: Para hacer los ejercicios de este tema descárgate [esta página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) y ábrela en tu navegador. Obten por consola, al meos de 2 formas diferentes:
+> EJERCICIO: Para hacer los ejercicios de este tema descárgate [esta página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) y ábrela en tu navegador. Obtén por consola, al menos de 2 formas diferentes:
 > - El elemento con id 'input2'
 > - La colección de párrafos
 > - Lo mismo pero sólo de los párrafos que hay dentro del div 'lipsum'
@@ -126,7 +126,7 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 * `elemento.hasChildNodes`: indica si _elemento_ tiene o no nodos hijos
 * `elemento.childElementCount`: devuelve el nº de nodos hijo de  _elemento_
 
-**IMPORTANTE**: a menos que me interesen comantarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
+**IMPORTANTE**: a menos que me interesen comentarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
 
 ![Recorrer el árbol DOM](./img/domRelaciones.png)
 
@@ -160,11 +160,11 @@ Otras propiedades:
 * `elemento.clientLeft` / `elemento.clientTop`: devuelve la distancia de _elemento_ al borde izquierdo / superior
 * `elemento.offsetLeft` / `elemento.offsetTop`: devuelve los píxels que hemos desplazado _elemento_ a la izquierda / abajo
 
-> EJERCICIO: Obten desde la consola, al menos de 2 formas:
+> EJERCICIO: Obtén desde la consola, al menos de 2 formas:
 > - El innerHTML de la etiqueta de 'Escoge sexo'
 > - El textContent de esa etiqueta
 > - El valor del primer input de sexo 
-> - El valor del sexo que esté seleccionado (difíil, búscalo por Internet)
+> - El valor del sexo que esté seleccionado (difícil, búscalo por Internet)
 
 ## Manipular el árbol DOM
 Vamos a ver qué métodos nos permiten cambiar el árbol DOM, y por tanto modificar la página:
@@ -224,8 +224,12 @@ Así sólo debe repintar el párrafo añadido, conservando todo lo demás que te
 
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 
+> EJERCICIO: Añade a la página:
+> - Un nuevo párrafo al final del DIV _'lipsum'_ con el texto "Nuevo párrafo **añadido** por javascript" (fíjate que una palabra estça en negrita)
+> - Un nuevo elemento al formulario tras el _'Dato 1'_ con la etiqueta _'Dato 1 bis'_ y el INPUT con id _'input1bis'_ que al cargar la página tendrá escrito "Hola" 
+
 ### Modificar el DOM con [ChildNode](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode)
-Childnode es una interfaz que permite maipular del DOM de forma más sencilla pero no está soportada en los navegadores Safari de IOS. Incluye los métodos:
+Childnode es una interfaz que permite manipular del DOM de forma más sencilla pero no está soportada en los navegadores Safari de IOS. Incluye los métodos:
 * `elemento.before(nuevoNodo)`: añade el _nuevoNodo_ pasado antes del nodo _elemento_
 * `elemento.after(nuevoNodo)`: añade el _nuevoNodo_ pasado después del nodo _elemento_
 * `elemento.replaceWith(nuevoNodo)`: reemplaza el nodo _elemento_ con el _nuevoNodo_ pasado
