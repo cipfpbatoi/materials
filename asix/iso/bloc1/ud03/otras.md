@@ -11,11 +11,11 @@
 ## Documentación de la instalación
 Cuando instalamos un sistema operativo, especialmente en un servidor, conviene ir anotando en un documento cuestiones importantes cómo:
 - Fecha y hora de la instalación
-- Especificaciones del hardware del equipo (procesador, RAM, disco llevar, tarjeta gráfica, tarjetas de red, etc.)
+- Especificaciones del hardware del equipo (procesador, RAM, disco duro, tarjeta gráfica, tarjetas de red, etc.)
 - Versión y num. de serie del sistema operativo, licencias de cliente instaladas, ...
 - Identificación del equipo: nombre, ubicación, ...
 - Identificación de los usuarios: contraseña del administrador, nombre y contraseña del resto de usuarios
-- Software adicional instalado incluyendo el nombre del programa la versión, descripción, utilidad y fecha de instalación
+- Software adicional instalado incluyendo el nombre del programa, la versión, descripción, utilidad y fecha de instalación
 - Configuración de red: IP, máscara, puerta de enlace, servidores DNS, num. de roseta en el switch o el rack, nombre del dominio o grupo de trabajo al que pertenece
 - Impresoras conectadas: nombre, tipo, IP o puerto, ubicación
 - Configuraciones adicionales: configuración de elementos como cortafuegos, gestor de base de datos, antivirus, etc
@@ -26,6 +26,8 @@ La documentación de un equipo no es un documento estático sino que va cambiado
 - Otro software que se instale posteriormente
 - Incidencias que se produzcan durante la vida útil del equipo
 - etc
+
+En el material del curso tenéis un ejemplo de plantilla de documentación, pero cada uno utilizará el más adecuado para su organización.
 
 ## Instalación de aplicaciones
 Después de instalar el sistema operativo y los drivers necesarios nuestro ordenador ya es totalmente operativo pero todavía no es demasiado útil para el usuario final que necesita de software específico para las tareas que tiene que desarrollar.

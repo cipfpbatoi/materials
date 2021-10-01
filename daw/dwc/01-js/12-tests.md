@@ -2,20 +2,24 @@
 
 Tabla de contenidos
 
-- [Introducción al testing](#introducción-al-testing)
+- [Testing](#testing)
+  - [Introducción al testing](#introducción-al-testing)
 - [Testing en Javascript](#testing-en-javascript)
   - [Instalar npm](#instalar-npm)
   - [Instalar jest](#instalar-jest)
   - [Transpilar nuestro código](#transpilar-nuestro-código)
-    - [Usar Babel](#usar-babel)
-  - [Usar webpack](#usar-webpack)
+    - [Usando Babel con Jest](#usando-babel-con-jest)
+  - [Usando Webpack](#usando-webpack)
+    - [Instalar webpack](#instalar-webpack)
+    - [Ejecutar webpack](#ejecutar-webpack)
+    - [Enlazar el fichero generado en el HTML](#enlazar-el-fichero-generado-en-el-html)
   - [Testear la UI](#testear-la-ui)
 - [Usar jest](#usar-jest)
-  - [Matchers](#matchers)  
+  - [Matchers](#matchers)
   - [Test suites](#test-suites)
+  - [Mocks](#mocks)
   - [Testear promesas](#testear-promesas)
   - [Hooks de Jest](#hooks-de-jest)
-  - [Funciones mock](#funciones-mock)
 - [Desarrollo guiado por pruebas (TDD)](#desarrollo-guiado-por-pruebas-tdd)
   
 ## Introducción al testing
@@ -341,6 +345,8 @@ En realidad no se llama a la función real sino a la definida por el mock y pode
 
 Podéis obtener toda la información en la [documentación de jest](https://jestjs.io/docs/en/mock-functions).
 
+También podemos encontrar muchos ejemplos en otras webs, como en [adalab](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
+
 ## Testear promesas
 Para testear una función que devuelve una promesa debemos hacerlo de diferente manera. Por ejemplo tenemos una función 'getData' que devuelve una promesa. Para testearla:
 ```javascript
@@ -394,11 +400,6 @@ test('city database has San Juan', () => {
   expect(isCity('San Juan')).toBeTruthy();
 });`
 ```
-
-## Funciones mock
-Permiten sustituir el código de ciertas funciones externas usadas en el código que queremos testear. Puedes ver cómo funcionan en la [documentación oficial de Jest](https://jestjs.io/docs/en/mock-functions).
-
-[Ver ejemplos](https://books.adalab.es/materiales-front-end-e/sprint-3.-react/3_14_testing_js)
 
 # Desarrollo guiado por pruebas (TDD)
 Es una forma de programar que consiste en escribir primero las pruebas que deba pasar el código (Test Dirve Development) y luego el código que las pase. Por último deberíamos refactorizarlo ([Refactoring](https://es.wikipedia.org/wiki/Refactorizaci%C3%B3n)). Para escribir las pruebas generalmente se utilizan las [pruebas unitarias](https://es.wikipedia.org/wiki/Prueba_unitaria) (unit test en inglés). 

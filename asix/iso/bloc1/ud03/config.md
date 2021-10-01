@@ -12,11 +12,11 @@
 Una vez finalizada la instalación todavía tendremos que configurar algunas opciones:
 - tendremos que comprobar que todas las particiones del disco están correctamente montadas y, por lo tanto, accesibles desde el sistema operativo
 - también tenemos que comprobar que todos los dispositivos hardware han sido correctamente detectados e instalados sus drivers
-- enemos que comprobar que la configuración de la red es la correcta si esta es por DHCP o configurarla si es manual
+- tenemos que comprobar que la configuración de la red es la correcta si esta es por DHCP o configurarla si es manual
 - tenemos que configurar las actualizaciones del sistema operativo, si queremos que sean automáticas o establecer una política de actualizaciones si tienen que hacerse manualmente
 - tenemos que instalar los programas de aplicación para que el equipo sea útil y los usuarios lo puedan utilizar para realizar su trabajo (lo veremos posteriormente en esta unidad)
 - tenemos que crear los usuarios y grupos necesarios así como carpetas y recursos compartidos y asignar permisos a los recursos del equipo
-- finalmente y antes de pasar el equipo a producción tenemos que hacer pruebas de rendimientos del sistema, crear una imagen para recuperarlo fácilmente en caso de caída y establecer el método de restauración, programar copias de seguridad y otras tareas.
+- finalmente y antes de pasar el equipo a producción tenemos que hacer pruebas de rendimiento del sistema, crear una imagen para recuperarlo fácilmente en caso de caída y establecer el método de restauración, programar copias de seguridad y otras tareas.
 
 ## Comprobación de las particiones
 Una vez instalado el sistema operativo debemos comprobar cómo se ve nuestro disco duro y las particiones que hemos hecho en el mismo. Para ello podemos usar diferentes comandos como `fdisk` o `gparted` o las utilidades que incluye el sistema operativo.
@@ -48,7 +48,7 @@ Al comprar un ordenador habitualmente viene con una versión _OEM_ de Windows in
 
 Si el disco está formateado con _GPT_ posiblemente guardará en una partición oculta una imagen del sistema limpio, como estaba cuando lo compramos, y al arrancar tendremos una opción para restaurar el equipo a los valores de fábrica. 
 
-Si no tendremos que descargarnos Windows desde la página de Microsoft y los diferentes drivers desde las páginas de sus fabricantes. Si el nuestro es un ordenador "de marca" posiblemente podremos descargar un fichero con todos los drivers desde su web; en caso contrario tendremos que ir una por una en las webs de los fabricantes de nuestro hardware (tarjeta gráfica, de red, etc) para el descargar los drivers y para eso necesitamos conocer la marca y modelo de cada componente de nuestro ordenador. Si no lo conocemos podemos utilizar software específico que detecta todo el hardware y nos muestra un informe. Algunos de estos programas son _Everest_, _SiSoft Sandra_, _WinAudit_, _MyPcDrivers_, etc. En GNU/Linux podemos simplemente usar el comando `lshw`.
+Si no tendremos que descargarnos Windows desde la página de Microsoft y los diferentes drivers desde las páginas de sus fabricantes. Si el nuestro es un ordenador "de marca" posiblemente podremos descargar un fichero con todos los drivers desde la web del fabricante. En caso contrario tendremos que ir una por una a las webs de los fabricantes de los componentes (tarjeta gráfica, de red, etc) para el descargar los drivers y para eso necesitamos conocer la marca y modelo de cada componente de nuestro ordenador. Si no lo conocemos podemos utilizar software específico que detecta todo el hardware y nos muestra un informe. Algunos de estos programas son _Everest_, _SiSoft Sandra_, _WinAudit_, _MyPcDrivers_, etc. En GNU/Linux podemos simplemente usar el comando `lshw`.
 
 También hay programas que guardan una copia de los drivers que tenemos actualmente instalados en el sistema, lo cual es muy útil si tenemos que reinstalar el sistema operativo. Antes de formatear podemos instalar uno de estos programas y guardar los drivers detectados en un USB o CD. Después de reinstalar nuestro sistema operativo sólo tenemos que instalar los drivers guardados. Algunos ejemplos son _Driver Genius_, _Driver Easy_, _DriverMax_, etc.
 
@@ -57,7 +57,7 @@ En el caso de máquinas virtuales no tendremos problemas ni en GNU/Linux ni en W
 ## Actualizaciones
 Todos los programas están formados por miles o, incluso, millones de líneas de código y es muy fácil que puedan tener errores. En ocasiones esos errores pueden suponer un problema de seguridad para el equipo por lo cual periódicamente se publican actualizaciones que solucionan los problemas detectados hasta entonces. A estas actualizaciones se los denomina habitualmente _parches_.
 
-Esto es especialmente importante en el caso del sistema operativo porque es el programa que controla el ordenador. Por este motivo **NUNCA** tenemos que tener un sistema operativo desactualizado, tanto si utilizamos sistemas operativos privativos (como los de Microsoft o Apple) como libres (como Gnu/Linux).
+Esto es especialmente importante en el caso del sistema operativo porque es el programa que controla el ordenador. Por este motivo **NUNCA** debemos tener un sistema operativo desactualizado, tanto si utilizamos sistemas operativos privativos (como los de Microsoft o Apple) como libres (como Gnu/Linux).
 
 En general podemos encontrar diferentes tipos de actualizaciones:
 - **de seguridad**: corrigen alguna vulnerabilidad detectada en el programa. Siempre es importante instalarlas porque muchos virus y otro malware utilizan los agujeros de seguridad conocidos de sistemas y programas para introducirse en el ordenador.

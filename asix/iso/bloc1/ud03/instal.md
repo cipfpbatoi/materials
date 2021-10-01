@@ -8,7 +8,12 @@
     - [Instalación por clonación](#instalación-por-clonación)
     - [Instalaciones desatendidas](#instalaciones-desatendidas)
   - [Dónde instalar el sistema: particionado](#dónde-instalar-el-sistema-particionado)
-  - [Configuraciones básicas al instalar un sistema](#configuraciones-básicas-al-instalar-un-sistema)
+  - [Particiones a realizar al instalar el sistema](#particiones-a-realizar-al-instalar-el-sistema)
+    - [Particiones al instalar Windows](#particiones-al-instalar-windows)
+    - [Particiones al instalar GNU/Linux](#particiones-al-instalar-gnulinux)
+    - [GNU/Linux con Windows](#gnulinux-con-windows)
+  - [Instalación del cargador de arranque Grub](#instalación-del-cargador-de-arranque-grub)
+  - [Otras configuraciones básicas al instalar un sistema](#otras-configuraciones-básicas-al-instalar-un-sistema)
     - [Nombre del equipo](#nombre-del-equipo)
     - [Tipos de usuarios](#tipos-de-usuarios)
       - [Usuarios administrador](#usuarios-administrador)
@@ -136,9 +141,46 @@ Sin embargo este tipo de instalaciones también tienen sus inconvenientes. La pr
 Esto lo practicaremos en el bloque 2 configurando en nuestro servidor instalaciones desatendidas para los clientes.
 
 ## Dónde instalar el sistema: particionado
-Podemos encontrar la información actualizada de este apartado en las [Github Pages del CIP FP Batoi](../../../../altres/sistemes-operatius/particions)
+Podemos encontrar la información actualizada de este apartado en [este enlace](../../../../altres/sistemes-operatius/particions)
 
-## Configuraciones básicas al instalar un sistema
+## Particiones a realizar al instalar el sistema
+Como dijimos a la hora de planificar, debemos tener cuy claras qué particiones vamos a necesitar para nuestro sistema. 
+
+Siempre tenemos la posibilidad de no indicar las particiones a hacer y dejar que sea el propio asistente el que lo decida, pero en ocasiones esa no es la mejor elección.
+
+### Particiones al instalar Windows
+Cuando instalamos Windows 10, si no le indicamos qué particiones queremos el asistente creará las siguientes:
+- en un disco MBR (BIOS)
+  - partición de inicio (50 MB - NTFS): es la partición donde se guarda el gestor de arranque de Windows (_BootMGR_) y el fichero con las opciones de arranque (_BCD_). Esta partición no se monta (no se asigna letra) por lo que el usuario no la ve
+  - partición del sistema (NTFS): es la partición que se montará en la letra C: con el sistema operativo y donde se guardarán también los datos de los usuarios (en la carpeta _C:\Usuarios_). Ocupa todo el disco menos el espacio ocupado por las otras 2 particiones pequeñas
+  - entorno de recuperación de Windows (500 MB - NTFS): tampoco se monta (ni el '_Administrador de Discos_' nos permite asignarle una letra) y contiene el entorno de recuperación (fichero _WinRE.wim_). Se carga si reiniciamos con la letra SHIFT pulsada y es un entorno como el que se carga al arrancar desde el CD de instalación pulsando en 'Reparar el sistema'
+- en un disco GPT (UEFI)
+  - partición _EFI System Partition_ - ESP (100 MB - Fat32): es la partición ESP que debe tener cualquier disco GPT que incluya un sistema operativo ya que es donde se almacenan los gestores de arranque de los diferentes sistemas (_bootmgr.efi_ para Windows, _grubx64.efi_ para algunos Linux, ...)
+  - partición reservada de Microsoft - MSR (16 MB): según [Microsoft](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions#microsoft-reserved-partition-msr) es una partición para ayudar con la administración de particiones GPT... 
+  - entorno de recuperación de Windows (500 MB - NTFS): igual que la que se crea en MBR
+
+![Particiones de disco duro basadas en UEFI/GPT](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/images/dep-win10-partitions-uefi.png)
+
+### Particiones al instalar GNU/Linux
+Por defecto si instalamos GNU/Linux indicando el particionado automático se crearán 2 particiones:
+- partición del sistema (ext4): la partición donde se instalará el sistema y donde estarán todos los ficheros. Se monta en **/** y ocupa todo el espacio de disco menos el dedicado a la partición de _swap_
+- partición de _swap_ o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 0 más GB de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
+
+Sin embargo es conveniente hacer más particiones, al menos para los datos de los usuarios. Esta partición tendrá también formato _ext4_ y se montará en **/home**.
+
+Las particiones a las que asignamos un punto de montaje (al menos **/** y si hacemos **/home** también) se añaden al fichero `/etc/fstab` donde habrá una línea para cada partición que deba montarse al arrancar el ordenador.
+
+### GNU/Linux con Windows
+Si al instalar el sistema ya tenemos un Windows instalado en esta máquina el asistente lo detectará y nos mostrará la opción de instalar GNU/Linux junto a Windows. En ese caso nos pedirá que reduzcamos el tamaño de la partición de Windows para dejar sitio a la de Linux. En Debian no aparece esta opción pero podemos entrar a particionado manual y allí redimensionar la partición de Windows y crear en ese espacio las de Debian.
+
+Por defecto las particiones Windows y el resto de particiones que haya en el disco no se montarán automáticamente en GNU/Linux. Si queremos que alguna se monte sólo tenemos que seleccionarla y ponerle un punto de montaje (el directorio en que se montará). Esto añadirá la partición al fichero `/etc/fstab`. Si no siempre podremos montarlas desde el entorno gráfico pinchando sobre ellas o desde la terminal con el comando `mount` o bien podemos añadirlas manualmente a `/etc/fstab` para que se monten siempre al iniciar el sistema.
+
+## Instalación del cargador de arranque Grub
+El último paso al instalar un sistema GNU/Linux es siempre guardar el cargador de arranque Grub para que el sistema puede iniciar, de lo contrario no podríamos arrancarlo (tendríamos que arreglarlo manualmente como se vió en el tema del [arranque de Linux](../../../../altres/sistemes-operatius/arrencada/bios.html#reparar-larrencada-del-sistema-1)).
+
+Siempre debemos guardarlo en el dispositivo desde el que arranca nuestro ordenador (normalmente '**/dev/sda**') lo que significa que se guardará en el MBR para iniciar el proceso de arranque. También si tenemos Windows ya instalado porque queremos que Grub sustituya al cargador por defecto del MBR que sólo nos permite arrancar el Windows.
+
+## Otras configuraciones básicas al instalar un sistema
 Durante el proceso de instalación, además de en qué partición instalar el sistema, nos hacen una serie de preguntas para configurar el mismo. Estas preguntas varían de un sistema a otro pero la mayoría preguntan, entre otras:
 - Idioma de la instalación: en qué idioma haremos el proceso de instalación. Este idioma será el idioma por defecto del sistema operativo una vez instalado, aunque posteriormente podemos añadir más idiomas y cambiar el idioma por defecto
 - Idioma del teclado: cuál es el idioma de nuestro teclado, que determina la posición de cada tecla
@@ -155,7 +197,9 @@ El nombre de un equipo lo identifica en la red por lo cual su nombre tiene que s
 
 Cuando instalamos el sistema operativo nos preguntan el nombre que tendrá el equipo pero posteriormente podemos cambiarlo en cualquier momento Para cambiar el nombre del equipo en Windows 10 lo podemos hacer desde `Inicio -> Configuración -> Sistema -> Acerca de -> Cambiar nombre de este equipo`. Otra forma que funciona en todos los Windows es desde el _Explorador de archivos_ pulsando sobre el icono de _Este equipo_ con el `botón derecho -> Propiedades`. Después de cambiar el nombre tenemos que reiniciar el equipo para que se aplique el cambio.
 
-En GNU/Linux el nombre del equipo se guarda en el fichero `/etc/hostname`. Para cambiarlo sólo tenemos que editar el fichero y escribir allí el nuevo nombre. Este nombre se aplicará cuando reiniciamos el equipo. Si queremos cambiar el nombre del equipo sólo para esta sesión de trabajo lo hacemos desde la terminal con el comando `hostname`. Por ejemplo para que se llame pc01 haremos:
+En GNU/Linux el nombre del equipo se guarda en el fichero `/etc/hostname`. Para cambiarlo sólo tenemos que editar el fichero y escribir allí el nuevo nombre. Este nombre se aplicará cuando reiniciamos el equipo. Normalmente también se guarda en el fichero `/etc/hosts` para que se resuelva sin preguntar al DNS por lo que debemos comprovar si está y si es así cambiarlo también.
+
+Si lo que queremos es cambiar el nombre del equipo sólo para esta sesión de trabajo lo hacemos desde la terminal con el comando `hostname`. Por ejemplo para que se llame pc01 haremos:
 
 ```bash
 hostname pc01
@@ -163,20 +207,40 @@ hostname pc01
 
 Cuando volvamos a reiniciar el equipo se llamará con el nombre que ponga en el fichero `/etc/hostname`.
 
+El Ubuntu y otras distribuciones tenemos también el comando `hostnamectl` que me permite ver el nombre de la màquina o cambiarlo:
+
+```bash
+batoi@pc-juanbatoi:~$ hostnamectl 
+
+   Static hostname: pc-juanbatoi
+         Icon name: computer-laptop
+           Chassis: laptop
+        Machine ID: 34a45d74850d400d834559def624e447
+           Boot ID: bb1dd13b3be84e2b9cb9735c74f3ce6e
+  Operating System: Linux Mint 20
+            Kernel: Linux 5.4.0-67-generic
+      Architecture: x86-64
+```
+
+Para darle un nuevo nombre se lo pasamos a dicho comando:
+```bash
+hostname mipc
+```
+
 ### Tipos de usuarios
 Es habitual que un ordenador lo utilice más de una persona, pero que pasará sí:
 - cada persona quiere un fondo de pantalla diferente
 - cada uno quiere tener sus vínculos de favoritos
 - cada persona quiere que sus ficheros sean privados
 
-Para solucionar todo esto se crearon los _usuarios_. Creamos un usuario para cada persona y los cambios que cada uno haga se guardan con la información de ese usuario de forma que sólo se aplican cuando ese usuario inicia sesión. Además se establecen permisos para indicar qué usuarios tienen acceso en cada fichero y que pueden hacer con él.
+Para solucionar todo esto se crearon los _usuarios_. Creamos un usuario para cada persona que usa el ordenador y los cambios que cada uno haga se guardan con la información de ese usuario de forma que sólo se aplican cuando ese usuario inicia sesión. Además se establecen permisos para indicar qué usuarios tienen acceso en cada fichero y que pueden hacer con él.
 
 Existen 3 tipo de usuarios: administrador, estándar e invitado.
 
 #### Usuarios administrador
 Tienen control total sobre todo el equipo, su configuración y sus datos. En cada sistema tiene que haber al menos uno que es quien lo configura. Es altamente recomendable que este usuario tenga una contraseña para evitar que cualquiera pueda cambiar la configuración del equipo o acceder y, si quiere, eliminar cualquier fichero del mismo.
 
-En Windows siempre existe un usuario de este tipo cuyo nombre es **_Administrador_**, pero que por defecto está deshabilitado. Además el usuario con el cual instalamos el sistema operativo es un usuario de tipo _administrador_. Los usuarios que creamos posteriormente serán de tipo __estándar_ o _administrador_ según elijamos al crearlos.
+En Windows siempre existe un usuario de este tipo cuyo nombre es **_Administrador_**, pero que por defecto está deshabilitado. Además el usuario con el cual instalamos el sistema operativo es un usuario de tipo _administrador_. Los usuarios que creamos posteriormente serán de tipo _estándar_ o _administrador_ según elijamos al crearlos. Para que un usuario sea administrador sólo tiene que pertenecer al grupo _**Administradores**_.
 
 En GNU/Linux siempre hay un usuario administrador llamado **_root_**. El usuario con el cual instalamos Ubuntu y otras distribuciones también es un usuario _administrador_. Desde la terminal un usuario administrador puede ejecutar cualquier orden como si fuera _root_ anteponiéndole el comando **`sudo`**. Por ejemplo puede cambiar el nombre del equipo y llamarlo pc01 escribiendo:
 
@@ -194,6 +258,8 @@ o bien convertirnos en _root_ desde el usuario actual con
 ```bash
 sudo su
 ```
+
+Para que un usuario sea administrador (pueda hacer _sudo_) sólo es necesario que pertenezca al grupo _**sudo**_.
 
 #### Usuarios estándar
 Son los usuarios normales del equipo. Pueden configurar su usuario y acceder a sus datos o a datos a los que alguien les dé permisos pero no pueden cambiar la configuración del equipo ni instalar nuevo software. Tienen una carpeta personal con su nombre donde guardan sus ficheros y dentro de la cual pueden hacer cualquier cosa.
@@ -233,7 +299,7 @@ Cada línea del fichero configura un repositorio. Su sintaxis es:
 
 - en primer lugar indicamos si queremos bajar paquetes ya compilados (_deb_) o el código fuente para compilarlo (_deb-src_)
 - url del repositorio
-- versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos `_version_-updates` en Ubuntu o `version/updates` en Debian. Para parches de seguridad pondremos `version-security` o `versio/security` respectivamente (_vrsion_ se debe cambiar por la versión adecuada como _focal_ o _bullseye_)
+- versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos `_version_-updates` en Ubuntu o `version/updates` en Debian. Para parches de seguridad pondremos `version-security` o `version/security` respectivamente (_vrsion_ se debe cambiar por la versión adecuada como _focal_ o _bullseye_)
 - tipo de software que queremos (`main`, `restricted`, `universe` o `multiverse` en Ubuntu o `main`, `contrib` o `non-free` en Debian). Podemos poner más de un tipo separados por espacio
 
 Ejemplo de fichero en Ubuntu:
@@ -249,6 +315,7 @@ Después de hacer cambios en este fichero tenemos que recargar la lista de paque
 ```bash
 apt-get update
 ```
+
 ## Tipos de red en Windows
 En los sistemas operativos Windows si estamos conectados en una red cuando instalamos el sistema operativo se nos pregunta el tipo de red que es:
 
@@ -261,3 +328,4 @@ La información que proporcionamos le permite a Windows configurar el cortafuego
 - **Red de trabajo**: indicamos que estamos en una red en el trabajo. Windows configura el cortafuegos en un nivel intermedio
 - **Red pública**: indicamos que estamos en una red pública (por ejemplo en una estación o una cafetería) y no confiamos en el resto de equipos de esta red por lo cual Windows configurará el cortafuegos con las máximas restricciones para evitar que otro usuario conectado a la misma red pueda acceder a nuestro equipo y a la información que guardamos en él.
 
+En versiones posteriores de Windows sólo se nos pregunta si queremos que los otros equipos que haya en esa red puedan o no ver nuestro equipo. El redes públicas debemos contestar que **No** y en nuestra red de casa o del trabajo que **Sí** para poder compartir información con los otros equipos de dicha red. 
