@@ -153,23 +153,24 @@ Siempre tenemos la posibilidad de no indicar las particiones a hacer y dejar que
 ### Particiones al instalar Windows
 Cuando instalamos Windows 10, si no le indicamos qué particiones queremos el asistente creará las siguientes:
 - en un disco MBR (BIOS)
-  - partición de inicio (50 MB - NTFS): es la partición donde se guarda el gestor de arranque de Windows (_BootMGR_) y el fichero con las opciones de arranque (_BCD_). Esta partición no se monta (no se asigna letra) por lo que el usuario no la ve
-  - partición del sistema (NTFS): es la partición que se montará en la letra C: con el sistema operativo y donde se guardarán también los datos de los usuarios (en la carpeta _C:\Usuarios_). Ocupa todo el disco menos el espacio ocupado por las otras 2 particiones pequeñas
-  - entorno de recuperación de Windows (500 MB - NTFS): tampoco se monta (ni el '_Administrador de Discos_' nos permite asignarle una letra) y contiene el entorno de recuperación (fichero _WinRE.wim_). Se carga si reiniciamos con la letra SHIFT pulsada y es un entorno como el que se carga al arrancar desde el CD de instalación pulsando en 'Reparar el sistema'
+  - partición de **inicio** (50 MB - NTFS): es la partición donde se guarda el gestor de arranque de Windows (_BootMGR_) y el fichero con las opciones de arranque (_BCD_). Esta partición no se monta (no se asigna letra) por lo que el usuario no la ve
+  - partición de **Windows** (NTFS): es la partición que se montará en la letra C: con el sistema operativo y donde se guardarán también los datos de los usuarios (en la carpeta _C:\Usuarios_). Ocupa todo el disco menos el espacio ocupado por las otras 2 particiones pequeñas
+  - **entorno de recuperación de Windows - WinRE** (500 MB - NTFS): tampoco se monta (ni el '_Administrador de Discos_' nos permite asignarle una letra) y contiene el entorno de recuperación (fichero _WinRE.wim_). Se carga si reiniciamos con la letra SHIFT pulsada y es un entorno como el que se carga al arrancar desde el CD de instalación pulsando en 'Reparar el sistema'
 
 ![Particiones creadas por el instalador de Windows](./media/AdmDiscosWin10bios.png)
 
 - en un disco GPT (UEFI)
-  - partición _EFI System Partition_ - ESP (100 MB - Fat32): es la partición ESP que debe tener cualquier disco GPT que incluya un sistema operativo ya que es donde se almacenan los gestores de arranque de los diferentes sistemas (_bootmgr.efi_ para Windows, _grubx64.efi_ para algunos Linux, ...)
-  - partición reservada de Microsoft - MSR (16 MB): según [Microsoft](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions#microsoft-reserved-partition-msr) es una partición para ayudar con la administración de particiones GPT... 
-  - entorno de recuperación de Windows (500 MB - NTFS): igual que la que se crea en MBR
+  - partición **_EFI System Partition_ - ESP** (100 MB - Fat32): es la partición ESP que debe tener cualquier disco GPT que incluya un sistema operativo ya que es donde se almacenan los gestores de arranque de los diferentes sistemas (_bootmgr.efi_ para Windows, _grubx64.efi_ para algunos Linux, ...)
+  - partición **reservada de Microsoft - MSR** (16 MB): según [Microsoft](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions#microsoft-reserved-partition-msr) es una partición para ayudar con la administración de particiones GPT... 
+  - partición de **Windows** (NTFS): como en MBR
+  - entorno de **recuperación de Windows** (500 MB - NTFS): igual que la que se crea en MBR
 
 ![Particiones de disco duro basadas en UEFI/GPT](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/images/dep-win10-partitions-uefi.png)
 
 ### Particiones al instalar GNU/Linux
 Por defecto si instalamos GNU/Linux indicando el particionado automático se crearán 2 particiones (si el disco es GPT se creará además la partición ESP):
-- partición del sistema (ext4): la partición donde se instalará el sistema y donde estarán todos los ficheros. Se monta en **/** y ocupa todo el espacio de disco menos el dedicado a la partición de _swap_
-- partición de _swap_ o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 GB o más de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
+- partición **raíz** del sistema operativo (ext4): la partición donde se instalará el sistema y donde estarán todos los ficheros. Se monta en **/** y ocupa todo el espacio de disco menos el dedicado a la partición de _swap_
+- partición de **_swap_** o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 GB o más de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
 
 En el caso de Ubuntu no se crea partición de swap:
 
