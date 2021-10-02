@@ -154,6 +154,9 @@ Cuando instalamos Windows 10, si no le indicamos qué particiones queremos el as
   - partición de inicio (50 MB - NTFS): es la partición donde se guarda el gestor de arranque de Windows (_BootMGR_) y el fichero con las opciones de arranque (_BCD_). Esta partición no se monta (no se asigna letra) por lo que el usuario no la ve
   - partición del sistema (NTFS): es la partición que se montará en la letra C: con el sistema operativo y donde se guardarán también los datos de los usuarios (en la carpeta _C:\Usuarios_). Ocupa todo el disco menos el espacio ocupado por las otras 2 particiones pequeñas
   - entorno de recuperación de Windows (500 MB - NTFS): tampoco se monta (ni el '_Administrador de Discos_' nos permite asignarle una letra) y contiene el entorno de recuperación (fichero _WinRE.wim_). Se carga si reiniciamos con la letra SHIFT pulsada y es un entorno como el que se carga al arrancar desde el CD de instalación pulsando en 'Reparar el sistema'
+
+![Particiones creadas por el instalador de Windows](./media/AdmDiscosWin10bios.png)
+
 - en un disco GPT (UEFI)
   - partición _EFI System Partition_ - ESP (100 MB - Fat32): es la partición ESP que debe tener cualquier disco GPT que incluya un sistema operativo ya que es donde se almacenan los gestores de arranque de los diferentes sistemas (_bootmgr.efi_ para Windows, _grubx64.efi_ para algunos Linux, ...)
   - partición reservada de Microsoft - MSR (16 MB): según [Microsoft](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions#microsoft-reserved-partition-msr) es una partición para ayudar con la administración de particiones GPT... 
@@ -162,11 +165,17 @@ Cuando instalamos Windows 10, si no le indicamos qué particiones queremos el as
 ![Particiones de disco duro basadas en UEFI/GPT](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/images/dep-win10-partitions-uefi.png)
 
 ### Particiones al instalar GNU/Linux
-Por defecto si instalamos GNU/Linux indicando el particionado automático se crearán 2 particiones:
+Por defecto si instalamos GNU/Linux indicando el particionado automático se crearán 2 particiones (si el disco es GPT se creará además la partición ESP):
 - partición del sistema (ext4): la partición donde se instalará el sistema y donde estarán todos los ficheros. Se monta en **/** y ocupa todo el espacio de disco menos el dedicado a la partición de _swap_
-- partición de _swap_ o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 0 más GB de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
+- partición de _swap_ o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 GB o más de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
+
+En el caso de Ubuntu no se crea partición de swap:
+
+![particiones que crea el instalador de Ubuntu](./media/particionesDefaultUbuntu.png)
 
 Sin embargo es conveniente hacer más particiones, al menos para los datos de los usuarios. Esta partición tendrá también formato _ext4_ y se montará en **/home**.
+
+![particiones mínimas recomendadas al instalar GNU/Linux](./media/particionesRecomendadasUbuntu.png)
 
 Las particiones a las que asignamos un punto de montaje (al menos **/** y si hacemos **/home** también) se añaden al fichero `/etc/fstab` donde habrá una línea para cada partición que deba montarse al arrancar el ordenador.
 
@@ -299,7 +308,7 @@ Cada línea del fichero configura un repositorio. Su sintaxis es:
 
 - en primer lugar indicamos si queremos bajar paquetes ya compilados (_deb_) o el código fuente para compilarlo (_deb-src_)
 - url del repositorio
-- versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos `_version_-updates` en Ubuntu o `version/updates` en Debian. Para parches de seguridad pondremos `version-security` o `version/security` respectivamente (_vrsion_ se debe cambiar por la versión adecuada como _focal_ o _bullseye_)
+- versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos `_version_-updates` en Ubuntu o `version/updates` en Debian. Para parches de seguridad pondremos `version-security` o `version/security` respectivamente (_version_ se debe cambiar por la versión adecuada como _focal_ o _bullseye_)
 - tipo de software que queremos (`main`, `restricted`, `universe` o `multiverse` en Ubuntu o `main`, `contrib` o `non-free` en Debian). Podemos poner más de un tipo separados por espacio
 
 Ejemplo de fichero en Ubuntu:
@@ -328,4 +337,4 @@ La información que proporcionamos le permite a Windows configurar el cortafuego
 - **Red de trabajo**: indicamos que estamos en una red en el trabajo. Windows configura el cortafuegos en un nivel intermedio
 - **Red pública**: indicamos que estamos en una red pública (por ejemplo en una estación o una cafetería) y no confiamos en el resto de equipos de esta red por lo cual Windows configurará el cortafuegos con las máximas restricciones para evitar que otro usuario conectado a la misma red pueda acceder a nuestro equipo y a la información que guardamos en él.
 
-En versiones posteriores de Windows sólo se nos pregunta si queremos que los otros equipos que haya en esa red puedan o no ver nuestro equipo. El redes públicas debemos contestar que **No** y en nuestra red de casa o del trabajo que **Sí** para poder compartir información con los otros equipos de dicha red. 
+En versiones posteriores de Windows sólo se nos pregunta **si queremos que los otros equipos de esa red puedan o no ver nuestro equipo**. El redes públicas debemos contestar que **No** y en nuestra red de casa o del trabajo que **Sí** para poder compartir información con los otros equipos de dicha red. 
