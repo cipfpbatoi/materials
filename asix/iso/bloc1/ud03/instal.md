@@ -141,6 +141,8 @@ Sin embargo este tipo de instalaciones también tienen sus inconvenientes. La pr
 Esto lo practicaremos en el bloque 2 configurando en nuestro servidor instalaciones desatendidas para los clientes.
 
 ## Dónde instalar el sistema: particionado
+Es la parte más importante y delicada de la instalación de un nuevo sistema operativo y por tanto tenemos que asegurarnos de hacerlo correctamente.
+
 Podemos encontrar la información actualizada de este apartado en [este enlace](../../../../altres/sistemes-operatius/particions)
 
 ## Particiones a realizar al instalar el sistema
