@@ -31,7 +31,5 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:
 1. [Red de ordenadores. Arquitectura cliente/servidor](arq-cs.md)
-2. Funciones de un servidor
-3. Principales S.O. de servidor
-4. Dominios: protocolo LDAP
-5. Dominios en Windows: Active Directory
+2. Principales S.O. de servidor
+3. Dominios. Active Directory

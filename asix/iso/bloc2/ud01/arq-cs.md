@@ -32,6 +32,11 @@ Los principales parámetros que nos harán elegir un tipo de red u otro son:
 - Número de **equipos**: es el mismo caso de los usuarios. Si son muy pocos puede ser útil una red "peer to peer" pero cuando crece su número se tiene que ir a una con uno o más servidores.
 - **Servicios** a prestar: si los clientes sólo necesitan compartir una conexión en Internet no tiene sentido crear una red con servidor. Según aumentan los servicios necesarios (compartición de ficheros, de impresoras, servicios de red, gestión centralizada de usuarios, etc) se necesitará uno o más servidores para proporcionar esos servicios.
 
+En resumen las diferencias entre los dos tipos de red son:
+- en un grupo de trabajo todos los equipos están al mismo nivel mientras que en un dominio uno o más son servidores que gestionan y proporcionan servicios al resto
+- en un grupo de trabajo cada equipo gestiona las cuentas de los usuarios que pueden iniciar sesión en el mismo. En un dominio un usuario del dominio puede iniciar sesión en cualquier equipo del mismo
+- en un grupo de trabajo todos los equipos deben estar en la misma red local mientras que en un dominio no importa en qué red se encuentren los equipos miembros (pueden estar en diferentes redes locales)
+
 ## Arquitectura cliente/servidor (C/S)
 La red cliente-servidor es una red de comunicaciones en la que los clientes están conectados a un servidor, en el que se centralizan los diversos recursos y aplicaciones con que cuenta la red y que los pone a disposición de los clientes cada vez que estos los solicitan.
 
