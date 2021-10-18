@@ -12,10 +12,13 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   * [Implantació de Sistemes Oeratius (1rASIX)](./asix/iso/)
   
 ### Altres apunts
+- [Sistemes operatius](./altres/sistemes-operatius)
+  * [Arrencada del sistema](./altres/sistemes-operatius/arrencada/)
+  * [Principals sistemes operatius](./altres/sistemes-operatius/exemples-so/)
+  * [Particionament de discos](./altres/sistemes-operatius/particions/)
+  * [Samba](./altres/sistemes-operatius/samba/)
+  * [Comandos de Windows](./altres/sistemes-operatius/comandos-windows/)
 * [Virtualització. Virtualbox](./altres/virtualitzacio/)
-* [Arrencada del sistema](./altres/sistemes-operatius/arrencada/)
-* [Particionament de discos](./altres/sistemes-operatius/particions/)
 * [Configurar la xarxa en GNU/Linux](./altres/xarxa-linux/)
-* [Samba](./altres/sistemes-operatius/samba/)
 * [Crear documentación con Markdown](./altres/markdown/)
 * [Pasar-li una ISO als alumnes](./altres/descargar-isos)
