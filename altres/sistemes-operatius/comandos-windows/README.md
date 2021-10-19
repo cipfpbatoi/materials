@@ -4,13 +4,20 @@
     - [Introducción a PowerShell](#introducción-a-powershell)
     - [Obtener ayuda](#obtener-ayuda)
     - [Sintaxis de los comandos de la consola](#sintaxis-de-los-comandos-de-la-consola)
-  - [Comandos para trabajar con Directorios](#comandos-para-trabajar-con-directorios)
-    - [Get-Content / dir](#get-content--dir)
-    - [Set-Location / cd (o chdir)](#set-location--cd-o-chdir)
-    - [New-Item / mkdir (o md)](#new-item--mkdir-o-md)
-    - [Remove-Item / rmdid (o rd)](#remove-item--rmdid-o-rd)
+  - [Comandos para trabajar con Directorios y Ficheros](#comandos-para-trabajar-con-directorios-y-ficheros)
+    - [Cambiar de directorio](#cambiar-de-directorio)
+    - [Ver el contenido de un directorio](#ver-el-contenido-de-un-directorio)
     - [tree](#tree)
-  - [Comandos para trabajar con Ficheros](#comandos-para-trabajar-con-ficheros)
+    - [Crear un directorio o un fichero vacío](#crear-un-directorio-o-un-fichero-vacío)
+    - [Borrar un directorio o fichero](#borrar-un-directorio-o-fichero)
+    - [Copiar directorios y ficheros](#copiar-directorios-y-ficheros)
+      - [copy](#copy)
+      - [xcopy](#xcopy)
+      - [Copy-Item](#copy-item)
+    - [Mover directorios y archivos](#mover-directorios-y-archivos)
+    - [Renombrar directorios y ficheros](#renombrar-directorios-y-ficheros)
+    - [Ver y cambiar los atributos de un directorio o fichero](#ver-y-cambiar-los-atributos-de-un-directorio-o-fichero)
+  - [Redireccionamiento de comandos](#redireccionamiento-de-comandos)
 
 ## Introducción
 La línea de comandos de Windows es una implementación de la consola de Ms-DOS para la interfaz gráfica del sistema operativo Windows.
@@ -21,7 +28,7 @@ Windows 7 y posteriores incluyen también el entorno a ejecución de comandos **
 
 PowerShell incluye _alias_ para muchos de sus comandos lo que permite ejecutarlos usando los comandos de la consola de Windows y también en muchos casos los comandos de GNU/Linux. Por ejemplo para obtener el listado de ficheros de la carpeta C:\ podemos usar el comando PS
 ```powershell
-Get-Children -Path C:\
+Get-ChildItem -Path C:\
 ```
 
 o bien uno de sus alias
@@ -37,7 +44,7 @@ Windows no diferencia entre mayúsculas y minúsculas por lo cual podemos utiliz
 Tanto desde la consola clásica como desde la de Powershell está restringida la ejecución de algunos comandos de administración. Para ejecutarlos debemos hacerlo desde una consola de Administrador.
 
 ### Introducción a PowerShell
-Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, ...) y un nombre de objeto sobre el que realizar la acción (_Locatiom_, _Iten_, _Content_, _Process_, _Service_, ...) separados por un **-**.
+Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
 
 Por ejemplo, para cambiar al directorio _Windows_ el comando es `cd C:\Windows` y su _cmdlet_ correspondiente es 
 
@@ -66,6 +73,8 @@ Ejemplo:
 ```powershell
 Get-Process | Where-Object {$_.Id -gt 500 -and $_.Id -lt 1000 } | Sort-Object -Property Id | Format-Table -Property *
 ```
+
+El operador **`|`** permite encadenar varios comandos de forma que la salida del comando que hay antes del operador constituirá la entrada para el comando que hay tras él. Se utiliza tanto en PS como en la consola clásica y en las diferentes terminales de GNU/Linux. Lo veremos con más detalle en el apartado de [redireccionamiento de comandos](#redireccionamiento-de-comandos).
 
 ### Obtener ayuda
 Para obtener la ayuda de un comando ejecutaremos el cmdlet
@@ -107,15 +116,34 @@ Cómo podemos ver, los parámetros que modifican el comportamiento de un comando
 
 El **Powershell** en lugar del carácter / los parámetros van precedidos de **-**.
 
-## [Comandos para trabajar con Directorios](https://docs.microsoft.com/es-es/powershell/scripting/samples/working-with-files-and-folders?view=powershell-7.1)
-Los siguientes comandos se utilizan para trabajar con carpetas. De cada uno se indica tanto el _cmdlet_ como el comando de la consola.
+## [Comandos para trabajar con Directorios y Ficheros](https://docs.microsoft.com/es-es/powershell/scripting/samples/working-with-files-and-folders?view=powershell-7.1)
+Los siguientes comandos se utilizan para trabajar con carpetas y ficheros.
 
-Los _cmdlets_ normalmente tienen alias tanto para poder seguir usando los comandos clásicos como para no escribir tanto. Por ejemplo `Get-Children` tiene como alias `dir`, `ls` y `gci`. Podemos ver todos los alias de un comando con `Get-Alias`. Ejemplo:
+Los _cmdlets_ normalmente tienen alias tanto para poder seguir usando los comandos clásicos como para no escribir tanto. Por ejemplo `Get-ChildItem` tiene como alias `dir`, `ls` y `gci`. Podemos ver todos los alias de un comando con `Get-Alias`. Ejemplo:
 ```powershell
 Get-Alias -Definition Get-ChildItem
 ```
 
-### Get-Content / dir
+### Cambiar de directorio
+- cmdlet: **`Set-Location`**
+- cmd: **`cd`** (o `chdir`)
+
+Cambia el directorio actual por el que le pasamos como parámetro. El cmd `cd` sin parámetros muestra la ruta del directorio actual (el _cmdlet_ para mostrar el directorio actual es **`Get-Location`**). 
+
+Ejemplos:
+- `cd C:\Usuarios`: Cambia al directorio C:\Usuarios que pasa a ser el directorio actual
+- `cd ..`: Cambia al directorio paro del actual
+- `cd`: Muestra la ruta absoluta del directorio actual
+- `Set-Location -Path C:\Usuarios`: Cambia al directorio C:\Usuarios que pasa a ser el directorio actual. En este _cmdlet_ y en muchos otros podemos omitir el parámetro _-Path_ y poner directamente la ruta: `Set-Location C:\Usuarios`
+- `Set-Location -Path ..`: Cambia al directorio padre del actual
+- `Get-Location`: Muestra la ruta absoluta del directorio actual
+- `Set-Location -Path .. -Passthru`: Cambia al directorio padre del actual y muestra por consola dónde se encuentra (es como hacer tras el _Set-Location_ un _Get-Location_)
+
+
+### Ver el contenido de un directorio
+- cmdlet: **`Get-ChildItem`**
+- cmd: **`dir`**
+
 Lista el contenido del directorio pasado como parámetro. Si no le pasamos ningún parámetro muestra el contenido del directorio actual. 
 
 Principales parámetros de _dir_:
@@ -134,28 +162,36 @@ Principales parámetros de _dir_:
 Ejemplos:
 - `dir`: Muestra el contenido del directorio actual
 - `dir /p C:\Usuarios`: Muestra el contenido del directorio C:\Usuarios pantalla a pantalla
-- `dir ..`: Muestra el contenido del directorio paro del actual
+- `dir ..`: Muestra el contenido del directorio padre del actual
 - `dir /o:-s *.txt`: Muestra todos los ficheros del directorio actual con extensión .txt ordenados por su medida de mayor a menor
 
-Principales parámetros de _Get-Children_:
-- **`-Path PATH`**: de qué directorio queremos ver su contenido
+Principales parámetros de _Get-ChildItem_:
+- **`-Path PATH`**: de qué directorio queremos ver su contenido (podemos omitir el _-Path_)
 - **`-Recurse`**: muestra también el contenido de los subdirectorios
-- **`-Filter`**, **`-Include`**, **`-Exclude`**: permite filtrar los resultados por el nombre. También se puede usar para filtrar el cmdlet **`Where-Object`** que es mucho más potente
-
-### Set-Location / cd (o chdir)
-Cambia el directorio actual por el que le pasamos como parámetro. `cd` sin parámetros muestra la ruta del directorio actual (el _cmdlet_ para mostrar el directorio actual es **`Get-Location`**). 
+- **`-Force`**: muestra también los archivos ocultos y del sistema (los que tienen los atributos **H** -_hidden_- o **S** -_system_-)
+- **`-Filter`**, **`-Include`**, **`-Exclude`**: permite filtrar los resultados por el nombre. También se puede usar para filtrar el cmdlet **`Where-Object`** que es mucho más potente y el cmdlet **`Sort-Object`** para ordenar el resultado
 
 Ejemplos:
-- `cd C:\Usuarios`: Cambia al directorio C:\Usuarios que pasa a ser el directorio actual
-- `cd ..`: Cambia al directorio paro del actual
-- `cd`: Muestra la ruta absoluta del directorio actual
-- `Set-Location -Path C:\Usuarios`: Cambia al directorio C:\Usuarios que pasa a ser el directorio actual
-- `Set-Location -Path ..`: Cambia al directorio padre del actual
-- `Get-Location`: Muestra la ruta absoluta del directorio actual
-- `Set-Location -Path .. -Passthru`: Cambia al directorio padre del actual y muestra por consola dónde se encuentra (es como hacer tras el _Set-Location_ un _Get-Location_)
+- `Get-ChildItem`: Muestra el contenido del directorio actual
+- `Get-ChildItem ..`: Muestra el contenido del directorio padre del actual
+- `Get-ChildItem C:\Usuarios -Force`: Muestra el contenido del directorio C:\Usuarios, incluyendo ficheros ocultos y del sistema
+- `Get-ChildItem -Include *.txt`: Muestra todos los ficheros del directorio actual con extensión .txt
+- `Get-ChildItem -Include *.txt | Where-Object -FilterScript {($_.LastWriteTime -gt '2005-10-01') -and ($_.Length -ge 1mb) -and ($_.Length -le 10mb)}`: Muestra todos los ficheros del directorio actual con extensión .txt que se modificaron por última vez después del 1 de octubre de 2005, cuyo tamaño no es inferior a 1 megabyte ni superior a 10 megabytes
+- `Get-ChildItem -Include *.txt | Where-Object -FilterScript {($_.LastWriteTime -gt '2015-10-01') -and ($_.Length -ge 1mb) -and ($_.Length -le 10mb)} | Sort-Object -Property Length`: Muestra todos los ficheros del directorio actual con extensión .txt que se modificaron por última vez después del 1 de octubre de 2015, cuyo tamaño es mayor o igual a 1 megabyte y menor o igual a 10 megabytes ordenados por tamaño
 
+### tree
+Muestra la estructura de directorios de la ruta indicada. Modificadores:
+- **`/F`**: Muestra también los ficheros de cada directorio
 
-### New-Item / mkdir (o md)
+Ejemplos:
+- `tree`: Muestra la estructura de directorios desde el directorio actual
+- `tree C:\`: Muestra toda la estructura de directorios de la unidad C:
+- `tree C:\  /F`: Muestra toda la estructura de directorios de la unidad C: y los ficheros de cada directorio
+
+### Crear un directorio o un fichero vacío
+- cmdlet: **`New-Item`**
+- cmd (directorios): **`mkdir`** (o `md`)
+
 Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
 - `mkdir clientes`: Crea un directorio llamado clientes dentro del directorio actual
 - `mkdir ..\clientes`: Crea un directorio llamado clientes en el directorio paro del actual
@@ -165,8 +201,17 @@ Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
 - `New-Item -Path '..\clientes' -ItemType Directory`: Crea un directorio llamado clientes en el directorio paro del actual
 - `New-Item -Path 'C:\Usuarios\Juan\Documentos\clientes' -ItemType Directory`: Crea el directorio clientes en C:\Usuarios\Juan\Documentos
 
-### Remove-Item / rmdid (o rd)
-Elimina el directorio que le pasamos como parámetro. Si el directorio no está vacío _rmdir_ devolverá un error (a menos que se le añada el modificador **/s**) mientras que _Remove-Item_ pedirá confirmación (a menos que se le añada el modificador **-Recurse**). Principales modificadores:
+No hay ningún cmd para crear un fichero pero podemos hacerlo con el cmdlet `New-Item`:
+- `New-Item -Path 'clientes.txt' -ItemType File`: Crea un fichero llamado clientes.txt dentro del directorio actual
+- `New-Item -Path 'C:\Usuarios\Juan\Documentos\clientes.txt' -ItemType File`: Crea el fichero clientes.txt en C:\Usuarios\Juan\Documentos
+
+### Borrar un directorio o fichero
+- cmdlet: **`Remove-Item`**
+- cmd:
+  - directorios: **`rmdir`** (o `rd`)
+  - ficheros: **`del`** (o `erase`)
+
+Para borrar directorios usamos cmd `rmdir` que elimina el directorio que le pasamos como parámetro. Si el directorio no está vacío _rmdir_ devolverá un error (a menos que se le añada el modificador **/s**) mientras que _Remove-Item_ pedirá confirmación (a menos que se le añada el modificador **-Recurse**).
 
 Ejemplos:
 - `rd clientes`: Elimina el directorio clientes que hay dentro del directorio actual (tiene que estar vacío)
@@ -176,13 +221,79 @@ Ejemplos:
 - `Remove-Item -Path  C:\Usuarios\Juan\Documentos\clientes`: Elimina el directorio clientes de la ubicación indicada (si no está vacío pedirá confirmación)
 - `Remove-Item -Path clientes -Recurse`: Elimina el directorio clientes que hay dentro del directorio actual y todo su contenido sin pedir confirmación
 
-### tree
-Muestra la estructura de directorios de la ruta indicada. Modificadores:
-- **`/F`**: Muestra también los ficheros de cada directorio
+Para borrar ficheros el cmd es `del`. El cmdlet funciona como hemos visto. Ejemplos:
+- `del lligme.txt`: Borra el fichero lligme.txt del directorio actual
+- `del C:\Usuarios\juan\*.odt`: Borra todos los ficheros con extensión odt del directorio indicado
+- `Remove-Item -Path lligme.txt`: Borra el fichero lligme.txt del directorio actual
+- `Remove-Item -Path C:\Usuarios\juan\*.odt`: Borra todos los ficheros con extensión odt del directorio indicado
+
+### Copiar directorios y ficheros
+- cmdlet: **`Copy-Item`**
+- cmd: **`copy`** y **`xcopy`**
+
+#### copy
+Copia lo indicado como primer parámetro (uno o varios ficheros o directorios) en el directorio especificado como segundo parámetro. El comando copy NO copia directorios. Ejemplos:
+- `copy leeme.txt ..`: Copia el fichero leeme.txt del directorio actual a su directorio padre
+- `copy C:\Windows\* F:\`: Copia todos los ficheros del directorio C:\Windows al directorio raíz de la unidad F: (pero no copiará los subdirectorios)
+
+#### xcopy
+Es igual que el comando copy pero permite copiar árboles de directorios y ficheros enteros. Principales modificadores:
+- **/S**: Copia también los subdirectorios, excepto los vacíos
+- **/E**: Copia también los subdirectorios, incluyendo los vacíos
+- **/H**: Copia también los ficheros ocultos y del sistema
+- **/D:m-d-y**: Copia sólo los modificados a partir de la fecha indicada
 
 Ejemplos:
-- `tree`: Muestra la estructura de directorios desde el directorio actual
-- `tree C:\`: Muestra toda la estructura de directorios de la unidad C:
+- `xcopy * F:\`: Copia todos los ficheros del directorio actual al directorio raíz de la unidad F: (pero no copiará los subdirectorios)
+- `xcopy /E * F:\`: Copia todos los ficheros y subdirectorios del directorio actual al directorio raíz de la unidad F:
 
-## [Comandos para trabajar con Ficheros](https://docs.microsoft.com/es-es/powershell/scripting/samples/working-with-files-and-folders?view=powershell-7.1)
+#### Copy-Item
+Funciona como _xcopy_. Si ya existe el fichero en el destino se produce un error. Principales parámetros y modificadores:
+- **-Path**: Indica la ruta de los objetos a copiar
+- **-Destination**: Indica el directorio de destino
+- **-Recurse**: Copia también los subdirectorios
+- **-Force**: Si existe el fichero en el destino lo sobreescribe
+- **-Filter**, **-Include**, **-Exclude**: Permite filtrar los objetos a copiar
 
+Ejemplos:
+- `Copy-Item -Path leeme.txt -Destination F:\`: Copia todos el fichero leeme.txt del directorio actual al directorio raíz de la unidad F:. También se puede poner `Copy-Item leeme.txt F:\`
+- `Copy-Item -Path * -Destination F:\`: Copia todos los ficheros del directorio actual al directorio raíz de la unidad F: (pero no copiará los subdirectorios)
+- `Copy-Item -Path * -Destination F:\ -Recurse`: Copia todos los ficheros y subdirectorios del directorio actual al directorio raíz de la unidad F:
+
+### Mover directorios y archivos
+- cmdlet: **`Move-Item`**
+- cmd: **`move`**
+
+Funcionan como los comandos de copiar pero en vez de hacer una copia se mueven los ficheros o directorios de ubicación. Después copiar tendremos el fichero 2 veces: donde estaba y donde lo hemos copiado. Si lo movemos se borra de donde estaba y se sitúa donde lo copiamos.
+
+Funciona también con directorios sn necesidad de poner modificador (sin _-Recurse_ el cmdlet y sin _/S_ o _/E_ el cmd).
+
+### Renombrar directorios y ficheros 
+- cmdlet: **`Rename-Item`**
+- cmd: **`ren`** (o `rename`)
+
+Permite cambiar el nombre del fichero o directorio pasado como primer parámetro por el que le pasamos como segundo parámetro. Ejemplo:
+- `ren C:\Windows\leeme.txt readme.txt`: Cambia el nombre del fichero leeme.txt del directorio C:\Windows por readme.txt
+- `Rename-Item -Path C:\Windows\leeme.txt -NewName readme.txt`: Cambia el nombre del fichero leeme.txt del directorio C:\Windows por readme.txt
+
+También podemos cambiar el nombre a muchos ficheros a la vez:
+- `Get-ChildItem *.txt | Rename-Item -NewName { $_.Name -replace '.txt','.log' }`: Cambia la extensión de todos los ficheros .txt del directorio actual por .log
+
+No se puede cambiar el directorio donde se encuentra el fichero con este comando. Para ello hay que usar _Move-Item_ / _move_ que permiten moverlo de lugar y además cambiar su nombre (si se lo especificamos en la ruta de destino)
+
+### Ver y cambiar los atributos de un directorio o fichero
+- **`attrib`**
+
+Permite ver y cambiar los atributos de los ficheros. Los atributos que pueden tener los ficheros son:
+- **A**: modificado. Se usa para hacer copias de seguridad incrementales: cada vez que se modifica un fichero Windows le pone este atributo y cuando se hace una copia de seguridad se le quita y así se puede saber cuáles se han modificado desde la última copia
+- **H**: Hidden, oculto
+- **R**: Read, sólo lectura
+- **S**: System, fichero del sistema operativo
+
+Ejemplos:
+- `attrib`: Muestra los atributos de todos los ficheros del directorio actual
+- `attrib +H lligme.txt`: Pone el atributo H al fichero lligme.txt del directorio actual (ahora ese fichero está oculto y no aparece al hacer un DIR o un Get-ChildItem)
+- `attrib -R C:\boot.ini`: Quita el atributo R al fichero boot.ini del directorio raíz de C: por lo cual ahora se puede modificar ese fichero
+
+
+## Redireccionamiento de comandos
