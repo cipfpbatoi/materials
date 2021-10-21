@@ -26,6 +26,16 @@
   - [Redireccionamiento de comandos](#redireccionamiento-de-comandos)
     - [Dispositivos](#dispositivos)
     - [Operadores de redireccionamiento](#operadores-de-redireccionamiento)
+  - [Comandos para gestionar la red](#comandos-para-gestionar-la-red)
+    - [CMD](#cmd)
+    - [cmdlets](#cmdlets)
+  - [Comandos para gestionar discos](#comandos-para-gestionar-discos)
+    - [CMD](#cmd-1)
+    - [cmdlets](#cmdlets-1)
+  - [Comandos para gestionar procesos](#comandos-para-gestionar-procesos)
+    - [Ver los procesos](#ver-los-procesos)
+    - [Detener procesos](#detener-procesos)
+    - [Iniciar procesos](#iniciar-procesos)
 
 ## Introducción
 La línea de comandos de Windows es una implementación de la consola de Ms-DOS para la interfaz gráfica del sistema operativo Windows.
@@ -90,6 +100,8 @@ Para obtener la ayuda de un comando ejecutaremos el cmdlet
 Get-Help NombreDelCmdlet
 ```
 
+Si queremos ver ejemplos de su uso pondremos `Get-Help NombreDelCmdlet -examples`.
+
 La primera vez nos pedirá que actualicemos la ayuda con el cmdlet Update-Help ya que no se instala por defecto (hay que hacerlo desde una consola de Administrador). Este cmdlet tiene como alias _help_ y _man_.
 
 El cmdlet para obtener la lista de comandos es `Get-Command`.
@@ -122,7 +134,7 @@ La información que nos proporciona la ayuda es la siguiente:
 
 Cómo podemos ver, los parámetros que modifican el comportamiento de un comando en la consola de Windows son una letra precedida del carácter **/**. Podemos poner tantos parámetros como necesitemos para un comando.
 
-El **Powershell** en lugar del carácter / los parámetros van precedidos de **-**.
+El **Powershell** en lugar del carácter / los parámetros van precedidos de **-** como en Linux.
 
 ## [Comandos para trabajar con Directorios y Ficheros](https://docs.microsoft.com/es-es/powershell/scripting/samples/working-with-files-and-folders?view=powershell-7.1)
 Los siguientes comandos se utilizan para trabajar con carpetas y ficheros.
@@ -355,6 +367,7 @@ Si se trata de un fichero de texto delimitado por un carácter (CSV) podemos con
 
 Ejemplos:
 - `Import-Csv delimitado.txt -Delimiter ";"`: Convierte el fichero CSV en un objeto y nos muestra cada item con sus propiedades
+- `Import-Csv delimitado.txt -Delimiter ";" | Format-Table`: Convierte el fichero CSV en un objeto y nos muestra cada item con sus propiedades en formato tabla (por defecto aparece en formato lista `Format-List`)
 - `Import-Csv delimitado.txt -Delimiter ";" | Out-GridView `: Convierte el fichero CSV en un objeto y lo muestra en una tabla grid en una ventana
 - `Import-Csv delimitado.txt -Delimiter ";" | Where-Object {$_.Localitat -match "Muro"}`: Muestra las líneas del fichero fijo.txt que contengan el texto "Muro" en el campo "Localitat". Fíjate que ahora sólo filtra por dicho campo por lo que si hay un alumno cuyo apellido sea "Muro" no aparecerá (en el ejemplo de texto fijo sí que aparecería)
 - `Import-Csv delimitado.txt -Delimiter ";" | Sort-Object -Property 1rCognom, 2nCognom`: Convierte el fichero CSV en un objeto y lo ordena por los campos 1rCognom y, los que lo tengan igual, 2nCognom
@@ -400,3 +413,68 @@ En Powershell podemos utilizar igual los operadores de redirección **>**, **2>*
 Además podemos enviar la salida **a un fichero y al monitor** con el _cmdlet_ **`Tee-Object`**. Ejemplos:
 - `Get-ChildItem C:\Usuarios\juan | Tee-Object ficheros_de_juan`: La lista de ficheros del directorio indicado la muestra en el monitor y además la guarda en un fichero llamado ficheros_de_juan. Si el fichero existe lo truncará
 - `Get-ChildItem C:\Usuarios\juan | Tee-Object -Append ficheros_de_juan`: La lista de ficheros del directorio indicado la muestra en el monitor y además la añade al fichero llamado ficheros_de_juan. Si ya existe el fichero añadirá la lista al final
+
+## Comandos para gestionar la red
+### CMD
+- **`ipconfig`**: Muestra información de la configuración de red del equipo (dirección ip, puerta de enlace, etc). Modificadores:
+  - **/all**: Muestra toda la información
+  - **/renew**: Vuelve a pedir IP al servidor DHCP
+- **`ping`**: Envía un ping al ordenador especificado como parámetro. Podemos indicar el ordenador por su nombre o por su IP. Nos permite comprobar la conectividad de la red y su velocidad.
+- **`tracert`**: Igual que ping pero no sólo muestra el tiempo que ha tardado la respuesta sino todos los equipos por los cuales ha pasado el ping antes de llegar a su destino.
+- **`netstat`**: Muestra estadísticas de las conexiones actualmente establecidas.
+- **`nslookup`**: Resuelve el nombre de dominio indicado, mostrando cuál es su IP
+
+### cmdlets
+- **`Get-NetAdapter`**: Muestra las propiedades básicas del adaptador de red
+- **`Get-NetIpAddress`**: Muestra la configuración de la dirección IP, tanto IPv4 como IPv6 y las interfaces de red respectivas
+- **`Get-NetIPConfiguration`**: Muestra información de la configuración de red, interfaces utilizables, direcciones IP y direcciones DNS del sistema.
+- **`Get-NetRoute`**: Muestra toda la tabla de rutas
+- **`Enable-NetAdapter -Name "Ethernet"`**: Activa la interfaz llamada Ethernet
+- **`Disable-NetAdapter -Name "Ethernet"`**: Desactiva la interfaz llamada Ethernet
+- **`Enable-NetAdapter -Name "Ethernet"`**
+- **`Rename-Adapter -Name "Ethernet" - NewName "Externa"`**: Renombra un adaptador de red
+- **`Get-NetAdapter -Name "Ethernet" | Remove-NetIPAddress`**: Elimina la IP de adaptador "Ethernet"
+- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPv4Address 192.168.1.25 -PrefixLength "24"`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24
+- **`Test-NetConnection -ComputerName 8.8.8.8`**: Realiza un ping a 8.8.8.8
+- **`Test-NetConnection 8.8.8.8 –TraceRoute`**: Ejecuta un tracert a 8.8.8.8
+- **`Resolve-DnsName google.com`**: Ejecuta un Nslookup a google.com
+- **`Get-NetTCPConnection`**: Muestra el estado actual de la red, los puertos y su propietario (como netstat)
+- **`Get-NetTCPConnection –State Established`**: igual que la anterior pero muestra sólo las conexiones establecidas
+
+## Comandos para gestionar discos
+### CMD
+- **`diskpart`**: Se trata de un programa en modo texto que permite gestionar las particiones de nuestros discos
+- **`chkdsk`**: Permite comprobar un sistema de archivos FAT o NTFS. Ejemplo: `chkdsk E:`
+- **`defrag`**: Desfragmenta el sistema de archivos que le indicamos. Ejemplo: `defrag E:`
+- **`format`**: Formatea una partición con sistema de archivos FAT o NTFS. Ejemplo: `format E:`
+- **`convert`**: Convierte una partición FAT a NTFS sin perder los datos
+
+### cmdlets
+- **`Get-Disk`**: muestra los discos de ordenador
+- **`Get-Partition`**: muestra las particiones
+- **`Get-StoragePool`**: muestra los pools de almacenamiento del servidor
+- **`Initialize-Disk`**: inicializa un nuevo disco añadido al equipo (luego habrá que hacer particiones y formatearlas). Ejemplo: `Initialize-Disk -Number 1 -PartitionStyle GPT`
+- **`New-Partition -DiskNumber 1 -Size 150GB -AssignDriveLetter`**: crea una partición de 150GB en el disco 1 y hace que se le asigne una letra automáticamente (por ejemplo la E:)
+- **`Get-Volume -DriveLetter E:`**: Muestra información de la partición E: (si no está formateada el espacio disponible será 0)
+- **`Format-Volume -DriveLetter E -FileSystem NTFS`**: formatea la partición E: a NTFS
+- **`Optimize-Volume -DriveLetter E -Defrag -Verbose`**: inicia la desfragmentación del disco E: mostrando todos los detalles de la operación
+- **`Optimize-Volume -DriveLetter E -ReTrim -Verbose`**: optimiza un disco SSD que admite TRIM
+- **`Remove-Particion -DriveLetter E`**: Elimina la partición E:
+
+## [Comandos para gestionar procesos](https://docs.microsoft.com/es-es/powershell/scripting/samples/managing-processes-with-process-cmdlets?view=powershell-7.1)
+### Ver los procesos
+Para ver los procesos del sistema usamos el _cmdlet_ **`Get-Process`**. Ejemplos:
+- **`Get-Process`**: Muestra todos los procesos
+- **`Get-Process -Id 2398`**: Muestra el proceso 2398
+- **`Get-Process -Name firefox*`**: Muestra todos los procesos cuyo nombre comience por firefox
+
+### Detener procesos
+El _cmdlet_ que se usa es **`Stop-Process`**. Ejemplos:
+- **`Stop-Process -Id 2398`**: Mata el proceso 2398
+- **`Stop-Process -Name firefox*`**: Mata todos los procesos cuyo nombre comience por firefox
+- **`Stop-Process -Name firefox* Confirm`**: Mata todos los procesos cuyo nombre comience por firefox pero antes pide confirmación para cada uno
+- **`Get-Process | Where-Object -FilterScript {$_.Responding -eq $false} | Stop-Process`**: Mata todos los procesos que no estén respondiendo
+
+### Iniciar procesos
+El _cmdlet_ que se usa es **`Start-Process`**. Ejemplo:
+- **`Stop-Process notepad.exe`**: Inicia un bloc de notas
