@@ -5,19 +5,19 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Eventos](#eventos)
-  - [Introducción](#introducci%C3%B3n)
-  - [Escuchadores de eventos](#escuchadores-de-eventos)
-    - [Forma clásica](#forma-cl%C3%A1sica)
+  - [Introducción](#introducción)
+  - [Cómo escuchar un evento](#cómo-escuchar-un-evento)
     - [Event listeners](#event-listeners)
   - [Tipos de eventos](#tipos-de-eventos)
-    - [Eventos de página](#eventos-de-p%C3%A1gina)
-    - [Eventos de ratón](#eventos-de-rat%C3%B3n)
+    - [Eventos de página](#eventos-de-página)
+    - [Eventos de ratón](#eventos-de-ratón)
     - [Eventos de teclado](#eventos-de-teclado)
     - [Eventos de toque](#eventos-de-toque)
     - [Eventos de formulario](#eventos-de-formulario)
-  - [Los objetos _this_ y _event_](#los-objetos-_this-y-event_)
-  - [Propagación de eventos (bubbling)](#propagaci%C3%B3n-de-eventos-bubbling)
-  - [innerHTML y escuchadores de eventos)](#innerHTML-y-escuchadores-de-eventos)
+  - [Los objetos _this_ y _event_](#los-objetos-this-y-event)
+    - [_Bindeo_ del objeto _this_](#bindeo-del-objeto-this)
+  - [Propagación de eventos (bubbling)](#propagación-de-eventos-bubbling)
+  - [innerHTML y escuchadores de eventos](#innerhtml-y-escuchadores-de-eventos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -185,6 +185,20 @@ En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _varia
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(this));
 ```
 por lo que el valor de _this_ dentro de la función _aceptado_ será el mismo que tenía fuera, es decir, el objeto.
+
+Podemos _bindear_, es decir, pasarle a la función escuchadora más variables declarándolas como parámetros de _bind_. El primer parámetro será el valor de _this_ y los demás serán parámetros que recibirá la función antes de recibir el parámetro _event_ que será el último. Por ejemplo:
+
+```javascript
+document.getElementById('acepto').removeEventListener('click', aceptado.bind(var1, var2, var3));
+...
+function aceptado(param1, param2, event) {
+  // Aquí dentro tendremos los valores
+  // this = var1
+  // param1 = var2
+  // param2 = var3
+  // event es el objeto con la información del evento producido
+}
+```
 
 ## Propagación de eventos (bubbling)
 Normalmente en una página web los elementos HTML se solapan unos con otros, por ejemplo, un \<span> está en un \<p> que está en un \<div> que está en el \<body>. Si ponemos un escuchador del evento _click_ a todos ellos se ejecutarán todos ellos, pero ¿en qué orden?.

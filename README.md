@@ -9,7 +9,7 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   * [Desenvolupament Web en Entorn Client (2nDAW)](./daw/dwc/)
   * [Desenvolupament Web en Entorn Servidor (2nDAW)](https://igomis.github.io/apunts/)  
 * CFGS Administració de Sistemes Informàtics i Xarxes (ASIX)
-  * [Implantació de Sistemes Oeratius (1rASIX)](./asix/iso/)
+  * [Implantació de Sistemes Operatius (1rASIX)](./asix/iso/)
   
 ### Altres apunts
 - [Sistemes operatius](./altres/sistemes-operatius)

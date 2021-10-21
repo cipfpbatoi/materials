@@ -17,7 +17,15 @@
     - [Mover directorios y archivos](#mover-directorios-y-archivos)
     - [Renombrar directorios y ficheros](#renombrar-directorios-y-ficheros)
     - [Ver y cambiar los atributos de un directorio o fichero](#ver-y-cambiar-los-atributos-de-un-directorio-o-fichero)
+  - [Comandos _CMD_ para trabajar con el contenido de un fichero](#comandos-cmd-para-trabajar-con-el-contenido-de-un-fichero)
+    - [Mostrar el contenido del fichero](#mostrar-el-contenido-del-fichero)
+    - [Filtrar las líneas de un fichero](#filtrar-las-líneas-de-un-fichero)
+    - [Ordenar un fichero](#ordenar-un-fichero)
+    - [Comparar ficheros](#comparar-ficheros)
+  - [_CMDLETS_ para trabajar con el contenido de un fichero](#cmdlets-para-trabajar-con-el-contenido-de-un-fichero)
   - [Redireccionamiento de comandos](#redireccionamiento-de-comandos)
+    - [Dispositivos](#dispositivos)
+    - [Operadores de redireccionamiento](#operadores-de-redireccionamiento)
 
 ## Introducción
 La línea de comandos de Windows es una implementación de la consola de Ms-DOS para la interfaz gráfica del sistema operativo Windows.
@@ -295,5 +303,100 @@ Ejemplos:
 - `attrib +H lligme.txt`: Pone el atributo H al fichero lligme.txt del directorio actual (ahora ese fichero está oculto y no aparece al hacer un DIR o un Get-ChildItem)
 - `attrib -R C:\boot.ini`: Quita el atributo R al fichero boot.ini del directorio raíz de C: por lo cual ahora se puede modificar ese fichero
 
+## Comandos _CMD_ para trabajar con el contenido de un fichero
 
+### Mostrar el contenido del fichero
+- cmd: **`type`**
+- cmd: **`more`**
+
+`type` muestra por pantalla el contenido del fichero o ficheros pasados como parámetro.
+
+`more` hace lo mismo pero si el contenido del fichero ocupa más de una pantalla lo muestra pantalla a pantalla, esperando a que el usuario pulse una tecla para mostrar la siguiente pantalla. Este comando se usa mucho para paginar cualquier cosa pasándosela en un pipe al more:
+```cmd
+dir C:\Windows | more
+```
+
+### Filtrar las líneas de un fichero
+- cmd: **`find`***
+
+Busca el texto pasado entre comillas como primer parámetro en el fichero pasado como segundo parámetro y muestra por pantalla las líneas que lo contengan. 
+
+Ejemplo:
+- `find "Muro" fijo.txt`: Muestra las líneas del fichero fijo.txt que contengan el texto Muro
+
+### Ordenar un fichero
+- cmd: **`sort`**
+
+Ordena el contenido de un fichero de texto. La ordenación la hace por líneas. Modificadores:
+- **/+n** (n = número): A partir de qué carácter de cada línea se ordena. Si no indicamos nada ordena por el primer carácter de cada línea
+- **/R**: Hace la ordenación al revés, de mayor a menor
+
+Ejemplos:
+- `sort alumnos.txt`: Muestra el contenido del fichero alumnos.txt ordenado
+- `sort /+10 alumnos.txt`: Muestra el contenido del fichero alumnos.txt ordenado a partir de la posición 10 de cada línea (ignora las anteriores para hacer la ordenación)
+- `sort /R alumnos.txt`: Muestra el contenido del fichero alumnos.txt ordenado de mayor a menor
+
+A los comandos _more_, _find_ y _sort_ se los denomina filtros porque reciben una entrada, la filtran o modifican y devuelven una salida que es esa entrada modificada.
+
+### Comparar ficheros
+- cmd: **`fc`**
+
+Compara el contenido de los ficheros pasado como parámetro y muestra por pantalla las líneas que tengan alguna diferencia. Ejemplo:
+- `fc fichero1.txt fichero2.txt`: Muestra por pantalla las líneas que sean diferentes entre los ficheros fichero1.txt y fichero2.txt del directorio actual
+
+## _CMDLETS_ para trabajar con el contenido de un fichero
+Existen muchas formas en Powershell de mostrar, filtrar y ordenar el contenido de un fichero. La más sencilla es usar el _cmdlet_ **`Get-Content`** para mostrarlo y luego usar **`Where-Object`**, **`Sort-Object`**, etc. para filtrarlo, ordenarlo, etc ya que estos comandos (como todos) trabajan sobre objetos y funcionan tanto sobre ficheros como sobre las líneas de un fichero.
+
+Ejemplo:
+- `Get-Content fijo.txt | Where-Object {$_ -match "Muro"}`: Muestra las líneas del fichero fijo.txt que contengan el texto Muro. Fíjate que buscamos en toda la línea ($_) y no en un campo concreto ($_.Localitat) porque todo el contenido es texto, no hay definidos campos. Si queremos todas las líneas que NO contengan un texto en lugar de `-match` usaremos **`-notmatch`**.
+- `Get-Content fijo.txt | Where-Object {$_ -match "Muro"} | Sort-Object`: Muestra las líneas del fichero fijo.txt que contengan el texto Muro ordenadas alfabéticamente
+
+Si se trata de un fichero de texto delimitado por un carácter (CSV) podemos convertirlo en un objeto con sus campos con **`Import-Csv`** y con él podemos filtrar por campo, ordenar por campo, mostrar sólo algunos campos y cualquier otra cosa que se nos ocurra.
+
+Ejemplos:
+- `Import-Csv delimitado.txt -Delimiter ";"`: Convierte el fichero CSV en un objeto y nos muestra cada item con sus propiedades
+- `Import-Csv delimitado.txt -Delimiter ";" | Out-GridView `: Convierte el fichero CSV en un objeto y lo muestra en una tabla grid en una ventana
+- `Import-Csv delimitado.txt -Delimiter ";" | Where-Object {$_.Localitat -match "Muro"}`: Muestra las líneas del fichero fijo.txt que contengan el texto "Muro" en el campo "Localitat". Fíjate que ahora sólo filtra por dicho campo por lo que si hay un alumno cuyo apellido sea "Muro" no aparecerá (en el ejemplo de texto fijo sí que aparecería)
+- `Import-Csv delimitado.txt -Delimiter ";" | Sort-Object -Property 1rCognom, 2nCognom`: Convierte el fichero CSV en un objeto y lo ordena por los campos 1rCognom y, los que lo tengan igual, 2nCognom
+- `Import-Csv delimitado.txt -Delimiter ";" | Where-Object {$_.Localitat -match "Muro"} | Select-Object 1rCognom, 2nCognom, Nom`: De las líneas del fichero fijo.txt que contengan el texto "Muro" en el campo "Localitat" muestra sólo los campos 1rCognom, 2nCognom y Nom
+- 
 ## Redireccionamiento de comandos
+### Dispositivos
+La comunicación de la terminal con el exterior se hace, por defecto, mediante 3 dispositivos:
+- dispositivo estándar de **entrada**, que es el **teclado**. Es el dispositivo por el que se introduce la información
+dispositivo estándar de **salida**, que es el **monitor**. Es por donde el sistema muestra la información al usuario
+dispositivo estándar de **error**, que también es el **monitor**. Es por donde el sistema muestra los mensajes de error al usuario
+
+A los dispositivos estándar de entrada y salida se los conoce como **consola** (o abreviado **CON**). Los dispositivos que se utilizaban en la consola tradicional CMD son:
+- **CON**: consola. Es el dispositivo que se utiliza por defecto y está formado por el teclado y el monitor
+- **NUL**: es un dispositivo ficticio que hace desaparecer todo el que le se envía. Por ejemplo si no queremos que los errores aparezcan en el monitor redireccionamos la salida de error al dispositivo NUL.
+- Otros dispositivos: _LPTn_ que hace referencia a los puertos paralelos del ordenador (hasta 3, LPT1, LPT2 y LPT3). Antiguamente la impresora estaba conectada al puerto LPT1 que también se denomina _PRN_. _COMn_ que identifica los puertos serie y pueden haber 4 (COM1, COM2, COM3 y COM4)...
+
+Podemos utilizar estos dispositivos en los comandos. Por ejemplo:
+- `copy prueba.txt PRN`: Copia el fichero prueba.txt del directorio actual en el dispositivo PRN, o sea, lo envía a la impresora conectada en el primer puerto paralelo. Es otra forma de imprimir un fichero (seria equivalente al comando PRINT prueba.txt)
+- `copy prueba.txt .. 2> NUL`: Copia el fichero prueba.txt del directorio actual en el directorio padre del actual y si se produce algún error en vez de mostrarlo por el monitor lo envía a NUL (es decir desaparece)
+
+### Operadores de redireccionamiento
+Cómo hemos comentado, la entrada y salida por defecto es CON (el teclado y el monitor), por ejemplo si ejecutamos el comando DATE muestra la fecha actual por el monitor y espera que introducimos una nueva fecha por el teclado.
+
+Pero es posible redireccionar la entrada y la salida para que se utilizo otro dispositivo, un fichero o, incluso, otro comando. Los operadores que lo hacen posible son:
+- **<**: redirecciona la entrada al fichero o dispositivo indicado (poco usual)
+- **>**: redirecciona la salida al fichero o dispositivo indicado. Si se un fichero lo creará (y si ya existe lo truncará, es decir, eliminará su contenido)
+- **>>**: redirecciona la salida a un fichero y, si ya existe, lo añade al final
+- **2>**: redirecciona la salida de error a un fichero o dispositivo
+- **|**: redirecciona la salida del comando a su izquierda a la entrada del comando a su derecha. Se utiliza habitualmente con los filtros (more, find, sort).
+
+Ejemplos:
+- `dir C:\Usuarios\juan > ficheros_de_juan`: La lista de ficheros del directorio indicado la guarda en un fichero llamado ficheros_de_juan. Si el fichero existe lo truncará
+- `dir C:\Usuarios\juan >> ficheros_de_juan`: La lista de ficheros del directorio indicado la añade al fichero llamado ficheros_de_juan. Si ya existe el fichero añadirá la lista al final
+- `sort alumnos.txt > alumnos_ordenado.txt`: Copia el contenido del fichero alumnos.txt ordenado al fichero alumnos_ordenado.txt
+- `dir | more`: Muestra el contenido del directorio actual pantalla a pantalla
+- `find “Alcoi” alumnos.txt | sort >> alumnos_ordenado.txt`: Filtra en el fichero alumnos.txt las líneas que contengan la palabra Alcoi, envía esas líneas al comando suerte que las ordena y el resultado (los alumnos que son de Alcoi, ordenados) se añade al fichero alumnos_ordenado.txt
+
+En Powershell podemos utilizar igual los operadores de redirección **>**, **2>** y **|** (no _<_ que no está implementado) pero además podemos redireccionar la salida con el comando **`Out-File`** que guarda la salida en el fichero que le indiquemos. Ejemplos:
+- `Get-ChildItem C:\Usuarios\juan | Out-File ficheros_de_juan`: La lista de ficheros del directorio indicado la guarda en un fichero llamado ficheros_de_juan. Si el fichero existe lo truncará
+- `Get-ChildItem C:\Usuarios\juan | Out-File -Append ficheros_de_juan`: La lista de ficheros del directorio indicado la añade al fichero llamado ficheros_de_juan. Si ya existe el fichero añadirá la lista al final
+
+Además podemos enviar la salida **a un fichero y al monitor** con el _cmdlet_ **`Tee-Object`**. Ejemplos:
+- `Get-ChildItem C:\Usuarios\juan | Tee-Object ficheros_de_juan`: La lista de ficheros del directorio indicado la muestra en el monitor y además la guarda en un fichero llamado ficheros_de_juan. Si el fichero existe lo truncará
+- `Get-ChildItem C:\Usuarios\juan | Tee-Object -Append ficheros_de_juan`: La lista de ficheros del directorio indicado la muestra en el monitor y además la añade al fichero llamado ficheros_de_juan. Si ya existe el fichero añadirá la lista al final

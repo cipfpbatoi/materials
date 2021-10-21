@@ -1,0 +1,11 @@
+# Altres materials
+- [Sistemes operatius](./sistemes-operatius)
+  * [Arrencada del sistema](./sistemes-operatius/arrencada/)
+  * [Principals sistemes operatius](./sistemes-operatius/exemples-so/)
+  * [Particionament de discos](./sistemes-operatius/particions/)
+  * [Samba](./sistemes-operatius/samba/)
+  * [Comandos de Windows](./sistemes-operatius/comandos-windows/)
+* [Virtualització. Virtualbox](./virtualitzacio/)
+* [Configurar la xarxa en GNU/Linux](./xarxa-linux/)
+* [Crear documentación con Markdown](./markdown/)
+* [Pasar-li una ISO als alumnes](./descargar-isos)
