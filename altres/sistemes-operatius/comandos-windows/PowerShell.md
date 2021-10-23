@@ -238,6 +238,12 @@ Si queremos detener procesos el _cmdlet_ que se usa es **`Stop-Process`**. Ejemp
 Para iniciar un proceso se usa **`Start-Process`**. Ejemplo:
 - **`Start-Process notepad.exe`**: Inicia un bloc de notas
 
+También podemos gestionar los servicios de Windows con los comandos:
+- **`Get-Service`**: Muestra todos los servicios. Si mostramos un servicio con el parámetro `-RequiredServices` se muestran los servicios necesarios para que ese servicio funcione. Con el parámetro `-DependentServices` se muestran los servicios que necesitan de ese servicio para funcionar
+- **`Stop-Service -Id 2398`**: Muestra el proceso 2398
+- **`Get-Service -Name firefox*`**: Muestra todos los procesos cuyo nombre comience por firefox
+
+
 ## Comandos para gestionar usuarios
 Para trabajar con los usuarios tenemos los comandos:
 - **`Get-LocalUser`** / **`Get-ADUser`**: muestra las cuentas de usuarios locales de ese equipo / de Active Directory
