@@ -240,9 +240,18 @@ Para iniciar un proceso se usa **`Start-Process`**. Ejemplo:
 
 También podemos gestionar los servicios de Windows con los comandos:
 - **`Get-Service`**: Muestra todos los servicios. Si mostramos un servicio con el parámetro `-RequiredServices` se muestran los servicios necesarios para que ese servicio funcione. Con el parámetro `-DependentServices` se muestran los servicios que necesitan de ese servicio para funcionar
-- **`Stop-Service -Id 2398`**: Muestra el proceso 2398
-- **`Get-Service -Name firefox*`**: Muestra todos los procesos cuyo nombre comience por firefox
+- **`Stop-Service -Id 2398`**: Para el proceso 2398
+- **`Start-Service -Name wua*`**: Muestra todos los procesos cuyo nombre comience por firefox
+- **`Set-Service`**
 
+Ejemplos:
+- `Get-Service`**: Muestra todos los servicios
+- `Get-Service -Name wuauserv`: Muestra información del servicio wuauserv (Windows Update)
+- `Get-Service -Name wuauserv -RequiredServices`: Muestra los servicios que necesita Windows Update para funcionar
+- `Stop-Service -Id 2398`: Para el servicio 2398
+- `Stop-Service -Name wuauserv`: Para el servicio wauserv
+- `Start-Service -Name wuauserv`: Arranca el servicio wuauserv
+- `Set-Service wuauserv -StartupType disabled`: Deshabilita el servicio wuauserv (no se podrá arrancar hasta que se configure como manual)
 
 ## Comandos para gestionar usuarios
 Para trabajar con los usuarios tenemos los comandos:
