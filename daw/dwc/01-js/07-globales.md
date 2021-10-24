@@ -5,11 +5,11 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Objetos nativos](#objetos-nativos)
-  - [Introducción](#introducci%C3%B3n)
+  - [Introducción](#introducción)
   - [Funciones globales](#funciones-globales)
   - [Objetos nativos del lenguaje](#objetos-nativos-del-lenguaje)
-    - [Objeto Math](#objeto-math)
-    - [Objeto Date](#objeto-date)
+  - [Objeto Math](#objeto-math)
+  - [Objeto Date](#objeto-date)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -88,7 +88,7 @@ Pero además tenemos los tipos de objetos nativos, que no dependen del navegador
 - Date
 - RegExp
 
-Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho mñas eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera u objeto y tenemos acceso a todas sus propiedades y mètodos (`num.toFixed(2)`).
+Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho más eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera un objeto y tenemos acceso a todas sus propiedades y métodos (`num.toFixed(2)`).
 
 Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string), [Boolean](./01-sintaxis.html#boolean) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
 
@@ -123,7 +123,7 @@ console.log( Math.sqrt(2) );         // imprime 1.4142135623730951
 
 ## Objeto Date
 Es la clase que usaremos siempre que vayamos a trabajar con fechas. Al crear una instancia de la clase le pasamos la fecha que queremos crear o lo dejamos en blanco para que nos cree la fecha actual. Si le pasamos la fecha podemos pasarle:
-- milisegundos, desde la fecha EPOC
+- milisegundos, desde la fecha EPOCH
 - cadena de fecha
 - valor para año, mes (entre 0 y 11), día, hora, minutos, segundos, milisegundos
 
@@ -142,10 +142,10 @@ let date5=new Date(2018,7,30,5,30);    // Thu Ago 30 2018 05:30:00 GMT+0200 (CES
 
 > EJERCICIO: Crea en la consola dos variables fecNac1 y fecNac2 que contengan tu fecha de nacimiento. La primera la creas pasandole una cadena y la segunda pasándole año, mes y día
 
-Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o ` ` (espacio). Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
+Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o `espacio`. Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
 
 ```javascript
-let date=new Date(2018,7,41);    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10Sep
+let date=new Date(2018,7,41);    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10
 let date=new Date(2018,7,0);     // Tue Jul 31 2018 00:00:00 GMT+0200 (CEST) -> 0=0Ago=31Jul (el anterior)
 let date=new Date(2018,7,-1);    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) -> -1=0Ago-1=31Jul-1=30Jul
 ```
@@ -176,7 +176,7 @@ let fecha=new Date('2018-07-30');    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDay() );       // imprime 1
 ```
 * **hours**, **minutes**, **seconds**, **milliseconds**, : devuelve/cambia el número de la hora, minuto, segundo o milisegundo, respectivamente.
-* **time**: devuelve/cambia el número de milisegundos desde Epoch(1/1/1970 00:00:00 GMT):
+* **time**: devuelve/cambia el número de milisegundos desde Epoch (1/1/1970 00:00:00 GMT):
 ```javascript
 let fecha=new Date('2018-07-30');    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getTime() );      // imprime 1532908800000
@@ -221,8 +221,3 @@ console.log( fecha.getDate() );      // imprime 30
 > EJERCICIO: comprueba si es mayor tu fecha de nacimiento o el 1 de enero de este año
 
 Podemos probar los distintos métodos de las fechas en la página de [w3schools](http://www.w3schools.com/jsref/jsref_obj_date.asp).
-
-## Objeto RegExp
-Otro objeto incorporado en el lenguaje Javascript es el objeto RegExp que nos permite construir expresiones regualres. Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. 
-
-Las veremos en detalle [dentro del siguiente tema](./08-forms.md#expresiones-regulares).

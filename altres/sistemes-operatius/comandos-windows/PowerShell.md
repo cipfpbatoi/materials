@@ -2,6 +2,7 @@
 - [PowerShell](#powershell)
   - [Introducción a PowerShell](#introducción-a-powershell)
   - [Obtener ayuda](#obtener-ayuda)
+  - [PowerShell ISE](#powershell-ise)
   - [Sintaxis de los comandos de la consola](#sintaxis-de-los-comandos-de-la-consola)
   - [Comandos para trabajar con Directorios y Ficheros](#comandos-para-trabajar-con-directorios-y-ficheros)
     - [Cambiar de directorio](#cambiar-de-directorio)
@@ -68,6 +69,13 @@ Si sólo queremos ver ejemplos de su uso pondremos `Get-Help <NombreDelCmdlet> -
 La primera vez nos pedirá que actualicemos la ayuda con el cmdlet **`Update-Help`** ya que no se instala por defecto (hay que hacerlo desde una consola de Administrador). Este cmdlet tiene como alias _help_ y _man_.
 
 El cmdlet para obtener la lista de comandos es `Get-Command`.
+
+## PowerShell ISE
+PowerShell incluye un entorno para probar comandos llamado ISE (_Interactive Script Environment_) que nos permite ver gráficamente los parámetros de un comando lo que puede ser útil cuando no los recordamos.
+
+![PowerSell ISE](./media/psISE.png)
+
+En este caso se quería listar los ficheros del directorio actual cuyo nombre empieza por 'ntuser' aunque estén ocultos. Se selecciona el comando a usar, se marcan los parámetros en el panel de la derecha y se pulsa 'Ejecutar' y el entorno escribe por nosotros el comando con sus parámetros correctos.
 
 ## Sintaxis de los comandos de la consola
 Normalmente para ejecutar un comando ponemos uno o más parámetros para que el comando haga exactamente lo que queremos. Esto hace que en ocasiones sea compleja la forma de utilizar un comando y muchas veces tenemos que ir a la ayuda para hacer lo que queremos.
