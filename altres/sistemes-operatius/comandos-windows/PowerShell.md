@@ -58,10 +58,15 @@ Get-Alias -Definition Get-ChildItem
 ```
 
 ## Obtener ayuda
+Normalmente para ejecutar un comando ponemos uno o más parámetros para que el comando haga exactamente lo que queremos. Esto hace que en ocasiones sea compleja la forma de utilizar un comando y muchas veces tenemos que ir a la ayuda para hacer lo que queremos.
+
 Para obtener la ayuda de un comando ejecutaremos el cmdlet
 ```powershell
 Get-Help <NombreDelCmdlet>
 ```
+
+![Help COPY](./media/helpCopy.png)
+
 Si ponemos `Get-Help <NombreDelCmdlet> -full` muestra información detallada de cada opción del comando así como ejemplos de uso.
 
 Si sólo queremos ver ejemplos de su uso pondremos `Get-Help <NombreDelCmdlet> -examples`.
