@@ -67,7 +67,7 @@ Por tanto en este tipo de redes el servidor debe estar bien dimensionado y el ad
 Hay muchos tipos de servicios que puede prestar un servidor:
 - Gestión de usuarios: los usuarios se crean y gestionan desde el servidor y no desde cada equipo cliente
 - Compartición de archivos: permite que los usuarios autorizados puedan acceder a archivos ubicados en el servidor de archivos
-- Servicio DHCP: el servidor proporciona direcciones IP a los equipos cliente para conectarse en la red sintener que configurar cada equipo manualmente
+- Servicio DHCP: el servidor proporciona direcciones IP a los equipos cliente para conectarse en la red sin tener que configurar cada equipo manualmente
 - Gestión de comunicaciones: el servidor puede enlazar diferentes redes (por ejemplo nuestra red local con Internet) controlando el tráfico en todo momento
 - Servicio de correo: el servidor proporciona servicios de correo electrónico en la red
 - Servidor web: proporciona páginas web a los usuarios que acceden a través de su navegador

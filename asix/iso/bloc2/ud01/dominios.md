@@ -1,4 +1,9 @@
 # Dominios. Active Directory
+- [Dominios. Active Directory](#dominios-active-directory)
+  - [Introducción](#introducción)
+  - [Relaciones de confianza](#relaciones-de-confianza)
+  - [Notación de los objetos del directorio](#notación-de-los-objetos-del-directorio)
+  - [Active Directory](#active-directory)
 
 ## Introducción
 Hoy en día, los ordenadores existentes en cualquier organización se encuentran formando parte de redes de ordenadores, de forma que pueden intercambiar información.
@@ -29,13 +34,31 @@ Se pueden establecer relaciones de confianza entre los árboles de forma que usu
 https://es.wikipedia.org/wiki/Active_Directory#Intercambio_entre_dominios.5B2.5D
 
 ## Notación de los objetos del directorio
+La función del dominio es representar los componentes, tanto físicos como lógicos, que forman el sistema informático de la empresa para centralizar su gestión. Cada elemento se representará como un objeto del dominio, siendo los más importantes:
+- **Usuario**: representa a una persona que utiliza el sistema informático y nos permite identificarla en la red
+- **Equipo/Servidor**: representa a un ordenador de la red
+- **Impresora**
+- **Grupo**: permite agrupar diferentes objetos, normalmente del mismo tipo, para asignarles permisos y privilegios a todos los miembros del grupo a la vez
+- **Unidad organizativa** (OU, _Organizational Unit_): es un contenedor que nos permite organizar los diferentes objetos. Lo normal es que contenga distintos tipos de objetos. Por ejemplo podríamos crear una OU para cada departamento de la empresa donde colocaremos los usuarios, grupos, equipos, impresoras,... de ese departamento
+- **Carpeta compartida**: representa una carpeta accesible a los distintos equipos de la red
+- ...
+
+Según el tipo de objeto que sea tendrá diferentes **atributos**, que representan una información sobre el mismo mismo. Por ejemplo algunos de los atributos de un usuario son _login_, _contraseña_, _nombre_, _email_, etc. mientras que atributos típicos de un equipo son _nombre_, _ubicación_, _sistema operativo_, ...
+
+Cada objeto se identifica mediante su _**Distinguished Name**_ (**DN**). La forma de cada DN recuerda a la de un fichero con su ruta, aunque en vez de _descender_ desde la raíz al fichero _asciende_ desde el objeto a la raíz que siempre es el dominio que lo contiene. Por ejemplo
+```bash
+CN=Juan Segura,OU=Asix,OU=Informatica,DC=cipfpbatoi,DC=lan
+```
+
+representa a un usuario cuyo nombre (CN=_Common Name_) es '_Juan Segura_' que se encuentra en la unidad organizativa (OU=_Organizational Unit_) '_Asix_' que a su vez está dentro de la OU '_Informatica_' del dominio '_cipfpbatoi.lan_'.
+
+A la parte inicial del _DN_ se le llama **RDN** (_Relative Distinguished Name_) que es el atributo del objeto que lo identifica: en el caso de usuarios es su _CN_ (o su _UID_ -User IDentifier-), en el de grupos su _CN_ o _GID_, en el de OUs es su _OU_ y en el de dominios su _DC_ (_domain component_). Fijaos que el dominio aparece dividido en sus distintos componentes.
 
 ## Active Directory
+En el caso de redes Windows el servidor será un equipo con un sistema operativo Windows 2019 Server (o alguna de las versiones anteriores).
 
-En el caso de redes Windows el servidor será un equipo con un sistema operativo Windows 2012 Server (o alguna de las versiones anteriores como Windows Server 2008 R2, Windows Server 2008, etc).
+El nombre que da Microsoft al servicio de directorio es **Active Directory** y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (_Lightweight Directory Access Protocolo_, protocolo ligero de acceso al directorio).
 
-El nombre que da Microsoft al servicio de directorio es Active Directory y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (Lightweight Directory Access Protocolo, protocolo ligero de acceso al directorio).
+Cuando en un servidor Windows instalamos el rol de "Servicios de dominio de Active Directory" se convierte en **Controlador de dominio** (DC, _Domain Controller_). En cualquier red con arquitectura cliente/servidor habrá al menos un controlador de dominio, llamado controlador de dominio principal (PDC, _Primary Domain Controller_), pero pueden haber más controladores de dominio secundarios con copias del directorio, llamados BDC (_Backup Domain Controllers_).
 
-Cuando en un servidor Windows instalamos la función de "Servicios de dominio de Active Directory" se convierte en controlador de dominio (DC, Domain Controller). En cualquier red con arquitectura cliente/servidor habrá al menos un controlador de dominio que se llama controlador de dominio principal pero pueden haber más controladores de dominio secundarios con copias del directorio.
-
-Por eso en un dominio se necesita un servidor DNS (si no lo tenemos se instala el servicio DNS automáticamente al instalar Active Directory y se configura para poder responder al nombre del servidor y del dominio).
+Si en un sistema montamos un dominio _Active Directory_ se necesitará un servidor DNS que resuelva dicho dominio para los equipos de la red. Si no hay ninguno se instalará el servicio DNS automáticamente al instalar _Active Directory_ y se configurará para poder responder al nombre del servidor y del dominio).
