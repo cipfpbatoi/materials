@@ -284,11 +284,13 @@ Ejemplos:
 - `Get-ADUser -Filter * -SearchBase "OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN"`: muestra los usuarios de la unidad organizativa (OU) '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan
 - `Get-ADUser -Identity jsegura -Properties *`: muestra todos los campos del usuario jsegura
 - `New-LocalUser "User01" -Description "Cuenta de prueba" -NoPassword`: crea la cuenta de User01 con una descripción y sin contraseña
-- `New-ADUser "jsegura" -Path OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN -FullName "Juan Segura" -DisplayName "Juan Segura" -GivenName "Juan" -Surname "Segura" -AccountPassword (ConvertTo-SecureString 12345678 -AsPlainText -force)  -OfficePhone "666 12 34 56" -Enabled $true`: crea el usuario jsegura en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan, le asigna la contraseña 12345678 (encriptada), le configura unos parámetros (nombre, teléfono, ...) y la activa. Si queremos pedir al usuario que introduzca la contraseña haremos `-AccountPassword(Read-Host -AsSecureString "Introduce la contraseña")`
+- `New-ADUser "jsegura" -Path OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN -DisplayName "Juan Segura" -GivenName "Juan" -Surname "Segura" -AccountPassword (ConvertTo-SecureString 12345678 -AsPlainText -force)  -OfficePhone "666 12 34 56" -Enabled $true`: crea el usuario jsegura en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan, le asigna la contraseña 12345678 (encriptada), le configura unos parámetros (nombre, teléfono, ...) y la activa. Si queremos pedir al usuario que introduzca la contraseña haremos `-AccountPassword(Read-Host -AsSecureString "Introduce la contraseña")`
 - `New-LocalUser "User01" -Description "Cuenta de prueba" -NoPassword`: crea la cuenta de User01 con una descripción y sin contraseña
 - `Set-ADAccountPassword -Identity jsegura -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "p@ssw0rd" -Force)`: le pone al usuario jsegura la contraseña p@ssw0rd
 - `Set-ADAccountPassword -Identity 'CN=jsegura,OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN' -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "p@ssw0rd" -Force)`: hace lo mismo pero identifica al usuario por su DN en lugar de por su login
 - `Set-ADUser -Identity jsegura -Remove @{otherMailbox="juan.segura"} -Add @{url="acme.com"} -Replace @{title="manager"} -Clear description`: modifica el usuario jsegura y le quita el campo de otherMailbox, le añade el de url y le cambia el de title, además de borrar su descripción
+
+NOTA: para especificar el nombre de usuario se pone el parámetro `-Name` o no se pone nada. Para especificar el nombre completo con `New-LocalUser` el parámetro es `-FullName` y en `New-ADUser` es `-DisplayName` y además permite indicar nombre y apellidos con `-GivenName` y `SurName` respectivamente.
 
 ## Comandos para gestionar grupos
 - **`Get-LocalGroup`** /  **`Get-ADGroup`**: muestra los grupos locales / de Active Directory
