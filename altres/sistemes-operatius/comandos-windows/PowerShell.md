@@ -214,14 +214,14 @@ Ejemplos:
 - **`Enable-NetAdapter -Name "Ethernet"`**: Activa la interfaz llamada Ethernet
 - **`Disable-NetAdapter -Name "Ethernet"`**: Desactiva la interfaz llamada Ethernet
 - **`Enable-NetAdapter -Name "Ethernet"`**
-- **`Rename-Adapter -Name "Ethernet" - NewName "Externa"`**: Renombra un adaptador de red
+- **`Rename-NetAdapter -Name "Ethernet" -NewName "Externa"`**: Renombra un adaptador de red
 - **`Get-NetAdapter -Name "Ethernet" | Remove-NetIPAddress`**: Elimina la IP de adaptador "Ethernet"
-- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPv4Address 192.168.1.25 -PrefixLength "24"`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24
+- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.25 -PrefixLength "24"`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24
 - **`Test-NetConnection -ComputerName 8.8.8.8`**: Realiza un ping a 8.8.8.8
-- **`Test-NetConnection 8.8.8.8 –TraceRoute`**: Ejecuta un tracert a 8.8.8.8
+- **`Test-NetConnection 8.8.8.8 -TraceRoute`**: Ejecuta un tracert a 8.8.8.8
 - **`Resolve-DnsName google.com`**: Ejecuta un Nslookup a google.com
 - **`Get-NetTCPConnection`**: Muestra el estado actual de la red, los puertos y su propietario (como netstat)
-- **`Get-NetTCPConnection –State Established`**: igual que la anterior pero muestra sólo las conexiones establecidas
+- **`Get-NetTCPConnection -State Established`**: igual que la anterior pero muestra sólo las conexiones establecidas
 
 ## Comandos para gestionar discos
 - **`Get-Disk`**: muestra los discos de ordenador
@@ -271,7 +271,7 @@ Para trabajar con los usuarios tenemos los comandos:
 - **`Get-LocalUser`** / **`Get-ADUser`**: muestra las cuentas de usuarios locales de ese equipo / de Active Directory
 - **`New-LocalUser`** / **`New-ADUser`**: Crea una nueva cuenta de usuario local / de AD
 - **`Set-LocalUser`** / **`Set-ADUser`**: Establece o modifica una propiedad de una cuenta de usuario
-- **`Set-LocalAccountPassword`** / **`Set-ADAccountPassword`**: Establece o modifica la contraseña de una cuenta de usuario
+- **`Set-ADAccountPassword`**: Establece o modifica la contraseña de una cuenta de usuario de AD (si la cuenta es local podemos hacerlo con `Set-LocalUser`)
 - **`Rename-LocalUser`** / **`Rename-ADUser`**: Renombra una cuenta de usuario
 - **`Disable-LocalUser`** / **`Disable-ADUser`**: Desactiva una cuenta de usuario
 - **`Enable-LocalUser`** / **`Enable-ADUser`**: Activa una cuenta de usuario
@@ -290,7 +290,7 @@ Ejemplos:
 - `Set-ADAccountPassword -Identity 'CN=jsegura,OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN' -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "p@ssw0rd" -Force)`: hace lo mismo pero identifica al usuario por su DN en lugar de por su login
 - `Set-ADUser -Identity jsegura -Remove @{otherMailbox="juan.segura"} -Add @{url="acme.com"} -Replace @{title="manager"} -Clear description`: modifica el usuario jsegura y le quita el campo de otherMailbox, le añade el de url y le cambia el de title, además de borrar su descripción
 
-NOTA: para especificar el nombre de usuario se pone el parámetro `-Name` o no se pone nada. Para especificar el nombre completo con `New-LocalUser` el parámetro es `-FullName` y en `New-ADUser` es `-DisplayName` y además permite indicar nombre y apellidos con `-GivenName` y `SurName` respectivamente.
+NOTA: para especificar el nombre de usuario se pone el parámetro `-Name` o no se pone nada. Para especificar el nombre completo con `New-LocalUser` el parámetro es `-FullName` y en `New-ADUser` es `-DisplayName` y además permite indicar nombre y apellidos con `-GivenName` y `-SurName` respectivamente.
 
 ## Comandos para gestionar grupos
 - **`Get-LocalGroup`** /  **`Get-ADGroup`**: muestra los grupos locales / de Active Directory
@@ -303,5 +303,6 @@ NOTA: para especificar el nombre de usuario se pone el parámetro `-Name` o no s
 - **`Remove-LocalGroupMember`** / **`Remove-ADGroupMember`**: Elimina un miembro de un grupo
 
 Ejemplos:
+- `New-LocalGroup -Name "Profes" - Description "Professors del curs"`: añade un nuevo grupo local llamado Profes
 - `New-ADGroup -Name "Professors del matí" -SamAccountName ProfesMati -GroupCategory Security -GroupScope Global -DisplayName "Professors del matí" -Path "OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN" -Description "Members of this group are teachers in the morning courses"`: añade un nuevo grupo global llamado ProfesMati en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan
 - `Add-ADGroupMember -Identity ProfesMati -Members jsegura,lmanzaneque`: añade los usuarios jsegura y lmanzaneque al grupo ProfesMati
