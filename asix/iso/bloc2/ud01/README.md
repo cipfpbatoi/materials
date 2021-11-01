@@ -43,9 +43,8 @@ Los contenidos de esta unidad son los siguientes:
 2. [Principales S.O. de servidor](so-srv.md)
 3. [Dominios. Active Directory](dominios.md)
 4. [Instalación de Windows Server](instal.md)
-5. Instalar roles y características. El servicio de enrutamiento
-6. Administrar discos
-7. Instalación de Active Directory
+5. [Instalar roles y características](roles.md)
+6. [Administrar discos](discos.md)
 
 ## Caso práctico
 En el centro donde estudiamos la ESO van a ofrecer el año próximo como opcional la asignatura de Informática y como el director sabe que somos un poco "manitas" en esto de la informática y que estamos estudiando el ciclo de Administración de Sistemas Informáticos y Redes nos ha pedido que le echemos una mano para montar en el centro un aula informática y configurarla con todo lo necesario.
@@ -62,7 +61,7 @@ Para llevar a cabo esta tarea deberemos ejecutar las siguientes fases:
   - fijar los recursos disponibles, tanto materiales como humanos
   - encontrar diferentes soluciones posibles e identificar ventajas e inconvenientes de cada una
 - **diseño**: se deberán buscar las soluciones concretas para satisfacer las necesidades descritas en la fase de análisis. Esta fase finalizará con la redacción del proyecto donde se recogen las soluciones a implantar, el coste del mismo, cómo se realizará la implantación, necesidades de formación del personal, etc
-- **implementación**: una vez aceptado el proyecto por parte del cliente se llevará a cabo su implantación así como a formación a los usuarios en caso necesario
+- **implementación**: una vez aceptado el proyecto por parte del cliente se llevará a cabo su implantación así como la formación a los usuarios en caso necesario
 
 Existe una última fase que es la de **mantenimiento** donde se solucionarán las incidencias producidas y, en muchos casos, se implantarán mejoras.
 
@@ -77,13 +76,13 @@ Por tanto los primeros pasos a realizar serán:
 
 Con toda esta información se supone que tendremos los diferentes requisitos y necesidades para montar el sistema informático del aula.
 
-Es importante recordar que también es importante que aportemos nuevas opciones que consideremos importantes o de interés para nuestros clientes para poder tener un plus respecto a posibles competidores.
+Tened en cuenta que también es importante que aportemos nuevas opciones que consideremos de interés para nuestros clientes para poder tener un plus respecto a posibles competidores.
 
 Veamos un ejemplo de cómo podrían haber ido las reuniones.
 - Reunión con dirección. Las principales conclusiones que extraemos de dicha reunión son:
   - Espacio físico. El aula de que disponemos es suficientemente amplia y en ella hay colocadas 20 mesas dispuestas en 5 filas (4 mesas por fila) con las conexiones necesarias para conectar los equipos: cada mesa tiene 2 rosetas de red y 4 enchufes eléctricos.
   - Red. Todo el cableado de las mesas (40 tomas) más 2 tomas que hay en la pared frontal del aula bajo la pizarra se recoge en un rack en el que tenemos 2 switches de 24 + 2 bocas (24 bocas Fast ethernet + 2 bocas Gigabit). A dicho rack llega la conexión con la red del centro (a velocidad gigabit)
-  - Hardware. En cada fila hay colocados 7 equipos (2 por mesa menos la última de cada fila que sólo tiene 1 equipo) con procesador Intel i3, 8 GB de RAM, 1 TB de disco duro y tarjeta de red Fast ethernet. En la mesa del profesor hay otro equipo de iguales características. Por tanto disponemos de 36 PCs
+  - Hardware. En cada fila hay colocados 7 equipos (2 por mesa menos la última de cada fila que sólo tiene 1 equipo) con procesador Intel i3, 8 GB de RAM, 1 TB de disco duro y tarjeta de red Fast Ethernet. En la mesa del profesor hay otro equipo de iguales características. Por tanto disponemos de 36 PCs
   - Software. Cada ordenador viene con el sistema operativo Windows 10 Pro
   - Usuarios. El aula la utilizarán alumnos de 4 grupos de la ESO (en total unos 150 alumnos)
 - Reunión con los profesores. Las conclusiones que extraemos de la reunión con los profesores que utilizarán el aula el año próximo son:

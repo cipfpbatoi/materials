@@ -1,0 +1,61 @@
+# Instalar roles y características
+- [Instalar roles y características](#instalar-roles-y-características)
+  - [Introducción](#introducción)
+  - [Servicio de enrutamiento](#servicio-de-enrutamiento)
+  - [Instalación del dominio](#instalación-del-dominio)
+    - [Añadir un cliente al dominio](#añadir-un-cliente-al-dominio)
+
+## Introducción
+Hemos comentado que los roles son los diferentes servicios que podemos instalar en el servidor.
+
+Después de instalar Windows Server el sistema operativo funciona como cualquier otro Windows hasta que instalamos los componentes que le permitan funcionar como un servidor. A estos componentes Microsoft los denomina "roles".
+
+Para agregar un rol al servidor se hace desde el **Administrador del servidor** en el `menú Administrar-> Agregar Roles y características`. Algunos de ellos son:
+- **Acceso remoto**: servicios que ofrecen la capacidad de conectar diferentes segmentos de red y las herramientas para administrar el acceso a la red. Incluye varios servicios como el servicio de enrutamiento, VPN o el servicio de acceso remoto.
+- **Servicios de archivos y almacenamiento**: proporcionan administración de almacenamiento, replicación de archivos, acceso de los clientes a los archivos, etc
+- **Servicios de dominio de Active Directory (AD)**: administra la información sobre usuarios, equipos y el resto de dispositivos y recursos. Permite a los administradores gestionar todos los elementos del dominio.
+- **Servicios de impresión y documentos**: permite administrar impresoras y servidores de impresión.
+- **Servidor DHCP**
+- **Servidor DNS**
+- **Servidor web (IIS)**: integra el servidor web IIS (Internet Information Server) y ASP.NET
+
+El más importante es el servicio de dominio, que veremos en el siguiente apartado. Antes vamos a ver cómo se instalaría cualquier rol y en concreto instalaremos y configuraremos el servicio de enrutamiento para que los clientes de nuestra red interna tengan salida al exterior (y a Internet) a través de este servidor.
+
+Puedes ver [este vídeo](./media/rolSrvImpresion.ogv) de cómo instalar un rol.
+
+## Servicio de enrutamiento
+Deberemos instalar esta función si nuestro servidor va a permitir a los clientes de al red salir al exterior (para ello necesitará tener 2 tarjetas de red). Con las dos tarjetas configuradas tenemos 2 redes diferentes: una externa que nos comunica con el exterior y una interna que nos comunica con nuestros clientes. Pero ahora mismo las 2 redes no están comunicadas entre sí y un cliente de la red interna sólo puede llegar hasta el servidor pero no salir al exterior. Para que pueda hacerlo tenemos que enrutar las 2 tarjetas del servidor de forma que todo el tráfico que llega por la tarjeta interna hacia el exterior se enrute a la tarjeta externa que sabe hacia donde se tiene que dirigir.
+
+En Windows Server 2008 este servicio se instala como cualquier otro rol. En Windows Server 2012 se encuentra dentro de Acceso remoto. Una vez instalado el servicio hay que configurarlo.
+
+Para ello pregunta es qué tipo de servicio queremos crear. En nuestro caso sólo queremos conectar las 2 redes haciendo NAT para que los clientes puedan acceder a la red externa e Internet.
+
+A continuación hemos de indicar cuál es la tarjeta externa por la cual salir a Internet. Por último nos dice que no hay ningún servidor de DNS ni DHCP instalado pero como los instalaremos más adelante elegimos no configurar ahora esto.
+
+Puedes ver [este vídeo](./media/Enrutamiento.ogv) de cómo instalar y configurar este rol.
+
+## Instalación del dominio
+Para que nuestro servidor sea un controlador de dominio (DC, Domain Controller) debemos instalar el rol de **Servicio de dominio de Active Directory**.
+
+Como cualquier otro rol en primer lugar se instala y luego se configura.
+
+Podemos abrir el asistente de configuración desde la pantalla que indica el final de la instalación o ejecutando el comando **`DCPROMO.EXE`**.
+
+Puedes ver [este vídeo](./media/Dominio.ogv) de cómo instalar y configurar este rol.
+
+Vamos a explicar las diferentes opciones que hemos escogido durante la configuración del dominio:
+- en primer lugar hemos de seleccionar _Agregar un nuevo bosque_ ya que no hay ningún dominio en nuestra red al que vayamos a unirnos. El nombre del nuevo dominio raíz debería tener más de 1 nivel (por ejemplo _midominio.lan_ con 2 niveles)
+- el nivel funcional del bosque y del dominio lo establecemos al máximo posible, Windows Server 2016. Así podemos aprovechar todas sus características. Si en este dominio tuviéramos un DC con una versión inferior deberíamos escoger dicha versión para que sean compatibles
+- además se va a instalar el **servicio DNS** porque no hay ningún servidor DNS en el dominio así que esta máquina hará también de servidor DNS
+- en cuanto a la ubicación de los diferentes componentes del dominio si tenemos varios discos sería conveniente que estén en discos distintos por rendimiento. Podéis obtener más información en la web de Microsoft. En nuestro caso lo dejaremos todo en C:
+
+Tras configurar el dominio se reiniciará el servidor que a partir de cuando vuelva a arrancar ya será un DC.
+
+### Añadir un cliente al dominio
+En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor, es decir:
+- que sus IPs pertenezcan a la misma red
+- que físicamente sus cables de red estén conectados al mismo switch (o a switches conectados entre sí)
+- que el cliente puede resolver correctamente el nombre del dominio (para ello como DNS del cliente deberemos poner la IP del servidor que hará de servidor DNS en el dominio)
+
+Una vez hecho esto (podemos comprobarlo desde la terminal con `ping` y `nslookup`) ya podemos añadir el cliente al dominio. Puedes ver [este vídeo](./media/Cliente.ogv) de cómo añadir un cliente al dominio.
+
