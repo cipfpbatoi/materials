@@ -12,7 +12,7 @@ La correcta administración de la red es fundamental y centralizar esa administr
 
 El elemento que representa toda la red a administrar con todos los recursos que contiene se llama **Dominio**. Un dominio es una red de ordenadores conectados entre sí donde se confía a uno de los equipos de dicha red (o a un grupo de ellos, los controladores de dominio), la administración de los distintos elementos de la red (equipos, usuarios, impresoras, privilegios y permisos de los usuarios sobre cada recurso, etc.
 
-La información del dominio la almacena el controlador (o contraladores) en una base de datos jerárquica llamada **directorio**, que almacena la información sobre cada objeto del dominio: servidores, equipos cliente, impresoras, usuarios, grupos, archivos compartidos, etc.
+La información del dominio la almacena el controlador (o controladores) en una base de datos jerárquica llamada **directorio**, que almacena la información sobre cada objeto del dominio: servidores, equipos cliente, impresoras, usuarios, grupos, archivos compartidos, etc.
 
 Para gestionar el directorio el servidor dispondrá de unas herramientas que siguen el estándar **LDAP** (_Lightweight Directory Access Protocol_, protocolo ligero de acceso al directorio). Este protocolo establece que cada dominio tiene un nombre único que sigue la notación de nombres de DNS (ejemplo _cipfpbatoi.lan_). 
 

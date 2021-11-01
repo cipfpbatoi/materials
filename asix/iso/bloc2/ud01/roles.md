@@ -3,6 +3,8 @@
   - [Introducción](#introducción)
   - [Servicio de enrutamiento](#servicio-de-enrutamiento)
   - [Instalación del dominio](#instalación-del-dominio)
+    - [Instalar el dominio desde la terminal](#instalar-el-dominio-desde-la-terminal)
+    - [Degradar un controlador de dominio](#degradar-un-controlador-de-dominio)
     - [Añadir un cliente al dominio](#añadir-un-cliente-al-dominio)
 
 ## Introducción
@@ -10,7 +12,11 @@ Hemos comentado que los roles son los diferentes servicios que podemos instalar 
 
 Después de instalar Windows Server el sistema operativo funciona como cualquier otro Windows hasta que instalamos los componentes que le permitan funcionar como un servidor. A estos componentes Microsoft los denomina "roles".
 
-Para agregar un rol al servidor se hace desde el **Administrador del servidor** en el `menú Administrar-> Agregar Roles y características`. Algunos de ellos son:
+Para agregar un rol al servidor se hace desde el **Administrador del servidor** en el `menú Administrar-> Agregar Roles y características`. 
+
+![Roles y características](media/AdministrarRoles.png)
+
+Algunos de ellos son:
 - **Acceso remoto**: servicios que ofrecen la capacidad de conectar diferentes segmentos de red y las herramientas para administrar el acceso a la red. Incluye varios servicios como el servicio de enrutamiento, VPN o el servicio de acceso remoto.
 - **Servicios de archivos y almacenamiento**: proporcionan administración de almacenamiento, replicación de archivos, acceso de los clientes a los archivos, etc
 - **Servicios de dominio de Active Directory (AD)**: administra la información sobre usuarios, equipos y el resto de dispositivos y recursos. Permite a los administradores gestionar todos los elementos del dominio.
@@ -34,6 +40,12 @@ A continuación hemos de indicar cuál es la tarjeta externa por la cual salir a
 
 Puedes ver [este vídeo](./media/Enrutamiento.ogv) de cómo instalar y configurar este rol.
 
+Si tenemos más de una red interna las otras tarjetas internas se enrutan desde _Enrutamiento y acceso remoto->nuestro servidor->IPv4->NAT_ i se añaden el resto de interfaces internas.
+
+![Enrutar otra red](media/enrutarOtraRed.png)
+
+Una vez configurada la red comprobaremos su correcto funcionamiento, con las órdenes `ping` y `tracert`. Ahora ya se debe poder navegar por Internet desde un cliente. El comando que nos muestra la configuración actual de la red es `ipconfig / all`.
+
 ## Instalación del dominio
 Para que nuestro servidor sea un controlador de dominio (DC, Domain Controller) debemos instalar el rol de **Servicio de dominio de Active Directory**.
 
@@ -50,6 +62,32 @@ Vamos a explicar las diferentes opciones que hemos escogido durante la configura
 - en cuanto a la ubicación de los diferentes componentes del dominio si tenemos varios discos sería conveniente que estén en discos distintos por rendimiento. Podéis obtener más información en la web de Microsoft. En nuestro caso lo dejaremos todo en C:
 
 Tras configurar el dominio se reiniciará el servidor que a partir de cuando vuelva a arrancar ya será un DC.
+
+### Instalar el dominio desde la terminal
+El comando para crear el dominio ACME.LAN con PowerShell sería:
+```powershell
+$dominioFQDN = "ACME.LAN"
+$dominioNETBIOS = "ACME"
+$adminPass = "Batoi@1234."
+Install-WindowsFeature AD-Domain-Services,DNS
+Import-module addsdeployment
+Install-ADDSForest `
+    -DomainName $dominioFQDN `
+    -DomainNetBiosName $dominioNETBIOS `
+    -SafeModeAdministratorPassword (ConvertTo-SecureString -string $adminPass -AsPlainText -Force) `
+    -DomainMode WinThreshold `
+    -ForestMode WinThreshold `
+    -InstallDNS -Confirm:$false `
+    -DomainMode WinThreshold `
+    -ForestMode WinThreshold `
+    -InstallDNS -Confirm:$false
+```
+
+### Degradar un controlador de dominio
+Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace igual que para promocionarlo, con el comando `dcpromo`.
+
+Aparece una ventana que nos pregunta si queremos eliminar el dominio. Si estamos degradando el último controlador del dominio marcaremos una casilla que lo indica y se eliminará todo el dominio, perdiéndose toda la información que contenía. El servidor pasará a ser un servidor independiente. Si por el contrario aún quedan otros controladores de dominio la única cosa que estamos haciendo es que este servidor pasará a ser un servidor miembro del dominio sin funciones de controlador (que las harán el resto de controladores que aún queden en el dominio).
+
 
 ### Añadir un cliente al dominio
 En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor, es decir:

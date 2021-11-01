@@ -10,6 +10,7 @@
       - [Actualizar el servidor](#actualizar-el-servidor)
       - [Roles y características](#roles-y-características)
       - [Versión de evaluación](#versión-de-evaluación)
+  - [Documentación de la instalación](#documentación-de-la-instalación)
 
 ## Planificación de la instalación
 Instalar un sistema operativo nunca es un proceso trivial y mucho menos en el caso de un servidor. Si el sistema no se instala y configura correctamente podemos encontrarnos posteriormente con fallos que serán difíciles de corregir. Ya vimos en el bloque 1 las [tareas a planificar](../ud03/aplnif.md#introducción) antes de realizar la instalación de un sistema operativo.
@@ -41,16 +42,14 @@ En nuestro caso no tenemos que preocuparnos de la parte del hardware porque ya l
 
 Respecto al  sistema operativo ya hemos elegido los sistemas para los clientes y debemos ahora elegir el sistema operativo para el servidor. Como aún no tenemos demasiados conocimientos de los sistemas GNU/Linux nos decantaremos por un Windows Server para el servidor que hemos visto que cumple con los requerimientos que nos plantean.
 
-Lo razonable es instalar la última versión: Windows Server 2012 R2. Sin embargo nosotros por los recursos disponibles en nuestro ordenador de clase para virtualizar es posible que debamos instalar una versión anterior, Windows Server 2008 R2, cuyos requisitos de hardware son inferiores.
+Lo razonable es instalar la última versión: Windows Server 2022. Dentro de cada versión de Windows hay diferentes ediciones y debemos elegir la más adecuada para nuestro sistema.
 
-Dentro de cada versión de Windows hay diferentes ediciones y debemos elegir la más adecuada para nuestro sistema.
-
-En la web de Microsoft o la Wikipedia podemos consultar las características de las diferentes ediciones.
+En la web de [Microsoft](https://www.microsoft.com/es-es/windows-server/pricing), Wikipedia y otras páginas podemos consultar las características de las diferentes ediciones.
 
 ## Proceso de instalación
 Una vez finalizada la planificación procederemos a la instalación del sistema. Si ya tenemos las particiones hechas en la instalación elegiremos cuál será la del sistema. Si no las haremos al instalar (recordad que el instalador de Windows sólo permite crear particiones primarias y con sistema de ficheros NTFS).
 
-El proceso de instalación es similar al de cuaquier Windows cliente.
+El proceso de instalación es similar al de cualquier Windows cliente.
 
 ### Instalación Server Core
 Esta instalación (que es la opción por defecto al instalar el sistema) instala el servidor pero sin entorno gráfico, con las ventajas e inconvenientes que ello comporta. En realidad sí que hay un sistema gráfico desde el que se pueden realizar algunas acciones pero no es tan potente ni pesado como el entorno gráfico normal.
@@ -78,7 +77,7 @@ Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar q
 A continuación vamos a realizar una serie de tareas básicas de configuración desde el `Administrador del servidor->Servidor local`.
 
 #### Proporcionar información del equipo
-Tenemos que indicar el nombre del equipo y del dominio. Como nombre de equipo se recomienda que no tenga más de 15 caracteres y sólo use caracteres estándar (letras normales, números o guión). El nombre tiene que ser único en el dominio.
+Tenemos que proporcionar el **nombre del equipo**. Como nombre de equipo se recomienda que no tenga más de 15 caracteres y sólo use caracteres estándar (letras normales, números o guión). El nombre tiene que ser único en el dominio.
 
 Respecto al dominio si este servidor hará de servidor en un dominio ya existente (donde ya hay otro servidor que hace de controlador de dominio) aquí indicaremos el nombre del dominio. Si no trabajaremos con dominio o es este servidor el que hará de controlador lo dejamos como grupo de trabajo (posteriormente veremos como crear el nuevo dominio).
 
@@ -91,22 +90,22 @@ También es aconsejable comprobar la zona horaria (aparece a la derecha).
 #### Configurar la red
 Tenemos que comprobar la configuración de la red. Lo más normal es que el servidor tenga direcciones IP estáticas, no obtenidas por DHCP (seguramente será él quien asigne direcciones por DHCP). Si no lo hemos hecho antes desde aquí le asignamos la IP que corresponda a cada tarjeta de red.
 
-Si nuestro servidor tiene que hacer de servidor de comunicaciones y ser la puerta de enlace por la cual los clientes de nuestra red accedan en Internet tendrá que tener 2 tarjetas de red:
+Si nuestro servidor tiene que hacer de servidor de comunicaciones y ser la puerta de enlace por la cual los clientes de nuestra red accedan en Internet tendrá que tener al menos 2 tarjetas de red:
 - la tarjeta externa que conectará nuestro servidor con la red externa (al router o equipo que le da salida a Internet). Configuraremos el protocolo TCP/IP (la IPv4, la IPv6 o las dos, según el protocolo que utilizamos en nuestra red): como _gateway_ pondremos la IP del dispositivo que nos proporciona acceso a Internet y como IP de nuestro equipo pondremos la IP estática con que se conecta a ese gateway (tendrá que estar en la misma subred para poder acceder al gateway). Si estamos creando un servidor virtual la IP será diferente según si elegimos adaptador puente o NAT cuando configuremos el adaptador en VirtualBox.
-- la tarjeta interna conectará nuestro servidor a los clientes e irá al switch al que se conectan todos los clientes. En su configuración no pondremos ninguna gateway porque la salida de esta tarjeta será la tarjeta externa y como dirección IP de nuestro servidor pondremos una IP de la misma subred de nuestros clientes (normalmente solo ser la acabada en 1, por ejemplo 192.168.224.1, pero puede ser cualquier).
+- la tarjeta interna conectará nuestro servidor a los clientes e irá al switch al que se conectan todos los clientes. En su configuración no pondremos ninguna gateway porque la salida de esta tarjeta será la tarjeta externa y como dirección IP de nuestro servidor pondremos una IP de la misma subred de nuestros clientes (normalmente solo ser la acabada en 1, por ejemplo 192.168.224.1, pero puede ser cualquiera).
 
-Finalmente tendremos que enrutar el tráfico entre las dos tarjetas de forma que todo el tráfico de salida que llega por la tarjeta interna sea transferido a la externa desde donde irá hacia su destino. Sin este paso los clientes llegarán al servidor pero no podrán ir más allá. La forma más sencilla de hacer esto es instalando en nuestro servidor el Servicio de Enrutamiento (es uno de los servicios que encontramos dentro del Servicio de acceso y directivas de red).
+Finalmente tendremos que enrutar el tráfico entre las dos tarjetas de forma que todo el tráfico de salida que llega por la tarjeta interna sea transferido a la externa desde donde irá hacia su destino. Sin este paso los clientes llegarán al servidor pero no podrán ir más allá. La forma más sencilla de hacer esto es instalando en nuestro servidor el **Servicio de Enrutamiento** (es uno de los servicios que encontramos dentro del servicio de _Acceso a red_).
 
 #### Actualizar el servidor
 En este apartado configuramos las actualizaciones del servidor. Podemos configurarlas automáticamente o manualmente donde podemos indicar cómo queremos que se realizan las actualizaciones, que se envían a Microsoft los informes de errores y cómo queremos participar en el programa de mejora de la experiencia de usuario (se envía información a Microsoft del que instalamos y estiércol).
 
-Si es importante que un cliente esté siempre actualizado para evitar vulnerabilidades esto es mucho más importante en el caso del servidor porque si un atacante consigue acceder a nuestro servidor tendrá a su alcance toda la información y los recursos de nuestra red.
+Si es importante que un cliente esté siempre actualizado para evitar vulnerabilidades esto es mucho más importante en el caso del servidor porque si un atacante consigue acceder a nuestro servidor tendrá a su alcance toda la información y los recursos de nuestra red. De todas formas tenemos que tener cuidado con esto porque algunas actualizaciones requieren reiniciar el equipo (y es un tema delicado en un servidor) y también podría pasar que alguna actualización nos de problemas con nuestro hardware o con alguna aplicación instalada, aunque es algo poco habitual. Por eso hay administradores que prefieren que las actualizaciones se descarguen automáticamente pero no se instalen sino que hacen ellos la instalación en momentos en que no sea crítico el funcionamiento del servidor.
 
-No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Windows. También se puede actualizar el sistema fácilmente desde esta ventana en la parte de la derecha.
+No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Windows.
+
+**Recordad que nosotros deshabilitaremos las actualitzaciones automáticas para no colapsar la red del instituto.**
 
 #### Roles y características
-Desde aquí podemos instalar componentes y servicios y configurar otros elementos. Se encuentra en la parte inferior de la ventana del Servidor local y permite agregar o quitar roles y características.
-
 Los roles son los diferentes servicios que podemos instalar en el servidor.
 
 Las características son componentes que permiten añadir funcionalidades al servidor, como copias de seguridad, cifrado de discos, equilibrio de carga de red, etc.
@@ -118,10 +117,12 @@ El más importante es el **servicio de dominio de Active Directory**, que veremo
 Pero antes de eso vamos a aprender a administrar los discos de que dispongamos que es una cuestión importante en un servidor ya que posiblemente en ellos se alojen los datos de la empresa.
 
 #### Versión de evaluación
-La versión que hemos instalado es la versión  de evaluación y sólo podemos utilizarla durante un tiempo determinado antes de adquirir una licencia. Ppodemos ixer el tiempo que nos queda con el comando:
+La versión que hemos instalado es la versión  de evaluación y sólo podemos utilizarla durante un tiempo determinado antes de adquirir una licencia. Podemos ver el tiempo que nos queda con el comando:
 ```bash
 slmgr.vbs -dli
 ```
+
+![slmgr](media/slmgr.png)
 
 Microsoft nos permite ampliar el periodo de prueba con el comando:
 ```bash
@@ -129,3 +130,20 @@ slmgr.vbs -rearm
 ```
 
 Este comando tarda un tiempo en ejecutarse y después nos pide que reiniciemos el sistema.
+
+## Documentación de la instalación
+A lo largo de la instalación es conveniente anotar en un documento cuestiones cómo:
+- Fecha y hora de la instalación
+- Versión y número. de serie del sistema operativo, licencias de cliente instaladas, ...
+- Especificaciones hardware del equipo (procesador, RAM, disco llevar, tarjeta gráfica, tarjetas de red, etc)
+- Discos duros y particiones del equipo (nombre, medida, FS, utilización, ...)
+- Identificación del equipo: nombre, contraseña del administrador, ubicación
+- Software adicional instalado incluyendo con el nombre del programa la versión, descripción, utilidad y fecha de instalación
+- Configuración de red: IP, máscara, puerta de enlace, servidores DNS, num. de roseta en el switch o el rack, nombre del dominio o grupo de trabajo
+- Actualizaciones instaladas: nombre, utilidad y fecha de instalación
+- Clientes conectados: IP, sistema operativo, nombre del equipo, tipo de equipo, ubicación, usuario habitual, observaciones
+- Otras datos: antivirus, cortafuegos, gestor de base de datos, servidores a quienes está conectado, etc
+- Configuraciones adicionales: configuración de elementos como cortafuegos, gestor de base de datos, antivirus, etc
+- Impresoras conectadas: nombre, tipo, IP o puerto, ubicación
+
+La documentación no es un documento estático sino que irá modificándose a medida que cambiemos la configuración del servidor.
