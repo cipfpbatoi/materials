@@ -368,8 +368,8 @@ Podéis ver más información de cómo usar formData en [MDN web docs](https://d
 Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
 1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
 1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
-  1. Se encarga de hacer la petición Ajax al servidor
-  1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
+  - Se encarga de hacer la petición Ajax al servidor
+  - Si se produce un error se encarga de informar al usuario de nuestra aplicación
 1. Cuando se reciben deben pintarse en la tabla
 
 Si no estuviéramos haciendo una petición asíncrona el código de todo esto será algo como el siguiente (ATENCIÓN, este código **NO FUNCIONA**):
