@@ -216,14 +216,14 @@ Como normalmente no nos interesa cada cambio en el estado de la petición sino q
 * **abort**: si se cancela la petición (se hace llamando al método **.abort()** de la petición)
 * **loadend**: se produce siempre que termina la petición, independiantemente de si se recibe respuesta o sucede algún error (incluyendo un _timeout_ o un _abort_)
 
-Ejemplo:
+Ejemplo de código que sí usaremos:
 ```javascript
 const peticion=new XMLHttpRequest();
 peticion.open('GET', 'https://jsonplaceholder.typicode.com/users');
 peticion.send();
 peticion.addEventListener('load', function() {
     if (peticion.status===200) {
-        let usuarios=JSON.parse(peticion.responseText);  // Convertirmos los datos JSON a un objeto
+        let usuarios=JSON.parse(peticion.responseText);
         // procesamos los datos que tenemos en usuarios
     } else {
         muestraError();
@@ -369,33 +369,37 @@ Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que mues
 1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
 1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
   1. Se encarga de hacer la petición Ajax al servidor
-  1. Cuando recibe los datos se encarga de pintarlos en la tabla
   1. Si se produce un error se encarga de informar al usuario de nuestra aplicación
-  
-Por tanto todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor. Aquí tenéis cómo podría quedar código de esta página sin usar promesas:
+1. Cuando se reciben deben pintarse en la tabla
+
+Si no estuviéramos haciendo una petición asíncrona el código de todo esto será algo como el siguiente (ATENCIÓN, este código **NO FUNCIONA**):
+
+<script async src="https://jsfiddle.net/juansegura/b0znLwkt/embed/js,html,result/"></script>
+
+Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve tiempo después, cuando el servidor conteste, pero entonces ya no hay nadie escuchando.
+
+La solución es que todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor:
 
 <script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
 Esta forma de programar tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos. Por tanto nuestro código queda poco claro.
 
 ### Usando funciones _callback_
-Esto se podría evitar usando una función **_callback_** que le pasamos a getPosts para que la llame cuando tenga los datos:
+Esto se podría mejorar usando una función **_callback_**. La idea es que creamos una función que procese los datos (`renderPosts`) y se la pasamos a `getPosts` para que la llame cuando tenga los datos:
 
 <script async src="//jsfiddle.net/juansegura/cob8m3zx/embed/js,html,result/"></script>
 
 Hemos creado una función que se ocupa de renderizar los datos y se la pasamos a la función que gestiona la petición para que la llame cuando los datos están disponibles. Utilizando la función _callback_ hemos conseguido que _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los pasa a la encargada de pintarlos en la tabla.
 
 ### Usando promesas
-Son una forma más limpia de resolver una función asíncrona. En el primer ejemplo de arriba hemos visto que tenemos que usar los datos (pintar los posts en la tabla) dentro de `peticion.addEventListener('load' ...`) porque es donde los tenemos disponibles y esto hace muy confuso el código. Con la función _callback_ se mejora algo pero sigue sin ser demasiado organizado.
-
-Nuestro código sería más claro si hiciera algo como:
+Sin embargo hay una forma más limpia de resolver una función asíncrona y que el código se parezca al primero que hicimos y que no funcionaba, el que hacía:
 ```javascript
     ...
     let idUser = document.getElementById('id-usuario').value;
     if (isNaN(idUser) || idUser == '') {
       alert('Debes introducir un número');
     } else {
-      const data = getPosts(idUser);
+      const posts = getPosts(idUser);
       // y aquí usamos los datos recibidos, en este caso para pintar los posts
     }
     ...
@@ -403,7 +407,7 @@ Nuestro código sería más claro si hiciera algo como:
 
 Esto podemos conseguirlo mediante el uso de _promesas_. Una llamada a una promesa cuenta con 2 métodos:
 - **.then(_function(datos) { ... }_)**: al resolverse la promesa satisfactoriamente se ejecuta la función pasada como parámetro del _then_. Esta recibe como parámetro los datos que se envían al resolver la promesa (normalmente los datos devueltos por la función asíncrona a la que se ha llamado)
-- **.catch(_function(datos) { ... }_)**: la función pasada como parámentro se ejecuta si se rechaza la promesa (normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (normalmente información sobre el error producido).
+- **.catch(_function(datos) { ... }_)**: la función pasada como parámetro se ejecuta si se rechaza la promesa (normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (normalmente información sobre el error producido).
 
 De esta manera nuestro código quedaría:
 ```javascript
@@ -426,13 +430,11 @@ De esta manera nuestro código quedaría:
           })
           document.getElementById('num-posts').textContent = posts.length;
         })
-        .catch(function(error) {
-          console.error(error);
-        })
+        .catch((error) => console.error(error))
     }
 ```
 
-La llamada a la función asíncrona se hace desde dentro de una función que devuelve una promesa (_getPosts_). Cuando la promesa se resuelva satisfactoriamente _getPosts_ llama a una función **_resolve()_** a la que le pasa los datos recibidos por el servidor (que los recibirá quien llamó a la promesa en su _.then_). Si se produce algún error se rechaza la promesa llamando a su función **_reject()_** pasando como parámetro la información de que ha fallado la llamada y por qué (esto le llegará a quien la llamó en su _.catch_). Por tanto nuestra función _getPosts_ ahora quedará así:
+La llamada a la función asíncrona se hace desde dentro de una función que devuelve una promesa (_`getPosts`_). Cuando la promesa se resuelva satisfactoriamente _getPosts_ llama a una función **_`resolve()`_** a la que le pasa los datos recibidos por el servidor (que los recibirá quien llamó a la promesa en su _.then_). Si se produce algún error se rechaza la promesa llamando a su función **_`reject()`_** pasando como parámetro la información de que ha fallado la llamada y por qué (esto le llegará a quien la llamó en su _.catch_). Por tanto nuestra función _getPosts_ ahora quedará así:
 
 ```javascript
 function getPosts(idUser) {
@@ -451,6 +453,8 @@ function getPosts(idUser) {
   })
 }
 ```
+
+Fijaos que el único cambio es la primera línea donde convertimos nuestra función en una promesa, y que luego para "devolver" los datos a quian llama a _getPosts_ en lugar de hacer un _return_, que ya hemos visto que no funciona, se hace un _resolve_ si todo ha ido bien o un _reject_ si ha fallado.
 
 Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos **_.then()_** y * **_.catch()_** que hemos visto anteriormente.
 
@@ -525,6 +529,8 @@ Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs
 
 ### Usando _async / await_
 Estas nuevas instrucciones introducidas en ES2016 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que NO están soportadas por navegadores antiguos.
+
+Usando esto sí funcionaría el primer ejemplo que hicimos.
 
 La palabra **async** se antepone a _function_ al declarar una función e indica que esa función va a hacer una llamada asíncrona. Al anteponerle _async_ se 'envuelve' automáticamente esa función en una promesa (o sea que devuelve una promesa a la que podríamos ponerle un `.then()`).
 
