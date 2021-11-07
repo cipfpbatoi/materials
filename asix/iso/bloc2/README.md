@@ -3,6 +3,7 @@ En este bloque veremos cómo gestionar la red informática de una empresa y todo
 
 El bloque está compuesto por las unidades de trabajo:
 - [UD 1 - Introducción a los dominios](./ud01): en esta unidad veremos qué es una red cliente/servidor y que es un dominio
-- [UD 2 - Administración centralizada del dominio](ud02): crearemos objetos en nuestro dominio como usuarios, grupos, plantillas, etc
-- [UD 3 - Compartición de recursos](ud03): compartiremos carpetas e impresoras y estableceremos los permisos de acceso
-- [UD 4 -  Administración avanzada del dominio](ud04): crearemos directivas que nos permitan mejorar la gestión del dominio y realizaremos otras tareas como añadir clientes GNU/Linux al dominio y configurar diferentes servicios
+- [UD 2 - Instalación y configuración del sistema y el dominio](./ud02): instalaremos Windows Server, instalaremos algún rol y configuraremos el dominio
+- [UD 3 - Administración centralizada del dominio](ud02): crearemos objetos en nuestro dominio como usuarios, grupos, plantillas, etc
+- [UD 4 - Compartición de recursos](ud03): compartiremos carpetas e impresoras y estableceremos los permisos de acceso
+- [UD 5 -  Administración avanzada del dominio](ud04): crearemos directivas que nos permitan mejorar la gestión del dominio y realizaremos otras tareas como añadir clientes GNU/Linux al dominio y configurar diferentes servicios

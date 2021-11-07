@@ -5,9 +5,6 @@
   - [Conocimientos previos](#conocimientos-previos)
   - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
-    - [Fases en la implantación de un sistema informático](#fases-en-la-implantación-de-un-sistema-informático)
-    - [Análisis del sistema](#análisis-del-sistema)
-    - [Diseño del sistema](#diseño-del-sistema)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
@@ -24,9 +21,6 @@ Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 - La red informática
 - Arquitectura cliente/servidor
 - Principales sistemas operativos de servidor
-- Instalar y configurar Windows Server
-- El dominio en Windows
-- Documentar el proceso
 
 ## Conocimientos previos
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
@@ -42,9 +36,6 @@ Los contenidos de esta unidad son los siguientes:
 1. [Red de ordenadores. Arquitectura cliente/servidor](arq-cs.md)
 2. [Principales S.O. de servidor](so-srv.md)
 3. [Dominios. Active Directory](dominios.md)
-4. [Instalación de Windows Server](instal.md)
-5. [Instalar roles y características](roles.md)
-6. [Administrar discos](discos.md)
 
 ## Caso práctico
 En el centro donde estudiamos la ESO van a ofrecer el año próximo como opcional la asignatura de Informática y como el director sabe que somos un poco "manitas" en esto de la informática y que estamos estudiando el ciclo de Administración de Sistemas Informáticos y Redes nos ha pedido que le echemos una mano para montar en el centro un aula informática y configurarla con todo lo necesario.
