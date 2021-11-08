@@ -78,8 +78,7 @@ En el HTML debemos vincular los scripts de la librería de Vue y de nuestro cód
 
 Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele poner como id _app_) que en este caso es un `<div>`.
 
-Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **`{{ ... }}`** ) que muestra en
-la página la variable o expresión Javascript que contiene.
+Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **`{\{ ... }}`** ) que muestra en la página la variable o expresión Javascript que contiene.
 
 ### Javascript
 En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En Vue 2:
