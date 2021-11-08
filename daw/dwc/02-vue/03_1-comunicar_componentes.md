@@ -2,25 +2,25 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 Tabla de contenidos
 
-- [Comunicación entre componentes](#comunicaci%C3%B3n-entre-componentes)
+- [Comunicación entre componentes](#comunicación-entre-componentes)
   - [Props (de padre a hijo)](#props-de-padre-a-hijo)
     - [No cambiar el valor de una prop](#no-cambiar-el-valor-de-una-prop)
-    - [Validación de props](#validaci%C3%B3n-de-props)
+    - [Validación de props](#validación-de-props)
     - [Pasar atributos de padre a hijo](#pasar-atributos-de-padre-a-hijo)
   - [Emitir eventos (de hijo a padre)](#emitir-eventos-de-hijo-a-padre)
     - [Capturar el evento en el padre: .native](#capturar-el-evento-en-el-padre-native)
     - [sync](#sync)
     - [Definir y validar eventos](#definir-y-validar-eventos)
-  - [Bus de comunicaciones](#bus-de-comunicaciones)
+  - [Bus de eventos](#bus-de-eventos)
   - [Compartir datos](#compartir-datos)
     - [$root y $parent](#root-y-parent)
     - [Store pattern](#store-pattern)
   - [Vuex](#vuex)
   - [Slots](#slots)
     - [Slots con nombre](#slots-con-nombre)
-- [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
-  - [Solución emitiendo eventos](#soluci%C3%B3n-emitiendo-eventos)
-  - [Solución con _Store pattern_](#soluci%C3%B3n-con-_store-pattern_)
+- [Aplicación de ejemplo](#aplicación-de-ejemplo)
+  - [Solución emitiendo eventos](#solución-emitiendo-eventos)
+  - [Solución con _Store pattern_](#solución-con-store-pattern)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -292,6 +292,8 @@ app.component('custom-form', {
 En este ejemplo el componente emite _click_ que no se valida y _submit_ donde se valida que debe recibir 2 parámetros.
 
 ## Bus de eventos
+**NOTA**: Esta funcionalidad ha sido eliminada de Vue3.
+
 Si queremos pasar información entre varios componentes que no tienen por qué ser padres/hijos podemos crear un componente que haga de canal de comunicación y que incluiremos en cada componente que queramos comunicar:
 
 En primer lugar creamos de forma global (fuera de cualquier componente) el objeto que gestione la comunicación entre componentes:

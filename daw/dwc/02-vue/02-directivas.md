@@ -1,22 +1,17 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
+# Directivas en Vue
 - [Directivas en Vue](#directivas-en-vue)
-  - [Directivas básicas](#directivas-b%C3%A1sicas)
+  - [Directivas básicas](#directivas-básicas)
   - [Condicionales: v-if](#condicionales-v-if)
   - [Bucles: v-for](#bucles-v-for)
   - [Eventos: v-on](#eventos-v-on)
     - [Modificadores de eventos](#modificadores-de-eventos)
-  - [Ejemplo de aplicación](#ejemplo-de-aplicaci%C3%B3n)
-    - [Solución de la aplicación](#soluci%C3%B3n-de-la-aplicaci%C3%B3n)
+  - [Ejemplo de aplicación](#ejemplo-de-aplicación)
+    - [Solución de la aplicación](#solución-de-la-aplicación)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Directivas en Vue
-Las directivas son atributos especiales que se ponen en las etiquetas HTML y que les dan cierta funcionalidad. Todas comienzan por **v-**. 
 
 ## Directivas básicas
+Las directivas son atributos especiales que se ponen en las etiquetas HTML y que les dan cierta funcionalidad. Todas comienzan por **v-**. 
+
 Las más comunes son:
 * `v-text`: es equivalente a hacer una interpolación (` {{ ... }} `). Muestra el valor en la etiqueta
 * `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra

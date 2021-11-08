@@ -1,23 +1,20 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
-- [Conceptos básicos](#conceptos-b%C3%A1sicos)
+# Conceptos básicos
+- [Conceptos básicos](#conceptos-básicos)
+  - [Introducción](#introducción)
   - [Usar Vue](#usar-vue)
-  - [La primera aplicación Vue](#la-primera-aplicaci%C3%B3n-vue)
+  - [La primera aplicación Vue](#la-primera-aplicación-vue)
     - [HTML](#html)
     - [Javascript](#javascript)
-  - [La instancia _Vue_](#la-instancia-_vue_)
-  - [_Binding_ de variables](#_binding_-de-variables)
-    - [Enlace unidireccional: interpolación {\{...}}](#enlace-unidireccional-interpolaci%C3%B3n-%5C)
+  - [La instancia _Vue_](#la-instancia-vue)
+    - [El ciclo de vida de un componente](#el-ciclo-de-vida-de-un-componente)
+  - [_Binding_ de variables](#binding-de-variables)
+    - [Enlace unidireccional: interpolación {\{...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
-  - [Vue devtools](#vue-devtools)
-  - [Extensiones para el editor de código](#extensiones-para-el-editor-de-c%C3%B3digo)
+  - [[Vue devtools]](#vue-devtools)
+  - [Extensiones para el editor de código](#extensiones-para-el-editor-de-código)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Conceptos básicos
+## Introducción
 Vue es un framework progresivo para la construcción de interfaces de usuario y aplicaciones desde el lado del cliente. Lo de framework "progresivo" significa que su núcleo es pequeño pero está diseñado para crecer: su núcleo está enfocado sólo en la capa de visualización (como React) pero es fácil añadirle otras bibliotecas o proyectos existentes (algunos desarrollados por el mismo equipo de Vue) que nos permitan crear complejas SPA.
 
 Un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
@@ -31,7 +28,7 @@ Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis
 * [Comparativa Openwebminars](https://openwebinars.net/blog/los-6-mejores-frameworks-javascript/?utm_source=customer-io&utm_medium=newsletter)
 * [Openwebminars: Vue vs Angular](https://openwebinars.net/blog/vue-vs-angular/)
 * [Carlos Azaustre: Vue vs Angular (vídeo)](https://www.youtube.com/watch?v=jTtab_rnvic)
-* [Angular vs. React vs. Vue: A 2017 comparison](https://medium.com/unicorn-supplies/angular-vs-react-vs-vue-a-2017-comparison-c5c52d620176)
+* [Angular vs React vs Vue: Which Framework to Choose in 2021](https://www.codeinwp.com/blog/angular-vs-vue-vs-react/)
 * ...
 
 Las razones de que veamos Vue en vez de Angular o React son, en resumen:
@@ -40,7 +37,16 @@ Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 * **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece muy buen rendimiento
 
 ## Usar Vue
-Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN:
+Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN. Si queremos usar la nueva versión Vue 3 usaremos cualquier CDN como:
+```html
+<script src="https://unpkg.com/vue@next"></script>
+
+<script src="https://unpkg.com/vue@3.2.21/dist/vue.global.prod.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.21/vue.cjs.js" integrity="sha512-2e2aXOh4/FgkCAUyurkjk0Uw4m1gPcExFwb1Ai4Ajjg97se/FEWfrLG1na4mq8cgOzouc8qLIqsh0EGksPGdqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+```
+
+Para utilizar Vue 2 podemos usar los CDN:
 ```html
 <!-- development version, includes helpful console warnings -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -51,33 +57,37 @@ o
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 ```
 
-Si queremos usar la nueva versión Vue 3 (aún no recomendado para producción) usaremos el CDN:
-```html
-<script src="https://unpkg.com/vue@next"></script>
-```
-
 Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
 
 ## La primera aplicación Vue
-Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación
+Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación. En Vue 3:
+
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="dyzZgeY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/dyzZgeY">
+  Vue3 Hello world</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+En Vue 2:
 
 <script async src="//jsfiddle.net/juansegura/psk853hL/embed/"></script>
+
 ### HTML
 En el HTML debemos vincular los scripts de la librería de Vue y de nuestro código. 
 
 Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele poner como id _app_) que en este caso es un `<div>`.
 
-Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **{\{ ... }}** ) que muestra en
-la página la variable o expresión Javscript que contiene.
+Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **`{{ ... }}`** ) que muestra en
+la página la variable o expresión Javascript que contiene.
 
 ### Javascript
-En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades:
+En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En Vue 2:
 * *el*: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más 
 de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* *data*: objeto donde definiremos todas las variables que vamos a usar en la vista. En nuestro caso sólo tenemos una que 
-es _message_. A cada variable le debemos dar un valor inicial.
+* *data*: objeto donde definiremos todas las variables que vamos a usar en la vista. En nuestro caso sólo tenemos una que es _message_. A cada variable le debemos dar un valor inicial.
 * pueden haber más como *methods* (objeto con métodos que podemos llamar desde la vista), *props* (array de variables que se 
-pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremmos más adelante.
+pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremos más adelante.
 
 En **Vue3** la sintaxis para crear la aplicación es ligeramente diferente:
 ```javascript
@@ -92,14 +102,14 @@ app.mount('#app')
 ```
 
 Las principales diferencias son:
-- la instancia se crea con el método _createApp_ en vez de con el constructor de Vue
-- el elemento en que se montará la aplicación no se incluye en el objeto que se pasa al crear la aplicación sino que se indica en el método _mount_
-- la propiedad _data_ no es un objeto sino una función que devuelve ese objeto (esto sucede igual en los componenetes de Vue2 como veremos más adelante).
+- la instancia se crea con el método _`createApp`_ en vez de con el constructor de Vue
+- el elemento en que se montará la aplicación no se incluye en el objeto que se pasa al crear la aplicación sino que se indica en el método _`mount`_
+- la propiedad _data_ no es un objeto sino una función que devuelve ese objeto (esto sucede igual en los componentes de Vue2 como veremos más adelante).
 
 ## La instancia _Vue_
 La instancia que hemos creado (y cada componente) recibe un objeto de opciones con las siguientes propiedades:
-* **el**: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista (las variables que sólo uemos en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas son accesibles desde la vista poniendo *{\{ su_nombre }}* y desde el código JS poniendo *this.su_nombre*. En los componentes (lo veremos más adelante) y en Vue3 en lugar de ser un objeto es una función que devuelve ese objeto.
+* **el** (sólo en Vue2): el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
+* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **`{{ su_nombre }}`** y desde el código JS poniendo **`this.su_nombre`**. En Vue3 y en todos los componentes (lo veremos más adelante) en lugar de ser un objeto es una función que devuelve ese objeto.
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
 ```javascript
 data: {
@@ -114,7 +124,7 @@ computed: {
 ```
 
 * **methods**: objeto con métodos a los que podemos llamar desde la vista
-* eventos del ciclo de vida de la instancia (_hooks_): para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
+* **_hooks_** (eventos del ciclo de vida de la instancia): para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
 
 ```javascript
 created() {
@@ -129,7 +139,9 @@ En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cu
 
 ![Ciclo de vida de Vue](https://v3.vuejs.org/images/lifecycle.png)
 
-**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlace en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
+**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
+
+**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlazan en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
 ```javascript
 // MAL, NO HACER ASÍ
 created: () => {
@@ -137,7 +149,12 @@ created: () => {
 }
 ```
 
-**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
+```javascript
+// BIEN, HACER ASÍ
+created() {
+    console.log('instancia creada'); 
+}
+```
 
 ## _Binding_ de variables
 Para probar su funcionamiento conviene que nos descarguemos los ficheros y los abramos en local.
@@ -187,7 +204,7 @@ var miApp = Vue.createApp({
 Hemos creado una variable _miApp_ que contiene nuestro objeto Vue y que podemos ver y manipular desde la consola. Si cambiamos el valor de la variable _message_
 
 ```javascript
-miApp.message = "Hola Vue2!";
+miApp.message = "Hola Vue!";
 ```
 
 vemos que cambia lo que muestra nuestra página.
@@ -220,7 +237,7 @@ Tenemos además está la directiva `v-model` que es un enlace bidireccional que 
 
 Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos.
 
-NOTA: toda la apliación se monta en el elemento _app_ por lo que las directivas o interpolaciones que pongamos fuera del mismo no se interpretarán.
+NOTA: toda la aplicación se monta en el elemento _app_ por lo que las directivas o interpolaciones que pongamos fuera del mismo no se interpretarán.
 
 ## [Vue devtools]
 Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
