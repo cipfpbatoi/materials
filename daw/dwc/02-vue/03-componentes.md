@@ -1,22 +1,19 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
-- [Componentes](#componentes)
+# Componentes en Vue
+- [Componentes en Vue](#componentes-en-vue)
+- [Introducción](#introducción)
   - [Usar un componente](#usar-un-componente)
-  - [Parámetros: _props_](#par%C3%A1metros-props)
+  - [Parámetros: _props_](#parámetros-props)
   - [A tener en cuenta](#a-tener-en-cuenta)
-    - [_template_ debe contener un único elemento](#_template_-debe-contener-un-%C3%BAnico-elemento)
-    - [_data_ debe ser una función](#_data_-debe-ser-una-funci%C3%B3n)
+    - [En Vue2 _template_ debe contener un único elemento](#en-vue2-template-debe-contener-un-único-elemento)
+    - [_data_ debe ser una función](#data-debe-ser-una-función)
     - [Registrar un componente localmente](#registrar-un-componente-localmente)
-  - [Ejemplo de aplicación](#ejemplo-de-aplicaci%C3%B3n)
+  - [Ejemplo de aplicación](#ejemplo-de-aplicación)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Componentes
+# Introducción
 El sistema de componentes es un concepto importante en Vue y en cualquier framework moderno. En lugar de separar nuestra aplicación en ficheros según el tipo de información que contienen (ficheros html, css o js) es más lógico separarla según su funcionalidad. Una página web muestra una UI donde se pueden distinguir diferentes partes. En el siguiente ejemplo tenemos:
 
-![Ejemplo de págna web](./img/borsaTreball.png)
+![Ejemplo de página web](./img/borsaTreball.png)
 
 - un menú que es una lista que contiene
   - (repetido) un elemento del menú, cada uno formado por un logo y un texto
@@ -31,12 +28,12 @@ El sistema de componentes es un concepto importante en Vue y en cualquier framew
 
 Pues estos elementos podrían constituir diferentes componentes: nuestras aplicaciones estarán compuestas de pequeños componentes independientes y reusables en diferentes partes de nuestra aplicación o en otras aplicaciones (podemos usar el elemento de buscar para otras páginas de nuestra web o incluso para otras aplicaciones). También es habitual que un componente contenga otros subcomponentes, estableciéndose relaciones padre-hijo (por ejemplo en componente fila contendrá un subcomponente por cada botón que queramos poner en ella).
 
-Para sabér qué debe ser un componente y que no podemos considerar un componente como un elemento que tiene entidad propia, tanto a nivel funcional como visual, es decir, que puede ponerse en el lugar que queramos de la aplicación y se verá y funcionará correctamente. Además es algo que es muy posible que pueda aparecer en más de un lugar de la aplicación. En definitiva un componente:
+Para sabér qué debe ser un componente y que no, podemos considerar un componente como un elemento que tiene entidad propia, tanto a nivel funcional como visual, es decir, que puede ponerse en el lugar que queramos de la aplicación y se verá y funcionará correctamente. Además es algo que es muy posible que pueda aparecer en más de un lugar de la aplicación. En definitiva un componente:
 - es una parte de la UI
 - debe poder reutilizarse y combinarse con otros componentes para formar componentes mayores
 - son objetos JS
 
-El componente tendrá una parte de HTML donde definimos su estructura y una parte JS que le da su funcionalidad. Puede además tener o no CSS para establecer su apariencia.
+El componente es un objeto con una parte de **HTML** donde definimos su estructura, una parte **JS** que le da su funcionalidad y una parte (opcional) **CSS** para establecer su apariencia.
 
 Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 * encapsulamos el código de la aplicación en elementos más sencillos
@@ -49,7 +46,7 @@ En definitiva nuestra aplicación será como un árbol de componentes con la ins
 ![Árbol de componentes](https://vuejs.org/images/components.png)
 
 ## Usar un componente
-Para usarlo basta con crearlo con `app.component` (`Vue.component` en versiones anteriores a Vue3), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, _template_ (el código HTML que se insertará donde pongamos el componente), etc. Lo hacemos en nuestro fichero JS.
+Para usarlo basta con crearlo con `app.component` (`Vue.component` en Vue2), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad _template_ con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```javascript
@@ -74,6 +71,31 @@ const app = new Vue({
 ...
 ```
 
+```javascript
+// sintaxis de Vue3
+const app = Vue.createApp({
+  ...
+})
+
+app.component('todo-item', {
+  template: `
+    <li>
+      <input type="checkbox" v-model="elem.done">
+      <del v-if="elem.done">
+        {{ elem.title }}
+      </del>
+      <span v-else>
+        {{ elem.title }}
+      </span>
+    </li>`,
+  data: ()=>({
+    elem: { title: 'Cosa a hacer', done: true }
+  })
+})
+...
+app.mount('#app')
+```
+
 El nombre de un componente puede estar en PascalCase (MyComponentName) o en kebab-case (my-component-name). Lo recomendado es que en Javascript lo pongamos en PascalCase y en el HTML en kebeb-case (Vue hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
 
 Ahora ya podemos usar el componente en nuestro HTML:
@@ -82,6 +104,7 @@ Ahora ya podemos usar el componente en nuestro HTML:
   <todo-item></todo-item>
 </ul>
 ```
+
 >**Resultado:**
 ><ul>
 >  <li>
@@ -100,35 +123,8 @@ Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta est�
 ```
 De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un \<ul> deben ser \<li> o los de un \<tr> deben ser \<td>).
 
-### Componentes en Vue3
-Funcionan exactamente igual que en Vue2 sólo que se declaran como componentes de la instancia creada y no del objeto _Vue_ y, al contrario que en Vue2, se declaran después de crear la instancia:
-
-```javascript
-const app = Vue.createApp({
-...
-})
-
-app.component('todo-item', {
-  template: `
-    <li>
-      <input type="checkbox" v-model="elem.done">
-      <del v-if="elem.done">
-        {{ elem.title }}
-      </del>
-      <span v-else>
-        {{ elem.title }}
-      </span>
-    </li>`,
-  data: ()=>({
-    elem: { title: 'Cosa a hacer', done: true }
-  })
-})
-
-app.mount('#app')
-```
-
 ## Parámetros: _props_
-Podemos pasar parámetros a un componente anñadiendo atributos a su etiqueta:
+Podemos pasar parámetros a un componente añadiendo atributos a su etiqueta:
 ```html
 <ul>
   <todo-item :todo="{ title: 'Nueva cosa a hacer', done: false }"></todo-item>
@@ -269,7 +265,8 @@ NOTA: he puesto el objeto devuelto entre paréntesis para que se sepa que es un 
 ### Registrar un componente localmente
 Un componente registrado como hemos visto es _global_ y puede usarse en cualquier instancia raíz de Vue creada posteriormente (con _new Vue()_ ) y también dentro de subcomponentes de dicha instancia.
 
-Pero a veces queremos registrar un componente _localmente_ de forma que sólo se pueda usar localmente dentro de la instancia Vue o del subcomponente en que se registra.
+Pero eso no es lo más correcto ya que lo normal, igual que con las variables, es registrarlo
+localmente donde vaya a usarse, de forma que sólo se pueda usar dentro de la instancia Vue o del subcomponente en que se registra.
 
 En ese caso el componente a registrar se guarda en un objeto
 ```javascript
@@ -294,14 +291,14 @@ var ComponentB={
 }
 ```
 
-NOTA: al ser igual el nombre de la propiedad (_component-a_) y su valor (_ComponentA_) no es necesario poner los _:_ y el valor:
+NOTA: al ser igual el nombre de la propiedad (_component-a_) y su valor (_ComponentA_) podemos usar la notación de ES2015 y no poner el valor:
 ```javascript
   components: {
     ComponentA,
   }
 ```
 
-Cuando trabajamos con componente no están todos en el mismo fichero sino que cada componente se guarda en un fichero con extensión _.vue_ y se importar donde vaya a usarse:
+Cuando trabajamos con componentes lo normal es que no estén en el mismo fichero sino que cada componente se guarde en su propio fichero (con extensión _.vue_) y se importe donde vaya a usarse:
 ```javascript
 // fichero ComponentB.vue
 import ComponentA from './ComponentA.vue'
@@ -323,8 +320,16 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 * add-item: incluye el formulario para añadir una nueva tarea (el input y el botón)
 * del-all: el botón para borrar toda la lista
   
-**Solución**:
-NOTA: está en sintaxis Vue2.
+**Solución en sintaxis Vue3:**
+
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="wvqjJjY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/wvqjJjY">
+  to-do app components</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+**Solución en sintaxis Vue2:**
 
 <script async src="//jsfiddle.net/juansegura/3yoLvmnt/embed/"></script>
 
