@@ -13,25 +13,25 @@
 Las directivas son atributos especiales que se ponen en las etiquetas HTML y que les dan cierta funcionalidad. Todas comienzan por **v-**. 
 
 Las más comunes son:
-* `v-text`: es equivalente a hacer una interpolación (` {{ ... }} `). Muestra el valor en la etiqueta
+* `v-text`: es equivalente a hacer una interpolación (**{\{ ... }**). Muestra el valor en la etiqueta
 * `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra
 * `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas)
-* `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que se muestre dentro de un _span_ ese valor pero que también tenga una clase con ese valor haremos:
+* `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
 ```html
-<span v-bind:class="estado">{{ estado }}</span>
+<span v-bind:class="estado">...
 ```
-El resultado será: `<span class="error">error</span>`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">{{ estado }}</span>`)
+El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">`)
 * `v-model`: permite enlazar un input a una variable (la hemos visto en el capítulo anterior)
 * `v-if`: renderiza o no el elemento que la contiene en función de una condición
 * `v-show`: similar al _v-if_ pero siempre renderiza el elemento (está en el DOM) y lo que hace es mostrarlo u ocultarlo (`display: none`) en función de la condición. Es mejor si el elemento va a mostrarse y ocultarse a menudo porque no tiene que volver a renderizarlo cada vez
 * `v-for`: repite el elemento HTML que contiene esta etiqueta para cada elemento de un array
-* `v-on`: le pone al elemento HTML un escuchador de eventos (ej `<button v-on:click="pulsado">Pulsa</button>`. La directiva `v-on:` se puede abreviar como `@` (`<button @click="pulsado">Pulsa</button>`).
+* `v-on`: le pone al elemento HTML un escuchador de eventos (ej `<button v-on:click="pulsado">Pulsa</button>`. La directiva `v-on:` se puede abreviar como `@`, por ejemplo `<button @click="pulsado">Pulsa</button>`.
 
 Lo que enlazamos en una directiva o una interpolación puede ser una variable o una expresión javascript. Ej.:
 ```html
-<p>{{ name }}</p>
-<p>{{ 'Cómo estás ' + name }}</p>
-<p>{{ name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario '+name+' puedes cambiar tus datos' }}</p>
+<p>{\{ name }}</p>
+<p>{\{ 'Cómo estás ' + name }}</p>
+<p>{\{ name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario ' + name + ' puedes cambiar tus datos' }}</p>
 ```
 
 ## Condicionales: v-if
@@ -73,7 +73,12 @@ También se pueden enlazar varios con `v-else-if`:
 ## Bucles: v-for
 Esta directiva repite el elemento HTML en que se encuentra una vez por cada elemento del array al que se enlaza.
 
-<script async src="//jsfiddle.net/juansegura/o6bj81s3/embed/js,html,result/"></script>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="ExvLZOz" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/ExvLZOz">
+  v-for</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 La directiva v-for recorre el array _todos_ y para cada elemento del array crea una etiqueta \<li> y carga dicho elemento en la variable _elem_ a la que podemos acceder dentro del \<li>. 
 
@@ -84,21 +89,26 @@ Vue es más eficiente a la hora de renderizar si cada elemento que crea *v-for* 
 <... v-for="(elem,index) in todos" :key="index" ...>
 ```
 
-También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0;i<...)`):
+También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0;i<10;i++)`):
 ```html
 <span v-for="n in 10">{{ n }}</span>
 ```
 
-NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. SI se hace siempre se ejecuta primero el `v-if`.
+NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. Si se hace siempre se ejecuta primero el `v-if`.
 
 ## Eventos: v-on
 Esta directiva captura un evento y ejecuta un método como respuesta al mismo.
 
-<iframe width="100%" height="300" src="//jsfiddle.net/juansegura/255u8f1j/embedded/js,html,result/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="ExvLZGB" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/ExvLZGB">
+  v-for</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 El evento que queremos capturar se pone tras el carácter `:` y se indica el método que se ejecutará.
 
-Fijaos en el método _delTodos()_ que para hacer referencia desde el objeto Vue a alguna variable o método se le antepone *this.*
+Fijaos en el método _delTodos()_ que para hacer referencia desde el objeto Vue a alguna variable o método se le antepone **_this._**
 
 Se puede pasar un parámetro a la función escuchadora:
 ```vue
@@ -117,10 +127,10 @@ Esta directiva se usa mucho así que se puede abreviar con **`@`**. El código e
 
 ### Modificadores de eventos
 A un evento gestionado por una directiva _v-on_ podemos añadirle (separado por .) un modificador. Alguno de los más usados son:
-* _.prevent_: equivale a hacer un preventDefault()
-* _.stop_: como stopPropagation()
-* _.self_: sólo se lanza si el evento se produce en este elemento y no en alguno de sus hijos
-* _.once_: sólo se lanza la primera vez que se produce el evento (sería como hacer un _addEventListener_ y tras ejecutarse la primera vez hacer un _removeEventListener_)
+* **_.prevent_**: equivale a hacer un preventDefault()
+* **_.stop_**: como stopPropagation()
+* **_.self_**: sólo se lanza si el evento se produce en este elemento y no en alguno de sus hijos
+* **_.once_**: sólo se lanza la primera vez que se produce el evento (sería como hacer un _addEventListener_ y tras ejecutarse la primera vez hacer un _removeEventListener_)
 
 Ejemplo:
 ```html
@@ -142,18 +152,23 @@ Además queremos que:
 ### Solución de la aplicación
 Puedes ver una solución al problema planteado en:
 
-<script async src="//jsfiddle.net/juansegura/qfbtewhe/embed/"></script>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="zYdjNgg" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/zYdjNgg">
+  Untitled</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 Cosas a comentar:
 * *HTML* 
   * linea 3: el \<ul> sólo se mostrará si hay elementos en la lista (todos.length)
   * línea 4: la directiva v-for además de crear una variable con el elemento crea otra con su posición dentro del array que usaremos para borrarla
   * línea 4: al método que llamamos al producirse el evento _dblclick_ le pasamos el índice de dicho elemento en el array de cosas a hacer
-  * línea 7: enlazamos cada checkbox con la propiedad _done_ del elemento de forma que al marcar al checkbox la propiedad valdrá *true* y al desmarcarlo valdrá *false*
-  * líneas 9 a 14: para mostrar un elemento no hecho usamos un span y para mostrar uno hecho un del para que aparezca tachado
-  * líneas 18 a 20: si no se muestra el \<ul> se mostrará un párrafo diciendo que no hay elementos en la lista
-  * línea 21: el input lo enlazamos a una nueva variable, _newTodo_, donde guardaremos lo que se escriba
+  * línea 6: enlazamos cada checkbox con la propiedad _done_ del elemento de forma que al marcar al checkbox la propiedad valdrá *true* y al desmarcarlo valdrá *false*
+  * líneas 7 a 12: para mostrar un elemento no hecho usamos un **_span_** y para mostrar uno hecho un **_del_** para que aparezca tachado
+  * línea 16: si no se muestra el \<ul> se mostrará un párrafo diciendo que no hay elementos en la lista
+  * línea 17: el input lo enlazamos a una nueva variable, _newTodo_, donde guardaremos lo que se escriba
 * *Javascript* 
   * línea 4: creamos la nueva variable _newTodo_ para guardar el título de la nueva cosa a añadir. Lo inicializamos a una cadena vacía y así el input estará vacío de entrada
-  * línea 26: delTodo recibe como parámetro el índice del elemento a borrar así que sólo tiene que hacer un splice al array
-  * línea 29: addTodo añade al array un nuevo elemento con el texto que hay en el input y después vacía dicho texto
+  * línea 27: delTodo recibe como parámetro el índice del elemento a borrar así que sólo tiene que hacer un splice al array
+  * línea 30: addTodo añade al array un nuevo elemento con el texto que hay en el input y después vacía dicho texto

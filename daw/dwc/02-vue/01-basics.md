@@ -78,12 +78,11 @@ En el HTML debemos vincular los scripts de la librería de Vue y de nuestro cód
 
 Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele poner como id _app_) que en este caso es un `<div>`.
 
-Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **`{\{ ... }}`** ) que muestra en la página la variable o expresión Javascript que contiene.
+Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **{\{ ... }}** ) que muestra en la página la variable o expresión Javascript que contiene.
 
 ### Javascript
 En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En Vue 2:
-* *el*: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más 
-de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
+* *el*: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
 * *data*: objeto donde definiremos todas las variables que vamos a usar en la vista. En nuestro caso sólo tenemos una que es _message_. A cada variable le debemos dar un valor inicial.
 * pueden haber más como *methods* (objeto con métodos que podemos llamar desde la vista), *props* (array de variables que se 
 pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremos más adelante.
@@ -108,7 +107,7 @@ Las principales diferencias son:
 ## La instancia _Vue_
 La instancia que hemos creado (y cada componente) recibe un objeto de opciones con las siguientes propiedades:
 * **el** (sólo en Vue2): el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **`{{ su_nombre }}`** y desde el código JS poniendo **`this.su_nombre`**. En Vue3 y en todos los componentes (lo veremos más adelante) en lugar de ser un objeto es una función que devuelve ese objeto.
+* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **{\{ su_nombre }}** y desde el código JS poniendo **`this.su_nombre`**. En Vue3 y en todos los componentes (lo veremos más adelante) en lugar de ser un objeto es una función que devuelve ese objeto.
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
 ```javascript
 data: {
@@ -136,11 +135,11 @@ Al crearse la instancia de Vue o un componente la aplicación debe realizar unas
 
 En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
 
-![Ciclo de vida de Vue](https://v3.vuejs.org/images/lifecycle.png)
+![Ciclo de vida de Vue](https://v3.vuejs.org/images/lifecycle.svg)
 
 **NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
 
-**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlazan en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
+**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlaza en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
 ```javascript
 // MAL, NO HACER ASÍ
 created: () => {
@@ -232,7 +231,12 @@ Tenemos además está la directiva `v-model` que es un enlace bidireccional que 
   <input v-model="message">
 ```
 
-<script async src="//jsfiddle.net/juansegura/psk853hL/24/embed/"></script>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="GRvdrqp" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/GRvdrqp">
+  v-model</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos.
 
