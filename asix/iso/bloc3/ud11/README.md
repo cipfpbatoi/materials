@@ -1,5 +1,5 @@
-Módulo: ISO
-===========
+Módulo: Implantación de Sistemas Operativos
+============================================
 
 UT 11 - Instalación de un servidor con software libre
 =====================================================
@@ -11,17 +11,6 @@ Implantación de Sistemas Operativos
 ===================================
 
 C.F.G.S.: Administración de sistemas informáticos en red
-
-Bloque 3 - Administración de dominios con sistemas libres
-=========================================================
-
-En este bloque veremos cómo gestionar la red informática de una empresa utlizando software libre. Aprenderemos a hacer las mismas cosas que hacíamos en Windows pero con software libre.
-
-El bloque está compuesto por 4 unidades de trabajo:
-
--   UT 11 - Instalación y configuración de un servidor: en esta unidad veremos cómo instalar y configurar diversos servidores
--   UT 12 - Centralización de la información con LDAP: crearemos un dominio y en él diferentes usuarios, grupos, etc
--   UT 13 - Compartición de recursos con NFS: compartiremos carpetas e impresoras y estableceremos los permisos de acceso
 
 Introducción a la UT 11
 =======================
