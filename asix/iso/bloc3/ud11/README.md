@@ -360,7 +360,7 @@ Cada línea del fichero configura un repositorio. Su sintaxis es:
 
 Ejemplo de fichero en Linux Mint (basado en Ubuntu):
 
-![sources.list](imagen.png)
+![sources.list](imgs/imagen.png)
 
 Después de hacer cambios en un fichero tenemos que recargar la lista de paquetes de los repositorios con el comando
 
@@ -381,8 +381,8 @@ Tenemos muchas formas de instalar software en nuestro sistema.
 
 Para instalar nuevas funcionalidades enteras podemos utilizar la herramienta tasksel:
 
-![Repositorios](repDebian.jpg "Repositorios")
-![Instalar software](tasksel.jpg "Instalar software")
+![Repositorios](imgs/repDebian.jpg "Repositorios")
+![Instalar software](imgs/tasksel.jpg "Instalar software")
 
 Nos muestra diferentes usos que podemos darle al sistema y al marcar un se encarga de instalar todos los paquetes necesarios.
 
