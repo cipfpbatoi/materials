@@ -4,12 +4,11 @@
   - [Proceso de instalación](#proceso-de-instalación)
     - [Instalación Server Core](#instalación-server-core)
   - [Finalización de la instalación](#finalización-de-la-instalación)
-    - [Configuración básica](#configuración-básica)
-      - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
-      - [Configurar la red](#configurar-la-red)
-      - [Actualizar el servidor](#actualizar-el-servidor)
-      - [Roles y características](#roles-y-características)
-      - [Versión de evaluación](#versión-de-evaluación)
+    - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
+    - [Configurar la red](#configurar-la-red)
+    - [Actualizar el servidor](#actualizar-el-servidor)
+    - [Roles y características](#roles-y-características)
+    - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
 
 ## Planificación de la instalación
@@ -57,12 +56,14 @@ Esta instalación (que es la opción por defecto al instalar el sistema) instala
 Una forma bastante práctica de usar un servidor Server Core es gestionarlo con la herramienta de Microsoft **RSAT** (_Remote Server Administration Tools_) que puede instalarse en cualquier cliente Windows con entorno gráfico y que nos permitirá gestionar desde él el servidor gráficamente.
 
 El comando que cambia el nombre del servidor es netdom:
-
+```powershell
 netdom renamecomputer %COMPUTERNAME% /newname:MISERVIDOR
+```
 
-El que configura la red es netsh:
-
+Para configurar la red podemos usar Powershell o **netsh**:
+```powershell
 netsh interface ipv4 set address name="Conexión de área local" source=static address=192.168.100.1 mask=255.255.255.0 gateway=192.168.221.1
+```
 
 ## Finalización de la instalación
 Una vez finalizada la instalación y antes de configurar el sistema es conveniente hacer una serie de comprobaciones:
@@ -71,12 +72,11 @@ Una vez finalizada la instalación y antes de configurar el sistema es convenien
 - **registros de eventos**: mediante el Visor de eventos podemos como probar que no haya errores o advertencias que indican que algo no funciona correctamente
 - **particiones**: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas
 
-Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. Después acabaremos de configurarlo y a continuación sería conveniente hacer una imagen del servidor limpio.
+Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. Después acabaremos de configurarlo como veremos ahora y, una vez configurado, sería conveniente hacer una imagen del servidor limpio.
 
-### Configuración básica
-A continuación vamos a realizar una serie de tareas básicas de configuración desde el `Administrador del servidor->Servidor local`.
+Lo primero es realizar una serie de tareas básicas de configuración desde el `Administrador del servidor->Servidor local`.
 
-#### Proporcionar información del equipo
+### Proporcionar información del equipo
 Tenemos que proporcionar el **nombre del equipo**. Como nombre de equipo se recomienda que no tenga más de 15 caracteres y sólo use caracteres estándar (letras normales, números o guión). El nombre tiene que ser único en el dominio.
 
 Respecto al dominio si este servidor hará de servidor en un dominio ya existente (donde ya hay otro servidor que hace de controlador de dominio) aquí indicaremos el nombre del dominio. Si no trabajaremos con dominio o es este servidor el que hará de controlador lo dejamos como grupo de trabajo (posteriormente veremos como crear el nuevo dominio).
@@ -87,7 +87,7 @@ Si es necesario podemos habilitar el _Escritorio remoto_ para que los usuarios p
 
 También es aconsejable comprobar la zona horaria (aparece a la derecha).
 
-#### Configurar la red
+### Configurar la red
 Tenemos que comprobar la configuración de la red. Lo más normal es que el servidor tenga direcciones IP estáticas, no obtenidas por DHCP (seguramente será él quien asigne direcciones por DHCP). Si no lo hemos hecho antes desde aquí le asignamos la IP que corresponda a cada tarjeta de red.
 
 Si nuestro servidor tiene que hacer de servidor de comunicaciones y ser la puerta de enlace por la cual los clientes de nuestra red accedan en Internet tendrá que tener al menos 2 tarjetas de red:
@@ -96,7 +96,7 @@ Si nuestro servidor tiene que hacer de servidor de comunicaciones y ser la puert
 
 Finalmente tendremos que enrutar el tráfico entre las dos tarjetas de forma que todo el tráfico de salida que llega por la tarjeta interna sea transferido a la externa desde donde irá hacia su destino. Sin este paso los clientes llegarán al servidor pero no podrán ir más allá. La forma más sencilla de hacer esto es instalando en nuestro servidor el **Servicio de Enrutamiento** (es uno de los servicios que encontramos dentro del servicio de _Acceso a red_).
 
-#### Actualizar el servidor
+### Actualizar el servidor
 En este apartado configuramos las actualizaciones del servidor. Podemos configurarlas automáticamente o manualmente donde podemos indicar cómo queremos que se realizan las actualizaciones, que se envían a Microsoft los informes de errores y cómo queremos participar en el programa de mejora de la experiencia de usuario (se envía información a Microsoft del que instalamos y estiércol).
 
 Si es importante que un cliente esté siempre actualizado para evitar vulnerabilidades esto es mucho más importante en el caso del servidor porque si un atacante consigue acceder a nuestro servidor tendrá a su alcance toda la información y los recursos de nuestra red. De todas formas tenemos que tener cuidado con esto porque algunas actualizaciones requieren reiniciar el equipo (y es un tema delicado en un servidor) y también podría pasar que alguna actualización nos de problemas con nuestro hardware o con alguna aplicación instalada, aunque es algo poco habitual. Por eso hay administradores que prefieren que las actualizaciones se descarguen automáticamente pero no se instalen sino que hacen ellos la instalación en momentos en que no sea crítico el funcionamiento del servidor.
@@ -105,7 +105,7 @@ No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Win
 
 **Recordad que nosotros deshabilitaremos las actualitzaciones automáticas para no colapsar la red del instituto.**
 
-#### Roles y características
+### Roles y características
 Los roles son los diferentes servicios que podemos instalar en el servidor.
 
 Las características son componentes que permiten añadir funcionalidades al servidor, como copias de seguridad, cifrado de discos, equilibrio de carga de red, etc.
@@ -116,7 +116,7 @@ El más importante es el **servicio de dominio de Active Directory**, que veremo
 
 Pero antes de eso vamos a aprender a administrar los discos de que dispongamos que es una cuestión importante en un servidor ya que posiblemente en ellos se alojen los datos de la empresa.
 
-#### Versión de evaluación
+### Versión de evaluación
 La versión que hemos instalado es la versión  de evaluación y sólo podemos utilizarla durante un tiempo determinado antes de adquirir una licencia. Podemos ver el tiempo que nos queda con el comando:
 ```bash
 slmgr.vbs -dli

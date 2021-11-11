@@ -27,7 +27,7 @@ Algunos de ellos son:
 
 El más importante es el servicio de dominio, que veremos en el siguiente apartado. Antes vamos a ver cómo se instalaría cualquier rol y en concreto instalaremos y configuraremos el servicio de enrutamiento para que los clientes de nuestra red interna tengan salida al exterior (y a Internet) a través de este servidor.
 
-Puedes ver [este vídeo](./media/rolSrvImpresion.ogv) de cómo instalar un rol.
+Puedes ver [este vídeo](./media/rolSrvImpresion.ogv) de cómo instalar un rol, en concreto el _Servicio de Impresión_.
 
 ## Servicio de enrutamiento
 Deberemos instalar esta función si nuestro servidor va a permitir a los clientes de al red salir al exterior (para ello necesitará tener 2 tarjetas de red). Con las dos tarjetas configuradas tenemos 2 redes diferentes: una externa que nos comunica con el exterior y una interna que nos comunica con nuestros clientes. Pero ahora mismo las 2 redes no están comunicadas entre sí y un cliente de la red interna sólo puede llegar hasta el servidor pero no salir al exterior. Para que pueda hacerlo tenemos que enrutar las 2 tarjetas del servidor de forma que todo el tráfico que llega por la tarjeta interna hacia el exterior se enrute a la tarjeta externa que sabe hacia donde se tiene que dirigir.
@@ -49,19 +49,17 @@ Una vez configurada la red comprobaremos su correcto funcionamiento, con las ór
 ## Instalación del dominio
 Para que nuestro servidor sea un controlador de dominio (DC, Domain Controller) debemos instalar el rol de **Servicio de dominio de Active Directory**.
 
-Como cualquier otro rol en primer lugar se instala y luego se configura.
-
-Podemos abrir el asistente de configuración desde la pantalla que indica el final de la instalación o ejecutando el comando **`DCPROMO.EXE`**.
+Como cualquier otro rol en primer lugar se instala y luego se configura. Podemos abrir el asistente de configuración desde la pantalla que indica el final de la instalación.
 
 Puedes ver [este vídeo](./media/Dominio.ogv) de cómo instalar y configurar este rol.
 
 Vamos a explicar las diferentes opciones que hemos escogido durante la configuración del dominio:
-- en primer lugar hemos de seleccionar _Agregar un nuevo bosque_ ya que no hay ningún dominio en nuestra red al que vayamos a unirnos. El nombre del nuevo dominio raíz debería tener más de 1 nivel (por ejemplo _midominio.lan_ con 2 niveles)
+- en primer lugar hemos de seleccionar _Agregar un nuevo bosque_ ya que no hay ningún dominio en nuestra red al que vayamos a unirnos. El nombre del nuevo dominio raíz debería tener más de 1 nivel (por ejemplo _midominio.lan_ con 2 niveles). EN caso de tener ya un dominio en el bosque elegiremps entre crear un nuevo dominio en ese árbol o crear un árbol nuevo
 - el nivel funcional del bosque y del dominio lo establecemos al máximo posible, Windows Server 2016. Así podemos aprovechar todas sus características. Si en este dominio tuviéramos un DC con una versión inferior deberíamos escoger dicha versión para que sean compatibles
-- además se va a instalar el **servicio DNS** porque no hay ningún servidor DNS en el dominio así que esta máquina hará también de servidor DNS
-- en cuanto a la ubicación de los diferentes componentes del dominio si tenemos varios discos sería conveniente que estén en discos distintos por rendimiento. Podéis obtener más información en la web de Microsoft. En nuestro caso lo dejaremos todo en C:
+- además se va a instalar el **servicio DNS** porque no hay ningún servidor DNS en el dominio así que esta máquina hará también de servidor DNS. Aparece un mensaje diciendo que si ya tenemos un DNS debemos agregar manualmente la zona para el dominio que estamos creando, pero si no hay ningún DNS no hay que nacer nada porque automáticamente se instalará uno con la zona para este dominio y con un _reenviador_ (a quien enviar otras peticiones) que será el DNS de la tarjeta externa de la máquina en este momento. Además en la configuración de dicha tarjeta se cambiará ese DNS por 127.0.0.1
+- en cuanto a la ubicación de los diferentes componentes del dominio, si tenemos varios discos sería conveniente que estén en discos distintos por cuestión de rendimiento. Podéis obtener más información en la web de Microsoft. En nuestro caso lo dejaremos todo en C:
 
-Tras configurar el dominio se reiniciará el servidor que a partir de cuando vuelva a arrancar ya será un DC.
+Tras configurar el dominio se reiniciará el servidor que, cuando vuelva a arrancar, ya será un DC.
 
 ### Instalar el dominio desde la terminal
 El comando para crear el dominio ACME.LAN con PowerShell sería:
@@ -84,10 +82,11 @@ Install-ADDSForest `
 ```
 
 ### Degradar un controlador de dominio
-Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace igual que para promocionarlo, con el comando `dcpromo`.
+Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace desinstalando el rol de **Servicios de dominio de Active Directory**.
 
-Aparece una ventana que nos pregunta si queremos eliminar el dominio. Si estamos degradando el último controlador del dominio marcaremos una casilla que lo indica y se eliminará todo el dominio, perdiéndose toda la información que contenía. El servidor pasará a ser un servidor independiente. Si por el contrario aún quedan otros controladores de dominio la única cosa que estamos haciendo es que este servidor pasará a ser un servidor miembro del dominio sin funciones de controlador (que las harán el resto de controladores que aún queden en el dominio).
+En la ventana de 'quitar las características' requeridas marcaremos debajo la casilla de 'Quitar herramientas de administración'. Posteriormente aparece una ventana informándonos que se debe 'Disminuir el nivel de este DC'. Pulsamos en ella y al final aparecerá una pantalla indicándonos todos los roles que hospeda este DC. Tras marcar la casilla 'COntinuar con la eliminación' se procederá a la misma.
 
+Si estamos degradando el último controlador del dominio se eliminará el mismo, perdiéndose toda la información que contenía. El servidor pasará a ser un servidor independiente. Si por el contrario aún quedan otros controladores de dominio la única cosa que estamos haciendo es que este servidor pasará a ser un servidor miembro del dominio sin funciones de controlador (que las harán el resto de controladores que aún queden en el dominio).
 
 ### Añadir un cliente al dominio
 En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor, es decir:
