@@ -23,7 +23,6 @@ Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/gu
 
 **¿Qué framework es mejor?**
 Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis algunos enlaces al respecto:
-* [¿Angular, Reactjs o Vuejs?, mi opinión. Uno de Piera](https://www.uno-de-piera.com/angular-reactjs-vuejs/)
 * [Comparativa VueJs](https://vuejs.org/v2/guide/comparison.html)
 * [Comparativa Openwebminars](https://openwebinars.net/blog/los-6-mejores-frameworks-javascript/?utm_source=customer-io&utm_medium=newsletter)
 * [Openwebminars: Vue vs Angular](https://openwebinars.net/blog/vue-vs-angular/)

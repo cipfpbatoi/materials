@@ -378,7 +378,7 @@ Si no estuviéramos haciendo una petición asíncrona el código de todo esto se
 
 Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve tiempo después, cuando el servidor conteste, pero entonces ya no hay nadie escuchando.
 
-La solución es que todo el código, no sólo de la petición Ajax sino también de qué hacer con los datos cuando llegan, se encuentra en la función que pide los datos al servidor:
+La solución es que todo el código, no sólo de la petición Ajax sino también el de qué hacer con los datos cuando llegan, se encuentre en la función que pide los datos al servidor:
 
 <script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 

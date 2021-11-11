@@ -13,7 +13,7 @@
 Las directivas son atributos especiales que se ponen en las etiquetas HTML y que les dan cierta funcionalidad. Todas comienzan por **v-**. 
 
 Las más comunes son:
-* `v-text`: es equivalente a hacer una interpolación (**{\{ ... }**). Muestra el valor en la etiqueta
+* `v-text`: es equivalente a hacer una interpolación (**{\{ ... }}**). Muestra el valor en la etiqueta
 * `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra
 * `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas)
 * `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
@@ -29,9 +29,9 @@ El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abre
 
 Lo que enlazamos en una directiva o una interpolación puede ser una variable o una expresión javascript. Ej.:
 ```html
-<p>{\{ name }}</p>
-<p>{\{ 'Cómo estás ' + name }}</p>
-<p>{\{ name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario ' + name + ' puedes cambiar tus datos' }}</p>
+<p>{ { name }}</p>
+<p>{ { 'Cómo estás ' + name }}</p>
+<p>{ { name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario ' + name + ' puedes cambiar tus datos' }}</p>
 ```
 
 ## Condicionales: v-if

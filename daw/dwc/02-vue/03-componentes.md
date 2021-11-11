@@ -1,6 +1,6 @@
 # Componentes en Vue
 - [Componentes en Vue](#componentes-en-vue)
-- [Introducción](#introducción)
+  - [Introducción](#introducción)
   - [Usar un componente](#usar-un-componente)
   - [Parámetros: _props_](#parámetros-props)
   - [A tener en cuenta](#a-tener-en-cuenta)
@@ -10,7 +10,7 @@
   - [Ejemplo de aplicación](#ejemplo-de-aplicación)
 
 
-# Introducción
+## Introducción
 El sistema de componentes es un concepto importante en Vue y en cualquier framework moderno. En lugar de separar nuestra aplicación en ficheros según el tipo de información que contienen (ficheros html, css o js) es más lógico separarla según su funcionalidad. Una página web muestra una UI donde se pueden distinguir diferentes partes. En el siguiente ejemplo tenemos:
 
 ![Ejemplo de página web](./img/borsaTreball.png)
