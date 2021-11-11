@@ -31,7 +31,7 @@ Los resultados de aprendizaje relacionados con el módulo son los siguientes:
 ## Contenidos
 - [Bloque 1: Instalación de sistemas operativos libres y propietarios.](bloc1/README.md)
 - [Bloque 2: Administración de dominios con sistemas operativos propietarios.](./bloc2/README.md)
-- Bloque 3: Administración de dominios con sistemas operativos libres.
+- [Bloque 3: Administración de dominios con sistemas operativos libres.](bloc3/README.md)
 - Bloque 4: Administración de redes heterogéneas.
 
 ## Licencia
