@@ -266,7 +266,7 @@ Para ejecutar un comando o un script al iniciar el equipo podemos añadirlo al f
 
 Para hacer una copia de seguridad del contenido de una carpeta podemos utilizar el comando tar. Un ejemplo de su uso es:
 
-tar -czf copia\_\`date -I\`.tar.gz /datos
+    tar -czf copia\_\`date -I\`.tar.gz /datos
 
 El comando tar crea un archivo con los ficheros que le indicamos. Los parámetros anteriores son:
 
@@ -281,7 +281,7 @@ El comando tar crea un archivo con los ficheros que le indicamos. Los parámetro
 
 Posteriormente si queremos restaurar los ficheros ejecutaremos:
 
-tar -xzf copia\_2015-08-25.tar.gz /datos
+    tar -xzf copia\_2015-08-25.tar.gz /datos
 
 Servicios
 =========
@@ -388,7 +388,7 @@ Nos muestra diferentes usos que podemos darle al sistema y al marcar un se encar
 
 La forma más habitual para instalar un paquete es el comando apt-get. Ejemplo:
 
-apt-get install cowsay
+    apt-get install cowsay
 
 Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre\_del\_paquete.
 
@@ -447,7 +447,7 @@ Para ver las particiones o carpetas montadas utilizamos el comando df o mount.
 
 Para particionar un disco duro desde la terminal (por ejemplo /dev/sdb):
 
-fdisk /dev/sdb
+    fdisk /dev/sdb
 
 Ahora utilizamos los comandos de fdisk (m para obtener ayuda):
 
@@ -458,17 +458,21 @@ Ahora utilizamos los comandos de fdisk (m para obtener ayuda):
 
 Una vez hecha la partición se formatea con mkfs (por ejemplo /dev/sdb1 con FS ext4):
 
-mkfs.ext4 /dev/sdb1
+    mkfs.ext4 /dev/sdb1
 
-Para comprobar una partición: fsck /dev/sdb1
+Para comprobar una partición: 
+    
+    fsck /dev/sdb1
 
-Para montar una partición: mount [-t tipo\_de\_FS] partición punto\_de\_montaje
+Para montar una partición: 
 
-Ejemplo: mount /dev/sdb1 /datos
+    mount [-t tipo\_de\_FS] partición punto\_de\_montaje
+    
+    Ejemplo: mount /dev/sdb1 /datos
 
-Para montar automáticamente una partición añadiremos una línea al fichero /etc/fstab.:
+Para montar automáticamente una partición añadiremos una línea al fichero /etc/fstab:
 
-nombre\_particio\_o\_uuid punto\_de\_montaje tipo\_fs opciones dump pass
+    nombre\_particio\_o\_uuid punto\_de\_montaje tipo\_fs opciones dump pass
 
 ![fstab](imgs/fstab.png "fstab")
 
@@ -476,7 +480,7 @@ NOTA: *dump* no se usa y se pone un 0, *pass* es para decir si queremos que la p
 
 Después de modificar el fichero para montar su contenido ejecutamos:
 
-mount -a
+    mount -a
 
 Cómo hemos visto para montar una partición podemos utilizar su nombre (/dev/sd...) o su UUID que es un identficador de la partición.
 
@@ -484,9 +488,10 @@ Para conocer el UUID de una partición: blkid
 
 ![blkid](imgs/blkid.png "blkid")
 
-Para desmontar una partición: umount punto\_de\_montaje
+Para desmontar una partición: 
 
-Ejemplo: umount /datos
+    umount punto\_de\_montaje
+    Ejemplo: umount /datos
 
 LVM
 ===
@@ -528,46 +533,46 @@ En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si 
 
 A continuación crearemos y configuraremos nuestros volúmenes. Primeramente crearemos los volúmenes físicos de las particiones en que vamos a utilizar LVM. Por ejemplo para utilizar la partición sda3 haremos:
 
-pvcreate /dev/sda3
+    pvcreate /dev/sda3
 
 Esto lo tenemos que repetir para cada partición a utilizar (por ejemplo sda4 y sda5). También podríamos usar un disco completo (por ejemplo sdb) con:
 
-pvcreate /dev/sdb
+    pvcreate /dev/sdb
 
 Ahora creamos el grupo de volúmenes que contendrá nuestros volúmenes lógicos finales:
 
-vgcreate volgroup\_01 /dev/sda3 /dev/sda4 /dev/sda5
+    vgcreate volgroup\_01 /dev/sda3 /dev/sda4 /dev/sda5
 
 Con el comando vgscan podemos ver los grupos creados y con pvscan los volúmenes físicos.
 
 Por último sólo queda crear los volúmenes lógicos que utilizaremos. Por ejemplo crearemos un llamado volumen\_01 de 2 GB:
 
-lvcreate -L2G -n volumen\_01 volgroup\_01
+    lvcreate -L2G -n volumen\_01 volgroup\_01
 
 Con lvscan podemos ver los volúmenes lógicos creados.
 
 Ahora ya podemos darle formato y montarlo como cualquier otra partición:
 
-mkfs.ext4 /dev/volgroup\_01/volumen\_01
-mount /dev/volgroup\_01/volumen\_01 /datos
+    mkfs.ext4 /dev/volgroup\_01/volumen\_01
+    mount /dev/volgroup\_01/volumen\_01 /datos
 
 #### Como añadir una nueva partición al volumen
 
 En primer lugar creamos un nuevo volumen físico en la partición:
 
-pvcreate /dev/sdb1
+    pvcreate /dev/sdb1
 
 A continuación lo añadimos a nuestro grupo:
 
-vgextend volgroup\_01 /dev/sdb1
+    vgextend volgroup\_01 /dev/sdb1
 
 Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmenes lógicos. Por ejemplo vamos a darle otros 3 GB al volumen\_01:
 
-lvextend -L +3G /dev/volgroup\_01/volumen\_01
+    lvextend -L +3G /dev/volgroup\_01/volumen\_01
 
 Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir en cuenta porque esta operación es peligrosa y podríamos perder los datos:
 
-resize2fs /dev/volgroup\_01/volumen\_01 5G
+    resize2fs /dev/volgroup\_01/volumen\_01 5G
 
 Ya tendríamos 5 GB en nuestro volumen en cuenta de las 2 iniciales.
 
@@ -580,11 +585,11 @@ Las ACL se incluyen por defecto en el sistema de ficheros NTFS de Windows y en G
 
 Posiblemente ya tengamos instalado el paquete ***acl***. Si no lo único que hay que hacer es instalarlo. Para poder usar estos permisos en una partición hay que indicarlo al montarla poniéndole las opciones ***user\_xattr y acl***. En las distribuciones modernas por defecto todas las particiones se montan con estas opciones. Podemos comprobarlo con:
 
-    sudo tune2fs -l /dev/sda1 | grep acl
+    tune2fs -l /dev/sda1 | grep acl
 
 Si no le monta así por defecto debemos configurarlo en el fichero /etc/fstab para que se monte siempre:
 
-/dev/sda6  /datos  ext4  acl,user\_xattr,defaults  0  0
+    /dev/sda6  /datos  ext4  acl,user\_xattr,defaults  0  0
 
 ### Utilizando las ACL
 
@@ -626,7 +631,7 @@ default: aquí se repiten las líneas de permisos y establece los permisos que t
 
 Para asignar estos permisos utilizamos el comando setfacl. Su sintaxis es:
 
-setfacl [-R] [-m | -x ] [ d | default]:{u|g|o|m}:[nombre\_usuario | nombre\_grupo]:{r|w|x|-} nombre\_fichero\_o\_carpeta
+    setfacl [-R] [-m | -x ] [ d | default]:{u|g|o|m}:[nombre\_usuario | nombre\_grupo]:{r|w|x|-} nombre\_fichero\_o\_carpeta
 
 Parámetros:
 
@@ -639,11 +644,11 @@ Parámetros:
 
 Ejemplos:
 
-setacl -R -m user::rwx,user:mcastell:r-x,g::r-x,g:informatica:r-x,o::--- apuntes
+    setacl -R -m user::rwx,user:mcastell:r-x,g::r-x,g:informatica:r-x,o::--- apuntes
 
 En la carpeta apuntes y todo su contenido (-R) da permisos rwx para su propietario (u::rwx), r-x para el usuario mcastell (u:mcastell:r-x), r-x para el grupo propietario (g::r-x) y para el grupo informatica (g:informatica:r-x) y quita los permisos para el resto (o::---)
 
-setacl -R -x user:mcastell apuntes
+    setacl -R -x user:mcastell apuntes
 
 En la carpeta apuntes y todo su contenido (-R) quita la ACL que daba permisos al usuario mcastell.
 
@@ -665,13 +670,13 @@ Para utilizar cuotas de disco tenemos que tener instalado el paquete ***quota***
 
 A continuación en el fichero ***/etc/fstab*** indicamos en qué sistema de archivos queremos utilizar cuotas en las opciones de ese sistema de archivo, por ejemplo para usarlo en la partición sda7 que utilizamos para datos haremos:
 
-/dev/sda7  /datos  ext4  defaults,usrquota,grpquota  0  0
+    /dev/sda7  /datos  ext4  defaults,usrquota,grpquota  0  0
 
 Por último hay que volver a montar el sistema de archivos que hemos modificado.
 
 El siguiente paso es crear los ficheros de archivos de cuota que son ***aquota.user*** y ***aquota.group*** y que crearemos con el comando quotacheck:
 
-quotacheck -cug /datos
+    quotacheck -cug /datos
 
 La opción -c es para crear los ficheros y -u y -g para que comprueba tanto los grupos como los usuarios. SI hemos reiniciado el servidor después de activar las cuotas es posible que los ficheros de cuota ya se hayan creado y no hay que ejecutar este comando.
 
@@ -679,11 +684,11 @@ La opción -c es para crear los ficheros y -u y -g para que comprueba tanto los 
 
 Por último establecemos las cuotas para los usuarios y para los grupos con el comando edquota, por ejemplo:
 
-edquota -u usuario
+    edquota -u usuario
 
 o bien
 
-edquota -g grupo
+    edquota -g grupo
 
 Este comando abre el fichero de cuotas del usuario o grupo especificado para indicar las cuotas a establecer. La información que incluye es:
 
@@ -697,15 +702,15 @@ Este comando abre el fichero de cuotas del usuario o grupo especificado para ind
 
 Para establecer el periodo de gracia en que se puede superar una couta blanda se utiliza el comando:
 
-edquota -t
+    edquota -t
 
 ### Comprobar las cuotas de disco
 
 Para comprobar las cuotas utilizamos los comandos:
 
-cuota -u usuario - Muestra información de las cuotas del usuario indicado
-cuota -g grupo - Muestra información de las cuotas del grupo indicado
-repquota /datos - Muestra información de las cuotas de la partición /datos
+    cuota -u usuario - Muestra información de las cuotas del usuario indicado
+    cuota -g grupo - Muestra información de las cuotas del grupo indicado
+    repquota /datos - Muestra información de las cuotas de la partición /datos
 
 Programar tareas
 ================
@@ -714,7 +719,7 @@ Para programar tareas tenemos los comandos crontab y at.
 
 El comando at permite ejecutar una orden en un determinado momento:
 
-at cuando\_queremos\_que\_se ejecute
+    at cuando\_queremos\_que\_se ejecute
 
 A continuación (dentro de la terminal de at) escribimos los comandos a ejecutar como si estuvimos haciendo un script. Para acabar pulsamos Ctrl+D y volvemos a la consola.
 
@@ -724,11 +729,11 @@ Respecto a las tareas programadas tenemos un servicio llamado ***crond*** que ca
 
 Las tareas se guardan en un fichero de texto llamado ***crontab*** con información de la tarea a ejecutar y de cuando a de ejecutarse. Cada usuario crea y edita su propio fichero con el comando:
 
-crontab -e
+    crontab -e
 
 En cada línea ponemos una tarea a ejecutar con el siguiente formato:
 
-minuto hora día\_del\_mes mes día\_semana comando
+    minuto hora día\_del\_mes mes día\_semana comando
 
 -   minuto: valor entre 0 y 59
 -   hora: valor entre 0 y 23
@@ -787,11 +792,11 @@ Para poder evaluar diferentes opciones vamos a crear 3 servidores virtuales e in
 
 Ahora debemos decidir qué versión instalaremos de cada sistema:
 
--   Debian: instalaremos la versión **stable** (Debian 8 Jessie) ya que en el servidor damos más importancia a su estabilidad que a poder usar las últimas versiones de las herramientas
--   Ubuntu: vamos a escoger la última versión LTS, en nuestro caso la 14.04. Así no nos veremos obligados a actualizar el servidor cada 6 meses y en esta versión tendremos soporte durante 5 años (aunque posiblemente al cabo de 2 años actualizaremos el sistema a la siguiente versión LTS)
--   CentOS: instalaremos la última versión, la 7.
+-   Debian: instalaremos la versión **stable** (Debian 11) ya que en el servidor damos más importancia a su estabilidad que a poder usar las últimas versiones de las herramientas
+-   Ubuntu: vamos a escoger la última versión LTS, en nuestro caso la 20.04. Así no nos veremos obligados a actualizar el servidor cada 6 meses y en esta versión tendremos soporte durante 5 años (aunque posiblemente al cabo de 2 años actualizaremos el sistema a la siguiente versión LTS)
+-   CentOS: instalaremos la última versión.
 
-En los 3 casos hay versiones para arquitecturas de 32 y 64 bits y nosotros escogeremos esta última que es la de nuestro equipo i3.
+En los 3 casos hay versiones para arquitecturas de 32 y 64 bits y nosotros escogeremos esta última.
 
 Además podemos instalar el servidor con o sin entorno gráfico. Nosotros haremos la instalación sin entorno gráfico para así tener todos los recursos del servidor a disposición de los clientes.
 
@@ -874,12 +879,12 @@ Si no se muestran las interfaces de red o su configuración no es correcta la ca
 
 Una vez hecho esto detenemos el Network Manager:
 
-systemctl stop NetworkManager
-systemctl disable NetworkManager
+    systemctl stop NetworkManager
+    systemctl disable NetworkManager
 
 y reiniciamos el servicio de red:
 
-systemctl restart network.service
+    systemctl restart network.service
 
 Ahora ya nuestra configuración debe ser la correcta.
 
@@ -906,7 +911,7 @@ Respecto a la red el contenido del fichero /etc/network/interfaces será:
 
 Tras eso debemos activar el enrutamiento. El comando a añadir a /etc/rc.local es:
 
-  iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j SNAT --to 192.168.221.199
+    iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j SNAT --to 192.168.221.199
 
 #### Creación de las particiones para datos
 
@@ -914,40 +919,40 @@ Ahora configuraremos el segundo disco duro de 10 GB que es el que utilizaremos p
 
 En primer lugar lo particionamos:
 
-  fdisk /dev/sdb
+    fdisk /dev/sdb
 
 Crearemos una única partición porque todo el disco va a ir al grupo de volúmenes (el disco virtual) de LVM.
 
 Luego formateamos la partición con ext2. No lo hacemos con ext4 porque esta partición en realidad no la vamos a utilizar sino que se va a LVM y las que usaremos son las particiones virtuales que hagamos allí y que sí formatearemos con ext4.
 
-  mkfs.ext2  /dev/sdb1
+    mkfs.ext4  /dev/sdb1
 
 Ahora indicamos que esa partición se usará con LVM:
 
- pvcreate /dev/sdb1
+    pvcreate /dev/sdb1
 
 La añadimos a un nuevo grupo de volúmenes al que llamaremos datosLVM:
 
-  vgcreate datosLVM /dev/sdb1
+    vgcreate datosLVM /dev/sdb1
 
 Y hacemos 2 particiones virtuales, una para datos del servidor (la llamaré datosSrv) y otra para las carpetas personales de los usuarios del dominio (la llamaré homeDominio):
 
-  lvcreate -L4G -n datosSrv datosLVM
-  lvcreate -L4G -n homeDominio datosLVM
+    lvcreate -L4G -n datosSrv datosLVM
+    lvcreate -L4G -n homeDominio datosLVM
 
 Las formateamos con ext4:
 
-  mkfs.ext4 datosSrv
-  mkfs.ext4 homeDominio
+    mkfs.ext4 datosSrv
+    mkfs.ext4 homeDominio
 
 Y las montamos (las añado a /etc/fstab para que se monten siempre):
 
-  /dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
-  /dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
+/dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
+/dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
 
 y hago un mount -a para que se monten ahora sin tener que reiniciar el servidor)
 
-  mount -a
+    mount -a
 
 Bibliografía
 ============
