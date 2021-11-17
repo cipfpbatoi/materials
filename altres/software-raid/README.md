@@ -47,7 +47,9 @@ And now we can remove it:
 Verifying the status of the RAID arrays:
     
     # cat /proc/mdstat
+
 or
+
     # mdadm --detail /dev/md0
 
 Add new disc to array:
@@ -57,6 +59,7 @@ Add new disc to array:
 Verifying the status of the RAID arrays:
     
     # cat /proc/mdstat
+
 or
 
     # mdadm --detail /dev/md0

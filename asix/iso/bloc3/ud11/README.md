@@ -94,7 +94,9 @@ Una vez decididas las particiones que haremos hay que decidir el sistema de arch
 Por último decidiremos si vamos a usar algún nivel de **RAID** y si usaremos o no **LVM** que es un administrador de volúmenes virtuales (similar a los discos dinámicos de Windows). Podemos encontrar más información sobre LVM en:
 
 -   RAID: [https://es.wikipedia.org/wiki/RAID](https://es.wikipedia.org/wiki/RAID) 
+-   https://cipfpbatoi.github.io/materials/altres/software-raid/
 -   LVM: [http://es.wikipedia.org/wiki/Logical\_Volume\_Manager](http://es.wikipedia.org/wiki/Logical_Volume_Manager)
+-   https://cipfpbatoi.github.io/materials/altres/lvm/
 
 
 Instalación del servidor

@@ -18,6 +18,8 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   * [Particionament de discos](./altres/sistemes-operatius/particions/)
   * [Samba](./altres/sistemes-operatius/samba/)
   * [Comandos de Windows](./altres/sistemes-operatius/comandos-windows/)
+  * [Software RAID](./altres/software-raid/)
+  * [LVM](./altres/lvm/)
 * [Virtualització. Virtualbox](./altres/virtualitzacio/)
 * [Configurar la xarxa en GNU/Linux](./altres/xarxa-linux/)
 * [Crear documentación con Markdown](./altres/markdown/)

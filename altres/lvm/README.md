@@ -1,7 +1,5 @@
-LVM
-===
-Logical Volume Manager
-----------------------
+LVM (Logical Volume Manager)
+============================
 
 Install:
 
