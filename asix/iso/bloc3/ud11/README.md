@@ -93,10 +93,9 @@ Una vez decididas las particiones que haremos hay que decidir el sistema de arch
 
 Por último decidiremos si vamos a usar algún nivel de **RAID** y si usaremos o no **LVM** que es un administrador de volúmenes virtuales (similar a los discos dinámicos de Windows). Podemos encontrar más información sobre LVM en:
 
--   RAID: [https://es.wikipedia.org/wiki/RAID](https://es.wikipedia.org/wiki/RAID)
+-   RAID: [https://es.wikipedia.org/wiki/RAID](https://es.wikipedia.org/wiki/RAID) 
 -   LVM: [http://es.wikipedia.org/wiki/Logical\_Volume\_Manager](http://es.wikipedia.org/wiki/Logical_Volume_Manager)
 
-En temas posteriores aprenderemos más sobre esto.
 
 Instalación del servidor
 ========================
@@ -122,7 +121,22 @@ Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entor
 
 ### Instalación de Ubuntu Server LTS
 
-Es prácticamente igual a la de Debian y Ubuntu Desktop
+![UbuntuServer](imgs/ubuntu-0.png)
+
+![UbuntuServer](imgs/ubuntu-1.png)
+
+![UbuntuServer](imgs/ubuntu-2.png)
+
+![UbuntuServer](imgs/ubuntu-3.png)
+
+![UbuntuServer](imgs/ubuntu-4.png)
+
+![UbuntuServer](imgs/ubuntu-5.png)
+
+![UbuntuServer](imgs/ubuntu-6.png)
+
+![UbuntuServer](imgs/ubuntu-7.png)
+
 
 ### Instalación de Cent OS v.7
 
