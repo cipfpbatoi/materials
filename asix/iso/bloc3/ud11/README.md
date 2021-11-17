@@ -1,7 +1,7 @@
 Módulo: Implantación de Sistemas Operativos
 ============================================
 
-UT 11 - Instalación de un servidor con software libre
+UD 11 - Instalación de un servidor con software libre
 =====================================================
 
 1º ASIR
@@ -12,7 +12,7 @@ Implantación de Sistemas Operativos
 
 C.F.G.S.: Administración de sistemas informáticos en red
 
-Introducción a la UT 11
+Introducción a la UD 11
 =======================
 
 Objetivos de la unidad
@@ -62,7 +62,7 @@ En caso afirmativo habremos de decidir qué servidor es el que mejor se adapta a
 
 Si nuestra elección es un servidor de software libre tenemos muchas opciones diferentes y habremos de elegir la más adecuada a nuestras circunstancias. Entre las más utilizadas se encuentran:
 
--   **Debian**: es uno de los sistemas más utilizados por ser de los más eficientes en la gestión de los recursos del sistema. En caso de decantarnos por esta distribución deberemos escoger qué versión instalar. Para un servidor la opción recomendada es la versión estable (en la actualidad la versión 11 llamada **Bullseye**) aunque, en función de nuestras necesidades,  también podríamos decantarnos por la versión testing (actualmente la 12 llamada **bookworm**). 
+-   **Debian**: es uno de los sistemas más utilizados por ser de los más eficientes en la gestión de los recursos del sistema. En caso de decantarnos por esta distribución deberemos escoger qué versión instalar. Para un servidor la opción recomendada es la versión estable (en la actualidad la versión 11 llamada **Bullseye**) aunque, en función de nuestras necesidades,  también podríamos decantarnos por la versión testing (actualmente la 12 llamada **Bookworm**). 
   
   ![Bullseye](imgs/bullseye.jpg)
   
@@ -120,9 +120,9 @@ A la hora de particionar el disco elegiremos LVM pero con partición separada pa
 
 Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entorno de escritorio, ni lo marcaremos. Sí aparece marcado el servidor SSH que nosotros desmarcaremos ya que no lo vamos a usar (gestionaremos el servidor con Webmin).
 
-### Instalación de Ubuntu Server 18.04 LTS
+### Instalación de Ubuntu Server LTS
 
-Es prácticamente igual a la de Debian y Ubuntu Desktop (que ya hemos instalado otras veces)
+Es prácticamente igual a la de Debian y Ubuntu Desktop
 
 ### Instalación de Cent OS v.7
 
@@ -360,7 +360,7 @@ Cada línea del fichero configura un repositorio. Su sintaxis es:
 
 Ejemplo de fichero en Linux Mint (basado en Ubuntu):
 
-![sources.list](imgs/imagen.png)
+![sources.list](imgs/sourceslist.png)
 
 Después de hacer cambios en un fichero tenemos que recargar la lista de paquetes de los repositorios con el comando
 
@@ -379,9 +379,10 @@ Antes de descargar software es conveniente actualizar la lista de paquetes para 
 
 Tenemos muchas formas de instalar software en nuestro sistema.
 
-Para instalar nuevas funcionalidades enteras podemos utilizar la herramienta tasksel:
+Para instalar nuevas funcionalidades enteras podemos utilizar diferentes herramienta.
 
-![Repositorios](imgs/repDebian.jpg "Repositorios")
+https://wiki.debian.org/es/PackageManagement/PkgTools 
+
 ![Instalar software](imgs/tasksel.jpg "Instalar software")
 
 Nos muestra diferentes usos que podemos darle al sistema y al marcar un se encarga de instalar todos los paquetes necesarios.
