@@ -94,9 +94,9 @@ Una vez decididas las particiones que haremos hay que decidir el sistema de arch
 Por último decidiremos si vamos a usar algún nivel de **RAID** y si usaremos o no **LVM** que es un administrador de volúmenes virtuales (similar a los discos dinámicos de Windows). Podemos encontrar más información sobre LVM en:
 
 -   RAID: [https://es.wikipedia.org/wiki/RAID](https://es.wikipedia.org/wiki/RAID) 
--   https://cipfpbatoi.github.io/materials/altres/software-raid/
+-   [Software RAID](https://cipfpbatoi.github.io/materials/altres/software-raid/)
 -   LVM: [http://es.wikipedia.org/wiki/Logical\_Volume\_Manager](http://es.wikipedia.org/wiki/Logical_Volume_Manager)
--   https://cipfpbatoi.github.io/materials/altres/lvm/
+-   [LMV2](https://cipfpbatoi.github.io/materials/altres/lvm/)
 
 
 Instalación del servidor
@@ -119,7 +119,7 @@ A la hora de particionar el disco elegiremos LVM pero con partición separada pa
     -   /dev/mapper/srvAulaDebian-99-vg-swap, de 512 MB para el swap (del mismo tamaño de la RAM)
     -   /dev/mapper/srvAulaDebian-99-vg-home, de 10 GB para el las carpetas de los usuarios (se monta en /home)
 
-Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entorno de escritorio, ni lo marcaremos. Sí aparece marcado el servidor SSH que nosotros desmarcaremos ya que no lo vamos a usar (gestionaremos el servidor con Webmin).
+Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entorno de escritorio, ni lo marcaremos. Marcar SSH Server.
 
 ### Instalación de Ubuntu Server LTS
 
