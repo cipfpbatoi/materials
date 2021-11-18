@@ -7,6 +7,7 @@
     - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
     - [Configurar la red](#configurar-la-red)
     - [Actualizar el servidor](#actualizar-el-servidor)
+    - [sconfig](#sconfig)
     - [Roles y características](#roles-y-características)
     - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
@@ -55,14 +56,16 @@ Esta instalación (que es la opción por defecto al instalar el sistema) instala
 
 Una forma bastante práctica de usar un servidor Server Core es gestionarlo con la herramienta de Microsoft **RSAT** (_Remote Server Administration Tools_) que puede instalarse en cualquier cliente Windows con entorno gráfico y que nos permitirá gestionar desde él el servidor gráficamente.
 
-El comando que cambia el nombre del servidor es netdom:
+Para cambiar el nombre del servidor haremos:
 ```powershell
-netdom renamecomputer %COMPUTERNAME% /newname:MISERVIDOR
+Rename-Computer -NewName MISERVIDOR
+Restart-Computer -force
 ```
 
 Para configurar la red podemos usar Powershell o **netsh**:
 ```powershell
-netsh interface ipv4 set address name="Conexión de área local" source=static address=192.168.100.1 mask=255.255.255.0 gateway=192.168.221.1
+Get-NetAdapter –name $redInterna | Remove-NetIPAddress -Confirm:$false
+Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24
 ```
 
 ## Finalización de la instalación
@@ -104,6 +107,11 @@ Si es importante que un cliente esté siempre actualizado para evitar vulnerabil
 No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Windows.
 
 **Recordad que nosotros deshabilitaremos las actualitzaciones automáticas para no colapsar la red del instituto.**
+
+### sconfig
+Esta herramienta de texto **sconfig** nos permite configurar de forma sencilla la mayoría de opciones desde la terminal, lo que no será muy útil en una instalación _Server Core_. Si lo ejecutamos nos aparece su menú:
+
+![sconfig](media/sconfig.png)
 
 ### Roles y características
 Los roles son los diferentes servicios que podemos instalar en el servidor.
