@@ -8,7 +8,7 @@ El bloque está compuesto por 5 unidades de trabajo:
 - [UD 2 Virtualización](../../../altres/virtualitzacio/): aquí veremos todo lo relacionado con la virtualización para poder trabajar con máquinas virtuales.
 - [UD 3 Instalación](ud03): en esta unidad instalaremos diferentes sistemas operativos y veremos las cosas básicas a configurar durante el proceso de instalación.
 - UD 4 Sistemas de archivos: en esta unidad conoceremos diferentes sistemas de archivos, la gestión de permisos y la estructura de estos.
-- UD 5 Comandos
+- [UD 5 Comandos](ud05): en esta unidad conoceremos los principales comandos para Windows y GNU/Linux.
 
 ## Introducción
 Actualmente cualquier empresa maneja enormes cantidades de información. El **sistema informático** de la empresa es el encargado de tratar toda esa información y está formado por el _hardware_ (todos los elementos físicos del sistema), el _software_ (todos los programas que hacen que funcionen y realicen las tareas que se necesitan) y también los recursos humanos que hacen que el sistema funcione correctamente.
