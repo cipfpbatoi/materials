@@ -226,18 +226,18 @@ Finalización de la instalación
 Una vez realizada la instalación, y antes de configurar el sistema, es conveniente hacer una serie de comprobaciones:
 
 -   Estado de los dispositivos: comprobar que todos los dispositivos que tenemos se han detectado y funcionan correctamente.
--   Configuración de la red: es fundamental que sea correcta. Podemos comprobarlo con órdenes como ip, ping o nslookup.
--   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un dmesg | less para visualizar la información de arranque de nuestro sistema. También podemos entrar decir del directorio de logs (*/var/log*) y comprobar los diferentes registros de nuestro sistema.
--   Particiones: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas. Para ver todos los discos de los sistema tenemos la orden fdisk -l y para ver las particiones montadas el comando df. También podemos obtener estas informaciones con lsblk. Para montar una partición se hace con mount y al arrancar se montan todas las particiones indicadas en el fichero */etc/fstab*.
+-   Configuración de la red: es fundamental que sea correcta. Podemos comprobarlo con órdenes como **ip**, **ping** o **nslookup**.
+-   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg | less** para visualizar la información de arranque de nuestro sistema. También podemos entrar decir del directorio de logs (*/var/log*) y comprobar los diferentes registros de nuestro sistema.
+-   Particiones: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas. Para ver todos los discos de los sistema tenemos la orden **fdisk -l** y para ver las particiones montadas el comando **df**. También podemos obtener estas informaciones con **lsblk**. Para montar una partición se hace con mount y al arrancar se montan todas las particiones indicadas en el fichero */etc/fstab*.
 
-Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. A continuación deberíamos actualizar el sistema para asegurarnos de tener las últimas versiones de los paquetes y todos los parches de seguridad. Podemos hacerlo con el comando apt-get upgrade (nosotros no lo haremos para no sobrecargar la red).
+Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. A continuación deberíamos actualizar el sistema para asegurarnos de tener las últimas versiones de los paquetes y todos los parches de seguridad. Podemos hacerlo con el comando **apt-get upgrade** (nosotros no lo haremos para no sobrecargar la red).
 
 Después convendría hacer una imagen del servidor limpio, y guardarla para poder restaurarlo en caso de problemas. También sería interesante hacer una cuando instalemos el software adicional y realizamos todas las configuraciones, pero antes de ponerlo en explotación y permitir la conexión de los clientes de nuestra red.
 
 Configuración básica del servidor
 =================================
 
-Todas las configuraciones indicadas aquí son para equipos basados en Debian (como el propio Debian o Ubuntu). En otras distribuciones como CentOS estas pueden variar significativamente (por ejemplo CentOS y también Fedora, RedHat o Suse utilizan el sistema de paquetes .rpm en vez del .deb y cambia todo lo referido a los repositorios, instalación de software, etc).
+Todas las configuraciones indicadas aquí son para equipos basados en *Debian* (como el propio Debian o Ubuntu). En otras distribuciones como *CentOS* estas pueden variar significativamente (por ejemplo CentOS y también Fedora, RedHat o Suse utilizan el sistema de paquetes .rpm en vez del .deb y cambia todo lo referido a los repositorios, instalación de software, etc).
 
 Además haremos un repaso de los principales comandos que usaremos en la configuración de un sistema GNU/Linux, ya que hemos hecho la instalación sin entorno gráfico.
 
@@ -249,7 +249,7 @@ En Ubuntu 18.04 y posteriores, si existe el fichero **/etc/cloud/cloud.cfg** (si
 
     preserve_hostname: true
 
-En vez de cambiar el contenido del fichero**/etc/hostname** podemos cambiarlo con el comando **hostnamectl**:
+En vez de cambiar el contenido del fichero **/etc/hostname** podemos cambiarlo con el comando **hostnamectl**:
 
     hostnamectl set-hostname nuevo-nombre
 
@@ -264,7 +264,7 @@ Comandos para crear usuarios useradd y adduser. La diferencia es que adduser nos
 -   Para añadir un usuario a un grupo: adduser usuario grupo
 -   Para modificar un usuario usermod (con los mismos parámetros que useradd).
 
-Cómo ya sabemos todos los usuarios, grupos, etc se guardamos como líneas en ficheros de texto. Los más importantes son:
+Toda la gestión de usuarios, grupos, etc se gestiona con ficheros de texto. Los más importantes son:
 
 -   Fichero de usuarios: ***/etc/passwd***
 -   Fichero de grupos: ***/etc/group***
@@ -278,26 +278,23 @@ Para ver sólo los grupos a que pertenece un usuario: groups usuario
 
 ### Otras utilidades
 
-Para ejecutar un comando o un script al iniciar el equipo podemos añadirlo al fichero ***/etc/rc.local*** (antes de la línea de exit).
-
 Para hacer una copia de seguridad del contenido de una carpeta podemos utilizar el comando tar. Un ejemplo de su uso es:
 
-    tar -czf copia\_\`date -I\`.tar.gz /datos
+    tar -czf copia.tar.gz /datos
 
 El comando tar crea un archivo con los ficheros que le indicamos. Los parámetros anteriores son:
 
 -   -c: para crear el archivo. Para extraer los ficheros es -x
 -   -z: para comprimir el archivo creado en formato gzip, así ocupará menos espacio
 -   -f: para indicar que lo que vamos a archivar son ficheros
--   nombre del fichero a crear. En el ejemplo es copia\_2015-08-25.tar.gz (o la fecha que sea cuando se ejecuta):
--   date -I: es un comando que muestra la fecha. Para ejecutar un comando dentro de un texto lo tenemos que escribir entre acentos graves (\`)
+-   nombre del fichero a crear. En el ejemplo es copia.tar.gz
 -   tar: extensión por defecto de los archivos creados con el comando tar
 -   gz: extensión por defecto de los ficheros comprimidos con gzip
 -   ficheros o directorios a archivar, aquí /datos
 
 Posteriormente si queremos restaurar los ficheros ejecutaremos:
 
-    tar -xzf copia\_2015-08-25.tar.gz /datos
+    tar -xzf copias.tar.gz /datos
 
 Servicios
 =========
@@ -391,7 +388,7 @@ Para añadir un nuevo respositorio al sistema usamos el comando:
 Instalación de software
 =======================
 
-Antes de descargar software es conveniente actualizar la lista de paquetes para asegurarnos de instalar las últimas versiones de los paquetes (con apt-get update).
+Antes de descargar software es conveniente actualizar la lista de paquetes para asegurarnos de instalar las últimas versiones de los paquetes (**apt-get update**).
 
 Tenemos muchas formas de instalar software en nuestro sistema.
 
@@ -399,21 +396,25 @@ Para instalar nuevas funcionalidades enteras podemos utilizar diferentes herrami
 
 https://wiki.debian.org/es/PackageManagement/PkgTools 
 
-![Instalar software](imgs/tasksel.jpg "Instalar software")
+![Instalar software](imgs/tasksel.png "Instalar software")
 
 Nos muestra diferentes usos que podemos darle al sistema y al marcar un se encarga de instalar todos los paquetes necesarios.
 
-La forma más habitual para instalar un paquete es el comando apt-get. Ejemplo:
+La forma más habitual para instalar un paquete es el comando **apt-get**. Ejemplo:
 
     apt-get install cowsay
 
-Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre\_del\_paquete.
+Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre\_del\_paquete. Ejemplo:
 
-Para desinstalar un paquete se hace con apt-get remove nombre\_del\_paquete.
+    apt-cache search sl
+
+Para desinstalar un paquete se hace con apt-get remove nombre\_del\_paquete. Ejemplo:
+
+    apt-get remove sl
 
 Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando dpkg -i nombre\_del\_paquete.deb
 
-Este comando no instala las dependencias. Si no se completa la instalación del paquete porque faltan dependencias ejecutaremos apt-get install -f para que se instalen automáticamente.
+Este comando no instala las dependencias. Si no se completa la instalación del paquete porque faltan dependencias ejecutaremos **apt-get install -f** para que se instalen automáticamente.
 
 Resumen de comandos relacionados con el software:
 
@@ -450,7 +451,7 @@ Desde el entorno gráfico la gestión de paquetes es muy parecida a la de Debian
 Discos y particiones
 ====================
 
-En GNU/Linux todos los dispositivos se tratan como ficheros, la mayoría de los cuales se encuentran en el directorio ***/dev***. Los discos se denominan ***sdX*** (el primer disco sda, el segundo sdb, etc) y las particiones dentro de cada disco se denominan con un número del 1 al 4 para particiones primarias (y extendida) y a partir del 5 para particiones lógicas.
+En GNU/Linux todos los dispositivos se tratan como ficheros, la mayoría de los cuales se encuentran en el directorio ***/dev***. Los discos se denominan ***sdX*** (el primer disco sda, el segundo sdb, etc) y las particiones dentro de cada disco se denominan con un número del 1 al 4 para particiones primarias (y extendida) y a partir del 5 para particiones lógicas(discos MBR). 
 
 Para ver los discos que tenemos en el sistema podemos ejecutar el comando:
 
@@ -481,15 +482,13 @@ Para comprobar una partición:
     
     fsck /dev/sdb1
 
-Para montar una partición: 
+Para montar una partición mount [-t tipo\_de\_FS] partición punto\_de\_montaje. Ejemplo: 
 
-    mount [-t tipo\_de\_FS] partición punto\_de\_montaje
-    
-    Ejemplo: mount /dev/sdb1 /datos
+    mount /dev/sdb1 /datos
 
-Para montar automáticamente una partición añadiremos una línea al fichero /etc/fstab:
+Para montar automáticamente una partición añadiremos una línea al fichero */etc/fstab*:
 
-    nombre\_particio\_o\_uuid punto\_de\_montaje tipo\_fs opciones dump pass
+    nombre_particion_o_uuid_o_dispositivo punto_de_montaje fs opciones dump pass
 
 ![fstab](imgs/fstab.png "fstab")
 
@@ -501,14 +500,13 @@ Después de modificar el fichero para montar su contenido ejecutamos:
 
 Cómo hemos visto para montar una partición podemos utilizar su nombre (/dev/sd...) o su UUID que es un identficador de la partición.
 
-Para conocer el UUID de una partición: blkid
+Para conocer el UUID de una partición: **blkid**
 
 ![blkid](imgs/blkid.png "blkid")
 
-Para desmontar una partición: 
+Para desmontar una partición utilzamos el comando umount punto_de_montaje. Ejemplo: 
 
-    umount punto\_de\_montaje
-    Ejemplo: umount /datos
+    umount /datos
 
 LVM
 ===
