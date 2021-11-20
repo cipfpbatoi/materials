@@ -6,11 +6,57 @@ UD 11 - Instalación de un servidor con software libre
 
 1º ASIR
 -------
-
-Implantación de Sistemas Operativos
-===================================
-
-C.F.G.S.: Administración de sistemas informáticos en red
+- [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
+- [UD 11 - Instalación de un servidor con software libre](#ud-11---instalación-de-un-servidor-con-software-libre)
+  - [1º ASIR](#1º-asir)
+- [Introducción a la UD 11](#introducción-a-la-ud-11)
+  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+  - [Conceptos clave](#conceptos-clave)
+  - [Conocimiento previo](#conocimiento-previo)
+- [Planificación de la instalación](#planificación-de-la-instalación)
+- [Sistemas de archivo y particionamiento](#sistemas-de-archivo-y-particionamiento)
+- [Instalación del servidor](#instalación-del-servidor)
+    - [Instalación de Debian 8 Jessie](#instalación-de-debian-8-jessie)
+    - [Instalación de Ubuntu Server LTS](#instalación-de-ubuntu-server-lts)
+    - [Instalación de Cent OS v.7](#instalación-de-cent-os-v7)
+- [Finalización de la instalación](#finalización-de-la-instalación)
+- [Configuración básica del servidor](#configuración-básica-del-servidor)
+    - [Nombre del equipo](#nombre-del-equipo)
+    - [Gestionar usuarios y grupos](#gestionar-usuarios-y-grupos)
+    - [Otras utilidades](#otras-utilidades)
+- [Servicios](#servicios)
+  - [Servicios](#servicios-1)
+- [Red](#red)
+- [Repositorios](#repositorios)
+- [Instalación de software](#instalación-de-software)
+    - [Paquetes rpm](#paquetes-rpm)
+- [Discos y particiones](#discos-y-particiones)
+- [LVM](#lvm)
+    - [Ejemplo de uso desde la consola](#ejemplo-de-uso-desde-la-consola)
+      - [Como añadir una nueva partición al volumen](#como-añadir-una-nueva-partición-al-volumen)
+- [ACL](#acl)
+    - [Utilizando las ACL](#utilizando-las-acl)
+      - [getfacl](#getfacl)
+      - [setfacl](#setfacl)
+- [Cuotas de disco](#cuotas-de-disco)
+    - [Instalar y activar las cuotas de disco](#instalar-y-activar-las-cuotas-de-disco)
+    - [Establecer las cuotas de disco](#establecer-las-cuotas-de-disco)
+    - [Comprobar las cuotas de disco](#comprobar-las-cuotas-de-disco)
+- [Programar tareas](#programar-tareas)
+- [Acceso remoto](#acceso-remoto)
+- [Retroalimentación](#retroalimentación)
+    - [Elección del sistema](#elección-del-sistema)
+    - [Planificación de la instalación](#planificación-de-la-instalación-1)
+    - [Creación de la máquina virtual](#creación-de-la-máquina-virtual)
+    - [Instalación y configuración](#instalación-y-configuración)
+    - [Documentar la instalación](#documentar-la-instalación)
+    - [Ejemplo de instalación y configuración de la máquina CentOS](#ejemplo-de-instalación-y-configuración-de-la-máquina-centos)
+      - [Configurar la red](#configurar-la-red)
+    - [Instalación de Debian/Ubuntu](#instalación-de-debianubuntu)
+      - [Configuración inicial de las particiones](#configuración-inicial-de-las-particiones)
+      - [Configuración de la red](#configuración-de-la-red)
+      - [Creación de las particiones para datos](#creación-de-las-particiones-para-datos)
+- [Bibliografía](#bibliografía)
 
 Introducción a la UD 11
 =======================
@@ -217,8 +263,6 @@ Una vez hecho procedemos con la instalación del sistema:
 Y tras reiniciar ya tenemos nuestro sistema CentOS operativo:
 
 ![CentOS](imgs/17reinicio.png "CentOS")
-
-#### 
 
 Finalización de la instalación
 ==============================
