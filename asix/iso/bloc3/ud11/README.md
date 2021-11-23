@@ -274,7 +274,7 @@ Una vez realizada la instalación, y antes de configurar el sistema, es convenie
 
 -   Estado de los dispositivos: comprobar que todos los dispositivos que tenemos se han detectado y funcionan correctamente.
 -   Configuración de la red: es fundamental que sea correcta. Podemos comprobarlo con órdenes como **ip**, **ping** o **nslookup**.
--   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg | less** para visualizar la información de arranque de nuestro sistema. También podemos entrar decir del directorio de logs (*/var/log*) y comprobar los diferentes registros de nuestro sistema.
+-   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg | less** para visualizar la información de arranque de nuestro sistema. También podemos entrar al directorio de logs (***/var/log***) y comprobar los diferentes registros de nuestro sistema.
 -   Particiones: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas. Para ver todos los discos de los sistema tenemos la orden **fdisk -l** y para ver las particiones montadas el comando **df**. También podemos obtener estas informaciones con **lsblk**. Para montar una partición se hace con mount y al arrancar se montan todas las particiones indicadas en el fichero */etc/fstab*.
 
 Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. A continuación deberíamos actualizar el sistema para asegurarnos de tener las últimas versiones de los paquetes y todos los parches de seguridad. Podemos hacerlo con el comando **apt-get upgrade** (nosotros no lo haremos para no sobrecargar la red).
@@ -338,7 +338,8 @@ Para hacer una copia de seguridad del contenido de una carpeta podemos utilizar 
 
 El comando tar crea un archivo con los ficheros que le indicamos. Los parámetros anteriores son:
 
--   -c: para crear el archivo. Para extraer los ficheros es -x
+-   -c: para crear el archivo. 
+-   Para extraer los ficheros es -x.
 -   -z: para comprimir el archivo creado en formato gzip, así ocupará menos espacio
 -   -f: para indicar que lo que vamos a archivar son ficheros
 -   nombre del fichero a crear. En el ejemplo es copia.tar.gz
@@ -448,7 +449,7 @@ Tenemos muchas formas de instalar software en nuestro sistema.
 
 Para instalar nuevas funcionalidades enteras podemos utilizar diferentes herramienta.
 
-https://wiki.debian.org/es/PackageManagement/PkgTools 
+[https://wiki.debian.org/es/PackageManagement/PkgTools](https://wiki.debian.org/es/PackageManagement/PkgTools)
 
 ![Instalar software](imgs/tasksel.png "Instalar software")
 
@@ -466,7 +467,7 @@ Para desinstalar un paquete se hace con apt-get remove nombre\_del\_paquete. Eje
 
     apt-get remove sl
 
-Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando dpkg -i nombre\_del\_paquete.deb
+Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando dpkg -i nombre_del_paquete.deb
 
 Este comando no instala las dependencias. Si no se completa la instalación del paquete porque faltan dependencias ejecutaremos **apt-get install -f** para que se instalen automáticamente.
 
