@@ -23,6 +23,9 @@ UD 11 - Instalación de un servidor con software libre
 - [Configuración básica del servidor](#configuración-básica-del-servidor)
     - [Nombre del equipo](#nombre-del-equipo)
     - [Gestionar usuarios y grupos](#gestionar-usuarios-y-grupos)
+      - [***/etc/passwd***](#etcpasswd)
+      - [***/etc/group***](#etcgroup)
+      - [***/etc/shadow***](#etcshadow)
     - [Otras utilidades](#otras-utilidades)
 - [Servicios](#servicios)
   - [Servicios](#servicios-1)
@@ -238,7 +241,7 @@ y la del swap
 
 Antes de crearse las particiones nos muestra los cambios que se harán en el disco para que los confirmemos:
 
-![CentOS](imgs/imgs/11partresumen.png "CentOS")
+![CentOS](imgs/11partresumen.png "CentOS")
 
 El siguiente paso es configurar el nombre de la máquina y la red. Estableceremos IPs estáticas para nuestras tarjetas de red:
 
@@ -310,9 +313,16 @@ Comandos para crear usuarios useradd y adduser. La diferencia es que adduser nos
 
 Toda la gestión de usuarios, grupos, etc se gestiona con ficheros de texto. Los más importantes son:
 
--   Fichero de usuarios: ***/etc/passwd***
--   Fichero de grupos: ***/etc/group***
--   Fichero de contraseñas: ***/etc/shadow***
+#### ***/etc/passwd***  
+
+![passwd](imgs/passwd.png)
+
+#### ***/etc/group***
+
+![group](imgs/group.png)
+
+#### ***/etc/shadow***
+![shadow](imgs/shadow.png)
 
 Para ver los datos de un usuario: id usuario
 
