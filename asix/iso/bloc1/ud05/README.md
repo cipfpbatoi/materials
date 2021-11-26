@@ -10,8 +10,6 @@ UT 5 - Comandos
 Implantación de Sistemas Operativos 
 ===================================
 
-\<imagen\>
-
 C.F.G.S.: Administración de sistemas informáticos en red
 
 Introducción a la UT 5 
