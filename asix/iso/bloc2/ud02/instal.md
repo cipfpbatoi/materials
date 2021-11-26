@@ -7,6 +7,7 @@
     - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
     - [Configurar la red](#configurar-la-red)
     - [Actualizar el servidor](#actualizar-el-servidor)
+    - [Administrar el servidor desde la terminal](#administrar-el-servidor-desde-la-terminal)
     - [sconfig](#sconfig)
     - [Roles y características](#roles-y-características)
     - [Versión de evaluación](#versión-de-evaluación)
@@ -54,20 +55,6 @@ El proceso de instalación es similar al de cualquier Windows cliente.
 ### Instalación Server Core
 Esta instalación (que es la opción por defecto al instalar el sistema) instala el servidor pero sin entorno gráfico, con las ventajas e inconvenientes que ello comporta. En realidad sí que hay un sistema gráfico desde el que se pueden realizar algunas acciones pero no es tan potente ni pesado como el entorno gráfico normal.
 
-Una forma bastante práctica de usar un servidor Server Core es gestionarlo con la herramienta de Microsoft **RSAT** (_Remote Server Administration Tools_) que puede instalarse en cualquier cliente Windows con entorno gráfico y que nos permitirá gestionar desde él el servidor gráficamente.
-
-Para cambiar el nombre del servidor haremos:
-```powershell
-Rename-Computer -NewName MISERVIDOR
-Restart-Computer -force
-```
-
-Para configurar la red podemos usar Powershell o **netsh**:
-```powershell
-Get-NetAdapter –name $redInterna | Remove-NetIPAddress -Confirm:$false
-Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24
-```
-
 ## Finalización de la instalación
 Una vez finalizada la instalación y antes de configurar el sistema es conveniente hacer una serie de comprobaciones:
 - **estado de los dispositivos**: desde el _Administrador de dispositivos_ podemos comprobar que no haya hardware sin detectar o con problemas de controladores
@@ -107,6 +94,25 @@ Si es importante que un cliente esté siempre actualizado para evitar vulnerabil
 No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Windows.
 
 **Recordad que nosotros deshabilitaremos las actualitzaciones automáticas para no colapsar la red del instituto.**
+
+### Administrar el servidor desde la terminal
+Si hemos instalado el servidor sin entorno de escritorio debemos usar la terminal para configurarlo. Algunos comandos que tendremos que usar son:
+
+Para cambiar el nombre del servidor:
+```powershell
+Rename-Computer -NewName MISERVIDOR
+Restart-Computer -force
+```
+
+Para configurar la red podemos usar Powershell o **netsh**:
+```powershell
+Get-NetAdapter –name $redInterna | Remove-NetIPAddress -Confirm:$false
+Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24
+```
+
+Podemos encontrar muchos comandos de configuración en la página de [Administración de un servidor Server Core](https://docs.microsoft.com/es-es/windows-server/administration/server-core/server-core-administer) de Microsoft.
+
+Una vez configurado el servidor podemos gestionarlo con la herramienta de Microsoft **RSAT** (_Remote Server Administration Tools_) que puede instalarse en cualquier cliente Windows con entorno gráfico y que nos permitirá gestionar desde él el servidor gráficamente.
 
 ### sconfig
 Esta herramienta de texto **sconfig** nos permite configurar de forma sencilla la mayoría de opciones desde la terminal, lo que no será muy útil en una instalación _Server Core_. Si lo ejecutamos nos aparece su menú:

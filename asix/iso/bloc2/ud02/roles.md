@@ -1,6 +1,7 @@
 # Instalar roles y características
 - [Instalar roles y características](#instalar-roles-y-características)
   - [Introducción](#introducción)
+    - [Powershell](#powershell)
   - [Servicio de enrutamiento](#servicio-de-enrutamiento)
   - [Instalación del dominio](#instalación-del-dominio)
     - [Instalar el dominio desde la terminal](#instalar-el-dominio-desde-la-terminal)
@@ -28,6 +29,19 @@ Algunos de ellos son:
 El más importante es el servicio de dominio, que veremos en el siguiente apartado. Antes vamos a ver cómo se instalaría cualquier rol y en concreto instalaremos y configuraremos el servicio de enrutamiento para que los clientes de nuestra red interna tengan salida al exterior (y a Internet) a través de este servidor.
 
 Puedes ver [este vídeo](./media/rolSrvImpresion.ogv) de cómo instalar un rol, en concreto el _Servicio de Impresión_.
+
+### Powershell
+El comando para instalar un rol es `Install-WindowsFeature`. A diferencia del entorno gráfico este comando no incluirá las herramientas de administración de ese rol a menos que incluyamos el parámetro `IncludeManagementTools`. El comando
+
+```powershell
+Install-WindowsFeature -Name <feature_name> -computerName <computer_name> -IncludeManagementTools -Restart
+```
+
+instala el rol identificado por _<feature_name>_ en el equipo _<computer_name>_ (si no se pone este parámetro se instala en la máquina en que se ejecuta el comando) incluyendo sus herramientas de administración y, si es necesario, reinicia el equipo tras finalizar la instalación.
+
+Podemos obtener la lista de roles que podemos instalar en este equipo con el comando `Get-WindowsFeature`. Si queremos la lista para otro equipo pondremos `Get-WindowsFeature -computerName <computer_name>`.
+
+Y para desinstalar un rol ejecutaremos `Uninstall-WindowsFeature -Name <feature_name> -computerName <computer_name> -Restart -IncludeManagementTools`.
 
 ## Servicio de enrutamiento
 Deberemos instalar esta función si nuestro servidor va a permitir a los clientes de al red salir al exterior (para ello necesitará tener 2 tarjetas de red). Con las dos tarjetas configuradas tenemos 2 redes diferentes: una externa que nos comunica con el exterior y una interna que nos comunica con nuestros clientes. Pero ahora mismo las 2 redes no están comunicadas entre sí y un cliente de la red interna sólo puede llegar hasta el servidor pero no salir al exterior. Para que pueda hacerlo tenemos que enrutar las 2 tarjetas del servidor de forma que todo el tráfico que llega por la tarjeta interna hacia el exterior se enrute a la tarjeta externa que sabe hacia donde se tiene que dirigir.
