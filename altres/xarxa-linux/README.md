@@ -534,7 +534,7 @@ Si tenim un mètode de què comprovar evitarem "tocar" configuracions que tenim 
 2. **Fer un `ping` a la porta d'enllaç**. Si la configuració és correcta fem un _ping_ a la porta d'enllaç que ens ha mostrat el comando del pas anterior. Si falla pot ser:
   - _ip i fw estan en xarxes diferents_: recorda que la ip ha d'estar en la mateixa xarxa que la porta d'enllaç
   - _el cable_: el cable que ix del nostre equip ha d'arribar al mateix switch al que va el de la nostra porta d'enllaç. Si és una màquina virtual s'hem d'assegurar que el nom de la targeta interna del client i del servidor és el mateix (és el nom del switch virtual que es crea)
-  - _el firewall_: els firewalls dels Windows clients (Windows 10, ...) NO permet el pas dels pings. Per això no farem ping al client sinó des del client al servidor. Si hem de fer ping a un client Windows abans hem de afegir una regla al seu firewall per a mpermetre els paquets ICMP (o deshabilitar el firewall mentre fem el ping)
+  - _el firewall_: el firewall dels Windows clients (Windows 10, ...) NO permet el pas dels pings. Per això no farem ping al client sinó des del client al servidor. Si hem de fer ping a un client Windows abans hem de afegir una regla al seu firewall per a mpermetre els paquets ICMP (o deshabilitar el firewall mentre fem el ping)
 
 3. **Fer un `ping` a un equip de fora de la xarxa**. Si el ping anterior ha funcionat farem un ping a un equip de fora, per exemple al 8.8.8.8 (si estem en l'institut podem fer-ho al nostre servidor 172.16.20.1 perquè el router no deixa eixir els pings fora). Si falla és
   - _l'enrutament_: en la nostra porta d'enllaç no s'ha fet l'enrutament correctament i tenim que arreglar-lo

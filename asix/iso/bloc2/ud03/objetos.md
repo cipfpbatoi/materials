@@ -21,6 +21,7 @@
   - [Unidades Organizativas](#unidades-organizativas)
     - [Operaciones comunes](#operaciones-comunes)
     - [Delegar la administración de una OU](#delegar-la-administración-de-una-ou)
+  - [Sitios (_Sites_)](#sitios-sites)
   - [Buscar objetos](#buscar-objetos)
     - [Buscar desde el cliente](#buscar-desde-el-cliente)
   - [Gestionar objetos desde la línea de comandos](#gestionar-objetos-desde-la-línea-de-comandos)
@@ -33,6 +34,7 @@ La gestión de un dominio supone crear y configurar adecuadamente los objetos de
 ### Elementos de Active Directory
 La forma en que se organizan los objetos del directorio es:
 - **Dominio**: es la estructura fundamental que engloba todos los demás objetos de la red
+- **Sitio**: es una ubicación geográfica. Cada dominio puede tener un único sitio o varios (por ejemplo uno para cada delegación o sede de nuestra empresa)
 - **Unidad organizativa (OU)**: es un elementos que creamos para agrupar lógicamente diversos objetos (por ejemplo podemos hacer una OU por cada departamento de la empresa donde incluir los usuarios, equipos, impresoras, ... de ese departamento). Son como las carpetas que nos permiten agrupar los archivos de un disco
 - **Grupo**: es también una agrupación de objetos pero del mismo tipo. Lo más habitual es hacer grupos de usuarios para luego asignar los permisos a los grupos en vez de a usuarios individuales
 - **Objeto**: cada objeto representa un elemento de la red (equipo, usuario, carpeta compartida, impresora, ...)
@@ -349,6 +351,9 @@ A continuación elegimos qué tareas queremos delegar:
 
 Finalmente el asistente nos muestra el resumen de lo que queremos hacer y cuando aceptemos se hace la delegación para las tareas indicadas.
 
+## Sitios (_Sites_)
+Definen diferentes ubicaciones dentro del dominio y sirven para establecer límites de replicación. Si nuestra empresa tiene diferentes ubicaciones crearemos un _site_ para cada una de ellas para mejorar el rendimiento ya que se supone que la comunicación entre distintos sitios no es tan rápida como dentro de un sitio.
+
 ## Buscar objetos
 Según va aumentando el número de objetos en el AD se hace más difícil encontrar las cosas. Para facilitarlo se incluye un buscador que podemos abrir desde el botón de _**'Encontrar objetos...'**_ desde el menú contextual de cualquier contenedor:
 
@@ -459,6 +464,7 @@ Remove-ADUser -Identity "jsegura"
 ```powershell
 Move-ADObject -identity "CN=jsegura,OU=asix,DC=cipfpbatoi,DC=lan" -targetpath "OU=daw,DC=cipfpbatoi,DC=lan"
 ```
+Como se ve el nombre completo LDAP de un usuario es parecido al de una OU pero su prefijo es "CN".
 
 8. Mueve a la OU _daw_ a todos los usuarios que sean del departamento de _INF_:
 
@@ -478,23 +484,8 @@ Get-ADUser -filter * -searchBase "OU=asix,DC=cipfpbatoi,DC=lan" | Move-ADObject 
 Set-ADAccountPassword -Identity jsegura -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "p@ssw0rd" -Force): 
 ```
 
-```powershell
-```
-
-```powershell
-```
-
-```powershell
-```
-
-
 Siempre hay que utilizar comillas (" ") si hay espacios en alguna variable. 
-Ejemplo: Añadir el usuario Juan Segura con login jsegura y contraseña P@ssw0rd a la OU Informática del dominio info2.local y hacerlo miembro del grupo Profesores:
-
-
-Como se ve el nombre completo LDAP de un usuario es parecido al de una OU pero su prefijo es "cn". La opción -disabled es para desactivar/activar la cuenta y memberof indica a qué grupo pertenece. Otras opciones son:
-
-ln: apellidos del usuario
-fn: nombre del usuario
-mustchpwd: obligación de cambiar la contraseña en el primer inicio de sesión
-canchpwd: si el usuario puede cambiar la contraseña
+Ejemplo: 
+```powershell
+New-ADUser -name "jsegura" -displayname "Juan Segura"
+```
