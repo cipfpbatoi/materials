@@ -2,13 +2,10 @@ Módulo: Implantación de Sistemas Operativos
 ============================================
 
 UD 11 - Instalación de un servidor con software libre
-=====================================================
+-----------------------------------------------------
 
-1º ASIR
--------
 - [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
-- [UD 11 - Instalación de un servidor con software libre](#ud-11---instalación-de-un-servidor-con-software-libre)
-  - [1º ASIR](#1º-asir)
+  - [UD 11 - Instalación de un servidor con software libre](#ud-11---instalación-de-un-servidor-con-software-libre)
 - [Introducción a la UD 11](#introducción-a-la-ud-11)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
@@ -16,19 +13,18 @@ UD 11 - Instalación de un servidor con software libre
 - [Planificación de la instalación](#planificación-de-la-instalación)
 - [Sistemas de archivo y particionamiento](#sistemas-de-archivo-y-particionamiento)
 - [Instalación del servidor](#instalación-del-servidor)
-    - [Instalación de Debian 8 Jessie](#instalación-de-debian-8-jessie)
-    - [Instalación de Ubuntu Server LTS](#instalación-de-ubuntu-server-lts)
-    - [Instalación de Cent OS v.7](#instalación-de-cent-os-v7)
+  - [Instalación de Debian 8 Jessie](#instalación-de-debian-8-jessie)
+  - [Instalación de Ubuntu Server LTS](#instalación-de-ubuntu-server-lts)
+  - [Instalación de Cent OS v.7](#instalación-de-cent-os-v7)
 - [Finalización de la instalación](#finalización-de-la-instalación)
 - [Configuración básica del servidor](#configuración-básica-del-servidor)
     - [Nombre del equipo](#nombre-del-equipo)
     - [Gestionar usuarios y grupos](#gestionar-usuarios-y-grupos)
-      - [***/etc/passwd***](#etcpasswd)
-      - [***/etc/group***](#etcgroup)
-      - [***/etc/shadow***](#etcshadow)
+  - [***/etc/passwd***](#etcpasswd)
+  - [***/etc/group***](#etcgroup)
+  - [***/etc/shadow***](#etcshadow)
     - [Otras utilidades](#otras-utilidades)
 - [Servicios](#servicios)
-  - [Servicios](#servicios-1)
 - [Red](#red)
 - [Repositorios](#repositorios)
 - [Instalación de software](#instalación-de-software)
@@ -155,7 +151,8 @@ Una vez finalizada la planificación procederemos a la instalación del sistema.
 
 Lo más común es instalar el servidor sin interfaz gráfica. 
 
-### Instalación de Debian 8 Jessie
+Instalación de Debian 8 Jessie
+------------------------------
 
 [installDebian.ogv](imgs/installDebian.ogv)
 
@@ -170,7 +167,8 @@ A la hora de particionar el disco elegiremos LVM pero con partición separada pa
 
 Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entorno de escritorio, ni lo marcaremos. Marcar SSH Server.
 
-### Instalación de Ubuntu Server LTS
+Instalación de Ubuntu Server LTS
+--------------------------------
 
 ![UbuntuServer](imgs/ubuntu-0.png)
 
@@ -189,7 +187,8 @@ Respecto a los paquetes a instalar, por defecto no aparece marcado ningún entor
 ![UbuntuServer](imgs/ubuntu-7.png)
 
 
-### Instalación de Cent OS v.7
+Instalación de Cent OS v.7
+---------------------------
 
 Arrancamos la máquina virtual e introducimos el CD de CentOS y comenzamos la instalación:
 
@@ -313,15 +312,16 @@ Comandos para crear usuarios useradd y adduser. La diferencia es que adduser nos
 
 Toda la gestión de usuarios, grupos, etc se gestiona con ficheros de texto. Los más importantes son:
 
-#### ***/etc/passwd***  
-
+ ***/etc/passwd***  
+------------------
 ![passwd](imgs/passwd.png)
 
-#### ***/etc/group***
-
+***/etc/group***
+----------------
 ![group](imgs/group.png)
 
-#### ***/etc/shadow***
+***/etc/shadow***
+-----------------
 ![shadow](imgs/shadow.png)
 
 Para ver los datos de un usuario: id usuario
@@ -353,9 +353,6 @@ Posteriormente si queremos restaurar los ficheros ejecutaremos:
 
 Servicios
 =========
-
-Servicios
----------
 
 Con el sistema de inicio SysV el comando para iniciar o parar servicios era **service**:
 
@@ -419,14 +416,14 @@ La lista de repositorios se configura en ***/etc/apt/sources.list*** aunque las 
 
 Cada línea del fichero configura un repositorio. Su sintaxis es:
 
-{deb | deb-src} URL\_del\_repositorio versión tipo\_de\_paquetes
+{deb | deb-src} URL_del_repositorio versión tipo_de_paquetes
 
 -   en primer lugar indicamos si queremos bajar paquetes ya compilados (deb) o el código fuente para compilarlo (deb-src)
 -   URL del repositorio
 -   versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos version-updates en Ubuntu o version/updates en Debian y para parches de seguridad version-security (o version/security)
 -   tipo de software que queremos (main, restricted, universe, multiverse en Ubuntu o main, contrib, non-free en Debian). Podemos poner más de un tipo separados por espacio
 
-Ejemplo de fichero en Linux Mint (basado en Ubuntu):
+Ejemplo de fichero:
 
 ![sources.list](imgs/sourceslist.png)
 
@@ -459,7 +456,7 @@ La forma más habitual para instalar un paquete es el comando **apt-get**. Ejemp
 
     apt-get install cowsay
 
-Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre\_del\_paquete. Ejemplo:
+Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre_del_paquete. Ejemplo:
 
     apt-cache search sl
 
