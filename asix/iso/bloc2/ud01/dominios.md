@@ -1,7 +1,7 @@
 # Dominios. Active Directory
 - [Dominios. Active Directory](#dominios-active-directory)
   - [Introducción](#introducción)
-  - [Relaciones de confianza](#relaciones-de-confianza)
+  - [Dominios y bosques. Relaciones de confianza](#dominios-y-bosques-relaciones-de-confianza)
   - [Notación de los objetos del directorio](#notación-de-los-objetos-del-directorio)
   - [Active Directory](#active-directory)
 
@@ -12,15 +12,17 @@ La correcta administración de la red es fundamental y centralizar esa administr
 
 El elemento que representa toda la red a administrar con todos los recursos que contiene se llama **Dominio**. Un dominio es una red de ordenadores conectados entre sí donde se confía a uno de los equipos de dicha red (o a un grupo de ellos, los controladores de dominio), la administración de los distintos elementos de la red (equipos, usuarios, impresoras, privilegios y permisos de los usuarios sobre cada recurso, etc.
 
-La información del dominio la almacena el controlador (o controladores) en una base de datos jerárquica llamada **directorio**, que almacena la información sobre cada objeto del dominio: servidores, equipos cliente, impresoras, usuarios, grupos, archivos compartidos, etc.
+La información del dominio la almacena el servidor controlador del dominio (o servidores) en una base de datos jerárquica llamada **directorio**, que almacena la información sobre cada objeto del dominio: servidores, equipos cliente, impresoras, usuarios, grupos, archivos compartidos, etc.
 
-Para gestionar el directorio el servidor dispondrá de unas herramientas que siguen el estándar **LDAP** (_Lightweight Directory Access Protocol_, protocolo ligero de acceso al directorio). Este protocolo establece que cada dominio tiene un nombre único que sigue la notación de nombres de DNS (ejemplo _cipfpbatoi.lan_). 
+Para gestionar el directorio el servidor dispondrá de unas herramientas que siguen el estándar **LDAP** (_Lightweight Directory Access Protocol_, protocolo ligero de acceso al directorio).
 
-Un dominio puede tener subdominios (como _www.cipfpbatoi.lan_ o _moodle.cipfpbatoi.lan_). Al conjunto del dominio y todos sus subdominios se le llama **árbol** de dominios y el dominio principal es el **dominio raíz** (en el ejemplo _cipfpbatoi.lan_).
+## Dominios y bosques. Relaciones de confianza
+Cada dominio tiene un nombre único que sigue la notación de nombres de DNS (ejemplo _cipfpbatoi.lan_). Un dominio puede tener subdominios (como _www.cipfpbatoi.lan_ o _moodle.cipfpbatoi.lan_). Al conjunto del dominio y todos sus subdominios se le llama **árbol** de dominios y el dominio principal es el **dominio raíz** (en el ejemplo _cipfpbatoi.lan_).
 
 En ocasiones podemos tener más de un dominio independiente (por ejemplo podríamos tener el dominio _aulas.lan_ para nuestras aulas con los subdominios _aula1.aulas.lan_, _aula2.aulas.lan_, etc., y el dominio _departamentos.lan_ para los distintos departamentos del centro). Al conjunto de todos los árboles de dominios se le llama **bosque**.
 
-## Relaciones de confianza
+El bosque se considera el límite de seguridad de _Active Directory_ y todo lo que engloba puede ser administrado de forma centralizada desde el DC (_Domain Controller_).
+
 Aunque tengamos organizada nuestra red en diferentes bosques en ocasiones usuarios de un dominio necesitan acceder a recursos que se encuentran en otro dominio. Para hacerlo posible se establecen relaciones de confianza entre los mismos.
 
 Una relación de confianza es una relación establecida entre dos dominios de forma que los usuarios de un dominio son reconocidos por los controladores de otro dominio, lo que les permite acceder a los recursos del mismo. 
@@ -40,6 +42,7 @@ La función del dominio es representar los componentes, tanto físicos como lóg
 - **Impresora**
 - **Grupo**: permite agrupar diferentes objetos, normalmente del mismo tipo, para asignarles permisos y privilegios a todos los miembros del grupo a la vez
 - **Unidad organizativa** (OU, _Organizational Unit_): es un contenedor que nos permite organizar los diferentes objetos. Lo normal es que contenga distintos tipos de objetos. Por ejemplo podríamos crear una OU para cada departamento de la empresa donde colocaremos los usuarios, grupos, equipos, impresoras,... de ese departamento
+- **Sitio**: refleja una ubicación física (por ejemplo una sede)
 - **Carpeta compartida**: representa una carpeta accesible a los distintos equipos de la red
 - ...
 
