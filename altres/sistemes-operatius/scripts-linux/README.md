@@ -6,4 +6,4 @@
 ## Introducción
 
 ## Leer datos de un fichero
-![Leer datos de un fichero](./leerDatos.md)
+[Leer datos de un fichero](./leerDatos.md)
