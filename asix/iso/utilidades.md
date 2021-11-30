@@ -42,7 +42,7 @@ Para conocer todas las opciones posibles, es aconsejable hacer **tar ­help**. U
 
     tar ­cvf /dev/rmt0 /users | mail backup­user
 
-Más ejemplos, creando un fichero **tar**  a partir de un directorio y en el siguiente ejemplo desempaquetando un fichero **tar**
+Más ejemplos, creando un fichero **tar** a partir de un directorio y en el siguiente ejemplo desempaquetando un fichero **tar**
 
     tar ­cvf foo.tar foo/  # Archiva el dir. foo en foot.tar
     tar ­xvf foo.tar       # Desarchiva el fichero foo.tar
@@ -51,7 +51,7 @@ Marcar que tar no es un compresor, simplemente archiva ciertos ficheros, directo
 
 ### gzip/bzip2
 
-**Gzip*+ proviene de GNU ZIP, se trata de un software basado en el algoritmo Deflate para comprimir ficheros, pero solo comprime un sólo fichero y no archiva. 
+**Gzip** proviene de GNU ZIP, se trata de un software basado en el algoritmo Deflate para comprimir ficheros, pero solo comprime un sólo fichero y no archiva. 
 
 **Bzip2** es un software que comprime y descomprime ficheros. El porcentaje de compresión depende del fichero a comprimir, pero es bastante mejor al de los compresores basados en otros algoritmos de compresión (gzip, WinZip,...). Como inconveniente, **bzip2** emplea más memoria y más tiempo en su ejecución.
 
@@ -84,7 +84,7 @@ Como hemos comentado, tar no es un compresor y bzip y gzip no archivan. Con las 
 
 rsync es una aplicación libre para sistemas de tipo Unix/Linux y Microsoft Windows que ofrece transmisión eficiente de datos incrementales, también opera con datos comprimidos y cifrados. Mediante una técnica de delta encoding, permite sincronizar archivos y directorios entre dos máquinas de una red o entre dos ubicaciones en una misma máquina, minimizando el volumen de datos transferidos. Una característica importante de rsync no encontrada en la mayoría de programas o protocolos es que la copia toma lugar con sólo una transmisión en cada dirección. 
 
-**rsync**   puede   copiar   o   mostrar   directorios   contenidos   y   copia   de   archivos, opcionalmente usando compresión y recursión.
+**rsync** puede copiar o mostrar directorios contenidos y copia de archivos, opcionalmente usando compresión y recursión.
     
     rsync options source destination
 
@@ -98,7 +98,7 @@ Opciones:
 - ­*v* verbose
 - *r* recursivo
 
-Para sincronizar y preservar características como(timesamp, permisos, propietarios y grupos). Con la opción ­a indicamos que realizaremos en modo “archive” y esto implica las siguientes opciones:
+Para sincronizar y preservar características como(timesamp, permisos, propietarios y grupos). Con la opción **­a** indicamos que realizaremos en modo *archive* y esto implica las siguientes opciones:
 
 - Modo recursivo.
 - Preservamos los enlaces simbólicos.
