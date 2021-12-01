@@ -6,18 +6,34 @@ samba-tool -h
 ```
 
 Els subcomandos que anem a usar ara són:
+- **ou**: per a gestionar unitats organitzatives
 - **group**: per a gestionar grups
 - **user**: per a gestionar usuaris
 
 Encara que existeixen molts més per a gestionar molts altres elements (gpo, dns, ...)
 
+## Gestió d'unitats organitzatives
+Amb `samba-tool ou -h` podem vore les opcions que podem utilitzar.
+
+Si volem crear l'ou Aula dins de l'ou **Batoi** que es troba en el domini **cipfpbatoi.lan** farem:
+
+```bash
+samba-tool ou create "OU=Aula,OU=Batoi,DC=cipfpbatoi,DC=lan" --description "Objectes de l'aula de formació"
+```
+
+Podem veure totes les opcions a l'hora de crear una ou amb:
+
+```bash
+samba-tool ou create -h
+```
+
 ## Gestió de grups
-Amb `samba-tool group` veen les opcion que podem utilitzar:
+Amb `samba-tool group -h` es mostren les opcions que podem utilitzar.
 
 Per defecte els grups es crearan dins de la OU **Users** però podem indicar on volem que es creu. Per exemple si volem crear el grup gProfes dins de la OU **Aula** que està dins de la OU **Batoi** farem:
 
 ```bash
-samba-tool group add gProfes --groupou=OU=Aula,OU=Batoi
+samba-tool group add gProfes --groupou=OU=Aula,OU=Batoi --description="Professors de l'aula"
 ```
 
 També podem indicar què GID volem que tinga amb l'opció `--gidnumber num_de_gid`. És habitual donar als grups i usuaris del domini nombres alts (a partir del 5000 o el 10000) per a no interferir en els usuaris i grups locals que tenen GID i UID a partir del 1000.
@@ -67,12 +83,13 @@ Per veure més comandes relacionades amb samba, es poden accedir a la seguent we
 
 https://www.sysadminsdecuba.com/2018/04/tips-comandos-utiles-de-samba/
 
-## Gestió d'OU
-Amb samba-tool podem gestionar fàcilment usuaris i grups però no permet crear unitats organitzatives. Per a fer-ho hem d'actuar directament amb LDB que és la base de dades de Samba (normalment es guarda en `/var/lib/samba/private/sam.ldb`).
+## Gestió amb fitxers LDIF
+Samba (al igual que OpenLDAP i la resta de directoris que segueixen l'estàndard LDAP) permet actuar directament amb **LDB** que és la base de dades del directori (normalment es guarda en `/var/lib/samba/private/sam.ldb`).
 
-Per a això tenim les eines ldb (ldbadd, ldbdel, ldbedit, ldbmodify, ldbrename, ldbsearch) que instal·lem amb el paquet **ldb-tools** (aquests comandos s'instal·len en `/usr/bin`).
+Per a això tenim les eines ldb (`ldbadd`, `ldbdel`, `ldbedit`, `ldbmodify`, `ldbrename`, `ldbsearch`) que podem instal·lar amb el paquet **ldb-tools** (aquests comandos s'instal·len en `/usr/bin`).
 
-Per a afegir una OU hem de crear un fitxer LDIF amb les seues dades i afegir-lo amb `ldbadd`. Per exemple volem crear l'OU _Aula_ dins de l'OU _Batoi_ (que ja està creada) en el domini _cipfpbatoi.lan_. Crearem un fitxer (per exemple ouAula.ldif) amb el contingut:
+Si volem, per exemple, afegir una OU hem de crear un fitxer LDIF amb les seues dades i afegir-lo amb `ldbadd`. Per exemple volem crear l'OU _Aula_ dins de l'OU _Batoi_ (que ja està creada) en el domini _cipfpbatoi.lan_. Els que farem és:
+1. Crearem un fitxer (per exemple ouAula.ldif) amb el contingut:
 ```bash
 dn: OU=Aula,OU=Batoi,DC=cipfpbatoi,DC=lan
 ou: Aula
@@ -80,7 +97,7 @@ objectClass: top
 objectClass: organizationalunit 
 ```
 
-Per a afegir-la al domini executem:
+2. Per a afegir-la al domini executem:
 ```bash
 ldbadd -H /var/lib/samba/private/sam.ldb ouAula.ldif 
 ```
