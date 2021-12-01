@@ -18,13 +18,13 @@ Amb `samba-tool ou -h` podem vore les opcions que podem utilitzar.
 Si volem crear l'ou Aula dins de l'ou **Batoi** que es troba en el domini **cipfpbatoi.lan** farem:
 
 ```bash
-samba-tool ou create "OU=Aula,OU=Batoi,DC=cipfpbatoi,DC=lan" --description "Objectes de l'aula de formació"
+samba-tool ou add "OU=Aula,OU=Batoi,DC=cipfpbatoi,DC=lan" --description "Objectes de l'aula de formació"
 ```
 
 Podem veure totes les opcions a l'hora de crear una ou amb:
 
 ```bash
-samba-tool ou create -h
+samba-tool ou add -h
 ```
 
 ## Gestió de grups
@@ -35,8 +35,6 @@ Per defecte els grups es crearan dins de la OU **Users** però podem indicar on 
 ```bash
 samba-tool group add gProfes --groupou=OU=Aula,OU=Batoi --description="Professors de l'aula"
 ```
-
-També podem indicar què GID volem que tinga amb l'opció `--gidnumber num_de_gid`. És habitual donar als grups i usuaris del domini nombres alts (a partir del 5000 o el 10000) per a no interferir en els usuaris i grups locals que tenen GID i UID a partir del 1000.
 
 Podem veure totes les opcions a l'hora de crear un grup amb:
 
@@ -54,13 +52,13 @@ samba-tool group listmembers gEmpresa
 Ho farem amb el comando `samba-tool user`. A l'hora de crear un nou usuari haurem d'especificar moltes opcions. Les podem veure totes amb:
 
 ```bash
-samba-tool user create -h
+samba-tool user add -h
 ```
 
-Per exemple anem a crear l'usuari _jsegura_ amb contrasenya _Batoi@1234_ el nom de la qual és _Juan_ i cognom _Segura_, volem que tinga com UID la _10001_ i que haja de canviar la contrasenya en el pròxim inici de sessió i ho volem crear dins de la OU _smx_ que està en la OU _Aula_. El comando serà el següent:
+Per exemple anem a crear l'usuari _jsegura_ amb contrasenya _Batoi@1234_ el nom de la qual és _Juan_ i cognom _Segura_, volem que tinga que canviar la contrasenya en el pròxim inici de sessió i ho volem crear dins de la OU _smx_ que està en la OU _Aula_. El comando serà el següent:
 
 ```bash
-samba-tool user create jsegura Batoi@1234 --given-name=Juan --surname=Segura --must-change-at-next-login --userou=OU=Aula,OU=Batoi --uid-number=10001
+samba-tool user add jsegura Batoi@1234 --given-name=Juan --surname=Segura --must-change-at-next-login --userou=OU=Aula,OU=Batoi
 ```
 
 Per a afegir-lo al grup creat abans, farem:
