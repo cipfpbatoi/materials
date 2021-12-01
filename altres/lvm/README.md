@@ -1,57 +1,82 @@
 LVM (Logical Volume Manager)
 ============================
 
-Install:
+LVM es una implementación de un administrador de volúmenes lógicos para el kernel Linux (el equivalente a los discos dinámicos de Windows) e incluye la mayoría de características que se esperan de un administrador de volúmenes, permitiendo:
 
-    # aptitude install lvm2
+-   Redimensionado de grupos lógicos
+-   Redimensionado de volúmenes lógicos
+-   Instantáneas de sólo lectura (LVM2 ofrece lectura y escritura)
+-   RAID0 de volúmenes lógicos.
 
-Create a physical volumes:
+En la imagen podemos observar como trabaja LVM:
 
-    # pvcreate /dev/sdd /dev/sde
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/LVM-esquema_basico.PNG/420px-LVM-esquema_basico.PNG)
 
-You can view physical volumes using
+En primer lugar escogemos los volúmenes físicos (PV, *Phisical Volums*) que utilizaremos para LVM. Podemos escoger particiones o discos enteros. A continuación los asignamos a grupos de volúmenes (VG) que serían el equivalente a discos virtuales en los que creamos volúmenes lógicos (LV) que son los que finalmente usaremos como si fueran una partición.
 
-    # pvscan
-or
-    # pvdisplay
+En la imagen hay 7 PV procedentes de 2 discos diferentes con los que se crean 2 VG: uno formado por los PV hda1, hda2, hdb1 y hdb2, y el otro formado por los PV hda3, hda4 y hdb3. En el primer VG se crea un único LV que posteriormente se monta en la carpeta /home y del segundo VG se crea también un LV que se montará en /usr.
 
-Create a volume group:
+En cualquier momento podemos añadir más volúmenes físicos a uno o más grupos de volúmenes lo que nos permitirá crear en ellos nuevos volúmenes lógicos o ampliar la medida de cualquiera de los ya existentes, todo de forma transparente para el usuario.
 
-    # vgcreate vg0 /dev/sdd /dev/sde
+Algunas de las ventajas que proporciona LVM son:
 
-You can view volume group:
-    
-    # vgdisplay
+-   Cuando instalamos el sistema y hacemos las particiones siempre es difícil estimar cuánto espacio será necesario para el sistema o para datos y es bastante común que nos quedemos sin espacio en alguna partición aunque sobre espacio en otra. Con LVM podemos reducir las particiones a las que les sobre espacio y añadírselo a la que lo necesite. También podemos dejar cierta cantidad de espacio de disco sin asignar para expandir un volumen cuando se necesite.
+-   Los grupos de usuarios (por ejemplo administración, ventas, etc.) pueden tener sus propios volúmenes lógicos que pueden crecer lo que sea necesario.
+-   Cuando un nuevo disco se añade al sistema, no es necesario mover al nuevo disco los datos de los usuarios. Simplemente se añade el nuevo disco al grupo lógico correspondiente y se expanden los volúmenes lógicos todo lo que se considere adecuado. También se pueden migrar los datos de discos antiguos a otros nuevos, de forma totalmente transparente al usuario.
 
-Now, you can create a logical volume:
-    
-    # lvcreate -L 15GB -n lvol0 vg0
+Como hemos dicho antes un LVM se compone de tres partes:
 
-You can view logical volume:
+-   Volúmenes físicos (PV): Son los discos o las particiones del disco duro con sistema de archivos LVM.
+-   Volúmenes lógicos (LV): es el equivalente a una partición en un sistema tradicional. El LV es visible como un dispositivo estándar de bloques, por lo cual puede contener un sistema de archivos
+-   Grupos de volúmenes (VG): es como el disco duro virtual del cual creamos nuestros volúmenes lógicos (LV).
 
-    # lvdisplay
+Hay muchas herramientas gráficas para gestionar LVM como system-config-lvm pero nosotros utilizaremos la consola de comandos o el propio Webmin que ya tenemos instalado.
 
-Create filesystem ext4
+Ejemplo de uso desde la consola
+-------------------------------
+En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si todavía no lo tenemos instalado.
 
-    # mkfs.ext4 -v -L "NewLogicalVolum0" /dev/vg0/lvol0
+A continuación crearemos y configuraremos nuestros volúmenes. Primeramente crearemos los volúmenes físicos de las particiones en que vamos a utilizar LVM. Por ejemplo para utilizar la partición sda3 haremos:
 
-Resize logical volume
-=====================
+    pvcreate /dev/sda3
 
-Now, we resize a logical volume.
+Esto lo tenemos que repetir para cada partición a utilizar (por ejemplo sda4 y sda5). También podríamos usar un disco completo (por ejemplo sdb) con:
 
-Create a physical volume:
+    pvcreate /dev/sdb
 
-    # pvcreate /dev/sdf
+Ahora creamos el grupo de volúmenes que contendrá nuestros volúmenes lógicos finales:
 
-Add to vg0 the new physical volume:
+    vgcreate volgroup\_01 /dev/sda3 /dev/sda4 /dev/sda5
 
-    # vgextend vg0 /dev/sdf
+Con el comando vgscan podemos ver los grupos creados y con pvscan los volúmenes físicos.
 
-Now extend logical volume vl-myvl with 25GB
+Por último sólo queda crear los volúmenes lógicos que utilizaremos. Por ejemplo crearemos un llamado volumen\_01 de 2 GB:
 
-    # lvextend -L +25GB /dev/vg0/vl-myvl
+    lvcreate -L2G -n volumen\_01 volgroup\_01
 
-Finally, we need resize the logical volume(ext2/3/4):
+Con lvscan podemos ver los volúmenes lógicos creados.
 
-    # resize2fs /dev/vg0/vl-myvl
+Ahora ya podemos darle formato y montarlo como cualquier otra partición:
+
+    mkfs.ext4 /dev/volgroup\_01/volumen\_01
+    mount /dev/volgroup\_01/volumen\_01 /datos
+
+### Como añadir una nueva partición al volumen
+
+En primer lugar creamos un nuevo volumen físico en la partición:
+
+    pvcreate /dev/sdb1
+
+A continuación lo añadimos a nuestro grupo:
+
+    vgextend volgroup\_01 /dev/sdb1
+
+Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmenes lógicos. Por ejemplo vamos a darle otros 3 GB al volumen\_01:
+
+    lvextend -L +3G /dev/volgroup\_01/volumen\_01
+
+Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir en cuenta porque esta operación es peligrosa y podríamos perder los datos:
+
+    resize2fs /dev/volgroup\_01/volumen\_01 5G
+
+Ya tendríamos 5 GB en nuestro volumen en cuenta de las 2 iniciales.

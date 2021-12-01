@@ -23,7 +23,7 @@ UD 11 - Instalación de un servidor con software libre
   - [***/etc/passwd***](#etcpasswd)
   - [***/etc/group***](#etcgroup)
   - [***/etc/shadow***](#etcshadow)
-    - [Otras utilidades](#otras-utilidades)
+- [Utilidades](#utilidades)
 - [Servicios](#servicios)
 - [Red](#red)
 - [Repositorios](#repositorios)
@@ -31,8 +31,6 @@ UD 11 - Instalación de un servidor con software libre
     - [Paquetes rpm](#paquetes-rpm)
 - [Discos y particiones](#discos-y-particiones)
 - [LVM](#lvm)
-    - [Ejemplo de uso desde la consola](#ejemplo-de-uso-desde-la-consola)
-      - [Como añadir una nueva partición al volumen](#como-añadir-una-nueva-partición-al-volumen)
 - [ACL](#acl)
     - [Utilizando las ACL](#utilizando-las-acl)
       - [getfacl](#getfacl)
@@ -273,7 +271,7 @@ Una vez realizada la instalación, y antes de configurar el sistema, es convenie
 
 -   Estado de los dispositivos: comprobar que todos los dispositivos que tenemos se han detectado y funcionan correctamente.
 -   Configuración de la red: es fundamental que sea correcta. Podemos comprobarlo con órdenes como **ip**, **ping** o **nslookup**.
--   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg | less** para visualizar la información de arranque de nuestro sistema. También podemos entrar al directorio de logs (***/var/log***) y comprobar los diferentes registros de nuestro sistema.
+-   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg** para visualizar la información de arranque de nuestro sistema. También podemos entrar al directorio de logs (***/var/log***) y comprobar los diferentes registros de nuestro sistema.
 -   Particiones: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas. Para ver todos los discos de los sistema tenemos la orden **fdisk -l** y para ver las particiones montadas el comando **df**. También podemos obtener estas informaciones con **lsblk**. Para montar una partición se hace con mount y al arrancar se montan todas las particiones indicadas en el fichero */etc/fstab*.
 
 Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. A continuación deberíamos actualizar el sistema para asegurarnos de tener las últimas versiones de los paquetes y todos los parches de seguridad. Podemos hacerlo con el comando **apt-get upgrade** (nosotros no lo haremos para no sobrecargar la red).
@@ -330,26 +328,13 @@ Para ver los datos de un usuario: id usuario
 
 Para ver sólo los grupos a que pertenece un usuario: groups usuario
 
-### Otras utilidades
+Utilidades
+==========
 
-Para hacer una copia de seguridad del contenido de una carpeta podemos utilizar el comando tar. Un ejemplo de su uso es:
+Documento sobre diferente [utilidades](../../utilidades.md) para realizar copias de seguiridad. 
 
-    tar -czf copia.tar.gz /datos
 
-El comando tar crea un archivo con los ficheros que le indicamos. Los parámetros anteriores son:
 
--   -c: para crear el archivo. 
--   Para extraer los ficheros es -x.
--   -z: para comprimir el archivo creado en formato gzip, así ocupará menos espacio
--   -f: para indicar que lo que vamos a archivar son ficheros
--   nombre del fichero a crear. En el ejemplo es copia.tar.gz
--   tar: extensión por defecto de los archivos creados con el comando tar
--   gz: extensión por defecto de los ficheros comprimidos con gzip
--   ficheros o directorios a archivar, aquí /datos
-
-Posteriormente si queremos restaurar los ficheros ejecutaremos:
-
-    tar -xzf copias.tar.gz /datos
 
 Servicios
 =========
@@ -563,85 +548,7 @@ Para desmontar una partición utilzamos el comando umount punto_de_montaje. Ejem
 LVM
 ===
 
-LVM es una implementación de un administrador de volúmenes lógicos para el kernel Linux (el equivalente a los discos dinámicos de Windows) e incluye la mayoría de características que se esperan de un administrador de volúmenes, permitiendo:
-
--   Redimensionado de grupos lógicos
--   Redimensionado de volúmenes lógicos
--   Instantáneas de sólo lectura (LVM2 ofrece lectura y escritura)
--   RAID0 de volúmenes lógicos.
-
-En la imagen podemos observar como trabaja LVM:
-
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/LVM-esquema_basico.PNG/420px-LVM-esquema_basico.PNG)
-
-En primer lugar escogemos los volúmenes físicos (PV, *Phisical Volums*) que utilizaremos para LVM. Podemos escoger particiones o discos enteros. A continuación los asignamos a grupos de volúmenes (VG) que serían el equivalente a discos virtuales en los que creamos volúmenes lógicos (LV) que son los que finalmente usaremos como si fueran una partición.
-
-En la imagen hay 7 PV procedentes de 2 discos diferentes con los que se crean 2 VG: uno formado por los PV hda1, hda2, hdb1 y hdb2, y el otro formado por los PV hda3, hda4 y hdb3. En el primer VG se crea un único LV que posteriormente se monta en la carpeta /home y del segundo VG se crea también un LV que se montará en /usr.
-
-En cualquier momento podemos añadir más volúmenes físicos a uno o más grupos de volúmenes lo que nos permitirá crear en ellos nuevos volúmenes lógicos o ampliar la medida de cualquiera de los ya existentes, todo de forma transparente para el usuario.
-
-Algunas de las ventajas que proporciona LVM son:
-
--   Cuando instalamos el sistema y hacemos las particiones siempre es difícil estimar cuánto espacio será necesario para el sistema o para datos y es bastante común que nos quedemos sin espacio en alguna partición aunque sobre espacio en otra. Con LVM podemos reducir las particiones a las que les sobre espacio y añadírselo a la que lo necesite. También podemos dejar cierta cantidad de espacio de disco sin asignar para expandir un volumen cuando se necesite.
--   Los grupos de usuarios (por ejemplo administración, ventas, etc.) pueden tener sus propios volúmenes lógicos que pueden crecer lo que sea necesario.
--   Cuando un nuevo disco se añade al sistema, no es necesario mover al nuevo disco los datos de los usuarios. Simplemente se añade el nuevo disco al grupo lógico correspondiente y se expanden los volúmenes lógicos todo lo que se considere adecuado. También se pueden migrar los datos de discos antiguos a otros nuevos, de forma totalmente transparente al usuario.
-
-Como hemos dicho antes un LVM se compone de tres partes:
-
--   Volúmenes físicos (PV): Son los discos o las particiones del disco duro con sistema de archivos LVM.
--   Volúmenes lógicos (LV): es el equivalente a una partición en un sistema tradicional. El LV es visible como un dispositivo estándar de bloques, por lo cual puede contener un sistema de archivos
--   Grupos de volúmenes (VG): es como el disco duro virtual del cual creamos nuestros volúmenes lógicos (LV).
-
-Hay muchas herramientas gráficas para gestionar LVM como system-config-lvm pero nosotros utilizaremos la consola de comandos o el propio Webmin que ya tenemos instalado.
-
-### Ejemplo de uso desde la consola
-
-En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si todavía no lo tenemos instalado.
-
-A continuación crearemos y configuraremos nuestros volúmenes. Primeramente crearemos los volúmenes físicos de las particiones en que vamos a utilizar LVM. Por ejemplo para utilizar la partición sda3 haremos:
-
-    pvcreate /dev/sda3
-
-Esto lo tenemos que repetir para cada partición a utilizar (por ejemplo sda4 y sda5). También podríamos usar un disco completo (por ejemplo sdb) con:
-
-    pvcreate /dev/sdb
-
-Ahora creamos el grupo de volúmenes que contendrá nuestros volúmenes lógicos finales:
-
-    vgcreate volgroup\_01 /dev/sda3 /dev/sda4 /dev/sda5
-
-Con el comando vgscan podemos ver los grupos creados y con pvscan los volúmenes físicos.
-
-Por último sólo queda crear los volúmenes lógicos que utilizaremos. Por ejemplo crearemos un llamado volumen\_01 de 2 GB:
-
-    lvcreate -L2G -n volumen\_01 volgroup\_01
-
-Con lvscan podemos ver los volúmenes lógicos creados.
-
-Ahora ya podemos darle formato y montarlo como cualquier otra partición:
-
-    mkfs.ext4 /dev/volgroup\_01/volumen\_01
-    mount /dev/volgroup\_01/volumen\_01 /datos
-
-#### Como añadir una nueva partición al volumen
-
-En primer lugar creamos un nuevo volumen físico en la partición:
-
-    pvcreate /dev/sdb1
-
-A continuación lo añadimos a nuestro grupo:
-
-    vgextend volgroup\_01 /dev/sdb1
-
-Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmenes lógicos. Por ejemplo vamos a darle otros 3 GB al volumen\_01:
-
-    lvextend -L +3G /dev/volgroup\_01/volumen\_01
-
-Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir en cuenta porque esta operación es peligrosa y podríamos perder los datos:
-
-    resize2fs /dev/volgroup\_01/volumen\_01 5G
-
-Ya tendríamos 5 GB en nuestro volumen en cuenta de las 2 iniciales.
+Documentación para la gestión de [Volúmenes](../../../../altres/lvm/README.md) en GNU/Linux.
 
 ACL
 ===
