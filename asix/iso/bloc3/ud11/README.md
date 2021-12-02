@@ -30,6 +30,7 @@ UD 11 - Instalación de un servidor con software libre
 - [Instalación de software](#instalación-de-software)
     - [Paquetes rpm](#paquetes-rpm)
 - [Discos y particiones](#discos-y-particiones)
+- [RAID](#raid)
 - [LVM](#lvm)
 - [ACL](#acl)
     - [Utilizando las ACL](#utilizando-las-acl)
@@ -333,9 +334,6 @@ Utilidades
 
 Documento sobre diferente [utilidades](../../utilidades.md) para realizar copias de seguiridad. 
 
-
-
-
 Servicios
 =========
 
@@ -455,17 +453,17 @@ Este comando no instala las dependencias. Si no se completa la instalación del 
 
 Resumen de comandos relacionados con el software:
 
--   Para instalar un paquete: apt-get install nombre\_del\_paquete
--   Para reinstalar un paquete: apt-get --reinstall install nombre\_del\_paquete
+-   Para instalar un paquete: apt-get install nombre_del_paquete
+-   Para reinstalar un paquete: apt-get --reinstall install nombre_del_paquete
 -   Para reconfigurar un paquete (sin volverlo a instalar): dpkg-reconfigure nombre\_del\_paquete
--   Para descargar el código fuente de un paquete: apt-get source nombre\_del\_paquete
--   Para desinstalar un paquete: apt-get [--purge] remove nombre\_del\_paquete
+-   Para descargar el código fuente de un paquete: apt-get source nombre_del_paquete
+-   Para desinstalar un paquete: apt-get [--purge] remove nombre_del_paquete
     Con la opción --purge eliminamos también todos los ficheros de configuración del paquete
 -   Para actualizar todos los paquetes: apt-get upgrade
 -   Para actualizar la versión instalada: apt-get dist-upgrade
--   Para buscar paquetes relacionados con algo: apt-cache search que\_busco
--   Para obtener más información sobre un paquete: apt-cache show nombre\_del\_paquete
--   Para instalar un paquete .deb que hemos descargado nosotros previamente: dpkg -y nombre\_de el\_paquete.deb
+-   Para buscar paquetes relacionados con algo: apt-cache search que_busco
+-   Para obtener más información sobre un paquete: apt-cache show nombre_del_paquete
+-   Para instalar un paquete .deb que hemos descargado nosotros previamente: dpkg -y nombre_del_paquete.deb
     Si tiene dependencias no resueltas fallará la instalación. Para que se instalan las dependencias no resueltas y se vuelva a intentar la instalación de un paquete que ha fallado: apt-get -f install
 
 ### Paquetes rpm
@@ -544,6 +542,11 @@ Para conocer el UUID de una partición: **blkid**
 Para desmontar una partición utilzamos el comando umount punto_de_montaje. Ejemplo: 
 
     umount /datos
+
+RAID
+====
+
+Documentación para la gestión de [RAIDs](../../../../altres/software-raid/README.md) por software. 
 
 LVM
 ===
@@ -921,8 +924,8 @@ Las formateamos con ext4:
 
 Y las montamos (las añado a /etc/fstab para que se monten siempre):
 
-/dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
-/dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
+    /dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
+    /dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
 
 y hago un mount -a para que se monten ahora sin tener que reiniciar el servidor)
 
