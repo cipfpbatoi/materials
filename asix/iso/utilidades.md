@@ -1,14 +1,19 @@
-Herramientas básicas para realizar copias de seguridad
-======================================================
+Herramientas básicas
+=====================
+
+![logo](./bloc3/ud11/imgs/tar-gz-bz2.png)
 
 **tar­ gzip ­bzip2 ­rsync**
 
-- [Herramientas básicas para realizar copias de seguridad](#herramientas-básicas-para-realizar-copias-de-seguridad)
+
+- [Herramientas básicas](#herramientas-básicas)
     - [dump restore](#dump-restore)
     - [tar](#tar)
     - [gzip/bzip2](#gzipbzip2)
     - [tar/gzip/bzp2](#targzipbzp2)
     - [rsync](#rsync)
+
+Herramientas básicas para realizar copias de seguridad. 
 
 ### dump restore
 
