@@ -7,6 +7,7 @@
     - [Instalar el dominio desde la terminal](#instalar-el-dominio-desde-la-terminal)
     - [Degradar un controlador de dominio](#degradar-un-controlador-de-dominio)
     - [Añadir un cliente al dominio](#añadir-un-cliente-al-dominio)
+  - [RSAT](#rsat)
 
 ## Introducción
 Hemos comentado que los roles son los diferentes servicios que podemos instalar en el servidor.
@@ -110,3 +111,30 @@ En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor
 
 Una vez hecho esto (podemos comprobarlo desde la terminal con `ping` y `nslookup`) ya podemos añadir el cliente al dominio. Puedes ver [este vídeo](./media/Cliente.ogv) de cómo añadir un cliente al dominio.
 
+## RSAT
+Las herramientas de administración remota del servidor (RSAT, Remote Server Administration Tools) es un software gratuito que Microsoft pone a disposición de los usuarios para poder administrar un servidor desde cualquier cliente Windows. Esto nos permite, por ejemplo, instalar el servidor sin entorno gráfico (que es lo que recomienda Microsoft) y administrarlo desde un equipo cliente que sí lo tiene.
+
+En versiones de Windows 10 posteriores a la 1809 no es necesario instalarlas sino que sólo debemos activarlas.
+
+NOTA: para saber qué versión es nuestro sistema desde la terminal ejecutamos el comando winver.
+
+Para activarlas vamos a `Configuración -> Aplicaciones y características -> Características opcionales -> Agregar una característica`:
+
+![Activar RSAT](media/rsatActivar.png)
+
+Marcaremos las que necesitemos, al menos:
+- **RSAT: Administrador del servidor**: proporciona la herramienta de _Administrador del servidor_
+- **RSAT: Herramientas de Active Directory Domain Services y Ligthweigth Directory Services**: proporciona muchas de las herramientas del dominio como _Usuarios y Equipos de Active Directory_
+- **RSAT: Herramientas de Administración de directivas de grupo**: para crear y gestionar las directivas
+
+Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (desde `Administrar -> Agregar servidores`). Allí pinchamos en _'Buscar ahora'_, no es necesario escribir su nombre ni su dirección:
+
+![Agregar servidor](media/rsatServidor.png)
+
+En el menú _'Herramientas'_ ya tenemos las herramientas para gestionar nuestro dominio.
+
+En Windows 7 y 8 y versiones de Windows 10 anteriores a la 1809 debemos descargar las _RSAT_ desde la página de Microsoft (hay que escoger la versión apropiada para nuestro sistema) e instalarlas. Necesitamos realizar la instalación desde una cuenta con permisos para instalar software pero para usarlo necesitaremos una cuenta con permisos para administrar el dominio (o sea, debemos usarlo desde una cuenta de usuario que sea _Administrador del dominio_).
+
+Se instala como una actualización del sistema (por lo que si hemos deshabilitado el servicio de _Windows Update_ deberemos volver a habilitarlo). Para Windows 10 existen diferentes paquetes en función de nuestra versión por lo que se recomienda consultar la [página de Microsoft](https://support.microsoft.com/es-es/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems)
+
+A partir de Windows 8 al terminar la instalación ya podemos usar las herramientas RSAT. En Windows 7 debíamos previamente activar las características que deseamos utilizar (aparecen como el resto de características del sistema operativo).

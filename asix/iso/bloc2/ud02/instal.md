@@ -9,7 +9,6 @@
     - [Actualizar el servidor](#actualizar-el-servidor)
     - [Administrar el servidor desde la terminal](#administrar-el-servidor-desde-la-terminal)
     - [sconfig](#sconfig)
-    - [Roles y características](#roles-y-características)
     - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
 
@@ -112,23 +111,10 @@ Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –I
 
 Podemos encontrar muchos comandos de configuración en la página de [Administración de un servidor Server Core](https://docs.microsoft.com/es-es/windows-server/administration/server-core/server-core-administer) de Microsoft.
 
-Una vez configurado el servidor podemos gestionarlo con la herramienta de Microsoft **RSAT** (_Remote Server Administration Tools_) que puede instalarse en cualquier cliente Windows con entorno gráfico y que nos permitirá gestionar desde él el servidor gráficamente.
-
 ### sconfig
 Esta herramienta de texto **sconfig** nos permite configurar de forma sencilla la mayoría de opciones desde la terminal, lo que no será muy útil en una instalación _Server Core_. Si lo ejecutamos nos aparece su menú:
 
 ![sconfig](media/sconfig.png)
-
-### Roles y características
-Los roles son los diferentes servicios que podemos instalar en el servidor.
-
-Las características son componentes que permiten añadir funcionalidades al servidor, como copias de seguridad, cifrado de discos, equilibrio de carga de red, etc.
-
-Tras la instalación ya tenemos Windows Server correctamente instalado en nuestra máquina pero aún no se comporta como un servidor. Ahora falta instalar los servicios necesarios para convertir a este equipo en el servidor del nuestra red.
-
-El más importante es el **servicio de dominio de Active Directory**, que veremos en el siguiente apartado. Antes vamos a ver cómo se instalaría cualquier servicio (llamados "roles" por Microsoft) y en concreto instalaremos y configuraremos el servicio de enrutamiento para que los clientes de nuestra red interna tengan salida al exterior (y a Internet) a través de este servidor.
-
-Pero antes de eso vamos a aprender a administrar los discos de que dispongamos que es una cuestión importante en un servidor ya que posiblemente en ellos se alojen los datos de la empresa.
 
 ### Versión de evaluación
 La versión que hemos instalado es la versión  de evaluación y sólo podemos utilizarla durante un tiempo determinado antes de adquirir una licencia. Podemos ver el tiempo que nos queda con el comando:

@@ -1,11 +1,19 @@
 # Samba
-- [Introducción](#introducci%C3%B3n)
-- [Instalación y configuración del servidor](#instalaci%C3%B3n-y-configuraci%C3%B3n-del-servidor)
-  - [Creación del dominio](#creaci%C3%B3n-del-dominio)
-  - [Configuración adicional en sistemas con systemd-resolved](#configuraci%C3%B3n-adicional-en-sistemas-con-systemd-resolved)
-  - [Crear el dominio en un servidor DNS](#crear-el-dominio-en-un-servidor-dns)
-- [Samba4 en CentOS](#samba4-en-centos)
-- [Gestió del domini: samba-tools](./samba-tools.md)
+- [Samba](#samba)
+  - [Introducción](#introducción)
+  - [Instalación y configuración del servidor](#instalación-y-configuración-del-servidor)
+    - [Creación del dominio](#creación-del-dominio)
+    - [Configuración adicional en sistemas con systemd-resolved](#configuración-adicional-en-sistemas-con-systemd-resolved)
+    - [Activación del _Active DIrectory_](#activación-del-active-directory)
+      - [Configurar ufw](#configurar-ufw)
+    - [Crear el dominio en un servidor DNS](#crear-el-dominio-en-un-servidor-dns)
+  - [Samba4 en CentOS](#samba4-en-centos)
+    - [1.- Añadimos nuestro servidor a hosts.](#1--añadimos-nuestro-servidor-a-hosts)
+    - [2.- Descargamos las herramientas necesarias.](#2--descargamos-las-herramientas-necesarias)
+    - [3.- Descargamos samba](#3--descargamos-samba)
+    - [4.- Compilamos samba](#4--compilamos-samba)
+    - [5.- Creamos el dominio](#5--creamos-el-dominio)
+    - [6.- Configuraciones finales](#6--configuraciones-finales)
 
 
 ## Introducción
@@ -28,7 +36,7 @@ El paquete a instalar en el servidor es el paquete **samba** (si el servidor es 
 
 Para añadir los clientes al dominio también necesitaremos tener instalado el paquete **winbind**.
 
-Podemos saber qué versión de samba tenemos instalada con:
+Para saber saber qué versión de samba tenemos instalada ejecutamos:
 ```bash
   samba -V
 ```
@@ -42,26 +50,28 @@ Además Samba4 incluye el servicio **samba-ad-dc** (_Samba Active Directory Doma
 La configuración del servicio se hace en el fichero **/etc/samba/smb.conf**. 
 
 ### Creación del dominio
-El primer paso es hacer la provisión de nuestro dominio con el comando **samba-tool**. Para que funcione correctamene tenemos que eliminar previamente el fichero del configuración de Samba (o mejor, cambiarle el nombre). Para crear el doinio ejecutamos el comando samba-tool:
+El primer paso es hacer la provisión de nuestro dominio con el comando **samba-tool**. Para que funcione correctamente tenemos que eliminar previamente el fichero del configuración de Samba (o mejor, cambiarle el nombre). Para crear el dominio ejecutamos el comando:
 ```bash
   samba-tool domain provision --use-rfc2307 --interactive
 ```
 
-La opción use-rfc2307 permite a Samba guardar atributos POSIX de los usuarios y crear la información NIS para gestionarlos en GNU/Linux. Lo que nos preguntará este comando es:
+La opción `use-rfc2307` permite a Samba guardar atributos POSIX de los usuarios y crear la información NIS para gestionarlos en GNU/Linux y será útil si vamos a tener equipos GNU/Linux en el dominio. 
+
+Lo que nos preguntará este comando es:
 
 ![Samba crear dominio](./img/sambaDomainCreate.png)
 
 - el nombre del dominio para Kerberos (**REALM**): pondremos el nombre de nuestro dominio, por ejemplo _cipfpbatoi.lan_
-- el nombre del dominio (su nombre NetBIOS): ya lo pone por defecto (en nuestro caso _cipfpbatoi_)
+- el nombre del dominio (su nombre **NetBIOS**): ya lo pone por defecto (en nuestro caso _cipfpbatoi_)
 - qué tipo de servidor será: 
-  - controlador del dominio (DC)
+  - controlador del dominio (**DC**)
   - miembro del dominio (ya debe haber algún controlador)
   - servidor único (sin dominio o como un equipo más del dominio existente, por ejemplo sólo servidor de ficheros)
-- el DNS que utilizaremos: por defecto pone **SAMBA-INTERNAL** que es uno básico que integra Samba y así no necesitamos instalar y configurar DNS. Como sucede en Windows, se instalará un DNS básico que sólo sabe resolver el nombre del dominio y el del servidor, y cualquier otra petición la enviará al _reenviador DNS_
-- el reenviador del DNS: un DNS a quien el servidor le reenviará todas las peticiones que no sepa resolver (sólo sabe resolver el nombre del dominio y del servidor). Por defecto aparece el DNS actualmente configurado en el equipo
+- el DNS que utilizaremos: por defecto pone **SAMBA-INTERNAL** que es uno básico que integra Samba y así no necesitamos instalar y configurar un servicio DNS. Como sucede en Windows, se instalará un DNS básico que sólo sabe resolver el nombre del dominio y el del servidor, y cualquier otra petición la enviará al _reenviador DNS_. También tenemos opciones para funcionar junto a un DNS _Bind9_ u otros.
+- el **reenviador** del DNS: si hemos escogido _SAMBA\_INTERNAL_ necesitamos un DNS a quien el servidor le reenviará todas las peticiones que no sepa resolver (sólo sabe resolver el nombre del dominio y del servidor). Por defecto aparece el DNS actualmente configurado en el equipo
 - la contraseña del administrador del dominio: debe tener al menos 7 caracteres y cumplir los requisitos de complejidad
 
-También se puede ejecutar el comando poniéndole todas las opciones en vez de poner –interactive para que nos las pida:
+También se puede ejecutar el comando poniéndole todas las opciones en vez de poner `--interactive`:
 ```bash
 samba-tool domain provision --realm cipfpbatoi.lan --domain CIPFPBATOI --adminpass P@ssw0rd --server-role=dc --use-rfc2307
 ```
@@ -71,11 +81,11 @@ Si todo funciona correctamente se creará el nuevo dominio:
 
 ![Dominio creado](./img/sambaDomainCreated.png)
 
-Ahora tenemos que cambiar la configuración de la red para poner como **dns-nameservers** nuestro servidor y añadir en **dns-search** nuestro dominio. En _ifupdown_ haremos:
+Ahora tenemos que cambiar la configuración de la red para poner como **dns-nameservers** nuestro servidor y añadir en **dns-search** nuestro dominio. Si nuestro servidor usa _ifupdown_ haremos:
 
 ![Configurar la red](./img/sambaDNSifupdown.png)
 
-Y en netplan:
+Y si usa netplan:
 
 ![Configurar la red netplan](./img/sambaDNSnetplan.png)
 
@@ -85,23 +95,35 @@ Ya tenemos el dominio configurado y podemos añadir nuestros clientes Windows ex
 
 Sin embargo para que Windows se comunique con el servidor y pueda crearse la cuenta del equipo en el dominio debemos haber instalado en el servidor el paquete _winbind_ (y reiniciar el servidor). Si no lo tenemos al añadir el cliente al dominio se nos pide las credenciales de quien nos puede añadir al dominio (y se validan correctamente en el servidor) pero luego aparece un error diciendo que el recurso ya no está disponible.
 
+Si añadimos al fichero de configuración de Samba (`/etc/samba/smb.conf`) en la sección [global] la línea
+```bash
+allow dns updates = nonsecure and secure
+```
+
+permitirá a los clientes registrarse en el DNS cuando se añaden al dominio.
+
+Siempre que modifiquemos el fichero de configuración de samba tenemos que recargar los datos con el comando:
+```bash
+smbcontrol all reload-config
+```
+
 Para añadir clientes GNU/Linux se hace igual que para añadirlos al Active Directory creado con un _Windows Server_.
 
 Es importante que la hora sea la correcta tanto en el servidor como en el cliente para que Kerberos funcione adecuadamente. Para asegurarnos de ello podemos instalar el servicio NTP (el paquete se llama _ntp_) que coge la hora de Internet. Una vez instalado toma la hora por defecto de los servidores de hora de Ubuntu pero podemos indicarle otros servidores de hora.
 
 ### Configuración adicional en sistemas con systemd-resolved
-Algunas distribuciones como Ubuntu 17.10 y posteriores utilizan un servicio denominado **systemd-resolved** para resolver los nombres de dominio (tiene una caché que optimiza la resolución de nombres). En ellas cuando miramos su DNS nos dice que és la 127.0.0.1:53 (es el puerto que usa este servicio).
+Las distribuciones Ubuntu 17.10 y posteriores utilizan un servicio denominado **systemd-resolved** para resolver los nombres de dominio que utiliza una caché que optimiza la resolución de nombres. En ellas cuando miramos su DNS nos dice que és la 127.0.0.1:53 (es el puerto que usa este servicio).
 
 Esto que es muy útil en una máquina cliente, causa problemas en el servidor porque interfiere con el DNS interno de Samba por lo que vamos a desactivarlo después de configurar el dominio.
 
 Los pasos a realizar son los siguientes:
-1. Paramos y deshabilitamos (para que no se iniciem de nuevo al arrancar el servidor) los servicios de samba (_smbd_ y _nmbd_), _winbind_ y _systemd-resolved_:
+1. Paramos y deshabilitamos (para que no se inicie de nuevo al arrancar el servidor) el servicio _systemd-resolved_:
 ```bash
-systemctl stop smbd nmbd winbind systemd-resolved
-systemctl disable smbd nmbd winbind systemd-resolved
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
 ```
 
-2. Eliminamos **resolv.conf** (que ahora no es un fichero sino un enlace al de systemd-resolved) y lo creamos nuevo. En él escribimos el DNS 127.0.0.1 (para que resuelva el DNS de Samba) y el nombre del dominio (para que resuelve el nombre de nuestro servidor aunque no pongamos su nombre completo, con dominio):
+2. Eliminamos **resolv.conf** (que ahora no es un fichero sino un enlace al fichero de _systemd-resolved_) y lo creamos nuevo. En él escribimos el DNS 127.0.0.1 (para que resuelva el DNS de Samba) y el nombre del dominio (para que resuelve el nombre de nuestro servidor aunque no pongamos su nombre completo, con dominio):
 ```bash
 rm /etc/resolv.conf
 nano /etc/resolv.conf
@@ -113,14 +135,24 @@ search cipfpbatoi.lan
 nameserver 127.0.0.1
 ```
 
-3. Arrancamos y habilitamos el servicio de controlador de dominio de Samba:
+### Activación del _Active DIrectory_
+Al instalar Samba se configuran los servicios que hemos visto para compartir carpetas en la red con el protocolo CIFS/SMB pero no el servicio que gestiona el _Active Directory_. Para activarlo haremos:
+1. Paramos y deshabilitamos (para que no se iniciem de nuevo al arrancar el servidor) los servicios de samba (_smbd_, _nmbd_ y _winbind_):
+```bash
+systemctl stop smbd nmbd winbind
+systemctl disable smbd nmbd winbind
+```
+
+1. Activamos y habilitamos el servicio de controlador de dominio de Samba:
 ```bash
 systemctl unmask samba-ad-dc
-systemctl start samba-ad-dc
 systemctl enable samba-ad-dc
 ```
 
-Tras reiniciar el servidor comprobaremos que el servicio **samba-ad-dc** funciona correctamente.
+Tras **reiniciar el servidor** comprobaremos que el servicio _**samba-ad-dc**_ funciona correctamente con:
+```bash
+systemctl status samba-ad-dc
+```
 
 #### Configurar ufw
 Si tenemos activado el Firewall debemos abrir los puertos que utiliza el dominio de Samba para que el cliente pueda acceder al mismo (de hecho no funciona ni el comando _nslookup_ porque el puerto 53 está bloqueado como el resto).
@@ -176,7 +208,7 @@ Global Catalog SSL ** | 3269 | tcp
 Como son muchos podemos crear un script donde los anotamos y así sólo tenemos que ejecutar el script o modificarlo cuando lo necesitemos.
 
 ### Crear el dominio en un servidor DNS
-Si queremos que nuestro servidor además de hacer de Contrlador del Dominio sea también un servidor DNS con bind tenemos que instalar el paquete **bind9** y configurarlo.
+Si queremos que nuestro servidor además de hacer de Controlador del Dominio sea también un servidor DNS con _bind_ tenemos que instalar el paquete **bind9** y configurarlo.
 
 Cuando creamos el dominio (con samba-tool domain provision) a la hora de escoger el DNS pondremos _BIND_DLZ_ (en mayúsculas) en lugar de SAMBA_INTERNAL.
 
@@ -198,11 +230,11 @@ Añadimos al final (pero dentro de las llaves) la línea:
 tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
 ```
 
-Eso permitira a Samba añadir registros al DNS cuando se añadan clientes al dominio.
+Eso permitirá a Samba añadir registros al DNS cuando se añadan clientes al dominio.
 
 - Fichero **/etc/bind/named.conf.local**
 
-Si en este fichero tenemos ya una definición de zona de nuestro dominio (por ejemplo si estaba configurado antes con SAMBA_INTERNAL) tenemos que quitarla porque la añadira Samba automàticamente.
+Si en este fichero tenemos ya una definición de zona de nuestro dominio (por ejemplo si estaba configurado antes con SAMBA_INTERNAL) tenemos que quitarla porque la añadirá Samba automáticamente.
 
 Finalmente reiniciamos el servicio BIND:
 ```bash
@@ -216,17 +248,18 @@ allow dns updates = nonsecure and secure
 
 para permitir que se registren en el DNS los clientes al ser añadidos al dominio.
 
-Ya deberia funcionar el DNS y podemos continuar con la configuración del dominio como se ha explicado en el capítulo anterior.
+Ya debería funcionar el DNS y podemos continuar con la configuración del dominio como se ha explicado en el capítulo anterior.
 
 Fuentes:
 - [Configuració do servidor Samba4 com a controlador de domini](https://manuais.iessanclemente.net/index.php/Configuración_do_servidor_Samba4_como_controlador_de_dominio)
 - [BIND9 DLZ DNS Back End](https://wiki.samba.org/index.php/BIND9_DLZ_DNS_Back_End)
+- [Guía para la implementación de servicios integrados a Samba4 como Active Directory Domain Controller (AD DC) en Debian 9/10 – Parte 3](https://www.sysadminsdecuba.com/2019/08/guia-para-la-implementacion-de-servicios-integrados-a-samba4-como-active-directory-domain-controller-ad-dc-en-debian-9-10-parte-3/)
 - [Samba4 AD DC on Ubuntu 14.04](https://blogging.dragon.org.uk/samba4-ad-dc-on-ubuntu-14-04/)
 
 ## Samba4 en CentOS
 Red Hat no proporciona el servicio de Samba4 que permite implementar un _Active Directory_ y en vez de Samba4 apuesta por [FreeIPA](https://en.wikipedia.org/wiki/FreeIPA) para la administración de identidades.
 
-Si queremos instalar Samba 4 tenemos que descargarnos el código fuente de samba y compilarlo nosotros en nuestro servidor.  Los pasos a hacer son los siguientes:
+Si queremos instalar Samba4 tenemos que descargarnos el código fuente de samba y compilarlo nosotros en nuestro servidor.  Los pasos a hacer son los siguientes:
 
 ### 1.- Añadimos nuestro servidor a hosts. 
 Editamos **/etc/hosts** y añadimos una línea con nuestra IP y el nombre del el nuestro servidor, con y sin dominio, por ejemplo:
