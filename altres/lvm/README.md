@@ -32,8 +32,11 @@ Como hemos dicho antes un LVM se compone de tres partes:
 
 Hay muchas herramientas gráficas para gestionar LVM como system-config-lvm pero nosotros utilizaremos la consola de comandos o el propio Webmin que ya tenemos instalado.
 
-Ejemplo de uso desde la consola
--------------------------------
+Ejemplo
+-------
+
+![lvm](lvm.png)
+
 En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si todavía no lo tenemos instalado.
 
 A continuación crearemos y configuraremos nuestros volúmenes. Primeramente crearemos los volúmenes físicos de las particiones en que vamos a utilizar LVM. Por ejemplo para utilizar la partición sda3 haremos:
@@ -46,20 +49,20 @@ Esto lo tenemos que repetir para cada partición a utilizar (por ejemplo sda4 y 
 
 Ahora creamos el grupo de volúmenes que contendrá nuestros volúmenes lógicos finales:
 
-    vgcreate volgroup\_01 /dev/sda3 /dev/sda4 /dev/sda5
+    vgcreate volgroup_01 /dev/sda3 /dev/sda4 /dev/sda5
 
 Con el comando vgscan podemos ver los grupos creados y con pvscan los volúmenes físicos.
 
 Por último sólo queda crear los volúmenes lógicos que utilizaremos. Por ejemplo crearemos un llamado volumen\_01 de 2 GB:
 
-    lvcreate -L2G -n volumen\_01 volgroup\_01
+    lvcreate -L2G -n volumen_01 volgroup_01
 
 Con lvscan podemos ver los volúmenes lógicos creados.
 
 Ahora ya podemos darle formato y montarlo como cualquier otra partición:
 
-    mkfs.ext4 /dev/volgroup\_01/volumen\_01
-    mount /dev/volgroup\_01/volumen\_01 /datos
+    mkfs.ext4 /dev/volgroup_01/volumen_01
+    mount /dev/volgroup_01/volumen_01 /datos
 
 ### Como añadir una nueva partición al volumen
 
@@ -69,14 +72,14 @@ En primer lugar creamos un nuevo volumen físico en la partición:
 
 A continuación lo añadimos a nuestro grupo:
 
-    vgextend volgroup\_01 /dev/sdb1
+    vgextend volgroup_01 /dev/sdb1
 
-Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmenes lógicos. Por ejemplo vamos a darle otros 3 GB al volumen\_01:
+Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmenes lógicos. Por ejemplo vamos a darle otros 3 GB al volumen_01:
 
-    lvextend -L +3G /dev/volgroup\_01/volumen\_01
+    lvextend -L +3G /dev/volgroup_01/volumen\_01
 
 Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir en cuenta porque esta operación es peligrosa y podríamos perder los datos:
 
-    resize2fs /dev/volgroup\_01/volumen\_01 5G
+    resize2fs /dev/volgroup_01/volumen_01 5G
 
 Ya tendríamos 5 GB en nuestro volumen en cuenta de las 2 iniciales.
