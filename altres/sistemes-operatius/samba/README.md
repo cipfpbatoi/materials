@@ -143,10 +143,9 @@ systemctl stop smbd nmbd winbind
 systemctl disable smbd nmbd winbind
 ```
 
-1. Activamos, arrancamos y habilitamos el servicio de controlador de dominio de Samba:
+1. Activamos y habilitamos el servicio de controlador de dominio de Samba:
 ```bash
 systemctl unmask samba-ad-dc
-systemctl start samba-ad-dc
 systemctl enable samba-ad-dc
 ```
 
