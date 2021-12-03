@@ -63,12 +63,21 @@ Si tenemos más de una red interna las otras tarjetas internas se enrutan desde 
 Una vez configurada la red comprobaremos su correcto funcionamiento, con las órdenes `ping` y `tracert`. Ahora ya se debe poder navegar por Internet desde un cliente. El comando que nos muestra la configuración actual de la red es `ipconfig / all`.
 
 ### Realizar el enrutamiento desde la terminal
-Debemos instalar el rol de enrutamiento (**_Routing_**) y configurarlo (podemos hacerlo con el comando `netsh`). Por ejemplo, suponemos que el equipo tiene 2 adaptadores de red llamados _WAN_ (el que sale a internet) y _LAN_ (elque va a la red interna que queremos enrutar). Los comandos a ejecutar serían:
+Para hacer _NAT_ entre nuestra red interna y la externa podemos crear una regla con `New-NetNat` sin necesidad de instalar el servicio de enrutamiento. 
+
+Por ejemplo, si queremos hacer _nat_ sobre los paquetes que nos llegan de la red interna 192.168.100.0 escribiremos:
+```powershell
+New-NetNat -Name "Enruta red 100" -InternalIPInterfaceAddressPrefix 192.168.100.0/24
+```
+
+Podemos añadir más de una regla para enrutar diferentes redes internas. Para ver las regals que tenemos creadas ejecutamos `Get-NetNat`.
+
+Para hacerlo mediante comandos `netsh` debemos instalar el rol de enrutamiento (**_Routing_**) y configurarlo. Por ejemplo, suponemos que el equipo tiene 2 adaptadores de red llamados _WAN_ (el que sale a internet) y _LAN_ (el que va a la red interna que queremos enrutar). Los comandos a ejecutar serían:
 ```powershell
 Install-WindowsFeature Routing -IncludeManagementTools
 # Install-RemoteAccess -VpnType Vpn
 
-# netsh routing ip nat install
+netsh routing ip nat install
 netsh routing ip nat add interface WAN
 netsh routing ip nat set interface WAN mode=full
 netsh routing ip nat add interface LAN
