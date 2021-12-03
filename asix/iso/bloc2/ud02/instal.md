@@ -8,6 +8,7 @@
     - [Configurar la red](#configurar-la-red)
     - [Actualizar el servidor](#actualizar-el-servidor)
     - [Administrar el servidor desde la terminal](#administrar-el-servidor-desde-la-terminal)
+      - [El Firewall](#el-firewall)
     - [sconfig](#sconfig)
     - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
@@ -109,7 +110,41 @@ Get-NetAdapter –name $redInterna | Remove-NetIPAddress -Confirm:$false
 Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24
 ```
 
+Para ver el nombre de cada interfaz de red usamos el comando `Get-NetIPInterface`.
+
 Podemos encontrar muchos comandos de configuración en la página de [Administración de un servidor Server Core](https://docs.microsoft.com/es-es/windows-server/administration/server-core/server-core-administer) de Microsoft.
+
+#### El Firewall
+El Firewall de Windows Server al instalarlo sin entorno gráfico por defecto corta el tráfico ICMP (los _ping_) al servidor desde cualquier equipo que no pertenezca al dominio. Podemos desactivar temporalmente el firewall con el comando
+```powershell
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled false
+```
+
+y volverlo a habilitar poniéndolo de nuevo a _true_. En este ejemplo lo hemos desactivado para los 3 perfiles existentes (_Dominio_, _Público_ y _Privado_).
+
+En cualquier caso lo que debemos hacer es añadir una regla al firewall. Con `netsh` sería:
+```powershell
+netsh advfirewall firewall add rule name="Habilitar respuesta ICMP IPv4" protocol=icmpv4:8,any dir=in action=allow
+```
+
+Podemos eliminarla con:
+```powershell
+netsh advfirewall firewall add rule name="Deshabilitar respuesta ICMP IPv4" protocol=icmpv4:8,any dir=in action=block
+```
+
+Podéis ver diferentes ejemplos de reglas para permitir programas, abrir puertos, etc. 
+y mostrar todas las reglas con `Get-NetFirewallRule`. Ejemplo para mostrar todas las reglas de entrada activas, mostrando además el protocolo, puerto, etc en formato tabla para verlas mejor:
+```powershell
+Get-NetFirewallRule -Action Allow -Enabled True -Direction Inbound |
+Format-Table -Property Name,
+@{Name="Protocol";Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}},
+@{Name="LocalPort";Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}},
+@{Name="RemotePort";Expression={($PSItem | Get-NetFirewallPortFilter).RemotePort}},
+@{Name="RemoteAddress";Expression={($PSItem | Get-NetFirewallAddressFilter).RemoteAddress}},
+Enabled, Profile, Direction, Action
+```
+
+Podemos obtener más información de cómo configurar el _Firewall_ usando Powershell en páginas como [Reparar.info](https://reparar.info/configuracion-de-reglas-de-firewall-de-windows-con-powershell/) o usando `netsh advfirewall` en páginas como [esta](https://docs.microsoft.com/es-es/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior) de Microsoft con ejemplos para habilitar programas o abrir puertos.
 
 ### sconfig
 Esta herramienta de texto **sconfig** nos permite configurar de forma sencilla la mayoría de opciones desde la terminal, lo que no será muy útil en una instalación _Server Core_. Si lo ejecutamos nos aparece su menú:
