@@ -15,7 +15,7 @@
   - [Comandos para trabajar con el contenido de un fichero](#comandos-para-trabajar-con-el-contenido-de-un-fichero)
   - [Comandos para gestionar la red](#comandos-para-gestionar-la-red)
   - [Comandos para gestionar discos](#comandos-para-gestionar-discos)
-  - [Comandos para gestionar procesos](#comandos-para-gestionar-procesos)
+  - [Comandos para gestionar procesos y servicios](#comandos-para-gestionar-procesos-y-servicios)
   - [Comandos para gestionar usuarios](#comandos-para-gestionar-usuarios)
   - [Comandos para gestionar grupos](#comandos-para-gestionar-grupos)
 
@@ -236,7 +236,7 @@ Ejemplos:
 - **`Remove-Particion -DriveLetter E`**: Elimina la partición E:
 
 
-## [Comandos para gestionar procesos](https://docs.microsoft.com/es-es/powershell/scripting/samples/managing-processes-with-process-cmdlets?view=powershell-7.1)
+## [Comandos para gestionar procesos y servicios](https://docs.microsoft.com/es-es/powershell/scripting/samples/managing-processes-with-process-cmdlets?view=powershell-7.1)
 Para ver los procesos del sistema usamos el _cmdlet_ **`Get-Process`**. Ejemplos:
 - **`Get-Process`**: Muestra todos los procesos
 - **`Get-Process -Id 2398`**: Muestra el proceso 2398
@@ -255,7 +255,7 @@ También podemos gestionar los servicios de Windows con los comandos:
 - **`Get-Service`**: Muestra todos los servicios. Si mostramos un servicio con el parámetro `-RequiredServices` se muestran los servicios necesarios para que ese servicio funcione. Con el parámetro `-DependentServices` se muestran los servicios que necesitan de ese servicio para funcionar
 - **`Stop-Service -Id 2398`**: Para el proceso 2398
 - **`Start-Service -Name wua*`**: Muestra todos los procesos cuyo nombre comience por firefox
-- **`Set-Service`**
+- **`Set-Service`**: Modifica cualquier cosa del servicio
 
 Ejemplos:
 - `Get-Service`**: Muestra todos los servicios
@@ -264,7 +264,7 @@ Ejemplos:
 - `Stop-Service -Id 2398`: Para el servicio 2398
 - `Stop-Service -Name wuauserv`: Para el servicio wauserv
 - `Start-Service -Name wuauserv`: Arranca el servicio wuauserv
-- `Set-Service wuauserv -StartupType disabled`: Deshabilita el servicio wuauserv (no se podrá arrancar hasta que se configure como manual)
+- `Set-Service wuauserv -StartupType Disabled`: Deshabilita el servicio wuauserv (no se podrá arrancar hasta que se configure como _Manual_ o _Automatic_)
 
 ## Comandos para gestionar usuarios
 Para trabajar con los usuarios tenemos los comandos:

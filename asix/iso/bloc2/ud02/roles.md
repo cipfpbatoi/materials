@@ -3,6 +3,7 @@
   - [Introducción](#introducción)
     - [Powershell](#powershell)
   - [Servicio de enrutamiento](#servicio-de-enrutamiento)
+    - [Realizar el enrutamiento desde la terminal](#realizar-el-enrutamiento-desde-la-terminal)
   - [Instalación del dominio](#instalación-del-dominio)
     - [Instalar el dominio desde la terminal](#instalar-el-dominio-desde-la-terminal)
     - [Degradar un controlador de dominio](#degradar-un-controlador-de-dominio)
@@ -61,6 +62,27 @@ Si tenemos más de una red interna las otras tarjetas internas se enrutan desde 
 
 Una vez configurada la red comprobaremos su correcto funcionamiento, con las órdenes `ping` y `tracert`. Ahora ya se debe poder navegar por Internet desde un cliente. El comando que nos muestra la configuración actual de la red es `ipconfig / all`.
 
+### Realizar el enrutamiento desde la terminal
+Para hacer _NAT_ entre nuestra red interna y la externa podemos crear una regla con `New-NetNat` sin necesidad de instalar el servicio de enrutamiento. 
+
+Por ejemplo, si queremos hacer _nat_ sobre los paquetes que nos llegan de la red interna 192.168.100.0 escribiremos:
+```powershell
+New-NetNat -Name "Enruta red 100" -InternalIPInterfaceAddressPrefix 192.168.100.0/24
+```
+
+Podemos añadir más de una regla para enrutar diferentes redes internas. Para ver las regals que tenemos creadas ejecutamos `Get-NetNat`.
+
+Para hacerlo mediante comandos `netsh` debemos instalar el rol de enrutamiento (**_Routing_**) y configurarlo. Por ejemplo, suponemos que el equipo tiene 2 adaptadores de red llamados _WAN_ (el que sale a internet) y _LAN_ (el que va a la red interna que queremos enrutar). Los comandos a ejecutar serían:
+```powershell
+Install-WindowsFeature Routing -IncludeManagementTools
+# Install-RemoteAccess -VpnType Vpn
+
+netsh routing ip nat install
+netsh routing ip nat add interface WAN
+netsh routing ip nat set interface WAN mode=full
+netsh routing ip nat add interface LAN
+```
+
 ## Instalación del dominio
 Para que nuestro servidor sea un controlador de dominio (DC, Domain Controller) debemos instalar el rol de **Servicio de dominio de Active Directory**.
 
@@ -91,9 +113,6 @@ Install-ADDSForest `
     -DomainMode WinThreshold `
     -ForestMode WinThreshold `
     -InstallDNS -Confirm:$false `
-    -DomainMode WinThreshold `
-    -ForestMode WinThreshold `
-    -InstallDNS -Confirm:$false
 ```
 
 ### Degradar un controlador de dominio
@@ -126,6 +145,8 @@ Marcaremos las que necesitemos, al menos:
 - **RSAT: Administrador del servidor**: proporciona la herramienta de _Administrador del servidor_
 - **RSAT: Herramientas de Active Directory Domain Services y Ligthweigth Directory Services**: proporciona muchas de las herramientas del dominio como _Usuarios y Equipos de Active Directory_
 - **RSAT: Herramientas de Administración de directivas de grupo**: para crear y gestionar las directivas
+
+**NOTA**: para poder instalar estas características el equipo debe tener acceso a Internet y activo el servicio _Windows Update_
 
 Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (desde `Administrar -> Agregar servidores`). Allí pinchamos en _'Buscar ahora'_, no es necesario escribir su nombre ni su dirección:
 
