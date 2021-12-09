@@ -264,7 +264,7 @@ Puedes encontrar la información actualizada de cómo configurar la red en:
 
 - [https://cipfpbatoi.github.io/materials/altres/xarxa-linux/](https://cipfpbatoi.github.io/materials/altres/xarxa-linux/)
 - [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
-- [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)
+- [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
 
 Repositorios
 ============
@@ -447,7 +447,7 @@ Para programar tareas tenemos los comandos crontab y at.
 
 El comando at permite ejecutar una orden en un determinado momento:
 
-    at cuando\_queremos\_que\_se ejecute
+    at cuando_queremos_que_se_ejecute
 
 A continuación (dentro de la terminal de at) escribimos los comandos a ejecutar como si estuvimos haciendo un script. Para acabar pulsamos Ctrl+D y volvemos a la consola.
 
@@ -489,7 +489,7 @@ Cada usuario tiene su propio fichero y las tareas programadas en él se ejecutan
 
 El usuario root ejecuta a las 00:01 de cada viernes el comando tar para hacer una copia de seguridad de todo el contenido de la carpeta /home con prioridad 19 (es decir con la menor posible)
 
-NOTA: tened en cuenta que las tareas no se ejecutan en una terminal “normal” por lo cual no mostrarán nada por pantalla. SI queremos ver algo tenemos que redireccionar la salida de los comandos a un fichero y posteriormente ver su contenido.
+NOTA: tened en cuenta que las tareas no se ejecutan en una terminal “normal” por lo cual no mostrarán nada por pantalla. Si queremos ver algo tenemos que redireccionar la salida de los comandos a un fichero y posteriormente ver su contenido.
 
 Acceso remoto
 =============
