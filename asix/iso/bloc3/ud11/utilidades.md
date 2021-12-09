@@ -1,7 +1,8 @@
 Herramientas básicas
 =====================
 
-![logo](./bloc3/ud11/imgs/tar-gz-bz2.png)
+![logo](./imgs/tar-gz-bz2.png)
+
 
 **tar­ gzip ­bzip2 ­rsync**
 
