@@ -27,7 +27,7 @@
   - [Gestionar objetos desde la línea de comandos](#gestionar-objetos-desde-la-línea-de-comandos)
 
 ## Introducción
-El Directorio Activo, tal como hemos visto, es en realidad una base de datos jerárquica de objetos, que representan las entidades que pueden administrarse en una red de ordenadores, en nuestro caso en un dominio de Windows Server. Esta base de datos centralizada de objetos de administración es consultada por todos los ordenadores miembros del dominio y modificada por todos los controladores del dominio.
+_Active Directory_, tal como hemos visto, es en realidad una base de datos jerárquica de objetos, que representan las entidades que pueden administrarse en una red de ordenadores, en nuestro caso en un dominio de Windows Server. Esta base de datos centralizada de objetos de administración puede ser consultada por todos los ordenadores miembros del dominio y modificada por todos los controladores del dominio.
 
 La gestión de un dominio supone crear y configurar adecuadamente los objetos del directorio que representan a las entidades o recursos que existen en la red (usuarios, grupos, equipos, etc.) y las relaciones entre ellos (qué miembros tiene cada grupo, qué grupos tienen acceso a cada recurso, etc).
 
@@ -35,22 +35,24 @@ La gestión de un dominio supone crear y configurar adecuadamente los objetos de
 La forma en que se organizan los objetos del directorio es:
 - **Dominio**: es la estructura fundamental que engloba todos los demás objetos de la red
 - **Sitio**: es una ubicación geográfica. Cada dominio puede tener un único sitio o varios (por ejemplo uno para cada delegación o sede de nuestra empresa)
-- **Unidad organizativa (OU)**: es un elementos que creamos para agrupar lógicamente diversos objetos (por ejemplo podemos hacer una OU por cada departamento de la empresa donde incluir los usuarios, equipos, impresoras, ... de ese departamento). Son como las carpetas que nos permiten agrupar los archivos de un disco
-- **Grupo**: es también una agrupación de objetos pero del mismo tipo. Lo más habitual es hacer grupos de usuarios para luego asignar los permisos a los grupos en vez de a usuarios individuales
+- **Unidad organizativa (OU)**: es un elemento que creamos para agrupar lógicamente diversos objetos (por ejemplo podemos hacer una OU por cada departamento de la empresa donde incluir los usuarios, equipos, impresoras, ... de ese departamento). Son como las carpetas que nos permiten agrupar los archivos de un disco
+- **Grupo**: es también una agrupación de objetos pero del mismo tipo. Lo más habitual es hacer grupos de usuarios para luego asignar los permisos a los grupos en vez de a usuarios individuales, pero también podemos hacer grupos de equipos
 - **Objeto**: cada objeto representa un elemento de la red (equipo, usuario, carpeta compartida, impresora, ...)
 
 ### Nombres de los objetos de AD
-Cualquier objeto en el AD (un usuario, un equipo, un grupo o una unidad organizativa) se identifica por su nombre. El nombre de un objeto se puede indicar de 3 formas distintas. Por ejemplo si creamos una cuenta de usuario llamado jsegura dentro de la OU asix que está dentro de la OU informática dentro del dominio acme.lan podemos denominarla de 3 formas:
-- _RDN (Relative Distinguished Name)_: es el nombre del objeto precedido de su tipo (CN=jsegura). CN es la abreviatura de _Common Name_ o nombre común.
-- _DN (Distinguished Name)_: identifica globalmente el objeto e incluye el nombre de todos los objetos que lo contienen hasta llegar al dominio (CN=jsegura,OU=asix,OU=informatica,DC=acme,DC=lan). Esto sería el equivalente a una ruta absoluta en un sistema de ficheros y es la forma que usaremos habitualmente para identificar cualquier objeto.
-- _Nombre canónico_: es igual que el anterior pero cambia la forma de escribirlo (acme.lan/informatica/asix/jsegura)
+Cualquier objeto en el AD (un usuario, un equipo, un grupo o una unidad organizativa) se identifica por su nombre. El nombre de un objeto se puede indicar de 3 formas distintas: por su nombre canónico, por su nombre distinguido (DN) o por su nombre distinguido relativo (RDN).
 
-Por su parte la OU asix del ejemplo anterior podemos denominarla de 3 formas:
-- RDN: OU=asix
-- DN: OU=asix,OU=informatica,DC=acme,DC=lan
-- Nombre canónico: acme.lan/informatica/asix
+Por ejemplo si creamos una cuenta de usuario llamado jsegura dentro de una OU llamada asix que está dentro de la OU informática dentro del dominio acme.lan se nombraría como:
+- _Nombre canónico_: identifica al objeto globalmente ya que incluye la ruta para llegar al mismo además de su nombre: **acme.lan/informatica/asix/jsegura**. Es similar a la ruta absoluta de un fichero
+- _DN (Distinguished Name)_: es el más utilizado. Es como el anterior pero va desde el objeto al dominio (al revés que el nombre canónico) e incluye para cada elemento una abreviatura de 2 letras que indica el tipo de objeto que es. Sería: **CN=jsegura,OU=asix,OU=informatica,DC=acme,DC=lan** (los tipos son _CN=Common Name, OU=Organizational Unit, DC=Domain Component_). Es la forma que usaremos habitualmente para identificar cualquier objeto.
+- _RDN (Relative Distinguished Name)_: es sólo el nombre del objeto, sin su ruta: **CN=jsegura**
 
-Además de su nombre cada objeto tiene unos atributos que lo describen y que varían en función del tipo de objeto de que se trate. Por ejemplo algunos de los atributos de un usuario son su nombre, sus apellidos o su cuenta de e-mail. Algunos de los atributos de un grupo son su nombre, su tipo o sus miembros.
+Por su parte la OU asix del ejemplo anterior podemos denominarla como:
+- RDN: **OU=asix**
+- DN: **OU=asix,OU=informatica,DC=acme,DC=lan**
+- Nombre canónico: **acme.lan/informatica/asix**
+
+Además de su nombre cada objeto tiene unos atributos que lo describen y que varían en función del tipo de objeto de que se trate. Por ejemplo algunos de los atributos de un objeto de tipo usuario son nombre, apellidos, cuenta de e-mail, etc. Algunos de los atributos de un grupo son nombre, tipo o miembros.
 
 ### Usuarios y equipos de Active Directory
 El AD dispone de herramientas para la gestión de los objetos y sus diferentes atributos y esta es la que más utilizaremos.
@@ -59,11 +61,11 @@ Como el resto de herramientas se accede a ella desde el `Administrador del servi
 
 ![Usuarios y equipos de AD](./media/UsuariosyequiposAD.png)
 
-Aquí vemos nuestro dominio y dentro varias Unidades organizativas (OU, también llamadas Departamentos) que se han creado automáticamente, entre las que destacan:
+Aquí vemos nuestro dominio y dentro varias _Unidades organizativas_ (OU, también llamadas Departamentos) que se han creado automáticamente, entre las que destacan:
 - _Builtin_: son usuarios y grupos integrados creados automáticamente al crear el domino. Más adelante veremos quiénes son y para qué se utilizan
 - _Computers_: aquí tenemos todos los equipos cliente añadidos al dominio
 - _Domain Controllers_: aquí están las cuentas de todos los equipos controladores del dominio. Ahora tenemos únicamente la de nuestro servidor
-- _Users_: aquí es donde se crean por defecto los usuarios y los grupos, aunque es más práctico crear nuestras propias OU para crear en ellas nuestros usuarios (por razones de organización). Ya hay muchos usuarios y grupos predeterminados que se han creado al instalar el dominio.
+- _Users_: aquí es donde se crean por defecto los usuarios y los grupos, aunque es más práctico crear nuestras propias OU para crear en ellas nuestros usuarios (para que quede mejor organizado). Ya hay muchos usuarios y grupos predeterminados que se han creado al instalar el dominio.
 
 En la barra de herramientas tenemos iconos para crear un nuevo usuario, un nuevo grupo o un nuevo departamento (OU) así como para buscar objetos, filtrarlos, etc.
 
@@ -72,15 +74,15 @@ Para cada persona que utiliza el ordenador se tiene que crear una cuenta de usua
 - identificar y autentificar a esa persona para acceder al sistema
 - gestionar los permisos y derechos que tendrá esa persona sobre los recursos del sistema
 
-Cuando creamos un usuario en un sistema Windows que no sea DC (como hacíamos en un Windows cliente) lo que creamos es una cuenta local de usuario, es decir, una cuenta con la que el usuario puede iniciar sesión en el equipo en el cual creamos la cuenta.
+Cuando creamos un usuario en un equipo con Windows que no sea DC (como hacíamos en un Windows cliente) lo que creamos es una cuenta local de usuario, es decir, una cuenta con la que el usuario puede iniciar sesión en el equipo en el cual creamos la cuenta.
 
-Cuando trabajamos en red es posible que un usuario necesite iniciar sesión en diferentes ordenadores de la red, para lo cual tendría que tener una cuenta de usuario en cada equipo.
+Si ese usuario necesite iniciar sesión en otros ordenadores de la red tendríamos que crearle una cuenta de usuario en cada uno.
 
-La alternativa se crear una cuenta de **usuario de dominio** que es una cuenta que se crea dentro de AD y que permite al usuario iniciar sesión desde cualquier equipo del dominio (no es que se cree una cuenta para ese usuario en cada ordenador miembro sino que existe una única cuenta visible en todos los ordenadores del dominio).
+La alternativa es crearle una cuenta de **usuario de dominio** que es una cuenta que se crea dentro de AD y le permite al usuario iniciar sesión desde cualquier equipo del dominio (no es que se cree una cuenta para ese usuario en cada ordenador miembro sino que existe una única cuenta visible en todos los ordenadores del dominio).
 
-En un dominio Windows, cualquier servidor que actúa como DC puede crear cuentas de dominio. Los datos de estas cuentas se almacenan en el Directorio Activo y por lo tanto son conocidos por todos los ordenadores del dominio. Cuando una persona se conecta a cualquier ordenador utilizando su cuenta de dominio, el ordenador en cuestión realiza una consulta al Directorio Activo para que se validen las credenciales del usuario.
+Estas cuentas se crean desde la herramienta _Usuarios y equipos de Active Directory_ y sus datos se almacenan en el Directorio Activo por lo que son conocidos por todos los ordenadores del dominio. Cuando una persona se conecta a cualquier ordenador utilizando su cuenta de dominio, el ordenador en cuestión realiza una consulta al AD para que se validen las credenciales del usuario.
 
-Los ordenadores miembros de un dominio que no sean DC, además de conocer a los usuarios globales del dominio, pueden tener también sus propios usuarios locales. En este caso, estos usuarios son únicamente visibles en el ordenador en el cual han sido creados. Cuando una persona desea entrar en el sistema utilizando una cuenta local, esta cuenta se valida contra la base de datos local de ese ordenador.
+Los ordenadores miembros de un dominio que no sean DC, además de reconocer a los usuarios del dominio, pueden tener también sus propios usuarios locales. En este caso, estos usuarios son únicamente visibles en el ordenador en el cual han sido creados. Cuando una persona desea entrar en el sistema utilizando una cuenta local, esta cuenta se valida contra la base de datos local de ese ordenador.
 
 A una cuenta de usuario local no se le pueden asignar permisos sobre recursos del dominio, sólo sobre recursos locales del equipo en que se crea. A un usuario del dominio se le pueden conceder permisos sobre cualquier recurso (archivo, directorio, impresora, etc.) de cualquier ordenador miembro del dominio.
 
@@ -164,22 +166,24 @@ En dominios Windows Server se definen tres tipos de grupos de seguridad o ámbit
 - **Grupos globales**. Son visibles en cualquier dominio y permiten asignar permisos y derechos sobre recursos de cualquier dominio. Sus miembros tienen que pertenecer al dominio en que se crea el grupo y suelen utilizarse para clasificar a los usuarios en función de las labores que realizan. Normalmente los utilizamos para agrupar usuarios similares.
 - **Grupos universales**. Son visibles en todo el bosque. Sus miembros son usuarios de cualquier dominio y permiten asignar permisos y derechos sobre recursos de cualquier dominio. La utilización de grupos universales tiene sentido sólo cuando un mismo conjunto de usuarios (y/o grupos) de varios dominios tienen que recibir permisos/derechos en varios dominios simultáneamente. Por razones de eficiencia tenemos que limitar al máximo el uso de este tipo de grupos.
 
-En un ordenador miembro de un dominio también se pueden definir grupos locales. Los grupos locales pueden estar formados por cuentas de usuario locales y usuarios y grupos globales de cualquier dominio del bosque y además por grupos universales. Un grupo local no puede ser miembro de otro grupo local. Los grupos locales pueden utilizarse para conceder permisos y derechos en el equipo en qué son creados.
+En un ordenador miembro de un dominio también se pueden definir grupos locales. Los grupos locales pueden estar formados por cuentas de usuario locales y por usuarios y grupos globales de cualquier dominio del bosque, además de por grupos universales. Un grupo local no puede ser miembro de otro grupo local. Los grupos locales pueden utilizarse para conceder permisos y derechos en el equipo en que son creados.
 
 Por lo tanto, la administración de la protección en cada ordenador del dominio puede realizarse mediante grupos locales del dominio o grupos locales del equipo en que reside el recurso a administrar.
 
-En relación con esto, es importante saber que cuando un ordenador pasa a ser miembro de un dominio, el grupo global Administradores del dominio se incluye automáticamente en el grupo local Administradores de este ordenador. De igual forma, el grupo global Usuarios del dominio se incluye dentro del grupo local Usuarios. De esta forma, los administradores y usuarios del dominio tienen en cada equipo miembro los mismos derechos y permisos que los que tengan ya definidos los administradores y usuarios locales.
+En relación con esto, es importante saber que cuando un ordenador pasa a ser miembro de un dominio, el grupo global _Administradores del dominio_ se incluye automáticamente en el grupo local _Administradores_ de este ordenador. De igual forma, el grupo global _Usuarios del dominio_ se incluye dentro del grupo local _Usuarios_. De esta forma, los administradores y usuarios del dominio tienen en cada equipo miembro los mismos derechos y permisos que los que tengan ya definidos los administradores y usuarios locales.
 
 La manera de organizar los usuarios y grupos que recomienda Windows en un entorno con varios dominios es la llamada **A G DL P** (Accounts -cuentas de usuario-, Global, Domain Local, Permissions):
 - **Asignar usuarios a grupos globales**, según las labores que ejerzan en la organización.
 - **Incluir usuarios y/o grupos globales en grupos locales** según el nivel de acceso que tengan que tener.
 - **Asignar permisos y derechos únicamente a estos grupos locales**.
 
+![A G DL P](media/agdlp.jpg)
+
 Los pasos a seguir son:
 - En primer lugar tenemos que identificar los tipos de usuarios que tendremos (por ejemplo, todos los empleados del departamento de informática)
 - A continuación se crea un grupo global para agrupar esos usuarios similares (ej. _ggInformáticos_)
 - Determinar si para lo que queremos hacer (por ejemplo permitir a los informáticos imprimir en una impresora de red) podemos utilizar uno de los grupos integrados (como _Usuarios del dominio_ o _Administradores_) o tenemos que crear un nuevo grupo local de dominio. En este caso crearemos un nuevo grupo local de dominio llamado _gdlUsuarios de impresora_
-- A continuación tenemos que identificar todos los grupos de usuarios con las mismas necesidades (imprimir en la impresora de red) y añadirlos al grupo local creado anteriormente (añadiremos el grupo _ggInformáticos_ al _gdlUsuarios de impresora_)
+- A continuación tenemos que identificar todos los grupos de usuarios con las esas necesidades (imprimir en la impresora de red) y añadirlos al grupo local creado anteriormente (añadiremos el grupo _ggInformáticos_ al _gdlUsuarios de impresora_)
 - En el recurso Impresora concederemos los permisos necesarios para que puedan imprimir los miembros del grupo _gdlUsuarios de impresora_
 
 Dentro de un grupo podemos incluir otros grupos, pero:

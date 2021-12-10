@@ -1,27 +1,24 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
+# Vue-cli
 - [Vue-cli](#vue-cli)
-  - [Instalación](#instalaci%C3%B3n)
-  - [Creación de un nuevo proyecto](#creaci%C3%B3n-de-un-nuevo-proyecto)
+  - [Introducción](#introducción)
+  - [Instalación](#instalación)
+  - [Creación de un nuevo proyecto](#creación-de-un-nuevo-proyecto)
     - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
     - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
-      - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicaci%C3%B3n)
-  - [Añadir nuevos plugins y dependencias](#a%C3%B1adir-nuevos-plugins-y-dependencias)
-    - [bootstrap-vue](#bootstrap-vue)
+      - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
+  - [Añadir nuevos plugins y dependencias](#añadir-nuevos-plugins-y-dependencias)
+    - [Bootstrap](#bootstrap)
+      - [bootstrap-vue para Vue 2](#bootstrap-vue-para-vue-2)
   - [Crear un nuevo componente](#crear-un-nuevo-componente)
-  - [Depurar el código en la consola](#depurar-el-c%C3%B3digo-en-la-consola)
-- [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
-- [Comunicación entre componentes en Vue-cli](#comunicaci%C3%B3n-entre-componentes-en-vue-cli)
+  - [Depurar el código en la consola](#depurar-el-código-en-la-consola)
+- [Aplicación de ejemplo](#aplicación-de-ejemplo)
+- [Comunicación entre componentes en Vue-cli](#comunicación-entre-componentes-en-vue-cli)
   - [Event Bus](#event-bus)
   - [Store pattern](#store-pattern)
   - [Store pattern en Vue3](#store-pattern-en-vue3)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Vue-cli
+## Introducción
 Se trata de una herramienta que incluye Vue que nos ayuda en:
 * Crea automáticamente el _scaffolding_ básico de nuestro proyecto basándose en una serie de plantillas predefinidas
 * Incluye herramientas como Webpack, Babel, Uglify, ... que permiten
@@ -62,7 +59,7 @@ Vue nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3 por defect
 
 ![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
 
-Tabién podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
+También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
 ```bash
 vue ui
 ```
@@ -239,15 +236,36 @@ npm install -S vue-router
 
 Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
 
-### bootstrap-vue
-Esta librería es una implementación de **Bootstrap** para Vue de la que se ha eliminado jQuery y otras cosas innecesarias. El aspecto de los elementos varía un poco pero es muy parecido. Nosotros la usaremos en nuestros proyectos para mejorar el aspecto de nuestras aplicaciones.
+### Bootstrap
+Podemos utilizar _Bootstrap 5_ directamente en Vue ya que esta versión no necesita de la librería _jQuery_.
+
+Para usarlo simplemente lo instalaremos como una dependencia de producción y después lo añadimos al fichero `src/main.js`:
+```javascript
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
+```
+
+Y para que funcionen los componentede _Bootstrap_ sólo tenemos que usar los atributos `data-bs-`, por ejemplo para hacer un botón colapsable haremos:
+```html
+<button 
+  class="btn btn-primary" 
+  data-bs-target="#collapseTarget" 
+  data-bs-toggle="collapse">
+  Bootstrap collapse
+</button>
+<div class="collapse py-2" id="collapseTarget">
+  This is the toggle-able content!
+</div>
+```
+
+En lugar de esto podemos _envolver_ los componentes bootstrap en componentes Vue como se explica en muchas páginas, como [Using Bootstrap 5 with Vue 3](https://stackoverflow.com/questions/65547199/using-bootstrap-5-with-vue-3).
+
+#### bootstrap-vue para Vue 2
+Como _Bootstrap 4_ sí incluía _jQuery_ y otras cosas innecesarias crearon para Vue 2 un _plugin_ llamado **_bootstrap-vue_** que es una implementación de _Bootstrap 4_ sin -JQuery_. El aspecto de los elementos varía un poco pero es muy parecido. 
 
 Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
 
-Como es un plugin lo instalamos como hemos visto antes:
-```bash
-vue add bootstrap-vue
-```
+Como es un plugin lo instalamos como hemos visto antes (`vue add bootstrap-vue`) y no es necesario configurar nada.
 
 Además incluye [iconos](https://bootstrap-vue.js.org/docs/icons#icons) y si queremos usarlos tenemos que modificar el fichero creado dentro de _plugins_ y añadir:
 ```bash
