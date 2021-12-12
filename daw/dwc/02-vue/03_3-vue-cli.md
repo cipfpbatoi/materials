@@ -7,7 +7,7 @@
     - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
-  - [Añadir nuevos plugins y dependencias](#añadir-nuevos-plugins-y-dependencias)
+  - [Añadir nuevos paquetes y plugins](#añadir-nuevos-paquetes-y-plugins)
     - [Bootstrap](#bootstrap)
       - [bootstrap-vue para Vue 2](#bootstrap-vue-para-vue-2)
   - [Crear un nuevo componente](#crear-un-nuevo-componente)
@@ -210,31 +210,31 @@ Recibe el parámetro _msg_ que es de tipo String.
 _style_
 Aquí la etiqueta SÍ tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos incluidos se aplicarán sólo a este componente.
 
-## Añadir nuevos plugins y dependencias
-Para instalar un nuevo plugin a nuestro proyecto (antes conviene haber hecho un _commit_) usamos `vue add` desde la carpeta del proyecto, por ejemplo para añadir el plugin _vuetify_ ejecutamos:
+## Añadir nuevos paquetes y plugins
+Si queremos usar un nuevo paquete en nuestra aplicación lo instalaremos con _npm_:
+```bash
+npm install nombre-paquete
+```
+
+Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
+```bash
+npm install -S axios
+```
+
+Para usarlo en nuestros componentes debemos importarlo y registrarlo tal y como se indique en su documentación. Lo normal es hacerlo en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins) para poderlo usar en todos los componentes.
+
+Si el paquete que queremos instalar se encuentra como plugin el proceso es más sencillo ya que sólo es necesario usar usamos `vue add` (antes conviene haber hecho un _commit_) desde la carpeta del proyecto, por ejemplo para añadir el plugin _vuetify_ ejecutamos:
 ```bash
 vue add vuetify
 ```
 
 Esto automáticamente:
 * instala el plugin dentro de _node-modules_
-* modifica el fichero _package.json_
-* crea un fichero JS dentro de la carpeta **_plugins_** que importa y registra la librería
+* añade el paquete al fichero _package.json_
+* crea un fichero JS dentro de la carpeta **_plugins_** que importa y registra esa librería
 * importa dicho fichero al **_main.js_**
 
 NOTA: actualmente Vuetify no soporta Vue3 por lo que esto sólo funcionará en Vue2
-
-Si queremos instalar un paquete que no funciona como plugin lo haremos desde _npm_:
-```bash
-npm install nombre-paquete
-```
-
-El comando `npm install` sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
-```bash
-npm install -S vue-router
-```
-
-Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
 
 ### Bootstrap
 Podemos utilizar _Bootstrap 5_ directamente en Vue ya que esta versión no necesita de la librería _jQuery_.
@@ -245,7 +245,17 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 ```
 
-Y para que funcionen los componentede _Bootstrap_ sólo tenemos que usar los atributos `data-bs-`, por ejemplo para hacer un botón colapsable haremos:
+Para usar los iconos de _Bootstrap 5_ debemos importar el css y ya podemos incluir los iconos en etiquetas _<i>_ como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Por ejemplo, incluimos en el _<style>_ del componente **App.vue**:
+```javascript
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
+```
+
+y donde queramos incluir el icono de la papelera, por ejemplo, incluimos:
+```html
+<i class="bi bi-trash"></i>
+```
+
+Respecto a los componentes de _Bootstrap_, para que funcionen sólo tenemos que usar los atributos `data-bs-`, por ejemplo para hacer un botón colapsable haremos:
 ```html
 <button 
   class="btn btn-primary" 
@@ -258,7 +268,7 @@ Y para que funcionen los componentede _Bootstrap_ sólo tenemos que usar los atr
 </div>
 ```
 
-En lugar de esto podemos _envolver_ los componentes bootstrap en componentes Vue como se explica en muchas páginas, como [Using Bootstrap 5 with Vue 3](https://stackoverflow.com/questions/65547199/using-bootstrap-5-with-vue-3).
+En lugar de usar atributos _data-bs-_ podemos _envolver_ los componentes bootstrap en componentes Vue como se explica en muchas páginas, como [Using Bootstrap 5 with Vue 3](https://stackoverflow.com/questions/65547199/using-bootstrap-5-with-vue-3).
 
 #### bootstrap-vue para Vue 2
 Como _Bootstrap 4_ sí incluía _jQuery_ y otras cosas innecesarias crearon para Vue 2 un _plugin_ llamado **_bootstrap-vue_** que es una implementación de _Bootstrap 4_ sin -JQuery_. El aspecto de los elementos varía un poco pero es muy parecido. 
