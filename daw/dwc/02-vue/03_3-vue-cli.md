@@ -1,27 +1,24 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
+# Vue-cli
 - [Vue-cli](#vue-cli)
-  - [Instalación](#instalaci%C3%B3n)
-  - [Creación de un nuevo proyecto](#creaci%C3%B3n-de-un-nuevo-proyecto)
+  - [Introducción](#introducción)
+  - [Instalación](#instalación)
+  - [Creación de un nuevo proyecto](#creación-de-un-nuevo-proyecto)
     - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
     - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
-      - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicaci%C3%B3n)
-  - [Añadir nuevos plugins y dependencias](#a%C3%B1adir-nuevos-plugins-y-dependencias)
-    - [bootstrap-vue](#bootstrap-vue)
+      - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
+  - [Añadir nuevos paquetes y plugins](#añadir-nuevos-paquetes-y-plugins)
+    - [Bootstrap](#bootstrap)
+      - [bootstrap-vue para Vue 2](#bootstrap-vue-para-vue-2)
   - [Crear un nuevo componente](#crear-un-nuevo-componente)
-  - [Depurar el código en la consola](#depurar-el-c%C3%B3digo-en-la-consola)
-- [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
-- [Comunicación entre componentes en Vue-cli](#comunicaci%C3%B3n-entre-componentes-en-vue-cli)
+  - [Depurar el código en la consola](#depurar-el-código-en-la-consola)
+- [Aplicación de ejemplo](#aplicación-de-ejemplo)
+- [Comunicación entre componentes en Vue-cli](#comunicación-entre-componentes-en-vue-cli)
   - [Event Bus](#event-bus)
   - [Store pattern](#store-pattern)
   - [Store pattern en Vue3](#store-pattern-en-vue3)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Vue-cli
+## Introducción
 Se trata de una herramienta que incluye Vue que nos ayuda en:
 * Crea automáticamente el _scaffolding_ básico de nuestro proyecto basándose en una serie de plantillas predefinidas
 * Incluye herramientas como Webpack, Babel, Uglify, ... que permiten
@@ -62,7 +59,7 @@ Vue nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3 por defect
 
 ![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
 
-Tabién podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
+También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
 ```bash
 vue ui
 ```
@@ -213,41 +210,72 @@ Recibe el parámetro _msg_ que es de tipo String.
 _style_
 Aquí la etiqueta SÍ tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos incluidos se aplicarán sólo a este componente.
 
-## Añadir nuevos plugins y dependencias
-Para instalar un nuevo plugin a nuestro proyecto (antes conviene haber hecho un _commit_) usamos `vue add` desde la carpeta del proyecto, por ejemplo para añadir el plugin _vuetify_ ejecutamos:
+## Añadir nuevos paquetes y plugins
+Si queremos usar un nuevo paquete en nuestra aplicación lo instalaremos con _npm_:
+```bash
+npm install nombre-paquete
+```
+
+Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
+```bash
+npm install -S axios
+```
+
+Para usarlo en nuestros componentes debemos importarlo y registrarlo tal y como se indique en su documentación. Lo normal es hacerlo en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins) para poderlo usar en todos los componentes.
+
+Si el paquete que queremos instalar se encuentra como plugin el proceso es más sencillo ya que sólo es necesario usar usamos `vue add` (antes conviene haber hecho un _commit_) desde la carpeta del proyecto, por ejemplo para añadir el plugin _vuetify_ ejecutamos:
 ```bash
 vue add vuetify
 ```
 
 Esto automáticamente:
 * instala el plugin dentro de _node-modules_
-* modifica el fichero _package.json_
-* crea un fichero JS dentro de la carpeta **_plugins_** que importa y registra la librería
+* añade el paquete al fichero _package.json_
+* crea un fichero JS dentro de la carpeta **_plugins_** que importa y registra esa librería
 * importa dicho fichero al **_main.js_**
 
 NOTA: actualmente Vuetify no soporta Vue3 por lo que esto sólo funcionará en Vue2
 
-Si queremos instalar un paquete que no funciona como plugin lo haremos desde _npm_:
-```bash
-npm install nombre-paquete
+### Bootstrap
+Podemos utilizar _Bootstrap 5_ directamente en Vue ya que esta versión no necesita de la librería _jQuery_.
+
+Para usarlo simplemente lo instalaremos como una dependencia de producción y después lo añadimos al fichero `src/main.js`:
+```javascript
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
 ```
 
-El comando `npm install` sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
-```bash
-npm install -S vue-router
+Para usar los iconos de _Bootstrap 5_ debemos importar el css y ya podemos incluir los iconos en etiquetas _<i>_ como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Por ejemplo, incluimos en el _<style>_ del componente **App.vue**:
+```javascript
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 ```
 
-Para usarlo debemos importarlo y registrarlo nosotros en el **_main.js_** (o en algún fichero JS que importemos en _main.js_ como en el caso de los plugins).
+y donde queramos incluir el icono de la papelera, por ejemplo, incluimos:
+```html
+<i class="bi bi-trash"></i>
+```
 
-### bootstrap-vue
-Esta librería es una implementación de **Bootstrap** para Vue de la que se ha eliminado jQuery y otras cosas innecesarias. El aspecto de los elementos varía un poco pero es muy parecido. Nosotros la usaremos en nuestros proyectos para mejorar el aspecto de nuestras aplicaciones.
+Respecto a los componentes de _Bootstrap_, para que funcionen sólo tenemos que usar los atributos `data-bs-`, por ejemplo para hacer un botón colapsable haremos:
+```html
+<button 
+  class="btn btn-primary" 
+  data-bs-target="#collapseTarget" 
+  data-bs-toggle="collapse">
+  Bootstrap collapse
+</button>
+<div class="collapse py-2" id="collapseTarget">
+  This is the toggle-able content!
+</div>
+```
+
+En lugar de usar atributos _data-bs-_ podemos _envolver_ los componentes bootstrap en componentes Vue como se explica en muchas páginas, como [Using Bootstrap 5 with Vue 3](https://stackoverflow.com/questions/65547199/using-bootstrap-5-with-vue-3).
+
+#### bootstrap-vue para Vue 2
+Como _Bootstrap 4_ sí incluía _jQuery_ y otras cosas innecesarias crearon para Vue 2 un _plugin_ llamado **_bootstrap-vue_** que es una implementación de _Bootstrap 4_ sin -JQuery_. El aspecto de los elementos varía un poco pero es muy parecido. 
 
 Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
 
-Como es un plugin lo instalamos como hemos visto antes:
-```bash
-vue add bootstrap-vue
-```
+Como es un plugin lo instalamos como hemos visto antes (`vue add bootstrap-vue`) y no es necesario configurar nada.
 
 Además incluye [iconos](https://bootstrap-vue.js.org/docs/icons#icons) y si queremos usarlos tenemos que modificar el fichero creado dentro de _plugins_ y añadir:
 ```bash

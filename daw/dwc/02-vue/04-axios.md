@@ -3,19 +3,20 @@
 Tabla de contenidos
 
 - [Axios](#axios)
-  - [Instalación](#instalaci%C3%B3n)
-  - [Usar _axios_](#usar-_axios_)
-- [Aplicación de ejemplo](#aplicaci%C3%B3n-de-ejemplo)
-  - [Solución](#soluci%C3%B3n)
+  - [Instalación](#instalación)
+  - [Usar _axios_](#usar-axios)
+  - [Aplicación de ejemplo](#aplicación-de-ejemplo)
     - [Pedir los datos al cargarse](#pedir-los-datos-al-cargarse)
     - [Borrar un todo](#borrar-un-todo)
-    - [Añadir un todo](#a%C3%B1adir-un-todo)
-    - [Actualizar el campo _done_](#actualizar-el-campo-_done_)
+    - [Añadir un todo](#añadir-un-todo)
+    - [Actualizar el campo _done_](#actualizar-el-campo-done)
     - [Borrar todas las tareas](#borrar-todas-las-tareas)
-  - [Solución mejor organizada](#soluci%C3%B3n-mejor-organizada)
-  - [json-server](#json-server)
-- [Añadir cabeceras a la petición](#añadir-cabeceras-a-la-petición)
-  - [Axios Interceptors](#axios-interceptors)
+  - [Organizar las peticiones](#organizar-las-peticiones)
+    - [Api con varias tablas](#api-con-varias-tablas)
+    - [Api como clase](#api-como-clase)
+    - [El fichero _.env_](#el-fichero-env)
+  - [Añadir cabeceras a la petición](#añadir-cabeceras-a-la-petición)
+  - [Axios interceptors](#axios-interceptors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -62,7 +63,7 @@ axios.get(url)
   .catch(response => ... trata el error ...)
 ```
 
-# Aplicación de ejemplo
+## Aplicación de ejemplo
 Vamos a seguir con la aplicación de la lista de tareas pero ahora los datos no serán un array estático sino que estarán en un servidor. Usaremos como servidor para probar la aplicación [**json-server**](#json-server) por lo que las peticiones serán a la URL 'localhost:3000' que es el servidor web de json-server.
 
 Los cambios que debemos hacer en nuestra aplicación son:
@@ -72,7 +73,6 @@ Los cambios que debemos hacer en nuestra aplicación son:
 1. Al marcar/desmarcar un elemento lo modificaremos en la base de datos
 1. Para borrarlos todos haremos peticiones DELETE al servidor
 
-## Solución
 Vamos a modificar los diferentes componentes para implementar os cambios requeridos:
 
 ### Pedir los datos al cargarse
@@ -166,8 +166,8 @@ Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servido
 
 Si lo probáis con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
 
-## Solución mejor organizada
-Vamos a crear un fichero que será donde estén las peticiones a axios de forma que nuestro código quede más limpio en los componentes. Podemos llamar al fichero APIService.js y allí creamos las funciones que laman a la API:
+## Organizar las peticiones
+Para mejorar la legibilidad del código vamos a crear un fichero que será donde estén las peticiones a axios de forma que nuestros componentes queden más limpios. Podríamos llamar al fichero _APIService.js_ y allí creamos las funciones que laman a la API:
 ```javascript
 import axios from 'axios';
 const baseURL = 'http://localhost:3000';
@@ -214,6 +214,7 @@ export default {
   },
 ```
 
+### Api con varias tablas
 Si nuestra APIService tiene que acceder a varias tablas el código va haciéndose más largo. Podemos escribir lo mismo de antes pero de forma más concisa:
 ```javascript
 import axios from 'axios';
@@ -247,6 +248,7 @@ export default {
 };
 ```
 
+### Api como clase
 También podemos usar programación orientada a objetos para hacer nuestra ApiService y construir una clase que se ocupe de las peticiones a la API:
 ```javascript
 import axios from 'axios';
@@ -295,7 +297,10 @@ export default {
   },
 ```
 
-No es recomandable poner la ruta del servidor en el código como hemos hecho nosotros sino que sería mejor ponerla en el fichero _.env_ que es un fichero donde guardar las configuraciones de la aplicación. Vue puede acceder a todas las variables definidas en el mismo que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
+### El fichero _.env_
+Se trata de un fichero donde guardar las configuraciones de la aplicación y la ruta del servidor es una constante que estaría mejor en este fichero que en el código como hemos hecho nosotros. 
+
+Vue puede acceder a todas las variables de _.env_ que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
 ```javascript
 const baseURL = process.env.VUE_APP_RUTA_API;
 ```
@@ -305,29 +310,9 @@ Y en el fichero _,env_ ponemos
 VUE_APP_RUTA_API=http://localhost:3000
 ```
 
-El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero _.env.local_ que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API sería "http://localhost:3000" mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
+El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usuamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
-## json-server
-Es un servidor API-REST que funciona bajo node.js y que utiliza un fichero JSON como contenedor de los datos en lugar de una base de datos.
-
-Para instalarlo en nuestra máquina ejecutamos:
-```bash
-npm install json-server -g
-```
-
-Para que sirva un fichero datos.json:
-```bash
-json-server --watch datos.json 
-```
-La opción _--watch_ es opcional y le indica que actualice los datos si se modifica el fichero _.json_ externamente (si lo editamos).
-
-Los datos los sirve por el puerto 3000 y servirá los diferentes objetos definidos en el fichero _.json_. Por ejemplo:
-* https://localhost:3000/users: devuelve todos los elementos del array _users_ del fichero _.json_
-* https://localhost:3000/users/5: devuelve el elementos del array _users_ del fichero _.json_ cuya propiedad _id_ valga 5
-
-Para más información: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
-
-# Añadir cabeceras a la petición
+## Añadir cabeceras a la petición
 Muchas veces necesitamos añadir cabeceras a una petición _axios_, por ejemplo para enviar un token que nos autentifique ante una API. Axios permite pasar como tercer parámetro un objeto con una configuración personalizada, que puede incluir esas cabeceras:
 
 ```javascript
