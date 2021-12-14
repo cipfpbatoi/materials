@@ -263,8 +263,9 @@ Red
 Puedes encontrar la información actualizada de cómo configurar la red en:
 
 - [https://cipfpbatoi.github.io/materials/altres/xarxa-linux/](https://cipfpbatoi.github.io/materials/altres/xarxa-linux/)
-- [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
-- [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
+- Configuración de red en Debian [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
+- SystemdNetworkd: [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
+- SystemdNetworkd: [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
 
 Repositorios
 ============
