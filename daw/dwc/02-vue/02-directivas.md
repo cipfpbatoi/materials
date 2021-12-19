@@ -15,13 +15,16 @@ Las directivas son atributos especiales que se ponen en las etiquetas HTML y que
 Las más comunes son:
 * `v-text`: es equivalente a hacer una interpolación (**{\{ ... }}**). Muestra el valor en la etiqueta
 * `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra
-* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas)
+* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas). Internamente hace un `.innerHTML` del elemento mientras que `v-text` (y `{{...}}`) hacen un `.textContent`
 * `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
 ```html
 <span v-bind:class="estado">...
 ```
 El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">`)
-* `v-model`: permite enlazar un input a una variable (la hemos visto en el capítulo anterior)
+* `v-model`: permite enlazar un input a una variable (la hemos visto en el capítulo anterior). Tiene 3 modificadores útiles.
+  * `.lazy`: em lugar de actualizar el valor al pulsar cada tecla (_onInput_) lo hace al perder el foco (_onChange_)
+  * `.number`: convierte el contenido a Number
+  * `.trim`: elimina los espacios al principio y al final del texto
 * `v-if`: renderiza o no el elemento que la contiene en función de una condición
 * `v-show`: similar al _v-if_ pero siempre renderiza el elemento (está en el DOM) y lo que hace es mostrarlo u ocultarlo (`display: none`) en función de la condición. Es mejor si el elemento va a mostrarse y ocultarse a menudo porque no tiene que volver a renderizarlo cada vez
 * `v-for`: repite el elemento HTML que contiene esta etiqueta para cada elemento de un array

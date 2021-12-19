@@ -1,40 +1,42 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
+# Vue-router
 - [Vue-router](#vue-router)
-  - [Instalación](#instalaci%C3%B3n)
+  - [Introducción](#introducción)
+  - [Instalación](#instalación)
+    - [Añadir vue-router a un proyecto Vue2 ya creado](#añadir-vue-router-a-un-proyecto-vue2-ya-creado)
+    - [Añadir vue-router a un proyecto Vue3 ya creado](#añadir-vue-router-a-un-proyecto-vue3-ya-creado)
   - [Crear las rutas](#crear-las-rutas)
-  - [Crear un menú](#crear-un-men%C3%BA)
+  - [Crear un menú](#crear-un-menú)
   - [Saltar a una ruta](#saltar-a-una-ruta)
-  - [Paso de parámetros](#paso-de-par%C3%A1metros)
+  - [Paso de parámetros](#paso-de-parámetros)
   - [El objeto $route](#el-objeto-route)
   - [Redireccionamiento. Not found](#redireccionamiento-not-found)
-  - [Cambio de parámetros en una ruta](#cambio-de-par%C3%A1metros-en-una-ruta)
+  - [Cambio de parámetros en una ruta](#cambio-de-parámetros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Vue-router
-Como comentamos al pricipio Vue nos va a permitir crear SPA (_Single Page Applications_) lo que significa que sólo se cargará una pagina: _index.html_. Sin embargo nuestra aplicación estará dividida en diferentes vistas que el usuario percibirá como si fueran páginas diferentes y el encargado de gestionar la navegación entre estas vistas/páginas es **Vue-router** que es otra de las librerías del "ecosistema" de Vue (en este caso realizada por los desarrolladores de Vue).
+## Introducción
+Como comentamos al principio Vue nos va a permitir crear SPA (_Single Page Applications_) lo que significa que sólo se cargará una pagina: _index.html_. Sin embargo nuestra aplicación estará dividida en diferentes vistas que el usuario percibirá como si fueran páginas diferentes y el encargado de gestionar la navegación entre estas vistas/páginas es **Vue-router** que es otra de las librerías del "ecosistema" de Vue (en este caso realizada por los desarrolladores de Vue).
 
 En resumen, en nuestra aplicación (normalmente en el _App.vue_) tendremos una etiqueta `<router-view>` y lo que hará _vue-router_ es cargar en esa etiqueta el componente que corresponda en función de la ruta que haya en la barra de direcciones del navegador. Por ejemplo si la URL es **/products** cargará un componente llamado _ProductsTable_ (que mostrará una tabla con todos los productos de la aplicación) y si la URL es **/newprod** cargará un componente llamado _ProductForm_ con un formulario para añadir un nuevo producto.
 
 Lo que hacemos para configurar _vue-router_ es definir rutas que _mapean_ componentes de nuestra aplicación a rutas URL de forma que cuando se pone determinada ruta en el navegador se carga en nuestra página el componente indicado. También permite tener subrutas que mapeen subcomponentes dentro de otros.
 
 ## Instalación
-Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. En ese caso lo que hace _vue-cli_ es:
-- se instala el paquete **vue-router**. Si hubiéramos marcado _router_ al crear el proyecto deberíamos instalarlo nosotros manualmente con:
+Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. 
+
+### Añadir vue-router a un proyecto Vue2 ya creado
+Si queremos añadirlo a un proyecto ya creado previamente tendremos que configurarlo manualmente como haciendo:
+- se instala el paquete **vue-router** como dependencia de producción:
 ```bash
 npm install -S vue-router
 ```
 
-- se crea el fichero de rutas en **/src/router/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+- se crea el fichero de rutas, por ejemplo en **/src/router/index.js**. Aquí se define para cada ruta de nuestra aplicación el componente que debe cargarse. Su contenido es
 
 ```javascript
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import About from '../views/About.vue'
 
 Vue.use(VueRouter)
 
@@ -43,6 +45,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
 ]
 
@@ -67,14 +74,44 @@ new Vue({
 }).$mount('#app')
 ```
 
-- en el _scaffolding_ del proyecto se crea una nueva carpeta _views_ que es donde se recomienda guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación
+- en el _scaffolding_ del proyecto es recomendable crear una nueva carpeta _views_ donde guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación. En un proyecto nuevo se nos creará automáticamente.
 
-Si queremos es añadir _vue-router_ a un proyecto ya existente que no lo tiene debemos añadir manualmente el paquete y configurarlo haciendo los pasos indicados arriba. Si queremos instalarlo en un proyecto  _Vue3_ ejecutamos:
+### Añadir vue-router a un proyecto Vue3 ya creado
+Vue3 sólo soporta versiones _vue-router_ superiores a la 4.x. Para asegurarnos que la instala ejecutaremos:
 ```bash
-npm install vue-router@next -S
+npm install -S vue-router@next
 ```
 
-EL fichero _main.js_ en _Vue3_ quedaría:
+(o editaremos a mano la versión en el _package.json_)
+
+El resto es todo igual excepto que en el fichero de rutas cambia las primeras líneas y el objeto que se exporta:
+```javascript
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+import About from '../views/About.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+
+export default router
+```
+
+Y en el fichero _main.js_ se haría:
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -84,13 +121,9 @@ createApp(App).use(router).mount('#app')
 ```
 
 ## Crear las rutas
-Las rutas de nuestra aplicación las definiremos en en fichero **_router/index.js_**. Allí importamos _Vue-router_, lo declaramos (`Vue.use`), creamos una instancia para nuestras rutas (`new Router`, que es el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
+Las rutas de nuestra aplicación las definiremos en el fichero **_router/index.js_**. Allí creamos la instancia para nuestras rutas (el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
 ```javascript
-// En Vue 2:
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// En Vue 3:
-// import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 
 // Importamos los componentes que se carguen en alguna ruta
 import AppHome from './components/AppHome.vue'
@@ -98,8 +131,6 @@ import AppAbout from './components/AppAbout.vue'
 import UsersTable from './components/UsersTable.vue'
 import UserNew from './components/UserNew.vue'
 import UserEdit from './components/UserEdit.vue'
-
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -123,17 +154,17 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({
-  mode: 'history',	// en Vue3 cambiaremos esta línea por 	history: createWebHistory(),
-  routes,
-});
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
 
 export default router
 ```
 
-El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (ya que en realidad no se están cargando diferentes páginas sino partes de una única página -es una SPA-). Esta es la opción que escogeremos siempre en las aplicaciones SPA.
+El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (piensa que en realidad no se están cargando diferentes páginas sino partes de una única página ya que es una SPA). Esta es la opción que escogeremos siempre en las aplicaciones SPA, aunque si nuestro servidor web usa ASP.NET o JSP habrá que decirle que ignore las URLs porque ya se ocupa de ellas Vue. La alternativa sería usar `createWebHashHistory()` pero en ese caso las rutas en vez de ser algo como `http://localhost:8080/products` serían  `http://localhost:8080/#products`.
 
-_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_: la ruta `/edit/` seguida de algo más hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `id` la parte final de la ruta (por ejemplo **/edit/5** hace que el componente reciba en sus _props_ una variable llamada _id_ con valor 5).
+_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_: la ruta `/edit/` seguida de algo más (ej. `/edit/5`) hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `this.$route.params.id` la parte final de la ruta. Si añadimos a la ruta la opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ con valor 5).
 
 Para cada ruta que queramos mapear hay que definir:
 * **path**: la url que hará que se cargue el componente
@@ -141,9 +172,9 @@ Para cada ruta que queramos mapear hay que definir:
 
 Además de esas propiedades podemos indicar:
 * **name**: le damos a la ruta un nombre que luego podemos usar para referirnos a ella
-* **props**: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se pone el componente tendrá que acceder al parámetro _id_ desde `this.$route.params.id` 
+* **props**: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se incluye esta opción el componente tendrá que acceder al parámetro _id_ desde `this.$route.params.id` 
 
-Cada vez que pongamos una nueva URL en el navegador no cambiará todo el layout sino que sólo se cargará en componente indicado para esa ruta. En el fichero _Aapp.vue_, en la parte del HTML en que queramos que se carguen los diferentes componentes de nuestra SPA incluiremos la etiqueta:
+Cada vez que pongamos una nueva URL en el navegador no cambiará todo el layout sino que sólo se cargará el componente indicado para esa ruta. En el fichero _App.vue_, en la parte del HTML en que queramos que se carguen los diferentes componentes de nuestra SPA incluiremos la etiqueta:
 ```html
 <router-view></router-view>
 ```
@@ -171,16 +202,16 @@ Se puede hacer (aunque no es lo normal) una opción de menú a una ruta dinámic
 En este caso es necesario que la ruta dinámica tenga un _name_.
 
 ## Saltar a una ruta
-Al hacer `Vue.use` en el fichero del router hacemos que esté disponible para todos los componentes desde `this.$router`. Esto nos permite acceder al router desde un componente para, por ejemplo, cambiar a una ruta.
+Al hacer `.use(router)` en el fichero _main.js_ (o declarar la variable `router` en Vue2) hacemos que esa variable (el router) esté disponible para todos los componentes desde `this.$router`. Esto nos permite acceder al router desde un componente para, por ejemplo, cambiar a una ruta.
 
 Podemos cargar la ruta que queramos desde JS con
-```javascrip
+```javascript
 this.$router.push(ruta)
 ```
 Tenemos varios métodos para navegar por código:
-* **.push(newUrl)**: salta a la ruta _newUrl_ y la añade al historial
-* **.replace(newURL)**: salta a la nueva ruta pero reemplaza en el historial la ruta actual por esta
-* **.go(num)**: permite saltar el num. de páginas indicadas adelante (ej. _this.$route(go1)_) o atrás (_.go(-1)_) por el historial
+* **`.push(newUrl)`**: salta a la ruta _newUrl_ y la añade al historial
+* **`.replace(newURL)`**: salta a la nueva ruta pero reemplaza en el historial la ruta actual por esta
+* **`.go(num)`**: permite saltar el num. de páginas indicadas adelante (ej. _this.$router.go(1)_) o atrás (_.go(-1)_) por el historial
 
 Estos métodos son equivalentes a los métodos _history.push()_, _history.replace()_ y _history.go()_ de JS.
 
@@ -210,14 +241,14 @@ salta a la URL `/register?plan=private`. En el componente que se carga obtenemos
 ## El objeto $route
 Es un objeto que contiene información de la ruta actual (no confundir con _$router_). Algunas de sus propiedades son:
 * **params**: el objeto con los parámetros pasados a la ruta (puede haber más de uno)
-* **query**: si huberia alguna consulta en la ruta (tras '?') se obtiene aquí un objeto con ellas
+* **query**: si hubiera alguna consulta en la ruta (tras '?') se obtiene aquí un objeto con ellas
 * **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
 * **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
 
 ## Redireccionamiento. Not found
-En una ruta podemos poner una redirección a otroa en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
+En una ruta podemos poner una redirección a otra en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
 
-En primer lugar haremos una ruta para el componente CompNoFound y luego una ruta genérica (\*) que redirija a la anterior:
+Para ello haremos una ruta para el componente _CompNotFound_ y luego una ruta genérica (\*) que redirija a la anterior:
 ```javascript
   routes: [
     ...
@@ -236,6 +267,8 @@ En primer lugar haremos una ruta para el componente CompNoFound y luego una ruta
 ```
 
 La ruta genérica siempre debe ser la última.
+
+**NOTA**: en **Vue3** en lugar de `path: '*'` debemos poner `path: "/:pathMatch(.*)*"`
 
 Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
 

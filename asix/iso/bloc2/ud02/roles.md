@@ -48,15 +48,15 @@ Y para desinstalar un rol ejecutaremos `Uninstall-WindowsFeature -Name <feature_
 ## Servicio de enrutamiento
 Deberemos instalar esta función si nuestro servidor va a permitir a los clientes de al red salir al exterior (para ello necesitará tener 2 tarjetas de red). Con las dos tarjetas configuradas tenemos 2 redes diferentes: una externa que nos comunica con el exterior y una interna que nos comunica con nuestros clientes. Pero ahora mismo las 2 redes no están comunicadas entre sí y un cliente de la red interna sólo puede llegar hasta el servidor pero no salir al exterior. Para que pueda hacerlo tenemos que enrutar las 2 tarjetas del servidor de forma que todo el tráfico que llega por la tarjeta interna hacia el exterior se enrute a la tarjeta externa que sabe hacia donde se tiene que dirigir.
 
-En Windows Server 2008 este servicio se instala como cualquier otro rol. En Windows Server 2012 se encuentra dentro de Acceso remoto. Una vez instalado el servicio hay que configurarlo.
+Este servicio se encuentra dentro del rol de **Acceso remoto**. Una vez instalado el servicio hay que configurarlo.
 
-Para ello pregunta es qué tipo de servicio queremos crear. En nuestro caso sólo queremos conectar las 2 redes haciendo NAT para que los clientes puedan acceder a la red externa e Internet.
+Para ello pregunta es qué tipo de servicio queremos crear. En nuestro caso sólo queremos conectar las 2 redes haciendo **NAT** para que los clientes puedan acceder a la red externa e Internet.
 
 A continuación hemos de indicar cuál es la tarjeta externa por la cual salir a Internet. Por último nos dice que no hay ningún servidor de DNS ni DHCP instalado pero como los instalaremos más adelante elegimos no configurar ahora esto.
 
 Puedes ver [este vídeo](./media/Enrutamiento.ogv) de cómo instalar y configurar este rol.
 
-Si tenemos más de una red interna las otras tarjetas internas se enrutan desde _Enrutamiento y acceso remoto->nuestro servidor->IPv4->NAT_ i se añaden el resto de interfaces internas.
+Si tenemos más de una red interna las otras tarjetas internas se enrutan desde `Enrutamiento y acceso remoto->nuestro servidor->IPv4->NAT` y se añaden el resto de interfaces internas.
 
 ![Enrutar otra red](media/enrutarOtraRed.png)
 

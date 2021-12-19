@@ -117,3 +117,5 @@ La principal diferencia es la forma de configurar uno y otro. Un RAID por hardwa
 La ventaja de los volúmenes sería su sencillez para configurarlos, además de que se pueden crear volúmenes con discos de diferente tipo y velocidad. Sin embargo el rendimiento (especialmente en un RAID-0) va a ser menor y la carga de la CPU mucho mayor ya que es esta la encargada de dividir la información a escribir y gestionar dichas escrituras entre los distintos discos. 
 
 Así que si el presupuesto lo permite siempre es aconsejable montar un RAID por hardware.
+
+Puedes consultar la [web de Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) para obtener más información sobre los volúmenes o buscar diferentes páginas para ver [cómo crearlos con Powershell](https://searchstorage.techtarget.com/tip/PowerShell-tutorial-Managing-Windows-Storage-Spaces).
