@@ -194,7 +194,7 @@ No se puede cambiar el directorio donde se encuentra el fichero con este comando
 **`New-SMBShare`**
 
 Permite compartir en la red un directorio existente con el protocolo SMB/CIFS. Ejemplo:
-`- New-SMBShare –Name Datos –Path "C:\Datos" –FullAccess "Admins. del dominio" -ReadAccess "Usuarios"`: comparte el directorio C:\Datos con el nombre Datos y le asigna permisos SMB de _Control total_ al grupo _Admins. del dominio_ y permisos de _Leer_ al grupo C.
+`New-SMBShare –Name Datos –Path "C:\Datos" –FullAccess "Admins. del dominio" -ReadAccess "Usuarios"`: comparte el directorio C:\Datos con el nombre Datos y le asigna permisos SMB de _Control total_ al grupo _Admins. del dominio_ y permisos de _Leer_ al grupo _Usuarios_.
 
 ## Comandos para trabajar con el contenido de un fichero
 Existen muchas formas en Powershell de mostrar, filtrar y ordenar el contenido de un fichero. La más sencilla es usar el _cmdlet_ **`Get-Content`** para mostrarlo y luego usar **`Where-Object`**, **`Sort-Object`**, etc. para filtrarlo, ordenarlo, etc ya que estos comandos (como todos) trabajan sobre objetos y funcionan tanto sobre ficheros como sobre las líneas de un fichero.

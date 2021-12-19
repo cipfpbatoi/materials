@@ -10,6 +10,7 @@
   - [Creación de volúmenes reflejados (RAID-1)](#creación-de-volúmenes-reflejados-raid-1)
   - [RAID 5](#raid-5)
   - [Volúmenes dinámicos vs RAID por BIOS](#volúmenes-dinámicos-vs-raid-por-bios)
+  - [Powershell](#powershell)
 
 ## Introducción
 En Windows Server tenemos dos tipos de discos:
@@ -27,6 +28,8 @@ Podemos crear distintos tipos de volúmenes dinámicos:
 - **RAID-5** (paridad): se necesitan al menos 3 discos y proporciona tolerancia a fallos sin desperdiciar tanto espacio de disco como los volúmenes reflejados al no duplicarse la información guardada
 
 Tanto los discos básicos como los dinámicos se gestionan desde el **Administrador de discos**.
+
+Podéis ampliar la información en la página de [Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces).
 
 ## Administración de discos
 Para gestionar los discos utilizamos la herramienta _Administración de discos_ que encontramos dentro del _Administrador de equipos_ y es muy parecida a la de otras versiones de Windows. Algunas de las características que incorpora el Administrador de discos son:
@@ -118,4 +121,7 @@ La ventaja de los volúmenes sería su sencillez para configurarlos, además de 
 
 Así que si el presupuesto lo permite siempre es aconsejable montar un RAID por hardware.
 
-Puedes consultar la [web de Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) para obtener más información sobre los volúmenes o buscar diferentes páginas para ver [cómo crearlos con Powershell](https://searchstorage.techtarget.com/tip/PowerShell-tutorial-Managing-Windows-Storage-Spaces).
+## Powershell
+En la [web de Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) o en diferentes páginas como [cómo crearlos con Powershell](https://searchstorage.techtarget.com/tip/PowerShell-tutorial-Managing-Windows-Storage-Spaces) podemos ver cómo crear volúmenes con Powershell.
+
+También podemos ver la información sobre el comando `New-VirtualDisk` en la [web de Microsoft](https://docs.microsoft.com/en-us/powershell/module/storage/new-virtualdisk?view=windowsserver2022-ps&viewFallbackFrom=win10-ps).

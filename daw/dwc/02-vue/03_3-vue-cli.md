@@ -216,7 +216,7 @@ Si queremos usar un nuevo paquete en nuestra aplicación lo instalaremos con _np
 npm install nombre-paquete
 ```
 
-Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **--save** o **-S** (si se trata de una dependencia de producción) o bien **--dev** o **-D** (si es una dependencia de desarrollo). Ej.:
+Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **`--save`** o **`-S`** (si se trata de una dependencia de producción) o bien **`--dev`** o **`-D`** (si es una dependencia de desarrollo). Ej.:
 ```bash
 npm install -S axios
 ```
@@ -245,7 +245,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 ```
 
-Para usar los iconos de _Bootstrap 5_ debemos importar el css y ya podemos incluir los iconos en etiquetas _<i>_ como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Por ejemplo, incluimos en el _<style>_ del componente **App.vue**:
+Para usar los iconos de _Bootstrap 5_ debemos importar el css y ya podemos incluir los iconos en etiquetas _\<i>_ como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Por ejemplo, incluimos en el _\<style>_ del componente **App.vue**:
 ```javascript
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 ```
@@ -271,7 +271,7 @@ Respecto a los componentes de _Bootstrap_, para que funcionen sólo tenemos que 
 En lugar de usar atributos _data-bs-_ podemos _envolver_ los componentes bootstrap en componentes Vue como se explica en muchas páginas, como [Using Bootstrap 5 with Vue 3](https://stackoverflow.com/questions/65547199/using-bootstrap-5-with-vue-3).
 
 #### bootstrap-vue para Vue 2
-Como _Bootstrap 4_ sí incluía _jQuery_ y otras cosas innecesarias crearon para Vue 2 un _plugin_ llamado **_bootstrap-vue_** que es una implementación de _Bootstrap 4_ sin -JQuery_. El aspecto de los elementos varía un poco pero es muy parecido. 
+Como _Bootstrap 4_ sí incluía _jQuery_ y otras cosas innecesarias crearon para Vue 2 un _plugin_ llamado **_bootstrap-vue_** que es una implementación de _Bootstrap 4_ sin _jQuery_. El aspecto de los elementos varía un poco pero es muy parecido. 
 
 Podemos ver todo lo que incluye y cómo usarla en su [página oficial](https://bootstrap-vue.js.org/).
 

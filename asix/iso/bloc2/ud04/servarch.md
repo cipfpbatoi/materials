@@ -2,6 +2,7 @@
 - [Servicios de archivo y almacenamiento](#servicios-de-archivo-y-almacenamiento)
   - [Introducción](#introducción)
   - [Crear un recurso compartido](#crear-un-recurso-compartido)
+    - [Compartir una carpeta desde la terminal](#compartir-una-carpeta-desde-la-terminal)
     - [Publicar una carpeta compartida](#publicar-una-carpeta-compartida)
   - [Administrador de recursos del servidor de archivos (FSRM)](#administrador-de-recursos-del-servidor-de-archivos-fsrm)
     - [Cuotas de disco](#cuotas-de-disco)
@@ -34,6 +35,17 @@ Si compartimos un recurso desde a opción _Básico_ nos pregunta dónde crear la
 Si instalamos el **_Administrador de recursos del servidor de archivos_** podemos crear un nuevo recurso compartido usando la opción _Avanzado_ que además de las opciones del _Básico_ nos permite indicar:
 - el uso de esa carpeta (si es para archivos de un usuario -como su carpeta particular-, de un grupo -ficheros que usa un grupo de usuarios-, archivos de copia de seguridad o archivos de programa)
 - si queremos establecer cuotas en la carpeta (lo veremos más adelante).
+
+### Compartir una carpeta desde la terminal
+Algunos comandos de utilidad para trabajar con carpetas compartidas son:
+- `New-SmbShare -Name <recursocompartido> -Path <ruta a la carpeta> <Permisos> <usuario o grupo>`: compaarte una carpeta
+- `Remove-SmbShare -Name <recursocompartido> -force`: quita la compartición de una carpeta
+- `Get-FileShare`: muestra las carpetas compartidas que tenemos
+- `Get-FileShare -name <recursocompartido> | select *`: muestra todas las propiedades de una carpeta compartida
+- `Get-SmbShareAccess <recursocompartido>`: muestra los permisos SMB sobre dicho recurso compartido
+
+Ejemplo:
+`New-SMBShare -Name Datos -Path "C:\Datos" -FullAccess "Admins. del dominio" -ReadAccess "Usuarios"`: comparte el directorio C:\Datos con el nombre Datos y le asigna permisos SMB de _Control total_ al grupo _Admins. del dominio_ y permisos de _Leer_ al grupo _Usuarios_.
 
 ### Publicar una carpeta compartida
 Si queremos podemos publicar la carpeta compartida desde _Usuarios y equipos de Active Directory_ para que los usuarios la puedan encontrar más fácilmente (la pueden buscar con la herramienta de _Buscar en Active Directory_).

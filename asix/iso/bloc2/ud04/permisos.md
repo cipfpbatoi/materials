@@ -38,20 +38,20 @@ Sin embargo tenemos 7 permisos _estándar_ (como el de Escritura que a veces usa
 Recordad que al aplicar un permiso sobre una carpeta este permiso se hereda a todos los ficheros y subcarpetas que contenga (aunque se puede eliminar la herencia en un objeto si lo necesitamos).
 
 ### Establecer permisos NTFS desde la terminal
-El comando incluido en el sistema para establecer los permisos NTFS desde la línea de comandos es `iacls` (aunque tenemos muchas herramientas como xcalcs o subinacl que también permiten hacerlo pero tenemos que instalarlas puesto que no lo están por defecto).
+El comando incluido en el sistema para establecer los permisos NTFS desde la línea de comandos es `icacls` (aunque tenemos muchas herramientas como xcalcs o subinacl que también permiten hacerlo pero tenemos que instalarlas puesto que no lo están por defecto).
 
 Vamos a ver algunos ejemplos de cómo utilizarlo:
 - Para dar al grupo Ventas el permiso de Control total sobre la carpeta Prueba:
 ```powershell
-iacls D:\Pruebas /grant INFO2\Ventas:(F)
+icacls D:\Pruebas /grant INFO2\Ventas:(F)
 ```
 - Para quitar la herencia en la carpeta Prueba:
 ```powershell
-iacls D:\Pruebas /inheritance:d
+icacls D:\Pruebas /inheritance:d
 ```
 - Para quitar todos los permisos al grupo Usuarios sobre la carpeta Prueba:
 ```powershell
-iacls D:\Pruebas /remove:g Usuarios
+icacls D:\Pruebas /remove:g Usuarios
 ```
 
 Como podemos ver si utilizamos un grupo creado por nosotros tenemos que poner antes el nombre del dominio pero no para grupos predeterminados. La letra para indicar los permisos estándar es F (Full, control total), W (Write, escribir) y R (Read, leer). Para modificar pondremos (R,W).
