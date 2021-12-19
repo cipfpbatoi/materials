@@ -6,6 +6,7 @@
   - [Administrador de recursos del servidor de archivos (FSRM)](#administrador-de-recursos-del-servidor-de-archivos-fsrm)
     - [Cuotas de disco](#cuotas-de-disco)
     - [Filtrado de archivos](#filtrado-de-archivos)
+    - [FSRM con Powershell](#fsrm-con-powershell)
   - [iSCSI](#iscsi)
   - [Carpetas de trabajo](#carpetas-de-trabajo)
 
@@ -85,6 +86,57 @@ Como con las cuotas hay creadas unas plantillas que podemos usar o podemos crear
 - si se generará un evento
 - si se ejecutará un comando o script
 - si se generará un informe de almacenamiento
+
+### FSRM con Powershell
+Una vez hemos instalado el rol de _Administración de recursos del servidor de archivos_ (FSRM, _File Server Resource Manager_) Se añaden a PowerShell unos comandos que tienen el prefijo fsrm. Algunos de los más útiles son:
+- `Get-fsrmSetting`: devuelve o muestra la configuración de nuestro servidor de archivos
+- `New-fsrmQuotaTemplate`: nos va a permitir crear una nueva plantilla de cuotas
+- `New-fsrmAction`: nos permite definir una acción que utilizaremos una vez un usuario sobrepase el límite de umbral establecido
+- `New-fsrmQuotaThreshold`: nos va a permitir establecer un umbral a partir del cual generaremos una acción (enviar un correo,  notificar un evento, etc.)
+- `New-FsrmFileGroup`: nos permite definir un grupo de archivos para filtrar
+- `New-FsrmFileScreenTemplate`: nos va a permitir crear una plantilla con los grupos que nosotros elijamos
+
+Nos será de utilidad, definirnos variables para utilizarlas en los distintos comandos.
+
+**Ejemplo creación de cuota**
+Vamos a definir una cuota para el recurso compartido _E:\Shares\Diseny_ que cuando el usuario supere el umbral del 85% registre un evento de warning informando de lo ocurrido.
+
+Primero vamos a definirnos la variable _Action_ en la cual definiremos la acción a realizar cuando superemos el umbral, que va a ser registrarlo en el visor de eventos.
+```powershell
+$Action = New-FsrmAction -Type Event -EventType Warning -Body "El usuario [Source Io Owner] ha superado el 85% de la cuota de 10MB"
+```
+
+Después definimos el limite a partir del cual se generará la acción.
+```powershell
+$Limite = New-FsrmQuotaThreshold -Percentage 85 -Action $Action
+```
+
+Finalmente creamos la nueva plantilla asignándole el umbral que hemos establecido en la variable anterior.
+```powershell
+New-FsrmQuotaTemplate -Name "Limite para Diseño" -Size 50GB -Threshold $Limite
+```
+
+Una vez creada la plantilla, solo necesitamos asignarla.
+```powershell
+New-FsrmQuota -Path E:\Shares\Diseny -Template "Limite para Diseño"
+```
+
+**Ejemplo creación de filtro de archivos**
+Vamos a definir un grupo de archivos que usaremos para crear una plantilla que posteriormente asignaremos a un recurso compartido. Junto con todos los ejecutables, vamos a bloquear los archivos: *.pdf.
+
+Lo primero que hacemos es crear el grupo de archivos para incluir los pdf, jpg y html.
+```powershell
+New-FsrmFileGroup -Name "Grupo de archivos pdf" -IncludePattern "*.pdf"
+```
+
+A continuación creamos la plantilla con los grupos que queremos bloquear. Como necesitamos incluir más de un grupo a nuestra plantilla (un array de grupos) se deben añadir separados por comas utilizando el parámetro @("grupo1", "grupo2",...,"grupoN"). Esto sirve igual si queremos añadir a un grupo mas de un tipo de archivos. 
+```powershell
+New-FsrmFileScreenTemplate -Name "Bloquear los ejecutables y los archivos .pdf" -IncludeGroup @("Grupo de archivos pdf, jpg y html", "Bloquear archivos ejecutables")
+```
+
+Finalmente solo quedaría añadir esta plantilla al recurso compartido que queramos.
+
+En la página de Microsoft podemos ver los distintos [cmdlets FSMR](https://docs.microsoft.com/es-es/previous-versions/windows/powershell-scripting/jj900651(v%3dwps.620)).
 
 ## iSCSI
 iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
