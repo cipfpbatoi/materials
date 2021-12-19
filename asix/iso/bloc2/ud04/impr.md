@@ -50,7 +50,7 @@ Podemos instalar una nueva impresora de la misma forma que se hace en un cliente
 
 También es posible (y recomendable) hacerlo desde la herramienta **_Administración de impresión_** que nos permitirá tener más control sobre las impresoras y los drivers instalados. 
 
-**NOTA**: esta herramienta nos muestra el servidor local por lo que si queremos administrar otro servidor debemos instalar en él el rol de **`Servidor de impresión`** y después añadirlo desde el `menú Acción -> Agregar o quitar servidores` en la herramienta de _Administración de impresión_ del equipo en que lo queremos administrar. Podemos ver un vídeo de [cómo añadir una impresora](media/AddPrinter.mkv).
+**NOTA**: esta herramienta nos muestra el servidor local por lo que si queremos administrar otro servidor debemos instalar en él el rol de **`Servidor de impresión`** y después añadirlo desde el `menú Acción -> Agregar o quitar servidores` en la herramienta de _Administración de impresión_ del equipo en que lo queremos administrar. Podemos ver un vídeo de [cómo añadir una impresora](https://youtu.be/YGPE3Owa-WE).
 
 Lo normal es que se hubiera detectado la impresora en la primera pantalla pero como estamos instalando una impresora que no existe no es detectada (ni tampoco más adelante cuando le indicamos su IP).
 
