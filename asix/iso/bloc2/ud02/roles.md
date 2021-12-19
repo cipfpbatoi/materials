@@ -146,6 +146,12 @@ Marcaremos las que necesitemos, al menos:
 - **RSAT: Herramientas de Active Directory Domain Services y Ligthweigth Directory Services**: proporciona muchas de las herramientas del dominio como _Usuarios y Equipos de Active Directory_
 - **RSAT: Herramientas de Administración de directivas de grupo**: para crear y gestionar las directivas
 
+Hay otras que nos pueden ser de utilidad como:
+- **RSAT: Herramientas de servidor DNS**: para gestionar el servidor DNS instalado
+- **RSAT: Herramientas de servidor DHCP**: si instalamos el rol de _Servidor DHCP_
+- **RSAT: Herramientas de servicios de archivo**: si instalamos el rol de _Administrador de recursos del servidor de archivo_
+- y muchas otras
+
 **NOTA**: para poder instalar estas características el equipo debe tener acceso a Internet y activo el servicio _Windows Update_
 
 Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (desde `Administrar -> Agregar servidores`). Allí pinchamos en _'Buscar ahora'_, no es necesario escribir su nombre ni su dirección:

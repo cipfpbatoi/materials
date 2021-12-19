@@ -65,6 +65,8 @@ Por ejemplo, si tenemos un usuario móvil llamado opla que ha iniciado sesión e
 ### Creación de perfiles móviles de usuario
 En primer lugar crearemos en el servidor la carpeta donde almacenaremos todos los perfiles de los usuarios. La carpeta de perfiles tiene que estar compartida con permisos al menos de **Modificar** (tanto SMB como NTFS) para todos los usuarios que tengan perfil móvil. Esto es porque la carpeta con el perfil del usuario la crea el equipo cliente la primera vez que el usuario inicia sesión y lo hace con sus credenciales (es como si la creara el usuario por lo que necesita permisos de crear carpetas).
 
+**NOTA**: para crear y compartir carpetas podemos usar **`Servicios de archivo y almacenamiento`** dentro del `Administrador del servidor`.
+
 Después tenemos que especificar en la cuenta de usuario la ubicación física de su perfil (dentro de la carpeta creada anteriormente). Por ejemplo, en el servidor `ServInfo2` hemos compartido la carpeta `Perfiles` y vamos a indicar que el usuario `alumno` tiene un perfil móvil, En su cuenta ponemos:
 
 ![Perfil móvil](media/t4-12perfMobil.png)
