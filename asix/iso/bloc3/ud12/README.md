@@ -9,7 +9,6 @@ UD 12 - Centralización de la información con LDAP
 - [Introducción a la UD 12](#introducción-a-la-ud-12)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
 - [Introducción a LDAP](#introducción-a-ldap)
     - [Los objetos del directorio](#los-objetos-del-directorio)
 - [Instalación y configuración](#instalación-y-configuración)
@@ -25,17 +24,7 @@ UD 12 - Centralización de la información con LDAP
     - [Configuración de PAM](#configuración-de-pam)
 - [Ajustes de la configuración](#ajustes-de-la-configuración)
     - [Perfiles móviles](#perfiles-móviles)
-- [Proyecto de clase](#proyecto-de-clase)
-  - [Caso práctico](#caso-práctico)
-- [Retroalimentación](#retroalimentación)
-    - [Configurar el servidor](#configurar-el-servidor)
-    - [Configurar el dominio](#configurar-el-dominio)
-    - [Configurar el cliente](#configurar-el-cliente)
-- [Actividades de ampliación](#actividades-de-ampliación)
-  - [Actividad de ampliación 1](#actividad-de-ampliación-1)
-- [Retroalimentación](#retroalimentación-1)
-  - [Actividad de ampliación 2](#actividad-de-ampliación-2)
-- [Retroalimentación](#retroalimentación-2)
+- [Proyecto](#proyecto)
 - [Bibliografía](#bibliografía)
   - [Bibliografía](#bibliografía-1)
 
@@ -68,14 +57,6 @@ Los conceptos más importantes de esta unidad son:
 -   Administración del directorio
 -   Configuración de un cliente LDAP
 
-Conocimiento previo 
--------------------
-
-Antes de comenzar esta unidad de trabajo el alumno debería saber:
-
--   cómo utilizar software de virtualización para crear máquinas virtuales
--   cómo utilizar la terminal para realizar tareas básicas en una máquina
-
 Introducción a LDAP 
 ===================
 
@@ -85,7 +66,7 @@ Un directorio es una base de datos especial donde las consultas son frecuentes p
 
 El directorio se organiza como un árbol y tiene una entrada para cada objeto que almacena. Cada entrada consta de un conjunto de atributos y un atributo tiene un nombre (el tipo de atributo) y uno o más valores.
 
-LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentidicación centralizada  de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarsepara gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
+LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentidicación centralizada  de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
 
 Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Algunas de las más usadas son:
 
@@ -136,8 +117,7 @@ Habitualmente se utiliza el formato LDIF para describir un objeto. En él se def
         objectClass: person\
         objectClass: top
 
-Como veis, el DN se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a
-la izquierda).
+Como veis, el DN se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
 
 En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo y después su valor. Algunos nombres de atributo son:
 
@@ -154,7 +134,7 @@ Instalación y configuración
 
 Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio. En el caso de CentOS el paquete a instalar es **openldap** (aunque a partir de la versión 8 de RHEL este paquete ya no se incluye en los repositorios y habrá que descargar el código fuente, compilarlo e instalarlo a mano como se indica en la [web de openLdap](http://www.openldap.org/doc/admin24/install.html), o bien utilizar algún repositorio alternativo).
 
-Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd**.y nos pedirá la siguiente información:
+Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd** y nos pedirá la siguiente información:
 
 -   el nombre del dominio LDAP (si no lo proporcionamos será *nodomain*)
 -   el nombre de nuestra organización (es informativo y por eso puede tener espacios u otros caracteres)
@@ -188,25 +168,24 @@ Por ejemplo, para borrar todo nuestro directorio ejecutamos la orden:
 
 Para cambiar la contraseña de un usuario:
 
-ldappasswd -D "dn del administrador" -W -s nueva\_contraseña "dn del usuario"
+    ldappasswd -D "dn del administrador" -W -s nueva\_contraseña "dn del usuario"
 
 (ATENCIÓN: "*dn administrador*" quiere decir el dn de tu administrador: **cn=admin,dc=nuestroDominio,dc=lan**, o el que sea)
 
-Ejemplo: tenemos que crear una OU denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una OU es su nombre (atributo llamado *ou*) y es un objeto de las clases
-*top* y *organizationalUnit*. El RDN de este tipo de objeto es su único atributo: *ou*.
+Ejemplo: tenemos que crear una OU denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una OU es su nombre (atributo llamado *ou*) y es un objeto de las clases *top* y *organizationalUnit*. El RDN de este tipo de objeto es su único atributo: *ou*.
 
-Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou\_usuarios.ldif* con la información de la nuestra OU:
+Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuarios.ldif* con la información de la nuestra OU:
 
 ![ldap](./media/01-ou.png "ldap")
 
-A continuación ejecutamos la orden ldapadd para crearla:
+A continuación ejecutamos la orden *ldapadd* para crearla:
 
-    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=se” -W -f OU\_usuarios.ldif
+    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=se” -W -f OU_usuarios.ldif
 
 Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la
 información.
 
-Para eliminar esta ou ejecutaremos el comando ldapdelete:
+Para eliminar esta ou ejecutaremos el comando *ldapdelete*:
 
     ldapdelete -D “cn=admin,dc=cipfpbatoi,dc.es” -W “OU=Usuarios,dc=cipfpbatoi,dc.es”
 
@@ -221,42 +200,42 @@ Los principales objetos con que trabajaremos son:
 | organizativa       |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | Grupo              | cn                 | cn: nombre del     | posixGroup         |
-|                    |                    | grupo\             |                    |
-|                    |                    | gidNumber: gid\    |                    |
+|                    |                    | grupo              |                    |
+|                    |                    | gidNumber: gid     |                    |
 |                    |                    | memberUid: uid de  |                    |
 |                    |                    | los miembros,      |                    |
 |                    |                    | separados por coma |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| Usuario            | cn                 | uid: login del     | inetOrgPerson\     |
-|                    |                    | usuario\           | posixAccount\      |
-|                    |  o                 | uidNumber: nº id\  | shadowAccount      |
+| Usuario            | cn                 | uid: login del     | inetOrgPerson      |
+|                    |                    | usuario            | posixAccount       |
+|                    |  o                 | uidNumber: nº id   | shadowAccount      |
 |                    |                    | gidNumber: nº      |                    |
-|                    | uid                | grupo principal\   |                    |
+|                    | uid                | grupo principal    |                    |
 |                    |                    | sn: apellidos, ej. |                    |
-|                    |                    | Martínez Puig\     |                    |
+|                    |                    | Martínez Puig      |                    |
 |                    |                    | cn: nombre para    |                    |
 |                    |                    | mostrar del        |                    |
-|                    |                    | usuario\           |                    |
+|                    |                    | usuario            |                    |
 |                    |                    | homeDirectory:     |                    |
-|                    |                    | ruta de su home\   |                    |
+|                    |                    | ruta de su home    |                    |
 |                    |                    | loginShell: shell  |                    |
 |                    |                    | del usuario        |                    |
 |                    |                    | (/bin/bash o el    |                    |
-|                    |                    | que sea)\          |                    |
-|                    |                    | \                  |                    |
+|                    |                    | que sea)           |                    |
+|                    |                    |                    |                    |
 |                    |                    | Además podemos     |                    |
 |                    |                    | especificar muchos |                    |
 |                    |                    | más atributos      |                    |
-|                    |                    | cómo:\             |                    |
+|                    |                    | cómo:              |                    |
 |                    |                    | - givenName:       |                    |
-|                    |                    | nombre, ej. Jorge\ |                    |
+|                    |                    | nombre, ej. Jorge  |                    |
 |                    |                    | - userPassword:    |                    |
-|                    |                    | contraseña\        |                    |
+|                    |                    | contraseña         |                    |
 |                    |                    | - displayName:     |                    |
 |                    |                    | nombre para        |                    |
 |                    |                    | mostrar, ej. Jorge |                    |
-|                    |                    | Martínez Puig\     |                    |
-|                    |                    | - mail: su e-mail\ |                    |
+|                    |                    | Martínez Puig      |                    |
+|                    |                    | - mail: su e-mail  |                    |
 |                    |                    | - shadowExpire,    |                    |
 |                    |                    | shadowFlag,        |                    |
 |                    |                    | shadowWarning,     |                    |
@@ -266,25 +245,25 @@ Los principales objetos con que trabajaremos son:
 |                    |                    | password           |                    |
 +--------------------+--------------------+--------------------+--------------------+
 
-IMPORTANTE: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000 nosotros utilizaremos números a partir de **10000** para los uidNumber y gidNumber de usuarios y grupos del directorio.
+IMPORTANTE: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000 nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
 
-Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP /etc/openldap/schema. Algunos de los más comunes son:
+Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP **/etc/openldap/schema**. Algunos de los más comunes son:
 
 -   /etc/openldap/schema/core.schema
 -   /etc/openldap/schema/cosine.schema
 -   /etc/openldap/schema/inetorgperson.schema
 -   /etc/openldap/schema/nis.schema
 
-Si además vamos a necesitar que el servidor LDAP almacene cuentas Samba tendremos que asegurarnos que LDAP conoce la estructura y los datos necesarios de una cuenta Samba mediante la inclusión del correspondiente fichero de esquema samba.schema.
+Si además vamos a necesitar que el servidor LDAP almacene cuentas Samba tendremos que asegurarnos que LDAP conoce la estructura y los datos necesarios de una cuenta Samba mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
 
 LDAP Account Manager
 ====================
 
 Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramientas (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
 
-Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en[http://localhost/lam](http://localhost/lam.%20). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost habremos de poner la IP o el nombre de nuestro servidor LDAP.
+Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam.%20). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor LDAP.
 
-La configuración inicial puede hacerse desde el entorno gráfico en la opción LAM configuration. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
+La configuración inicial puede hacerse desde el entorno gráfico en la opción **LAM configuration**. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
 
 A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el dominio, el dn del administrador y las OU que utilizar por defecto para crear nuevos usuarios, grupos y equipos. No hace falta configurar los UID y GID porque por defecto ya utiliza valores superiores a 10000.
 
@@ -301,7 +280,7 @@ phpldapadmin y otros
 
 Otra herramienta web muy utilizada para administrar el directorio es phpLDAPAdmin. Lo instalamos con el paquete del mismo nombre.
 
-Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nuestras necesidades. Este archivo es /etc/phpldapadmin/config.php.
+Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nuestras necesidades. Este archivo es **/etc/phpldapadmin/config.php**.
 
 Las opciones a modificar son:
 
@@ -310,15 +289,15 @@ Las opciones a modificar son:
 -   Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
 -   También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea: $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
 
-Ahora podemos acceder a esta herramienta desde el navegador con http://mi\_servidor\_ldap/phpldapadmin, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
+Ahora podemos acceder a esta herramienta desde el navegador con **http://mi\_servidor\_ldap/phpldapadmin**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
 
-ATENCIÓN: cuando añadimos un usuario desde phpldapAdmin utiliza por defecto como RDN el cn del usuario en vez de la uid. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus objectClass (account, posixAccount y shadowAccount) y su RDN (userid, perque phpldapadmin denomina así al atributo uid).
+***ATENCIÓN***: cuando añadimos un usuario desde phpldapAdmin utiliza por defecto como RDN el cn del usuario en vez de la uid. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus objectClass (account, posixAccount y shadowAccount) y su RDN (userid, perque phpldapadmin denomina así al atributo uid).
 
 ### Otras herramientas
 
 Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es Webmin que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
 
-Otras herramientas (también de software libre como todas las que hemos visto) son GOsa o Web2ldap.
+Otras herramientas (también de software libre como todas las que hemos visto) son **GOsa** o **Web2ldap**.
 
 Configuración del cliente LDAP
 ==============================
@@ -329,7 +308,7 @@ De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. E
 
 En el proceso de validación de los usuarios en el cliente mediante un servidor LDAP van a participar dos servicios:
 
--   **NSS** (Name Service Switch): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (/etc/passwd, /etc/group y /etc/shadow), pero NSS permite utilizar además otras fuentes como un servidor NIS o un servidor LDAP
+-   **NSS** (Name Service Switch): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (/etc/passwd, /etc/group y /etc/shadow), pero NSS permite utilizar además otras fuentes como un servidor NIS o un servidor LDAP.
 -   **PAM** (Pluggable Authentication Module): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero PAM permite utilizar otros métodos como un servidor LDAP, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas GNU/Linux utilizan PAM y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
 
 Instalación en el cliente
@@ -451,107 +430,10 @@ Para que estos cambios tengan efecto debemos volver a ejecutar el comando
 
 Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
 
-Esto es lo que haremos en la siguiente unidad.
+Proyecto
+========
 
-Proyecto de clase
-=================
-
-Caso práctico 
--------------
-
-Ya tenemos nuestro servidor (en realidad 3 servidores) instalado y configurado. Ahora es el momento de crear el dominio y los diferentes usuarios.
-
-El primer paso será instalar y configurar el dominio. A continuación crearemos las OU, los grupos y los usuarios del mismo. Aún no serán usuarios móviles (esto lo dejaremos para la próxima Unidad).
-
-Por último configuraremos el cliente del aula que ya tenemos hecho (en el sistema GNU/Linux) para que puedan iniciar sesión e el mismo los usuarios del dominio. Probaremos a iniciar sesión con un usuario del dominio tanto en una terminal como en el sistema gráfico.
-
-Retroalimentación 
-=================
-
-### Configurar el servidor
-
-Lo primero que haremos es seleccionar con qué servidor de los 3 que hemos instalado nos quedaremos. Vamos a elegir el servidor Ubuntu o el Debian (como prefiráis).
-
-Ahora vamos a configurarlo como servidor LDAP. Recordad que el nombre del dominio  será aulaESO-xx.lan, o si queremos diferenciarlo del de Windows le podemos llamar aulaESOubuntu-xx.lan o aulaESOdebian-xx.lan.
-
-### Configurar el dominio
-
-A continuación crearemos las OU para nuestros objetos. Yo voy a utilizar LDAP Account Manager por comodidad y sólo voy a usar 3 OUs: Alumnos donde crearé todos mis alumnos, Profes donde crearé los profesores y Grupos donde crearé los grupos. En LAM configuraré como OU por defecto para los grupos la de Grupos y como OU por defecto para los usuarios
-Profes.
-
-Ahora vamos a crear los grupos que usaremos: gAlum1Eso, gAlum2Eso, gAlum3Eso, gAlum4Eso, gProfesInfo, gProfesEso. Recordad que queremos utilizar gid mayores de 5000 (también con los uidNumber de los usuarios).
-
-Por último crearemos los usuarios. Crearé todos los profesores y un par de alumnos por grupo.En el home de cada alumno en vez de algo como /home/usuario pondré algo como /home/movil/usuario de forma que tenga todos los usuarios móviles en un directorio aparte y así sea sencillo en la siguiente Unidad que sus homes se almacenen en el servidor y no e el
-cliente.
-
-Como actividad de ampliación se propone hacer un script para crear los 150 alumnos automáticamente.
-
-### Configurar el cliente
-
-Ahora configuraremos nuestros clientes para que validen los usuarios del dominio contra el servidor LDAP. Los pasos a realizar son:
-
--   instalar los paquetes para usar PAM y NSS con LDAP
--   configurar ldap-auth-config
--   configurar NSS. Una vez hecho comprobaremos que funciona correctamente con getent
--   ajustamos la configuración de /usr/share/pam-configs/ldap para que los usuarios puedan cambiar su contraseña y que se cree automáticamente su home. Podremos una máscara para que nadie más que el propietario tenga acceso a su carpeta personal
-
-Una vez hecho todo esto abriremos una terminal en el cliente e intentaremos convertirnos en un usuario del dominio. Por ejemplo para ser jsegura ejecutaremos el comando:
-
-    su jsegura
-
-Comprobaremos que podemos iniciar sesión, que se crea su home y que podemos cambiar su contraseña.
-
-Por último cerramos sesión en el cliente e intentamos iniciar sesión con un usuario del dominio. Algunos gestores de ventanas (como LightDM que usa Ubuntu) no permiten por defecto escribir el nombre del usuario sino simplemente elegirlo de la lista de usuarios locales.
-
-En ese caso deberemos cambiar el fichero de configuración para que pida el nombre del usuario en vez de elegirlo de la lista, En caso de Ubuntu es el fichero /usr/share/lightdm/lightdm.conf.d/50-unity\_greeter.conf y en la sección [SeatDefaults] debemos poner la línea:
-    
-    greeter-show-manual-login=true
-
-Actividades de ampliación 
-=========================
-
-Actividad de ampliación 1 
--------------------------
-
-Instala y configura el dominio e el servidor CentOS además de hacerlo en el servidor Ubuntu o Debian.
-
-Retroalimentación 
-=================
-
-Pon un nombre de dominio diferente al usado en Ubuntu o Debian, como aulaESOcentos-xx.lan.
-
-Actividad de ampliación 2 
--------------------------
-
-Como ya sabemos nuestros usuarios serán unos 150 alumnos de la ESO.
-
-Realiza un script que permita automatizar la creación de dichos usuarios.
-
-Retroalimentación 
-=================
-
-Como en el caso de Windows no vamos a proporcionaros el script sino unas indicaciones de cómo hacerlo.
-
-Posiblemente lo más sencillo sea que el script construya en fichero LDIF con los datos de todos los alumnos y posteriormente nosotros añadiremos dicho fichero al dicrecorio con el comando ldapadd.
-
-En este caso el bucle lo construiremos con un WHILE (en Windows usamosun bucle FOR). Un ejemplo es:
-
-while IFS=:  read  dato1 dato2 dato3 dato4 \
-do\
-    echo "El primer dato es " \$dato1\
-    echo "El segundo dato es " \$dato2\
-    echo "El tercer dato es " \$dato3\
-    echo "El cuarto dato es " \$dato4\
-    echo\
-done \< fichero.txt
-
-Este script coge cada línea de un fichero llamado fichero.txt que se supone que tiene 4 campos separados por el carácter ":" (IFS=:) y guarda cada campo en las variables indicadas (dato1, ..., dato4).
-
-A continuación muestra por pantalla cada dato en una línea y añade una línea en blanco tras el 4º dato.
-
-Recordad que el fichero LDIF debe contener para cada usuario una línea con su DN y otra para cada atributo del mismo y luego una línea en blanco entre cada usuario.
-
-Recordad también usar uidNumber mayores de 5000.
+-   [Proyecto de clase](./proyecto.md)
 
 Bibliografía 
 ============
