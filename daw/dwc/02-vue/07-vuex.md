@@ -1,22 +1,23 @@
 # Vuex
 Tabla de contenidos
-- [Introducción](#introducción)
-- [Instalar Vuex](#instalar-vuex)
-- [Usar Vuex](#usar-vuex)
-  - [Acceder al State desde un componente](#acceder-al-state-desde-un-componente)
-  - [Getters](#getters)
-  - [Mutations](#mutations)
-  - [Actions](#actions)
-- [state en formularios](#state-en-formularios)
-- [Saber más](#saber-más)
+- [Vuex](#vuex)
+  - [Introducción](#introducción)
+  - [Instalar y configurar Vuex](#instalar-y-configurar-vuex)
+  - [Usar Vuex](#usar-vuex)
+    - [Acceder al State desde un componente](#acceder-al-state-desde-un-componente)
+    - [Getters](#getters)
+    - [Mutations](#mutations)
+    - [Actions](#actions)
+  - [state en formularios](#state-en-formularios)
+  - [Saber más](#saber-más)
 
 
 ## Introducción
 Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. 
 
-En Vue la comunicación entre componentes se hace hacia abajo mediante _props_ y hacia arriba emitiendo eventos. Ya vimos que cuando distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con _event Bus_ y _state management pattern_. Estas soluciones pueden servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios con estos patrones. Para esos casos debemos usar _Vuex_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
+En Vue la comunicación entre componentes se hace hacia abajo mediante _props_ y hacia arriba emitiendo eventos. Ya vimos que cuando distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con _event Bus_ o _store pattern_. Estas soluciones pueden servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios con estos patrones. Para esos casos debemos usar _Vuex_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
 
-El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande (para aplicacioes pequeñas basta con un _eventBus_ o un _store  pattern_ hecho por nosotros). Como dijo _Dan Abramov_, el creador de _Redux_ 
+El uso de Vuex implica mayor complejidad en nuestra aplicación por lo que es recomendable su uso en aplicaciones de tamaño medio o grande (para aplicaciones pequeñas basta con un _eventBus_ o un _store  pattern_ hecho por nosotros). Como dijo _Dan Abramov_, el creador de _Redux_ 
 
 > Las librerías _Flux_ son como las gafas: lo sabrás cuando las necesites
 
@@ -36,7 +37,7 @@ Vuex centraliza la forma en que nuestros componentes se comunican entre ellos. C
 
 ![Vuex data flow](https://vuex.vuejs.org/vuex.png)
 
-Los componentes de Vue peden renderizar datos de Vuex y es reactivo frente a ellos (si se modifican se volverá arenderizar el componente). Si el componente quiere modificar estos datos debe emitir (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción emite una confirmación (**commit**) que **muta** el _Estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza de nuevo el componente para mostrar el nuevo estado. En el estado almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
+Los componentes de Vue pueden renderizar datos de Vuex y es reactivo frente a ellos (si se modifican se volverá a renderizar el componente). Si el componente quiere modificar estos datos debe enviar (**dispatch**) acciones que ejecutan un proceso (que puede ser asíncrono, por ejemplo una petición a una API). Cuando se resuelve la acción realiza una confirmación (**commit**) que **muta** el _estado_ de la aplicación (aquí podemos depurar con las _DevTools_) por lo que se renderiza de nuevo el componente para mostrar el nuevo estado. En _Vuex_ almacenaremos tanto datos (accesibles desde cualquier componente) como métodos que se utilicen en más de un componente.
 
 ## Instalar y configurar Vuex
 Si al crear nuestro proyecto Vue marcamos en las opciones que incluya Vuex la instalación y configuración de la herramienta se hará automáticamente:
@@ -45,7 +46,7 @@ Si al crear nuestro proyecto Vue marcamos en las opciones que incluya Vuex la in
 npm install -S vuex
 ```
 
-- se crea el fichero de vuex en **/src/store/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido es
+- se crea el fichero de vuex en **/src/store/index.js**. Es nuestro almacén donde se guardan todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Su contenido en Vue2 es
 
 ```javascript
 import Vue from 'vue'
@@ -56,7 +57,20 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
   },
-  getters: {
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
+  },
+})
+```
+y en Vue3
+```javascript
+import { createStore } from 'vuex'
+
+export default createStore({
+  state: {
   },
   mutations: {
   },
@@ -68,6 +82,7 @@ export default new Vuex.Store({
 ```
 
 - se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$store`. Es igual que pasaba con _vue-router_:
+
 ```javascript
 ...
 import router from './router'
@@ -80,14 +95,14 @@ new Vue({
 }).$mount('#app')
 ```
 
-Si no hemos seleccionado _vuex_ al crear el proyecto deberemos hacer estos 3 pasos nosotros manualmente. También tenemos la opción de no importar el _store_ en el fichero _main.js_ sino immportarlo únicamente en cada componente que vaya a utilizarlo.
+Si no hemos seleccionado _vuex_ al crear el proyecto deberemos hacer estos 3 pasos nosotros manualmente. También tenemos la opción de no importar el _store_ en el fichero _main.js_ sino importarlo únicamente en cada componente que vaya a utilizarlo.
 
 ## Usar Vuex
 El corazón de Vuex es el **_store_** que es un objeto donde almacenar **_states_** (datos globales) de la aplicación pero se diferencia de un objeto normal en que:
 - es reactivo
 - sólo se puede modificar haciendo _commits_ de mutaciones
 
-Desde la consola del navegador podemos usar las _devtools_ para ver nuestro almacén. Para ello vamos a Vue y elegmos la segunda opción (Vuex):
+Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro almacén. Para ello vamos a Vue y elegimos la segunda opción (Vuex):
 
 ![DevTools - Vuex](./img/DevTools-Vuex.png)
 
@@ -148,7 +163,7 @@ export default {
 }
 ```
 
-Si no hemos importado el almacén en el `main.js` lo tendremos que importar en cada componente que lo necesite:
+Si no hemos importado el almacén en el `main.js` lo tendremos que importar en cada componente que lo necesite (no es lo habitua):
 ```javascript
 import store from '@/store'
 
@@ -174,7 +189,7 @@ La mejor forma de acceder a propiedades del almacén es creando métodos _comput
   },
 ```
 
-Si queremos usar varias propedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
+Si queremos usar varias propiedades del _store_ en un componente en vez de hacer un método _computed_ para cada una podemos usar el _helper_ **mapState**:
 ```javascript
 import { mapState } from 'vuex'
 
@@ -184,7 +199,7 @@ import { mapState } from 'vuex'
 ```
 
 ### Getters
-En ocasiones no necesitamos una varibale del state sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un _getter_ en el almacén que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
+En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un _getter_ en el almacén que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
 ```javascript
 export default new Vuex.Store({
   state: {
@@ -268,7 +283,7 @@ Cada vez que se llama a una mutación se registra en las _DevTools_ y podemos ve
 
 ![DevTools - Mutations](./img/DevTools-Vuex-mutations.png)
 
-Si queremos pasar varios parámetros el _payload_ será un objeto. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
+Si queremos pasar varios parámetros el _payload_ deberá ser un objeto. En ese caso podemos pasar el nombre de la mutación como propiedad _type_ del objeto:
 ```javascript
 this.$store.commit({
   type: 'incrementBy',
@@ -278,7 +293,7 @@ this.$store.commit({
 
 Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llamar a acciones que ejecuten esas mutaciones. Recuerda que el código de las mutaciones **NO puede ser asíncrono**, por lo que no pueden, por ejemplo, hacer una llamada a _axios_.
 
-Para llamar a la mutación desde un componente hacemos:
+Para llamar a la mutación desde un componente haríamos:
 ```javascript
 `this.$store.commit('increment')`:
 ```
@@ -303,7 +318,7 @@ export default {
 ```
 
 ### Actions
-Son métodos del almacén como las mutaciones pero que **SÍ pueden hacer llamadas asíncronas**. Por tanto es aquí donde haremos las llamadas a la BBDD y cuando el servidor responda modificaremos los datos en del _store_. Lo mejor es no cambiarlos directamente en la _action_ (aunque podría hacerse) sino que la _action_ debería llamar a una _mutation_ que la cambie y así se registra en las _DevTools_. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
+Son métodos del almacén como las mutaciones pero que **SÍ pueden hacer llamadas asíncronas**. Por tanto es aquí donde haremos las llamadas a la BBDD y cuando el servidor responda modificaremos los datos del _store_. Lo mejor es no cambiarlos directamente en la _action_ (aunque podría hacerse) sino que la _action_ debería llamar a una _mutation_ que la cambie y así se registra en las _DevTools_. Las acciones reciben como parámetro un objeto _context_ con las mismas propiedades y métodos que el almacén, lo que permite:
 - lanzar una mutación con `context.commit(`
 - acceder a los datos con `context.state.`
 - acceder a los getters con `context.getters.`
@@ -365,7 +380,7 @@ Si la acción realiza una llamada asíncrona y el componente que la llama tiene 
   },
 ```
 
-Y en el componente tenemos los métodos _then_ y _catch_ para saber cuándo ha acabado:
+En este caso en el componente tenemos los métodos _then_ y _catch_ para saber cuándo ha acabado la acción:
 ```javascript
 this.$store.dispatch('addTodo', this.newTodo)
 .then((todo) => {   	              // se ejecutará si la acción ha hecho un resolve()
@@ -382,7 +397,7 @@ Si queremos usar un formulario para modificar un state del store no podemos asoc
 
 Tenemos 2 soluciones al problema:
 - podemos no usar el v-model sino descomponerlo en un _:value_ y un _@input_ como vimos al hablar de poner un input en un subcomponente
-- podemos ponerle a computed de ese state un setter y un getter como vimos en el capítulo de [Profundizando en Vue](./06-profundizando.md)
+- podemos ponerle al computed de ese state un setter y un getter como vimos en el capítulo de [Profundizando en Vue](./06-profundizando.md)
 
 Más información en la [documentación oficial](https://vuex.vuejs.org/guide/forms.html) de Vuex.
 

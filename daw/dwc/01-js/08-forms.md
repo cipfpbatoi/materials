@@ -45,7 +45,7 @@ input:invalid {
 
 La validación se realiza al enviar el formulario y al encontrar un error se muestra, se detiene la validación del resto de campos y no se envía el formulario.
 
-### Validación mediante Javascript
+### Validación mediante API de validación de formularios
 Mediante Javscript tenemos acceso a todos los campos del formulario por lo que podemos hacer la validación como queramos, pero es una tarea pesada, repetitiva y que provoca código spaguetti difícil de leer y mantener más adelante.
 
 Para hacerla más simple podemos usar la [API de validación de formularios](https://developer.mozilla.org/en-US/docs/Web/API/Constraint_validation) de HTML5 que nos da la ventaja de:
@@ -74,7 +74,7 @@ EN la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp)
 
 Para validar un formulario nosotros pero usando esta API debemos añadir al FORM el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
-### Ejemplo
+#### Ejemplo
 Un ejemplo sencillo de validación de un formulario podría ser:
 - index.html
 
@@ -127,8 +127,10 @@ input:invalid {
 }
 ```
 
-## Expresiones regulares
+### yup
+Existen múltiples librerías que facilitan enormenmente el tedioso trabajo de validar un formulario. Un ejemplo es [yup](https://www.npmjs.com/package/yup).
 
+## Expresiones regulares
 Las expresiones regulares permiten buscar un patrón dado en una cadena de texto. Se usan mucho a la hora de validar formularios o para buscar y reemplazar texto. En Javascript se crean poniéndolas entre caracteres `/` (o instanciándolas de la clase _RegExp_, aunque es mejor de la otra forma):
 ```javascript
 let cadena='Hola mundo';

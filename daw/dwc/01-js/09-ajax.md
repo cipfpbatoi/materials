@@ -558,6 +558,30 @@ En este código no estamos tratando los posibles errores que se pueden producir.
 
 <script async src="//jsfiddle.net/juansegura/sojvq7r0/embed/js,html,result/"></script>
 
+### Hacer varias peticiones simultáneamente. Promise.all
+En coasiones necesitamos hacer más de una pertición al servidor. Por ejemplo para obtener los productos y sus categorías podríamos hacer:
+```javascript
+async function getTable(table) {
+  const response = await fetch(MyAPI + table);
+  const data = await response.json();
+  return data;
+}
+
+async function pideDatos() {
+  const products = await getTable('/products');
+  const categories = await getTable('/categories');
+  return [products, categories];
+}
+```
+
+El problema es que no comienza la petición de las categorías hasta que se reciben los productos. La solución es _envolver_ todas las peticiones en una instrucción `Promise.all()` que hace todas las peticiones a la vez y no se resuelve hasta que se han resuelto TODAS las promesas que incluye:
+```javascript
+async function pideDatos() {
+  const myData = await Promise.all(getTable('/products'), getTable('/categories'))
+  return [products, categories] = myData
+}
+```
+
 ## Single Page Application
 Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin 'esperas' que dejen la página en blanco o no funcional mientras se recarga desde el servidor).
 

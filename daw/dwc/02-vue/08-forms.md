@@ -41,7 +41,7 @@ Para poder tener sincronizado el formulario con nuestros datos utilizamos la dir
 
 Vamos a ver cómo usar los diferentes tipos de campos con Vue.
 
-## Validar diferentes tipos de inputs
+## Utilizar diferentes tipos de inputs
 Podemos probar el resultado en la [documentación de Vue](https://v3.vuejs.org/guide/forms.html).
 
 ### input normal
@@ -66,12 +66,12 @@ Igual que cualquier input, le ponemos el **v-model**. Si no ponemos un _value_ l
 ```
 
 ### checkbox múltiple
-Se trata de varios checkbox pero cuyos valores se guardan en el mismo campo, que debe ser un array. Le ponemos el **v-model** y el **value** que queramos que se guarde. La variable (en este ejemplo _user.ciclos_ será un array y guardará el value de cada checkbox marcado:
+Se trata de varios checkbox pero cuyos valores se guardan en el mismo campo, que debe ser un **array**. Le ponemos el **v-model** y el **value** que queramos que se guarde. La variable (en este ejemplo _user.ciclos_ será un array y guardará el value de cada checkbox marcado:
 ```html
-<input type="checkbox" v-model="user.ciclosImparte" value="smx">Sistemas Microinformáticos y Redes<br>
-<input type="checkbox" v-model="user.ciclosImparte" value="asix">Administración de Sistemas Informáticos y Redes<br>
-<input type="checkbox" v-model="user.ciclosImparte" value="dam">Desarrollo de Aplicaciones Multiplataforma<br>
-<input type="checkbox" v-model="user.ciclosImparte" value="daw">Desarrollo de Aplicaciones Web<br>
+<input type="checkbox" v-model="user.ciclos" value="smx">Sistemas Microinformáticos y Redes<br>
+<input type="checkbox" v-model="user.ciclos" value="asix">Administración de Sistemas Informáticos y Redes<br>
+<input type="checkbox" v-model="user.ciclos" value="dam">Desarrollo de Aplicaciones Multiplataforma<br>
+<input type="checkbox" v-model="user.ciclos" value="daw">Desarrollo de Aplicaciones Web<br>
 ```
 Si tenemos marcadas las casillas 1 y 3 el valor de _user.ciclos_ será \['smx', 'dam'].
 
@@ -79,16 +79,16 @@ Si tenemos marcadas las casillas 1 y 3 el valor de _user.ciclos_ será \['smx', 
 Muchas veces las opciones a mostrar las tendremos en algún objeto (una tabla de la BBDD, ...). En ese caso podemos generar automáticamente un checkbox para cada elemento:
 ```javascript
 ciclos: [
-  {cod: 'smx', desc: 'Sistemas Microinformáticos y Redes'},
-  {cod: 'asix', desc: 'Administración de Sistemas Informáticos y Redes'},
-  {cod: 'dam', desc: 'Desarrollo de Aplicaciones Multiplataforma'},
-  {cod: 'daw', desc: 'Desarrollo de Aplicaciones Web'},
+  {cod: 'smx', desc: 'Sist. Microinformáticos y Redes'},
+  {cod: 'asix', desc: 'Adm. de Sistemas Informáticos y Redes'},
+  {cod: 'dam', desc: 'Desar. de Aplicaciones Multiplataforma'},
+  {cod: 'daw', desc: 'Desar. de Aplicaciones Web'},
 ]
 ```
 
 ```html
 <div v-for="ciclo in ciclos" :key="ciclo.cod">
-  <input type="checkbox" v-model="user.ciclosImparte" :value="ciclo.cod">{ { ciclo.desc }}<br>
+  <input type="checkbox" v-model="user.ciclos" :value="ciclo.cod">{ { ciclo.desc }}<br>
 </div>
 ```
 ### select
@@ -130,16 +130,16 @@ Todo esto es incómodo y poco productivo. Para mejorarlo podemos usar una de las
 * [VueFormGenerator](https://github.com/vue-generators/vue-form-generator)
 * ...
 
-## Validar con VeeValidate
+## Validar con VeeValidate v3 (para Vue2)
 _VeeValidate_ es una librería que permite validar formularios de una manera más sencilla. Para ello incluye 2 componentes:
 - **ValidationProvider**: para validar cada \<INPUT> lo pondremos dentro de este componente, así como el elemento en el que se mostrarán los mensajes del validador
 - **ValidationObserver**: este componente valida un formulario completo y dentro de él es donde pondremos el elemento \<FORM> a validar
 
 Por tanto cada INPUT estará dentro de su _ValidationProvider_ y el formulario entero dentro de un _ValidationObserver_.
 
-### Instalación
 Vamos a ver cómo usar este librería en Vue2. En Vue3 es incluso más sencillo (tenéis todo explicado en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
 
+### Instalación
 Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
 ```[bash]
 npm install vee-validate -S
@@ -184,7 +184,7 @@ y también es posible usarlo directamente desde un CDN:
 
 ### Uso básico de VeeValidate
 Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a la que aplicamos las reglas que deba cumplir:
-```javascript
+```html
 <validation-provider rules="required" v-slot="{ errors }" name="myinput">
   <input v-model="value" type="text">
   <span>{ { errors[0] }}</span>
@@ -197,7 +197,7 @@ Cada input a validar los envolveremos en una etiqueta `<validation-provider>` a 
 </validation-provider>
 ```
 
-**OJO**: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter **\|** pero SIN ESPACIOS entre ellas.
+**OJO**: Si ponemos varias reglas como en el ejemplo irán separadas por el carácter **\|** pero **SIN ESPACIOS** entre ellas.
 
 La validación se efectúa tras cada modificación del campo (es decir, tras pulsar cada tecla). Si queremos que no se haga hasta salir del campo le añadiremos al _ValidationProvider_ el atributo `mode="lazy"`.
 
@@ -425,7 +425,75 @@ export default {
 
 NOTA: `this.$refs.form` hace referencia al ValidationObserver, para lo que se le ha añadido `ref=form`
 
+En este caso el servidor habrá devuelto un objeto con una propiedad _errors_ cuyo contenido podría ser:
+```javascript
+errors: [
+  email: 'El email introducido no es un email válido',
+  password: 'La contraseña no cumple los criterios de complejidad exigidos'
+]
+```
+
 Podéis encontrar toda la información y ejemplos en ela [documentación de _VeeValidate_](https://vee-validate.logaretm.com/v3/advanced/server-side-validation.html).
+
+## Validar con VeeValidate v4 y posteriores (para Vue3)
+Tenéis toda la información así como un tutorial de cómo usar este librería en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
+
+La forma de instalarla es
+```[bash]
+npm install vee-validate@next -S
+```
+
+Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field />` y la etiqueta `<form>` por el componente `<Form />` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. Deberás importar los componentes de`'vee-validate'` y registrarlos.
+
+Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devlverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar.
+
+Ejemplo (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue](https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue)):
+```vue
+<template>
+  <div id="app">
+    <Form @submit="onSubmit">
+      <Field name="email" type="email" :rules="validateEmail" />
+      <ErrorMessage name="email" />
+
+      <button>Sign up</button>
+    </Form>
+  </div>
+</template>
+
+<script>
+import { Form, Field, ErrorMessage } from "vee-validate";
+
+export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  methods: {
+    onSubmit(values) {
+      console.log(values);
+    },
+    validateEmail(value) {
+      // if the field is empty
+      if (!value) {
+        return "This field is required";
+      }
+
+      // if the field is not a valid email
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!regex.test(value)) {
+        return "This field must be a valid email";
+      }
+
+      // All is good
+      return true;
+    },
+  },
+};
+</script>
+```
+
+Vee-validate 4 también permite usar librerías como **yup**.
 
 # Inputs en subcomponentes
 La forma enlazar cada input con su variable correspondiente es mediante la directiva _v-model_ que hace un enlace bidireccional: al cambiar la variable Vue cambia el valor del input y si el usuario cambia el input Vue actualiza la variable automáticamente.
@@ -445,7 +513,7 @@ Así que lo que haremos es:
 * en el componente del formulario ponemos un _v-model_ que se encargue de actualizar la variable
 
 ```html
-<form-input v-model=”campo”></form-input> 
+<form-input v-model="campo"></form-input> 
 ```
 * en el subcomponente del inpit ponemos 
   * un _v-bind_ que muestre el valor inicial
