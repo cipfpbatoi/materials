@@ -295,7 +295,7 @@ Podemos llamar a las mutaciones desde un componente, aunque lo habitual es llama
 
 Para llamar a la mutación desde un componente haríamos:
 ```javascript
-`this.$store.commit('increment')`:
+this.$store.commit('increment'):
 ```
 
 Al igual con con el estado o los _getters_ podemos _mapear_ las mutaciones a métodos locales para poder hacer `this.increment()` en lugar de `this.$store.commit('increment')` con el _helper_ _mapMutatios_:
@@ -307,7 +307,8 @@ export default {
   methods: {
     ...mapMutations([
       'increment', // map `this.increment()` to `this.$store.commit('increment')`
-      'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
+      'incrementBy' // map `this.incrementBy(amount)` 
+                    // to `this.$store.commit('incrementBy', amount)`
     ]),
     // Y podemos hacer 'alias' de las mutaciones
     ...mapMutations({
@@ -383,11 +384,11 @@ Si la acción realiza una llamada asíncrona y el componente que la llama tiene 
 En este caso en el componente tenemos los métodos _then_ y _catch_ para saber cuándo ha acabado la acción:
 ```javascript
 this.$store.dispatch('addTodo', this.newTodo)
-.then((todo) => {   	              // se ejecutará si la acción ha hecho un resolve()
+.then((todo) => {   	      // se ejecutará si la acción ha hecho un resolve()
   alert('Añadida la tarea ' + todo.id)
   this.$router.push('/todos')
 })
-.catch((error) => alert(error))	    // se ejecutará si la acción ha hecho un reject()
+.catch((error) => alert(error))	// se ejecutará si la acción ha hecho un reject()
 ```
 
 **NOTA**: si quien llama a una acción no necesita saber cuándo termina la acción ni su resultado la acción no es necesario que devuelva una promesa
