@@ -6,8 +6,8 @@ UD 11 - Instalación de un servidor con software libre
 
 - [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
   - [UD 11 - Instalación de un servidor con software libre](#ud-11---instalación-de-un-servidor-con-software-libre)
-- [Introducción a la UD 11](#introducción-a-la-ud-11)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+- [Introducción](#introducción)
+  - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimiento previo](#conocimiento-previo)
 - [Planificación de la instalación](#planificación-de-la-instalación)
@@ -47,11 +47,11 @@ UD 11 - Instalación de un servidor con software libre
       - [Creación de las particiones para datos](#creación-de-las-particiones-para-datos)
 - [Bibliografía](#bibliografía)
 
-Introducción a la UD 11
-=======================
+Introducción
+============
 
-Objetivos de la unidad
-----------------------
+Objetivos 
+---------
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
@@ -262,7 +262,7 @@ Red
 
 Puedes encontrar la información actualizada de cómo configurar la red en:
 
-- [https://cipfpbatoi.github.io/materials/altres/xarxa-linux/](https://cipfpbatoi.github.io/materials/altres/xarxa-linux/)
+- [Configuración de red](#red)
 - Configuración de red en Debian [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
 - SystemdNetworkd: [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
 - SystemdNetworkd: [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
