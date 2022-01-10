@@ -10,6 +10,7 @@
     - [Reglas de aplicación de permisos](#reglas-de-aplicación-de-permisos)
   - [Permisos SMB](#permisos-smb)
   - [Consideraciones sobre los permisos](#consideraciones-sobre-los-permisos)
+
 ## Introducción
 Para establecer las acciones que un usuario (o grupo) puede o no llevar a cabo en el sistema se definen permisos y derechos:
 - Un **derecho** es un atributo de un usuario que le permite realizar una acción que **afecta al sistema en conjunto**, no a un objeto o recurso concreto. En Windows hay un conjunto fijo de derechos y cada derecho tiene una lista de grupos y usuarios que lo tienen concedido.
@@ -28,14 +29,25 @@ Los permisos SMB sólo se establecen para recursos compartidos, por lo tanto a c
 Si un recurso tiene permisos SMB y NTFS se aplicará el más restrictivo (es decir que sólo podemos acceder o realizar cualquier acción sobre él si tenemos tanto permisos SMB como NTFS que nos los permitan).
 
 ## Permisos NTFS
-En la unidad 4 aprendimos a trabajar con estos permisos. Recordad que en la mayoría de ocasiones utilizaremos sólo 3 permiso estándar:
+Para cada carpeta o fichero podemos establecer gran número de permisos NTFS que nos permiten detallar qué puede hacer un usuario en esa carpeta o fichero:
+
+![Permisos NTFS avanzados](media/permisisNTFScarpeta.png)
+
+Sin embargo normalmente no es necesario tanto detalle por lo que existen los llamados **permisos estándar** que son una agrupación de ellos para los casos más comunes. De ellos normalmente utilizaremos sólo 3 permisos estándar:
 - **Lectura y ejecución**: permite leer el fichero o carpeta y mostrar su contenido. Si es un fichero ejecutable permite ejecutarlo y entrar dentro si es una carpeta. No permite modificar ni eliminar nada.
 - **Modificar**: incluye el permiso anterior y además permite modificar el fichero o carpeta y crear ficheros nuevos (si es una carpeta). No permite cambiar los permisos ni tomar posesión de la carpeta o fichero. Tampoco eliminar subcarpetas ni archivos que contenga el recurso (si es una carpeta) pero sí eliminar el recurso en sí.
 - **Control total**: incluye el permiso de _Modificar_ y además permite cambiar los permisos o el propietario del archivo o carpeta. En definitiva, permite hacer cualquier cosa con el fichero o carpeta.
 
-Sin embargo tenemos 7 permisos _estándar_ (como el de Escritura que a veces usamos) y muchos más especiales.
+![Permisos estándar](media/permisosEstandarCarpeta.png)
 
-Recordad que al aplicar un permiso sobre una carpeta este permiso se hereda a todos los ficheros y subcarpetas que contenga (aunque se puede eliminar la herencia en un objeto si lo necesitamos).
+Sin embargo tenemos 6 permisos _estándar_ que son, además de los 3 vistos:
+- **Mostrar el contenido de la carpeta**: se aplica sólo a carpetas y permite ver los nombres de ficheros y subcarpetas que tiene esta carpeta
+- **Lectura**: para una carpeta permite ver sus archivos y subcarpetas además de sus atributos, el propietario y sus permisos. Para un fichero permite además verlo
+- **Escritura**: este lo usaremos alguna vez sobre una carpeta y permite crear nuevos archivos y subcarpetas (pero no ver lo que hay si no se tiene permiso de _Lectura_). Sobre un fichero permite sobreescribirlo y cambiar sus atributos.
+
+Recordad que al aplicar un permiso sobre una carpeta este permiso se hereda a todos los ficheros y subcarpetas que contenga, ya que es la opción predeterminada a otorgar un permiso. Sin embargo podemos modificarlo en las _'Opciones avanzadas'_ para hacer que se aplique, por ejemplo, sólo a esta carpeta (con lo que no se heredaría). Las opciones que tenemos son:
+
+![Permiso se aplica a](media/seaplicaa.png)
 
 ### Establecer permisos NTFS desde la terminal
 El comando incluido en el sistema para establecer los permisos NTFS desde la línea de comandos es `icacls` (aunque tenemos muchas herramientas como xcalcs o subinacl que también permiten hacerlo pero tenemos que instalarlas puesto que no lo están por defecto).
@@ -64,7 +76,7 @@ A crear un archivo o carpeta se pone como propietario del mismo el usuario que l
 Podemos ver el propietario actual y cambiarlo desde el botón **`Cambiar`**.
  
 ### Permisos implícitos (heredados) y explícitos
-Al crear una carpeta o archivo este hereda los permisos de la carpeta en la que se crea. Y también si cambiamos los permisos de una carpeta, estos cambios se propagan a todas las carpetas y archivos que contiene.
+Al crear una carpeta o archivo este hereda los permisos de la carpeta en la que se crea. Y también si cambiamos los permisos de una carpeta, estos cambios se propagan a todas las subcarpetas y archivos que contiene.
 
 Estos permisos se llaman _implícitos_ o _heredados_ y son muy útiles porque evitan que sea necesario asignar los permisos a cada carpeta y archivo del equipo. Desde la ventana de opciones avanzadas se puede ver si un permiso es heredado o explícito:
 
@@ -74,20 +86,20 @@ En este ejemplo el permiso del grupo _'Administradores'_ es heredado y el del gr
 
 ![Seguridad](media/seguridad.png)
 
-Los permisos heredados no podemos quitarlos a menos que deshabilitemos la herencia en la carpeta.
+El inconveniente que tienen es que los permisos heredados no podemos quitarlos a menos que deshabilitemos la herencia en la carpeta.
 
 ### Deshabilitar la herencia
-Si queremos modificar los permisos heredados de una carpeta debemos deshabilitar la herencia desde la ventana de Opciones avanzadas:
+Si queremos modificar los permisos heredados de una carpeta debemos deshabilitar la herencia desde la ventana de _'Opciones avanzadas'_:
 
 ![Deshabilitar la herencia](media/deshabherencia.png)
 
 Al pulsar el botón de '_Deshabilitar herencia_' nos pregunta qué hacer con los permisos heredados:
-- **Convertirlos en permisos explícitos**: es la opción que escogeremos normalmente y deja los permisos que hay ahora pero como explícitos y así podemos modificarlos o eliminarlos
-- **Quitar todos los permisos heredados**: los elimina directamente
+- **Convertirlos en permisos explícitos**: es la opción que escogeremos normalmente. Deja los permisos que hay ahora pero convertidos en explícitos y así podemos modificarlos o eliminarlos
+- **Quitar todos los permisos heredados**: los elimina directamente (normalmente no lo haremos ya que no querremos eliminar los permisos de _SYSTEM_, _Administrador_, etc.)
 
 Si modifican los permisos de la carpeta padre, los nuevos permisos ya no se heredarán en esta carpeta.
 
-También cuando asignamos un nuevo permiso a una carpeta podemos hacer que no se herede en las carpetas y archivos que contiene si lo hacemos desde opciones avanzadas:
+Como hemos visto antes, cuando asignamos un nuevo permiso a una carpeta podemos hacer que no se herede en las carpetas y archivos que contiene si lo hacemos desde opciones avanzadas:
 
 ![Se aplica a](media/seaplicaa.png)
 
@@ -99,24 +111,24 @@ Si copiamos un archivo o carpeta a otra ubicación se quitan sus permisos y here
 Si se mueve un archivo o carpeta dentro del mismo volumen conserva sus permisos pero si es a otro volumen pasa igual que en la copia.
 
 ### Reglas de aplicación de permisos
-- Los permisos son acumulativos: un usuario posee todos los permisos suyos más todos los de los grupos a que pertenece.
-- No tener un permiso es equivalente a tener el permiso denegado.
+- Los permisos son acumulativos: un usuario posee todos los permisos otorgados a él más todos los otorgados a los grupos a que pertenece.
+- Los usuarios y grupos que no aparecen en la lista de permisos no tienen ningún permiso sobre ese archivo o carpeta.
 - En caso de conflicto los permisos explícitos tienen prioridad sobre los heredados y los permisos de denegación sobre los de concesión.
 - Un permiso negativo (de denegación) tiene prioridad sobre un positivo (de concesión). Por ejemplo si a un usuario que pertenece a un grupo con permisos sobre una carpeta le denegamos el permiso no tendrá el permiso sobre la carpeta. Así mismo si otorgamos permiso al usuario pero alguno de los grupos a los que pertenece tiene denegado ese permiso el usuario no tendrá el permiso porque la denegación tiene prioridad sobre la concesión.
 
 ## Permisos SMB
-Al compartir un recurso en la red podemos definir los permisos para la utilización del recurso. Estos permisos varían en función del protocolo por el cual se comparte el recurso. Si el protocolo es NFS veremos los permisos que podemos asignar en el tema referente a los permisos en Linux. El protocolo CIFS/SMB que es el que utiliza Windows de forma predeterminada en sus redes.
+Al compartir un recurso en la red podemos definir los permisos para la utilización del recurso. Estos permisos varían en función del protocolo por el cual se comparte el recurso. Si el protocolo es NFS veremos los permisos que podemos asignar en el tema referente a los permisos en Linux. Normalmente el protocolo que usaremos es CIFS/SMB que es el que utiliza Windows de forma predeterminada en sus redes.
 
 Para compartir una carpeta vamos a sus _Propiedades_ y entramos en la pestanya _Compartir_:
 
 ![Compartir](media/compartir.png)
 
-Desde el botón de **_Uso compartido avanzado_** los permisos que podemos establecer son:
-- Leer (o Lector si utilizamos el asistente para compartir): da permiso para acceder, es decir, entrar dentro de las carpetas y abrir y leer los ficheros. Equivale a _Lectura y ejecución_ en NTFS
-- Cambiar (o Colaborador): otorga permiso para modificar archivos y subcarpetes, eliminar y crear nuevas. Es el equivalente a _Modificar_ en NTFS
-- Control total (o Copropietario): otorga todos los permisos sobre el recurso, es decir, permite también cambiar los permisos
+Desde el botón de **_Uso compartido avanzado_** podemos establecer los permisos SMB que son:
+- **Leer** (o _Lectura_ si utilizamos el asistente para compartir): da permiso para acceder, es decir, entrar dentro de las carpetas y abrir y leer los ficheros. Equivale a _Lectura y ejecución_ en NTFS
+- **Cambiar** (o _Lectura y escritura_): otorga permiso para modificar archivos y subcarpetes, eliminar y crear nuevas. Es el equivalente a _Modificar_ en NTFS
+- **Control total** (o _Propietario_): otorga todos los permisos sobre el recurso, es decir, permite también cambiar los permisos
 
-Cada permiso incluye el anterior (si un grupo tiene el permiso de Control total también tiene el de Cambiar y si un grupo tiene este también tiene el de Leer).
+Cada permiso incluye el anterior (si un grupo tiene el permiso de _Control total_ también tiene el de _Cambiar_ y si un grupo tiene este también tiene el de _Leer_).
 
 ![Uso compartido avanzado](media/usocompartidoavanzado.png)
 
@@ -126,13 +138,13 @@ Cuando establecemos los permisos tenemos la opción de **Permitir** o **Denegar*
 
 Siempre intentaremos no utilizar la opción de denegar, esta opción tiene prioridad sobre _Permitir_.
 
-Si en lugar de entrar en _Uso compartido avanzado_ compartimos la carpeta desde el botón de **_Compartir_** los permisos que podemos establecer son _Lectura_ o _Lectura y escritura_. Si lo hacemos así se añadirán también esos permisos en NTFS automáticamente (lo cual no siempre es lo que queremos).
+Si en lugar de entrar en _Uso compartido avanzado_ compartimos la carpeta desde el botón de **_Compartir_** los permisos que podemos establecer son _Lectura_ o _Lectura y escritura_. Si lo hacemos así **se añadirán también esos permisos en NTFS automáticamente** (lo cual no siempre es lo que queremos).
 
 Hay que recordar que los permisos SMB sólo se aplican cuando el usuario accede a la carpeta compartida desde la red. Si accede localmente estos permisos no se tienen en cuenta.
 
 ## Consideraciones sobre los permisos
 - Siempre daremos permisos a grupos y no a usuarios individuales puesto que así será mucho más fácil su administración. 
-- Intentaremos no dar nunca permisos a grupo _Todos_, mejor darlos al grupo _Usuarios_ o _Usuarios del dominio_.
-- Intentaremos no utilizar la opción de _denegar_, especialmente sobre grupos genéricos como _Usuarios_ o _Todos_, puesto que esta opción tiene prioridad sobre _Permitir_. Por ejemplo si permitimos el permiso de _Control total_ al usuario _Administrador_ pero lo denegamos para el grupo _Usuarios_, como el _Administrador_ también pertenece a este grupo estamos dándole y quitándole el permiso y denegar tiene prioridad con lo cual no tendría ningún permiso sobre el recurso.
+- Intentaremos no dar nunca permisos al grupo _Todos_, mejor darlos al grupo _Usuarios_ o _Usuarios del dominio_.
+- Intentaremos no utilizar la opción de _denegar_, especialmente sobre grupos genéricos como _Usuarios_ o _Todos_, puesto que esta opción tiene prioridad sobre _Permitir_. Por ejemplo si permitimos el permiso de _Control total_ al usuario _Administrador_ pero lo denegamos para el grupo _Todos_, como el _Administrador_ también pertenece a este grupo estamos dándole y quitándole el permiso y denegar tiene prioridad con lo cual no tendría ningún permiso sobre el recurso.
 - En caso de no marcar ningún permiso en un grupo este no tendría ningún permiso. En este caso es mejor quitar ese grupo
 
