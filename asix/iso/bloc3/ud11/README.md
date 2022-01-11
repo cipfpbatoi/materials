@@ -262,7 +262,7 @@ Red
 
 Puedes encontrar la información actualizada de cómo configurar la red en:
 
-- [Configuración de red](#red)
+- [Configuración de red](https://cipfpbatoi.github.io/materials/asix/iso/bloc3/ud11/red)
 - Configuración de red en Debian [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
 - SystemdNetworkd: [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
 - SystemdNetworkd: [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
