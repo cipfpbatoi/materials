@@ -1,37 +1,32 @@
-
 # Formularios en Vue
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
+- [Formularios en Vue](#formularios-en-vue)
 - [Introducción](#introducción)
-  - [Validar diferentes tipos de inputs](#validar-diferentes-tipos-de-inputs)
+  - [Utilizar diferentes tipos de inputs](#utilizar-diferentes-tipos-de-inputs)
     - [input normal](#input-normal)
     - [radio button](#radio-button)
     - [checkbox](#checkbox)
-    - [checkbox múltiple](#checkbox-m%C3%BAltiple)
-      - [Generar los checkbox automáticamente](#generar-los-checkbox-autom%C3%A1ticamente)
+    - [checkbox múltiple](#checkbox-múltiple)
+      - [Generar los checkbox automáticamente](#generar-los-checkbox-automáticamente)
     - [select](#select)
     - [Ejemplo](#ejemplo)
 - [Validar formularios](#validar-formularios)
-  - [Validar con VeeValidate](#validar-con-veevalidate)
-    - [Instalación](#instalaci%C3%B3n)
-    - [Uso básico de VeeValidate](#uso-b%C3%A1sico-de-veevalidate)
+  - [Validar con VeeValidate v3 (para Vue2)](#validar-con-veevalidate-v3-para-vue2)
+    - [Instalación](#instalación)
+    - [Uso básico de VeeValidate](#uso-básico-de-veevalidate)
     - [Personalizar el mensaje del validador](#personalizar-el-mensaje-del-validador)
     - [Idioma de los mensajes](#idioma-de-los-mensajes)
-    - [Crear nuevas reglas de validación](#crear-nuevas-reglas-de-validaci%C3%B3n)
+    - [Crear nuevas reglas de validación](#crear-nuevas-reglas-de-validación)
     - [Parámetros de las reglas](#parámetros-de-las-reglas)
     - [Estados de validación](#estados-de-validación)
     - [Validar al enviar el formulario](#validar-al-enviar-el-formulario)
-    - [Validación del lado del servidor](#validaci%C3%B3n-del-lado-del-servidor)
+    - [Validación del lado del servidor](#validación-del-lado-del-servidor)
+  - [Validar con VeeValidate v4 y posteriores (para Vue3)](#validar-con-veevalidate-v4-y-posteriores-para-vue3)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
   - [v-model en subcomponente input](#v-model-en-subcomponente-input)
     - [Ejemplo](#ejemplo-1)
-    - [Validación con Vee Validate](#validaci%C3%B3n-con-vee-validate)
+    - [Validación con Vee Validate](#validación-con-vee-validate)
   - [Slots](#slots)
     - [Ejemplo](#ejemplo-2)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Introducción
 Para poder tener sincronizado el formulario con nuestros datos utilizamos la directiva **v-model** en cada campo. Algunos modificadores útiles de _v-model_ son:
@@ -208,12 +203,12 @@ Podemos ver todas las [reglas disponibles](https://logaretm.github.io/vee-valida
 * tipos de datos: _alpha_ (sólo caracteres alfanuméricos), _alpha_num_ (alfanuméricos o números), _numeric_, _integer_,  _email_, ...
 * _min_:4 (longitud mínima 4), _max_:50
 * _min_value_:18 (debe ser un nº >= 18), _max_value_:65
-* _between_:18:65, _date\_detween_, _in_:1,2,3, _not\_in:1,2,3, ...
+* _between_:18:65, _date\_between_, _in_:1,2,3, _not\_in_:1,2,3, ...
 * _regex_: debe concordar con la expresión regular pasada
 * _is_ compara un campo con otro:
 * ficheros: _mimes_, _image_, _size_
 
-Las más comunes de estas reglas (required, min, max, email, ...) pueden ser registradas por Vee directamente desde los atributos del INPUT (required, minlength, ...) sin necesidad de definir un atributo `rules` en el ValidatorProvider.
+Las más comunes de estas reglas (_required_, _min_, _max_, _email_, ...) pueden ser registradas por Vee directamente desde los atributos del INPUT (_required_, _minlength_, ...) sin necesidad de definir un atributo `rules` en el ValidatorProvider.
 
 ### Personalizar el mensaje del validador
 Para personalizar el mensaje simplemente lo indicamos en el _extend_, por ejemplo para personalizar el mensaje de la regla _required_ haremos:
@@ -226,9 +221,9 @@ extend('required', {
 ```
 
 En el mensaje podemos usar 3 variables:
-- \_field\_: el nombre del campo (definido por el atributo _name_ del ValidationProvider o, si no lo tiene, por el atributo _name_ o _id_ del input que contiene)
-- \_value\_: el valor actual del campo
-- \_rule\_: el nombre de la regla de validación que se está aplicando
+- _\_field\__: el nombre del campo (definido por el atributo _name_ del ValidationProvider o, si no lo tiene, por el atributo _name_ o _id_ del input que contiene)
+- _\_value\__: el valor actual del campo
+- _\_rule\__: el nombre de la regla de validación que se está aplicando
 
 Por ejemplo el mensaje del required podría ser:
 ```javascript
@@ -339,7 +334,7 @@ Para deshabilitar el botón de enviar obtendremos del componente _ValidationObse
 ```html
 <template>
   <ValidationObserver v-slot="{ invalid }">
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="sendForm">
       <ValidationProvider name="E-mail" rules="required|email" v-slot="{ errors }">
         <input v-model="email" type="email">
         <span>{{ errors[0] }}</span>
@@ -359,7 +354,7 @@ Si lo que queremos es que no se ejecute la función del _submit_ si el formulari
 ```html
 <template>
   <ValidationObserver v-slot="{ handleSubmit }">
-    <form @submit.prevent="handleSubmit(onSubmit)">
+    <form @submit.prevent="handleSubmit(sendForm)">
       <ValidationProvider name="E-mail" rules="required|email" v-slot="{ errors }">
         <input v-model="email" type="email">
         <span>{{ errors[0] }}</span>
@@ -378,7 +373,7 @@ Si lo que queremos es que no se ejecute la función del _submit_ si el formulari
 Encontramos más información de cómo hacer validar formularios en la [documentación de vee-validate](https://vee-validate.logaretm.com/v3/guide/forms.html) en la documentación de Vee Validate.
 
 ### Validación del lado del servidor
-En ocasiones hay validaciones que obligatoriamente debe hacer el servidor, como comprobar si un nombre de usuario ya existe. Podemos integrar fácilmente los errores devueltos por el servidor en _VeeValidate_. Para ello sólo necesitamos que el servidor devuelva los errores deontro de un objeto cuyas propiedades deben coincidir con el _name_ o el _vid_ de los campos del formulario ya que _VeeValidate_ proporciona el método _setErrors_ que automáticamente asigna cada error del objeto devuelto por el servidor al campo correspondiente. Ejemplo:
+En ocasiones hay validaciones que obligatoriamente debe hacer el servidor, como comprobar si un nombre de usuario ya existe. Podemos integrar fácilmente los errores devueltos por el servidor en _VeeValidate_. Para ello sólo necesitamos que el servidor devuelva los errores dentro de un objeto cuyas propiedades deben coincidir con el _name_ o el _vid_ de los campos del formulario ya que _VeeValidate_ proporciona el método _setErrors_ que automáticamente asigna cada error del objeto devuelto por el servidor al campo correspondiente. Ejemplo:
 
 ```html
 <template>
@@ -423,7 +418,7 @@ export default {
 </script>
 ```
 
-NOTA: `this.$refs.form` hace referencia al ValidationObserver, para lo que se le ha añadido `ref=form`
+NOTA: `this.$refs.form` hace referencia al ValidationObserver, para lo que se le ha añadido `ref="form"`
 
 En este caso el servidor habrá devuelto un objeto con una propiedad _errors_ cuyo contenido podría ser:
 ```javascript
@@ -452,8 +447,11 @@ Ejemplo (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-
 <template>
   <div id="app">
     <Form @submit="onSubmit">
-      <Field name="email" type="email" :rules="validateEmail" />
+      <Field name="email" type="email" v-model="email" :rules="validateEmail" />
       <ErrorMessage name="email" />
+
+      <Field name="password" type="password" v-model="password" :rules="validatePassword" />
+      <ErrorMessage name="password" />
 
       <button>Sign up</button>
     </Form>
@@ -488,12 +486,68 @@ export default {
       // All is good
       return true;
     },
+    validatePassword(value) {
+      // if the field is empty
+      if (!value) {
+        return "This field is required";
+      }
+
+      // if the length is less than 8 characters
+      if (value.length < 8) {
+        return "The length of this field must be at least 8 characters";
+      }
+
+      // All is good
+      return true;
+    }
   },
 };
 </script>
 ```
 
-Vee-validate 4 también permite usar librerías como **yup**.
+Vee-validate 4 también permite usar librerías como [**yup**](https://www.npmjs.com/package/yup). En este caso la validación es casi automática como se muestra en la documentación de [vee-validate](https://vee-validate.logaretm.com/v4/guide/components/validation#validating-fields-with-yup). El ejemplo anterior quedaría:
+```vue
+<template>
+  <div id="app">
+    <Form @submit="onSubmit" :validation-schema="mySchema">
+      <Field name="email" type="email" v-model="email" />
+      <ErrorMessage name="email" />
+
+      <Field name="password" type="password" v-model="password" />
+      <ErrorMessage name="password" />
+
+      <button>Sign up</button>
+    </Form>
+  </div>
+</template>
+
+<script>
+import { Form, Field, ErrorMessage } from "vee-validate";
+import * as yup from 'yup';
+
+export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  data() {
+    const mySchema = yup.object({
+      email: yup.string().required().email(),
+      password: yup.string().required().min(8),
+    })
+    return {
+      mySchema
+    }
+  },
+  methods: {
+    onSubmit(values) {
+      console.log(values);
+    },
+  },
+};
+</script>
+```
 
 # Inputs en subcomponentes
 La forma enlazar cada input con su variable correspondiente es mediante la directiva _v-model_ que hace un enlace bidireccional: al cambiar la variable Vue cambia el valor del input y si el usuario cambia el input Vue actualiza la variable automáticamente.

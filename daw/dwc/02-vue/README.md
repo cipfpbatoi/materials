@@ -18,10 +18,10 @@ Contenidos:
 1. [Peticiones Ajax: axios](./04-axios.md)
 1. [SPA: vue-router](./05-vue-router.md)
 1. [Profundizando en Vue](./06-profundizando.md)
-1. [Formularios](./07-forms.md)
-1. [Vuex](./08-vuex.md)
-1. [Testeando componentes](./0x-testing.md)
-1. [Y más...](./09-cosas.md)
+1. [Vuex](./07-vuex.md)
+1. [Formularios](./08-forms.md)
+2. [Testeando componentes](./0x-testing.md)
+3. [Y más...](./09-cosas.md)
 
 Podemos encontrar infinidad de documentación en Internet para ampliar lo que veremos en este bloque. Hay que destacar especialmente la [documentación oficial de Vue 2](https://vuejs.org/v2/guide/index.html) [y de Vue 3](https://v3.vuejs.org/) que es muy completa. También podemos encontrar páginas, tutoriales o libros.
 

@@ -72,6 +72,12 @@ Si volem afegir més usuaris a un grup o grups dins d'altres, hem de separar per
 samba-tool group addmembers g_empresa00 g_administratiu00,g_SAT00
 ```
 
+Per a canviar la contrasenya d'un usuari, per exemple jsegura, farem:
+
+```bash
+samba-tool user setpassword jsegura
+```
+
 Igual que en els grups podem vore totes les opcions amb els usuaris executant l'ordre:
 ```bash
 samba-tool user -h

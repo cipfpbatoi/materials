@@ -338,6 +338,14 @@ Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para 
 </script>	
 ```
 
+## Imágenes
+Lo habitual es guardar las imágenes en la carpeta `assets`. Para que se carguen correctamente usaremos en su atributo `src` la función `require` con la URL de la imagen. Ejemplo:
+```html
+<td>  
+  <img :src="require('../assets/elPatitoFeo.jpeg')" height="100px" alt="El Patito Feo">
+</td>
+```
+
 ## Transiciones
 Vue permite controlar transiciones en nuestra aplicación poniendo el código CSS correspondiente y añadiéndole al elemento el atributo _transition_. Podemos encontrar más información en la [documentación oficial de Vue](https://vuejs.org/v2/guide/transitions.html).
 
