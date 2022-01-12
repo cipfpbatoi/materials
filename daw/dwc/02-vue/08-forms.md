@@ -21,6 +21,8 @@
     - [Validar al enviar el formulario](#validar-al-enviar-el-formulario)
     - [Validación del lado del servidor](#validación-del-lado-del-servidor)
   - [Validar con VeeValidate v4 y posteriores (para Vue3)](#validar-con-veevalidate-v4-y-posteriores-para-vue3)
+    - [Validar con vee-validate y yup](#validar-con-vee-validate-y-yup)
+    - [Personalizar los mensajes de yup](#personalizar-los-mensajes-de-yup)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
   - [v-model en subcomponente input](#v-model-en-subcomponente-input)
     - [Ejemplo](#ejemplo-1)
@@ -505,6 +507,7 @@ export default {
 </script>
 ```
 
+### Validar con vee-validate y yup
 Vee-validate 4 también permite usar librerías como [**yup**](https://www.npmjs.com/package/yup). En este caso la validación es casi automática como se muestra en la documentación de [vee-validate](https://vee-validate.logaretm.com/v4/guide/components/validation#validating-fields-with-yup). El ejemplo anterior quedaría:
 ```vue
 <template>
@@ -547,6 +550,25 @@ export default {
   },
 };
 </script>
+```
+
+### Personalizar los mensajes de yup
+Para personalizar los mensajes de error debemos definir un objeto con los nuevos mensajes. Las validaciones no incluidas mantendrán el mensaje original. Ejemplo:
+```javascript
+import * as yup from 'yup';
+import { setLocale } from 'yup';
+setLocale({
+  mixed: {
+    default: 'Campo no válido',
+    required: 'Eel campo no puede estar vacío aquí'
+  },
+  string: {
+    min: 'El campo debe tener al menos ${max} caracteres'
+  },
+  number: {
+    min: 'El valor del campo debe ser mayor que ${min}',
+  },
+});
 ```
 
 # Inputs en subcomponentes
