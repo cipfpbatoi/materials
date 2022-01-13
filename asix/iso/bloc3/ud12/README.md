@@ -6,8 +6,8 @@ UD 12 - Centralización de la información con LDAP
 
 - [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
   - [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
-- [Introducción a la UD 12](#introducción-a-la-ud-12)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+- [Introducción](#introducción)
+  - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
 - [Introducción a LDAP](#introducción-a-ldap)
     - [Los objetos del directorio](#los-objetos-del-directorio)
@@ -28,11 +28,11 @@ UD 12 - Centralización de la información con LDAP
 - [Bibliografía](#bibliografía)
   - [Bibliografía](#bibliografía-1)
 
-Introducción a la UD 12
-=======================
+Introducción
+============
 
-Objetivos de la unidad
-----------------------
+Objetivos
+---------
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
@@ -66,12 +66,12 @@ Un directorio es una base de datos especial donde las consultas son frecuentes p
 
 El directorio se organiza como un árbol y tiene una entrada para cada objeto que almacena. Cada entrada consta de un conjunto de atributos y un atributo tiene un nombre (el tipo de atributo) y uno o más valores.
 
-LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentidicación centralizada  de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
+LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentidicación centralizada de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
 
 Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Algunas de las más usadas son:
 
--   Active Directory: es la implementación que utiliza Microsoft para sus dominios
--   openLDAP: es una implementación libre y es la más usada en sistemas GNU/Linux
+-   **Active Directory**: es la implementación que utiliza Microsoft para sus dominios
+-   **openLDAP**: es una implementación libre y es la más usada en sistemas GNU/Linux
 -   Otras: Apache DS, Oracle Internet Directory, Novell Directory Services, etc.
 
 ### Los objetos del directorio
@@ -88,19 +88,19 @@ Un ejemplo de directorio sería:
 
 ![ldap](./media/ldap.png "ldap")
 
-LDAP suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
+**LDAP** suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
 
-Cada objeto tiene un identificador único llamado Nombre Distinguido (***Distinguished Name*, DN**) que consta de su **Relative Distinguished Name** (RDN) construido por el atributo identificativo del objeto, seguido del DN del objeto padre. Si lo comparamos con ficheros el RDN sería como el nombre del fichero y el DN su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
+Cada objeto tiene un identificador único llamado *Nombre Distinguido* (**Distinguished Name**, **DN**) que consta de su **Relative Distinguished Name** (**RDN**) construido por el atributo identificativo del objeto, seguido del DN del objeto padre. Si lo comparamos con ficheros el **RDN** sería como el nombre del fichero y el **DN** su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
 
 En el esquema anterior, el DN del objeto jnadie sería:
 
     uid=jnadie,ou=Users,dc=example,dc=com
 
-y su RDN sería simplemente:
+y su **RDN** sería simplemente:
     
     uid=jnadie
 
-Habitualmente se utiliza el formato LDIF para describir un objeto. En él se define el DN del objeto en la primera línea seguido del RDN y demás atributos del objeto, cada uno en una ínea:
+Habitualmente se utiliza el formato LDIF para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una ínea:
 
     dn: uid=jnadie,ou=Users,dc=example,dc=com\
         uid: jnadie\
@@ -117,7 +117,7 @@ Habitualmente se utiliza el formato LDIF para describir un objeto. En él se def
         objectClass: person\
         objectClass: top
 
-Como veis, el DN se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
+Como veis, el **DN** se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
 
 En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo y después su valor. Algunos nombres de atributo son:
 
@@ -132,7 +132,7 @@ En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo
 Instalación y configuración 
 ===========================
 
-Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio. En el caso de CentOS el paquete a instalar es **openldap** (aunque a partir de la versión 8 de RHEL este paquete ya no se incluye en los repositorios y habrá que descargar el código fuente, compilarlo e instalarlo a mano como se indica en la [web de openLdap](http://www.openldap.org/doc/admin24/install.html), o bien utilizar algún repositorio alternativo).
+Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio.
 
 Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd** y nos pedirá la siguiente información:
 
@@ -164,15 +164,19 @@ Algunos comandos para trabajar con LDAP:
 
 Por ejemplo, para borrar todo nuestro directorio ejecutamos la orden:
 
+```
     ldapdelete -r -D "dn administrador" -W "dc=nuestroDominio,dc.lan”
+```
 
 Para cambiar la contraseña de un usuario:
 
-    ldappasswd -D "dn del administrador" -W -s nueva\_contraseña "dn del usuario"
+```
+    ldappasswd -D "dn del administrador" -W -s nueva_contraseña "dn del usuario"
+```
 
-(ATENCIÓN: "*dn administrador*" quiere decir el dn de tu administrador: **cn=admin,dc=nuestroDominio,dc=lan**, o el que sea)
+(ATENCIÓN: "*dn administrador*" quiere decir el *dn* de tu administrador: **cn=admin,dc=nuestroDominio,dc=lan**, o el que sea)
 
-Ejemplo: tenemos que crear una OU denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una OU es su nombre (atributo llamado *ou*) y es un objeto de las clases *top* y *organizationalUnit*. El RDN de este tipo de objeto es su único atributo: *ou*.
+Ejemplo: tenemos que crear una **OU** denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una **OU** es su nombre (atributo llamado *ou*) y es un objeto de las clases *top* y *organizationalUnit*. El **RDN** de este tipo de objeto es su único atributo: *ou*.
 
 Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuarios.ldif* con la información de la nuestra OU:
 
@@ -180,14 +184,18 @@ Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuar
 
 A continuación ejecutamos la orden *ldapadd* para crearla:
 
-    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=se” -W -f OU_usuarios.ldif
+```
+    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=es” -W -f OU_usuarios.ldif
+```
 
 Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la
 información.
 
-Para eliminar esta ou ejecutaremos el comando *ldapdelete*:
+Para eliminar esta **OU** ejecutaremos el comando *ldapdelete*:
 
+```
     ldapdelete -D “cn=admin,dc=cipfpbatoi,dc.es” -W “OU=Usuarios,dc=cipfpbatoi,dc.es”
+```
 
 Cada tipo de objeto tendrá unos atributos obligatorios y otros opcionales y esto viene definido en el esquema que sigue dicho objeto (indicado por su objectClass). Un objeto puede (y suele) tener varios objectClass por lo que tiene atributos definidos en varios esquemas.
 
