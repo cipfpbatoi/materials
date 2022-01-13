@@ -10,6 +10,7 @@
     - [Configuració de la xarxa amb Network Manager](#configuració-de-la-xarxa-amb-network-manager)
     - [Configuració de la xarxa amb ifupdown](#configuració-de-la-xarxa-amb-ifupdown)
     - [Configuració con systemd-networkd](#configuració-con-systemd-networkd)
+      - [Ejemplos](#ejemplos)
       - [Más información](#más-información)
     - [Configuració en Virtualbox](#configuració-en-virtualbox)
     - [Detectar problemes](#detectar-problemes)
@@ -180,6 +181,8 @@ Si la nostra màquina té una IP fixa hauríem d'afegir-la ací també al costat
 Para usar ***systemd-networkd***, inicie/active `systemd-networkd.service`.
 
 Todas las configuraciones se almacenan en ficheros en `/etc/systemd/network` del tipo: `.network`, `.netdev` y `.link`. Las opciones especificadas en los archivos de configuración distinguen entre mayúsculas y minúsculas.
+
+#### Ejemplos
 
 ***Adaptador cableado utilizando DHCP. /etc/systemd/network/wired.network***
 
