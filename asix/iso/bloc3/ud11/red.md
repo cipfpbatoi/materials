@@ -1,4 +1,5 @@
-# La red en Debian GNU/Linux 
+# La red en Debian GNU/Linux
+
 - [La red en Debian GNU/Linux](#la-red-en-debian-gnulinux)
   - [Introducción](#introducción)
     - [Nombre de las tarjetas](#nombre-de-las-tarjetas)
@@ -20,22 +21,23 @@
   - [Solucionar problemes de conectivitat](#solucionar-problemes-de-conectivitat)
 
 ## Introducción
+
 La mayoría de sistemas GNU/Linux con entorno gráfico utilizan el servicio ***NetworkManager** para gestionar la red. Además todas tienen un servicio para gestionarla si la queremos configurarla directamente desde la terminal con los ficheros de configuración, sin utilizar el entorno gráfico.
 
 Todas las distribuciones GNU/Linux basadas en Debian han configurado siempre la red desde la terminal con el paquete **ifupdown**. Este paquete permite configurarla con el servicio **networking** que guarda la configuración de la red en el fichero `/etc/network/interfaces` (aunque también se puede configurar desde el entorno gráfico con el servicio **NetworkManager**).
 
-
-
 ### Nombre de las tarjetas
+
 En GNU/Linux las tarjetas de red se identifican como **ethX** (eth0, eth1, ...) si son tarjetas ethernet cableadas o **wlanX** si son tarjetas Wifi (en ocasiones se llaman athX si son wifis Atheros o con otros nombres dependiente del fabricante).
 
 El problema es que el nombre que se le asigna depende de cuando se configura la tarjeta al arrancar (la primera será la _eth0_, la segunda la _eth1_) y esto podría cambiar entre uno reinicio y otro. Además algunas distribuciones, como Ubuntu, asignan siempre el mismo nombre de interfaz a cada MAC por el que si se estropea una tarjeta y la cambiamos la nueva ya no seria eth0 sino el siguiente nombre no usado. El mismo también pasa en las máquinas virtuales donde podemos cambiar las MAC de nuestras tarjetas.
 
-Muchas configuraciones (firewall, enrutament, etc) dependen del nombre que tengan las tarjetas y si este cambia dejarán de funcionar correctamente. Para evitar el problema de no saber como se llamará cada interfaz de red, las distribuciones GNU/Linux utilizan **Predictable Network Interface Names** que asigna identificadores estables a las interfaces de red basándose en el tipo (local *Ethernet, *WLAN, *WWAN, etc).
+Muchas configuraciones (firewall, enrutament, etc) dependen del nombre que tengan las tarjetas y si este cambia dejarán de funcionar correctamente. Para evitar el problema de no saber como se llamará cada interfaz de red, las distribuciones GNU/Linux utilizan **Predictable Network Interface Names** que asigna identificadores estables a las interfaces de red basándose en el tipo (local Ethernet, WLAN, WWAN, etc).
 
 El nombre que reciben las tarjetas depende del tipo (**en...** para las ethernet con cable, **wl...** para las _wireless_ o **lo** para la interfaz *loopback*). El resto del nombre depende de donde está instalada (**p** si está *"pinchada"* en un puerto PCI, USB, etc, la tarjeta se llamará **enpXsY**; **o** si está en la placa y se llamará **enoX**). En las máquinas de VirtualBox la primera suele ser la **emp0s3** y el resto a partir de la **enp0s8**, ...
 
 ### Network Manager
+
 Si nuestra distribución es Debian o está basada en él (como Ubuntu, Linux Mint, Lliurex, ...) y tenemos entorno gráfico el servicio responsable de la red será por defecto lo **Network Manager**, aunque podemos configurar el sistema para gestionar la red sin este servicio, utilizando *netplan* o *ifupdown*. 
 
 Para ver o cambiar la configuración podemos pulsar con el ratón sobre el icono de la red y elegir la opción de **Configuración de la red**. Esto abre el editor del Network Manager:
@@ -43,6 +45,7 @@ Para ver o cambiar la configuración podemos pulsar con el ratón sobre el icono
 ![Network Manager](./imgs/ubunu18-xarxa-nm-1-conn.png)
 
 ### Netplan vs ifupdown
+
 Per a configurar la xarxa des de la terminal s'utilitzen diferents sistemes segons la distribució utilitzada: les distribucions _Debian_ utilitzen **ifupdown** i les _Ubuntu_ utilitzen **netplan**.
 
 Les principals diferències entre els dos sistemes són:
@@ -66,7 +69,7 @@ Si li posem el nom d'una targeta ens dona la informació de la mateixa:
 
 Para mostrar los dispositivos de red y su configuración utilizaremos:
 
-```
+```bash
 $ ip addr show
 $ ip link show
 ```
@@ -89,6 +92,7 @@ Y para ver el DNS muestramos el contenido del fichero `/etc/*resolv.*conf`:
 En este caso tenemos como DNS principal 127.0.0.1 (es decir esta máquina) y como secundario 8.8.8.8. No es conveniente modificar aquí los DNS porque este fichero es sobrescrito por los servicios que configuran la red.
 
 ### Accions més comuns
+
 El comandament `ip` ens permeten canviar al nostra configuració temporalment (per a canviar-la definitivament hem de fer-ho en els fitxers de configuració):
 * desactivar una interfície de xarxa:
   * ip: `ip link set enp0s3 down`
