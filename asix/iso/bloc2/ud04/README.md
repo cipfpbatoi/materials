@@ -35,7 +35,7 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:
 1. [Permisos y derechos](permisos.md)
-2. [Usuarios móviles](servarch.md)
+2. [Servicios de archivo y almacenamiento](servarch.md)
 3. [Compartir impresoras](impr.md)
 
 ## Caso práctico

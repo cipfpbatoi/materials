@@ -440,19 +440,21 @@ La forma de instalarla es
 npm install vee-validate@next -S
 ```
 
-Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field />` y la etiqueta `<form>` por el componente `<Form />` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. Deberás importar los componentes de`'vee-validate'` y registrarlos.
+Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field />` y la etiqueta `<form>` por el componente `<Form />` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. Los _inputs_ ya no necesitan `v-model` porque sus valores se recibirán en el objeto _values_. 
 
-Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devlverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar.
+Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devolverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar.
+
+Habrá que importar los componentes de`'vee-validate'` que se usen (_Form_, _Field_, _ErrorMessage_) y registrarlos.
 
 Ejemplo (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue](https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue)):
 ```vue
 <template>
   <div id="app">
     <Form @submit="onSubmit">
-      <Field name="email" type="email" v-model="email" :rules="validateEmail" />
+      <Field name="email" type="email" :rules="validateEmail" />
       <ErrorMessage name="email" />
 
-      <Field name="password" type="password" v-model="password" :rules="validatePassword" />
+      <Field name="password" type="password" :rules="validatePassword" />
       <ErrorMessage name="password" />
 
       <button>Sign up</button>
@@ -513,10 +515,10 @@ Vee-validate 4 también permite usar librerías como [**yup**](https://www.npmjs
 <template>
   <div id="app">
     <Form @submit="onSubmit" :validation-schema="mySchema">
-      <Field name="email" type="email" v-model="email" />
+      <Field name="email" type="email" />
       <ErrorMessage name="email" />
 
-      <Field name="password" type="password" v-model="password" />
+      <Field name="password" type="password" />
       <ErrorMessage name="password" />
 
       <button>Sign up</button>
