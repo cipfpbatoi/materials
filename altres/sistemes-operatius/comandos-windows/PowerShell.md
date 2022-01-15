@@ -21,7 +21,7 @@
   - [Comandos para gestionar grupos](#comandos-para-gestionar-grupos)
 
 ## Introducción a PowerShell
-Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
+Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, _Remove_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
 
 Por ejemplo, para cambiar al directorio _Windows_ el comando es `cd C:\Windows` y su _cmdlet_ correspondiente es 
 
@@ -313,3 +313,6 @@ Ejemplos:
 - `New-LocalGroup -Name "Profes" - Description "Professors del curs"`: añade un nuevo grupo local llamado Profes
 - `New-ADGroup -Name "Professors del matí" -SamAccountName ProfesMati -GroupCategory Security -GroupScope Global -DisplayName "Professors del matí" -Path "OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN" -Description "Members of this group are teachers in the morning courses"`: añade un nuevo grupo global llamado ProfesMati en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan
 - `Add-ADGroupMember -Identity ProfesMati -Members jsegura,lmanzaneque`: añade los usuarios jsegura y lmanzaneque al grupo ProfesMati
+
+## Saber más
+En Internet hay infinidad de páginas y tutoriales sobre Powershell. Te recomiendo el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).

@@ -43,3 +43,8 @@ Los contenidos de esta unidad son los siguientes:
 2. [Usuarios móviles](usrmoviles.md)
 
 ## Caso práctico
+Crearemos los usuarios para los 150 alumnos y los profesores (tenemos sus datos en un fichero) y los 4 grupos que usaran el aula (de 1r a 4r de la ESO).
+
+Todos los usuarios (alumnos y profes) tendrán una carpeta personal en el servidor donde poder dejar sus ficheros (ya que no siempre se sentarán en el mismo equipo).
+
+Además los profesores tendrán perfil móvil y todos los alumnos tendrán un mismo perfil móvil obligatorio.
