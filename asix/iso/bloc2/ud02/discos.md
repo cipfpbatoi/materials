@@ -121,6 +121,11 @@ La ventaja de los volúmenes sería su sencillez para configurarlos, además de 
 
 Así que si el presupuesto lo permite siempre es aconsejable montar un RAID por hardware.
 
+Además en este caso disponemos de más tipos de RAID que podemos usar como el 3, 4 o 6 (que es como el 5 pero con un disco más de paridad para mejorar la tolerancia). También se pueden hacer combinaciones como el RAID 01, 10, 50, ... De ellas la más usada es la RAID 10 o 1+0 que consiste e crear un RAID 0 de dos RAID 1. Ello nos permite aunar velocidad y fiabilidad sin tener que realizar los cálculos de paridad que requiere RAID 5.
+
+Podéis ampliar los tipos de RAID en numerosas páginas web como [Servidores
+Tipos de RAID para servidores NAS](https://www.redeszone.net/tutoriales/servidores/tipos-raid-servidor-nas/) de RedesZone.net.
+
 ## Powershell
 En la [web de Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) o en diferentes páginas como [cómo crearlos con Powershell](https://searchstorage.techtarget.com/tip/PowerShell-tutorial-Managing-Windows-Storage-Spaces) podemos ver cómo crear volúmenes con Powershell.
 

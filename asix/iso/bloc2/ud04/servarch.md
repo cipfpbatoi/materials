@@ -4,12 +4,13 @@
   - [Crear un recurso compartido](#crear-un-recurso-compartido)
     - [Compartir una carpeta desde la terminal](#compartir-una-carpeta-desde-la-terminal)
     - [Publicar una carpeta compartida](#publicar-una-carpeta-compartida)
+  - [Grupos de almacenamiento](#grupos-de-almacenamiento)
+  - [iSCSI](#iscsi)
+  - [Carpetas de trabajo](#carpetas-de-trabajo)
   - [Administrador de recursos del servidor de archivos (FSRM)](#administrador-de-recursos-del-servidor-de-archivos-fsrm)
     - [Cuotas de disco](#cuotas-de-disco)
     - [Filtrado de archivos](#filtrado-de-archivos)
     - [FSRM con Powershell](#fsrm-con-powershell)
-  - [iSCSI](#iscsi)
-  - [Carpetas de trabajo](#carpetas-de-trabajo)
 
 ## Introducción
 Se trata de una herramienta desde la que gestionar todo el almacenamiento del servidor. Accedemos a ella desde una opción del menú de la izquierda del _Administrador del servidor_. Tiene varias opciones:
@@ -53,6 +54,49 @@ Si queremos podemos publicar la carpeta compartida desde _Usuarios y equipos de 
 Para ello vamos a la OU donde queramos publicarla y escogemos `Nuevo -> Carpeta compartida`. Indicamos el nombre de la carpeta compartida y su ruta y podemos añadir palabras clave que ayuden al usuario a encontrarla. 
 
 NOTA: este proceso no crea la carpeta compartida. La debemos haber creado y compartido previamente
+
+## Grupos de almacenamiento
+Los grupos de almacenamiento (_storage pools_) permiten gestionar los discos de manera más eficiente. Su funcionamiento es similar a los discos LVM de Linux y los pasos a realizar son:
+
+![Storage Spaces Workflow](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/media/deploy-standalone-storage-spaces/storage-spaces-workflow.png)
+
+- Creamos un **grupo de almacenamiento** al que le asignamos los discos físicos que queramos, sin particionar. Posteriormente podremos añadir más discos. A la hora de añadir cada disco tenemos 3 opciones:
+  - Automático: el espacio del disco forma parte del grupo y se pueden guardar cosas en él
+  - Reserva activa (_Hot spare_): el espacio del disco no se suma a los demás sino que queda a la espera y entrará a formar parte del volumen si otro disco falla. Esta opción sólo tiene sentido se hemos elegido RAID1 o RAID5
+  - Manual: su espacio no se suma hasta que manualmente lo asignemos
+- En ese grupo creamos un **espacio de almacenamiento** o _disco virtual_ con el que trabajaremos, que se comportará como un disco real que podremos ver desde el _Administrador de discos_. Al crearlo especificaremos:
+  - Distribución de almacenamiento: nos permite elegir entre un disco _Simple_ (que realizará RAID0 entre todos los discos físicos del grupo), _Mirror_ (RAID1) o _Parity_ (RAID5)
+  - Aprovisionamiento: elegimos si será _Delgado_ o _Fijo_. La primera opción es como los discos dinámicos de Virtualbox donde no se asigna al disco todo su espacio sino que se le va asignando según lo va necesitando
+  - Reconocimiento de contenedor: podemos marcarlo si los discos están en diferentes chasis JBOD (_Just a Brunch Of Disks_) y en ese caso se encarga de que tengamos tolerancia a fallos a nivel de chasis
+  - Tamaño: el espacio que tendrá este disco virtual (del total del grupo) 
+- En el disco creado creamos un nuevo **volumen** como si se tratara de un disco real, al que se asignaremos el espacio que queramos y su sistema de ficheros (NTFS o ReFS)
+
+Podéis ver un ejemplo de uso de grupos de almacenamiento en las páginas [Grupos de almacenamiento](https://blog.ragasys.es/grupos-de-almacenamiento-storage-pool-en-ms-windows-server-2016) y [Espacio de almacenamiento](https://blog.ragasys.es/espacio-de-almacenamiento-storage-space-tipo-parity-o-raid-5-en-ms-windows-server-2016) de RAGASYS SISTEMAS o en muchas otras páginas en internet.
+
+Los grupos de almacenamiento nos permiten realizar en caliente:
+- añadir o eliminar discos físicos de un grupo de almacenamiento (lo que cambiará su tamaño)
+- redimensionar un disco virtual
+- redimensionar un volumen
+
+También permiten, si en nuestro grupo de almacenamiento tenemos discos tanto HDD como SSD, crear discos por capas que nos permita utilizar volúmenes que requieran mucha velocidad utilizando discos SSD y volúmenes que no requieran tanta velocidad utilizar los discos HDD. De manera interna al crear un disco por capas con diferente hardware (HDD y SSD) almacenará los datos que se estén utilizando con mucha frecuencia en el disco SSD para que funcionen más eficientemente y los que se usen con menos frecuencia en el disco HDD.
+
+## iSCSI
+iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
+
+La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://es.wikipedia.org/wiki/ISCSI#:~:text=iSCSI%20(Abreviatura%20de%20Internet%20SCSI,SCSI%20sobre%20redes%20TCP%2FIP.&text=La%20fabricaci%C3%B3n%20de%20almacenamientos%20basados,basadas%20en%20Canal%20de%20fibra.))
+
+El `Servidor de destino iSCSI` es un rol de servidor que permite que una máquina de Windows Server funcione como un dispositivo de almacenamiento. Una vez instalado crearemos en este servidor uno o más discos virtuales (desde `Administrador del servidor -> Servicios de archivo y almacenamiento -> iSCSI`) y configuraremos los servidores que podrán conectarse a él (_iniciadores iSCSI_).
+
+Una vez configurado, en los servidores que vayan a usar ese disco arrancamos el servicio **_Iniciador iSCSI_** (`Set-Service -Name MSiSCSI -StartupType Automatic`).
+
+A continuación iniciamos el _iniciador iSCSI_ (_iscsicpl.exe_) y en la pestaña _Descubrir_ buscamos el servidor de almacenamiento configurado antes y conectamos el disco, configurando la interfaz de red por la que se conectará al mismo.
+
+Podéis encontrar muchas páginas de internet donde explican el proceso, como [¿Cómo configurar y conectar un disco iSCSI en Windows Server?](https://informaticamadridmayor.es/tips/como-configurar-y-conectar-un-disco-iscsi-en-windows-server/).
+
+## Carpetas de trabajo
+Permiten tener sincronizados los archivos de un usuario entre sus distintos dispositivos. Sería una especie de **_OneDrive_** pero gestionado por nosotros.
+
+Podemos encontrar información de cómo implementarlas en la web de [Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/work-folders/deploy-work-folders).
 
 ## Administrador de recursos del servidor de archivos (FSRM)
 Se trata de un rol que nos permite configurar más cosas en los recursos, como cuotas de disco. Este rol se encuentra dentro de `Servicios de archivo y almacenamiento -> Servicios de iSCSI y archivo`.
@@ -150,20 +194,3 @@ Finalmente solo quedaría añadir esta plantilla al recurso compartido que quera
 
 En la página de Microsoft podemos ver los distintos [cmdlets FSMR](https://docs.microsoft.com/es-es/previous-versions/windows/powershell-scripting/jj900651(v%3dwps.620)).
 
-## iSCSI
-iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
-
-La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://es.wikipedia.org/wiki/ISCSI#:~:text=iSCSI%20(Abreviatura%20de%20Internet%20SCSI,SCSI%20sobre%20redes%20TCP%2FIP.&text=La%20fabricaci%C3%B3n%20de%20almacenamientos%20basados,basadas%20en%20Canal%20de%20fibra.))
-
-El `Servidor de destino iSCSI` es un rol de servidor que permite que una máquina de Windows Server funcione como un dispositivo de almacenamiento. Una vez instalado crearemos en este servidor uno o más discos virtuales (desde `Administrador del servidor -> Servicios de archivo y almacenamiento -> iSCSI`) y configuraremos los servidores que podrán conectarse a él (_iniciadores iSCSI_).
-
-Una vez configurado, en los servidores que vayan a usar ese disco arrancamos el servicio **_Iniciador iSCSI_** (`Set-Service -Name MSiSCSI -StartupType Automatic`).
-
-A continuación iniciamos el _iniciador iSCSI_ (_iscsicpl.exe_) y en la pestaña _Descubrir_ buscamos el servidor de almacenamiento configurado antes y conectamos el disco, configurando la interfaz de red por la que se conectará al mismo.
-
-Podéis encontrar muchas páginas de internet donde explican el proceso, como [¿Cómo configurar y conectar un disco iSCSI en Windows Server?](https://informaticamadridmayor.es/tips/como-configurar-y-conectar-un-disco-iscsi-en-windows-server/).
-
-## Carpetas de trabajo
-Permiten tener sincronizados los archivos de un usuario entre sus distintos dispositivos. Sería una especie de **_OneDrive_** pero gestionado por nosotros.
-
-Podemos encontrar información de cómo implementarlas en la web de [Microsoft](https://docs.microsoft.com/es-es/windows-server/storage/work-folders/deploy-work-folders).
