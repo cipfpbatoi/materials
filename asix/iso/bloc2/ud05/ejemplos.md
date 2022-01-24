@@ -11,7 +11,7 @@
   - [Plantillas de configuraciones](#plantillas-de-configuraciones)
 
 ## Introducción
-Son miles las configuraciones que podemos hacer usando GPO. En esta página vamos a ver cómo podemos usar GPO para configurar algunas cosas comunes en los usuarios de nuestro dominio.
+Son miles las configuraciones que podemos hacer usando GPO. En esta página vamos a ver cómo podemos usar GPO para configurar algunas cosas comunes en los usuarios de nuestro dominio, pero podemos encontrar infinidad más an páginas de Internet como la de [TechExpert TIPS](https://techexpert.tips/es/windows-es/).
 
 ## Cómo configurar el entorno del usuario
 Una de las aplicaciones más comunes de las directivas es configurar el entorno del usuario y, en muchas ocasiones, restringir las acciones que puede realizar sobre el ordenador. El entorno de un usuario se administra con el fin de asegurar que este disponga de todo lo necesario para realizar su trabajo pero no pueda dañar ni configurar incorrectamente este entorno.

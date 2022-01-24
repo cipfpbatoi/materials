@@ -26,6 +26,10 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:
 1. [Directivas](directivas.md)
+2. [Ejemplos](ejemplos.md)
 
 ## Caso práctico
-Crearemos las siguientes directivas:
+Crearemos las directivas necesarias para conseguir que:
+- los alumnos no tengan acceso al Panel de control
+- los profesores tengan la posibilidad de instalarse el programa Filezilla
+- cada usuario que pueda imprimir en una impresora la tendrá disponible
