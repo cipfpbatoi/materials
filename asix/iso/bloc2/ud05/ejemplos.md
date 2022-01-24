@@ -8,9 +8,10 @@
   - [Cómo implementar software en los equipos clientes](#cómo-implementar-software-en-los-equipos-clientes)
     - [Desinstalar programas](#desinstalar-programas)
   - [Cómo desplegar impresoras](#cómo-desplegar-impresoras)
+  - [Plantillas de configuraciones](#plantillas-de-configuraciones)
 
 ## Introducción
-En esta página vamos a ver cómo podemos usar GPO para configurar algunas cosas comunes en los usuarios de nuestro dominio.
+Son miles las configuraciones que podemos hacer usando GPO. En esta página vamos a ver cómo podemos usar GPO para configurar algunas cosas comunes en los usuarios de nuestro dominio.
 
 ## Cómo configurar el entorno del usuario
 Una de las aplicaciones más comunes de las directivas es configurar el entorno del usuario y, en muchas ocasiones, restringir las acciones que puede realizar sobre el ordenador. El entorno de un usuario se administra con el fin de asegurar que este disponga de todo lo necesario para realizar su trabajo pero no pueda dañar ni configurar incorrectamente este entorno.
@@ -102,3 +103,12 @@ a continuación marcamos si queremos que se aplique **a los usuarios** o **a los
 Podéis ver un [vídeo de ejemplo](media/DespliegaImpr.ogv) de cómo desplegar una impresora llamada HP_red para que aparezca a los usuarios miembros de los grupos gdl_profes y gdl_alum4eso.
 
 Para que la impresora se instale correctamente en todos los clientes nos tenemos que asegurar que tenemos los drivers para todos ellos. Desde la pestaña _Compartir_ de _Propiedades de la impresora_ podemos instalar drivers adicionales para otras arquitecturas (Itanium o i386) si tenemos clientes con esas arquitecturas de procesador.
+
+## Plantillas de configuraciones
+Muchas aplicaciones permiten descargar una plantilla de directivas, llamada _**Plantillas administrativas de oficina (ADMX)**_, que nos permiten configurar dicha aplicación mediante GPO. Esta plantilla se añade a las directivas ya incluidas de Windows de forma que se configuran igual que las que hemos visto hasta ahora.
+
+Algunos ejemplos son Mozilla Firefox ([instrucciones](https://support.mozilla.org/es/kb/personalizar-firefox-usando-la-politica-de-grupo)), Google Chrome ([instrucciones](https://support.google.com/chrome/a/answer/187202?hl=es#zippy=%2Cwindows)), Ms Office, ...
+
+Para utilizarlas debemos descargar sus ficheros con extensión **.admx** y **.adml** (ficheros de ayuda) y copiarlos a la carpeta de Windows del servidor donde se guardan las directivas predefinidas:
+- las ADMX a C:\Windows\PolicyDefinitions
+- las ADML a C:\Windows\PolicyDefinitions\es-ES (o a la del idioma que corresponda)

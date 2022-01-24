@@ -77,7 +77,7 @@ Podemos saber qué directivas están aplicándose efectivamente al usuario actua
 rsop.msc
 ```
 
-Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente 5 minutos pero puede ser más). Para actualizar las directivas y hacer que se aplican inmediatamente las que acabamos de crear utilizamos el comando:
+Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente suede tardar 10-20 minutos en replicarse a todos los DC, pero puede ser más). Para actualizar las directivas y hacer que se aplican inmediatamente las que acabamos de crear utilizamos el comando:
 ```cmd
 gpupdate /force
 ```
