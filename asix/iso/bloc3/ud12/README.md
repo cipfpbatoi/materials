@@ -10,7 +10,7 @@ UD 12 - Centralización de la información con LDAP
   - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
 - [Introducción a LDAP](#introducción-a-ldap)
-    - [Los objetos del directorio](#los-objetos-del-directorio)
+  - [Los objetos del directorio](#los-objetos-del-directorio)
 - [Instalación y configuración](#instalación-y-configuración)
 - [Configuración desde la terminal](#configuración-desde-la-terminal)
 - [LDAP Account Manager](#ldap-account-manager)
@@ -36,28 +36,26 @@ Objetivos
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
--   Implementar dominios.
--   Administrar cuentas de usuario y cuentas de equipo.
--   Centralizar la información personal de los usuarios del dominio
-    mediante el uso de perfiles móviles y carpetas personales.
--   Crear y administrar grupos.
--   Organizar los objetos del dominio para facilitar su administración.
--   Utilizar máquinas virtuales para administrar dominios y verificar su
-    funcionamiento.
--   Incorporar equipos al dominio.
--   Bloquear accesos no autorizados al dominio.
+- Implementar dominios.
+- Administrar cuentas de usuario y cuentas de equipo.
+- Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
+- Crear y administrar grupos.
+- Organizar los objetos del dominio para facilitar su administración.
+- Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
+- Incorporar equipos al dominio.
+- Bloquear accesos no autorizados al dominio.
 
-Conceptos clave 
+Conceptos clave
 ---------------
 
 Los conceptos más importantes de esta unidad son:
 
--   LDAP
--   Configuración de un servidor LDAP
--   Administración del directorio
--   Configuración de un cliente LDAP
+- LDAP
+- Configuración de un servidor LDAP
+- Administración del directorio
+- Configuración de un cliente LDAP
 
-Introducción a LDAP 
+Introducción a LDAP
 ===================
 
 LDAP son las siglas de *Lightweight Directory Access Protocol* (Protocolo Ligero de Acceso a Directorios) y es un protocolo cliente-servidor que permite el acceso a un servicio de directorio ordenado y distribuido para buscar información en la red.
@@ -66,23 +64,23 @@ Un directorio es una base de datos especial donde las consultas son frecuentes p
 
 El directorio se organiza como un árbol y tiene una entrada para cada objeto que almacena. Cada entrada consta de un conjunto de atributos y un atributo tiene un nombre (el tipo de atributo) y uno o más valores.
 
-LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentidicación centralizada de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
+LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentificació centralizada de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
 
 Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Algunas de las más usadas son:
 
--   **Active Directory**: es la implementación que utiliza Microsoft para sus dominios
--   **openLDAP**: es una implementación libre y es la más usada en sistemas GNU/Linux
--   Otras: Apache DS, Oracle Internet Directory, Novell Directory Services, etc.
+- **Active Directory**: es la implementación que utiliza Microsoft para sus dominios
+- **openLDAP**: es una implementación libre y es la más usada en sistemas GNU/Linux
+- Otras: Apache DS, Oracle Internet Directory, Novell Directory Services, etc.
 
-### Los objetos del directorio
+## Los objetos del directorio
 
 Un directorio es como un árbol cuya raíz es un dominio (un objeto de tipo DC) y del que cuelgan los diferentes objetos. Tenemos todo tipo de objetos pero los más comunes son:
 
--   **dominio**: es el objeto raíz del directorio
--   **unidades organizativas (ou)**: son contenedores de otros objetos y nos permiten organizar los objetos
--   **usuarios**: representan a personas de nuestra organización
--   **grupos**: son agrupaciones de usuarios
--   otros objetos: equipos, impresoras, ...
+- **dominio**: es el objeto raíz del directorio
+- **unidades organizativas (ou)**: son contenedores de otros objetos y nos permiten organizar los objetos
+- **usuarios**: representan a personas de nuestra organización
+- **grupos**: son agrupaciones de usuarios
+- otros objetos: equipos, impresoras, ...
 
 Un ejemplo de directorio sería:
 
@@ -90,17 +88,17 @@ Un ejemplo de directorio sería:
 
 **LDAP** suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
 
-Cada objeto tiene un identificador único llamado *Nombre Distinguido* (**Distinguished Name**, **DN**) que consta de su **Relative Distinguished Name** (**RDN**) construido por el atributo identificativo del objeto, seguido del DN del objeto padre. Si lo comparamos con ficheros el **RDN** sería como el nombre del fichero y el **DN** su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
+Cada objeto tiene un identificador único llamado **Nombre Distinguido** (**Distinguished Name**, **DN**) que consta de su **Relative Distinguished Name** (**RDN**) construido por el atributo identificativo del objeto, seguido del **DN** del objeto padre. Si lo comparamos con ficheros el **RDN** sería como el nombre del fichero y el **DN** su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
 
-En el esquema anterior, el DN del objeto jnadie sería:
+En el esquema anterior, el **DN** del objeto **jnadie** sería:
 
     uid=jnadie,ou=Users,dc=example,dc=com
 
 y su **RDN** sería simplemente:
-    
+
     uid=jnadie
 
-Habitualmente se utiliza el formato LDIF para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una ínea:
+Habitualmente se utiliza el formato **LDIF** para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una línea:
 
     dn: uid=jnadie,ou=Users,dc=example,dc=com\
         uid: jnadie\
@@ -121,56 +119,56 @@ Como veis, el **DN** se construye como el nombre de un fichero pero de derecha a
 
 En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo y después su valor. Algunos nombres de atributo son:
 
--   **dn**: Distinguished Name. Siempre está en la primera línea
--   **dc**: Domain Component. Es una parte del dominio. Si hay más de un nivel (lo habitual) habrá más de un atributo de. Por ejemplo www.google.es (3 niveles) se expresaría como dc=www,dc=google,dc=es
--   **cn**: Common Name (ej.: Juan Nadie)
--   **givenName**: nombre de pila (Juan)
--   **sn**: apellidos (Nadie)
--   **ou**: unidad organizativa
--   **object class**: tipo de objeto. En función de su tipo tendrá unos atributos u otros (por ejemplo un objeto persona tendrá nombre, apellidos, teléfono, ... mientras que un objeto grupo tendrá nombre, miembros, ...). Los tipos de objetos que tenemos y qué atributos tiene cada tipo viene definido por el **esquema** que estemos usando. Un objeto puede tener más de un tipo (por lo que tendrá los atributos definidos en los esquemas de todos ellos).
+- **dn**: Distinguished Name. Siempre está en la primera línea
+- **dc**: Domain Component. Es una parte del dominio. Si hay más de un nivel (lo habitual) habrá más de un atributo de. Por ejemplo www.google.es (3 niveles) se expresaría como dc=www,dc=google,dc=es
+- **cn**: Common Name (ej.: Juan Nadie)
+- **givenName**: nombre de pila (Juan)
+- **sn**: apellidos (Nadie)
+- **ou**: unidad organizativa
+- **object class**: tipo de objeto. En función de su tipo tendrá unos atributos u otros (por ejemplo un objeto persona tendrá nombre apellidos, teléfono, ... mientras que un objeto grupo tendrá nombre, miembros, ...). Los tipos de objetos que tenemos y qué atributos tiene cada tipo viene definido por el **esquema** que estemos usando. Un objeto puede tener más de un tipo (por lo que tendrá los atributos definidos en los esquemas de todos ellos).
 
-Instalación y configuración 
+Instalación y configuración
 ===========================
 
 Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio.
 
 Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd** y nos pedirá la siguiente información:
 
--   el nombre del dominio LDAP (si no lo proporcionamos será *nodomain*)
--   el nombre de nuestra organización (es informativo y por eso puede tener espacios u otros caracteres)
--   la contraseña del administrador del dominio
--   el motor de base de datos a utilizar (se recomienda el MDB)
--   si queremos o no que se borre el directorio si desinstalamos el programa
--   si queremos mover la base de datos antigua porque no interfiera con la que se creará ahora. La antigua se moverá a /var/backups
--   si queremos que se pueda usar el protocolo LDAPv2. Sólo lo haremos si tenemos programas o equipos muy antiguos
+- el nombre del dominio LDAP (si no lo proporcionamos será **nodomain**)
+- el nombre de nuestra organización (es informativo y por eso puede tener espacios u otros caracteres)
+- la contraseña del administrador del dominio
+- el motor de base de datos a utilizar (se recomienda el MDB)
+- si queremos o no que se borre el directorio si desinstalamos el programa
+- si queremos mover la base de datos antigua porque no interfiera con la que se creará ahora. La antigua se moverá a /var/backups
+- si queremos que se pueda usar el protocolo LDAPv2. Sólo lo haremos si tenemos programas o equipos muy antiguos
 
 Esto crea automáticamente el objeto raíz del directorio con el nombre de nuestro dominio y el objeto administrador del dominio (usuario **admin**) con la contraseña proporcionada. Podemos volver a ejecutarlo cuando queramos y se creará un nuevo directorio.
 
 [installLDAP.ogv](./media/installLDAP.ogv)
 
-Configuración desde la terminal 
+Configuración desde la terminal
 ===============================
 
 Algunos comandos para trabajar con LDAP:
 
--   **slapcat**: muestra todo el contenido del directorio en formato LDIF
--   **ldapadd**: permite añadir nuevos nodos al directorio. Sus parámetros más importantes son:
-    -   -D “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
-    -   -W: para que nos pida la contraseña en vez de escribirla en la orden
-    -   -f fichero: nombre del fichero con la información del nodo a crear en formato LDIF
--   **ldapdelete**: elimina un objeto del directorio
--   **ldapsearch**: busca objetos en el directorio
--   **ldappasswd**: cambia la contraseña de un usuario
+- **slapcat**: muestra todo el contenido del directorio en formato *LDIF*
+- **ldapadd**: permite añadir nuevos nodos al directorio. Sus parámetros más importantes son:
+  - -D “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
+  - -W: para que nos pida la contraseña en vez de escribirla en la orden
+  - -f fichero: nombre del fichero con la información del nodo a crear en formato *LDIF*
+- **ldapdelete**: elimina un objeto del directorio
+- **ldapsearch**: busca objetos en el directorio
+- **ldappasswd**: cambia la contraseña de un usuario
 
 Por ejemplo, para borrar todo nuestro directorio ejecutamos la orden:
 
-```
+```bash
     ldapdelete -r -D "dn administrador" -W "dc=nuestroDominio,dc.lan”
 ```
 
 Para cambiar la contraseña de un usuario:
 
-```
+```bash
     ldappasswd -D "dn del administrador" -W -s nueva_contraseña "dn del usuario"
 ```
 
@@ -182,18 +180,17 @@ Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuar
 
 ![ldap](./media/01-ou.png "ldap")
 
-A continuación ejecutamos la orden *ldapadd* para crearla:
+A continuación ejecutamos la orden **ldapadd** para crearla:
 
-```
+```bash
     ldapadd -D “cn=admin,dc=cipfpbatoi,dc=es” -W -f OU_usuarios.ldif
 ```
 
-Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la
-información.
+Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la información.
 
-Para eliminar esta **OU** ejecutaremos el comando *ldapdelete*:
+Para eliminar esta **OU** ejecutaremos el comando **ldapdelete**:
 
-```
+```bash
     ldapdelete -D “cn=admin,dc=cipfpbatoi,dc.es” -W “OU=Usuarios,dc=cipfpbatoi,dc.es”
 ```
 
@@ -253,33 +250,33 @@ Los principales objetos con que trabajaremos son:
 |                    |                    | password           |                    |
 +--------------------+--------------------+--------------------+--------------------+
 
-IMPORTANTE: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000 nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
+**IMPORTANTE**: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000, nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
 
 Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP **/etc/openldap/schema**. Algunos de los más comunes son:
 
--   /etc/openldap/schema/core.schema
--   /etc/openldap/schema/cosine.schema
--   /etc/openldap/schema/inetorgperson.schema
--   /etc/openldap/schema/nis.schema
+- /etc/openldap/schema/core.schema
+- /etc/openldap/schema/cosine.schema
+- /etc/openldap/schema/inetorgperson.schema
+- /etc/openldap/schema/nis.schema
 
 Si además vamos a necesitar que el servidor LDAP almacene cuentas Samba tendremos que asegurarnos que LDAP conoce la estructura y los datos necesarios de una cuenta Samba mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
 
 LDAP Account Manager
 ====================
 
-Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramientas (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
+Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramienta (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
 
 Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam.%20). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor LDAP.
 
 La configuración inicial puede hacerse desde el entorno gráfico en la opción **LAM configuration**. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
 
-A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el dominio, el dn del administrador y las OU que utilizar por defecto para crear nuevos usuarios, grupos y equipos. No hace falta configurar los UID y GID porque por defecto ya utiliza valores superiores a 10000.
+A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el dominio, el dn del administrador y las *OU* que utilizar por defecto para crear nuevos usuarios, grupos y equipos. No hace falta configurar los *UID* y *GID* porque por defecto ya utiliza valores superiores a 10000.
 
 Una vez configurado ya podríamos crear nuestros objetos:
 
 [lam.ogv](./media/lam.ogv)
 
-Tras crear los objetos hacemos un slapcat para comprobar que se han creado correctamente:
+Tras crear los objetos hacemos un **slapcat** para comprobar que se han creado correctamente:
 
 [slapcat.ogv](./media/slapcat.ogv)
 
@@ -292,14 +289,14 @@ Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nues
 
 Las opciones a modificar son:
 
--   Modificar la base o raíz del Directorio. $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
--   Configurar el usuario administrador por defecto. $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
--   Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
--   También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea: $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
+- Modificar la base o raíz del Directorio. $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
+- Configurar el usuario administrador por defecto. $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
+- Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
+- También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea: $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
 
-Ahora podemos acceder a esta herramienta desde el navegador con **http://mi\_servidor\_ldap/phpldapadmin**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
+Ahora podemos acceder a esta herramienta desde el navegador con **http://mi_servidor_ldap/phpldapadmin**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
 
-***ATENCIÓN***: cuando añadimos un usuario desde phpldapAdmin utiliza por defecto como RDN el cn del usuario en vez de la uid. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus objectClass (account, posixAccount y shadowAccount) y su RDN (userid, perque phpldapadmin denomina así al atributo uid).
+***ATENCIÓN***: cuando añadimos un usuario desde **phpldapAdmin** utiliza por defecto como *RDN* el *cn* del usuario en vez de la *uid*. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus *objectClass* (*account*, *posixAccount* y *shadowAccount*) y su *RDN* (*userid*, por que **phpldapadmin** denomina así al atributo *uid*).
 
 ### Otras herramientas
 
@@ -316,17 +313,17 @@ De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. E
 
 En el proceso de validación de los usuarios en el cliente mediante un servidor LDAP van a participar dos servicios:
 
--   **NSS** (Name Service Switch): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (/etc/passwd, /etc/group y /etc/shadow), pero NSS permite utilizar además otras fuentes como un servidor NIS o un servidor LDAP.
--   **PAM** (Pluggable Authentication Module): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero PAM permite utilizar otros métodos como un servidor LDAP, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas GNU/Linux utilizan PAM y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
+- **NSS** (Name Service Switch): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (/etc/passwd, /etc/group y /etc/shadow), pero NSS permite utilizar además otras fuentes como un servidor NIS o un servidor LDAP.
+- **PAM** (Pluggable Authentication Module): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero PAM permite utilizar otros métodos como un servidor LDAP, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas GNU/Linux utilizan PAM y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
 
 Instalación en el cliente
 =========================
 
 Los paquetes necesarios para configurar un equipo como cliente LDAP son:
 
--   **libnss-ldap**: permite al servicio NSS obtener información administrativa a través de un servidor LDAP
--   **libpam-ldap**: permite al servicio PAM utilizar un servidor LDAP para autenticar usuarios
--   **nscd**: este servicio implementa una caché para acelerar el uso de LDAP y así evitar continuas consultas al servidor por parte del cliente. Este paquete no es necesario, pero sí recomendable.
+- **libnss-ldap**: permite al servicio NSS obtener información administrativa a través de un servidor LDAP
+- **libpam-ldap**: permite al servicio PAM utilizar un servidor LDAP para autenticar usuarios
+- **nscd**: este servicio implementa una caché para acelerar el uso de LDAP y así evitar continuas consultas al servidor por parte del cliente. Este paquete no es necesario, pero sí recomendable.
 
 La instalación de este paquetes también nos seleccionará otros adicionales cómo: **auth-client-config,** **ldap-auth-client** y **ldap-auth-config**.
 
@@ -337,14 +334,14 @@ tanto por el servicio de autenticación PAM como por el servicio de nombres NSS.
 
 La configuración de este paquete nos pide la siguiente información:
 
--   el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para
+- el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para
     evitar problemas con el DNS. (NOTA: utilizar el protocolo ldap, no ldapi)
--   El DN de nuestro dominio
--   la versión del protocolo LDAP a utilizar (la misma que configuramos en el servidor)
--   si queremos que las contraseñas se guarden en un archivo independiente al que sólo root tenga acceso (como pasa con /etc/shadow)
--   si queremos que sea obligatorio identificarse para hacer consultas al directorio
--   el DN del administrador de LDAP (el que configuramos en el servidor)
--   su contraseña
+- El DN de nuestro dominio
+- la versión del protocolo LDAP a utilizar (la misma que configuramos en el servidor)
+- si queremos que las contraseñas se guarden en un archivo independiente al que sólo root tenga acceso (como pasa con /etc/shadow)
+- si queremos que sea obligatorio identificarse para hacer consultas al directorio
+- el DN del administrador de LDAP (el que configuramos en el servidor)
+- su contraseña
 
 Configuración de NSS y PAM
 ==========================
@@ -357,9 +354,9 @@ El siguiente paso es configurar el servicio NSS editando el fichero ***/etc/nssw
 
 En este fichero se configura dónde se debe buscar la información de los diferentes tipos de objetos, entre ellos:
 
--   Los nombres de usuario, especificados en el archivo de configuración con la línea que empieza por **passwd**
--   Los nombres de grupos, especificados en el archivo de configuración con la línea que empieza por **group**
--   Las contraseñas de usuario, especificadas en el archivo de configuración con la línea que empieza por **shadow**
+- Los nombres de usuario, especificados en el archivo de configuración con la línea que empieza por **passwd**
+- Los nombres de grupos, especificados en el archivo de configuración con la línea que empieza por **group**
+- Las contraseñas de usuario, especificadas en el archivo de configuración con la línea que empieza por **shadow**
 
 Indicaremos que la información sobre nombres de usuario, grupos y contraseñas primero se busque en los archivos locales (files o compat) y después mediante el servicio LDAP (ldap). Este orden es importante puesto que si se busca primero en LDAP, si por algún motivo no se puede acceder al servidor LDAP para realizar la validación, no sería posible acceder al equipo.
 
@@ -410,9 +407,9 @@ Para eso vamos a modificar el archivo de configuración de PAM **/usr/share/pam
 
 En ella especificamos:
 
--   que se cree el directorio del usuario la primera vez que inicia sesión
--   que se copie en el mismo el perfil por defecto (que se encuentra en /etc/skel. Este perfil incluye archivos ocultos (como .profile, .bash\_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
--   que se establezca su máscara en 0022, lo que dará permisos 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos umask 0027
+- que se cree el directorio del usuario la primera vez que inicia sesión
+- que se copie en el mismo el perfil por defecto (que se encuentra en /etc/skel. Este perfil incluye archivos ocultos (como .profile, .bash\_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
+- que se establezca su máscara en 0022, lo que dará permisos 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos umask 0027
 
 Si no hacemos esto, tendríamos que crear manualmente en todos los equipos clientes los directorios home de todos los usuarios LDAP.
 
@@ -441,19 +438,18 @@ Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que
 Proyecto
 ========
 
--   [Proyecto de clase](./proyecto.md)
+- [Proyecto de clase](./proyecto.md)
 
-Bibliografía 
+Bibliografía
 ============
 
-Bibliografía 
+Bibliografía
 ------------
 
--   [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
--   [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
--   [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
--   [Autenticación centralizada mediante OpenLDAP](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
--   [Gentoo Linux](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+- [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+- [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
+- [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
+- [Autenticación centralizada mediante OpenLDAP](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+- [Gentoo Linux](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
   
-
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
