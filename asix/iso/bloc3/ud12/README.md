@@ -26,7 +26,6 @@ UD 12 - Centralización de la información con LDAP
     - [Perfiles móviles](#perfiles-móviles)
 - [Proyecto](#proyecto)
 - [Bibliografía](#bibliografía)
-  - [Bibliografía](#bibliografía-1)
 
 Introducción
 ============
@@ -313,29 +312,27 @@ De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. E
 
 En el proceso de validación de los usuarios en el cliente mediante un servidor LDAP van a participar dos servicios:
 
-- **NSS** (Name Service Switch): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (/etc/passwd, /etc/group y /etc/shadow), pero NSS permite utilizar además otras fuentes como un servidor NIS o un servidor LDAP.
-- **PAM** (Pluggable Authentication Module): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero PAM permite utilizar otros métodos como un servidor LDAP, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas GNU/Linux utilizan PAM y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
+- **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**.
+- **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero PAM permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas GNU/Linux utilizan PAM y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
 
 Instalación en el cliente
 =========================
 
 Los paquetes necesarios para configurar un equipo como cliente LDAP son:
 
-- **libnss-ldap**: permite al servicio NSS obtener información administrativa a través de un servidor LDAP
-- **libpam-ldap**: permite al servicio PAM utilizar un servidor LDAP para autenticar usuarios
+- **libnss-ldap**: permite al servicio **NSS** obtener información administrativa a través de un servidor **LDAP**
+- **libpam-ldap**: permite al servicio **PAM** utilizar un servidor LDAP para autenticar usuarios
 - **nscd**: este servicio implementa una caché para acelerar el uso de LDAP y así evitar continuas consultas al servidor por parte del cliente. Este paquete no es necesario, pero sí recomendable.
 
 La instalación de este paquetes también nos seleccionará otros adicionales cómo: **auth-client-config,** **ldap-auth-client** y **ldap-auth-config**.
 
 ### Configuración del cliente ldap
 
-La instalación de los paquetes finaliza con la configuración del módulo de autentificació de ldap (**ldap-auth-config**). La configuración que hacemos se almacena en el fichero **/etc/ldap.conf**. Este se utiliza
-tanto por el servicio de autenticación PAM como por el servicio de nombres NSS. Si posteriormente tenemos que cambiar esta configuración podemos editar el fichero o, más fácilmente, reconfigurarlo con el comando **dpkg-reconfigure ldap-auth-config**.
+La instalación de los paquetes finaliza con la configuración del módulo de autentificació de ldap (**ldap-auth-config**). La configuración que hacemos se almacena en el fichero **/etc/ldap.conf**. Este se utiliza tanto por el servicio de autenticación PAM como por el servicio de nombres NSS. Si posteriormente tenemos que cambiar esta configuración podemos editar el fichero o, más fácilmente reconfigurarlo con el comando **dpkg-reconfigure ldap-auth-config**.
 
 La configuración de este paquete nos pide la siguiente información:
 
-- el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para
-    evitar problemas con el DNS. (NOTA: utilizar el protocolo ldap, no ldapi)
+- el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para evitar problemas con el DNS. (NOTA: utilizar el protocolo ldap, no ldapi)
 - El DN de nuestro dominio
 - la versión del protocolo LDAP a utilizar (la misma que configuramos en el servidor)
 - si queremos que las contraseñas se guarden en un archivo independiente al que sólo root tenga acceso (como pasa con /etc/shadow)
@@ -360,46 +357,50 @@ En este fichero se configura dónde se debe buscar la información de los difere
 
 Indicaremos que la información sobre nombres de usuario, grupos y contraseñas primero se busque en los archivos locales (files o compat) y después mediante el servicio LDAP (ldap). Este orden es importante puesto que si se busca primero en LDAP, si por algún motivo no se puede acceder al servidor LDAP para realizar la validación, no sería posible acceder al equipo.
 
-Por lo tanto las líneas en nuestro archivo /etc/nsswitch.conf quedarían como muestra la imagen anterior.
+Por lo tanto las líneas en nuestro archivo ***/etc/nsswitch.conf*** quedarían como muestra la imagen anterior.
 
-Respecto a las máquinas (hosts) primero las busca en el fichero local (/etc/hosts) y si no las encuentra pregunta al DNS. Esto no es necesario cambiarlo.
+Respecto a las máquinas (hosts) primero las busca en el fichero local (***/etc/hosts***) y si no las encuentra pregunta al DNS. Esto no es necesario cambiarlo.
 
 Podemos probar que NSS está funcionando con la orden **getent** (primeramente tendremos que reiniciar el cliente porque tengan efecto los cambios hechos):
 
+```bash
     getent passwd
+```
 
-Esta orden mostrará por pantalla la información de usuarios contenida en el archivo /etc/passwd. Si funciona NSS, además de la lista de usuarios locales, mostrará información de los usuarios creados en el directorio LDAP del servidor.
+Esta orden mostrará por pantalla la información de usuarios contenida en el archivo ***/etc/passwd***. Si funciona NSS, además de la lista de usuarios locales, mostrará información de los usuarios creados en el directorio LDAP del servidor.
 
-Podemos consultar el logs del sistema referentes a validación, **/var/log/auth.log**, para comprobar y ver posibles problemas.
+Podemos consultar el logs del sistema referentes a validación, ***/var/log/auth.log***, para comprobar y ver posibles problemas.
 
 ### Configuración de PAM
 
-El siguiente paso sería configurar PAM para que utilice el servicio proporcionado por LDAP. Los archivos de configuración de PAM se almacenan en el directorio **/etc/palmo.d**.
+El siguiente paso sería configurar **PAM** para que utilice el servicio proporcionado por **LDAP**. Los archivos de configuración de **PAM** se almacenan en el directorio **/etc/palmo.d**.
 
-Podemos configurar PAM sin editar manualmente los archivos de configuración con el comando **pam-auth-update**:
+Podemos configurar **PAM** sin editar manualmente los archivos de configuración con el comando **pam-auth-update**:
 
 ![ldap](./media/03-pam.png "ldap")
 
-Tenemos que asegurarnos que tenemos marcada la opción de LDAP Authentication (también la de Unix que es la autenticación por defecto). Lo normal es que esto se haya configurado automáticamente al instalar los paquetes.
+Tenemos que asegurarnos que tenemos marcada la opción de **LDAP Authentication** (también la de *Unix* que es la autenticación por defecto). Lo normal es que esto se haya configurado automáticamente al instalar los paquetes.
 
-Para probar que PAM funciona correctamente podemos utilizar el comando **pamtest** (se encuentra en el paquete libpam-dotfile que tendremos que instalar, pero atención que se encuentra en los repositorios universe).
+Para probar que **PAM** funciona correctamente podemos utilizar el comando **pamtest** (se encuentra en el paquete **libpam-dotfile** que tendremos que instalar, pero atención que se encuentra en los repositorios universe).
 
-Es necesario especificar 2 parámetros: el servicio para el que queremos probar la autenticación mediante PAM y el usuario que queremos validar en el servicio. Por ejemplo, para comprobar la validación del usuario batoi a través del servicio de cambio de contraseñas se ejecutaría laorden:
+Es necesario especificar 2 parámetros: el servicio para el que queremos probar la autenticación mediante **PAM** y el usuario que queremos validar en el servicio. Por ejemplo, para comprobar la validación del usuario *batoi* a través del servicio de cambio de contraseñas se ejecutaría la orden:
 
+```bash
     pamtest passwd batoi
+```
 
-Podemos probar otros servicios como login o ssh. Una vez configurado el servicio.
+Podemos probar otros servicios como *login* o *ssh*. Una vez configurado el servicio.
 
 En cualquier caso también podemos probar que el usuario se autentifica correctamente iniciando sesión con este usuario desde la terminal (desde el entorno gráfico aún no podrá iniciar sesión porque no se puede crear su perfil de usuario).
 
 Ajustes de la configuración
 ===========================
 
-Todavía quedan para hacer un par de ajustes para mejorar el funcionamiento de LDAP en el cliente.
+Todavía quedan para hacer un par de ajustes para mejorar el funcionamiento de **LDAP** en el cliente.
 
-Tendríamos que hacer que la primera vez que un usuario del directorio LDAP se valida en un equipo cliente se cree de forma automática su directorio home en el equipo con un perfil por defecto igual que sucede la primera vez que iniciamos sesión con un usuario local.
+Tendríamos que hacer que la primera vez que un usuario del directorio **LDAP** se valida en un equipo cliente se cree de forma automática su directorio home en el equipo con un perfil por defecto igual que sucede la primera vez que iniciamos sesión con un usuario local.
 
-Para eso vamos a modificar el archivo de configuración de PAM **/usr/share/pam-configs/ldap** y añadiremos como primera línea del bloque “Session” la siguiente línea:
+Para eso vamos a modificar el archivo de configuración de *PAM* **/usr/share/pam-configs/ldap** y añadiremos como primera línea del bloque *Session* la siguiente línea:
 
     required        pam\_mkhomedir.so skel=/etc/skel umask=0022
 
@@ -408,28 +409,30 @@ Para eso vamos a modificar el archivo de configuración de PAM **/usr/share/pam
 En ella especificamos:
 
 - que se cree el directorio del usuario la primera vez que inicia sesión
-- que se copie en el mismo el perfil por defecto (que se encuentra en /etc/skel. Este perfil incluye archivos ocultos (como .profile, .bash\_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
-- que se establezca su máscara en 0022, lo que dará permisos 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos umask 0027
+- que se copie en el mismo el perfil por defecto (que se encuentra en ***/etc/skel***. Este perfil incluye archivos ocultos (como .profile, bash_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
+- que se establezca su *máscara* en 0022, lo que dará *permisos* 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos *umask 0027*
 
-Si no hacemos esto, tendríamos que crear manualmente en todos los equipos clientes los directorios home de todos los usuarios LDAP.
+Si no hacemos esto, tendríamos que crear manualmente en todos los equipos clientes los directorios home de todos los usuarios **LDAP**.
 
-Otro aspecto que es aconsejable ajustar es que la configuración por defecto no permite que un usuario LDAP puede cambiar su contraeña desde el equipo cliente con la orden passwd.
+Otro aspecto que es aconsejable ajustar es que la configuración por defecto no permite que un usuario LDAP puede cambiar su contraeña desde el equipo cliente con la orden *passwd*.
 
-Para permitirlo tenemos que quitar el parámetro use\_authtok en la línea donde aparece en la sección Password en el mismo archivo, **/usr/share/pam-configs/ldap**:
+Para permitirlo tenemos que quitar el parámetro *use_authtok* en la línea donde aparece en la sección *Password* en el mismo archivo, **/usr/share/pam-configs/ldap**:
 
 ![ldap](./media/05-config.jpg "ldap")
 
 La línea:
 
-    [success=end user\_unknow=ignore default=die] pam\_ldap.so use\_authtoktry\_first\_pass
+    [success=end user_unknow=ignore default=die] pam_ldap.so use_authtoktry_first_pass
 
 pasaría a:
 
-    [success=end user\_unknow=ignore default=die] pam\_ldap.so try\_first\_pass
+    [success=end user_unknow=ignore default=die] pam_ldap.so try_first_pass
 
 Para que estos cambios tengan efecto debemos volver a ejecutar el comando
 
+```bash
     pam-auth-update
+```
 
 ### Perfiles móviles
 
@@ -443,8 +446,6 @@ Proyecto
 Bibliografía
 ============
 
-Bibliografía
-------------
 
 - [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
 - [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
