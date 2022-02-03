@@ -99,20 +99,22 @@ y su **RDN** sería simplemente:
 
 Habitualmente se utiliza el formato **LDIF** para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una línea:
 
-    dn: uid=jnadie,ou=Users,dc=example,dc=com\
-        uid: jnadie\
-        uidNumber: 5012\
-        cn: Juan Nadie\
-        givenName: Juan\
-        sn: Nadie\
-        telephoneNumber: +34 888 555 6789\
-        telephoneNumber: +34 888 555 1232\
-        mail: jnadie@example.com\
-        manager: uid=cperez,ou=Jefes,dc=example,dc=com\
-        objectClass: inetOrgPerson\
-        objectClass: organizationalPerson\
-        objectClass: person\
-        objectClass: top
+```bash
+dn: uid=jnadie,ou=Users,dc=example,dc=com
+    uid: jnadie
+    uidNumber: 5012
+    cn: Juan Nadie
+    givenName: Juan
+    sn: Nadie
+    telephoneNumber: +34 888 555 6789
+    telephoneNumber: +34 888 555 1233
+    mail: jnadie@example.com
+    manager: uid=cperez,ou=Jefes,dc=example,dc=com
+    objectClass: inetOrgPerson
+    objectClass: organizationalPerson
+    objectClass: person
+    objectClass: top
+```
 
 Como veis, el **DN** se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
 
@@ -148,13 +150,13 @@ Esto crea automáticamente el objeto raíz del directorio con el nombre de nuest
 Configuración desde la terminal
 ===============================
 
-Algunos comandos para trabajar con LDAP:
+Algunos comandos para trabajar con **LDAP**:
 
 - **slapcat**: muestra todo el contenido del directorio en formato *LDIF*
 - **ldapadd**: permite añadir nuevos nodos al directorio. Sus parámetros más importantes son:
-  - -D “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
-  - -W: para que nos pida la contraseña en vez de escribirla en la orden
-  - -f fichero: nombre del fichero con la información del nodo a crear en formato *LDIF*
+  - *-D* “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
+  - *-W*: para que nos pida la contraseña en vez de escribirla en la orden
+  - *-f* fichero: nombre del fichero con la información del nodo a crear en formato *LDIF*
 - **ldapdelete**: elimina un objeto del directorio
 - **ldapsearch**: busca objetos en el directorio
 - **ldappasswd**: cambia la contraseña de un usuario
@@ -197,57 +199,13 @@ Cada tipo de objeto tendrá unos atributos obligatorios y otros opcionales y est
 
 Los principales objetos con que trabajaremos son:
 
-+--------------------+--------------------+--------------------+--------------------+
-| **Objeto**         | **RDN**            | **Atributos**      | **objectClass**    |
-+--------------------+--------------------+--------------------+--------------------+
-| Unidad             | ou                 | ou: nombre         | organizationalUnit |
-| organizativa       |                    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| Grupo              | cn                 | cn: nombre del     | posixGroup         |
-|                    |                    | grupo              |                    |
-|                    |                    | gidNumber: gid     |                    |
-|                    |                    | memberUid: uid de  |                    |
-|                    |                    | los miembros,      |                    |
-|                    |                    | separados por coma |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| Usuario            | cn                 | uid: login del     | inetOrgPerson      |
-|                    |                    | usuario            | posixAccount       |
-|                    |  o                 | uidNumber: nº id   | shadowAccount      |
-|                    |                    | gidNumber: nº      |                    |
-|                    | uid                | grupo principal    |                    |
-|                    |                    | sn: apellidos, ej. |                    |
-|                    |                    | Martínez Puig      |                    |
-|                    |                    | cn: nombre para    |                    |
-|                    |                    | mostrar del        |                    |
-|                    |                    | usuario            |                    |
-|                    |                    | homeDirectory:     |                    |
-|                    |                    | ruta de su home    |                    |
-|                    |                    | loginShell: shell  |                    |
-|                    |                    | del usuario        |                    |
-|                    |                    | (/bin/bash o el    |                    |
-|                    |                    | que sea)           |                    |
-|                    |                    |                    |                    |
-|                    |                    | Además podemos     |                    |
-|                    |                    | especificar muchos |                    |
-|                    |                    | más atributos      |                    |
-|                    |                    | cómo:              |                    |
-|                    |                    | - givenName:       |                    |
-|                    |                    | nombre, ej. Jorge  |                    |
-|                    |                    | - userPassword:    |                    |
-|                    |                    | contraseña         |                    |
-|                    |                    | - displayName:     |                    |
-|                    |                    | nombre para        |                    |
-|                    |                    | mostrar, ej. Jorge |                    |
-|                    |                    | Martínez Puig      |                    |
-|                    |                    | - mail: su e-mail  |                    |
-|                    |                    | - shadowExpire,    |                    |
-|                    |                    | shadowFlag,        |                    |
-|                    |                    | shadowWarning,     |                    |
-|                    |                    | shadowMin,         |                    |
-|                    |                    | shadowMax, …:      |                    |
-|                    |                    | opciones de        |                    |
-|                    |                    | password           |                    |
-+--------------------+--------------------+--------------------+--------------------+
+| **Objeto**               | **RDN**            | **Atributos**      | **objectClass**    |
+|---|---|---|---|
+| Unidad <br> organizativa | ou                 | ou: nombre         | organizationalUnit |
+| Grupo | cn | **cn**: nombre del grupo <br> **gidNumber**: gid <br> **memberUid**: uid de los miembros, separados por coma | posixGroup |
+| Usuario | cn o uid | **uid**: login del usuario <br> **uidNumber**: nº id <br> **gidNumber**: nº grupo principal <br> **sn**: apellidos <br> **cn**: nombre para mostrar del usuario <br> **homeDirectory**:ruta de su home <br> **loginShell**: shell del usuario <br> Además podemos especificar muchos más atributos cómo: <br> - **givenName**: nombre <br> - **userPassword**: contraseña <br> - **displayName**: nombre para mostrar <br> - **mail**: su e-mail <br> - **shadowExpire**, **shadowFlag**, **shadowWarning**, **shadowMin**, **shadowMax**, …: opciones de password   | inetOrgPerson <br> posixAccount <br> shadowAccount |
+
+
 
 **IMPORTANTE**: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000, nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
 
