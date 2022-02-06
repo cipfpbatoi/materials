@@ -216,14 +216,14 @@ Los esquemas que podemos utilizar son los incluidos en directorio del servidor L
 - /etc/openldap/schema/inetorgperson.schema
 - /etc/openldap/schema/nis.schema
 
-Si además vamos a necesitar que el servidor LDAP almacene cuentas Samba tendremos que asegurarnos que LDAP conoce la estructura y los datos necesarios de una cuenta Samba mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
+Si además vamos a necesitar que el servidor **LDAP** almacene cuentas **Samba** tendremos que asegurarnos que **LDAP** conoce la estructura y los datos necesarios de una cuenta **Samba** mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
 
 LDAP Account Manager
 ====================
 
 Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramienta (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
 
-Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam.%20). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor LDAP.
+Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam.%20). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor **LDAP**.
 
 La configuración inicial puede hacerse desde el entorno gráfico en la opción **LAM configuration**. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
 
@@ -240,16 +240,32 @@ Tras crear los objetos hacemos un **slapcat** para comprobar que se han creado c
 phpldapadmin y otros
 ====================
 
-Otra herramienta web muy utilizada para administrar el directorio es phpLDAPAdmin. Lo instalamos con el paquete del mismo nombre.
+Otra herramienta web muy utilizada para administrar el directorio es **phpLDAPAdmin**. Lo instalamos con el paquete del mismo nombre.
 
 Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nuestras necesidades. Este archivo es **/etc/phpldapadmin/config.php**.
 
 Las opciones a modificar son:
 
-- Modificar la base o raíz del Directorio. $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
-- Configurar el usuario administrador por defecto. $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
-- Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
-- También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea: $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
+- Modificar la base o raíz del Directorio.
+  
+  ```bash
+  $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
+  ```
+- Configurar el usuario administrador por defecto.
+  
+  ```bash
+    $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
+  ```
+- Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos
+  
+  ```bash
+    $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
+  ```
+- También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea:
+  
+  ```bash
+    $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
+  ```
 
 Ahora podemos acceder a esta herramienta desde el navegador con **http://mi_servidor_ldap/phpldapadmin**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
 
@@ -257,7 +273,7 @@ Ahora podemos acceder a esta herramienta desde el navegador con **http://mi_serv
 
 ### Otras herramientas
 
-Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es Webmin que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
+Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es **Webmin** que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
 
 Otras herramientas (también de software libre como todas las que hemos visto) son **GOsa** o **Web2ldap**.
 
