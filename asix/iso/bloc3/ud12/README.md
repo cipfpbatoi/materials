@@ -205,8 +205,6 @@ Los principales objetos con que trabajaremos son:
 | Grupo | cn | **cn**: nombre del grupo <br> **gidNumber**: gid <br> **memberUid**: uid de los miembros, separados por coma | posixGroup |
 | Usuario | cn o uid | **uid**: login del usuario <br> **uidNumber**: nº id <br> **gidNumber**: nº grupo principal <br> **sn**: apellidos <br> **cn**: nombre para mostrar del usuario <br> **homeDirectory**:ruta de su home <br> **loginShell**: shell del usuario <br> Además podemos especificar muchos más atributos cómo: <br> - **givenName**: nombre <br> - **userPassword**: contraseña <br> - **displayName**: nombre para mostrar <br> - **mail**: su e-mail <br> - **shadowExpire**, **shadowFlag**, **shadowWarning**, **shadowMin**, **shadowMax**, …: opciones de password   | inetOrgPerson <br> posixAccount <br> shadowAccount |
 
-
-
 **IMPORTANTE**: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000, nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
 
 Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP **/etc/openldap/schema**. Algunos de los más comunes son:
@@ -249,25 +247,29 @@ Las opciones a modificar son:
 - Modificar la base o raíz del Directorio.
   
   ```bash
-  $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
+
+    $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
   ```
+
 - Configurar el usuario administrador por defecto.
   
   ```bash
     $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
   ```
+
 - Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos
   
   ```bash
     $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
   ```
+
 - También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea:
   
   ```bash
     $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
   ```
 
-Ahora podemos acceder a esta herramienta desde el navegador con **http://mi_servidor_ldap/phpldapadmin**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
+Ahora podemos acceder a esta herramienta desde el navegador con **<http://mi_servidor_ldap/phpldapadmin>**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
 
 ***ATENCIÓN***: cuando añadimos un usuario desde **phpldapAdmin** utiliza por defecto como *RDN* el *cn* del usuario en vez de la *uid*. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus *objectClass* (*account*, *posixAccount* y *shadowAccount*) y su *RDN* (*userid*, por que **phpldapadmin** denomina así al atributo *uid*).
 
@@ -376,7 +378,9 @@ Tendríamos que hacer que la primera vez que un usuario del directorio **LDAP** 
 
 Para eso vamos a modificar el archivo de configuración de *PAM* **/usr/share/pam-configs/ldap** y añadiremos como primera línea del bloque *Session* la siguiente línea:
 
+```bash
     required        pam\_mkhomedir.so skel=/etc/skel umask=0022
+```
 
 ![ldap](./media/06-config.jpg "ldap")
 
@@ -395,12 +399,15 @@ Para permitirlo tenemos que quitar el parámetro *use_authtok* en la línea dond
 ![ldap](./media/05-config.jpg "ldap")
 
 La línea:
+```bash
 
     [success=end user_unknow=ignore default=die] pam_ldap.so use_authtoktry_first_pass
+```
 
 pasaría a:
-
+```bash
     [success=end user_unknow=ignore default=die] pam_ldap.so try_first_pass
+```
 
 Para que estos cambios tengan efecto debemos volver a ejecutar el comando
 
@@ -419,7 +426,6 @@ Proyecto
 
 Bibliografía
 ============
-
 
 - [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
 - [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
