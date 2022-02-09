@@ -5,14 +5,19 @@ Materials, apunts, pràctiques, etc del Centre que complementen els cursos del [
 Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més d'un mòdul.
 
 ### Apunts de mòduls
+
 * CFGS Desenvolupament d'Aplicacions Web (DAW)
   * [Desenvolupament Web en Entorn Client (2nDAW)](./daw/dwc/)
-  * [Desenvolupament Web en Entorn Servidor (2nDAW)](https://igomis.github.io/apunts/)  
+  * [Desenvolupament Web en Entorn Servidor (2nDAW)](https://igomis.github.io/apunts/) 
+  * [Entorns de Desenvolupament (1rDAW)](daw/ed/)
+* CFGS Desenvolupament d'Aplicacions Multiplataforma (DAM)
+  * [Entorns de Desenvolupament (1rDAM)](daw/ed/)
 * CFGS Administració de Sistemes Informàtics i Xarxes (ASIX)
   * [Implantació de Sistemes Operatius (1rASIX)](./asix/iso/)
   
 ### Altres apunts
-- [Sistemes operatius](./altres/sistemes-operatius)
+
+* [Sistemes operatius](./altres/sistemes-operatius)
   * [Arrencada del sistema](./altres/sistemes-operatius/arrencada/)
   * [Principals sistemes operatius](./altres/sistemes-operatius/exemples-so/)
   * [Particionament de discos](./altres/sistemes-operatius/particions/)

@@ -1,0 +1,108 @@
+@startuml Casos de Uso
+:Plataforma de Pagament: as plataforma
+:Client:
+:Administratiu:
+://{abstract}//\nUsuari: as Usuari  
+Usuari <|-- Administratiu
+Usuari <|-- Client
+database "Base\nde\nDades" as db
+rectangle "Venda de Productes OnLine" {
+
+   usecase buscar [
+      Buscar Productes
+      --
+      **extension** points:
+      * Mostrar els Resultats
+      * Mostrar que no s'ha trobat
+   ]
+
+   (Mostrar\nResultats) as llistaProductes
+   (Informar de 0\nProductes Trobats) as ceroResultats
+   (Registrar\nUsuari) as registrar
+   (Comprar Productes) as comprar
+   (Realitzar\nPagament) as pagar
+   (Registrar\nPagament) as registrarPagament
+   
+   
+   note "**Condition**\n//{Hi ha productes}//\nExtension point:\n# Mostrar Resultats" as Nllistar
+
+   note "**Condition**\n//{No hi ha productes}//\nExtension point:\n# Mostrar que no s'ha trobat" as NZero
+
+   note as Nexistencies
+      **Condition**
+      //{Hi ha existències}//
+      extension points:
+      # Comprar Productes
+   end note
+
+
+   usecase inserir [
+   Inserir Productes
+   ..
+   * Es Demanaran les dades i es validarà si son correctes
+   --
+   extension points:
+   1. Inserir a la base de dades
+   2. Mostrar que les dades son errònies
+   ]
+
+   usecase InformarDadesErronies [
+      Informar de 
+      Dades Errònies 
+   ]
+
+   usecase InserirNouProducte [
+      Inserir Nou Producte
+   ]
+
+   note as NInserirNouProducte 
+      **Condition**
+      //{Les dades del Producte son correctes}//
+      extension points:
+      # Inserir Nou Producte
+   end note
+
+   note as NInformarDadesErronies
+      **Condition**
+      //{Les dades del Producte son Errònies}//
+      extension points:
+      # Informar de Dades Errònies
+   end note
+}
+'Autenticar
+Usuari -- registrar
+
+'Funcionalitat de comprar.
+Client -- buscar
+comprar .u- Nexistencies
+Nexistencies .u-> llistaProductes : <<extends>> 
+buscar -- db
+
+llistaProductes .u- Nllistar
+Nllistar .u-> buscar : <<extends>>
+
+ceroResultats .u. NZero 
+NZero .u.> buscar : <<extends>>
+buscar .u-> registrar : <<include>>
+
+plataforma -- pagar 
+comprar .-> pagar :  <<include>>
+comprar -- db
+
+comprar .-> registrarPagament: <<include>> 
+registrarPagament -- db 
+
+'Funcionalitat d'administratiu
+:inserir: -[hidden]u- registrarPagament
+:Administratiu: -l- inserir
+:inserir: .u-> registrar : <<include>> 
+'Inserir Nou producte (Dades Correctes)
+NInserirNouProducte .u-> inserir : <<extends>>
+InserirNouProducte .u- NInserirNouProducte
+InserirNouProducte -- db
+'Inserir Nou producte (Dades Incorrectes)
+NInformarDadesErronies .u-> inserir : <<extends>>
+InformarDadesErronies .u- NInformarDadesErronies
+
+
+@enduml
