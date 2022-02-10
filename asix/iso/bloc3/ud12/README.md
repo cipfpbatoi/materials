@@ -4,26 +4,30 @@ Módulo: Implantación de Sistemas Operativos
 UD 12 - Centralización de la información con LDAP
 --------------------------------------------------
 
-* [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
-* [Objetivos](#objetivos)
-* [Conceptos clave](#conceptos-clave)
-* [Introducción a LDAP](#introducción-a-ldap)
-* [Los objetos del directorio](#los-objetos-del-directorio)
-  * [Instalación y configuración](#instalación-y-configuración)
-  * [Configuración desde la terminal](#configuración-desde-la-terminal)
-  * [LDAP Account Manager](#ldap-account-manager)
-  * [phpldapadmin y otros](#phpldapadmin-y-otros)
-  * [Otras herramientas](#otras-herramientas)
-* [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
-  * [Instalación en el cliente](#instalación-en-el-cliente)
-  * [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
-* [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
-  * [Configuración del servicio NSS](#configuración-del-servicio-nss)
-  * [Configuración de PAM](#configuración-de-pam)
-  * [Ajustes de la configuración](#ajustes-de-la-configuración)
-  * [Perfiles móviles](#perfiles-móviles)
-* [Proyecto](#proyecto)
-* [Bibliografía](#bibliografía)
+- [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
+  - [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
+- [Introducción](#introducción)
+  - [Objetivos](#objetivos)
+  - [Conceptos clave](#conceptos-clave)
+  - [Introducción a LDAP](#introducción-a-ldap)
+  - [Los objetos del directorio](#los-objetos-del-directorio)
+    - [Instalación y configuración](#instalación-y-configuración)
+    - [Configuración desde la terminal](#configuración-desde-la-terminal)
+    - [LDAP Account Manager](#ldap-account-manager)
+    - [phpldapadmin y otros](#phpldapadmin-y-otros)
+    - [Otras herramientas](#otras-herramientas)
+  - [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
+    - [Instalación en el cliente](#instalación-en-el-cliente)
+    - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
+  - [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
+    - [Configuración del servicio NSS](#configuración-del-servicio-nss)
+    - [Configuración de PAM](#configuración-de-pam)
+    - [Ajustes de la configuración](#ajustes-de-la-configuración)
+    - [Perfiles móviles](#perfiles-móviles)
+  - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
+    - [Configurar SSSD](#configurar-sssd)
+  - [Proyecto](#proyecto)
+  - [Bibliografía](#bibliografía)
 
 Introducción
 ============
@@ -278,15 +282,14 @@ Otras herramientas (también de software libre como todas las que hemos visto) s
 
 ## Configuración del cliente LDAP
 
-
 Una vez instalado y configurado el servidor **LDAP**, nos queda configurar nuestros clientes de red para que utilicen el servidor para autentificar los usuarios.
 
 De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. En temas posteriores (integración de sistemas heterogéneos) ya veremos como hacerlo para clientes Windows.
 
 En el proceso de validación de los usuarios en el cliente mediante un servidor **LDAP** van a participar dos servicios:
 
-* **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**.
-* **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero *PAM* permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas **GNU/Linux** utilizan *PAM* y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
+* **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero *PAM* permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas **GNU/Linux** (login, ssh, su, ...) utilizan *PAM* y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
+* **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**. Para que un usuario pueda entrar en el sistema _PAM_ debe autorizarlo (si cumple los requisitos, por ejemplo que usuario+contraseña son correctos) pero se necesita más información del mismo, como a qué grupos pertenece o cuál es la ruta de su carpeta personal. Esta información la proporciona _NSS_. En el fichero `/etc/nsswitch.conf` es donde configura _NSS_ dónde debe buscar la información de los usuarios, grupos, etc.
 
 ### Instalación en el cliente
 
@@ -415,6 +418,42 @@ Para que estos cambios tengan efecto debemos volver a ejecutar el comando
 ### Perfiles móviles
 
 Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
+
+## Configuración del cliente LDAP con SSSD
+
+En lugar de utilizar sólo estas librerías podemos utilizar el _demonio_ _**SSSD**_ para autenticar e identificar un usuario contra un servidor LDAP remoto (incluyendo Microsoft _Active DIrectory_). Este sistema incluye sus propios módulos PAM y NSS diferentes de los _"standalone"_ que hemos visto en el apartado anterior. 
+
+Una ventaja de SSSD sobre las librerías PAM y NSS _standalone_ es que SSSD guarda una caché (en `/var/lib/sss/db`) que permite acceder al cliente en caso de que el servidor LDAP no esté activo en ese momento.
+
+### Configurar SSSD
+La configuración se realiza en `/etc/sssd/sssd.conf` (donde podemos configurar valores por defecto) y en los ficheros `.conf` que hay dentro del directorio  `/etc/sssd/sssd.conf.d` que se cargan después y por tanto sobreescriben sus valores. Todos estos ficheros deben ser propiedad de root y sólo él debe tener acceso.
+
+El fichero de configuración debe tener las secciones (más información en `man sssd.conf`):
+- **[sssd]**: debe al menos incluir una opción **domains** con una lista (separada por comas) de los distintos proveedores de autenticación/identidad (se les llama _domains_)
+- **[domain/nombre_del_dominio]**: para cada proveedor hay que incluir una sección donde se configura, al menos:
+  - **auth_provider**: proveedor de autenticación de este dominio (ldap, krb5, ad, ...)
+  - **id_provider**: proveedor de identidad (ldap, archivos, ...)
+  - **access_provider**: proveedor de acceso, que define qué usuarios tienen acceso al sistema (aunque se identifique correctamente si no cumple los criterios de este proveedor no podrá acceder). Los valores permitidos son ldap, krb5, ad, simple -permite si está en la lista-, denegar -siempre deniega-, permitir -siempre permite-, ...
+  - **chpass_provider**: quién se encarga de los cambios de contraseña (ldap, krb5, ad, none -no se permite-, ...)
+  - otras líneas dependiendo de las opciones elegidas. Podemos obtener más información en `man sssd-ldap`, `man sssd-krb5`, `man sssd-ad`, ...
+- **[pam]**: configuraciones adicionales de PAM (por ejemplo límite de días que permitirá el acceso _offline_ sin el servidor LDAP disponible)
+- **[nss]**: configuraciones adicionales de NSS (como excluir usuarios o grupos del sistema)
+
+Ejemplo de configuración para un servicio LDAP en el dominio acme.lan:
+```text
+[sssd]
+domains=ldapacme
+[domain/ldapacme]
+auth_provider=ldap
+id_provider=ldap
+ldap_uri=ldaps://ldapserver.acme.lan
+ldap_search_base=dc=acme,dc=lan
+ldap_tls_reqcert=allow
+```
+
+NOTA: la última línea es si el servidor usa un certificado autofirmado para TLS
+
+<small>Fuente: [https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd](https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd)</small>
 
 ## Proyecto
 
