@@ -6,4 +6,4 @@
 
 ## 3. Material extra
 
-* [Exemple de sol·lució del primer exercici de casos d'ús](UD5%20-%20PRAC1%20-%20DiagramaCasosDus_sol.md)
+* [Exemple de sol·lució del primer exercici de casos d'ús](UD5-PRAC1-SOL-CASUS.md)
