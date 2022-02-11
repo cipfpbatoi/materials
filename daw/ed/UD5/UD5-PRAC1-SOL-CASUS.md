@@ -6,6 +6,8 @@
 
 ![Venda de Productes On-Line diagrama](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/cipfpbatoi/materials/master/daw/ed/UD5/VendaDeProductesOnLine.puml)
 
+[PlantUML src per a Venda de Productes On-Line](VendaDeProductesOnLine.puml)
+
 > L'administratiu, una vegada autenticat, interactua amb el sistema per a inserir nous productes. El sistema demanarà les dades del producte i validarà si son correctes abans d'inserir el nou producte. En cas contrari indicarà que son errònies.
 
 ## 2. GESTIÓ D’UN VIDEOCLUB
