@@ -8,7 +8,8 @@
   - [iSCSI](#iscsi)
   - [Carpetas de trabajo](#carpetas-de-trabajo)
   - [Administrador de recursos del servidor de archivos (FSRM)](#administrador-de-recursos-del-servidor-de-archivos-fsrm)
-    - [Cuotas de disco](#cuotas-de-disco)
+    - [Cuotas de carpeta](#cuotas-de-carpeta)
+      - [Cuotas de volumen](#cuotas-de-volumen)
     - [Filtrado de archivos](#filtrado-de-archivos)
     - [FSRM con Powershell](#fsrm-con-powershell)
 
@@ -80,6 +81,12 @@ Los grupos de almacenamiento nos permiten realizar en caliente:
 
 También permiten, si en nuestro grupo de almacenamiento tenemos discos tanto HDD como SSD, crear discos por capas que nos permita utilizar volúmenes que requieran mucha velocidad utilizando discos SSD y volúmenes que no requieran tanta velocidad utilizar los discos HDD. De manera interna al crear un disco por capas con diferente hardware (HDD y SSD) almacenará los datos que se estén utilizando con mucha frecuencia en el disco SSD para que funcionen más eficientemente y los que se usen con menos frecuencia en el disco HDD.
 
+Podemos crear un espacio de almacenamiento con Powershell:
+```powershell
+$MyPhysicalDisks = Get-PhysicalDisk -CanPool $true
+NewStoragePool -FriendlyName MiGrupoAlm -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks MyPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
+```
+
 ## iSCSI
 iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
 
@@ -117,10 +124,16 @@ Lo que podemos gestionar desde aquí es:
 - Clasificaciones
 - Tareas de administración de archivos
 
-### Cuotas de disco
+### Cuotas de carpeta
 Permiten limitar la cantidad de espacio que un usuario puede utilizar en una carpeta compartida. Si se establecen el espacio disponible que a aparecerá al usuario no será el espacio real disponible en la carpeta sino el que él puede usar según establece su cuota.
 
-Hay varias plantillas creadas que podemos usar o podemos crear nuestras propias plantillas de cuota. En ellas se establece:
+![Cuotas de disco](media/Cuotas.png)
+
+Hay varias plantillas creadas que podemos usar o podemos crear nuestras propias plantillas de cuota. Para crear una nueva plantilla desde `Plantillas de cuota` seleccionamos en el `menú Acción -> Crear plantilla de cuota`:
+
+![Cuotas - crear plantilla](media/cuotas-nuevaPlantilla.png)
+
+En ellas se establece:
 - el espacio máximo disponible para el usuario
 - si no pueden superarlo (cuota máxima) o sí pueden pero les aparecerá una advertencia (cuota de advertencia)
 - umbrales a partir de los cuales se le informará al usuario de que está cerca de llegar a su cuota. Para cada umbral indicaremos:
@@ -130,6 +143,37 @@ Hay varias plantillas creadas que podemos usar o podemos crear nuestras propias 
   - si se generará un evento
   - si se ejecutará un comando o script
   - si se generará un informe de almacenamiento
+
+Si creamos una nueva plantilla es conveniente seleccionar en `Copiar propiedades` una plantilla similar a la que queremos crear para ahorrarnos trabajo ya que se copian en la nueva plantilla todas sus propiedades. También podemos empezar con una plantilla en blanco.
+
+Para crear una nueva cuota a aplicar en una carpeta seleccionamos desde el `menú Acción -> Crear cuota`:
+
+![Cuotas - nueva cuota](media/cuotas-nueva.png)
+
+Lo que tenemos que completar es:
+- Ruta: carpeta o volumen para el cual queremos definir una nueva cuota
+- Crear cuota o Aplicar plantilla: aquí indicamos si la cuota es sólo para la carpeta indicada o queremos aplicarla también a todas sus subcarpetas (que será lo habitual)
+- Derivar de plantilla o Definir propiedades: para utilizar una plantilla de cuota existente o crear una nueva cuota. Lo recomendado es trabajar sobre una plantilla ya creada.
+- Resumen de las propiedades: aparece un resumen de las propiedades de la cuota a aplicar en la carpeta
+
+#### Cuotas de volumen
+Además de establecer cuotas para una carpeta, que es lo más útil, podemos también limitar el espacio que los usuarios pueden utilizar de un volumen completo estableciendo cuotas del volumen. En este caso no es necesario instalar el _Administrador de recursos del servidor de archivos (FSRM)_. **NOTA**: no es conveniente establecer cuotas en la partición del sistema porque el sistema podría sobrepasar la cuota asignada durante el arranque.
+
+Para establecer cuotas en un volumen desde su menú contextual seleccionamos `Propiedades` y vamos a la pestaña de `Cuota`:
+
+![Cuotas volumen](media/cuotaVol.png)
+
+Tenemos que activar la opción `Habilitar la administración de cuotas`. Las opciones que tenemos son:
+- Denegar espacio en disco a usuarios que excedan el límite: si un usuario sobrepasa el límite asignado no puede escribir datos en el disco
+- No limitar el uso de disco: por defecto no establecemos límites. Después los podemos especificar para usuarios concretos
+- Limitar espacio en disco: ponemos límites por defecto para todos los usuarios. Indicaremos la cantidad de espacio a asignar por usuario y el nivel en el cual se le mostrará una advertencia
+- Registrar un evento cuando un usuario supero su límite o su nivel de advertencia: se registra un evento en los casos indicados porque el administrador pueda tomar las medidas apropiadas
+
+De este modo hemos establecido unas cuotas generales para todos los usuarios. Pero a a menudo querremos establecer cuotas sólo para determinados usuarios. Esto lo hacemos desde el botón de `Valores de cuota`. En la nueva ventana seleccionamos desde el `menú Cuota -> Nueva entrada de cuota...`, escogemos el usuario o usuarios a los cuales se aplicará la cuota que estamos creando y establecemos la cuota específica para ellos:
+
+![Cuotas volumen- nueva cuota usr](media/cuotaVol-newUser.png)
+
+De este modo establecemos cuotas para una partición entera.
 
 ### Filtrado de archivos
 Permite impedir que se almacenen en la carpeta compartida determinados tipos de archivo (vídeo, imágenes, ejecutables, ...).
@@ -169,12 +213,12 @@ $Limite = New-FsrmQuotaThreshold -Percentage 85 -Action $Action
 
 Finalmente creamos la nueva plantilla asignándole el umbral que hemos establecido en la variable anterior.
 ```powershell
-New-FsrmQuotaTemplate -Name "Limite para Diseño" -Size 50GB -Threshold $Limite
+New-FsrmQuotaTemplate -Name "Limite para Diseny" -Size 50GB -Threshold $Limite
 ```
 
 Una vez creada la plantilla, solo necesitamos asignarla.
 ```powershell
-New-FsrmQuota -Path E:\Shares\Diseny -Template "Limite para Diseño"
+New-FsrmQuota -Path E:\Shares\Diseny -Template "Limite para Diseny"
 ```
 
 **Ejemplo creación de filtro de archivos**

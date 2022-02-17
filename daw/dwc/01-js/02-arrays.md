@@ -5,30 +5,30 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Arrays](#arrays)
-  - [Introducción](#introducci%C3%B3n)
+  - [Introducción](#introducción)
   - [Operaciones con Arrays](#operaciones-con-arrays)
     - [lenght](#lenght)
-    - [Añadir elementos](#a%C3%B1adir-elementos)
+    - [Añadir elementos](#añadir-elementos)
     - [Eliminar elementos](#eliminar-elementos)
     - [splice](#splice)
     - [slice](#slice)
     - [Arrays y Strings](#arrays-y-strings)
     - [sort](#sort)
-    - [Otros métodos comunes](#otros-m%C3%A9todos-comunes)
+    - [Otros métodos comunes](#otros-métodos-comunes)
     - [Functional Programming](#functional-programming)
       - [filter](#filter)
       - [find](#find)
       - [findIndex](#findindex)
       - [every / some](#every--some)
-      - [reduce](#reduce)
       - [map](#map)
+      - [reduce](#reduce)
       - [forEach](#foreach)
       - [includes](#includes)
       - [Array.from](#arrayfrom)
   - [Referencia vs Copia](#referencia-vs-copia)
   - [Rest y Spread](#rest-y-spread)
-  - [Desestructuración de arrays](#desestructuraci%C3%B3n-de-arrays)
-  - [Map](#map)
+  - [Desestructuración de arrays](#desestructuración-de-arrays)
+  - [Map](#map-1)
   - [Set](#set)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -437,8 +437,8 @@ const miProducto = {
 
 muestraNombre(miProducto);
 
-function miProducto({name: nanme, units: units}) {        // Mejor pondríamos function miProducto({name, units}) {
-    console.log('Del producto '+name+' hay '+units+' unidades');
+function miProducto({name: name, units: units}) {        // Mejor pondríamos function miProducto({name, units}) {
+    console.log('Del producto ' + name + ' hay ' + units + ' unidades');
 }
 ```
 

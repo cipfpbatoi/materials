@@ -19,6 +19,8 @@
   - [Comandos para gestionar procesos y servicios](#comandos-para-gestionar-procesos-y-servicios)
   - [Comandos para gestionar usuarios](#comandos-para-gestionar-usuarios)
   - [Comandos para gestionar grupos](#comandos-para-gestionar-grupos)
+  - [Otros comandos de administración](#otros-comandos-de-administración)
+  - [Saber más](#saber-más)
 
 ## Introducción a PowerShell
 Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, _Remove_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
@@ -223,7 +225,8 @@ Ejemplos:
 - **`Enable-NetAdapter -Name "Ethernet"`**
 - **`Rename-NetAdapter -Name "Ethernet" -NewName "Externa"`**: Renombra un adaptador de red
 - **`Get-NetAdapter -Name "Ethernet" | Remove-NetIPAddress`**: Elimina la IP de adaptador "Ethernet"
-- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.25 -PrefixLength "24"`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24
+- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.25 -PrefixLength "24" -DefaultGateway 192.168.1.1`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24 y la puerta de enlace 192.168.1.1
+- **`Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 10.0.0.2`**: Se asigna a la interfaz "Ethernet" el DNS 10.0.2.2
 - **`Test-NetConnection -ComputerName 8.8.8.8`**: Realiza un ping a 8.8.8.8
 - **`Test-NetConnection 8.8.8.8 -TraceRoute`**: Ejecuta un tracert a 8.8.8.8
 - **`Resolve-DnsName google.com`**: Ejecuta un Nslookup a google.com
@@ -313,6 +316,12 @@ Ejemplos:
 - `New-LocalGroup -Name "Profes" - Description "Professors del curs"`: añade un nuevo grupo local llamado Profes
 - `New-ADGroup -Name "Professors del matí" -SamAccountName ProfesMati -GroupCategory Security -GroupScope Global -DisplayName "Professors del matí" -Path "OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN" -Description "Members of this group are teachers in the morning courses"`: añade un nuevo grupo global llamado ProfesMati en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan
 - `Add-ADGroupMember -Identity ProfesMati -Members jsegura,lmanzaneque`: añade los usuarios jsegura y lmanzaneque al grupo ProfesMati
+
+## Otros comandos de administración
+- **`Rename-Computer -Name pc01`**: renombra este ordenado a pc01
+- **`Restart-Computer`**: reinicia la máquina
+- **`Add-Computer ACME`**: añade este ordenado al dominio ACME (es el nombre NetBIOS del dominio)
+
 
 ## Saber más
 En Internet hay infinidad de páginas y tutoriales sobre Powershell. Te recomiendo el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).

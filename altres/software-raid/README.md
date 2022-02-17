@@ -63,3 +63,7 @@ Verifying the status of the RAID arrays:
 or
 
     # mdadm --detail /dev/md0
+
+**NOTE**: if the array is inactive (what happens, for instance, if a disk has dissapeared) before remove and add the new disk the array must be actived with:
+
+    # mdadm --run /dev/md0
