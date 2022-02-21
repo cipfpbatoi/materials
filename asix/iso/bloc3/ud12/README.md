@@ -15,6 +15,8 @@ UD 12 - Centralización de la información con LDAP
   * [phpldapadmin y otros](#phpldapadmin-y-otros)
   * [Otras herramientas](#otras-herramientas)
 * [Buscar elementos del directorio](#buscar-elementos-del-directorio)
+* [Modificar entradas del directorio](#modificar-entradas-del-directorio)
+* [Borrar entradas del directorio](#borrar-entradas-del-directorio)
 * [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
   * [Instalación en el cliente](#instalación-en-el-cliente)
   * [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
@@ -296,6 +298,34 @@ Parámetros:
 - **-b** va seguida del punto del árbol donde debe comenzar la búsqueda. En este caso, dc=iso,dc=lan. Después se incluye la condición que deberán cumplir los objetos buscados. En el ejemplo, cualquier valor (*) para el atributo uid.
 - Por último, se incluye el nombre de los atributos que queremos obtener en el resultado de la consulta.
 
+## Modificar entradas del directorio
+
+El comando que usaremos en este caso es **ldapmodify**, que permite cambiar el contenido de cualquier atributo, añadir atributos nuevos, eliminarlos etc.
+
+Dado que la sintaxis es más compleja nos apoyaremos en un archivo *LDIF* que especifique los cambios que necesitamos realizar. En nuestro caso, el archivo tendrá el siguiente aspecto:
+
+```bash
+  dn: uid=jomuoru,ou=usuarios,dc=iso,dc=lan
+  changetype: modify
+  replace: mail
+  mail: jomuoru@iso.lan
+```
+
+Como puedes suponer, la primera línea identifica la cuenta en la que realizaremos el cambio. La segunda indica el tipo de operación a realizar, la tercera identifica el atributo y, por último, la cuarta incluye el nuevo valor que debe asignarle.
+
+Por último, ejecutamos la utilidad **ldapmodify**, indicándole el nombre del archivo donde se encuentran los datos:
+
+```bash
+  ldapmodify -x -D cn=admin,dc=iso,dc=lan -W -f modify.ldif
+```
+
+## Borrar entradas del directorio
+
+La utilidad que permite eliminar entradas del directorio se llama **ldapdelete**. Para utilizarla, sólo tenemos que aportar los datos del objeto a borrar y los datos de la cuenta administrador que debe permitirlo. La sintaxis será como sigue:
+
+```bash
+  ldapdelete -x -W -D 'cn=admin,dc=iso,dc=lan' "uid=jomuoru,ou=usuarios,dc=iso,dc=lan"
+```
 
 ## Configuración del cliente LDAP
 
