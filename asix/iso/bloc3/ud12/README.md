@@ -4,30 +4,29 @@ Módulo: Implantación de Sistemas Operativos
 UD 12 - Centralización de la información con LDAP
 --------------------------------------------------
 
-- [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
-  - [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
-- [Introducción](#introducción)
-  - [Objetivos](#objetivos)
-  - [Conceptos clave](#conceptos-clave)
-  - [Introducción a LDAP](#introducción-a-ldap)
-  - [Los objetos del directorio](#los-objetos-del-directorio)
-    - [Instalación y configuración](#instalación-y-configuración)
-    - [Configuración desde la terminal](#configuración-desde-la-terminal)
-    - [LDAP Account Manager](#ldap-account-manager)
-    - [phpldapadmin y otros](#phpldapadmin-y-otros)
-    - [Otras herramientas](#otras-herramientas)
-  - [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
-    - [Instalación en el cliente](#instalación-en-el-cliente)
-    - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
-  - [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
-    - [Configuración del servicio NSS](#configuración-del-servicio-nss)
-    - [Configuración de PAM](#configuración-de-pam)
-    - [Ajustes de la configuración](#ajustes-de-la-configuración)
-    - [Perfiles móviles](#perfiles-móviles)
-  - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
-    - [Configurar SSSD](#configurar-sssd)
-  - [Proyecto](#proyecto)
-  - [Bibliografía](#bibliografía)
+* [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
+* [Objetivos](#objetivos)
+* [Conceptos clave](#conceptos-clave)
+* [Introducción a LDAP](#introducción-a-ldap)
+* [Los objetos del directorio](#los-objetos-del-directorio)
+  * [Instalación y configuración](#instalación-y-configuración)
+  * [Configuración desde la terminal](#configuración-desde-la-terminal)
+  * [LDAP Account Manager](#ldap-account-manager)
+  * [phpldapadmin y otros](#phpldapadmin-y-otros)
+  * [Otras herramientas](#otras-herramientas)
+* [Buscar elementos del directorio](#buscar-elementos-del-directorio)
+* [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
+  * [Instalación en el cliente](#instalación-en-el-cliente)
+  * [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
+* [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
+  * [Configuración del servicio NSS](#configuración-del-servicio-nss)
+  * [Configuración de PAM](#configuración-de-pam)
+  * [Ajustes de la configuración](#ajustes-de-la-configuración)
+  * [Perfiles móviles](#perfiles-móviles)
+* [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
+  * [Configurar SSSD](#configurar-sssd)
+* [Proyecto](#proyecto)
+* [Bibliografía](#bibliografía)
 
 Introducción
 ============
@@ -279,6 +278,22 @@ Ahora podemos acceder a esta herramienta desde el navegador con **<http://mi_ser
 Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es **Webmin** que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
 
 Otras herramientas (también de software libre como todas las que hemos visto) son **GOsa** o **Web2ldap**.
+
+## Buscar elementos del directorio
+
+Como hemos visto más arriba, la utilidad de línea de comandos que permite realizar búsquedas en el directorio **LDAP** es *ldapsearch*. Se trata de una utilidad con multitud de opciones, pero aquí vamos a hacer un uso básico de ella.
+
+Por ejemplo, podríamos buscar todos los usuarios usando la siguiente sintaxis:
+```bash
+
+ldapsearch -xLLL -b "dc=iso,dc=lan" uid=* sn givenName mail
+
+```
+Parámetros:
+
+- **-b** va seguida del punto del árbol donde debe comenzar la búsqueda. En este caso, dc=iso,dc=lan. Después se incluye la condición que deberán cumplir los objetos buscados. En el ejemplo, cualquier valor (*) para el atributo uid.
+- Por último, se incluye el nombre de los atributos que queremos obtener en el resultado de la consulta.
+
 
 ## Configuración del cliente LDAP
 
