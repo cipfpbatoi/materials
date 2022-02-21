@@ -291,6 +291,8 @@ ldapsearch -xLLL -b "dc=iso,dc=lan" uid=* sn givenName mail
 ```
 Parámetros:
 
+- **-x**  indica que usaremos autentificación simple.
+- **-LLL** sirve para que la salida sea simple del tipo LDAPv1.
 - **-b** va seguida del punto del árbol donde debe comenzar la búsqueda. En este caso, dc=iso,dc=lan. Después se incluye la condición que deberán cumplir los objetos buscados. En el ejemplo, cualquier valor (*) para el atributo uid.
 - Por último, se incluye el nombre de los atributos que queremos obtener en el resultado de la consulta.
 
