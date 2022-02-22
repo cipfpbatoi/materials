@@ -510,6 +510,7 @@ NOTA: la última línea es si el servidor usa un certificado autofirmado para TL
 ## Bibliografía
 
 
+* [https://wiki.debian.org/LDAP/PAM](https://wiki.debian.org/LDAP/PAM)
 * [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
 * [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
 * [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
