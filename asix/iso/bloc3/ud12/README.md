@@ -348,12 +348,28 @@ Instalación del paquete:
 
 ![libpam-ldapd](media/1-ldapd.png)
 
-Configuración del servidor ldap:
+Configuración de la dirección del servidor ldap:
 
 ![libpam-ldapd](media/2-ldapd.png)
 
+Configuración de **nslc** con el DN de nuestro dominio:
 
+![libpam-ldapd](media/3-ldapd.png)
 
+Configurando la fuente de datos LDAP para los diferentes servicios: 
+
+![libpam-ldapd](media/4-ldapd.png)
+
+Ahora podemos ejecutar el comando: 
+
+```bash
+
+pam-auth-update
+```
+
+y seleccionamos la opción *Create home directory*. Para que cree el directorio del usuario al validarse. 
+
+![libpam-ldapd](media/5-ldapd.png)
 
 ### Instalación en el cliente
 
