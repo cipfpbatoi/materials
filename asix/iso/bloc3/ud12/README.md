@@ -18,6 +18,7 @@ UD 12 - Centralización de la información con LDAP
 * [Modificar entradas del directorio](#modificar-entradas-del-directorio)
 * [Borrar entradas del directorio](#borrar-entradas-del-directorio)
 * [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
+  * [Instalación cliente Debian 11 Bullseye](#instalación-cliente-debian-11-bullseye)
   * [Instalación en el cliente](#instalación-en-el-cliente)
   * [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
 * [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
@@ -338,6 +339,22 @@ En el proceso de validación de los usuarios en el cliente mediante un servidor 
 * **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero *PAM* permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas **GNU/Linux** (login, ssh, su, ...) utilizan *PAM* y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
 * **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**. Para que un usuario pueda entrar en el sistema _PAM_ debe autorizarlo (si cumple los requisitos, por ejemplo que usuario+contraseña son correctos) pero se necesita más información del mismo, como a qué grupos pertenece o cuál es la ruta de su carpeta personal. Esta información la proporciona _NSS_. En el fichero `/etc/nsswitch.conf` es donde configura _NSS_ dónde debe buscar la información de los usuarios, grupos, etc.
 
+
+### Instalación cliente Debian 11 Bullseye
+
+En este apartado describimos el procedimiento para realizar la instalación/configuración utilizando el paquete **libpam-ldapd**. **libpam-ldapd** es una alternativa más nueva al **libpam-ldap** original. **libpam-ldapd** usa el mismo backend (**nslcd**) que **libnss-ldapd** y, por lo tanto, también comparte el mismo archivo de configuración (*/etc/nslcd.conf*) para los parámetros de conexión **LDAP**.
+
+Instalación del paquete:
+
+![libpam-ldapd](media/1-ldapd.png)
+
+Configuración del servidor ldap:
+
+![libpam-ldapd](media/2-ldapd.png)
+
+
+
+
 ### Instalación en el cliente
 
 Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
@@ -462,6 +479,7 @@ Para que estos cambios tengan efecto debemos volver a ejecutar el comando
     pam-auth-update
 ```
 
+
 ### Perfiles móviles
 
 Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
@@ -516,5 +534,6 @@ NOTA: la última línea es si el servidor usa un certificado autofirmado para TL
 * [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
 * [Autenticación centralizada mediante OpenLDAP](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
 * [Gentoo Linux](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+* [https://wiki.debian.org/LDAP](https://wiki.debian.org/LDAP)
   
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
