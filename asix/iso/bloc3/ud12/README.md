@@ -4,6 +4,8 @@ Módulo: Implantación de Sistemas Operativos
 UD 12 - Centralización de la información con LDAP
 --------------------------------------------------
 
+![ldap](./media/LDAPworm.gif)
+
 * [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
 * [Objetivos](#objetivos)
 * [Conceptos clave](#conceptos-clave)

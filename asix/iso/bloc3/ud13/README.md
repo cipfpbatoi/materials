@@ -1,125 +1,116 @@
 Módulo: Implantación de sistemas operativos
 ===========================================
 
-UD 13 - Compartición de recursos con NFS 
-========================================
+UD 13 - Compartición de recursos con NFS
+-----------------------------------------
 
-![ldap](./media/LDAPworm.gif)
-
-- [Módulo: Implantación de sistemas operativos](#módulo-implantación-de-sistemas-operativos)
-- [UD 13 - Compartición de recursos con NFS](#ud-13---compartición-de-recursos-con-nfs)
-- [Introducción](#introducción)
-  - [Objetivos](#objetivos)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-- [Instalación y configuración del servidor NFS](#instalación-y-configuración-del-servidor-nfs)
-  - [Qué es NFS](#qué-es-nfs)
-  - [Configuración del servidor](#configuración-del-servidor)
-  - [Compartir recursos](#compartir-recursos)
-    - [squash](#squash)
-    - [Permisos sobre las carpetas compartidas](#permisos-sobre-las-carpetas-compartidas)
-    - [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
-- [Configuración del cliente](#configuración-del-cliente)
-- [Perfiles móviles de usuarios LDAP](#perfiles-móviles-de-usuarios-ldap)
-- [Compartición de impresoras. CUPS](#compartición-de-impresoras-cups)
-    - [Instalación de CUPS](#instalación-de-cups)
-    - [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
-- [Proyecto](#proyecto)
-- [Bibliografía](#bibliografía)
+* [UD 13 - Compartición de recursos con NFS](#ud-13---compartición-de-recursos-con-nfs)
+* [Objetivos](#objetivos)
+* [Conceptos clave](#conceptos-clave)
+* [Conocimiento previo](#conocimiento-previo)
+* [Qué es NFS](#qué-es-nfs)
+* [Configuración del servidor](#configuración-del-servidor)
+* [Compartir recursos](#compartir-recursos)
+  * [squash](#squash)
+  * [Permisos sobre las carpetas compartidas](#permisos-sobre-las-carpetas-compartidas)
+  * [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
+  * [Instalación de CUPS](#instalación-de-cups)
+  * [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
 
 Introducción
 ============
 
-Objetivos 
+Objetivos
 ---------
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
-- Implementar dominios.
-- Administrar cuentas de usuario y cuentas de equipo.
-- Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
-- Crear y administrar grupos de seguridad.
-- Crear plantillas que faciliten la administración de usuarios con características similares.
-- Organizar los objetos del dominio para facilitar su administración.
-- Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
-- Incorporar equipos al dominio.
-- Bloquear accesos no autorizados al dominio.
-- Administrar el acceso a recursos locales y recursos de red.
-- Hacer cumplir los requerimientos de seguridad.
-- Implementar, verificar y asignar directivas de grupo.
-- Documentar la estructura del dominio, las tareas realizadas y las incidencias producidas.
+* Implementar dominios.
+* Administrar cuentas de usuario y cuentas de equipo.
+* Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
+* Crear y administrar grupos de seguridad.
+* Crear plantillas que faciliten la administración de usuarios con características similares.
+* Organizar los objetos del dominio para facilitar su administración.
+* Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
+* Incorporar equipos al dominio.
+* Bloquear accesos no autorizados al dominio.
+* Administrar el acceso a recursos locales y recursos de red.
+* Hacer cumplir los requerimientos de seguridad.
+* Implementar, verificar y asignar directivas de grupo.
+* Documentar la estructura del dominio, las tareas realizadas y las incidencias producidas.
 
 Conceptos clave
 ---------------
 
 Los conceptos más importantes de esta unidad son:
 
-- La red informática
-- Arquitectura cliente/servidor
-- Principales sistemas operativos de servidor
+* La red informática
+* Arquitectura cliente/servidor
+* Principales sistemas operativos de servidor
 
 Conocimiento previo
 -------------------
 
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
 
-- cuáles son los sistemas operativos de servidor más utilizados en la arquitectura PC
-- cómo utilizar software de virtualización para crear máquinas virtuales
-- gestionar unidades de almacenamiento y sus particiones
-- cuáles son los sistemas de archivo utilizados por los sistemas Microsoft y sus ventajas e inconvenientes
-- cómo asignar permisos a ficheros y carpetas en sistemas de archivo NTFS
-- cómo utilizar la terminal para realizar tareas básicas en un máquina
+* cuáles son los sistemas operativos de servidor más utilizados en la arquitectura PC
+* cómo utilizar software de virtualización para crear máquinas virtuales
+* gestionar unidades de almacenamiento y sus particiones
+* cuáles son los sistemas de archivo utilizados por los sistemas Microsoft y sus ventajas e inconvenientes
+* cómo asignar permisos a ficheros y carpetas en sistemas de archivo NTFS
+* cómo utilizar la terminal para realizar tareas básicas en un máquina
 
 Instalación y configuración del servidor NFS  
 ============================================
 
 ## Qué es NFS
 
-Para compartir directorios entre equipos de la red tenemos varias opciones. El protocolo NFS es el método utilizado como nativo en GNU/Linux. Esta opción es adecuada cuando todos los equipos que forman parte de la red utilizan el sistema GNU Linux. Otra posibilidad es utilizar el protocolo de archivos compartidos utilizado en sistemas Microsoft llamado SMB/CIFS e implementado para sistemas GNU/Linux como Samba. La ventaja de utilizar samba se que pueden acceder a los recursos compartidos con un cliente GNU/Linux o Windows.
+Para compartir directorios entre equipos de la red tenemos varias opciones. El protocolo **NFS** es el método utilizado como nativo en GNU/Linux. Esta opción es adecuada cuando todos los equipos que forman parte de la red utilizan el sistema GNU/Linux. Otra posibilidad es utilizar el protocolo de archivos compartidos utilizado en sistemas Microsoft llamado **SMB/CIFS** e implementado para sistemas GNU/Linux como **Samba**. La ventaja de utilizar **Samba** se que pueden acceder a los recursos compartidos con un cliente GNU/Linux o Windows.
 
-NFS (Network File System) es un protocolo para sistemas de archivos distribuidos en una red de área local y posibilita que diferentes sistemas conectados a una misma red accedan a ficheros remotos cómo si se tratara de locales. El protocolo NFS está incluido por defecto en la mayoría de distribuciones Linux y también en los sistemas OSX de Apple y algunas versiones de Windows (como Windows 8 Enterprise).
+**NFS** (*Network File System*) es un protocolo para sistemas de archivos distribuidos en una red de área local y posibilita que diferentes sistemas conectados a una misma red accedan a ficheros remotos cómo si se tratara de locales. El protocolo **NFS** está incluido por defecto en la mayoría de distribuciones Linux y también en los sistemas OSX de Apple y algunas versiones de Windows (como Windows 8 Enterprise).
 
-El ordenador que actúa como servidor \"exporta\" ciertos directorios de su sistema de archivos para que los clientes tengan acceso a ellos. Para poder acceder a los archivos remotos, los clientes deben montar cada directorio exportado por el servidor en algún punto de su sistema de archivos (igual que hace con las particiones de su disco).
+El ordenador que actúa como servidor \"**exporta**\" ciertos directorios de su sistema de archivos para que los clientes tengan acceso a ellos. Para poder acceder a los archivos remotos, los clientes deben montar cada directorio exportado por el servidor en algún punto de su sistema de archivos (igual que hace con las particiones de su disco).
 
 ## Configuración del servidor
 
-El paquete a instalar en el servidor es **nfs-kernel-server**. También se instalará el paquete nfs-common. El servicio nfs-kernel-server arranca dos demonios:
+El paquete a instalar en el servidor es **nfs-kernel-server**. También se instalará el paquete **nfs-common**. El servicio nfs-kernel-server arranca dos demonios:
 
-- nfsd: es el encargado de procesar las peticiones de los clientes para acceder a los ficheros exportados.
-- mountd: se encarga de las peticiones de montaje de los sistemas de archivos NFS por parte de los clientes. 
+* **nfsd**: es el encargado de procesar las peticiones de los clientes para acceder a los ficheros exportados.
+* **mountd**: se encarga de las peticiones de montaje de los sistemas de archivos NFS por parte de los clientes.
 
 El fichero e que se configuran los directorios a exportar es **/etc/exports**. Sólo se pueden exportar directorios locales y que no se pueden exportar subdirectorios de un directorio exportado (a menos que se encuentran en diferentes dispositivos físicos).
 
 ## Compartir recursos
 
-El archivo /etc/exports contendrá una línea por cada directorio exportado, en la cual se indicará la ruta completa al mismo seguida por ciertos parámetros que permiten especificar qué ordenadores tienen derecho a montar remotamente el directorio exportado, y con qué tipo de acceso.
+El archivo **/etc/exports** contendrá una línea por cada directorio exportado, en la cual se indicará la ruta completa al mismo seguida por ciertos parámetros que permiten especificar qué ordenadores tienen derecho a montar remotamente el directorio exportado, y con qué tipo de acceso.
 
 La sintaxis de cada línea es:
 
 ```bash
 [ruta cliente1(opción,opción,...) cliente2(opción,opción,...)...]
+
 ```
 
 dónde ruta es la ruta al directorio exportado, cliente es para qué equipos se exporta (nombres, IPs o rangos de IP -ej. 192.168.1.0/24) y opción especifica el tipo de acceso. Sólo se pone espacio entre un cliente y otro. Entre las diferentes opciones se pone sólo coma.
 
 Como cliente podemos poner:
 
-- el nombre DNS o la IP de un equipo
-- comodines (\* y ?) para sustituir todo el nombre o una parte del mismo (como 192.168.221.*, 192:168.*.* o * -en este caso será accesible a todo el mundo)
-- un intervalo de IPs, como 192.168.1.30 (las 30 primeras IP de la red 192.168.1.0)
-- si tenemos un servidor NIS podemos poner nombre de grupos precedidos por @ (como @clientes_nfs)
+* el nombre **DNS** o la **IP** de un equipo
+* comodines (\* y ?) para sustituir todo el nombre o una parte del mismo (como 192.168.221.*, 192:168.*.*o* -en este caso será accesible a todo el mundo)
+* un intervalo de **IPs**, como 192.168.1.30 (las 30 primeras IP de la red 192.168.1.0)
+* si tenemos un servidor **NIS** podemos poner nombre de grupos precedidos por @ (como @clientes_nfs)
 
 Respecto a las opciones, las más comunes son (en negrita tenéis la predeterminada):
 
-- rw / **ro**: modo lectura-escritura o sólo lectura
-- **root_squash** / no_root_squash / all_squash: root_squash mapea los uid y gid 0 a los uid y gid anónimos (nobody o nfsnobody), es decir, que las peticiones de lectura/escritura hechos por el root cliente sobre los datos "importados" es cómo si los realizara el usuario anónimo y no el root del servidor. no_root_squash no hace esto, por lo tanto el root del cliente cuando trabaja con los datos "importados" sigue actuando como root. all_squash: mapea todos los usuarios al usuario anónimo.
-- anonuid / anongid: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
-- **subtree_check** / no_subtree_check: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
-- **fsid=0:** significa que al montarlo en el cliente no hay que poner la ruta a la carpeta en el servidor sino que se comparte desde la raíz. Por ejemplo si queremos compartir /srv/datos/public y ponemos esta opción al montar la carpeta en el cliente pondremos que monte **servidor:/public** y no **servidor:/sv/datos/public**
-- **async**: las escrituras se harán asíncronamente. lo que mejora el rendimiento pero pueden perderse datos si se corta la conexión.
-- **wdelay** / no_wdelay: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
+* rw / **ro**: modo lectura-escritura o sólo lectura
+* **root_squash** / no_root_squash / all_squash: root_squash mapea los uid y gid 0 a los uid y gid anónimos (nobody o nfsnobody), es decir, que las peticiones de lectura/escritura hechos por el root cliente sobre los datos "importados" es cómo si los realizara el usuario anónimo y no el root del servidor. no_root_squash no hace esto, por lo tanto el root del cliente cuando trabaja con los datos "importados" sigue actuando como root. all_squash: mapea todos los usuarios al usuario anónimo.
+* anonuid / anongid: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
+* **subtree_check** / no_subtree_check: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
+* **fsid=0:** significa que al montarlo en el cliente no hay que poner la ruta a la carpeta en el servidor sino que se comparte desde la raíz. Por ejemplo si queremos compartir /srv/datos/public y ponemos esta opción al montar la carpeta en el cliente pondremos que monte **servidor:/public** y no **servidor:/sv/datos/public**
+* **async**: las escrituras se harán asíncronamente. lo que mejora el rendimiento pero pueden perderse datos si se corta la conexión.
+* **wdelay** / no_wdelay: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
 
-Ejemplo de fichero /etc/exports:
+Ejemplo de fichero **/etc/exports**:
 
 ```bash
 [/net *.mi_empresa.com(rw)] 
@@ -128,22 +119,23 @@ Ejemplo de fichero /etc/exports:
 [/datos/ftp/public (ro)]
 ```
 
-En el ejemplo anterior, el servidor NFS exporta cinco directorios:
+En el ejemplo anterior, el servidor **NFS** exporta cinco directorios:
 
-- /net: Accesible desde cualquier computadora del dominio mi_empresa.com, en modo de lectura/escritura (rw = read/write).
-- /srv/compartida: Accesible desde cualquier computadora de las redes 192.168.1.0 y 192.168.2.0, en modo de lectura/escritura (rw = read/write).
-- /prueba: Accesible desde cualquier equipo, en modo de sólo lectura (ro = read only)
-- /hombre/jperez: Accesible sólo desde la computadora pc1.mi\_empresa.com, en modo de lectura/escritura.
-- /datos/ftp/public: Accesible desde cualquier computadora (de cualquier dominio), pero en modo de sólo lectura (ro = read only).
+* **/net**: Accesible desde cualquier computadora del dominio mi_empresa.com, en modo de lectura/escritura (rw = read/write).
+* **/srv/compartida**: Accesible desde cualquier computadora de las redes 192.168.1.0 y 192.168.2.0, en modo de lectura/escritura (rw = read/write).
+* **/prueba**: Accesible desde cualquier equipo, en modo de sólo lectura (ro = read only)
+* **/home/jperez**: Accesible sólo desde la computadora pc1.mi_empresa.com, en modo de lectura/escritura.
+* **/datos/ftp/public**: Accesible desde cualquier computadora (de cualquier dominio), pero en modo de sólo lectura (ro = read only).
 
-Después de cualquier cambio sobre el archivo /etc/exports tenemos que ejecutar la siguiente orden para actualizar la tabla de NFS
+Después de cualquier cambio sobre el archivo **/etc/exports** tenemos que ejecutar la siguiente orden para actualizar la tabla de NFS
+
 ```bash
-exportfs -arv
+    exportfs -arv
 ```
 
 (**-a** exporta todos los directorios, **-r** eliminará las entradas antiguas y **-v** nos mostrará el resultado en la consola)
 
-Para reiniciar el servicio NFS ejecutamos la orden:
+Para reiniciar el servicio **NFS** ejecutamos la orden:
 
 ```bash
 /etc/init.d/nfs-kernel-server restart]
@@ -152,12 +144,12 @@ Para reiniciar el servicio NFS ejecutamos la orden:
 Podemos ver los directorios exportados por una máquina con la orden:
 
 ```bash
-    showmount -e nombre\_o\_ip\_pc]
+    showmount -e nombre_o_ip_pc]
 ```
 
 ### squash
 
-Los permisos que tendrá cada usuario que accede a un directorio compartido desde el cliente son los correspondientes a su uid en el servidor. Es decir, si el uid del usuario jomu en el equipo cliente es el 1000 tendrá sobre las carpetas compartidas en el servidor los permisos que tenga el usuario 1000 del servidor (a menos que hagamos la exportación con la opción all_squash).
+Los permisos que tendrá cada usuario que accede a un directorio compartido desde el cliente son los correspondientes a su uid en el servidor. Es decir, si el uid del usuario jomuoru en el equipo cliente es el 1000 tendrá sobre las carpetas compartidas en el servidor los permisos que tenga el usuario 1000 del servidor (a menos que hagamos la exportación con la opción all_squash).
 
 Por ejemplo, imaginemos un directorio llamado prueba que pertenece al usuario con uid 1000 del servidor llamado vperez y al grupo con gid 1000 llamado profes con permisos 750. Desde el servidor veríamos algo como:
 
@@ -173,16 +165,16 @@ Ahora exportamos este directorio y lo montamos en el cliente en una carpeta llam
 
 Por tanto el usuario juan acaba de adquirir permisos sobre dicho directorio simplemente por tener el mismo uid que tiene el propietario del directorio en el servidor.
 
-Todos estos problemas desaparecerán al utilizar nuestros usuarios LDAP ya que en ellos hemos usado valores de UID y GID superiores a 5000 y así no coincidirán con ningún usuario local del cliente ni del servidor (con UID y GID superiores a 1000 o inferiores si son usuarios o grupos del sistema).
+Todos estos problemas desaparecerán al utilizar nuestros usuarios **LDAP** ya que en ellos hemos usado valores de **UID** y **GID** superiores a 5000 y así no coincidirán con ningún usuario local del cliente ni del servidor (con **UID** y **GID** superiores a 1000 o inferiores si son usuarios o grupos del sistema).
 
-Aunque nosotros no vamos a profundizar en las opciones de compartición de NFS la versión NFSv4 sí permite la compartición en función de los usuarios utilizando diversas métodos de autentificación (kerberos con ACLs podría ser una).
+Aunque nosotros no vamos a profundizar en las opciones de compartición de **NFS** la versión **NFSv4** sí permite la compartición en función de los usuarios utilizando diversas métodos de autentificación (kerberos con **ACLs** podría ser una).
 
 ### Permisos sobre las carpetas compartidas
 
-Como hemos dicho las carpetas aparecerán como pertenecientes al usuario/grupo que en cada cliente coincida con el uid/gid del propietario en el servidor. Para evitar esto al crear la carpeta a compartir se suele cambiar su propietario a nobody/nogroup:
+Como hemos dicho las carpetas aparecerán como pertenecientes al usuario/grupo que en cada cliente coincida con el **uid/gid** del propietario en el servidor. Para evitar esto al crear la carpeta a compartir se suele cambiar su propietario a **nobody/nogroup**:
 
 ```bash
-chown nobody:nogroup /srv/compartida
+ chown nobody:nogroup /srv/compartida
 ```
 
 Además si queremos que sea de lectura y escritura compartiremos la carpeta con las opciones **rw** y **all_squash** para que cualquier usuario pueda escribir en ella.
@@ -191,7 +183,7 @@ Sin embargo, si la carpeta que estamos compartiendo es para almacenar los perfil
 
 ### Compartir recursos gráficamente
 
-Al igual que para LDAP tenemos muchas herramientas gráficas para configurar nuestro servidor NFS. Nosotros utilizaremos Webmin que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de NFS:
+Al igual que para LDAP tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos Webmin que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de NFS:
 
 ![Webmin](./media/01-nfs.png "Webmin")
 
@@ -216,6 +208,7 @@ Por ejemplo, para montar manualmente el directorio /net del equipo srvNFS en /us
 
 ``bash
 mount -t nfs srvNFS:/net /usr/local
+
 ```
 
 Si queremos que el montaje se realice automáticamente al iniciar el cliente se tiene que añadir la siguiente línea en /etc/fstab:
@@ -226,47 +219,33 @@ Si queremos que el montaje se realice automáticamente al iniciar el cliente se 
 
 Algunas opciones de mount son:
 
-- bg: realiza el montaje en background. Si el servidor NFS no está disponible, el cliente reintentará montar el directorio posteriormente.
-- ro/rw: monta los dispositivo con acceso de sólo lectura o de lectura y escritura respectivamente
-- async: permite hacer las operaciones de escritura asíncronamente
-- auto/noauto: para que el dispositivo se monto automáticamente al iniciar (o con mount -a) (opción auto) o que se tenga que montar explícitamente (noauto)
-- user/nouser: permite que cualquier usuario pueda montar el dispositivo (user) o que sólo pueda hacerlo root (nouser)
-- rsize=n,wsize=n: indica la medida de bloque para operaciones de lectura (rsize) y escritura (wsize). El valor por defecto es 1024 pero podemos mejorar el rendimiento subiéndolo a, por ejemplo, 8192
--   nfsvers=n: versión de nfs utilizada. Por defecto es la 4 pero si
+* bg: realiza el montaje en background. Si el servidor NFS no está disponible, el cliente reintentará montar el directorio posteriormente.
+* ro/rw: monta los dispositivo con acceso de sólo lectura o de lectura y escritura respectivamente
+* async: permite hacer las operaciones de escritura asíncronamente
+* auto/noauto: para que el dispositivo se monto automáticamente al iniciar (o con mount -a) (opción auto) o que se tenga que montar explícitamente (noauto)
+* user/nouser: permite que cualquier usuario pueda montar el dispositivo (user) o que sólo pueda hacerlo root (nouser)
+* rsize=n,wsize=n: indica la medida de bloque para operaciones de lectura (rsize) y escritura (wsize). El valor por defecto es 1024 pero podemos mejorar el rendimiento subiéndolo a, por ejemplo, 8192
+* nfsvers=n: versión de nfs utilizada. Por defecto es la 4 pero si
     usamos la 3 especificaremos nfsvers=3 (si no lo hacemos funciona
     igual pero aparecen de propietarios nobody y nogroup en el cliente)
 
-NOTA: aunque un usuario tenga permisos para escribir en una carpeta compartida con NFS no lo podrá hacer si no los tinen también sobre la carpeta en la cual se monta.
+**NOTA**: aunque un usuario tenga permisos para escribir en una carpeta compartida con NFS no lo podrá hacer si no los tinen también sobre la carpeta en la cual se monta.
 
-Perfiles móviles de usuarios LDAP 
+Perfiles móviles de usuarios LDAP
 =================================
 
-Ya tenemos configurado el directorio LDAP de forma que desde cualquier cliente puedo iniciar sesión con cualquier usuario del directorio. Pero su carpeta personal (que incluye su perfil y sus datos) se crea en cada máquina cliente lo cual es un problema si el usuario no tiene un único ordenador cliente asignado.
+Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier cliente puedo iniciar sesión con cualquier usuario del directorio. Pero su carpeta personal (que incluye su perfil y sus datos) se crea en cada máquina cliente lo cual es un problema si el usuario no tiene un único ordenador cliente asignado.
 
 El siguiente paso es que las carpetas personales de los usuarios móviles se creen en el servidor y se montan automáticamente en los clientes. Los pasos a hacer son:
 
-1.  Crear una carpeta en el servidor donde almacenar los homes de los
-    usuarios móviles y compartirla con NFS de lectura y escritura para
-    todos los clientes. Esta carpeta podría ser /home (pero estaríamos
-    exportando también las carpetas de los usuarios locales del
-    servidor) pero mejor cualquier otra, por ejemplo, /home/movil
-2.  Montar automáticamente en los clientes el directorio con las
-    carpetas personales de los usuarios móviles que hemos exportado
-    anteriormente
-3.  Asegurarnos de que el homeDirectory de los usuarios del directorio
-    LDAP es el correcto (/home/movil/usuario)
-4.  Si hemos configurado LDAP para que se creen automáticamente las
-    carpetas de los usuarios la primera vez que inician sesión no será
-    necesario hacer nada más. Si no habrá que crear dentro de
-    /home/movil manualmente la carpeta para cada usuario. Además tenemos
-    que copiar dentro del perfil por defecto y ponerle el propietario y
-    permisos adecuados:
-    1.  Creamos la carpeta: mkdir /home/movil/jsegura
-    2.  Copiamos el perfil: cp /etc/skel/.\* /hombre/movil/jsegura
-    3.  Cambiamos el propietario y el grupo: chown 5001:5000
-        /home/movil/jsegura
-    4.  Asignamos los permisos adecuados: chmod -R 750
-        /home/movil/jsegura
+1. Crear una carpeta en el servidor donde almacenar los homes de los usuarios móviles y compartirla con NFS de lectura y escritura para todos los clientes. Esta carpeta podría ser /home (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, /home/movil
+2. Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente
+3. Asegurarnos de que el homeDirectory de los usuarios del directorio LDAP es el correcto (/home/movil/usuario)
+4. Si hemos configurado LDAP para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de /home/movil manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
+    1. Creamos la carpeta: mkdir /home/movil/jsegura
+    2. Copiamos el perfil: cp /etc/skel/.* /hombre/movil/jsegura
+    3. Cambiamos el propietario y el grupo: chown 5001:5000 /home/movil/jsegura
+    4. Asignamos los permisos adecuados: chmod -R 750 /home/movil/jsegura
 
 Compartición de impresoras. CUPS  
 ================================
@@ -281,9 +260,9 @@ Para su administración incluye un gestor web en el puerto 631. Por defecto cups
 
 ![CUPS](03-cups.png "CUPS")
 
-En la primera línea * indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
+En la primera línea *indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
 
-Las otras 2 líneas modificadas habilitan el acceso al servidor y en las páginas de administración del mismo. Aquí también podemos permitir acceder desde una IP concreta, una red o desde cualquier cliente (cómo en nuestro caso). 
+Las otras 2 líneas modificadas habilitan el acceso al servidor y en las páginas de administración del mismo. Aquí también podemos permitir acceder desde una IP concreta, una red o desde cualquier cliente (cómo en nuestro caso).
 
 Ahora ya podemos acceder a CUPS desde nuestro cliente:
 
@@ -293,18 +272,18 @@ Desde esta aplicación podemos administrar y mantener el servicio de impresión.
 
 En la pestaña "Administración" podemos acceder a todas las operaciones de gestión, por ejemplo:
 
-- Añadir una nueva impresora
-- Administrar impresoras
-- Administrar clases
-- Administrar trabajos de impresión
+* Añadir una nueva impresora
+* Administrar impresoras
+* Administrar clases
+* Administrar trabajos de impresión
 
 ![CUPS](05-cups.png "CUPS"){width="768" height="294"}
 
 En la parte derecha de la ventana de administración podemos encontrar algunas opciones importantes:
 
-- Botón "Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado /etc/cups/cupsd.conf.
-- Botón "Ver archivo de registro de accesos". Para acceder directamente al archivo de registro de CUPS /var/log/cups/access_log. En este archivo se guardan todas las conexiones realizadas a CUPS.
-- Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro /var/log/cups/error\_log donde se guardan todos los errores producidos en CUPS.
+* Botón "Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado /etc/cups/cupsd.conf.
+* Botón "Ver archivo de registro de accesos". Para acceder directamente al archivo de registro de CUPS /var/log/cups/access_log. En este archivo se guardan todas las conexiones realizadas a CUPS.
+* Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro /var/log/cups/error\_log donde se guardan todos los errores producidos en CUPS.
 
 Por último, desde esta ventana se puede configurar algunos aspectos del funcionamiento de CUPS como permitir compartir impresoras, mostrar impresoras compartidas, u otra opción bastante interesante como permitir administración remota.
 
@@ -314,13 +293,12 @@ Para añadir una nueva impresora el asistente va preguntando todo lo necesario. 
 
 ![CUPS](06-cups.png "CUPS"){width="768" height="542"}
 
-- Si es una impresora local elegiremos el puerto utilizado en la parte de arriba (opciones rojas).
-- Si es una impresora de red elegiremos el protocolo a utilizar en la parte de bajo (opciones azules): el protocolo nativo de CUPS es ipp (por defecto en el puerto 631) pero si nuestra impresora no soporta este protocolo elegiremos AppSocket (por defecto funciona sobre el puerto 9100).
+* Si es una impresora local elegiremos el puerto utilizado en la parte de arriba (opciones rojas).
+* Si es una impresora de red elegiremos el protocolo a utilizar en la parte de bajo (opciones azules): el protocolo nativo de CUPS es ipp (por defecto en el puerto 631) pero si nuestra impresora no soporta este protocolo elegiremos AppSocket (por defecto funciona sobre el puerto 9100).
 
 Respecto a las clases son el equivalente a los grupo de impresoras de Windows. La principal diferencia es que aquí tenemos que instalar cada impresora del grupo por separado (pueden ser de diferente marca al contrario que en Windows) y después creamos la clase.
 
-Para obtener más información de como instalar y configurar las impresoras podemos consultar la página oficial del CUPS en
-<http://www.cups.org>
+Para obtener más información de como instalar y configurar las impresoras podemos consultar la página oficial del CUPS en [http://www.cups.org]([http://www.cups.org])
 
 ### Acceso a una impresora desde un equipo cliente
 
@@ -342,7 +320,6 @@ Proyecto
 Bibliografía
 ============
 
-- [https://www.openldap.org/](https://www.openldap.org/)
+* [https://www.openldap.org/](https://www.openldap.org/)
 
-
-Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org licenses by-nc-sa/4.0/)
+Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses by-nc-sa/4.0/)
