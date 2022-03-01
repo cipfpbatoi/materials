@@ -86,10 +86,7 @@ El archivo **/etc/exports** contendrá una línea por cada directorio exportado,
 
 La sintaxis de cada línea es:
 
-```bash
-[ruta cliente1(opción,opción,...) cliente2(opción,opción,...)...]
-
-```
+![nfs](./media/00-nfs.png)
 
 dónde ruta es la ruta al directorio exportado, cliente es para qué equipos se exporta (nombres, IPs o rangos de IP -ej. 192.168.1.0/24) y opción especifica el tipo de acceso. Sólo se pone espacio entre un cliente y otro. Entre las diferentes opciones se pone sólo coma.
 
@@ -102,21 +99,21 @@ Como cliente podemos poner:
 
 Respecto a las opciones, las más comunes son (en negrita tenéis la predeterminada):
 
-* rw / **ro**: modo lectura-escritura o sólo lectura
+* **rw** / **ro**: modo lectura-escritura o sólo lectura
 * **root_squash** / no_root_squash / all_squash: root_squash mapea los uid y gid 0 a los uid y gid anónimos (nobody o nfsnobody), es decir, que las peticiones de lectura/escritura hechos por el root cliente sobre los datos "importados" es cómo si los realizara el usuario anónimo y no el root del servidor. no_root_squash no hace esto, por lo tanto el root del cliente cuando trabaja con los datos "importados" sigue actuando como root. all_squash: mapea todos los usuarios al usuario anónimo.
-* anonuid / anongid: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
-* **subtree_check** / no_subtree_check: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
+* **anonuid** / **anongid**: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
+* **subtree_check** / **no_subtree_check**: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
 * **fsid=0:** significa que al montarlo en el cliente no hay que poner la ruta a la carpeta en el servidor sino que se comparte desde la raíz. Por ejemplo si queremos compartir /srv/datos/public y ponemos esta opción al montar la carpeta en el cliente pondremos que monte **servidor:/public** y no **servidor:/sv/datos/public**
 * **async**: las escrituras se harán asíncronamente. lo que mejora el rendimiento pero pueden perderse datos si se corta la conexión.
-* **wdelay** / no_wdelay: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
+* **wdelay** / **no_wdelay**: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
 
 Ejemplo de fichero **/etc/exports**:
 
 ```bash
-[/net *.mi_empresa.com(rw)] 
-[/srv/compartida 192.168.1.0/255.255.255.0(rw) 192.168.2.0/255.255.255.0(rw)]
-[/prueba (ro)] [/home/jperez pc1.mi_empresa.com(rw)]
-[/datos/ftp/public (ro)]
+/net *.mi_empresa.com(rw) 
+/srv/compartida 192.168.1.0/255.255.255.0(rw) 192.168.2.0/255.255.255.0(rw)
+/prueba (ro) /home/jperez pc1.mi_empresa.com(rw)
+/datos/ftp/public (ro)
 ```
 
 En el ejemplo anterior, el servidor **NFS** exporta cinco directorios:
@@ -138,29 +135,29 @@ Después de cualquier cambio sobre el archivo **/etc/exports** tenemos que ejecu
 Para reiniciar el servicio **NFS** ejecutamos la orden:
 
 ```bash
-/etc/init.d/nfs-kernel-server restart]
+/etc/init.d/nfs-kernel-server restart
 ```
 
 Podemos ver los directorios exportados por una máquina con la orden:
 
 ```bash
-    showmount -e nombre_o_ip_pc]
+    showmount -e nombre_o_ip_pc
 ```
 
 ### squash
 
-Los permisos que tendrá cada usuario que accede a un directorio compartido desde el cliente son los correspondientes a su uid en el servidor. Es decir, si el uid del usuario jomuoru en el equipo cliente es el 1000 tendrá sobre las carpetas compartidas en el servidor los permisos que tenga el usuario 1000 del servidor (a menos que hagamos la exportación con la opción all_squash).
+Los permisos que tendrá cada usuario que accede a un directorio compartido desde el cliente son los correspondientes a su **uid** en el servidor. Es decir, si el **uid** del usuario jomuoru en el equipo cliente es el 1000 tendrá sobre las carpetas compartidas en el servidor los permisos que tenga el usuario 1000 del servidor (a menos que hagamos la exportación con la opción **all_squash**).
 
-Por ejemplo, imaginemos un directorio llamado prueba que pertenece al usuario con uid 1000 del servidor llamado vperez y al grupo con gid 1000 llamado profes con permisos 750. Desde el servidor veríamos algo como:
+Por ejemplo, imaginemos un directorio llamado prueba que pertenece al usuario con **uid** 1000 del servidor llamado *vperez* y al grupo con **gid** 1000 llamado profes con permisos 750. Desde el servidor veríamos algo como:
 
 ```bash
-drwxr-x---  2  vperez  profes  prueba]
+drwxr-x---  2  vperez  profes  prueba
 ```
 
-Ahora exportamos este directorio y lo montamos en el cliente en una carpeta llamada prueba_nfs. En dicho cliente el usuario 1000 es juan y el grupo 1000 es alumnos. Al mirar los permisos de dicho directorio veríamos:
+Ahora exportamos este directorio y lo montamos en el cliente en una carpeta llamada prueba. En dicho cliente el usuario 1000 es juan y el grupo 1000 es alumnos. Al mirar los permisos de dicho directorio veríamos:
 
 ```bash
-[drwxr-x---  2  juan  alumnos prueba_nfs]
+[drwxr-x---  2  juan  alumnos prueba]
 ```
 
 Por tanto el usuario juan acaba de adquirir permisos sobre dicho directorio simplemente por tener el mismo uid que tiene el propietario del directorio en el servidor.
@@ -183,7 +180,7 @@ Sin embargo, si la carpeta que estamos compartiendo es para almacenar los perfil
 
 ### Compartir recursos gráficamente
 
-Al igual que para LDAP tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos Webmin que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de NFS:
+Al igual que para **LDAP** tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos *Webmin* que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de **NFS**:
 
 ![Webmin](./media/01-nfs.png "Webmin")
 
@@ -204,14 +201,14 @@ En los dos casos, la sintaxis para especificar un directorio remoto es la siguie
 nombre_del_host:directorio_remoto
 ```
 
-Por ejemplo, para montar manualmente el directorio /net del equipo srvNFS en /usr/local del equipo cliente, se tiene que ejecutar el siguiente comando:
+Por ejemplo, para montar manualmente el directorio */net* del equipo *srvNFS* en */usr/local* del equipo cliente, se tiene que ejecutar el siguiente comando:
 
 ``bash
 mount -t nfs srvNFS:/net /usr/local
 
 ```
 
-Si queremos que el montaje se realice automáticamente al iniciar el cliente se tiene que añadir la siguiente línea en /etc/fstab:
+Si queremos que el montaje se realice automáticamente al iniciar el cliente se tiene que añadir la siguiente línea en */etc/fstab*:
 
 ```bash
     srvNFS:/net /usr/local nfs rw,auto,noatime,nolock,bg,nfsvers=3,intr,actimeo=1800,rsize=8192,wsize=8192 0 0
