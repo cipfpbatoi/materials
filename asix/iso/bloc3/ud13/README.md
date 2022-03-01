@@ -69,7 +69,7 @@ Para compartir directorios entre equipos de la red tenemos varias opciones. El p
 
 **NFS** (*Network File System*) es un protocolo para sistemas de archivos distribuidos en una red de área local y posibilita que diferentes sistemas conectados a una misma red accedan a ficheros remotos cómo si se tratara de locales. El protocolo **NFS** está incluido por defecto en la mayoría de distribuciones Linux y también en los sistemas OSX de Apple y algunas versiones de Windows (como Windows 8 Enterprise).
 
-El ordenador que actúa como servidor \"**exporta**\" ciertos directorios de su sistema de archivos para que los clientes tengan acceso a ellos. Para poder acceder a los archivos remotos, los clientes deben montar cada directorio exportado por el servidor en algún punto de su sistema de archivos (igual que hace con las particiones de su disco).
+El ordenador que actúa como servidor **exporta** ciertos directorios de su sistema de archivos para que los clientes tengan acceso a ellos. Para poder acceder a los archivos remotos, los clientes deben montar cada directorio exportado por el servidor en algún punto de su sistema de archivos (igual que hace con las particiones de su disco).
 
 ## Configuración del servidor
 
@@ -219,15 +219,13 @@ Si queremos que el montaje se realice automáticamente al iniciar el cliente se 
 
 Algunas opciones de mount son:
 
-* bg: realiza el montaje en background. Si el servidor NFS no está disponible, el cliente reintentará montar el directorio posteriormente.
-* ro/rw: monta los dispositivo con acceso de sólo lectura o de lectura y escritura respectivamente
-* async: permite hacer las operaciones de escritura asíncronamente
-* auto/noauto: para que el dispositivo se monto automáticamente al iniciar (o con mount -a) (opción auto) o que se tenga que montar explícitamente (noauto)
-* user/nouser: permite que cualquier usuario pueda montar el dispositivo (user) o que sólo pueda hacerlo root (nouser)
-* rsize=n,wsize=n: indica la medida de bloque para operaciones de lectura (rsize) y escritura (wsize). El valor por defecto es 1024 pero podemos mejorar el rendimiento subiéndolo a, por ejemplo, 8192
-* nfsvers=n: versión de nfs utilizada. Por defecto es la 4 pero si
-    usamos la 3 especificaremos nfsvers=3 (si no lo hacemos funciona
-    igual pero aparecen de propietarios nobody y nogroup en el cliente)
+* **bg**: realiza el montaje en background. Si el servidor NFS no está disponible, el cliente reintentará montar el directorio posteriormente.
+* **ro/rw**: monta los dispositivo con acceso de sólo lectura o de lectura y escritura respectivamente
+* **async**: permite hacer las operaciones de escritura asíncronamente
+* **auto/noauto**: para que el dispositivo se monto automáticamente al iniciar (o con mount -a) (opción auto) o que se tenga que montar explícitamente (noauto)
+* **user/nouser**: permite que cualquier usuario pueda montar el dispositivo (user) o que sólo pueda hacerlo root (nouser)
+* **rsize=n,wsize=n**: indica la medida de bloque para operaciones de lectura (rsize) y escritura (wsize). El valor por defecto es 1024 pero podemos mejorar el rendimiento subiéndolo a, por ejemplo, 8192
+* **nfsvers=n**: versión de nfs utilizada. Por defecto es la 4 pero si usamos la 3 especificaremos nfsvers=3 (si no lo hacemos funciona igual pero aparecen de propietarios nobody y nogroup en el cliente)
 
 **NOTA**: aunque un usuario tenga permisos para escribir en una carpeta compartida con NFS no lo podrá hacer si no los tinen también sobre la carpeta en la cual se monta.
 
@@ -238,37 +236,37 @@ Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier clien
 
 El siguiente paso es que las carpetas personales de los usuarios móviles se creen en el servidor y se montan automáticamente en los clientes. Los pasos a hacer son:
 
-1. Crear una carpeta en el servidor donde almacenar los homes de los usuarios móviles y compartirla con NFS de lectura y escritura para todos los clientes. Esta carpeta podría ser /home (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, /home/movil
+1. Crear una carpeta en el servidor donde almacenar los homes de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Esta carpeta podría ser /home (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, */home/movil*.
 2. Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente
-3. Asegurarnos de que el homeDirectory de los usuarios del directorio LDAP es el correcto (/home/movil/usuario)
-4. Si hemos configurado LDAP para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de /home/movil manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
-    1. Creamos la carpeta: mkdir /home/movil/jsegura
-    2. Copiamos el perfil: cp /etc/skel/.* /hombre/movil/jsegura
-    3. Cambiamos el propietario y el grupo: chown 5001:5000 /home/movil/jsegura
-    4. Asignamos los permisos adecuados: chmod -R 750 /home/movil/jsegura
+3. Asegurarnos de que el **homeDirectory** de los usuarios del directorio **LDAP** es el correcto (*/home/movil/usuario*)
+4. Si hemos configurado **LDAP** para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de */home/movil* manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
+    1. Creamos la carpeta: ***mkdir /home/movil/jsegura***
+    2. Copiamos el perfil: ***cp /etc/skel/.* /hombre/movil/jsegura***
+    3. Cambiamos el propietario y el grupo: ***chown 5001:5000 /home/movil/jsegura***
+    4. Asignamos los permisos adecuados: ***chmod -R 750 /home/movil/jsegura***
 
 Compartición de impresoras. CUPS  
 ================================
 
-CUPS es el sistema de impresión común de Unix (Common Unix Printing System) y proporciona las tareas básicas de gestión de impresión y de colas de impresión. Está basado en el Internet Printing Protocolo (IPP).
+CUPS es el sistema de impresión común de **Unix** (Common Unix Printing System) y proporciona las tareas básicas de gestión de impresión y de colas de impresión. Está basado en el Internet Printing Protocolo (**IPP**).
 
 ### Instalación de CUPS
 
 El paquete a instalar (aunque posiblemente ya esté instalado en la mayoría de sistemas) es ***cups*** e instala un servicio con el mismo nombre. El registro se guarda en diferentes ficheros dentro del directorio **/var/log/cups/**.
 
-Para su administración incluye un gestor web en el puerto 631. Por defecto cups está configurado para acceder a este gestor sólo desde el equipo local. Para poder acceder desde otros equipos (como tenemos que hacer nosotros porque en el servidor no tenemos entorno gráfico ni navegador) tenemos que cambiar la configuración en el fichero **/etc/cups/cupsd.conf**:
+Para su administración incluye un gestor web en el puerto *631*. Por defecto cups está configurado para acceder a este gestor sólo desde el equipo local. Para poder acceder desde otros equipos (como tenemos que hacer nosotros porque en el servidor no tenemos entorno gráfico ni navegador) tenemos que cambiar la configuración en el fichero **/etc/cups/cupsd.conf**:
 
 ![CUPS](03-cups.png "CUPS")
 
-En la primera línea *indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
+En la primera línea indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
 
 Las otras 2 líneas modificadas habilitan el acceso al servidor y en las páginas de administración del mismo. Aquí también podemos permitir acceder desde una IP concreta, una red o desde cualquier cliente (cómo en nuestro caso).
 
-Ahora ya podemos acceder a CUPS desde nuestro cliente:
+Ahora ya podemos acceder a *CUPS* desde nuestro cliente:
 
 ![CUPS](04-cups.png "CUPS")
 
-Desde esta aplicación podemos administrar y mantener el servicio de impresión. Algunas tareas requieren validarse con un usuario que tenga permisos para administrar el servicio. Por defecto los usuarios que pueden administrar el servicio de impresión tiene que pertenecer al grupo lpadmin.
+Desde esta aplicación podemos administrar y mantener el servicio de impresión. Algunas tareas requieren validarse con un usuario que tenga permisos para administrar el servicio. Por defecto los usuarios que pueden administrar el servicio de impresión tiene que pertenecer al grupo **lpadmin**.
 
 En la pestaña "Administración" podemos acceder a todas las operaciones de gestión, por ejemplo:
 
@@ -281,13 +279,13 @@ En la pestaña "Administración" podemos acceder a todas las operaciones de gest
 
 En la parte derecha de la ventana de administración podemos encontrar algunas opciones importantes:
 
-* Botón "Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado /etc/cups/cupsd.conf.
-* Botón "Ver archivo de registro de accesos". Para acceder directamente al archivo de registro de CUPS /var/log/cups/access_log. En este archivo se guardan todas las conexiones realizadas a CUPS.
-* Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro /var/log/cups/error\_log donde se guardan todos los errores producidos en CUPS.
+* Botón "Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado */etc/cups/cupsd.conf*.
+* Botón "Ver archivo de registro de accesos". Para acceder directamente al archivo de registro de CUPS */var/log/cups/access_log*. En este archivo se guardan todas las conexiones realizadas a CUPS.
+* Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro */var/log/cups/error_log* donde se guardan todos los errores producidos en CUPS.
 
-Por último, desde esta ventana se puede configurar algunos aspectos del funcionamiento de CUPS como permitir compartir impresoras, mostrar impresoras compartidas, u otra opción bastante interesante como permitir administración remota.
+Por último, desde esta ventana se puede configurar algunos aspectos del funcionamiento de **CUPS** como permitir compartir impresoras, mostrar impresoras compartidas, u otra opción bastante interesante como permitir administración remota.
 
-Para que CUPS funcione como servidor de impresión tiene que marcarse la opción "Compartir impresoras conectadas a este sistema".
+Para que CUPS funcione como servidor de impresión tiene que marcarse la opción "*Compartir impresoras conectadas a este sistema*".
 
 Para añadir una nueva impresora el asistente va preguntando todo lo necesario. Lo primero que nos pregunta es como se conecta la impresora a nuestro servidor. Lo más habitual es que la impresora se detecte automáticamente, y ya tendremos las opciones correctas marcadas por defecto. Si esto no pasa (es lo que nos pasará a nosotros porque estamos instalando una impresora inventada) tendremos que contestar como se conectará nuestra impresora:
 
@@ -317,9 +315,5 @@ Proyecto
 
 [Proyecto de clase](./proyecto.md)
 
-Bibliografía
-============
-
-* [https://www.openldap.org/](https://www.openldap.org/)
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses by-nc-sa/4.0/)
