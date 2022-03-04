@@ -267,19 +267,20 @@ Algunes configuracions avançades no es poden fer amb el programa Samba i s'han 
 
 En aquest exemple es veuen un parell de dades que no es poden configurar amb el programa Samba:
 
-    En el paràmetre valid users s'ha afegit el grup profes.
-    Per indicar que és un grup se li ha afegit el símbol @ al davant.
-    Si no es posa aquest paràmetre, vol dir que tots els usuaris podran accedir al recurs compartit.
-    S'ha afegit el paràmetre write list = root. Això indica que, tot i que el recurs només és de lectura (writeable = no), qualsevol usuari o grup que afegim en aquest paràmetre tindrà permís d'escriptura (en aquest cas només el root).
+* En el paràmetre valid users s'ha afegit el grup profes.
+* Per indicar que és un grup se li ha afegit el símbol @ al davant.
+* Si no es posa aquest paràmetre, vol dir que tots els usuaris podran accedir al recurs compartit.
+* S'ha afegit el paràmetre write list = root. Això indica que, tot i que el recurs només és de lectura (writeable = no), qualsevol usuari o grup que afegim en aquest paràmetre tindrà permís d'escriptura (en aquest cas només el root).
 
 També es pot fer que el permís per defecte sigui d'escriptura (writeable = yes) i posar en el paràmetre read list els usuaris que només han de tenir permís de lectura:
 
+```bash 
 [compartida]
     path = /srv/samba/compartida
     writeable = yes
     valid users = @profes, alumne, root
     read list = alumne
-
+```
 Els usuaris i grups que es posen en aquests paràmetres, han de ser usuaris i grups de Linux, no de Samba.
 
 Si es configuren els paràmetres write list o read list, els usuaris que hi posem també han d'estar a valid users (o no posar aquest paràmetre).
@@ -288,10 +289,10 @@ Si es configuren els paràmetres write list o read list, els usuaris que hi pose
 
 Una forma senzilla de configurar els permisos desitjats és:
 
-    En els permisos locals, posar tots els permisos a tothom.
-    En els permisos de compartició de Samba, indicar els usuaris que hi tenen accés i amb quins permisos.
+* En els permisos locals, posar tots els permisos a tothom.
+* En els permisos de compartició de Samba, indicar els usuaris que hi tenen accés i amb quins permisos.
 
-Això és el contrari del què es feia al compartir carpetes en Windows (SMB/CIFS) i en Linux (NFS).
+Això és el contrari del què es feia al compartir carpetes en Windows (**SMB/CIFS**) i en Linux (**NFS**).
 Encara que pugui semblar perillós, es fa així perquè els permisos Samba són més detallats que els permisos Linux i perquè, en principi, en el servidor no han d'entrar usuaris que no siguin administradors.
 
 ### Determinar els permisos efectius
@@ -300,11 +301,11 @@ Quan s'accedix a un recurs compartit amb Samba, cal utilitzar l'identificador i 
 
 Per determinar els permisos que tindrà l'usuari, Samba realitza les següents comprovacions:
 
-    Comprova si l'usuari es troba a la llista d'usuaris Samba.
-    Comprova si l'usuari té permís per accedir al recurs compartit i quin tipus de permís (només lectura o lectura i escriptura).
-    Converteix l'usuari Samba en l'usuari Linux relacionat.
-    Determina els permisos triant els més restrictius entre els permisos que té l'usuari Samba sobre el recurs compartit i els permisos que té l'usuari Linux sobre la carpeta local.
-    Si l'usuari final és el root i en els permisos de compartició pot llegir i escriure, tindrà tots els permisos independentment dels permisos locals.
+* Comprova si l'usuari es troba a la llista d'usuaris Samba.
+* Comprova si l'usuari té permís per accedir al recurs compartit i quin tipus de permís (només lectura o lectura i escriptura).
+* Converteix l'usuari Samba en l'usuari Linux relacionat.
+* Determina els permisos triant els més restrictius entre els permisos que té l'usuari Samba sobre el recurs compartit i els permisos que té l'usuari Linux sobre la carpeta local.
+* Si l'usuari final és el root i en els permisos de compartició pot llegir i escriure, tindrà tots els permisos independentment dels permisos locals.
 
 ## Accedir des de Windows a carpetes compartides amb Linux (Samba)
 
