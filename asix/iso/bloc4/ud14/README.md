@@ -180,9 +180,9 @@ També hi ha altres resursos compartits que estan comentats perquè només s'uti
 Dins l'arxiu */etc/samba/smb.conf*, en la secció **[global]**, hi ha alguns paràmetres generals relacionats amb els usuaris.
 Els principals són els següents:
 
-- **username map**: arxiu on es guarda la relació entre usuaris Samba i usuaris Linux.
-- **guest ok**: s'accepta l'usuari anònim (Invitado) de Windows.
-- **guest account**: l'usuari anònim es converteix en l'usuari nobody de Linux.
+* **username map**: arxiu on es guarda la relació entre usuaris Samba i usuaris Linux.
+* **guest ok**: s'accepta l'usuari anònim (Invitado) de Windows.
+* **guest account**: l'usuari anònim es converteix en l'usuari nobody de Linux.
 
 ```bash
 username map = /etc/samba/smbusers
@@ -205,7 +205,7 @@ username map = /etc/samba/smbusers
 
 dins la secció **[global]** de l'arxiu */etc/samba/smb.conf*.
 
-Per defecte, Samba utilitza el mateix nom d'usuari Windows per accedir als recursos compartits en Linux. Si es vol transformar un usuari Windows en un usuari Linux concret cal editar l'arxiu */etc/samba/smbusers*.
+Per defecte, **Samba** utilitza el mateix nom d'usuari Windows per accedir als recursos compartits en Linux. Si es vol transformar un usuari Windows en un usuari Linux concret cal editar l'arxiu */etc/samba/smbusers*.
 
 A continuació hi ha un exemple amb el què es podria posar en aquest arxiu (els usuaris de Linux es posen a l'esquerra del símbol **=**, i els de **Samba** a la dreta):
 
@@ -217,18 +217,18 @@ profes = @profes    # el grup profes de Samba es transformarà en el grup profes
 nobody = *    # qualsevol usuari Samba que no estigui en la llista es transformarà en l'usuari nobody de Linux
 ```
 
-Un usuari Linux pot estar associat a més d'un usuari Samba, però no al revés. Els grups de Samba s'han de posar amb una @ al davant.
+Un usuari Linux pot estar associat a més d'un usuari **Samba**, però no al revés. Els grups de **Samba** s'han de posar amb una **@** al davant.
 
-L'usuari Linux (a l'esquerra de =) també ha d'estar a la base de dades de Samba; en cas contrari, l'usuari Samba es transformarà en usuari anònim (nobody / nogroup).
+L'usuari Linux (a l'esquerra de *=*) també ha d'estar a la base de dades de **Samba**; en cas contrari, l'usuari **Samba** es transformarà en usuari anònim *(nobody/nogroup*).
 
-No és necessari posar en aquest arxiu els usuaris que tenen el mateix nom Samba i Linux (per exemple, no és necessari posar profe = profe).
+No és necessari posar en aquest arxiu els usuaris que tenen el mateix nom **Samba** i Linux (per exemple, no és necessari posar profe = profe).
 
 ### Comprovar els usuaris Samba
 
 Les comandes a utilitzar són:
 
-- **pdbedit -L**: per veure els usuaris Samba.
-- **cat /etc/samba/smbusers**: per veure les transformacions d'usuaris.
+* **pdbedit -L**: per veure els usuaris Samba.
+* **cat /etc/samba/smbusers**: per veure les transformacions d'usuaris.
 
 ## Compartició de carpetes amb Samba (mode consola)
 
@@ -236,34 +236,38 @@ Les comandes a utilitzar són:
 
 Les principals opcions que s'han de configurar són:
 
-    Nom del recurs compartit: el nom que s'ha d'utilitzar quan s'hi accedeix de forma remota.
-    Ruta local: on es troba l'arxiu o carpeta que es vol compartir.
-    Visibilitat: si serà visible de forma remota.
-    Permisos: només lectura o lectura i escriptura.
-    Accessibilitat: si serà accessible per a tothom o només a una llista d'usuaris i/o grups.
-        Permetre o no l'accés a un usuari anònim.
-        Limitar l'accés a determinades màquines.
-        Excepcions: si el recurs és només de lectura, afegir usuaris que també podran escriure-hi (i viceversa).
+* Nom del recurs compartit: el nom que s'ha d'utilitzar quan s'hi accedeix de forma remota.
+* Ruta local: on es troba l'arxiu o carpeta que es vol compartir.
+* Visibilitat: si serà visible de forma remota.
+* Permisos: només lectura o lectura i escriptura.
+* Accessibilitat: si serà accessible per a tothom o només a una llista d'usuaris i/o grups.
+  * Permetre o no l'accés a un usuari anònim.
+  * Limitar l'accés a determinades màquines.
+  * Excepcions: si el recurs és només de lectura, afegir usuaris que també podran escriure-hi (i viceversa).
 
 ### Configuració de recursos compartits
 
-Normalment, els recursos compartits es posen al final de l'arxiu /etc/samba/smb.conf.
+Normalment, els recursos compartits es posen al final de l'arxiu */etc/samba/smb.conf*.
 
 La configuració de cada recurs es posa dins d'una secció. El nom de la secció serà el nom del recurs compartit, i els paràmetres de compartició s'escriuran en les línies següents.
 
 Els paràmetres més importants són la ruta local de la carpeta que es vol compartir (paràmetre path) i el mode de compartició (writeable o read only). Només es pot posar un d'aquests dos últims paràmetres: tots dos serveixen per indicar el mode de compartició però amb l'efecte contrari un de l'altre (writable = no seria el mateix que read only = yes).
 
+```bash
 [compartida]
     path = /srv/samba/compartida
     read only = yes
+```
 
 Algunes configuracions avançades no es poden fer amb el programa Samba i s'han de fer amb altres programes o editant l'arxiu de configuració:
 
+```bash
 [compartida]
     path = /srv/samba/compartida
     writeable = no
     valid users = @profes, alumne, root
     write list = root
+```
 
 En aquest exemple es veuen un parell de dades que no es poden configurar amb el programa Samba:
 
@@ -274,13 +278,14 @@ En aquest exemple es veuen un parell de dades que no es poden configurar amb el 
 
 També es pot fer que el permís per defecte sigui d'escriptura (writeable = yes) i posar en el paràmetre read list els usuaris que només han de tenir permís de lectura:
 
-```bash 
+```bash
 [compartida]
     path = /srv/samba/compartida
     writeable = yes
     valid users = @profes, alumne, root
     read list = alumne
 ```
+
 Els usuaris i grups que es posen en aquests paràmetres, han de ser usuaris i grups de Linux, no de Samba.
 
 Si es configuren els paràmetres write list o read list, els usuaris que hi posem també han d'estar a valid users (o no posar aquest paràmetre).
