@@ -1,9 +1,8 @@
-# Dominios. Active Directory
-- [Dominios. Active Directory](#dominios-active-directory)
+# Dominios
+- [Dominios](#dominios)
   - [Introducción](#introducción)
   - [Dominios y bosques. Relaciones de confianza](#dominios-y-bosques-relaciones-de-confianza)
   - [Notación de los objetos del directorio](#notación-de-los-objetos-del-directorio)
-  - [Active Directory](#active-directory)
 
 ## Introducción
 Hoy en día, los ordenadores existentes en cualquier organización se encuentran formando parte de redes de ordenadores, de forma que pueden intercambiar información.
@@ -57,11 +56,3 @@ representa a un usuario cuyo nombre (CN=_Common Name_) es '_Juan Segura_' que se
 
 A la parte inicial del _DN_ se le llama **RDN** (_Relative Distinguished Name_) que es el atributo del objeto que lo identifica: en el caso de usuarios es su _CN_ (o su _UID_ -User IDentifier-), en el de grupos su _CN_ o _GID_, en el de OUs es su _OU_ y en el de dominios su _DC_ (_domain component_). Fijaos que el dominio aparece dividido en sus distintos componentes.
 
-## Active Directory
-En el caso de redes Windows el servidor será un equipo con un sistema operativo Windows 2019 Server (o alguna de las versiones anteriores).
-
-El nombre que da Microsoft al servicio de directorio es **Active Directory** y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (_Lightweight Directory Access Protocolo_, protocolo ligero de acceso al directorio).
-
-Cuando en un servidor Windows instalamos el rol de "Servicios de dominio de Active Directory" se convierte en **Controlador de dominio** (DC, _Domain Controller_). En cualquier red con arquitectura cliente/servidor habrá al menos un controlador de dominio, llamado controlador de dominio principal (PDC, _Primary Domain Controller_), pero pueden haber más controladores de dominio secundarios con copias del directorio, llamados BDC (_Backup Domain Controllers_).
-
-Si en un sistema montamos un dominio _Active Directory_ se necesitará un servidor DNS que resuelva dicho dominio para los equipos de la red. Si no hay ninguno se instalará el servicio DNS automáticamente al instalar _Active Directory_ y se configurará para poder responder al nombre del servidor y del dominio).
