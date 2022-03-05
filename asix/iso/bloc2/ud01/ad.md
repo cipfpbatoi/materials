@@ -1,5 +1,9 @@
 # Active Directory
-
+- [Active Directory](#active-directory)
+  - [Introducción](#introducción)
+  - [Notación de los objetos del Active Directory](#notación-de-los-objetos-del-active-directory)
+  - [Añadir más DC a un dominio](#añadir-más-dc-a-un-dominio)
+  - [Roles FSMO](#roles-fsmo)
 
 ## Introducción
 El nombre que da Microsoft al servicio de directorio es **Active Directory** y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (_Lightweight Directory Access Protocolo_, protocolo ligero de acceso al directorio).
@@ -13,9 +17,9 @@ Como en cualquier LDAP todos los objetos de AD (usuarios, equipos, grupos, ...) 
 
 ![Get-ADUser](media/Get-ADUser.png)
 
-![Get-ADComputer](media/Get-ADComputer.png)
+![Get-ADComputer](media/Get_ADComputer.png)
 
-![Get-ADGroup](media/Get-ADGroup.png)
+![Get-ADGroup](media/Get_ADGroup.png)
 
 Como vemos, además del DN cada objeto tiene un **SID** (_Security IDentifier_) que también és único. Este SID esta formado por 3 partes:
 - **S-1-5-21**: es un identificador asignado por ISO a Microsoft y especifica que es un identificador de seguridad para uso en dominios NT
@@ -42,7 +46,7 @@ Por tanto para tener tolerancia a fallos respecto al DC en nuestra red debemos h
 
 **IMPORTANTE**: un DC sólo debería dedicarse a autenticar usuarios y a servidor DNS. Como mucho le podríamos poner un servicio ligero como DHCP pero no es recomendable que haga también de servidor de ficheros, de impresión o de aplicaciones. Tampoco debería hacer nunca de servidor de comunicaciones ya que contiene información muy importante y no debería estar expuesto a internet sino protegido dentro de la LAN.
 
-## FSMO
+## Roles FSMO
 Si nuestra infraestructura de red consta de un sólo dominio con un único DC es muy sencilla su administración pero cuando tenemos un bosque con varios dominios y subdominios gestionados por diferentes DC (cada dominio/subdominio debe contar con su propio DC) la cosa puede complicarse.
 
 Por ejemplo podría suceder que dos administradores estén creando simultáneamente 2 subdominios con el mismo nombre. O que en 2 DC se estén creando 2 usuarios y se les esté asignando el mismo identificador (SID) a ambos.
@@ -82,5 +86,5 @@ Además tiene otras funciones como procesar los bloqueos de cuenta o recibir pre
 Se encarga de actualizar el SID de los objetos al hacer referencia a ellos desde otro dominio.
 
 Podéis ampliar la información en páginas como:
-- [Microsoft](https://docs.microsoft.com/es-es/troubleshoot/windows-server/identity/fsmo-roles)
-- [Windowsserver](https://windowserver.wordpress.com/2011/05/10/maestros-de-operaciones-fsmo-roles-parte-1/)
+- [Microsoft: Roles FSMO de Active Directory en Windows](https://docs.microsoft.com/es-es/troubleshoot/windows-server/identity/fsmo-roles)
+- [Windowsserver: Maestros de Operaciones (FSMO Roles)](https://windowserver.wordpress.com/2011/05/10/maestros-de-operaciones-fsmo-roles-parte-1/)
