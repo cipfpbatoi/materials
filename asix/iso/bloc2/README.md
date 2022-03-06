@@ -7,4 +7,4 @@ El bloque está compuesto por las unidades de trabajo:
 - [UD 3 - Administración centralizada del dominio](./ud03): crearemos objetos en nuestro dominio como usuarios, grupos, plantillas, etc
 - [UD 4 - Compartición de recursos](./ud04): compartiremos carpetas e impresoras y estableceremos los permisos de acceso
 - [UD 5 - Directivas](./ud05): crearemos directivas que nos permitan mejorar la gestión del dominio
-- [UD 6 - Administración avanzada del dominio](./ud05): realizaremos otras tareas como añadir clientes GNU/Linux al dominio y configurar diferentes servicios
+- [UD 6 - Administración avanzada del dominio](./ud06): realizaremos otras tareas como añadir clientes GNU/Linux al dominio, configurar diferentes servicios o monitorizar el rendimiento del sistema

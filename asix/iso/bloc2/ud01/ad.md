@@ -4,6 +4,7 @@
   - [Notación de los objetos del Active Directory](#notación-de-los-objetos-del-active-directory)
   - [Añadir más DC a un dominio](#añadir-más-dc-a-un-dominio)
   - [Roles FSMO](#roles-fsmo)
+  - [Transferir roles FSMO](#transferir-roles-fsmo)
 
 ## Introducción
 El nombre que da Microsoft al servicio de directorio es **Active Directory** y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (_Lightweight Directory Access Protocolo_, protocolo ligero de acceso al directorio).
@@ -88,3 +89,13 @@ Se encarga de actualizar el SID de los objetos al hacer referencia a ellos desde
 Podéis ampliar la información en páginas como:
 - [Microsoft: Roles FSMO de Active Directory en Windows](https://docs.microsoft.com/es-es/troubleshoot/windows-server/identity/fsmo-roles)
 - [Windowsserver: Maestros de Operaciones (FSMO Roles)](https://windowserver.wordpress.com/2011/05/10/maestros-de-operaciones-fsmo-roles-parte-1/)
+
+## Transferir roles FSMO
+Cuando un DC es correctamente degradado sus roles FSMO son asignados automáticamente a otros DC. También puede suceder que se apague el DC correctamente, por ejemplo por mantenimiento programado, y sus roles FSMO sean asignados a otro DC "vivo".
+
+Sin embargo en ocasiones puede ser necesario que un _Administrador_ deba transferir manualmente un rol a otro DC, por ejemplo si el titular del mismo ha dejado de funcionar y se ha degradado con el comando `dcpromo /forceremoval`. El comando para transferir roles FSMO es
+```cmd
+ntdsutil /roles
+```
+
+Podéis ampliar la información en [Microsoft: Transferir o aprovechar roles FSMO en servicios de dominio de Active Directory](https://docs.microsoft.com/es-es/troubleshoot/windows-server/identity/transfer-or-seize-fsmo-roles-in-ad-ds).

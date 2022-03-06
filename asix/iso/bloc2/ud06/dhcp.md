@@ -1,5 +1,8 @@
 # Servicio DHCP
-
+- [Servicio DHCP](#servicio-dhcp)
+  - [Introducción](#introducción)
+  - [Instalación y configuración](#instalación-y-configuración)
+  - [Powershell](#powershell)
 
 ## Introducción
 DHCP permite simplificar la configuración IP de los equipos ya que permite usar un servidor DHCP para asignar dinámicamente una dirección IP a un equipo u otro dispositivo (impresora, ...) de la red en lugar de configurar manualmente todos los dispositivos con una dirección IP estática. Cada equipo recibirá una IP diferente además de su máscara, puerta de enlace y DNS.
