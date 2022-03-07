@@ -8,7 +8,12 @@
       - [Añadir el equipo al dominio](#añadir-el-equipo-al-dominio)
       - [Configurando la creación automática de los home](#configurando-la-creación-automática-de-los-home)
       - [ntp](#ntp)
-    - [pbis-open](#pbis-open)
+  - [pbis-open](#pbis-open)
+    - [Configuraciones adicionales](#configuraciones-adicionales)
+    - [Si no se puede escribir el usuario en el login](#si-no-se-puede-escribir-el-usuario-en-el-login)
+      - [Ubuntu](#ubuntu)
+      - [Linux Mint](#linux-mint)
+      - [Lubuntu](#lubuntu)
 
 ## Introducción
 Aunque no es lo más habitual en ocasiones debemos añadir clientes GNU/Linux al dominio. Hay diferentes formas de hacerlos:
@@ -69,7 +74,7 @@ Después reiniciaremos el servicio **ntp**. Podemos comprobar la sincronización
 
 Fuente: [EDUCATICA!](https://www.educatica.es/informatica/anadiendo-un-sistema-gnu-linux-al-dominio/)
 
-### pbis-open
+## pbis-open
 Se trata de un script que automáticamente descarga los paquetes necesarios y configura los ficheros necesarios por nosotros. Para que funcione debemos tener instalado el paquete _ssh_.
 
 Nos descargamos desde la web de [BeyondTrust](https://github.com/BeyondTrust/pbis-open/releases) el script adecuado a nuestro sistema y lo ejecutamos:
@@ -86,3 +91,89 @@ Ya lo tenemos añadido y debe aparecer en la OU _Computers_ de _Usuarios y equip
 ```bash
 sudo domainjoin-cli query
 ```
+
+También podemos ver información sobre PBIS y el dominio con:
+```bash
+pbis status
+```
+
+Para sacar un equipo Linux del dominio ejecutaremos:
+```bash
+sudo domainjoin-cli leave
+```
+
+Podemos ver desde la terminal la lista de todos los usuarios que pueden iniciar sesión en el sistema con:
+```bash
+getent passwd
+```
+
+y la lista de grupos con:
+```bash
+getent group
+```
+
+También podemos ver la información de usuarios y grupos desde PBIS con:
+```bash
+/opt/pbis/bin/enum-users
+/opt/pbis/bin/enum-groups
+```
+
+Ya podemos iniciar sesión con un usuario del dominio poniendo su nombre y el dominio, por ejemplo `ACME\Administrador` o `Administrador@acme.lan`.
+
+### Configuraciones adicionales
+Vamos a ejecutar unas órdenes que nos faciliten la tarea de loguearnos con un usuario del dominio. En estas órdenes, cuado se tenga que poner el nombre del dominio pondremos el nombre NETBIOS (el que va sin extensión):
+- `sudo /opt/pbis/bin/config UserDomainPrefix midominio`: para no tener que escribir nom_dominio\nom_usuario (o nom_usuario@nom_dominio) para iniciar sesión sino que baste poner el nombre del usuario
+- `sudo /opt/pbis/bin/config AssumeDefaultDomain true`: por defecto asume que el usuario introducido es un usuario del dominio
+- `sudo /opt/pbis/bin/config LoginShellTemplate /bin/bash`: la terminal de los usuarios será bash
+- `sudo /opt/pbis/bin/config HomeDirTemplate %H/%U`: donde estará el directorio personal del usuario, por defecto _/home/usuario_
+- (OPCIONAL) `sudo /opt/pbis/bin/config RequireMembershipOf "midominio\nom_grup"`: esto es por si queremos que sólo los miembros de un grupo determinado puedan iniciar sesión en esta máquina. Asegúrate de poner el nombre del grupo tal y como se ve en el comando `getent group` (por ejemplo el grupo de _Usuarios del dominio_ aparece como _usuarios^del^dominio_). ATENCIÓN: el carácter "\" es para escapar el siguiente carácter por lo que puede que tengamos que ponerlo doble "\\"
+
+Podemos comprobar si hemos configurado bien cualquier opción con la opción `--show`, por ejemplo, para saber qué grupo puede iniciar sesión en el cliente linux escribiremos:
+```bash
+/opt/pbis/bin/config --show RequireMembershipOf
+```
+
+### Si no se puede escribir el usuario en el login
+Si estamos utilizando un gestor gráfico que no permita escribir el nombre del usuario al autenticarnos hay que ver la forma de habilitarlo. 
+
+En primer lugar tenemos que identificar qué _display-manager_ se está usando con:
+```bash
+systemctl status display-manager
+```
+
+#### Ubuntu
+En el caso de Ubuntu y otras distribuciones que usan _ligthdm_, tenemos que cambiar la configuración añadiendo al final del archivo de configuración `/usr/share/lightdm/lightdm.conf.d/`
+```bash
+50-unity-greeter.conf les línies:
+allow-guest=false
+greeter-show-manual-login=true
+```
+
+y reiniciamos el equipo.
+
+#### Linux Mint
+Si se trata de Linux Mint con escritorio _Mate_, en el entorno gráfico hay que habilitar la opción '_Permitir el inicio de sesión manual_' que esta en `Administración -> Pantalla de inicio de sesión`:
+
+
+
+#### Lubuntu
+Si es un Lubuntu anterior al 20.04 no hay que hacer nada porque automáticamente pide escribir el nombre del usuario.
+
+Lubuntu 20.04 utiliza como _Display Manager_ _SDDM_ que no da opción para escribir el nombre del usuario. Lo que podemos hacer es que aparezcan los usuarios del dominio igual que aparecen los locales. Para ello en primer lugar tenemos que saber qué UID tienen los usuarios del dominio con
+```bash
+getent passwd
+```
+
+Aquí vemos que sus UID son 
+
+
+
+Ahora entramos en el fichero `/etc/sddm.conf` para añadir una sección _[Users]_ donde indicar qué UID tienen que aparecer (por defecto sólo aparecen los locales a partir del UID 1000). Como los nuestros tienen UID muy grandes (1179124212 i més) ponemos en ese fichero:
+```ini
+[Autologin]
+Session=Lubuntu
+[Users]
+MinimumUid=1000
+MaximumUid=9999999999
+RememberLastUser=true```
+
