@@ -26,7 +26,8 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 Los contenidos de esta unidad son los siguientes:
 1. [Añadir clientes GNU/Linux al dominio](linux.md)
 2. [Servicio DHCP](dhcp.md)
-3. [Supervisión del sistema](supervision.md)
+3. [Realizar copias de seguridad](backups.md)
+4. [Supervisión del sistema](supervision.md)
 
 ## Caso práctico
 
