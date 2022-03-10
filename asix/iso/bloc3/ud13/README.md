@@ -73,7 +73,7 @@ El ordenador que actúa como servidor **exporta** ciertos directorios de su sist
 
 ## Configuración del servidor
 
-El paquete a instalar en el servidor es **nfs-kernel-server**. También se instalará el paquete **nfs-common**. El servicio nfs-kernel-server arranca dos demonios:
+El paquete a instalar en el servidor es **nfs-kernel-server**. También se instalará el paquete **nfs-common**. El servicio **nfs-kernel-server** arranca dos demonios:
 
 * **nfsd**: es el encargado de procesar las peticiones de los clientes para acceder a los ficheros exportados.
 * **mountd**: se encarga de las peticiones de montaje de los sistemas de archivos NFS por parte de los clientes.
@@ -84,11 +84,11 @@ El fichero e que se configuran los directorios a exportar es **/etc/exports**. S
 
 El archivo **/etc/exports** contendrá una línea por cada directorio exportado, en la cual se indicará la ruta completa al mismo seguida por ciertos parámetros que permiten especificar qué ordenadores tienen derecho a montar remotamente el directorio exportado, y con qué tipo de acceso.
 
-La sintaxis de cada línea es:
+Ejemplo de fichero:
 
 ![nfs](./media/00-nfs.png)
 
-dónde ruta es la ruta al directorio exportado, cliente es para qué equipos se exporta (nombres, IPs o rangos de IP -ej. 192.168.1.0/24) y opción especifica el tipo de acceso. Sólo se pone espacio entre un cliente y otro. Entre las diferentes opciones se pone sólo coma.
+dónde /srv/nfs/C1 es la ruta al directorio exportado, a continuación aparece a quien se exporta el recurso (nombres, IPs o rangos de IP -ej. 192.168.1.0/24) y entre paréntesis las opciones que especifica el tipo de acceso. Sólo se pone espacio entre un cliente y otro. Entre las diferentes opciones se pone sólo coma.
 
 Como cliente podemos poner:
 
@@ -107,7 +107,7 @@ Respecto a las opciones, las más comunes son (en negrita tenéis la predetermin
 * **async**: las escrituras se harán asíncronamente. lo que mejora el rendimiento pero pueden perderse datos si se corta la conexión.
 * **wdelay** / **no_wdelay**: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
 
-Ejemplo de fichero **/etc/exports**:
+Otro ejemplo de fichero **/etc/exports**:
 
 ```bash
 /net *.mi_empresa.com(rw) 

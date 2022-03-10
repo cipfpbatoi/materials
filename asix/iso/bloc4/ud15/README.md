@@ -3,10 +3,10 @@ Módulo: Implantación de sistemas operativos
 
 ![Samba](./media/samba_logo.png)
 
-UD 14 - Samba
+UD 15 - Samba
 -------------
 
-* [UD 14 - Samba](#ud-14---samba)
+* [UD 15 - Samba](#ud-15---samba)
 * [Introducció](#introducció)
   * [Gestionar Samba des de la consola](#gestionar-samba-des-de-la-consola)
   * [Arxius de registre de Samba](#arxius-de-registre-de-samba)
