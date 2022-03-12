@@ -18,7 +18,7 @@
   - [Enrutament](#enrutament)
     - [Habilitar l'enrutament](#habilitar-lenrutament)
     - [Configurar NAT en sistemes netplan](#configurar-nat-en-sistemes-netplan)
-      - [Configurar NAT en sistemes amb ifupdown i nftables](#configurar-nat-en-sistemes-amb-ifupdown-i-nftables)
+    - [Configurar NAT en sistemes amb ifupdown i nftables](#configurar-nat-en-sistemes-amb-ifupdown-i-nftables)
     - [Configurar NAT en sistemes amb ifupdown i iptables](#configurar-nat-en-sistemes-amb-ifupdown-i-iptables)
     - [Configurar NAT en CentOS](#configurar-nat-en-centos)
   - [Solucionar problemes de conectivitat](#solucionar-problemes-de-conectivitat)
@@ -409,7 +409,7 @@ iptables  -t nat -F
 post-up iptables restore < /etc/iptables.up.rules
 ```
 
-#### Configurar NAT en sistemes amb ifupdown i nftables
+### Configurar NAT en sistemes amb ifupdown i nftables
 Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible però també podem utilitzar la sintaxis nova, amb el comando `nft`. 
 
 Si volem utilitzar _nftables_ en distribucions que no ho porten per defecte hauríem d'instal·lar-les i configurar-les:
