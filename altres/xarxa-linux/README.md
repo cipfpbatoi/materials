@@ -4,13 +4,13 @@
     - [Nom de les targetes](#nom-de-les-targetes)
     - [Network Manager (entorn gràfic)](#network-manager-entorn-gràfic)
     - [Netplan vs ifupdown (_Command Line Interface_)](#netplan-vs-ifupdown-command-line-interface)
-    - [Veure la configuració amb ifupdown](#veure-la-configuració-amb-ifupdown)
-    - [Veure la configuració amb netplan](#veure-la-configuració-amb-netplan)
+    - [Veure la configuració de la xarxa](#veure-la-configuració-de-la-xarxa)
     - [Accions més comuns](#accions-més-comuns)
   - [Configurar la xarxa](#configurar-la-xarxa)
-    - [Configurtació de la xarxa amb Network Manager](#configurtació-de-la-xarxa-amb-network-manager)
+    - [Configuració de la xarxa amb Network Manager](#configuració-de-la-xarxa-amb-network-manager)
     - [Configuració de la xarxa amb ifupdown](#configuració-de-la-xarxa-amb-ifupdown)
     - [Configuració de la xarxa amb netplan](#configuració-de-la-xarxa-amb-netplan)
+    - [Configuració con systemd-networkd](#configuració-con-systemd-networkd)
     - [Configuració de la xarxa en CentOS](#configuració-de-la-xarxa-en-centos)
       - [Afegir noves targetes](#afegir-noves-targetes)
     - [Configuració en Virtualbox](#configuració-en-virtualbox)
@@ -18,8 +18,8 @@
   - [Enrutament](#enrutament)
     - [Habilitar l'enrutament](#habilitar-lenrutament)
     - [Configurar NAT en sistemes netplan](#configurar-nat-en-sistemes-netplan)
-    - [Configurar NAT en sistemes amb ifupdown i iptables](#configurar-nat-en-sistemes-amb-ifupdown-i-iptables)
       - [Configurar NAT en sistemes amb ifupdown i nftables](#configurar-nat-en-sistemes-amb-ifupdown-i-nftables)
+    - [Configurar NAT en sistemes amb ifupdown i iptables](#configurar-nat-en-sistemes-amb-ifupdown-i-iptables)
     - [Configurar NAT en CentOS](#configurar-nat-en-centos)
   - [Solucionar problemes de conectivitat](#solucionar-problemes-de-conectivitat)
 
@@ -53,12 +53,6 @@ Per a configurar la xarxa des de la terminal s'utilitzen diferents sistemes sego
 Les principals diferències entre els dos sistemes són, entre uns altres:
 * el fitxer de configuració en _ifupdown_ es de text pla (**`/etc/network/interfaces`**) i en _netplan_ és un fitxer _YAML_ que es troba dins de **`/etc/netplan/`**
 * el servei que gestiona la xarxa  en _ifupdown_ és **`networking`** i en _netplan_ **`systemd-networkd`**
-* per a activar o desactivar una interficie el  en _ifupdown_ s'utilitzen els comandos `ifup` i `ifdown` i en _netplan_:
-```bash
-    ip link set $targeta up
-    ip link set $targeta down
-```
-* per a vore o configurar temporalment la xarxa en  en _ifupdown_ tenim el comando **`ifconfig`** i en _netplan_ s'ha substituit per **`ip`**
 * en _netplan_ hi ha una nova comanda, **networkctl**, per a veure què dispositius tenim. Amb el paràmetre `status` ens dóna la configuració de cadascun:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-04.png)
@@ -67,29 +61,8 @@ Si li posem el nom d'una targeta ens dona la informació de la mateixa:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-05.png)
 
-### Veure la configuració amb ifupdown
-El comando per a veure la configuració de la xarxa és `ifconfig` (en Debian si no som _root_ hem de posar la ruta sencera del comando `/sbin/ifconfig`):
-
-![ifconfig](./img/ifconfig3.png)
-
-Per a veure les rutes configurades i la porta d'enllaç tenim el comando `route`:
-
-![route](./img/route3.png)
-
-Ens indica que:
-* tots els paquets amb destinació la xarxa 192.168.101.0/24 eixiran per la targeta **enp0s8**
-* tots els paquets amb destinació la xarxa 192.168.102.0/24 eixiran per la targeta **enp0s9**
-* tots els paquets amb destinació la xarxa 10.0.2.0/24 eixiran per la targeta **enp0s3**
-* la resta de paquets aniran a la porta d'enllaç (10.0.2.2) per a targeta **enp0s3**
-
-I per a veure el DNS mostrem el contingut del fitxer `/etc/resolv.conf`:
-
-![resolv.conf](./img/resolv.png)
-
-En aquest cas tenim com a DNS principal 127.0.0.1 (és a dir aquesta màquina) i com a secondari 8.8.8.8. No és convenient modificar ací els DNS perquè aquest fitxer és sobreescrit pels serveis que configuren la xarxa.
-
-### Veure la configuració amb netplan
-El comando `ifconfig` es troba en el paquet **net-tools** junt a `route` i altres. Netplan en compte d'aquest paquet inclou el paquet **iproute2util** que sustitueix aquest comando pel comando `ip` que és més potent. Per a veure la configuració escrivim:
+### Veure la configuració de la xarxa
+Abans s'utilitzava el comando `ifconfig` que es troba en el paquet **net-tools** junt a `route` i altres. Les distribucions modernes en compte d'aquest paquet inclouen el paquet **iproute2util** que sustitueix aquest comando pel comando `ip` que és més potent. Per a veure la configuració escrivim:
 ```bash
 ip addr show
 ```
@@ -111,36 +84,36 @@ ip route show
 ![ip r](./img/ip-route.png)
 
 ### Accions més comuns
-Tant els comandos `ifconfig` com `ip` ens permeten canviar al nostra configuració temporalment (per a canviar-la definitivament hem de fer-ho en els fitxers de configuració):
+Tant els antics comandos `ifconfig` com `ip` ens permeten canviar al nostra configuració temporalment (per a canviar-la definitivament hem de fer-ho en els fitxers de configuració):
 * desactivar una interfície de xarxa:
-  * ifconfig: `ifconfig enp0s3 down`
   * ip: `ip link set enp0s3 down`
+  * ifconfig: `ifconfig enp0s3 down`
 * volver-la a activar:
-  * ifconfig: `ifconfig enp0s3 up`
   * ip: `ip link set enp0s3 up`
+  * ifconfig: `ifconfig enp0s3 up`
 * afegir una nova IP a una interfície:
-  * ifconfig: `ifconfig enp0s3 add 192.168.100.5/24`
   * ip: `ip addr add 192.168.100.5/24 dev enp0s3`
+  * ifconfig: `ifconfig enp0s3 add 192.168.100.5/24`
 * eliminar-la IP:
-  * ifconfig: `ifconfig enp0s3 del 192.168.100.5/24`
   * ip: `ip addr del 192.168.100.5/24 dev enp0s3`
+  * ifconfig: `ifconfig enp0s3 del 192.168.100.5/24`
 * canviar la porta d'enllaç (per exemple que siga la 192.168.1.1):
-  * ifconfig: `route add default gateway 192.168.1.1`
   * ip: `ip route add default via 192.168.1.1`
+  * ifconfig: `route add default gateway 192.168.1.1`
 
 Podeu consultar més comandos en [aquesta pàgina](https://www.tecmint.com/ifconfig-vs-ip-command-comparing-network-configuration/).
 
 ## Configurar la xarxa
-Tots els canvis que fem amb el comando `ifconfig` o `ip` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **systemd-networkd** en netplan), quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/nom-del-fitxer.yaml` en netplan). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
+Tots els canvis que fem amb `ip` o `ifconfig` són temporals i es perden quan reiniciem la xarxa. El servei de xarxa (anomenat **networking** en ifupdown i **systemd-networkd** en netplan) quan s'inicia configura la xarxa amb el contingut del fitxer de configuració (`/etc/network/interfaces` en ifupdown i `/etc/netplan/nom-del-fitxer.yaml` en netplan). Per tant, per a canviar la configuració permanentment hem de canviar-la en aquest fitxer.
 
 Ací veurem com configurar la xarxa en:
 * [sistemes amb entorn gràfic, amb Network Manager](#configurtació-de-la-xarxa-amb-Network-Manager)
-* [sistemes amb ifupdown (Ubuntu fins 17.04 i altres distribucions)](#configuraci%C3%B3-de-la-xarxa-amb-ifupdown)
-* [sistemes amb netplan (Ubuntu des de 17.10 i altres distribucions)](#configuraci%C3%B3-de-la-xarxa-amb-netplan)
+* [sistemes amb ifupdown (Debian i derivats i Ubuntu fins 17.04)](#configuraci%C3%B3-de-la-xarxa-amb-ifupdown)
+* [sistemes amb netplan (Ubuntu des de 17.10 i derivats)](#configuraci%C3%B3-de-la-xarxa-amb-netplan)
 * [CentOS](#configuraci%C3%B3-de-la-xarxa-en-centos)
 * [Configuració prèvia de Virtualbox](#configuraci%C3%B3-en-virtualbox)
 
-### Configurtació de la xarxa amb Network Manager
+### Configuració de la xarxa amb Network Manager
 Per a canviar la configuració podem prémer amb el ratolí sobre la icona de la xarxa i triar l'opció de **Editar les connexions**. AIxò obri l'editor del Network Manager (també es pot obrir des de la terminal amb `nm-connection-editor`):
 
 ![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-2-conn.png)
@@ -240,6 +213,39 @@ network:
   ethernets:
     ...
 ```
+
+### Configuració con systemd-networkd
+_**systemd-networkd**_ es un dimoni del sistema que gestiona les configuracions de xarxa. Detecta i configura els dispositius de xarxa segons es detecten i també pot crear dispositius de xarxa virtuals.
+
+Per a usar _**systemd-networkd**_ cal iniciar/activar el servei `systemd-networkd.service`.
+
+Totes les configuracions es guarden en fitxers en `/etc/systemd/network` de tipus `.network`, `.netdev` i `.link`. 
+
+Exemples
+- Adaptador cablejat utilitzant DHCP: `/etc/systemd/network/wired.network`
+```ini
+[Match]
+Name=enp1s0
+
+[Network]
+DHCP=ipv4
+```
+
+- Adaptador cablejat utilitzat una IP estàtica: `/etc/systemd/network/static.network`
+```ini
+[Match]
+Name=enp1s0
+
+[Network]
+Address=10.1.10.9/24
+Gateway=10.1.10.1
+DNS=10.1.10.1
+#DNS=8.8.8.8
+```
+
+Més informació:
+- [Systemd-networkd wiki Debian](https://wiki.debian.org/SystemdNetworkd)
+- [Systemd-networkd wiki Arch Linux](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
 
 ### Configuració de la xarxa en CentOS
 La configuració es similar a la de netplan i utilitzem també el comando `ip`. Però en compte d'un fitxer on es configuren totes les targetes cadascuna té el seu propi fitxer de configuració en **`/etc/sysconfig/network-scripts/ifcfg-enp0sX`**.
@@ -403,43 +409,10 @@ iptables  -t nat -F
 post-up iptables restore < /etc/iptables.up.rules
 ```
 
-### Configurar NAT en sistemes amb ifupdown i iptables
-Amb versions de GNU/Linux que utilitzen _ifupdown_ hem d'afegir regles a _iptables_. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i la nostra xarxa interna és la **192.168.101.0** el comando per a activar NAT seria:
-
-```bash
-iptables -t nat -A POSTROUTING -s 192.168.101.0/24 -o enp0s3 -j MASQUERADE
-```
-
-El que indiquem és d'on provindrà el tràfic a enrutar (**-s** xarxa interna/màscara, és a dir, `-s 192.168.10.0/24`) a quina targeta s'enviarà (**-o** targeta externa, és a dir, `-o enp0s3`) i que enrute a la IP que tinga la targeta externa (`-j MASQUERADE`). Si nostra IP externa sempre serà la mateixa podem posar l'opció `-j SNAT --to 10.0.2.20` (on 10.0.2.20 seria la IP externa) en compte de _-j MASQUERADE_.
-
-Si hem d'enrutar més d'una xarxa interna repetirem aquest comando per a cada xarxa a enrutar:
-
-```bash
-iptables -t nat -A POSTROUTING -s 192.168.102.0/24 -o enp0s3 -j MASQUERADE
-```
-
-Per a evitar haver d'executar aquest comando cada vegada que reiniciem el sistema instal·larem el paquet **iptables-persistent** que ens pregunta si emmagatzema la configuració actual de iptables (v4 i v6). Si li hem dit que sí cada vegada que reiniciem el sistema carregarà automàticament aquesta configuració. Si posteriorment fem modificacions en les iptables per a que ens torne a preguntar si guarda els canvis farem
-
-```bash
-dpkg-reconfigure iptables-persistent
-```
-
-Per a comprovar si el nostre sistema està fent NAT executem l'ordre:
-
-```bash
-iptables -t nat - L
-```
-
-![iptables](./img/iptables1.png)
-
-Si volem eliminar totes les regles que tenim ara en iptables (per a tornar-las a posar o per si ens hem equivocat):
-
-```bash
-iptables  -t nat -F
-```
-
 #### Configurar NAT en sistemes amb ifupdown i nftables
-Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible però també podem utilitzar la sintaxis nova, amb el comando `nft`. Per a això hem d'instal·lar i activar _nftables_:
+Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible però també podem utilitzar la sintaxis nova, amb el comando `nft`. 
+
+Si volem utilitzar _nftables_ en distribucions que no ho porten per defecte hauríem d'instal·lar-les i configurar-les:
 
 ```bash
 apt install nftables
@@ -458,17 +431,11 @@ Si volem borrar-la farem `nft add table nat`. Ara creem la cadena de postrouting
 nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
 ```
 
-I a continuació afegim les regles que vulgam:
+I a continuació afegim les regles que vulgam. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i volem enrutar 2 xarxes internes, la **192.168.101.0** i  la **192.168.102.0** el comando per a fer-ho seria::
 
 ```bash
 nft add rule nat postrouting ip saddr 192.168.101.0/24 oif enp0s3 snat 10.0.2.20
 nft add rule nat postrouting ip saddr 192.168.102.0/24 oif enp0s3 snat 10.0.2.20
-```
-
-Podem borrar totes les regles amb:
-
-```bash
-nft flush ruleset
 ```
 
 Per a veure les regles que tenim establertes ara fem:
@@ -477,10 +444,55 @@ Per a veure les regles que tenim establertes ara fem:
 nft list ruleset
 ```
 
+Podem borrar totes les regles amb:
+
+```bash
+nft flush ruleset
+```
+
 I per a tindre eixes regles actives al iniciar el servei hem de guardar-les en el fitxer de configuració de _nftables_ en **/etc/nftables.conf**. Podem fer-ho amb:
 
 ```bash
 nft list ruleset > /etc/nftables.conf
+```
+
+### Configurar NAT en sistemes amb ifupdown i iptables
+Amb versions de GNU/Linux que utilitzen _ifupdown_ hem d'afegir regles a _iptables_. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i la nostra xarxa interna és la **192.168.101.0** el comando per a activar NAT seria:
+
+```bash
+iptables -t nat -A POSTROUTING -s 192.168.101.0/24 -o enp0s3 -j MASQUERADE
+```
+
+El que indiquem és d'on provindrà el tràfic a enrutar (**-s** xarxa interna/màscara, és a dir, `-s 192.168.10.0/24`) a quina targeta s'enviarà (**-o** targeta externa, és a dir, `-o enp0s3`) i que enrute a la IP que tinga la targeta externa (`-j MASQUERADE`). Si nostra IP externa sempre serà la mateixa podem posar l'opció `-j SNAT --to 10.0.2.20` (on 10.0.2.20 seria la IP externa) en compte de _-j MASQUERADE_.
+
+Si hem d'enrutar més d'una xarxa interna repetirem aquest comando per a cada xarxa a enrutar:
+
+```bash
+iptables -t nat -A POSTROUTING -s 192.168.102.0/24 -o enp0s3 -j MASQUERADE
+```
+
+Per a evitar haver d'executar aquest comando cada vegada que reiniciem el sistema tenm 2 opcins:
+- posar-ho en un script que executarem a l'arrencar l'equip
+- instal·larem el paquet **iptables-persistent** 
+
+Si instal·lem _iptables-persistent_ ens pregunta si emmagatzema la configuració actual de iptables (v4 i v6). Si li hem dit que sí cada vegada que reiniciem el sistema carregarà automàticament aquesta configuració. Si posteriorment fem modificacions en les iptables per a que ens torne a preguntar si guarda els canvis farem
+
+```bash
+dpkg-reconfigure iptables-persistent
+```
+
+Per a comprovar si el nostre sistema està fent NAT executem l'ordre:
+
+```bash
+iptables -t nat - L
+```
+
+![iptables](./img/iptables1.png)
+
+Si volem eliminar totes les regles que tenim ara en iptables (per a tornar-las a posar o per si ens hem equivocat):
+
+```bash
+iptables  -t nat -F
 ```
 
 ### Configurar NAT en CentOS
@@ -532,7 +544,7 @@ Si tenim un mètode de què comprovar evitarem "tocar" configuracions que tenim 
 1. **Vore la configuració de la xarxa** d'eixe equip per a comprovar que tot és correcte (IP, màscara, porta d'enllaç i DNS). Ho farem amb `networkctl status` (si és un client Windows amb `ipconfig /all`)
 
 2. **Fer un `ping` a la porta d'enllaç**. Si la configuració és correcta fem un _ping_ a la porta d'enllaç que ens ha mostrat el comando del pas anterior. Si falla pot ser:
-  - _ip i fw estan en xarxes diferents_: recorda que la ip ha d'estar en la mateixa xarxa que la porta d'enllaç
+  - _ip i gw estan en xarxes diferents_: recorda que la ip ha d'estar en la mateixa xarxa que la porta d'enllaç
   - _el cable_: el cable que ix del nostre equip ha d'arribar al mateix switch al que va el de la nostra porta d'enllaç. Si és una màquina virtual s'hem d'assegurar que el nom de la targeta interna del client i del servidor és el mateix (és el nom del switch virtual que es crea)
   - _el firewall_: el firewall dels Windows clients (Windows 10, ...) NO permet el pas dels pings. Per això no farem ping al client sinó des del client al servidor. Si hem de fer ping a un client Windows abans hem de afegir una regla al seu firewall per a mpermetre els paquets ICMP (o deshabilitar el firewall mentre fem el ping)
 
