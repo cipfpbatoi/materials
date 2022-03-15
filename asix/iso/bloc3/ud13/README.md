@@ -112,7 +112,8 @@ Otro ejemplo de fichero **/etc/exports**:
 ```bash
 /net *.mi_empresa.com(rw) 
 /srv/compartida 192.168.1.0/255.255.255.0(rw) 192.168.2.0/255.255.255.0(rw)
-/prueba (ro) /home/jperez pc1.mi_empresa.com(rw)
+/prueba (ro) 
+/home/jperez pc1.mi_empresa.com(rw)
 /datos/ftp/public (ro)
 ```
 
@@ -203,15 +204,14 @@ nombre_del_host:directorio_remoto
 
 Por ejemplo, para montar manualmente el directorio */net* del equipo *srvNFS* en */usr/local* del equipo cliente, se tiene que ejecutar el siguiente comando:
 
-``bash
+```bash
 mount -t nfs srvNFS:/net /usr/local
-
 ```
 
 Si queremos que el montaje se realice automáticamente al iniciar el cliente se tiene que añadir la siguiente línea en */etc/fstab*:
 
 ```bash
-    srvNFS:/net /usr/local nfs rw,auto,noatime,nolock,bg,nfsvers=3,intr,actimeo=1800,rsize=8192,wsize=8192 0 0
+srvNFS:/net /usr/local nfs rw,auto,noatime,nolock,bg,nfsvers=3,intr,actimeo=1800,rsize=8192,wsize=8192 0 0
 ```
 
 Algunas opciones de mount son:
