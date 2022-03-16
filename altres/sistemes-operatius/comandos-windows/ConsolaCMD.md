@@ -18,6 +18,9 @@
     - [Filtrar las líneas de un fichero](#filtrar-las-líneas-de-un-fichero)
     - [Ordenar un fichero](#ordenar-un-fichero)
     - [Comparar ficheros](#comparar-ficheros)
+  - [Comandos para gestionar la red](#comandos-para-gestionar-la-red)
+    - [CMD](#cmd)
+  - [Comandos para gestionar discos](#comandos-para-gestionar-discos)
 
 ## Obtener ayuda
 Podemos obtener la lista de comandos y una breve explicación de lo que hacen con el comando `help`.
@@ -63,7 +66,7 @@ Cambia el directorio actual por el que le pasamos como parámetro. El comando `c
 
 Ejemplos:
 - `cd C:\Usuarios`: Cambia al directorio C:\Usuarios que pasa a ser el directorio actual
-- `cd ..`: Cambia al directorio paro del actual
+- `cd ..`: Cambia al directorio padre del actual
 - `cd`: Muestra la ruta absoluta del directorio actual
 
 ### Ver el contenido de un directorio
@@ -103,7 +106,7 @@ Ejemplos:
 
 Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
 - `mkdir clientes`: Crea un directorio llamado clientes dentro del directorio actual
-- `mkdir ..\clientes`: Crea un directorio llamado clientes en el directorio paro del actual
+- `mkdir ..\clientes`: Crea un directorio llamado clientes en el directorio padre del actual
 - `mkdir C:\Usuarios\Juan\Documentos\clientes`: Crea el directorio clientes en C:\Usuarios\Juan\Documentos
 - `mkdir clientes proveidors facturas`: Crea dentro del directorio actual los directorios clientes, proveidors y facturas
 

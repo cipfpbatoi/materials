@@ -142,7 +142,7 @@ Ejemplos:
 
 Crea un nuevo directorio o fichero que le pasamos como parámetro. Ejemplos:
 - `New-Item -Path 'clientes' -ItemType Directory`: Crea un directorio llamado clientes dentro del directorio actual
-- `New-Item -Path '..\clientes' -ItemType Directory`: Crea un directorio llamado clientes en el directorio paro del actual
+- `New-Item -Path '..\clientes' -ItemType Directory`: Crea un directorio llamado clientes en el directorio padre del actual
 - `New-Item -Path 'C:\Usuarios\Juan\Documentos\clientes' -ItemType Directory`: Crea el directorio clientes en C:\Usuarios\Juan\Documentos
 - `New-Item -Path 'clientes.txt' -ItemType File`: Crea un fichero llamado clientes.txt dentro del directorio actual
 - `New-Item -Path 'C:\Usuarios\Juan\Documentos\clientes.txt' -ItemType File`: Crea el fichero clientes.txt en C:\Usuarios\Juan\Documentos

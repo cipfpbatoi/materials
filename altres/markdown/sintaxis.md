@@ -156,16 +156,17 @@ Se pone su 'nombre' entre caracteres :, fácil ¿no? : :blush:
 Hay muchas [páginas](https://www.webfx.com/tools/emoji-cheat-sheet/) donde aparecen los nombres de los emoticonos.
 
 ## Editores
-Es tan simple utilizar el lenguaje Markdown que posiblemente no usemos ningún editor pero si queremos existen uchos a nuestra disposición:
+Es tan simple utilizar el lenguaje Markdown que posiblemente no usemos ningún editor pero si queremos existen muchos a nuestra disposición:
 * en línea:
     * [Dillinger](https://dillinger.io/)
     * [Markable](https://markable.in/accounts/login/?next=/editor/) (hay que registrarse)
     * [Dingus](https://daringfireball.net/projects/markdown/dingus)
     * ...
 * de escritorio
-    * Windows: MarkDownPad, ...
-    * Mac: Mou, ...
-    * Linux: UberWriter, ...
+    * Remarkable
+    * Atom
+    * Haroopad
+    * GNU Emacs
     * ...
     
 ## Leer más

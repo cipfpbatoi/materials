@@ -410,9 +410,9 @@ post-up iptables restore < /etc/iptables.up.rules
 ```
 
 ### Configurar NAT en sistemes amb ifupdown i nftables
-Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables*. Podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible però també podem utilitzar la sintaxis nova, amb el comando `nft`. 
+Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables* que tenia certes limitacions. El comando per a configurar-les és `ntf`.
 
-Si volem utilitzar _nftables_ en distribucions que no ho porten per defecte hauríem d'instal·lar-les i configurar-les:
+Podem utilitzar _nftables_ en distribucions antigues que no ho porten per defecte, només hem d'instal·lar-les i configurar-les:
 
 ```bash
 apt install nftables
@@ -425,17 +425,25 @@ Per a [crear les regles d'enrutament NAT](https://wiki.nftables.org/wiki-nftable
 nft add table nat
 ```
 
-Si volem borrar-la farem `nft add table nat`. Ara creem la cadena de postrouting:
+Per a vore les tables creades executem `nft list tables`.Si volem borrar-la farem `nft delete table nat`. Ara creem la cadena de postrouting:
 
 ```bash
-nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
+nft add chain nat postrouting { type nat hook postrouting priority 100 \;}
 ```
 
-I a continuació afegim les regles que vulgam. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i volem enrutar 2 xarxes internes, la **192.168.101.0** i  la **192.168.102.0** el comando per a fer-ho seria::
+I a continuació afegim les regles que vulgam. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i volem enrutar la xarxa interna **192.168.101.0**, el comando per a fer-ho seria::
 
 ```bash
 nft add rule nat postrouting ip saddr 192.168.101.0/24 oif enp0s3 snat 10.0.2.20
-nft add rule nat postrouting ip saddr 192.168.102.0/24 oif enp0s3 snat 10.0.2.20
+```
+
+El que indiquem és d'on provindrà el tràfic a enrutar (**saddr** xarxa interna/màscara, és a dir, `saddr 192.168.101.0/24`) a quina targeta s'enviarà (**oif** targeta externa, és a dir, `oif enp0s3`) i que enrute a la IP que tinga la targeta externa (`snat 10.0.2.20`). Si nostra IP externa pot canviar perquè estiga per DHCP hem de posar en compte de_snat_ l'opció `masquerade`.
+
+Si hem d'enrutar més d'una xarxa interna (per exemple la **192.168.101.0** i  la **192.168.102.0**) executem aquest comando per a cada xarxa a enrutar:
+
+```bash
+nft add rule nat postrouting ip saddr 192.168.101.0/24 oif enp0s3 masquerade
+nft add rule nat postrouting ip saddr 192.168.102.0/24 oif enp0s3 masquerade
 ```
 
 Per a veure les regles que tenim establertes ara fem:
@@ -457,7 +465,9 @@ nft list ruleset > /etc/nftables.conf
 ```
 
 ### Configurar NAT en sistemes amb ifupdown i iptables
-Amb versions de GNU/Linux que utilitzen _ifupdown_ hem d'afegir regles a _iptables_. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i la nostra xarxa interna és la **192.168.101.0** el comando per a activar NAT seria:
+Es recomana utilitzar _nftables_ en compte de _iptables_ que és una implementació més antiga i llimitada.
+
+Per a configurar NAT hem d'afegir regles a _iptables_. Per exemple si la nostra targeta externa és la **enp0s3** amb IP **10.0.2.20** i la nostra xarxa interna és la **192.168.101.0** el comando per a activar NAT seria:
 
 ```bash
 iptables -t nat -A POSTROUTING -s 192.168.101.0/24 -o enp0s3 -j MASQUERADE

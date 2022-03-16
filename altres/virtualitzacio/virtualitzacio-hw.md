@@ -1,19 +1,38 @@
 # Virtualització de hardware
 - [Virtualització de hardware](#virtualització-de-hardware)
   - [Introducció](#introducció)
+  - [Hipervisors](#hipervisors)
   - [Avantatges i inconvenients de virtualitzar](#avantatges-i-inconvenients-de-virtualitzar)
   - [Tipus de virtualització](#tipus-de-virtualització)
 
 ## Introducció
-En informàtica anomenem _virtualitzar_ a crear amb software una representació (versió virtual) d'algun recurs de manera que simula el seu funcionament. Nosaltres así vorem la **virtualització de hardware** (també anomenada _virtualització de plataforma_) que consisteix en simular tot el hardware de manera que es pot executar una instancia d'un sistema operatiu que te la il·lusió d'executar-se sobre un hardware real però hi ha més coses que es poden virtualitzar ().
+En informàtica anomenem _virtualitzar_ a crear amb software una representació (versió virtual) d'algun recurs de manera que simula el seu funcionament. Hi ha moltes coses que es poden virtualitzar. Nosaltres así vorem la **virtualització de hardware** (també anomenada _virtualització de plataforma_).
 
 Moltes vegades tenim la necessitat de provar un programa informàtic o fer proves d'un altre sistema operatiu diferent del que estem utilitzant en el nostre ordinador. Quina és la possible solució? Formatar l'equip i instal·lar el nou sistema operatiu? Crear una partició i instal·lar-ho? Buscar un altre equip en què estiga instal·lat?
 
-La solució és més senzilla que tot això: l'única cosa que s'ha de fer és instal·lar un programa que ens permet crear màquines virtuals dins del nostre ordinador.
+La solució més senzilla és utilitzar un programa de virtualització de hardware que simula el hardware d'un equip de manera que s'administra el _hardware virtual_ creat com si fos real. Eixos equips virtualitzats que creem s'anomenen **màquines virtuals**.
+
+Hi ha diferents tipus de tecnologies per a crear màquines virtuals:
+- Maquines virtuals de procés
+- Hipervisors
+- Contenidors
+
+Les maquines virtuals de procés ens permeten executar un programa dissenyat per a una arquitectura de maquinari o un sistema operatiu diferents dels que tenim en la màquina real. Ho fan creant un procés que emula el sistema necessari. Un exemple és **JVM** (_Java Virtual Machine_) que permet executar un programa Java en qualsevol dispositiu que tinga una JVM instal·lada
+
+Els contenidors simulen una màquina però utilitzant el sistema operatiu de l'equip amfitrió. Es com si tingueren diferents equips virtuals però tots amb el mateix sistema operatiu. Exemple: Docker, LXC, OpenVZ, ...
+
+Els hipervisors ens permeten simular tot el maquinari i en ells podem executar un sistema operatiu que potser diferent al de la màquina real i que tindrà la il·lusió d'executar-se sobre un equip real.
+
+![Hipervisor vs contenidor](https://upload.wikimedia.org/wikipedia/commons/0/0a/Docker-containerized-and-vm-transparent-bg.png)
+
+<a href="https://commons.wikimedia.org/wiki/File:Docker-containerized-and-vm-transparent-bg.png">docker.com</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons
+
+<cite>Font: https://commons.wikimedia.org/wiki/File:Docker-containerized-and-vm-transparent-bg.png</cite>
+
+## Hipervisors
+Una màquina virtual és un programari que emula un ordinador. Per tant és com si dins del nostre ordinador crearem més ordenadors “virtuals”.
 
 ![Virtualització](http://upload.wikimedia.org/wikipedia/commons/6/6e/Virtualization.JPG)
-
-Una màquina virtual és un programari que emula un ordinador. Per tant és com si dins del nostre ordinador crearem més ordenadors “virtuals”.
 
 Cadascun d'aqueixos ordinadors virtuals haurà de tindre el seu sistema operatiu i les seues aplicacions instal·lades, que en tot moment funcionen com si estigueren en un ordinador real. Per a l'ordinador real cada màquina virtual no és mes que un programa executant-se.
 
