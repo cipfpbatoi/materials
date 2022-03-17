@@ -5,65 +5,20 @@ UD 13 - Compartición de recursos con NFS
 -----------------------------------------
 
 * [UD 13 - Compartición de recursos con NFS](#ud-13---compartición-de-recursos-con-nfs)
-* [Objetivos](#objetivos)
-* [Conceptos clave](#conceptos-clave)
-* [Conocimiento previo](#conocimiento-previo)
-* [Qué es NFS](#qué-es-nfs)
+* [Instalación y configuración del servidor NFS](#instalación-y-configuración-del-servidor-nfs)
 * [Configuración del servidor](#configuración-del-servidor)
 * [Compartir recursos](#compartir-recursos)
   * [squash](#squash)
   * [Permisos sobre las carpetas compartidas](#permisos-sobre-las-carpetas-compartidas)
   * [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
+  * [Perfiles móviles de usuarios LDAP](#perfiles-móviles-de-usuarios-ldap)
+* [Compartición de impresoras. CUPS](#compartición-de-impresoras-cups)
   * [Instalación de CUPS](#instalación-de-cups)
   * [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
+* [Proyecto](#proyecto)
 
-Introducción
-============
+## Instalación y configuración del servidor NFS
 
-Objetivos
----------
-
-Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
-
-* Implementar dominios.
-* Administrar cuentas de usuario y cuentas de equipo.
-* Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
-* Crear y administrar grupos de seguridad.
-* Crear plantillas que faciliten la administración de usuarios con características similares.
-* Organizar los objetos del dominio para facilitar su administración.
-* Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
-* Incorporar equipos al dominio.
-* Bloquear accesos no autorizados al dominio.
-* Administrar el acceso a recursos locales y recursos de red.
-* Hacer cumplir los requerimientos de seguridad.
-* Implementar, verificar y asignar directivas de grupo.
-* Documentar la estructura del dominio, las tareas realizadas y las incidencias producidas.
-
-Conceptos clave
----------------
-
-Los conceptos más importantes de esta unidad son:
-
-* La red informática
-* Arquitectura cliente/servidor
-* Principales sistemas operativos de servidor
-
-Conocimiento previo
--------------------
-
-Antes de comenzar esta unidad de trabajo el alumno debería saber:
-
-* cuáles son los sistemas operativos de servidor más utilizados en la arquitectura PC
-* cómo utilizar software de virtualización para crear máquinas virtuales
-* gestionar unidades de almacenamiento y sus particiones
-* cuáles son los sistemas de archivo utilizados por los sistemas Microsoft y sus ventajas e inconvenientes
-* cómo asignar permisos a ficheros y carpetas en sistemas de archivo NTFS
-* cómo utilizar la terminal para realizar tareas básicas en un máquina
-
-Instalación y configuración del servidor NFS  
-============================================
-
-## Qué es NFS
 
 Para compartir directorios entre equipos de la red tenemos varias opciones. El protocolo **NFS** es el método utilizado como nativo en GNU/Linux. Esta opción es adecuada cuando todos los equipos que forman parte de la red utilizan el sistema GNU/Linux. Otra posibilidad es utilizar el protocolo de archivos compartidos utilizado en sistemas Microsoft llamado **SMB/CIFS** e implementado para sistemas GNU/Linux como **Samba**. La ventaja de utilizar **Samba** se que pueden acceder a los recursos compartidos con un cliente GNU/Linux o Windows.
 
@@ -226,8 +181,7 @@ Algunas opciones de mount son:
 
 **NOTA**: aunque un usuario tenga permisos para escribir en una carpeta compartida con NFS no lo podrá hacer si no los tinen también sobre la carpeta en la cual se monta.
 
-Perfiles móviles de usuarios LDAP
-=================================
+### Perfiles móviles de usuarios LDAP
 
 Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier cliente puedo iniciar sesión con cualquier usuario del directorio. Pero su carpeta personal (que incluye su perfil y sus datos) se crea en cada máquina cliente lo cual es un problema si el usuario no tiene un único ordenador cliente asignado.
 
@@ -242,8 +196,8 @@ El siguiente paso es que las carpetas personales de los usuarios móviles se cre
     3. Cambiamos el propietario y el grupo: ***chown 5001:5000 /home/movil/jsegura***
     4. Asignamos los permisos adecuados: ***chmod -R 750 /home/movil/jsegura***
 
-Compartición de impresoras. CUPS  
-================================
+## Compartición de impresoras. CUPS  
+
 
 CUPS es el sistema de impresión común de **Unix** (Common Unix Printing System) y proporciona las tareas básicas de gestión de impresión y de colas de impresión. Está basado en el Internet Printing Protocolo (**IPP**).
 
@@ -307,10 +261,8 @@ Además del acceso web a la configuración y administración de CUPS, también h
 
 ![CUPS](07-cups.png "CUPS"){width="277" height="165"}
 
-Proyecto
-========
+## Proyecto
 
 [Proyecto de clase](./proyecto.md)
-
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses by-nc-sa/4.0/)
