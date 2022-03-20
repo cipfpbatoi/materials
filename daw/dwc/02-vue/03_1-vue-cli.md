@@ -401,4 +401,15 @@ Recordemos que la aplicación que estamos desarrollando tiene los componentes:
 
 Para transformar esto en SFC simplemente crearemos un fichero para cada uno de estos componentes. Nuestro anterior _index.html_ será el \<template> del componente principal **App.vue**, que en un sección \<script> deberá importar y registrar cada uno de los componentes usados en el _template_ (_todo-list_, _todo-add_ y _todo-del-all_).
 
+Solución:
 
+<iframe src="https://codesandbox.io/embed/cranky-mclean-f6xwo3?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="cranky-mclean-f6xwo3"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
+
+O bien:
+
+[https://codesandbox.io/s/todo-app-with-vue-cli-dont-work-f6xwo3?file=/src/App.vue](https://codesandbox.io/s/todo-app-with-vue-cli-dont-work-f6xwo3?file=/src/App.vue)
