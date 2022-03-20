@@ -9,8 +9,8 @@ La guardaremos en el fichero _product.class.js_. Tendrá las siguientes **propie
   - units: argumento opcional (si no le pasamos este parámetro al constructor su número por defecto será 0).
   
 Esta clase tendrá los siguientes **métodos**:
-  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un enterio positivo para aumentar, o negativo para disminuir unidades). Devolerá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y generará un error.
-  ```javascrpt
+  - changeUnits: recibe el número de unidades a añadir al objeto (debe ser un entero positivo para aumentar, o negativo para disminuir unidades). Devolverá el producto modificado. Si se intentan restar más unidades de las que hay no hará nada y generará un error.
+  ```javascript
   changeUnits(units: Integer): Product
   ```    
   - productImport: devuelve el importe total del producto (su precio multiplicado por el nº de unidades)

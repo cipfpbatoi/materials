@@ -14,13 +14,13 @@ Las directivas son atributos especiales que se ponen en las etiquetas HTML y que
 
 Las más comunes son:
 * `v-text`: es equivalente a hacer una interpolación (**{\{ ... }}**). Muestra el valor en la etiqueta
-* `v-once`: igual pero no cambia lo mostrado si cambia el valor de la variable que se muestra
-* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas). Internamente hace un `.innerHTML` del elemento mientras que `v-text` (y `{{...}}`) hacen un `.textContent`
-* `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML, no entre la etiqueta y su cierre como hace la interpolación. Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
+* `v-once`: igual pero una vez renderizado no cambia lo mostrado en la vista aunque cambie el valor de la variable
+* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas). Internamente hace un `.innerHTML` del elemento mientras que `v-text` (y `{\{...}}`) hacen un `.textContent`
+* `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML (no entre la etiqueta y su cierre como hace la interpolación). Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
 ```html
 <span v-bind:class="estado">...
 ```
-El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abreviar simplemente como _`:`_ (`<span :class="estado">`)
+El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abreviar simplemente como __`:`__ (`<span :class="estado">`)
 * `v-model`: permite enlazar un input a una variable (la hemos visto en el capítulo anterior). Tiene 3 modificadores útiles.
   * `.lazy`: em lugar de actualizar el valor al pulsar cada tecla (_onInput_) lo hace al perder el foco (_onChange_)
   * `.number`: convierte el contenido a Number
@@ -34,7 +34,7 @@ Lo que enlazamos en una directiva o una interpolación puede ser una variable o 
 ```html
 <p>{ { name }}</p>
 <p>{ { 'Cómo estás ' + name }}</p>
-<p>{ { name=='root'?'Como jefe puedes cambiar cualquier cosa':'Como usuario ' + name + ' puedes cambiar tus datos' }}</p>
+<p>{ { name=='root'?'Hola Administrador':'Hola ' + name }}</p>
 ```
 
 ## Condicionales: v-if
@@ -92,9 +92,11 @@ Vue es más eficiente a la hora de renderizar si cada elemento que crea *v-for* 
 <... v-for="(elem,index) in todos" :key="index" ...>
 ```
 
+Pasar una _key_ en cada _v-for_ es recomendable ahora pero será obligatorio al usarlo en componentes así que conviene usarlo siempre.
+
 También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0;i<10;i++)`):
 ```html
-<span v-for="n in 10">{{ n }}</span>
+<span v-for="n in 10" :key="n">{{ n }}</span>
 ```
 
 NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. Si se hace siempre se ejecuta primero el `v-if`.

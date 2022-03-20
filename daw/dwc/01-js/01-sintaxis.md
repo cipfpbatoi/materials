@@ -1,34 +1,31 @@
 # Sintaxis
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
-- [Variables](#variables)
-- [Funciones](#funciones)
-  - [Parámetros](#par%C3%A1metros)
-  - [Funciones anónimas](#funciones-an%C3%B3nimas)
-  - [Arrow functions (funciones _labda_)](#arrow-functions-funciones-_labda_)
-- [Estructuras y bucles](#estructuras-y-bucles)
-  - [Estructura condicional: if](#estructura-condicional-if)
-  - [Estructura condicional: switch](#estructura-condicional-switch)
-  - [Bucle _while_](#bucle-_while_)
-  - [Bucle: for](#bucle-for)
-  - [Bucle: for con contador](#bucle-for-con-contador)
-    - [Bucle: for...in](#bucle-forin)
-    - [Bucle: for...of](#bucle-forof)
-- [Tipos de datos básicos](#tipos-de-datos-b%C3%A1sicos)
-  - [Number](#number)
-  - [String](#string)
-    - [Template literals](#template-literals)
-  - [Boolean](#boolean)
-- [Manejo de errores: try / catch](#manejo-de-errores)
-- [Buenas prácticas](#buenas-pr%C3%A1cticas)
-  - ['use strict'](#use-strict)
-  - [Variables](#variables-1)
-  - [Otras](#otras)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+- [Sintaxis](#sintaxis)
+  - [Variables](#variables)
+  - [Funciones](#funciones)
+    - [Parámetros](#parámetros)
+    - [Funciones anónimas](#funciones-anónimas)
+    - [Arrow functions (funciones _lambda_)](#arrow-functions-funciones-lambda)
+  - [Estructuras y bucles](#estructuras-y-bucles)
+    - [Estructura condicional: if](#estructura-condicional-if)
+    - [Estructura condicional: switch](#estructura-condicional-switch)
+    - [Bucle _while_](#bucle-while)
+    - [Bucle: for](#bucle-for)
+    - [Bucle: for con contador](#bucle-for-con-contador)
+      - [Bucle: for...in](#bucle-forin)
+      - [Bucle: for...of](#bucle-forof)
+  - [Tipos de datos básicos](#tipos-de-datos-básicos)
+    - [_Casting_ de variables](#casting-de-variables)
+    - [Number](#number)
+    - [String](#string)
+      - [Template literals](#template-literals)
+    - [Boolean](#boolean)
+  - [Manejo de errores](#manejo-de-errores)
+  - [Buenas prácticas](#buenas-prácticas)
+    - ['use strict'](#use-strict)
+    - [Variables](#variables-1)
+    - [Errores](#errores)
+    - [Otras](#otras)
+  - [Clean Code](#clean-code)
 
 ## Variables
 Javascript es un lenguaje débilmente tipado. Esto significa que no se indica de qué tipo es una variable al declararla e incluso puede cambiar su tipo a lo largo de la ejecución del programa. Ejemplo:
@@ -62,7 +59,7 @@ console.log(textoVar);  // mostrará la cadena
 
 Cualquier variable que no se declara dentro de una función (o si se usa sin declarar) es _global_. Debemos siempre intentar NO usar variables globales.
 
-Se recomenda que Los nombres de las variables sigan la sintaxis _camelCase_ (ej.: _miPrimeraVariable_).
+Se recomienda que Los nombres de las variables sigan la sintaxis _camelCase_ (ej.: _miPrimeraVariable_).
 
 Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error.
 
@@ -71,7 +68,7 @@ NOTA: en la página de [Babel](https://babeljs.io/) podemos teclear código en E
 ## Funciones
 Se declaran con **function** y se les pasan los parámetros entre paréntesis. La función puede devolver un valor usando **return** (si no tiene _return_ es como si devolviera _undefined_). 
 
-Puede usarse una función antes de haberla declarado por el comportamiento de Javscript llamado _hoisting_: el navegador primero carga todas las funciones y mueve las declaraciones de las variables al principio y luego ejecuta el código.
+Puede usarse una función antes de haberla declarado por el comportamiento de Javascript llamado _hoisting_: el navegador primero carga todas las funciones y mueve las declaraciones de las variables al principio y luego ejecuta el código.
 
 > EJERCICIO: Haz una función que te pida que escribas algo y muestre un alert diciendo 'Has escrito...' y el valor introducido. Pruébala en la consola (pegas allí la función y luego la llamas desde la consola)
 
@@ -129,15 +126,20 @@ console.log(suma(4, 2, 5, 3, 2, 1, 3));     // mostrará 20
 
 En Javascript las funciones son un tipo de datos más por lo que podemos hacer cosas como pasarlas por argumento o asignarlas a una variable:
 ```javascript
+const cuadrado = function(value) {
+  return value * value
+}
 function aplica_fn(dato, funcion_a_aplicar) {
     return funcion_a_aplicar(dato);
 }
 
-aplica_fn(3, potencia);     // devolverá 9 (3^2)
+aplica_fn(3, cuadrado);     // devolverá 9 (3^2)
 ```
 
+A este tipo de funciones se llama _funciones de primera clase_ y son típicas de lenguajes funcionales.
+
 ### Funciones anónimas
-Podemos definir una función sin darle un nombre. Dicha función puede asignarse a una variable, autoejecutarse o asignasrse a un manejador de eventos. Ejemplo:
+Como acabamos de ver podemos definir una función sin darle un nombre. Dicha función puede asignarse a una variable, autoejecutarse o asignasrse a un manejador de eventos. Ejemplo:
 ```javascript
 let holaMundo = function() {
     alert('Hola mundo!');

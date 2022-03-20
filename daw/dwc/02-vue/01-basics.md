@@ -13,11 +13,14 @@
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
   - [[Vue devtools]](#vue-devtools)
   - [Extensiones para el editor de código](#extensiones-para-el-editor-de-código)
+  - [Otras utilidades](#otras-utilidades)
 
 ## Introducción
 Vue es un framework progresivo para la construcción de interfaces de usuario y aplicaciones desde el lado del cliente. Lo de framework "progresivo" significa que su núcleo es pequeño pero está diseñado para crecer: su núcleo está enfocado sólo en la capa de visualización (como React) pero es fácil añadirle otras bibliotecas o proyectos existentes (algunos desarrollados por el mismo equipo de Vue) que nos permitan crear complejas SPA.
 
 Un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
+
+Vue es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados, _Angular_ desarrollado por Google y _React_ desarrollado por Facebook.
 
 Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y la de [Vue3](https://v3.vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router, axios y vuex entre otros.
 
@@ -58,6 +61,8 @@ o
 
 Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
 
+Nosotros estamos usando _VSCode_ como editor. Para que reconozca correctamente los ficheros _.vue_ debemos instalar el _plugin_ **Vetur**. Si vamos a usar Vue3 con Typescript podemos instalar el _plugin_ **Volar**.
+
 ## La primera aplicación Vue
 Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación. En Vue 3:
 
@@ -77,18 +82,18 @@ En el HTML debemos vincular los scripts de la librería de Vue y de nuestro cód
 
 Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele poner como id _app_) que en este caso es un `<div>`.
 
-Dentro de ese elemento podemos usar expresiones de Vue. En este ejemplo se usa el _moustache_ ( **{\{ ... }}** ) que muestra en la página la variable o expresión Javascript que contiene.
+Dentro de ese elemento es donde podemos usar expresiones de Vue (fuera del mismo se ignorarán). En este ejemplo se usa el _moustache_ ( **{\{ ... }}** ) que muestra en la página la variable o expresión Javascript que contiene.
 
 ### Javascript
-En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En Vue 2:
-* *el*: el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
+En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En **Vue 2**:
+* *el*: el elemento que contendrá la aplicación identificado en notación CSS
 * *data*: objeto donde definiremos todas las variables que vamos a usar en la vista. En nuestro caso sólo tenemos una que es _message_. A cada variable le debemos dar un valor inicial.
 * pueden haber más como *methods* (objeto con métodos que podemos llamar desde la vista), *props* (array de variables que se 
 pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremos más adelante.
 
-En **Vue3** la sintaxis para crear la aplicación es ligeramente diferente:
+En **Vue 3** la sintaxis para crear la aplicación es ligeramente diferente:
 ```javascript
-var app = VuecreateApp({
+var app = Vue.createApp({
   data() {
     return {
       message: 'Hello Vue!'
@@ -100,13 +105,13 @@ app.mount('#app')
 
 Las principales diferencias son:
 - la instancia se crea con el método _`createApp`_ en vez de con el constructor de Vue
-- el elemento en que se montará la aplicación no se incluye en el objeto que se pasa al crear la aplicación sino que se indica en el método _`mount`_
+- el elemento en que se montará la aplicación no se incluye como una propiedad del objeto que se pasa al crear la aplicación sino que se indica en el método _`mount`_
 - la propiedad _data_ no es un objeto sino una función que devuelve ese objeto (esto sucede igual en los componentes de Vue2 como veremos más adelante).
 
 ## La instancia _Vue_
-La instancia que hemos creado (y cada componente) recibe un objeto de opciones con las siguientes propiedades:
-* **el** (sólo en Vue2): el elemento que contendrá la aplicación identificado en notación CSS (# para id, . para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* **data**: objeto donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en el javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **{\{ su_nombre }}** y desde el código JS poniendo **`this.su_nombre`**. En Vue3 y en todos los componentes (lo veremos más adelante) en lugar de ser un objeto es una función que devuelve ese objeto.
+La instancia que hemos creado (al igual que cada componente) recibe un objeto de opciones con las siguientes propiedades:
+* **el** (sólo en Vue2): el elemento que contendrá la aplicación identificado en notación CSS (**#** para id, **.** para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
+* **data**: objeto (o función) donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **{\{ su_nombre }}** y desde el código JS poniendo **`this.su_nombre`**
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
 ```javascript
 data: {
@@ -120,7 +125,7 @@ computed: {
 }
 ```
 
-* **methods**: objeto con métodos a los que podemos llamar desde la vista
+* **methods**: objeto con métodos que también podemos llamar desde la vista
 * **_hooks_** (eventos del ciclo de vida de la instancia): para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
 
 ```javascript
@@ -134,7 +139,7 @@ Al crearse la instancia de Vue o un componente la aplicación debe realizar unas
 
 En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
 
-![Ciclo de vida de Vue](https://v3.vuejs.org/images/lifecycle.svg)
+![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.16e4c08e.png)
 
 **NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
 
@@ -176,16 +181,6 @@ Fichero HTML:
 ```
 Nuestro código debemos cargarlo después de cargar la librería y de crear el elemento HTML que contenga la aplicación.
 
-Fichero JS en Vue2:
-```javascript
-var miApp = new Vue({
-  el: '#app',
-  data: {
-    message: 'Hello Vue.js!'
-  }
-})
-```
-
 Fichero JS en Vue3:
 ```javascript
 var miApp = Vue.createApp({
@@ -195,6 +190,16 @@ var miApp = Vue.createApp({
     }
   }
 }).mount('#app');
+```
+
+Fichero JS en Vue2:
+```javascript
+var miApp = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue.js!'
+  }
+})
 ```
 
 ### Enlace unidireccional: interpolación {\{...}}
@@ -244,7 +249,7 @@ NOTA: toda la aplicación se monta en el elemento _app_ por lo que las directiva
 ## [Vue devtools]
 Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
 
-Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [documentación de Vue](https://v3.vuejs.org/guide/installation.html#vue-devtools).
+Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [documentación de Vue](https://vuejs.org/guide/scaling-up/tooling.html#browser-devtools).
 
 Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
@@ -266,4 +271,11 @@ NOTA: Si por algún motivo queremos trabajar sin servidor web (desde file://...)
 ![DevTools](./img/DevTolols-AllowFiles.png)
 
 ## Extensiones para el editor de código
-Cuando empecemos a trabajar con componentes usaremos ficheros con extensión **.vue** que integran el HTML, el JS y el CSS de cada componente. Para que nuestro editor los detecte correctamente es conveniente instalar la extensión para Vue (en el caso de Visual Studio Code se llama **Vetur**).
+Cuando empecemos a trabajar con componentes usaremos ficheros con extensión **.vue** que integran el HTML, el JS y el CSS de cada componente. Para que nuestro editor los detecte correctamente es conveniente instalar la extensión para Vue.
+
+En el caso de Visual Studio Code esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión **Vetur** que se usa con _Vue 2_).
+
+## Otras utilidades
+_Vue 3_ permite utilizar directamente _Typescript_ en nuestros componentes simplemente indicándolo al definir el SFC (lo veremos al llegar allí).
+
+Respecto a los _tests_ se recomienda usar _Jest_ para los test unitarios y _Cypress_ para los E2E, como se indoca en la [documentación oficial](https://vuejs.org/guide/scaling-up/tooling.html#testing).
