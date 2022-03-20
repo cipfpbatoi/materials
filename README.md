@@ -1,5 +1,5 @@
 # Materials del [CIP FP Batoi](http://www.cipfpbatoi.es)
-Materials, apunts, pràctiques, etc del Centre que complementen els cursos del [nostre moodle](https://moodle.cipfpbatoi.es)
+Materials, apunts, pràctiques, etc del Centre que complementen els cursos de [Aules](https://aules.edu.gva.es/fp/)
 
 ## Informàtica
 Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més d'un mòdul.

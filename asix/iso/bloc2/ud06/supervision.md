@@ -87,7 +87,7 @@ La información que recoge se reúne en **Conjuntos de Recopiladores de datos** 
 - Contadores de rendimiento: son mediciones del estado o de la actividad del sistema
 - Datos de seguimiento de eventos: se recopilan de componentes del sistema operativo o de aplicaciones que informan de acciones o eventos
 - Información de configuración del sistema: valores de las claves del Registro de Windows
-- Alerta de contador de rendimiento: contiene contadores de rendimiento y alertar en función de los límites que se definan.
+- Alerta de contador de rendimiento: permite definir unos contadores de rendimiento y lanzar una alerta si se supera alguno de los límites que se definan para dichos contadores.
 
 ![Monitor de Rendimiento](media/MonitorRendimiento.png)
 

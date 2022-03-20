@@ -1,15 +1,15 @@
 # Directivas
-- [Permisos y derechos](#permisos-y-derechos)
+- [Directivas](#directivas)
   - [Introducción](#introducción)
-  - [Permisos NTFS](#permisos-ntfs)
-    - [Establecer permisos NTFS desde la terminal](#establecer-permisos-ntfs-desde-la-terminal)
-    - [Propietarios de archivos y carpetas](#propietarios-de-archivos-y-carpetas)
-    - [Permisos implícitos (heredados) y explícitos](#permisos-implícitos-heredados-y-explícitos)
-    - [Deshabilitar la herencia](#deshabilitar-la-herencia)
-    - [Permisos al copiar o mover archivos y carpetas](#permisos-al-copiar-o-mover-archivos-y-carpetas)
-    - [Reglas de aplicación de permisos](#reglas-de-aplicación-de-permisos)
-  - [Permisos SMB](#permisos-smb)
-  - [Consideraciones sobre los permisos](#consideraciones-sobre-los-permisos)
+  - [Administrador de directivas de grupo](#administrador-de-directivas-de-grupo)
+    - [Qué hace una directiva y a quién se aplica](#qué-hace-una-directiva-y-a-quién-se-aplica)
+      - [A quién se aplica](#a-quién-se-aplica)
+      - [Quá hace la directiva](#quá-hace-la-directiva)
+    - [Directivas aplicadas efectivamente](#directivas-aplicadas-efectivamente)
+    - [Deshabilitar una GPO](#deshabilitar-una-gpo)
+    - [Administrar directivas locales](#administrar-directivas-locales)
+  - [Crear un nuevo GPO](#crear-un-nuevo-gpo)
+    - [Editor de administración de directivas de grupo](#editor-de-administración-de-directivas-de-grupo)
 
 ## Introducción
 Cómo vimos en la Unidad anterior un derecho es un atributo de un usuario que le permite realizar una acción que afecta al sistema en conjunto, no a un objeto o recurso concreto (por ejemplo cambiar el aspecto de su escritorio o instalar programas). Para simplificar su administración los derechos se agrupan en políticas del sistema llamadas **directivas de grupo** (_**Group Policy**_).
@@ -43,8 +43,8 @@ En caso de que haya más de una directiva en el mismo nivel se aplican en el ord
 
 Las directivas de grupo (tanto los locales como las del dominio) se pueden definir a **nivel de usuario** o a **nivel de equipo**. Las directivas de usuario se aplican al usuario independientemente de en qué equipo inicie sesión. Las directivas de equipo se aplican a un equipo sea quién sea el usuario que inicia sesión en él.
 
-## Administrar directivas
-La herramienta que incluye Active Directory para administrar las directivas es la característica de Administrador de directivas de grupo.
+## Administrador de directivas de grupo
+La herramienta que incluye Active Directory para administrar las directivas es la característica de **_Administrador de directivas de grupo_**.
 
 ![Administrador de directivas de grupo](media/AdmGPO.png)
 
@@ -53,6 +53,41 @@ Por defecto hay 2 GPO ya creados en el dominio que establecen su configuración 
 - _**Default Domain Controller Policy**_: vinculada a la OU _Domain Controllers_ y por tanto se aplicará sólo a los objetos que hay en esa OU (que son las cuentas de los equipos controladores del dominio)
 
 Todos los GPO aparecen en _Objetos de directivas de grupo_. Además cada GPO la encontramos dentro del objeto al que está vinculado (la _Default Domain Policy_ la vemos vinculada al dominio, la _Default DC Policy_ a la OU _Domain Controllers_, etc).
+
+### Qué hace una directiva y a quién se aplica
+Desde _Administración de directivas de grupo_ podemos ver a quién se está aplicando una GPO y qué es lo que configura. Para ello hacemos doble click en la GPO.
+
+#### A quién se aplica
+Para ver a quién se aplica seleccionamos la pestaña de **Ámbito**:
+
+![GPO - Ámbito](media/GPOambito.png)
+
+En **Vínculos** podemos ver a qué contenedores está vinculada. En este caso está vinculada al dominio. Podemos vincularla:
+- al dominio: se aplicará a todos los objetos del dominio
+- a uno o varios sitios: se aplicará a los objetos que haya dentro de esos sitios
+- a una o varias OU: se aplicará sólo a los objetos creados en ellas
+
+En **Filtrado de seguridad** establecemos a qué objetos de dichos contenedores se aplicará. Por defecto tenemos el grupo **Usuarios autentificados** por lo que se aplicará a todos los usuarios y a todos los equipos (ya que todos pertenecen a ese grupo). Si quisiéramos que se aplique sólo a uno o varios grupos concretos eliminaríamos este grupo y añadiríamos los grupos que queramos. En ese caso debemos añadir también el grupo **Equipos del dominio** o bien algún grupo que creemos al que añadamos los equipos en los que debe actuar esta directiva ya que algunas directivas necesitan que el equipo (además del usuario) tenga permisos de lectura sobre la directiva para que se le pueda aplicar.
+
+Además tenemos el **Filtrado WMI** que nos permite poner cualquier tipo de filtro que se comprobará en el equipo cliente antes de aplicar dicha directiva (por ejemplo qué tipo de S.O. tiene o qué programas tiene instalados).
+
+#### Quá hace la directiva
+Para saber qué configura este GPO iremos a la pestaña de **Configuración**. Al pulsar sobre mostrar todo vemos lo siguiente:
+
+![GPO - Configuración](media/GPOconfig.png)
+
+Vemos que esta directiva configura muchas opciones como que la longitud mínima de las contraseñas es de 7 caracteres o que su vigencia máxima es de 42 días (trascurrido ese tiempo se obliga al usuario a cambiarla).
+
+### Directivas aplicadas efectivamente
+Podemos saber qué directivas están aplicándose efectivamente al usuario actual sobre el equipo actual con el comando:
+```cmd
+rsop.msc
+```
+
+Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente suede tardar 10-20 minutos en replicarse a todos los DC, pero puede ser más). Para actualizar las directivas y hacer que se aplican inmediatamente las que acabamos de crear utilizamos el comando:
+```cmd
+gpupdate /force
+```
 
 ### Deshabilitar una GPO
 En cualquier momento podemos deshabilitar una GPO o directamente eliminarla. Si la deshabilitamos la GPO sigue existiendo pero no se aplicará a los objetos a los que está vinculada.
@@ -70,34 +105,6 @@ Si lo que queremos se desvincular una GPO de un contenedor para que no se apliqu
 - o bien desmarcamos _Vínculo habilitado_: el vínculo continúa existiendo pero no está activo
 
 Podemos eliminar una GPO o desvincularla desde su menú contextual. Si la desvinculamos la GPO continúa existiendo pero no se aplicará a los contenedores a los que está vinculada.
-
-### Directivas aplicadas efectivamente
-Podemos saber qué directivas están aplicándose efectivamente al usuario actual sobre el equipo actual con el comando:
-```cmd
-rsop.msc
-```
-
-Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente suede tardar 10-20 minutos en replicarse a todos los DC, pero puede ser más). Para actualizar las directivas y hacer que se aplican inmediatamente las que acabamos de crear utilizamos el comando:
-```cmd
-gpupdate /force
-```
-
-### Qué hace una directiva y a quién se aplica
-Desde _Administración de directivas de grupo_ podemos ver a quién se está aplicando una GPO y qué es lo que configura. Para ello hacemos doble click en la GPO.
-
-Para ver a quién se aplica seleccionamos la pestaña de **Ámbito**:
-
-![GPO - Ámbito](media/GPOambito.png)
-
-En **Vínculos** podemos ver a qué contenedores está vinculada. En este caso está vinculada al dominio.
-
-En **Filtrado de seguridad** establecemos a qué objetos de dichos contenedores se aplicará. Por defecto tenemos el grupo **Usuarios autentificados** por lo que se aplicará a todos los usuarios y a todos los equipos (ya que pertenecen a ese grupo). Si quisiéramos que se aplique sólo a uno o varios grupos concretos eliminaríamos este grupo y añadiríamos los grupos que queramos. En ese caso es conveniente añadir también el grupo **Equipos del dominio** ya que algunas directivas necesitan que el equipo (además del usuario) tenga permisos de acceso a la directiva para que se le pueda aplicar.
-
-Para saber qué configura este GPO iremos a la pestaña de **Configuración**. Al pulsar sobre mostrar todo vemos lo siguiente:
-
-![GPO - Configuración](media/GPOconfig.png)
-
-Vemos que esta directiva configura muchas opciones como que la longitud mínima de las contraseñas es de 7 caracteres o que su vigencia máxima es de 42 días (trascurrido ese tiempo se obliga al usuario a cambiarla).
 
 ### Administrar directivas locales
 Como hemos comentado, además de las directivas que tenemos en el servidor podemos crear directivas en cada equipo (también en los clientes).
