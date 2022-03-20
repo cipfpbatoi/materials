@@ -340,21 +340,21 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 
 **Pasos que he hecho**:
 1. Creo el componente que mostrará la lista: _todo-list_.
-    1. Su _template_ es un div que incluye el título (que será una variable para poderlo reutilizar) y la lista con las tareas a mostrar. Cada una de ellas será un subcomponente llamado _todo-item_
-    1. como parámetro recibirá el título de la lista como hemos indicado antes
-    1. llama al subcomponente _todo-item_ para cada tarea (v-for) y le pasa la tarea que debe mostrar
-    1. sus datos será el array de tareas
-    1. Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
-1. Creo el componente al que llama el anterio, _todo-item_. 
-    1. recibirá un objeto con la tarea a mostrar
-    1. su template será el <li> que tenía en el HTML pero quitando el _v-for_ porque él sólo se encarga de mostrar 1 item
-    1. el método para borrarlo al hacer doble click ya no puede funcionar porque el componente no tiene acceso al array de tareas. De momento sólo ponemos un _alert_ que nos diga que lo queremos borrar
+    - Su _template_ es un div que incluye el título (que será una variable para poderlo reutilizar) y la lista con las tareas a mostrar. Cada una de ellas será un subcomponente llamado _todo-item_
+    - como parámetro recibirá el título de la lista como hemos indicado antes
+    - llama al subcomponente _todo-item_ para cada tarea (v-for) y le pasa la tarea que debe mostrar
+    - sus datos será el array de tareas
+    - Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
+1. Creo el componente al que llama el anterior, _todo-item_. 
+    - recibirá un objeto con la tarea a mostrar
+    - su template será el <li> que tenía en el HTML pero quitando el _v-for_ porque él sólo se encarga de mostrar 1 item
+    - el método para borrarlo al hacer doble click ya no puede funcionar porque el componente no tiene acceso al array de tareas. De momento sólo ponemos un _alert_ que nos diga que lo queremos borrar
 1. Creo el componente _add-item_.
-    1. su _template_ será el \<input> y el \<button> que teníamos en el HTML, pero como sólo puede haber un elemento en el template los incluimos dentro de un <div>
-    1. no recibe ningún parámetro pero sí tiene una variable propia, _newTodo_, que quitamos del componente principal para añadirla a este componente
-    1. el método addTodo ya no funciona porque no tengo acceso al array de tareas así que de momento muestro un _alert_ con lo que querría añadir
+    - su _template_ será el \<input> y el \<button> que teníamos en el HTML, pero como sólo puede haber un elemento en el template los incluimos dentro de un <div>
+    - no recibe ningún parámetro pero sí tiene una variable propia, _newTodo_, que quitamos del componente principal para añadirla a este componente
+    - el método addTodo ya no funciona porque no tengo acceso al array de tareas así que de momento muestro un _alert_ con lo que querría añadir
 1. Creo el componente _del-all_
-    1. su _template_ es el botón
-    1. ni recibe parámetros ni tiene variables propias
-    1. con el método pasa lo mismo que en los otros casos así que simplemente muestro un _alert_
+    - su _template_ es el botón
+    - ni recibe parámetros ni tiene variables propias
+    - con el método pasa lo mismo que en los otros casos así que simplemente muestro un _alert_
   

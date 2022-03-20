@@ -22,7 +22,7 @@ Un framework nos facilita enormemente el trabajo a la hora de crear una aplicaci
 
 Vue es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados, _Angular_ desarrollado por Google y _React_ desarrollado por Facebook.
 
-Este material está basado en la [guía oficial de Vue2](https://vuejs.org/v2/guide/) y la de [Vue3](https://v3.vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router, axios y vuex entre otros.
+Este material está basado en la [guía oficial de Vue](https://vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router, axios y pinia (sustituto de vuex en Vue3) entre otros.
 
 **¿Qué framework es mejor?**
 Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis algunos enlaces al respecto:
@@ -253,7 +253,7 @@ Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [
 
 Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
-* Vuex: es la herramienta de gestión de estado para aplicaciones medias/grandes
+* Pinia/Vuex: es la herramienta de gestión de estado para aplicaciones medias/grandes
 * Eventos: permite ver todos los eventos emitidos
 * Refrescar: refresca la herramienta
 
