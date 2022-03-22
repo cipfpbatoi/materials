@@ -566,24 +566,18 @@ El atributo _slot_ podemos ponérselo a cualquier etiqueta (no tiene que ser \<t
 ```
 
 # Aplicación de ejemplo
-Vamos a hacer que funcione la aplicación que separamos en componentes.
+Vamos a hacer que funcione la aplicación que tenemos hecha en **vue-cli**.
 
 ## Solución con _Store pattern_
-Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde varios componentes. En él incluimos métodos para añadir y borrar un nuevo _todo_, para cambiar el estado de un _todo_ y para borrarlos todos.
+Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde varios componentes. En él incluimos métodos para añadir un nuevo _todo_, para borrar uno, para cambiar el estado de un _todo_ y para borrarlos todos.
 
-En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su data. El resto de componentes no necesitan acceder al array, por lo que no lo incluimos e su data, pero sí llamarán a los métodos para cambiarlo.
+En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su data. El resto de componentes no necesitan acceder al array, por lo que no lo incluimos en su data, pero sí llamarán a los métodos para cambiarlo.
 
-**Solución con Vue3**:
+Respecto al _todo-item_ debe cambiar los datos tanto al hacer doble click (se borra la tarea) como al marcar/desmarcar el checkbox (se cambia el estado de la tarea).
 
-<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="gOxKaEL" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/gOxKaEL">
-  to-do app components working</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
-
-Fijaos que para que `todo-list` se entere de los cambios que se producen en `todos` se ha definido el array como `reactive`. Esto es nuevo de Vue3 (en Vue2 no es necesario)
-
-**Solución con Vue2**:
-
-<script async src="//jsfiddle.net/juansegura/o0951fzr/embed/"></script>
+<iframe src="https://codesandbox.io/embed/todo-app-with-vue-cli-it-works-fnen9g?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="ToDo App with vue-cli (it works!!!)"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>

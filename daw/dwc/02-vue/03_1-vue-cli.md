@@ -409,7 +409,3 @@ Solución:
      allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
    ></iframe>
-
-O bien:
-
-[https://codesandbox.io/s/todo-app-with-vue-cli-dont-work-f6xwo3?file=/src/App.vue](https://codesandbox.io/s/todo-app-with-vue-cli-dont-work-f6xwo3?file=/src/App.vue)
