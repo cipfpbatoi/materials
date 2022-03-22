@@ -28,6 +28,7 @@ Los contenidos de esta unidad son los siguientes:
 2. [Servicio DHCP](dhcp.md)
 3. [Realizar copias de seguridad](backups.md)
 4. [Supervisión del sistema](supervision.md)
+5. [Auditoría del sistema](auditoria.md)
 
 ## Caso práctico
 
