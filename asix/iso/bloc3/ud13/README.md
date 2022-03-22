@@ -55,7 +55,11 @@ Como cliente podemos poner:
 Respecto a las opciones, las más comunes son (en negrita tenéis la predeterminada):
 
 * **rw** / **ro**: modo lectura-escritura o sólo lectura
-* **root_squash** / no_root_squash / all_squash: root_squash mapea los uid y gid 0 a los uid y gid anónimos (nobody o nfsnobody), es decir, que las peticiones de lectura/escritura hechos por el root cliente sobre los datos "importados" es cómo si los realizara el usuario anónimo y no el root del servidor. no_root_squash no hace esto, por lo tanto el root del cliente cuando trabaja con los datos "importados" sigue actuando como root. all_squash: mapea todos los usuarios al usuario anónimo.
+* **root_squash** / **no_root_squash** / **all_squash**: 
+  * **root_squash** indica que un usuario identificado como root tendrá acceso al directorio compartido sólo con privilegios de usuario anónimo. De esta forma se ha degradado al root al usuario local de privilegios más bajos protegiendo así los archivos en el servidor NFS. Esta opción se conoce también con el nombre de 'aplastamiento del root'. Para el resto de usuarios se intenta conservar su *UID* y *GID* en el servidor.
+  * **no_root_squash** desactiva la opción anterior, es decir, los accesos realizados como root desde el cliente serán también de root en el servidor NFS.
+  * **all_squash** indica que todos los clientes, incluido root, tendrán acceso al directorio con privilegios de un usuario anónimo. No se mantienen los *UID* y *GID* de ningún usuario.
+  * Si se utiliza alguna de las opciones squash podemos indicar cuál el el *UID* y *GID* del usuario con el que se quiere que se acceda, en lugar del anónimo. En este caso hemos de indicar a continuación de la opción squash lo siguiente:*(rw,all_squash,anonuid=1002,anongid=1002)*
 * **anonuid** / **anongid**: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
 * **subtree_check** / **no_subtree_check**: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
 * **fsid=0:** significa que al montarlo en el cliente no hay que poner la ruta a la carpeta en el servidor sino que se comparte desde la raíz. Por ejemplo si queremos compartir /srv/datos/public y ponemos esta opción al montar la carpeta en el cliente pondremos que monte **servidor:/public** y no **servidor:/sv/datos/public**
@@ -187,7 +191,7 @@ Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier clien
 
 El siguiente paso es que las carpetas personales de los usuarios móviles se creen en el servidor y se montan automáticamente en los clientes. Los pasos a hacer son:
 
-1. Crear una carpeta en el servidor donde almacenar los homes de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Esta carpeta podría ser /home (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, */home/movil*.
+1. Crear una carpeta en el servidor donde almacenar los *homes* de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Esta carpeta podría ser **/home** (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, */home/movil*.
 2. Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente
 3. Asegurarnos de que el **homeDirectory** de los usuarios del directorio **LDAP** es el correcto (*/home/movil/usuario*)
 4. Si hemos configurado **LDAP** para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de */home/movil* manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
