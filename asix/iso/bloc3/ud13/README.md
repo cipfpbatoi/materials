@@ -191,14 +191,24 @@ Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier clien
 
 El siguiente paso es que las carpetas personales de los usuarios móviles se creen en el servidor y se montan automáticamente en los clientes. Los pasos a hacer son:
 
-1. Crear una carpeta en el servidor donde almacenar los *homes* de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Esta carpeta podría ser **/home** (pero estaríamos exportando también las carpetas de los usuarios locales del servidor) pero mejor cualquier otra, por ejemplo, */home/movil*.
-2. Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente
-3. Asegurarnos de que el **homeDirectory** de los usuarios del directorio **LDAP** es el correcto (*/home/movil/usuario*)
+1. Crear una carpeta en el servidor donde almacenar los **homes** de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Por ejemplo, **/home/movil**. Cambia el propietario de la carpeta a *nobody:nogroup*. Exporta la carpeta:
+
+   ```bash
+   /home/movil        *(rw,sync,no_root_squash,no_subtree_check)
+   ```
+
+2. Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente. Para ello crearemos una carpeta **/home/movil** en el cliente donde montaremos de forma automática la carpeta del servidor *NFS*.
+   
+ ![perfilesm](./media/movil0.png)
+
+3. Asegurar de que el **homeDirectory** de los usuarios del directorio **LDAP** es el correcto (*/home/movil/usuario*)
 4. Si hemos configurado **LDAP** para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de */home/movil* manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
     1. Creamos la carpeta: ***mkdir /home/movil/jsegura***
     2. Copiamos el perfil: ***cp /etc/skel/.* /hombre/movil/jsegura***
     3. Cambiamos el propietario y el grupo: ***chown 5001:5000 /home/movil/jsegura***
     4. Asignamos los permisos adecuados: ***chmod -R 750 /home/movil/jsegura***
+
+![perfilesm](media/movil1.png)
 
 ## Compartición de impresoras. CUPS  
 
