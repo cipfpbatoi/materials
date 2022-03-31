@@ -211,7 +211,7 @@ El paquete a instalar (aunque posiblemente ya esté instalado en la mayoría de 
 
 Para su administración incluye un gestor web en el puerto *631*. Por defecto cups está configurado para acceder a este gestor sólo desde el equipo local. Para poder acceder desde otros equipos (como tenemos que hacer nosotros porque en el servidor no tenemos entorno gráfico ni navegador) tenemos que cambiar la configuración en el fichero **/etc/cups/cupsd.conf**:
 
-![CUPS](03-cups.png "CUPS")
+![CUPS](./media/03-cups.png "CUPS")
 
 En la primera línea indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
 
@@ -219,7 +219,7 @@ Las otras 2 líneas modificadas habilitan el acceso al servidor y en las página
 
 Ahora ya podemos acceder a *CUPS* desde nuestro cliente:
 
-![CUPS](04-cups.png "CUPS")
+![CUPS](./media/04-cups.png "CUPS)
 
 Desde esta aplicación podemos administrar y mantener el servicio de impresión. Algunas tareas requieren validarse con un usuario que tenga permisos para administrar el servicio. Por defecto los usuarios que pueden administrar el servicio de impresión tiene que pertenecer al grupo **lpadmin**.
 
@@ -230,7 +230,7 @@ En la pestaña "Administración" podemos acceder a todas las operaciones de gest
 * Administrar clases
 * Administrar trabajos de impresión
 
-![CUPS](05-cups.png "CUPS"){width="768" height="294"}
+![CUPS](./media/05-cups.png)
 
 En la parte derecha de la ventana de administración podemos encontrar algunas opciones importantes:
 
@@ -244,7 +244,7 @@ Para que CUPS funcione como servidor de impresión tiene que marcarse la opción
 
 Para añadir una nueva impresora el asistente va preguntando todo lo necesario. Lo primero que nos pregunta es como se conecta la impresora a nuestro servidor. Lo más habitual es que la impresora se detecte automáticamente, y ya tendremos las opciones correctas marcadas por defecto. Si esto no pasa (es lo que nos pasará a nosotros porque estamos instalando una impresora inventada) tendremos que contestar como se conectará nuestra impresora:
 
-![CUPS](06-cups.png "CUPS"){width="768" height="542"}
+![CUPS](./media/06-cups.png)
 
 * Si es una impresora local elegiremos el puerto utilizado en la parte de arriba (opciones rojas).
 * Si es una impresora de red elegiremos el protocolo a utilizar en la parte de bajo (opciones azules): el protocolo nativo de CUPS es ipp (por defecto en el puerto 631) pero si nuestra impresora no soporta este protocolo elegiremos AppSocket (por defecto funciona sobre el puerto 9100).
@@ -263,7 +263,7 @@ Tampoco tenemos que instalar ningún driver puesto que estos están centralizado
 
 Además del acceso web a la configuración y administración de CUPS, también han aplicaciones integradas en los diferentes escritorios (por ejemplo system-config-printer en el escritorio GNOME o KDE Print):
 
-![CUPS](07-cups.png "CUPS"){width="277" height="165"}
+![CUPS](./media/07-cups.png)
 
 ## Proyecto
 
