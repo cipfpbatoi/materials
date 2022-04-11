@@ -40,18 +40,39 @@ NOTA: Cualquier parámetro que pasemos sin _v-bind_ se considera texto. Si quere
 </ul>
 ```
 
-Si pasamos un objeto en un atributo _v-bind_ sin nombre lo que está recibiendo el componente hijo son sus propiedades:
-```html
-<ul>
-  <todo-item v-bind="{ todo: 'Aprender Vue', done: false }" ></todo-item>
-</ul>
+Si queremos pasar varios parámetros a un componente hijo podemos pasarle un objeto en un atributo _v-bind_ sin nombre y lo que recibirá el componente hijo son sus propiedades:
+```vue
+<template>
+  <ul>
+    <todo-item v-bind="propsObject" ></todo-item>
+  </ul>
+</template>
+
+<script>
+  ...
+  data() {
+    return {
+      propsObject: { 
+        todo: 'Aprender Vue', 
+        done: false
+      }
+    }
+  }
+  ...
 ```
-y en el componente se reciben sus propiedades separadamente:
+y en el componente se reciben sus parámetros separadamente:
 ```javascript
 app.component('todo-item, {
   props: ['todo', 'done'],
   ...
 ```
+
+También es posible que el nombre de un parámetro que queramos pasar sea una variable:
+```vue
+<child-component :[paramName]="valorAPasar" ></child-component>
+```
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-12)
 
 ### Nunca cambiar el valor de una prop
 Al pasar un parámetro mediante una _prop_ su valor se mantendrá actualizado en el hijo si su valor cambiara en el padre, pero no al revés por lo que no debemos cambiar su valor en el componente hijo (de hecho VUe3 no nos lo permite).
@@ -236,6 +257,8 @@ y en _todo-list_ lo escuchamos y llamamos al método que borre el item:
 ``` 
 
 **NOTA**: En componentes y _props_ se hace la conversión automáticamente entre los nombres en Javascript escritos en camelCase y los usados en HTML en kebab-case pero esto no sucede con los eventos, por lo que en el código deberemos nombrarlos también en kebab-case.
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-13)
 
 ### Capturar el evento en el padre
 En ocasiones (como en este caso) el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. En estos casos podemos hacer que el evento se capture directamente en el padre en lugar de en el hijo:
@@ -516,6 +539,8 @@ se renderizará como:
   <p>Esto se verá si no se pasa nada al slot</p>
 </div>
 ```
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-14)
 
 ### Slots con nombre
 A veces nos interesa tener más de 1 slot en un componente. Para saber qué contenido debe ir a cada slot se les da un nombre. 

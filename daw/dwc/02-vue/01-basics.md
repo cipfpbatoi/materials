@@ -2,25 +2,25 @@
 - [Conceptos básicos](#conceptos-básicos)
   - [Introducción](#introducción)
   - [Usar Vue](#usar-vue)
-  - [La primera aplicación Vue](#la-primera-aplicación-vue)
+  - [Estructura de una aplicación Vue](#estructura-de-una-aplicación-vue)
     - [HTML](#html)
     - [Javascript](#javascript)
   - [La instancia _Vue_](#la-instancia-vue)
-    - [El ciclo de vida de un componente](#el-ciclo-de-vida-de-un-componente)
   - [_Binding_ de variables](#binding-de-variables)
     - [Enlace unidireccional: interpolación {\{...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
+    - [El ciclo de vida de un componente](#el-ciclo-de-vida-de-un-componente)
   - [[Vue devtools]](#vue-devtools)
   - [Extensiones para el editor de código](#extensiones-para-el-editor-de-código)
   - [Otras utilidades](#otras-utilidades)
 
 ## Introducción
-Vue es un framework progresivo para la construcción de interfaces de usuario y aplicaciones desde el lado del cliente. Lo de framework "progresivo" significa que su núcleo es pequeño pero está diseñado para crecer: su núcleo está enfocado sólo en la capa de visualización (como React) pero es fácil añadirle otras bibliotecas o proyectos existentes (algunos desarrollados por el mismo equipo de Vue) que nos permitan crear complejas SPA.
+El uso de un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue es un framework progresivo para la construcción de interfaces de usuario y aplicaciones desde el lado del cliente. Lo de framework "progresivo" significa que su núcleo es pequeño pero está diseñado para crecer: su núcleo está enfocado sólo en la capa de visualización pero es fácil añadirle otras bibliotecas o proyectos existentes (algunos desarrollados por el mismo equipo de Vue) que nos permitan crear complejas SPA.
 
-Un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
+Su código es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados, _Angular_ desarrollado por Google y _React_ desarrollado por Facebook.
 
-Vue es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados, _Angular_ desarrollado por Google y _React_ desarrollado por Facebook.
+Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
 
 Este material está basado en la [guía oficial de Vue](https://vuejs.org/guide/introduction.html) y veremos además los servicios de vue-router, axios y pinia (sustituto de vuex en Vue3) entre otros.
 
@@ -63,7 +63,7 @@ Esta no es la forma más recomendable de trabajar por lo que más adelante usare
 
 Nosotros estamos usando _VSCode_ como editor. Para que reconozca correctamente los ficheros _.vue_ debemos instalar el _plugin_ **Vetur**. Si vamos a usar Vue3 con Typescript podemos instalar el _plugin_ **Volar**.
 
-## La primera aplicación Vue
+## Estructura de una aplicación Vue
 Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación. En Vue 3:
 
 <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="dyzZgeY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
@@ -134,32 +134,10 @@ created() {
 }
 ```
 
-### El ciclo de vida de un componente
-Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida.
-
-En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
-
-![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.16e4c08e.png)
-
-**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
-
-**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlaza en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
-```javascript
-// MAL, NO HACER ASÍ
-created: () => {
-    console.log('instancia creada'); 
-}
-```
-
-```javascript
-// BIEN, HACER ASÍ
-created() {
-    console.log('instancia creada'); 
-}
-```
-
 ## _Binding_ de variables
-Para probar su funcionamiento conviene que nos descarguemos los ficheros y los abramos en local.
+En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#step-1) tenemos un tutorial guiado donde podemos probar cada una de las funcionalidades de Vue. En la parte superior izquierda nos pregunta por nuestras preferencias: de momento escogeremos **Options** y **HTML**.
+
+Para probar el funcionamiento de los ejemplos de este tutorial conviene que nos descarguemos los ficheros y los abramos en local.
 
 Fichero HTML:
 ```html
@@ -171,7 +149,7 @@ Fichero HTML:
 <body>
 
   <div id="app">
-    <p>{{ message }}</p>
+    <p>{ { message }}</p>
   </div>
 
   <script src="https://unpkg.com/vue"></script>
@@ -202,6 +180,8 @@ var miApp = new Vue({
 })
 ```
 
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-2)
+
 ### Enlace unidireccional: interpolación {\{...}}
 Hemos creado una variable _miApp_ que contiene nuestro objeto Vue y que podemos ver y manipular desde la consola. Si cambiamos el valor de la variable _message_
 
@@ -227,6 +207,8 @@ Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que s
   <p :title="message">
 ```
 
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-3)
+
 ### Enlace bidireccional: v-model
 Tanto **{\{ }}** como `v-bind` son un enlace unidireccional: muestran en el DOM el valor de un dato y reaccionan ante cualquier cambio en dicho valor. 
 
@@ -245,6 +227,34 @@ Tenemos además está la directiva `v-model` que es un enlace bidireccional que 
 Vemos que al escribir en el _input_ automáticamente cambia lo mostrado en el primer párrafo. Esta característica nos permite ahorrar innumerables líneas de código para hacer que el DOM refleje los cambios que se producen en los datos.
 
 NOTA: toda la aplicación se monta en el elemento _app_ por lo que las directivas o interpolaciones que pongamos fuera del mismo no se interpretarán.
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-5)
+
+### El ciclo de vida de un componente
+Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida.
+
+En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
+
+![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.16e4c08e.png)
+
+**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
+
+**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlaza en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
+```javascript
+// MAL, NO HACER ASÍ
+created: () => {
+    console.log('instancia creada'); 
+}
+```
+
+```javascript
+// BIEN, HACER ASÍ
+created() {
+    console.log('instancia creada'); 
+}
+```
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-9)
 
 ## [Vue devtools]
 Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
@@ -273,9 +283,9 @@ NOTA: Si por algún motivo queremos trabajar sin servidor web (desde file://...)
 ## Extensiones para el editor de código
 Cuando empecemos a trabajar con componentes usaremos ficheros con extensión **.vue** que integran el HTML, el JS y el CSS de cada componente. Para que nuestro editor los detecte correctamente es conveniente instalar la extensión para Vue.
 
-En el caso de Visual Studio Code esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión **Vetur** que se usa con _Vue 2_).
+En el caso de _Visual Studio Code_ esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión **Vetur** que se usa con _Vue 2_). En _Sublime Text_ tenemos el plugin **Vue Syntax Highlight**.
 
 ## Otras utilidades
 _Vue 3_ permite utilizar directamente _Typescript_ en nuestros componentes simplemente indicándolo al definir el SFC (lo veremos al llegar allí).
 
-Respecto a los _tests_ se recomienda usar _Jest_ para los test unitarios y _Cypress_ para los E2E, como se indoca en la [documentación oficial](https://vuejs.org/guide/scaling-up/tooling.html#testing).
+Respecto a los _tests_ se recomienda usar _Jest_ para los test unitarios y _Cypress_ para los E2E, como se indica en la [documentación oficial](https://vuejs.org/guide/scaling-up/tooling.html#testing).

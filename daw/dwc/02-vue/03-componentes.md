@@ -319,7 +319,7 @@ export default {
 ## Ejemplo de aplicación
 Para empezar a ver el uso de componentes vamos a seguir con la aplicación de la lista de cosas que hacer pero dividiéndola en componentes.
 
-La decisión de qué componentes crear es subjetiva pero en principio cuanto más descomponamos más posibilidades tendremos de reutilizar componentes. Nosotros haremos los siguientes componentes:
+La decisión de qué componentes crear es subjetiva pero en principio cuanto más descompongamos más posibilidades tendremos de reutilizar componentes. Nosotros haremos los siguientes componentes:
 * todo-list: muestra la lista de tareas a realizar. Dentro tendrá:
   * todo-item: cada una de las tareas a hacer
 * add-item: incluye el formulario para añadir una nueva tarea (el input y el botón)

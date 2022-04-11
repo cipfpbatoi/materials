@@ -3,27 +3,32 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Siguientes cosas a aprender en Vue](#siguientes-cosas-a-aprender-en-vue)
-  - [Autenticación](#autenticaci%C3%B3n)
-  - [Paso a producción](#paso-a-producci%C3%B3n)
+  - [Autenticación](#autenticación)
+    - [Store](#store)
+    - [API](#api)
+    - [Login.vue](#loginvue)
+    - [Router](#router)
+  - [Paso a producción](#paso-a-producción)
   - [Vuetify](#vuetify)
-    - [Instalación](#instalaci%C3%B3n)
+    - [Instalación](#instalación)
     - [Crear el layout](#crear-el-layout)
-    - [Saber más](#saber-m%C3%A1s)
+    - [Saber más](#saber-más)
   - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
-  - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-Vue)
+  - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-vue)
     - [Quasar](#quasar)
     - [Vue Native](#vue-native)
     - [Ionic Vue](#ionic-vue)
   - [Nuxt](#nuxt)
+  - [Conclusión](#conclusión)
   - [Angular](#angular)
   - [Vue con Laravel](#vue-con-laravel)
-    - [Creación del proyecto](#creaci%C3%B3n-del-proyecto)
+    - [Creación del proyecto](#creación-del-proyecto)
     - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
     - [Configuramos Laravel](#configuramos-laravel)
     - [Compilamos Vue](#compilamos-vue)
     - [Creamos la API](#creamos-la-api)
-    - [Saber más](#saber-m%C3%A1s-2)
+    - [Saber más](#saber-más-1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -264,7 +269,7 @@ Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ (que prop
 * [Intro and Overview of Vuetify.js (Build a CRUD client with Vue.js)](https://www.youtube.com/watch?v=5GfpGaHKfyo)
 
 ## Typescript
-Es Javascript al que se le ha incorporado tipado de datos. En los [apuntes](./21-typescript.html) puedes ver una introducción a cómo usarlo en Vue y en Internet tienes infinidad de recursos para aprender más.
+Es Javascript al que se le ha incorporado tipado de datos y otras utilidades. En los [apuntes](./21-typescript.html) puedes ver una introducción a cómo usarlo en Vue y en Internet tienes infinidad de recursos para aprender más.
 
 ## SSR (Server Side Rendering)
 Esta tecnología permite que al obtener la página un robot (haciendo `curl miURL`) no devuelva sólo la \<app> sino el HTML para que los robots la puedan indexar correctamente. 

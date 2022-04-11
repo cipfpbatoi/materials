@@ -1,15 +1,23 @@
 # Profundizando en Vue
 Tabla de contenidos
-- [Computed](#computed)
-- [Watchers](#watchers)
-- [Clases](#clases)
-- [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
-- [Componentes asíncronos](#componentes-asíncronos)
-- [Custom Directives](#custom-directives)
-- [Filtros](#filtros)
-- [Transiciones](#transiciones)
-- [Entornos](#entornos)
-- [Guards del router](#guards-del-router)
+- [Profundizando en Vue](#profundizando-en-vue)
+  - [Computed](#computed)
+  - [Watchers](#watchers)
+  - [Acceder al DOM: 'ref'](#acceder-al-dom-ref)
+    - [nextTick](#nexttick)
+  - [Clases](#clases)
+    - [Sintaxis de objeto](#sintaxis-de-objeto)
+    - [Sintaxis de array](#sintaxis-de-array)
+    - [Asignar clases a un componente](#asignar-clases-a-un-componente)
+    - [Asignar estilos directamente](#asignar-estilos-directamente)
+  - [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
+  - [Componentes asíncronos](#componentes-asíncronos)
+  - [Custom Directives](#custom-directives)
+  - [Filtros](#filtros)
+  - [Imágenes](#imágenes)
+  - [Transiciones](#transiciones)
+  - [Entornos](#entornos)
+  - [Guards del router](#guards-del-router)
 
 
 ## Computed
@@ -80,6 +88,8 @@ export default {
 
 En lugar de definir _computed_ podríamos haber obtenido el mismo resultado usando métodos, pero la ventaja de las propiedades calculadas es que se cachean por lo que si se vuelven a tener que renderizar en el DOM no vuelven a evaluarse, a menos que cambie el valor de alguna de las variables reactivas que use.
 
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-4)
+
 Por defecto las propiedades _computed_ sólo hacen un _getter_, por lo que no se puede cambiar su valor. Pero podemos si queremos hacerlo definir métodos _getter_ y _setter_:
 
 ```javascript
@@ -127,6 +137,64 @@ Vue proporciona una forma genérica de controlar cuándo cambia el valor de una 
 En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Veremos su utilidad cuando trabajemos con _vue-router_.
 
 NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-10)
+
+## Acceder al DOM: 'ref'
+Aunque Vue se encarga de la vista por nosotros en alguna ocasión podemos tener que acceder a un elemento del DOM. En ese caso no haremos un `document.getElement...` sino que le ponemos una referencia al elemento con el atributo `ref` para poder acceder al mismo desde nuestro script:
+```vue
+<script>
+<template>
+  <form ref="myForm">
+    ...
+  </form>
+</template>
+
+export default {
+  mounted() {
+    this.$refs.myForm.setAttribute('novalidate', true)
+  }
+}
+</script>
+```
+
+Desde el código tenemos acceso a todas las referencias desde `this.$refs`. Hay que tener en cuenta que sólo se puede acceder a un elemento después de montarse el componente (en el _hook_ **mounted()** o después).
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-9)
+
+### nextTick
+Si modificamos una variable reactiva el cambio se refleja automáticamente en el DOM, pero no inmediatamente sino que se espera hasta el evento _nextTick_ en el ciclo de modificación para asegurarse de no cambiar algo que quizá va a volverse a cambiar en este ciclo.
+
+Si accedemos al DOM antes de que se produzca este evento el valor aún será en antiguo. Para obtener el nuevo valor hemos de esperar al _nextTick_:
+```vue
+<template>
+  <p>Contador: <span ref="contador">{{ count }}</span></p>
+  <button @click="increment">Incrementa</button>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      count: 0
+    }
+  },
+  methods: {
+    increment() {
+      count.value++
+      console.log('Contador en el DOM: ' + this.$refs.contador.textContent)
+      // Devolverá el valor sin actualizar aún
+      nextTick(() => {
+        console.log('Contador en el DOM tras nextTick: ' + this.$refs.contador.textContent)
+        // Devolverá el valor actualizado
+      })
+    }
+  }
+}
+</script>
+```
+
+Realmente es algo que seguramente nunca necesitemos pero así conocemos un poco más cómo funciona Vue internamente.
 
 ## Clases
 Ya hemos visto que en Javascript usamos las clases con mucha frecuencia, normalmente para asignar a elementos estilos definidos en el CSS, pero también para identificar elementos sin usar una _id_ (como hacíamos poniendo a los botones de acciones de los productos las clases _subir_, _bajar_, _editar_ o _borrar_).

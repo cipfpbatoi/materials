@@ -21,6 +21,7 @@
     - [Hacer varias peticiones simultáneamente. Promise.all](#hacer-varias-peticiones-simultáneamente-promiseall)
   - [Single Page Application](#single-page-application)
   - [Resumen de llamadas asíncronas](#resumen-de-llamadas-asíncronas)
+  - [CORS](#cors)
 
 ## Introducción
 AJAX es el acrónimo de **_Asynchronous Javascript And XML_** (Javascript asíncrono y XML) y es lo que usamos para hacer peticiones asíncronas al servidor desde Javascript. Cuando hacemos una petición al servidor no nos responde inmediatamente (la petición tiene que llegar al servidor, procesarse allí y enviarse la respuesta que llegará al cliente). 
@@ -689,3 +690,12 @@ Para evitar esto surgieron las **_promesas_** que permiten evitar las funciones 
 Aún así el código no es muy limpio. Para mejorarlo tenemos **_async_ y _await_** como vemos en [este ejemplo](https://repl.it/DhMa/0). Estas funciones forman parte del estándar ES2017 por lo que no están soportadas por navegadores antiguos (aunque siempre podemos transpilar con _Babel_).
 
 Fuente: [todoJs: Controlar la ejecución asíncrona](https://www.todojs.com/controlar-la-ejecucion-asincrona/)
+
+## CORS
+_Cross-Origin Resource Sharing_ (CORS) es un mecanismo de seguridad que incluyen los navegadores y que por defecto impiden que se pueden realizar peticiones Ajax desde un navegador a un servidor con un dominio diferente al de la página cargada originalmente. 
+
+Si necesitamos hacer este tipo de peticiones necesitamos que el servidor  al que hacemos la petición añada en su respuesta la cabecera _Access-Control-Allow-Origin_ donde indiquemos el dominio desde el que se pueden hacer peticiones (o __*__ para permitirlas desde cualquier dominio).
+
+El navegador comprobará las cabeceras de respuesta y si el dominio indicado por ella coincide con el dominio desde el que se hizo la petición, esta se permitirá.
+
+Como en desarrollo normalmente no estamos en el dominio de producción (para el que se permitirán las peticiones) podemos instalar en el navegador la extensión _allow CORS_ que al activarla deshabilita la seguridad CORS en el navegador.

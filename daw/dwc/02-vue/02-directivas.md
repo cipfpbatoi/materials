@@ -73,6 +73,8 @@ También se pueden enlazar varios con `v-else-if`:
 </div>
 ```
 
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-6)
+
 ## Bucles: v-for
 Esta directiva repite el elemento HTML en que se encuentra una vez por cada elemento del array al que se enlaza.
 
@@ -100,6 +102,8 @@ También podemos usar `v-for` para que se ejecute sobre un rango (como el típic
 ```
 
 NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. Si se hace siempre se ejecuta primero el `v-if`.
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-7)
 
 ## Eventos: v-on
 Esta directiva captura un evento y ejecuta un método como respuesta al mismo.
@@ -129,6 +133,8 @@ Esta directiva se usa mucho así que se puede abreviar con **`@`**. El código e
 ```html
 <button @click="pulsado('prueba')">Pulsa</button>
 ```
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-4)
 
 ### Modificadores de eventos
 A un evento gestionado por una directiva _v-on_ podemos añadirle (separado por .) un modificador. Alguno de los más usados son:

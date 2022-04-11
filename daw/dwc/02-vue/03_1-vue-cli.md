@@ -219,7 +219,7 @@ Declarar los componentes con `app.component()` en el fichero JS de la instancia 
 
 Por tanto eso puede ser adecuado para proyectos muy pequeños pero no lo es cuando estos empiezan a crecer.
 
-La solución es guardar cada componente en un único fichero (SFC), que tendrá extensión **.vue** y contendrá 3 secciones:
+La solución es guardar cada componente en un único fichero (SFC), que tendrá extensión **.vue**. Estos ficheros contienen 3 secciones diferentes:
 * \<template>: contiene todo el HTML del componente
 * \<script>: con el JS del mismo
 * \<style>: donde pondremos el CSS del componente
@@ -248,7 +248,7 @@ Respecto al lenguaje, podemos usar HTML (la opción por defecto) o [PUG](https:/
 
 
 #### \<script>
-Aquí definimos el componente. Será un objeto que exportaremos con sus diferentes propiedades. Si utiliza subcomponentes hay que importarlos antes de definir el objeto y registrarlos dentro de este.
+Aquí definimos y exportamos el componente, que será un objeto con diferentes propiedades. Si utiliza subcomponentes hay que importarlos antes de definir el objeto y registrarlos dentro de este.
 
 Entre las propiedades que puede tener el objeto están:
 - **name**: el nombre del componente. Es recomendable ponerlo, aunque sólo es obligatorio en caso de componentes recursivos
@@ -264,7 +264,7 @@ Entre las propiedades que puede tener el objeto están:
 #### \<style>
 Aquí pondremos estilos CSS que se aplicarán al componente. Podemos usar CSS, SASS o [PostCSS](https://postcss.org/). Si queremos importar ficheros de estilo con `@import` deberíamos guardarlos dentro de la carpeta _assets_ de nuestra aplicación.
 
-Si la etiqueta incluye el atributo _scoped_ estos estilos se aplicarán únicamente a este componente (y sus descendientes) y no a todos los componentes de nuestra aplicación. Si tenemos estilos que queremos que se apliquen a toda la aplicación y otros que son sólo para el componente y sus descendientes pondremos 2 etiquetas \<style>, una sin el atributo _scoped_ y otra con él.
+Si la etiqueta incluye el atributo _**scoped**_ estos estilos se aplicarán únicamente a este componente (y sus descendientes) y no a todos los componentes de nuestra aplicación. Si tenemos estilos que queremos que se apliquen a toda la aplicación y otros que son sólo para el componente y sus descendientes pondremos 2 etiquetas \<style>, una sin el atributo _scoped_ y otra con él.
 
 La forma más común de asignar estilos a elementos es usando clases. Para conseguir que su estilo cambie fácilmente podemos asignar al elemento clases dinámicas que hagan referencia a variables del componente. Ej.:
 ```vue

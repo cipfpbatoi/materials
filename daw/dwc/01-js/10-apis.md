@@ -30,7 +30,7 @@ Para poder realizar la operación _event_ tiene una propiedad llamada **dataTran
 
 Los pasos para arrastrar y soltar un elemento son:
 1. El elemento debe ser **_draggable_**
-1. Capturamos el evento [**dragstart**](https://developer.mozilla.org/en-US/docs/Web/Events/dragstart). Este evento se produce sobre un elemento cuando comenzamos a arrastarlo. Deberemos almacenar en el _dataTransfer_ quién está siendo arrastrado (si no guardamos nada se guarda automáticamente su `src` si es una imagen o su `href` si es un enlace). Indicaremos el tipo del dato que estamos almacenando (texto plano, HTML, fichero, etc) y su valor. Ej.:
+1. Capturamos el evento [**dragstart**](https://developer.mozilla.org/en-US/docs/Web/Events/dragstart). Este evento se produce sobre un elemento cuando comenzamos a arrastrarlo. Deberemos almacenar en el _dataTransfer_ quién está siendo arrastrado (si no guardamos nada se guarda automáticamente su `src` si es una imagen o su `href` si es un enlace). Indicaremos el tipo del dato que estamos almacenando (texto plano, HTML, fichero, etc) y su valor. Ej.:
 
 ```html
 <img id="imgGoogle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Google.png/320px-Google.png">
@@ -51,7 +51,7 @@ document.getElementById('zonaDrop').addEventListener('dragover', (event) => {
 })
 ```
 
-4. Capturamos el evento [**drop**](https://developer.mozilla.org/en-US/docs/Web/Events/drop). Este evento se produce sobre elemento sobre el que se suelta lo que estábamos arrastrando. Lo que haremos es evitar el comportamiento por defecto del navegador (que en caso de imágenes o enlaces es cargarlos en la página), obtener quién se ha soltado a partir del objeto _dataTransfer_ y relizar lo que queramos, que normalmente será añadir el objeto arrastardo como hijo del objeto sobre el que se ha hecho el _drop_. Ej.: 
+4. Capturamos el evento [**drop**](https://developer.mozilla.org/en-US/docs/Web/Events/drop). Este evento se produce sobre elemento sobre el que se suelta lo que estábamos arrastrando. Lo que haremos es evitar el comportamiento por defecto del navegador (que en caso de imágenes o enlaces es cargarlos en la página), obtener quién se ha soltado a partir del objeto _dataTransfer_ y realizar lo que queramos, que normalmente será añadir el objeto arrastrado como hijo del objeto sobre el que se ha hecho el _drop_. Ej.: 
 
 ```javascript
 document.getElementById('zonaDrop').addEventListener('drop', (event) => {
@@ -65,16 +65,16 @@ NOTA: si hacemos _draggable_ un elemento, por ejemplo un párrafo, ya no se pued
 
 Podemos obtener más información de esta API [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 
-> EJERCICIO: mira y modifica el ejemplo de [w3schhols](https://www.w3schools.com/html/html5_draganddrop.asp) para entender bien el funcionamiento del Drag&Drop (ten en cuenta que en vez de .addEventListener() las llamadas a los escuchadores están puestas como atributos del HTML pero el funcionamiento es el mismo).
+> EJERCICIO: mira y modifica el ejemplo de [w3schools](https://www.w3schools.com/html/html5_draganddrop.asp) para entender bien el funcionamiento del Drag&Drop (ten en cuenta que en vez de .addEventListener() las llamadas a los escuchadores están puestas como atributos del HTML pero el funcionamiento es el mismo).
 
 ## Almacenamiento en el cliente: API Storage
 Antes de HTML5 la única manera que tenían los programadores de guardar algo en el navegador del cliente (como sus preferencias, su idioma predeterminado para nuestra web, etc) era utilizando _cookies_. Las cookies tienen muchas limitaciones y es engorroso trabajar con ellas. 
 
-HTML5 incorpora la API de Local Storage para subsanar esto. Además existen otros métodos de almacenamiento en el cliente más vanzados como [IndexedDB](https://developer.mozilla.org/es/docs/IndexedDB) (es un estándar del W3C).
+HTML5 incorpora la API de Local Storage para subsanar esto. Además existen otros métodos de almacenamiento en el cliente más avanzados como [IndexedDB](https://developer.mozilla.org/es/docs/Web/API/IndexedDB_API) (es un estándar del W3C).
 
-El funcinamiento de la API Storage es muy sencillo: si el navegador la soporta dentro del objeto _window_ tendremos los objetos **localStorage** y **sessionStorage** deonde podremos almacenar información en el espacio de almacenamiento local (5 MB o 10 MB por sitio web según el navegador, que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en localStorage nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en sessionStorage se elimina automáticamente al cerrar la sesión el usuario.
+El funcionamiento de la API Storage es muy sencillo: si el navegador la soporta dentro del objeto _window_ tendremos los objetos **localStorage** y **sessionStorage** donde podremos almacenar información en el espacio de almacenamiento local (5 MB o 10 MB por sitio web según el navegador, que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en localStorage nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en sessionStorage se elimina automáticamente al cerrar la sesión el usuario.
 
-Mediante Javascript puedo saber si el navegador soporta o no esta API simplemente mirando su typeof:
+Mediante Javascript puedo saber si el navegador soporta o no esta API simplemente mirando su `typeof`:
 
 ```javascript
 if (typeof(Storage) === "undefined")    // NO está soportado
@@ -84,7 +84,7 @@ Tanto localStorage como sessionStorage son como un objeto global al que tengo ac
 * Guardar un dato: `localStorage.setItem("dato", "valor")` o también `localStorage.dato = "valor"`
 * Recuperar un dato: `let miDato=localStorage.getItem("dato")` o también `let miDato = localStorage.dato`
 * Borrar datos: `localStorage.removeItem("dato")` para borrar 'dato'. Si quiero borrar TODO lo que tengo `localStorage.clear()`
-* Guardar un objetos (o arrays): lo guardamos en JSON, `localStorage.setItem("dato", JSON.stringify("objeto")`
+* Guardar un objetos (o arrays): lo guardamos en JSON, `localStorage.setItem("dato", JSON.stringify("objeto"))`
 * Recuperar el objeto: ` ler miObjeto = JSON.parse(localStorage.getItem("dato"))`
 * Cómo saber cuántos datos tenemos: `localStorage.length`
 
@@ -96,7 +96,7 @@ window.addEventListener("storage", actualizaDatos);
 
 y la función 'actualizaDatos' podrá leer de nuevo lo que hay y actuar en consecuencia.
 
-> EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. GUarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStrage? ¿Y las de sessionStorage?
+> EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. GUarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStorage? ¿Y las de sessionStorage?
 
 Puedes ver un ejemplo [en este vídeo](https://www.youtube.com/watch?v=ASQQUSFtr8g&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=65) de cómo almacenar en el _Storage_ datos del usuario.
 
@@ -218,7 +218,7 @@ navigator.geolocation.getCurrentPosition(
 )
 ```
 
-Si queremos ir obteniendo contínuamente la posición podemos usar el método  **.watchPosition()** que tiene los mismos parámetros y funciona igual pero se ejecuta repetidamente. Este método devuelve un identificador para que lo podemos detener cuando queremos con **.clearWatch(ident)**. Ej.:
+Si queremos ir obteniendo continuamente la posición podemos usar el método  **.watchPosition()** que tiene los mismos parámetros y funciona igual pero se ejecuta repetidamente. Este método devuelve un identificador para que lo podemos detener cuando queremos con **.clearWatch(ident)**. Ej.:
 
 ```javascript
 const watchIdent = navigator.geolocation.watchPosition(
@@ -246,7 +246,7 @@ Podemos pasarle como tercer parámetro al método getCurrentPosition un objeto J
 - maximumAge: milisegundos que guarda la última posición en caché. Si se solicita una nueva posición antes de expirar el
 tiempo, el navegador devuelve directamente el dato almacenado
 
-Podemos obtener más información de esta API en [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) y ver y modificar ejemplos en [w3schhols](http://www.w3schools.com/html/html5_geolocation.asp) y muchas otras páginas. i
+Podemos obtener más información de esta API en [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) y ver y modificar ejemplos en [w3schools](http://www.w3schools.com/html/html5_geolocation.asp) y muchas otras páginas. i
 
 ## Google Maps API
 Para poder utilizar la API en primer lugar debemos [obtener una API KEY](https://developers.google.com/maps/documentation/javascript/get-api-key) de Google.
@@ -286,4 +286,4 @@ Aquí tenéis el ejemplo anterior:
 
 <script async src="//jsfiddle.net/juansegura/pqzhd2vm/embed/"></script>
 
-Podemos obtener más información de esta API en [Google Maps Plataform](https://developers.google.com/maps/documentation/javascript/tutorial), en el tutorial de [w3schhols](https://www.w3schools.com/graphics/google_maps_intro.asp) y en muchas otras páginas.
+Podemos obtener más información de esta API en [Google Maps Plataform](https://developers.google.com/maps/documentation/javascript/tutorial), en el tutorial de [w3schools](https://www.w3schools.com/graphics/google_maps_intro.asp) y en muchas otras páginas.
