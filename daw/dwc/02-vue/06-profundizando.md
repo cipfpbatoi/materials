@@ -23,7 +23,7 @@ Tabla de contenidos
 ## Computed
 Cuando se crea un componente de Vue (o el componente raíz) se le pasa como parámetro un objeto con las opciones con que se creará. Entre ellas tenemos _props_, _ data_, _methods_, y también otras como _computed_ y _watch_.
 
-Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo:
+Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo un código con expresiones complejas como:
 
 ```vue
 <template>
@@ -51,7 +51,7 @@ export default {
 </script>
 ```
 
-La solución a esas expresiones sería crear propiedades calculadas:
+se puede simplificar creando propiedades calculadas:
 
 ```vue
 <template>
@@ -84,6 +84,7 @@ export default {
     }
   }
 })
+</script>
 ```
 
 En lugar de definir _computed_ podríamos haber obtenido el mismo resultado usando métodos, pero la ventaja de las propiedades calculadas es que se cachean por lo que si se vuelven a tener que renderizar en el DOM no vuelven a evaluarse, a menos que cambie el valor de alguna de las variables reactivas que use.
@@ -165,7 +166,7 @@ Desde el código tenemos acceso a todas las referencias desde `this.$refs`. Hay 
 ### nextTick
 Si modificamos una variable reactiva el cambio se refleja automáticamente en el DOM, pero no inmediatamente sino que se espera hasta el evento _nextTick_ en el ciclo de modificación para asegurarse de no cambiar algo que quizá va a volverse a cambiar en este ciclo.
 
-Si accedemos al DOM antes de que se produzca este evento el valor aún será en antiguo. Para obtener el nuevo valor hemos de esperar al _nextTick_:
+Si accedemos al DOM antes de que se produzca este evento el valor aún será el antiguo. Para obtener el nuevo valor hemos de esperar al _nextTick_:
 ```vue
 <template>
   <p>Contador: <span ref="contador">{{ count }}</span></p>
@@ -316,6 +317,9 @@ export default {
     components: {
         ProductItem,
     },
+...
+}
+</script>
 ```
 
 Si queremos que se cargue asíncronamente no lo importamos hasta se registra:
@@ -327,6 +331,8 @@ export default {
         ProductItem: () => import('./ProductItem.vue'),
     },
 ...
+}
+</script>
 ```
 
 También podemos decirle que espere un tiempo a cargar el componente (delay) e incluso qué componente queremos cargar mientras está cargando el componente o cuál cargar si hay un error al cargarlo:
@@ -344,6 +350,8 @@ export default {
         })
     },
 ...
+}
+</script>
 ```
 
 ## Custom Directives
@@ -352,7 +360,7 @@ Podemos crear nuestras propias directivas para usar en los elementos que queramo
 import Vue from 'vue'
 
 Vue.directive('focus', {
-  inserted(el) {
+  mounted(el) {
     el.focus();
   }
 })
@@ -369,14 +377,16 @@ Para usarla en un componente la importamos y ya podemos usarla en el _template_:
 <script>
 import focus from './focus.js'
 ...
+}
+</script>
 ```
 
 Si queremos utilizarla en muchos componentes podemos importarla en el _main.js_ y así estará disponible para todos los componentes.
 
 Los estados de la directiva en los que podemos actuar son:
-- **inserted** (en Vue3 **mounted**): cuando se inserte la directiva
-- **componentUpdated** (en Vue3 **updated**): cuando se actualice el componente que contiene la directiva
-- **bind** (en Vue3 **beforeMount**): cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
+- **mounted** (en Vue2 **inserted**): cuando se inserte la directiva
+- **updated** (en Vue2 **componentUpdated**): cuando se actualice el componente que contiene la directiva
+- **beforeMount** (en Vue2 **bind**): cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
 - ...
 
 
@@ -460,14 +470,14 @@ let router = new Router({
       path: '/',
       component: 'MyComponent',
       beforeEnter(to, from, next) {
-        console.log('Vengo de '+from+' y voy a '+to);
+        console.log('Vengo de ' + from + ' y voy a ' + to);
         next();
       },
 ...
 })
 
 router.beforeEach(to, from, next) {
-  console.log('Vengo de '+from+' y voy a '+to);
+  console.log('Vengo de ' + from + ' y voy a ' + to);
   next();
 }
 
