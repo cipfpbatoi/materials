@@ -144,13 +144,13 @@ NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
 ## Acceder al DOM: 'ref'
 Aunque Vue se encarga de la vista por nosotros en alguna ocasión podemos tener que acceder a un elemento del DOM. En ese caso no haremos un `document.getElement...` sino que le ponemos una referencia al elemento con el atributo `ref` para poder acceder al mismo desde nuestro script:
 ```vue
-<script>
 <template>
   <form ref="myForm">
     ...
   </form>
 </template>
 
+<script>
 export default {
   mounted() {
     this.$refs.myForm.setAttribute('novalidate', true)
@@ -169,7 +169,7 @@ Si modificamos una variable reactiva el cambio se refleja automáticamente en el
 Si accedemos al DOM antes de que se produzca este evento el valor aún será el antiguo. Para obtener el nuevo valor hemos de esperar al _nextTick_:
 ```vue
 <template>
-  <p>Contador: <span ref="contador">{{ count }}</span></p>
+  <p>Contador: <span ref="contador">{ { count }}</span></p>
   <button @click="increment">Incrementa</button>
 </template>
 
