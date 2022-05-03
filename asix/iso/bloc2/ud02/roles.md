@@ -9,6 +9,7 @@
     - [Degradar un controlador de dominio](#degradar-un-controlador-de-dominio)
     - [Añadir un cliente al dominio](#añadir-un-cliente-al-dominio)
       - [La hora en cliente y servidor](#la-hora-en-cliente-y-servidor)
+  - [Otros roles](#otros-roles)
   - [RSAT](#rsat)
   - [Windows Admin Center (WAC)](#windows-admin-center-wac)
 
@@ -141,6 +142,20 @@ w32tm /resync
 ```
 
 Si lo ejecutamos en un cliente añadido al dominio y nos da problemas podemos ejecutar `w32tm /domain` para que sincronice la hora con el DC del dominio.
+
+## Otros roles
+Tenemos infinidad de servicios que podemos instalar en nuestro servidor. Algunos ejemplos son:
+- Servidor de actualizaciones (_Windows Server Update Services_): permite que los equipos de nuestra organización se instalen las actualizaciones desde este servidor para no tener que descargarlas cada uno de ellos. Tutoriales de ejemplo:
+  - [Windows Server Update Services](https://docs.microsoft.com/es-es/windows-server/administration/windows-server-update-services/get-started/windows-server-update-services-wsus)
+  - [Cómo instalar y configurar Windows Server Update Services (WSUS)](https://thesolving.com/es/sala-de-servidores/como-instalar-y-configurar-windows-server-update-services-wsus/)
+- Servidor de imágenes de Windows (_Windows Deployment Server_): permite desplegar Windows en la red para realizar la instalación de nuevos equipos desde el servidor. Tutoriales de ejemplo:
+  - [Servicios de implementación de Windows](https://docs.microsoft.com/es-es/windows/win32/wds/windows-deployment-services-portal)
+  - [Cómo configurar y utilizar los Servicios de implementación de Windows (WDS)](https://thesolving.com/es/sala-de-servidores/como-configurar-y-utilizar-windows-deployment-services-wds/)
+- Servidor de aplicaciones: permite que el servidor proporcione programas instalados en él a los equipos clientes (se ejecutan en el servidor). Tutorial de ejemplo:
+  - [Instalar rol Escritorio Remoto en Windows Server 2022](https://proyectoa.com/instalar-rol-escritorio-remoto-en-windows-server-2022/)
+- Característica de copias de seguridad (_Windows Server Backups_): es una herramienta para hacer backups del sistema, aunque no es la más completa para hacer backups de los datos. Tutoriales de ejemplo:
+  - [Windows Server Backup: Installation, Features and Limitations](https://www.vembu.com/blog/windows-server-backup-installation-features-limitations/)
+  - [Windows Server Backup: How to Install and Use It](https://www.minitool.com/backup-tips/windows-server-backup.html)
 
 ## RSAT
 Las herramientas de administración remota del servidor (RSAT, Remote Server Administration Tools) es un software gratuito que Microsoft pone a disposición de los usuarios para poder administrar un servidor desde cualquier cliente Windows. Esto nos permite, por ejemplo, instalar el servidor sin entorno gráfico (que es lo que recomienda Microsoft) y administrarlo desde un equipo cliente que sí lo tiene.
