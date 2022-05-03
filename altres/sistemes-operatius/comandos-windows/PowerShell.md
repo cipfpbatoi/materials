@@ -13,6 +13,7 @@
     - [Mover directorios y archivos](#mover-directorios-y-archivos)
     - [Renombrar directorios y ficheros](#renombrar-directorios-y-ficheros)
     - [Compartir un directorio](#compartir-un-directorio)
+    - [Descargar un fichero de internet](#descargar-un-fichero-de-internet)
   - [Comandos para trabajar con el contenido de un fichero](#comandos-para-trabajar-con-el-contenido-de-un-fichero)
   - [Comandos para gestionar la red](#comandos-para-gestionar-la-red)
   - [Comandos para gestionar discos](#comandos-para-gestionar-discos)
@@ -197,6 +198,17 @@ No se puede cambiar el directorio donde se encuentra el fichero con este comando
 
 Permite compartir en la red un directorio existente con el protocolo SMB/CIFS. Ejemplo:
 `New-SMBShare –Name Datos –Path "C:\Datos" –FullAccess "Admins. del dominio" -ReadAccess "Usuarios"`: comparte el directorio C:\Datos con el nombre Datos y le asigna permisos SMB de _Control total_ al grupo _Admins. del dominio_ y permisos de _Leer_ al grupo _Usuarios_.
+
+### Descargar un fichero de internet 
+**`System.Net.WebClient.DownloadFile`**
+
+El objeto _System.Net.WebClient_ proporciona métodos comunes para enviar y recibir datos de un recurso identificado por un identificador URI. La forma de hacerlo es:
+```powershell
+$webClient = New-Object System.Net.WebClient
+$webClient.DownloadFile("http://www.xyz.com/path/file.txt","C:\path\file.txt")
+```
+
+Si se necesita autenticación en el servidor web, antes de descargar el fichero ejecutaremos `$webClient.Credentials =  Get-Credential` para que nos pidan las credenciales.
 
 ## Comandos para trabajar con el contenido de un fichero
 Existen muchas formas en Powershell de mostrar, filtrar y ordenar el contenido de un fichero. La más sencilla es usar el _cmdlet_ **`Get-Content`** para mostrarlo y luego usar **`Where-Object`**, **`Sort-Object`**, etc. para filtrarlo, ordenarlo, etc ya que estos comandos (como todos) trabajan sobre objetos y funcionan tanto sobre ficheros como sobre las líneas de un fichero.

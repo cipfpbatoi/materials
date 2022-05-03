@@ -3,7 +3,11 @@ En el Centre tenim un servidor (`descargaiso.cipfpbatoi.lan`) on qualsevol pot d
 
 Podem pujar o baixar fitxers mitjançant `scp` (des de la terminal) o des de l'explorador d'arxius amb el protocol `sftp` (entorn gràfic).
 
-Per a fer-ho gràficament obrim l'_Explorador d'arxius_ i en la barra d'addresses posem `sftp://diso@descargaiso.cipfpbatoi.lan/home/diso/REPOSITORI` (si no podem escriure en la barra perquè només ens ixen les icones polsem `Ctrl+L`).
+Per a fer-ho gràficament obrim l'_Explorador d'arxius_ i en la barra d'addresses posem 
+```uri
+sftp://diso@descargaiso.cipfpbatoi.lan/home/diso/REPOSITORI
+```
+(si no podem escriure en la barra perquè només ens ixen les icones polsem `Ctrl+L`).
 
 L'usuari és **`diso`** i la contrasenya **`diso-2021`**
 
