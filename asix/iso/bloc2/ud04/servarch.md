@@ -6,6 +6,8 @@
     - [Publicar una carpeta compartida](#publicar-una-carpeta-compartida)
   - [Grupos de almacenamiento](#grupos-de-almacenamiento)
   - [iSCSI](#iscsi)
+    - [Utilizar discos iSCSI](#utilizar-discos-iscsi)
+    - [Proporcionar discos iSCSI](#proporcionar-discos-iscsi)
   - [Carpetas de trabajo](#carpetas-de-trabajo)
   - [Administrador de recursos del servidor de archivos (FSRM)](#administrador-de-recursos-del-servidor-de-archivos-fsrm)
     - [Cuotas de carpeta](#cuotas-de-carpeta)
@@ -90,13 +92,21 @@ NewStoragePool -FriendlyName MiGrupoAlm -StorageSubsystemFriendlyName "Windows S
 ## iSCSI
 iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
 
-La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://es.wikipedia.org/wiki/ISCSI#:~:text=iSCSI%20(Abreviatura%20de%20Internet%20SCSI,SCSI%20sobre%20redes%20TCP%2FIP.&text=La%20fabricaci%C3%B3n%20de%20almacenamientos%20basados,basadas%20en%20Canal%20de%20fibra.))
+La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa efectiva a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://es.wikipedia.org/wiki/ISCSI#:~:text=iSCSI%20(Abreviatura%20de%20Internet%20SCSI,SCSI%20sobre%20redes%20TCP%2FIP.&text=La%20fabricaci%C3%B3n%20de%20almacenamientos%20basados,basadas%20en%20Canal%20de%20fibra.) )
 
-El `Servidor de destino iSCSI` es un rol de servidor que permite que una máquina de Windows Server funcione como un dispositivo de almacenamiento. Una vez instalado crearemos en este servidor uno o más discos virtuales (desde `Administrador del servidor -> Servicios de archivo y almacenamiento -> iSCSI`) y configuraremos los servidores que podrán conectarse a él (_iniciadores iSCSI_).
+Windows Server permite utilizar como almacenamiento una cabina de discos SAN y también puede emular una para proporcionar su almacenamiento a otros equipos.
 
-Una vez configurado, en los servidores que vayan a usar ese disco arrancamos el servicio **_Iniciador iSCSI_** (`Set-Service -Name MSiSCSI -StartupType Automatic`).
+### Utilizar discos iSCSI
+Si tenemos un dispositivo que proporciona discos iSCSI (cabina de discos o equipo con el software específico para ello) podemos utilizarlos en cualquier equipo. Para ello arrancamos el servicio **_Iniciador iSCSI_** (`Set-Service -Name MSiSCSI -StartupType Automatic`).
 
-A continuación iniciamos el _iniciador iSCSI_ (_iscsicpl.exe_) y en la pestaña _Descubrir_ buscamos el servidor de almacenamiento configurado antes y conectamos el disco, configurando la interfaz de red por la que se conectará al mismo.
+A continuación iniciamos el programa _iniciador iSCSI_ (_iscsicpl.exe_) y en la pestaña _Descubrir_ buscamos el servidor de almacenamiento configurado en nuestra red y conectamos el disco, configurando la interfaz de red por la que se conectará al mismo.
+
+Recordad que para obtener un buen rendimiento la red con la que nos conectamos a los discos iSCSI debe ser una red independiente de la LAN de nuestra empresa.
+
+### Proporcionar discos iSCSI
+Un equipo con Windows Server puede convertirse en un dispositivo de almacenamiento que proporcione discos iSCSI a otros equipos de nuestra red. Para ello se debe instalar el rol de `Servidor de destino iSCSI` (se encuentra dentro de _Servicios de almacenamiento_).
+
+Una vez instalado crearemos en este servidor uno o más discos virtuales (desde `Administrador del servidor -> Servicios de archivo y almacenamiento -> iSCSI`) y configuraremos los servidores que podrán conectarse a él (_iniciadores iSCSI_).
 
 Podéis encontrar muchas páginas de internet donde explican el proceso, como [¿Cómo configurar y conectar un disco iSCSI en Windows Server?](https://informaticamadridmayor.es/tips/como-configurar-y-conectar-un-disco-iscsi-en-windows-server/).
 

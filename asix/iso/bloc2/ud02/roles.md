@@ -8,7 +8,9 @@
     - [Instalar el dominio desde la terminal](#instalar-el-dominio-desde-la-terminal)
     - [Degradar un controlador de dominio](#degradar-un-controlador-de-dominio)
     - [Añadir un cliente al dominio](#añadir-un-cliente-al-dominio)
+      - [La hora en cliente y servidor](#la-hora-en-cliente-y-servidor)
   - [RSAT](#rsat)
+  - [Windows Admin Center (WAC)](#windows-admin-center-wac)
 
 ## Introducción
 Hemos comentado que los roles son los diferentes servicios que podemos instalar en el servidor.
@@ -91,7 +93,7 @@ Como cualquier otro rol en primer lugar se instala y luego se configura. Podemos
 Puedes ver [este vídeo](./media/Dominio.ogv) de cómo instalar y configurar este rol.
 
 Vamos a explicar las diferentes opciones que hemos escogido durante la configuración del dominio:
-- en primer lugar hemos de seleccionar _Agregar un nuevo bosque_ ya que no hay ningún dominio en nuestra red al que vayamos a unirnos. El nombre del nuevo dominio raíz debería tener más de 1 nivel (por ejemplo _midominio.lan_ con 2 niveles). EN caso de tener ya un dominio en el bosque elegiremps entre crear un nuevo dominio en ese árbol o crear un árbol nuevo
+- en primer lugar hemos de seleccionar _Agregar un nuevo bosque_ ya que no hay ningún dominio en nuestra red al que vayamos a unirnos. El nombre del nuevo dominio raíz debería tener más de 1 nivel (por ejemplo _midominio.lan_ con 2 niveles). EN caso de tener ya un dominio en el bosque elegiremos entre crear un nuevo dominio en ese árbol o crear un árbol nuevo
 - el nivel funcional del bosque y del dominio lo establecemos al máximo posible, Windows Server 2016. Así podemos aprovechar todas sus características. Si en este dominio tuviéramos un DC con una versión inferior deberíamos escoger dicha versión para que sean compatibles
 - además se va a instalar el **servicio DNS** porque no hay ningún servidor DNS en el dominio así que esta máquina hará también de servidor DNS. Aparece un mensaje diciendo que si ya tenemos un DNS debemos agregar manualmente la zona para el dominio que estamos creando, pero si no hay ningún DNS no hay que nacer nada porque automáticamente se instalará uno con la zona para este dominio y con un _reenviador_ (a quien enviar otras peticiones) que será el DNS de la tarjeta externa de la máquina en este momento. Además en la configuración de dicha tarjeta se cambiará ese DNS por 127.0.0.1
 - en cuanto a la ubicación de los diferentes componentes del dominio, si tenemos varios discos sería conveniente que estén en discos distintos por cuestión de rendimiento. Podéis obtener más información en la web de Microsoft. En nuestro caso lo dejaremos todo en C:
@@ -130,16 +132,24 @@ En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor
 
 Una vez hecho esto (podemos comprobarlo desde la terminal con `ping` y `nslookup`) ya podemos añadir el cliente al dominio. Puedes ver [este vídeo](./media/Cliente.ogv) de cómo añadir un cliente al dominio.
 
+#### La hora en cliente y servidor
+Por defecto el servidor tolera una diferencia horaria con los clientes de 5 minutos. Eso significa que si la hora del cliente difiere en más de 5 minutos de la del servidor no le permitirá iniciar sesión en el dominio.
+
+Esto no suele ser un problema pero como trabajamos con máquinas virtuales y en ocasiones las dejamos guardadas hay veces que la hora se desconfigura. Para sincronizarla podemos ejecutar el comando:
+```cmd
+w32tm /resync
+```
+
+Si lo ejecutamos en un cliente añadido al dominio y nos da problemas podemos ejecutar `w32tm /domain` para que sincronice la hora con el DC del dominio.
+
 ## RSAT
 Las herramientas de administración remota del servidor (RSAT, Remote Server Administration Tools) es un software gratuito que Microsoft pone a disposición de los usuarios para poder administrar un servidor desde cualquier cliente Windows. Esto nos permite, por ejemplo, instalar el servidor sin entorno gráfico (que es lo que recomienda Microsoft) y administrarlo desde un equipo cliente que sí lo tiene.
 
-En versiones de Windows 10 posteriores a la 1809 no es necesario instalarlas sino que sólo debemos activarlas.
-
-NOTA: para saber qué versión es nuestro sistema desde la terminal ejecutamos el comando winver.
-
-Para activarlas vamos a `Configuración -> Aplicaciones y características -> Características opcionales -> Agregar una característica`:
+En versiones de Windows 10 posteriores a la 1809 podemos activarlas desde `Configuración -> Aplicaciones y características -> Características opcionales -> Agregar una característica`:
 
 ![Activar RSAT](media/rsatActivar.png)
+
+NOTA: para saber qué versión es nuestro sistema desde la terminal ejecutamos el comando `winver`.
 
 Marcaremos las que necesitemos, al menos:
 - **RSAT: Administrador del servidor**: proporciona la herramienta de _Administrador del servidor_
@@ -152,7 +162,7 @@ Hay otras que nos pueden ser de utilidad como:
 - **RSAT: Herramientas de servicios de archivo**: si instalamos el rol de _Administrador de recursos del servidor de archivo_
 - y muchas otras
 
-**NOTA**: para poder instalar estas características el equipo debe tener acceso a Internet y activo el servicio _Windows Update_
+**NOTA**: para poder instalar estas características el equipo debe tener acceso a Internet y activo el servicio _Windows Update_.
 
 Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (desde `Administrar -> Agregar servidores`). Allí pinchamos en _'Buscar ahora'_, no es necesario escribir su nombre ni su dirección:
 
@@ -160,8 +170,29 @@ Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (
 
 En el menú _'Herramientas'_ ya tenemos las herramientas para gestionar nuestro dominio.
 
-En Windows 7 y 8 y versiones de Windows 10 anteriores a la 1809 debemos descargar las _RSAT_ desde la página de Microsoft (hay que escoger la versión apropiada para nuestro sistema) e instalarlas. Necesitamos realizar la instalación desde una cuenta con permisos para instalar software pero para usarlo necesitaremos una cuenta con permisos para administrar el dominio (o sea, debemos usarlo desde una cuenta de usuario que sea _Administrador del dominio_).
+En versiones de Windows 10 anteriores a la 1809 se instala una actualización que hay que descargar de la página de Microsoft. 
 
-Se instala como una actualización del sistema (por lo que si hemos deshabilitado el servicio de _Windows Update_ deberemos volver a habilitarlo). Para Windows 10 existen diferentes paquetes en función de nuestra versión por lo que se recomienda consultar la [página de Microsoft](https://support.microsoft.com/es-es/help/2693643/remote-server-administration-tools-rsat-for-windows-operating-systems)
+Puedes ampliar la información sobre RSAT en la [web de Microsoft](https://docs.microsoft.com/es-es/troubleshoot/windows-server/system-management-components/remote-server-administration-tools).
 
-A partir de Windows 8 al terminar la instalación ya podemos usar las herramientas RSAT. En Windows 7 debíamos previamente activar las características que deseamos utilizar (aparecen como el resto de características del sistema operativo).
+## Windows Admin Center (WAC)
+El _Centro de Administración de Windows_ es una herramienta para administrar cualquier sistema Windows y que se ejecuta desde un navegador web. Cada vez que iniciamos el _Administrador del servidor_ nos aparece un mensaje animándonos a usar esta herramienta.
+
+Para poder utilizarlo primero se tiene que instalar en la máquina desde la que vamos a administrar los servidores. Tenemos las instrucciones en la [documentación de Microsoft](https://docs.microsoft.com/es-es/windows-server/manage/windows-admin-center/deploy/install).
+
+Por defecto utiliza el puerto 6516 pero podemos elegir cualquier otro. Al abrilo por primera vez nos pregunta qué certificado usar: seleccionaremos _Windows Admin Cliente_. A continuación tenemos que **Agregar** los servidores que queramos administrar.
+
+Al entrar a una máquina podemos ver información de la misma, parecido a como lo muestra el _Administrador del servidor_:
+
+![WAC- Información general](./media/WAC-general.png)
+
+En la parte izquierda tenemos el menú. Algunas opciones importantes son:
+- **Almacenamiento**: muestra los discos y volúmenes del equipo
+- **Archivos y uso compartido**: tenemos un explorador de archivos y una pestaña para ver, crear y configurar recursos compartidos
+- **Dispositivos**: similar al '_Administrador de dispositivos_
+- **Eventos**: muestra la información del _Visor de eventos_
+- **Roles y características**: para instalar o desinstalar roles en el equipo
+- **Firewall**, **Powershell**, **Redes**, **Servicios**, **Tareas programadas**, ...
+
+Podemos configurar más coses instalando extensiones como **Active directory** (para gestionar un dominio AD), **DHCP**, **DNS**, ...
+
+Se hace desde `Configuración -> Extensiones`. Algunas necesitan también instalar alguna herramienta de RSAT pero nos lo dice al abrirla y se instala desde allí.
