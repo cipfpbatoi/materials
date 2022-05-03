@@ -92,7 +92,7 @@ NewStoragePool -FriendlyName MiGrupoAlm -StorageSubsystemFriendlyName "Windows S
 ## iSCSI
 iSCSI (Abreviatura de Internet SCSI) es un estándar que permite el uso del protocolo SCSI sobre redes TCP/IP. iSCSI es un protocolo de la capa de transporte definido en las especificaciones SCSI-3.
 
-La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa efectiva a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://es.wikipedia.org/wiki/ISCSI#:~:text=iSCSI%20(Abreviatura%20de%20Internet%20SCSI,SCSI%20sobre%20redes%20TCP%2FIP.&text=La%20fabricaci%C3%B3n%20de%20almacenamientos%20basados,basadas%20en%20Canal%20de%20fibra.))).
+La adopción del iSCSI en entornos de producción corporativos se ha acelerado gracias al aumento del Gigabit Ethernet ya que es menos costosa y está resultando una alternativa efectiva a las soluciones SAN basadas en Canal de fibra. (Fuente [Wikipedia](https://en.wikipedia.org/wiki/ISCSI)).
 
 Windows Server permite utilizar como almacenamiento una cabina de discos SAN y también puede emular una para proporcionar su almacenamiento a otros equipos.
 
