@@ -132,7 +132,7 @@ Tenéis toda la información así como un tutorial de cómo usar este librería 
 
 La forma de instalarla es
 ```[bash]
-npm install vee-validate@next -S
+npm install vee-validate -S
 ```
 
 Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field />` y la etiqueta `<form>` por el componente `<Form />` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. Los _inputs_ ya no necesitan `v-model` porque sus valores se recibirán en el objeto _values_. 
@@ -250,23 +250,35 @@ export default {
 ```
 
 ### Personalizar los mensajes de yup
-Para personalizar los mensajes de error debemos definir un objeto con los nuevos mensajes. Las validaciones no incluidas mantendrán el mensaje original. Ejemplo:
+Para personalizar un mensaje de error de un campo sólo tenemos que indicar el mensaje al definir la regla del campo:
+```javascript
+const mySchema = yup.object({
+  email: yup.string().required('El email es obligatorio').email(),
+  password: yup.string().required().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+})
+```
+
+En este caso hemos personalizado el mensaje del _email_ si no contiene nada y del _password_ si no cumple el _min_.
+
+Si queremos personalizar todos los mensajes de error debemos definir un objeto con los nuevos mensajes. Las validaciones no incluidas mantendrán el mensaje original. Ejemplo:
 ```javascript
 import * as yup from 'yup';
 import { setLocale } from 'yup';
 setLocale({
   mixed: {
     default: 'Campo no válido',
-    required: 'Eel campo no puede estar vacío aquí'
+    required: 'El campo no puede estar vacío aquí'
   },
-  string: {
+  string: { // sólo las reglas 'min' de campos 'string'
     min: 'El campo debe tener al menos ${max} caracteres'
   },
-  number: {
+  number: { // sólo las reglas 'min' de campos 'number'
     min: 'El valor del campo debe ser mayor que ${min}',
   },
 });
 ```
+
+Podemos encontrar más información sobre vee-validate en su [documentación oficial](https://vee-validate.logaretm.com/v4/).
 
 ## Validar con VeeValidate v3 (para Vue2)
 _VeeValidate_ es una librería que permite validar formularios de una manera más sencilla. Para ello incluye 2 componentes:
