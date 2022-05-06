@@ -1,45 +1,15 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [Siguientes cosas a aprender en Vue](#siguientes-cosas-a-aprender-en-vue)
+# Siguientes cosas a aprender en Vue
+Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
   - [Autenticación](#autenticación)
-    - [Store](#store)
-    - [API](#api)
-    - [Login.vue](#loginvue)
-    - [Router](#router)
   - [Paso a producción](#paso-a-producción)
   - [Vuetify](#vuetify)
-    - [Instalación](#instalación)
-    - [Crear el layout](#crear-el-layout)
-    - [Saber más](#saber-más)
   - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-vue)
-    - [Quasar](#quasar)
-    - [Vue Native](#vue-native)
-    - [Ionic Vue](#ionic-vue)
   - [Nuxt](#nuxt)
   - [Conclusión](#conclusión)
   - [Angular](#angular)
   - [Vue con Laravel](#vue-con-laravel)
-    - [Creación del proyecto](#creación-del-proyecto)
-    - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
-    - [Configuramos Laravel](#configuramos-laravel)
-    - [Compilamos Vue](#compilamos-vue)
-    - [Creamos la API](#creamos-la-api)
-    - [Saber más](#saber-más-1)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Siguientes cosas a aprender en Vue
-Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
-* [Vuetify](#Vuetify)
-* [Vuex](#vuex)
-* [Vue con Laravel / con Lumen](#vue-con-laravel)
-* [Autenticación](#autenticaci%C3%B3n)
-* [ServerSide Rendering](#ssr-server-side-rendering)
-* [Nuxt](#nuxt)
 
 ## Autenticación
 Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que le hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
@@ -227,7 +197,7 @@ Crea un directorio **_dist_** con lo qie hay que subir a producción:
 - **ficheros .css** y el _source.map_
 - **imágenes**: las que hay en _static_ y en _assets_ (estas últimas procesadas,  minimizadas y optimizadas)
 - **favicon.ico**
-- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progssive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
+- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progressive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
 
 Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
 
@@ -283,7 +253,7 @@ Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 Explicación de qué es y cómo funciona en Angular: [Angular & SEO](http://app.getresponse.com/click.html?x=a62b&lc=BmvXkb&mc=CL&s=mh7Vjl&u=B71jy&y=T&)
 
 ## Crear aplicaciones móviles con Vue
-Diferentes librerías nos permiten que nuestras aplicaciones puedan ejecutarse en móviles tanto Andriod como iOS. La mayoría utilizan la librería **_Cordova_** de Apache2 para tener acceso a los elementos del móvil como notificaciones, cámara, geolocalización, ...
+Diferentes librerías nos permiten que nuestras aplicaciones puedan ejecutarse en móviles tanto Android como iOS. La mayoría utilizan la librería **_Cordova_** de Apache2 para tener acceso a los elementos del móvil como notificaciones, cámara, geolocalización, ...
 
 Existen muchos pero las más utilizadas hoy en día son _Quasar_, _Vue native_ e _Ionic_.
 
@@ -308,10 +278,10 @@ También hay otras librerías que nos pueden ser de utilidad como:
 - _[Weex](https://weex.apache.org/)_ para crear aplicaciones nativas para iOS y Android
 
 ## Conclusión
-Como vés existen infinidad de librerías alrededor de Vue para ofercernos nuevas fucionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
+Como vés existen infinidad de librerías alrededor de Vue para ofrecernos nuevas funcionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
 
 ## Angular
-Aunque el cecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
+Aunque el crecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
 - [Documentación oficial de Angular](https://angular.io/)
 - [Ejemplo de CRUD con Angular](https://www.djamware.com/post/5e435e84a8d0ef4300ffc5f6/angular-9-tutorial-learn-to-build-a-crud-angular-app-quickly)
 - ...
@@ -321,7 +291,7 @@ Es sencillo crear una SPA completa usando Vue en el Front-end y Laravel para cre
 
 Como proyectos independientes es la forma más sencilla. Simplemente nuestro proyecto Vue hará peticiones a la API desarrollada en Laravel.
 
-Si wueremos integrar Vue dentro del proyecto Laravel el funcionamiento es el siguiente:
+Si queremos integrar Vue dentro del proyecto Laravel el funcionamiento es el siguiente:
 * La primera petición le llega al router de Laravel que renderiza el diseño de la SPA
 * Las demás peticiones usan la API _history.pushState_ para navegar sin recargar la página y las gestiona el enrutador Vue
 
@@ -512,4 +482,3 @@ class AlumnosController extends Controller {
 ### Saber más
 * [Building a Vue SPA with Laravel](https://laravel-news.com/using-vue-router-laravel)
 * [Laravel 5.7 + Vue + Vue Router = SPA](https://medium.com/@weehong/laravel-5-7-vue-vue-router-spa-5e07fd591981). Igual pero usando la librería Vuetify
-

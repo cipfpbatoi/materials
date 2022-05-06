@@ -368,7 +368,7 @@ ufw status verbose
 
 ![ufw](./img/ufw.png)
 
-Per a configurar NAT hem d'activar ufw i realitzar les següents accions:
+Per a configurar NAT hem d'**activar ufw** i realitzar les següents accions:
 * Editar el fitxer `/etc/default/ufw` i canviar la línia `DEFAULT_FORWARD_POLICY="DROP"` per
 
 ```bash
