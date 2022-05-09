@@ -152,6 +152,8 @@ Tenemos infinidad de servicios que podemos instalar en nuestro servidor. Algunos
   - [Servicios de implementación de Windows](https://docs.microsoft.com/es-es/windows/win32/wds/windows-deployment-services-portal)
   - [Cómo configurar y utilizar los Servicios de implementación de Windows (WDS)](https://thesolving.com/es/sala-de-servidores/como-configurar-y-utilizar-windows-deployment-services-wds/)
 - Servidor de aplicaciones: permite que el servidor proporcione programas instalados en él a los equipos clientes (se ejecutan en el servidor). Tutorial de ejemplo:
+  - [RAGASYS SISTEMAS: Remote Desktop Services – Instalación de los Servicios de Escritorio Remoto](https://blog.ragasys.es/remote-desktop-services-instalacion-de-los-servicios-de-escritorio-remoto)
+  - [Microsoft: Implementación del entorno de Escritorio remoto](https://docs.microsoft.com/es-es/windows-server/remote/remote-desktop-services/rds-deploy-infrastructure)
   - [Instalar rol Escritorio Remoto en Windows Server 2022](https://proyectoa.com/instalar-rol-escritorio-remoto-en-windows-server-2022/)
 - Característica de copias de seguridad (_Windows Server Backups_): es una herramienta para hacer backups del sistema, aunque no es la más completa para hacer backups de los datos. Tutoriales de ejemplo:
   - [Windows Server Backup: Installation, Features and Limitations](https://www.vembu.com/blog/windows-server-backup-installation-features-limitations/)
