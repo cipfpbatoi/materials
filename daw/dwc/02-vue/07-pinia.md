@@ -27,6 +27,7 @@ npm install -S pinia
 ```
 
 - se importa _pinia_ en el **main.js** añadiendo:
+
 ```javascript
 ...
 import { createPinia } from 'pinia'
@@ -42,7 +43,7 @@ Al crear un almacén pondremos en él todas las variables que vaya a usar más d
 ```javascript
 import { defineStore } from 'pinia'
 
-export const useConterStore = defineStore('counter', {
+export const useConterStore = defineStore('main', {
   state: () => {
     return {
       count: 0
@@ -72,35 +73,16 @@ export default {
   ...
   computed: {
     ...mapState(useConterStore, {
-      counter: 'counter',
+      count: 'count',
     })
   },
   methods: {
-    ...mapActions(useConterStore, ['increment'], ['decrement'])
+    ...mapActions(useConterStore, ['increment', 'decrement'])
   }
 }
 ```
 
-```javascript
-//MyComponent.vue
-import { useToDoStore } from '../stores/toDoStore';
-import { mapState, mapActions } from 'pinia';
-
-export default {
-  ...
-  computed: {
-    ...mapState(useToDoStore, {
-      todos: 'todos',
-      finishedTodos: 'finishedTodos',
-    })
-  },
-  methods: {
-    ...mapActions(useToDoStore, ['addTodo'])
-  }
-}
-```
-
-Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.counter` o `this.increment()`).
+Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.count` o `this.increment()`).
 
 Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro almacén. Para ello vamos a la pestaña de Vue y desde el _Inspector_ buscamos _Pinia_:
 
@@ -123,7 +105,7 @@ export const useToDoStore = defineStore('todo', {
       /** @type {'all' | 'finished' | 'unfinished'} */
       filter: 'all',
       // type will be automatically inferred to number
-      nextId: 0,
+      nextId: 3,
       /** @type { string[]} */
       errors: [],
     }
@@ -147,12 +129,12 @@ export const useToDoStore = defineStore('todo', {
   actions: {
     // any amount of arguments, return a promise or not
     addTodo(title) {
-        this.nextId++
         this.todos.push({
           title,
           id: this.nextId,
           isFinished: false
         })
+        this.nextId++
     },
   },
 })
@@ -221,7 +203,7 @@ export const useToDoStore = defineStore('todo', {
 })
 ```
 
-Si la acción realiza una llamada asíncrona y el componente que la llama tiene que enterarse de cuándo finaliza debe devolver una promesa (debe declararse con `async`). En el componente podemos usar `await` o `then / catch` para saber cuándo ha acabado la acción:
+Si la acción realiza una llamada asíncrona y el componente que la llama tiene que enterarse de cuándo finaliza debe devolver una promesa (debe declararse con `async` o _envolverse_ en un `return new Promise(...)`). En el componente podemos usar `await` o `then / catch` para saber cuándo ha acabado la acción:
 ```javascript
 try {
   await this.addTodo(this.newTodo)
