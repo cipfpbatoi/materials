@@ -13,6 +13,7 @@
     - [Pinia](#pinia)
   - [Reusabilidad: _composables_](#reusabilidad-composables)
     - [Valores devueltos](#valores-devueltos)
+    - [Paso de parámetros](#paso-de-parámetros)
     - [Organizar el código con _composables_](#organizar-el-código-con-composables)
 
 ## Introducción
@@ -372,8 +373,8 @@ import { computed } from 'vue';
 
 <template>
     <div>
-        <p>Counter: {{ count }}</p>
-        <p>Last: {{ lastOperation }}</p>
+        <p>Counter: { { count }}</p>
+        <p>Last: { { lastOperation }}</p>
         <button @click="increment()">Add</button>
         <button @click="decrement()">Subtract</button>
     </div>
@@ -415,7 +416,7 @@ En cualquier componente donde necesitemos conocer la posición del ratón sólo 
 </script>
 
 <template>
-  X: {{ x }} Y: {{ y }}
+  X: { { x }} Y: { { y }}
 </template>
 ```
 
@@ -446,13 +447,14 @@ porque entonces al hacer en el componente
 las variables _x_ e _y_ dejarían de ser reactivas.
 
 Podría hacerse no desestructurando el objeto, pero se prefiere así por claridad, para tener claras qué variables nos proporciona la función:
+```vue
 <script setup>
   import { useMouse } from './useMouse';
   const position = useMouse();
 </script>
 
 <template>
-  X: {{ position.x }} Y: {{ position.y }}
+  X: { { position.x }} Y: { { position.y }}
 </template>
 ```
 
