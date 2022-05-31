@@ -62,8 +62,35 @@ export const useConterStore = defineStore('main', {
 
 En este ejemplo hemos creado un almacén que tiene un dato (_count_) y dos métodos para cambiar su valor (_increment_ y _decrement_). El primer parámetro de `defineStore` es el nombre con el que veremos el almacén desde las _DevTools_ (por si tenemos varios).
 
+Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro almacén. Para ello vamos a la pestaña de Vue y desde el _Inspector_ buscamos _Pinia_:
+
+![DevTools - Pinia](./img/DevTools-Pinia.png)
+
 ## Usar Pinia
-En cada componente que lo necesitemos podemos usar el almacén de datos. La forma más cómoda es usar los _helpers_ de `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente:
+En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos:
+```javascript
+//MyComponent.vue
+import { useConterStore } from '../stores/conterStore';
+
+export default {
+  ...
+  computed: {
+    count() {
+      return useConterStore.count  // state
+    }
+  },
+  methods: {
+    increment() {
+      return useConterStore.increment  // actions
+    },
+    decrement() {
+      return useConterStore.decrement  // actions
+    },
+  }
+}
+```
+
+Para hacerlo más sencillo podemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente:
 ```javascript
 //MyComponent.vue
 import { useConterStore } from '../stores/conterStore';
@@ -83,10 +110,6 @@ export default {
 ```
 
 Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.count` o `this.increment()`).
-
-Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro almacén. Para ello vamos a la pestaña de Vue y desde el _Inspector_ buscamos _Pinia_:
-
-![DevTools - Pinia](./img/DevTools-Pinia.png)
 
 ### Getters
 En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un método en el almacén (dentro de **`getters`**) que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):

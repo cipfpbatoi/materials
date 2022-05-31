@@ -241,24 +241,23 @@ Si el código HTML a incluir en el template es muy largo podemos ponerlo en un f
 ```
 
 Respecto al lenguaje, podemos usar HTML (la opción por defecto) o [PUG](https://pugjs.org/api/getting-started.html) que es una forma sencilla de escribir HTML. Lo indicamos como atributo de \<template>:
-```vue
+```html
 <template lang="pug">
 ...
 ```
-
 
 #### \<script>
 Aquí definimos y exportamos el componente, que será un objeto con diferentes propiedades. Si utiliza subcomponentes hay que importarlos antes de definir el objeto y registrarlos dentro de este.
 
 Entre las propiedades que puede tener el objeto están:
 - **name**: el nombre del componente. Es recomendable ponerlo, aunque sólo es obligatorio en caso de componentes recursivos
-- **components**: aquí registramos componentes hijos que queramos usar en el _template_ de este componente (debemos haber importado previamente el fichero _.vue_ que lo contiene a cada uno). En el _template_ usaremos como etiqueta el nombre con que lo registramos aquí
-- **props**: donde registramos los parámetros que nos pasa el componente padre como atributos de la etiqueta que muestra este componente
+- **components**: aquí registramos componentes hijos que queramos usar en el _template_ de este componente (debemos haber importado previamente los ficheros _.vue_ que los contienen). En el _template_ usaremos como etiqueta el nombre con que lo registramos aquí
+- **props**: donde registramos los parámetros que nos pasa el componente padre como atributos de la etiqueta que renderiza este componente
 - **data**: función que devuelve un objeto con todas las variables locales del componente
 - **methods**: objeto con los métodos del componente
-- **computed**: aquí pondremos las propiedades calculadas del componente
-- **created()**, **mounted()**, ...: funciones _hook_ que se ejecutarán al crearse el componente, al montarse, ...
-- **watch**: si queremos observar manualmente cambios en alguna variable y ejecutar código como respuesta a ellos (recuerda que Vue ya se encarga de actualizar la vista al cambiar las variables y viceversa).
+- **computed**: aquí pondremos las variables calculadas del componente. Lo veremos en detalle en la [unidad 6](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/06-profundizando.html#computed)
+- **created()**, **mounted()**, ...: funciones _hook_ que se ejecutan al crearse el componente, al montarse, ... Aquí pondremos el código que queremos que se ejecute al cargar un componente, como pedir a la BBDD los datos que necesita. Veremos los diferentes _hooks_ en la [unidad 6](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/06-profundizando.html#ciclo-de-vida-del-componente)
+- **watch**: si queremos observar manualmente cambios en alguna variable y ejecutar código como respuesta a ellos (recuerda que Vue ya se encarga de actualizar la vista al cambiar las variables y viceversa). Lo veremos en detalle en la [unidad 6](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/06-profundizando.html#watchers)
 - ...
 
 #### \<style>

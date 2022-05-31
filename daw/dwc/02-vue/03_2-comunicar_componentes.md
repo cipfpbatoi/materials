@@ -4,7 +4,7 @@
   - [Props (de padre a hijo)](#props-de-padre-a-hijo)
     - [Nunca cambiar el valor de una prop](#nunca-cambiar-el-valor-de-una-prop)
     - [Validación de props](#validación-de-props)
-    - [Pasar atributos de padre a hijo](#pasar-atributos-de-padre-a-hijo)
+    - [Pasar otros atributos de padre a hijo](#pasar-otros-atributos-de-padre-a-hijo)
   - [Emitir eventos (de hijo a padre)](#emitir-eventos-de-hijo-a-padre)
     - [Capturar el evento en el padre](#capturar-el-evento-en-el-padre)
     - [Definir y validar eventos](#definir-y-validar-eventos)
@@ -18,17 +18,17 @@
   - [Solución con _Store pattern_](#solución-con-store-pattern)
 
 ## Introducción
-Cada componente tiene sus propios datos que son **datos de nivel de componente**, pero hay ocasiones en que varios componentes necesitan acceder a los mismos datos. Es lo que nos sucede en nuestra aplicación de ejemplo donde varios componentes necesitan acceder a la lista de tareas (_todos_) para mostrarla (_todo-list_), añadir items (_todo-add_) o borrarla (_todo-del-all_).
+Cada componente tiene sus propios datos que son **datos de nivel de componente**, pero hay ocasiones en que varios componentes necesitan acceder a los mismos datos. Es lo que nos sucede en nuestra aplicación de ejemplo donde varios componentes necesitan acceder a la lista de tareas (variable _todos_) para mostrarla (_todo-list_), añadir items (_todo-add_) o borrarla (_todo-del-all_).
 
 Estos datos se consideran **datos de nivel de aplicación** y hay varias formas de tratarlos.
 
 Ya hemos visto que podemos pasar información a un componente hijo mediante _props_. Esto permite la comunicación de padres a hijos, pero queda por resolver cómo comunicarse los hijos con sus padres para informarles de cambios o eventos producidos y cómo comunicarse otros componentes entre sí.
 
 Nos podemos encontrar las siguientes situaciones:
-* Comunicación de padres a hijos: _props_
-* Comunicación de hijos a padres: emitir eventos
-* Comunicación entre otros componentes: usar el patrón _store pattern_
-* Comunicación más compleja: Pinia
+* Comunicación de padres a hijos: paso de parámetros (**_props_**)
+* Comunicación de hijos a padres: emitir eventos (**_emit_**)
+* Comunicación entre otros componentes: usar el patrón **_store pattern_**
+* Comunicación más compleja: **_Pinia_**
 
 ## Props (de padre a hijo)
 Ya hemos visto que podemos pasar parámetros del padre al componente hijo. Si el valor del parámetro cambia en el padre automáticamente se reflejan esos cambios en el hijo.
@@ -59,12 +59,15 @@ Si queremos pasar varios parámetros a un componente hijo podemos pasarle un obj
     }
   }
   ...
+</script>
 ```
+
 y en el componente se reciben sus parámetros separadamente:
 ```javascript
-app.component('todo-item, {
+app.component('todo-item', {
   props: ['todo', 'done'],
   ...
+})
 ```
 
 También es posible que el nombre de un parámetro que queramos pasar sea una variable:
@@ -77,7 +80,7 @@ También es posible que el nombre de un parámetro que queramos pasar sea una va
 ### Nunca cambiar el valor de una prop
 Al pasar un parámetro mediante una _prop_ su valor se mantendrá actualizado en el hijo si su valor cambiara en el padre, pero no al revés por lo que no debemos cambiar su valor en el componente hijo (de hecho VUe3 no nos lo permite).
 
-Si tenemos que cambiar su valor porque lo que nos pasan es sólo un valor inicial podemos asignar el parámetro a otra variable:
+Si tenemos que cambiar su valor porque lo que nos pasan es sólo un valor inicial podemos crear una variable local a la que le asignamos como valor inicial el parámetro pasado:
 ```javascript
 props: ['initialValue'],
 data(): {
@@ -87,7 +90,9 @@ data(): {
 }
 ```
 
-Igualmente si debemos darle determinado formato podemos hacerlo sobre la otra variable (en este caso mejor una _computed_), que es con la que trabajaremos:
+Y en el componente usaremos la nueva variable _myValue_.
+
+Si no necesitamos cambiarla sino sólo darle determinado formato a la variable pasada lo haremos creando una nueva variable (en este caso mejor una _computed_), que es con la que trabajaremos:
 ```javascript
 props: ['cadenaSinFormato'],
 computed(): {
@@ -97,7 +102,7 @@ computed(): {
 }
 ```
 
-**OJO**: Si el parámetro es un objeto o un array éste se pasa por referencia por lo que si lo cambiamos en el componente hijo  **sí** se cambiará en el padre, cosa que debemos evitar.
+**OJO**: Si el parámetro es un objeto o un array éste se pasa por referencia por lo que si lo cambiamos en el componente hijo **sí** se cambiará en el padre, cosa que debemos evitar.
 
 ### Validación de props
 Al recibir los parámetros podemos usar _sintaxis de objeto_ en lugar de _sintaxis de array_ y en ese caso podemos indicar algunas cosas como:
@@ -133,7 +138,7 @@ props: {
   }
 ```
 
-### Pasar atributos de padre a hijo
+### Pasar otros atributos de padre a hijo
 Además de los parámetros, que se reciben en _props_, el componente padre puede poner cualquier otro atributo en la etiqueta del hijo, quien lo recibirá y se aplicará a su elemento raíz. A esos atributos se puede acceder a través de `$attr`. Por ejemplo:
 ```html
 <!-- componente padre -->
@@ -202,13 +207,11 @@ Si un componente hijo debe pasarle un dato a su padre o informarle de algo puede
 
 El padre debe capturar el evento como cualquier otro. En su HTML hará:
 ```html
-<my-component @nombre-evento="fnManejadora"
-...
+<my-component @nombre-evento="fnManejadora" ... />
 ```
 
 y en su JS tendrá la función para manejar ese evento:
 ```javascript
-  ...
   methods: {
     fnManejadora(param) {
       ...
@@ -219,16 +222,14 @@ y en su JS tendrá la función para manejar ese evento:
 
 El componente hijo puede emitir cualquiera de los eventos estándar de JS ('click', 'change', ...) o un evento personalizado ('cambiado', ...).
 
-**Ejemplo**: continuando con la aplicación de tareas que dividimos en componentes, en el componente **todo-item** en lugar de hacer un alert emitiremos un evento al padre:
+**Ejemplo**: continuando con la aplicación de tareas que dividimos en componentes, en el componente **_todo-item_** en lugar de hacer un alert emitiremos un evento al padre:
 ```javascript
-    delTodo() {
-      this.$emit('del-item');
-    },
-  }
+delTodo() {
+  this.$emit('del-item');
+},
 ``` 
-y en _todo-list_ lo escuchamos y llamamos al método que borre el item:
 
-`todo-list.vue`
+y en el componente **_todo-list_** lo escuchamos y llamamos al método que borre el item:
 ```vue
 <template>
     <div>
@@ -253,16 +254,29 @@ y en _todo-list_ lo escuchamos y llamamos al método que borre el item:
     delTodo(index){
       this.todos.splice(index,1);
     },
-  ...
+  }
+</script>
 ``` 
 
 **NOTA**: En componentes y _props_ se hace la conversión automáticamente entre los nombres en Javascript escritos en camelCase y los usados en HTML en kebab-case pero esto no sucede con los eventos, por lo que en el código deberemos nombrarlos también en kebab-case.
+
+Igual que un componente declara las _props_ que recibe, también puede declarar los eventos que emite. Esto es opcional pero proporciona mayor claridad al código:
+```javascript
+// TodoItem.vue
+...
+props: {
+  todo: Object
+},
+emits: ['del-item'],
+...
+```
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-13)
 
 ### Capturar el evento en el padre
 En ocasiones (como en este caso) el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. En estos casos podemos hacer que el evento se capture directamente en el padre en lugar de en el hijo:
-`todo-list.vue`
+
+Componente **_todo-list.vue_**
 ```vue
 <template>
     <div>
@@ -280,16 +294,17 @@ En ocasiones (como en este caso) el componente hijo no hace nada más que inform
 
 Le estamos indicando a Vue que el evento _dblclick_ se capture en _todo-list_ directamente por lo que el componente _todo-item_ no tiene que capturarlo ni hacer nada:
 
-`todo-item.vue`
+Componente **_todo-item.vue_**
 ```vue
 <template>
     <li>
       <label>
     ...
+</template>
 ``` 
 
 ### Definir y validar eventos
-Los eventos que emite un componente pueden (y se recomienda por claridad) definirse en la opción _emits_:
+Como hemos dicho, los eventos que emite un componente pueden (y se recomienda por claridad) definirse en la opción _emits_:
 ```javascript
 app.component('todo-item', {
   emits: ['toogle-done', 'dblclick'],
@@ -314,6 +329,7 @@ Es recomendable definir los argumentos que emite usando sintaxis de objeto en ve
       }
     }
   },
+</script>
 ```
 
 En este ejemplo el componente emite _click_ que no se valida y _submit_ donde se valida que reciba 2 parámetros.
@@ -321,23 +337,29 @@ En este ejemplo el componente emite _click_ que no se valida y _submit_ donde se
 ## Compartir datos
 Una forma más sencilla de modificar datos de un componente desde otros es compartiendo los datos entre ellos. Definimos en un fichero _.js_ aparte un objeto que contendrá todos los datos a compartir entre componentes, lo importamos y lo registramos en el _data_ de cada componente que tenga que acceder a él. Ejemplo:
 
-`/src/datos.js`
+Fichero `/src/store/index.js`
 ```javascript
 import { reactive } from 'vue';
 
 export const store = reactive({
   message: '',
-  newData: { },
+  newData: {},
   ...
 })
 ```
 
-NOTA: En Vue3 para que la variable store sea reactiva (que la vista reaccione a los cambios que se produzcan en ella) hay que declararla con `reactive`.
+**NOTA**: En Vue3 para que la variable store sea reactiva (que la vista reaccione a los cambios que se produzcan en ella) hay que declararla con `reactive` si es un objeto o con `ref` si es un tipo primitivo (_string_, _number_, ...).
 
-`comp-a.vue`
+Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
+
+Componente `compA.vue`
 ```vue
-import { store } from '/src/datos.js'
+<template>
+  <p>Mensaje: { { message}} </p>
+</template>
+
 <script>
+import { store } from '../store/'
   ...
   data() {
     return {
@@ -346,18 +368,18 @@ import { store } from '/src/datos.js'
       ...
     }
   },
-  methods: {
-    changeMessage(newMessage) {
-      this.store.message=newMessage;
-    }
-  },
   ...
-})
+</script>
+```
 
-`comp-b.vue`
+Componente `compB.vue`
 ```vue
-import { store } from '/src/datos.js'
+<template>
+  <button @click="delMessage">Borrar mensaje</button>
+</template>
+
 <script>
+import { store } from '../store/'
   ...
   data() {
     return {
@@ -373,18 +395,17 @@ import { store } from '/src/datos.js'
   },
   ...
 })
+</script>
 ```
 
-Tanto desde _comp-a_ como desde _comp-b_ podemos modificar el contenido de **store** y esos cambios se reflejarán automáticamente tanto en la vista de _comp-a_ como en la de _comp-b_. 
+Desde cualquier componente podemos modificar el contenido de **store** y esos cambios se reflejarán automáticamente tanto en la vista de todos ellos.
 
-Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
-
-Esta forma de trabajar tiene un grave inconveniente: el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación, lo que es una pesadilla a la hora de depurar el código y encontrar errores.
+Esta forma de trabajar tiene un grave inconveniente: como el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación es difícilmente mantenible y se convierte en una pesadilla depurar el código y encontrar errores.
 
 Para evitarlo podemos usar un patrón de almacén (_store pattern_) que veremos en el siguiente apartado.
 
 ### $root y $parent
-Todos los componentes tienen acceso a los datos y métodos definidos en la instancia de Vue (donde hacemos el `new Vue`). Por ejemplo:
+Todos los componentes tienen acceso además de a sus propios datos declarados en `data()`, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `new Vue`). Por ejemplo:
 
 ```javascript
 new Vue({
@@ -412,7 +433,7 @@ De esta manera podríamos acceder directamente a datos del padre o usar la insta
 ### Store pattern
 Es una mejora sobre lo que hemos visto de compartir datos. Para evitar que cualquier componente pueda modificar los datos compartidos en el almacén, las acciones que modifican dichos datos están incluidas dentro del propio almacén, lo que facilita su seguimiento:
 
-`/src/datos.js`
+Fichero `/src/store/index.js`
 ```javascript
 import { reactive } from 'vue';
 
@@ -423,7 +444,7 @@ export const store={
     ...
   }),
   setMessageAction (newValue) {
-    if (this.debug) console.log('setMessageAction triggered with', newValue)
+    if (this.debug) console.log('setMessageAction triggered with ', newValue)
     this.state.message = newValue
   },
   clearMessageAction () {
@@ -433,10 +454,10 @@ export const store={
 }
 ```
 
-`comp-a.vue`
+Componente `compA.vue`
 ```vue
-import { store } from '/src/datos.js'
 <script>
+import { store } from '/src/datos.js'
   ...
   data() {
     return {
@@ -446,33 +467,22 @@ import { store } from '/src/datos.js'
       ...
     }
   },
-  methods: {
-    changeMessage(newMessage) {
-      store.setMessageAction(newMessage);
-    }
-  },
   ...
-})
+</script>
+```
 
-`comp-b.vue`
+Componente `compB.vue`
 ```vue
-import { store } from '/src/datos.js'
 <script>
+import { store } from '/src/datos.js'
   ...
-  data() {
-    return {
-      sharedData: store.state,
-      // y a continuación el resto de data del componente
-      ...
-    }
-  },
   methods: {
     delMessage() {
       store.clearMessageAction();
     }
   },
   ...
-})
+</script>
 ```
 
 **IMPORTANTE**: no podemos machacar ninguna variable del _state_ si es un objeto o un array, por ejemplo para borrar los datos de un array no podemos hacer
@@ -491,12 +501,14 @@ clearProductsAction () {
 }
 ```
 
+Esto se soluciona usando librerías de gestión de estado como _Pinia_ o _Vuex_.
+
 ## Pinia
-Es un patrón y una librería para gestionar los estados en una aplicación Vue. Ofrece un almacenamiento centralizado para todos los componentes con unas reglas para asegurar que un estado sólo cambia de determinada manera. Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante. En Vue2 y anteriores la librería que se usaba es _Vuex_.
+Es una librería para gestionar los estados en una aplicación Vue. Ofrece un almacenamiento centralizado para todos los componentes con unas reglas para asegurar que un estado sólo cambia de determinada manera. Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante. En Vue2 y anteriores la librería que se usaba es _Vuex_.
 
-En realidad es un _store pattern_ que ya tiene muchas cosas hechas así como herramientas de _debug_.
+En realidad es un _store pattern_ que ya tiene muchas cosas hechas y que se integra perfectamente con las _DevTools_.
 
-Lo veremos en detalla en el tema dedicado a esta librería.
+Lo veremos en detalla en la [unidad dedicada a esta librería](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/07-pinia.html).
 
 ## Slots
 Otra forma en que un componente hijo puede mostrar información del padre es usando _slots_. Un _slot_ es una ranura en un componente que, al renderizarse, se rellena con lo que le pasa el padre en el innerHTML de la etiqueta del componente. El _slot_ tiene acceso al contexto del componente padre, no al del componente donde se renderiza. Los _slots_ son una herramienta muy potente. Podemos obtener toda la información en la [documentación de Vue](https://v3.vuejs.org/guide/component-slots.html#slot-content). 

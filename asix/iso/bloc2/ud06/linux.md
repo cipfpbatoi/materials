@@ -14,12 +14,14 @@
       - [Ubuntu](#ubuntu)
       - [Linux Mint](#linux-mint)
       - [Lubuntu](#lubuntu)
+  - [ADsys](#adsys)
 
 ## Introducción
 Aunque no es lo más habitual en ocasiones debemos añadir clientes GNU/Linux al dominio. Hay diferentes formas de hacerlos:
 - usando **winbind** que es un paquete que utiliza Samba
 - usando alguna herramienta de terceros como [**pbis-open**](https://github.com/BeyondTrust/pbis-open/releases) que es un script que automáticamente descarga y configura todos los paquetes necesarios (lo veremos en el último apartado)
-- usando el paquete _System Security Services Daemon_ (**SSSD**) que es lo que explicamos aquí
+- usando el paquete _System Security Services Daemon_ (**SSSD**) que se explica a continuación
+- usando _ADsys_ en Ubuntu 22.04 y posteriores (incluido en el propio sistema)
 
 ## SSSD
 ### Instalación
@@ -175,5 +177,21 @@ Session=Lubuntu
 [Users]
 MinimumUid=1000
 MaximumUid=9999999999
-RememberLastUser=true```
+RememberLastUser=true
+```
 
+## ADsys
+**NOTA**: esta librería sólo está disponible para suscriptores de [Ubuntu Advantage](https://ubuntu.com/advantage).
+
+Desde Ubuntu Desktop 22.04 se incluye en el sistema esta librería que es un cliente de AD y que proporciona muchas más funcionalidades que las que teníamos sólo con SSSD (autenticación y nas pocas GPO), aunque también puede instalarse en la versión 20.04.
+
+ADsys consta de un demonio (_adsysd_) que implementa la autenticación (con Samba y Kerberos) y las GPO y una CLI (_adsysctl_) que nos permite controlar dicho demonio.
+
+Este paquete complementa a SSSD y PAM proporcionando:
+- soporte nativo de GPO, tanto de _Equipo_ como de _Usuario_
+- gestión de privilegios pudiendo otorgar o revocar privilegios para el usuario local o cualquier usuario o grupo de AD
+- ejecución de scripts al inicio o fin de sesión o de arranque de la máquina
+
+Para usar GPO debemos importar en AD las [plantillas adml o admx](https://github.com/ubuntu/adsys/tree/main/policies).
+
+Al igual que en Windows hay GPO tanto de _Equipo_ como de _Usuario_ que se aplican al cargar e sistema (_equipo_) o al iniciar la sesión (_usuario_)

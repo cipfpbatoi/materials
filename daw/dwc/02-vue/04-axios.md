@@ -85,7 +85,7 @@ import axios from 'axios'
 const url='http://localhost:3000'
 ```
 
-* Dentro del objeto añadimos el _hook_ **mounted** para hacer la petición Ajax al montar el componente:
+* Dentro del objeto añadimos el _hook_ **mounted** para hacer la petición Ajax al montar el componente (recordad que esa función se ejecuta automáticamente cuando se acaba de _renderizar_ el componente):
 
 ```javascript
 ...
@@ -130,7 +130,7 @@ Modificamos el método _addTodo_ del fichero **Todo-List.vue**:
 Al servidor hay que pasarle como parámetro el objeto a añadir. E el caso del json-server devolverá en el **response.data** el nuevo objeto añadido al completo. Otros servidores devuelven sólo la _id_ del nuevo registro o pueden no devolver nada. 
 
 ### Actualizar el campo _done_
-Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamos su id, su título y su estado así que modificamos el _teamplate_ del fichero **Todo-List.vue** para pasar el elemento entero a la función:
+Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamos su id, su título y su estado así que modificamos el _template_ del fichero **Todo-List.vue** para pasar el elemento entero a la función:
 ```html
       <todo-item 
         v-for="(item,index) in todos" 
@@ -154,7 +154,7 @@ A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue*
     },
 ```
 
-Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. En el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no inlcuidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
+Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. En el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no incluidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
 
 ### Borrar todas las tareas
 Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servidor no tiene una llamada para borrar todos los datos podemos recorrer el array _todos_ y borrar cada tarea usando el método **delTodo** que ya tenemos hecho:
@@ -276,7 +276,7 @@ export class APIService{
 }
 ```
 
-Y en los componentes donde queramos usarlo importamos la clase y creamos una instacia de la misma:
+Y en los componentes donde queramos usarlo importamos la clase y creamos una instancia de la misma:
 ```javascript
 import { APIService } from '../APIService';
 
@@ -310,7 +310,7 @@ Y en el fichero _,env_ ponemos
 VUE_APP_RUTA_API=http://localhost:3000
 ```
 
-El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usuamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
+El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
 ## Añadir cabeceras a la petición
 Muchas veces necesitamos añadir cabeceras a una petición _axios_, por ejemplo para enviar un token que nos autentifique ante una API. Axios permite pasar como tercer parámetro un objeto con una configuración personalizada, que puede incluir esas cabeceras:

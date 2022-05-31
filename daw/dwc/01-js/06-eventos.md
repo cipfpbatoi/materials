@@ -1,9 +1,4 @@
 # Eventos
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [Eventos](#eventos)
   - [Introducción](#introducción)
   - [Cómo escuchar un evento](#cómo-escuchar-un-evento)
@@ -18,8 +13,7 @@
     - [_Bindeo_ del objeto _this_](#bindeo-del-objeto-this)
   - [Propagación de eventos (bubbling)](#propagación-de-eventos-bubbling)
   - [innerHTML y escuchadores de eventos](#innerhtml-y-escuchadores-de-eventos)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+  - [Eventos personalizados](#eventos-personalizados)
 
 ## Introducción
 Nos permiten detectar acciones que realiza el usuario o cambios que suceden en la página y reaccionar en respuesta a ellas. Existen muchos eventos diferentes (podéis ver la lista en [w3schools](https://www.w3schools.com/jsref/dom_obj_event.asp)) aunque nosotros nos centraremos en los más comunes.
@@ -215,6 +209,8 @@ Sin embargo si al método `.addEventListener` le pasamos un tercer parámetro co
 
 En cualquier momento podemos evitar que se siga propagando el evento ejecutando el método `.stopPropagation()` en el código de cualquiera de los escuchadores.
 
+Podéis ver las distintas fases de un evento en la página [domevents.dev](https://domevents.dev/).
+
 ## innerHTML y escuchadores de eventos
 Si cambiamos la propiedad _innerHTML_ de un elemento del árbol DOM todos sus escuchadores de eventos desaparecen ya que es como si se volviera a crear ese elemento (y los escuchadores deben ponerse después de crearse). 
 
@@ -241,3 +237,17 @@ function renderNewRow(data) {
 ```
 
 De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a renderizar todas las filas de la tabla (todo lo que hay dentro de miTabla).
+
+## Eventos personalizados
+También podemos mediante código lanzar manualmente cualquier evento sobre un elemento con el método `dispatchEvent()` e incluso crear eventos personalizados, por ejemplo:
+```javascript
+const event = new Event('build');
+
+// Listen for the event.
+elem.addEventListener('build', (e) => { /* ... */ }, false);
+
+// Dispatch the event.
+elem.dispatchEvent(event);
+```
+
+Incluso podemos añadir datos al objeto _event_ si creamos el evento con `new CustomEvent()`. Podéis obtener más información en la [página de MDN](https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events).

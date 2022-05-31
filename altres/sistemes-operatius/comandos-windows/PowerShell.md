@@ -337,3 +337,5 @@ Ejemplos:
 
 ## Saber más
 En Internet hay infinidad de páginas y tutoriales sobre Powershell. Te recomiendo el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).
+
+También hay gran cantidad de cursos disponibles, como el de [Automatización de tareas administrativas mediante PowerShell](https://docs.microsoft.com/es-es/learn/paths/powershell/) de Microsoft.

@@ -5,15 +5,15 @@ Tabla de contenidos
   - [Watchers](#watchers)
   - [Acceder al DOM: 'ref'](#acceder-al-dom-ref)
     - [nextTick](#nexttick)
-  - [Clases](#clases)
+  - [Clases HTML](#clases-html)
     - [Sintaxis de objeto](#sintaxis-de-objeto)
     - [Sintaxis de array](#sintaxis-de-array)
     - [Asignar clases a un componente](#asignar-clases-a-un-componente)
     - [Asignar estilos directamente](#asignar-estilos-directamente)
   - [Ciclo de vida del componente](#ciclo-de-vida-del-componente)
+    - [El ciclo de vida de un componente](#el-ciclo-de-vida-de-un-componente)
   - [Componentes asíncronos](#componentes-asíncronos)
   - [Custom Directives](#custom-directives)
-  - [Filtros](#filtros)
   - [Imágenes](#imágenes)
   - [Transiciones](#transiciones)
   - [Entornos](#entornos)
@@ -197,7 +197,7 @@ export default {
 
 Realmente es algo que seguramente nunca necesitemos pero así conocemos un poco más cómo funciona Vue internamente.
 
-## Clases
+## Clases HTML
 Ya hemos visto que en Javascript usamos las clases con mucha frecuencia, normalmente para asignar a elementos estilos definidos en el CSS, pero también para identificar elementos sin usar una _id_ (como hacíamos poniendo a los botones de acciones de los productos las clases _subir_, _bajar_, _editar_ o _borrar_).
 
 En Vue tenemos diferentes formas de asignar clases. La más simple sería _bindear_ el atributo _class_ y gestionarlas directamente en el código, pero no es lo más cómodo:
@@ -294,7 +294,31 @@ data() {
 ```
 
 ## Ciclo de vida del componente
-Un componente pasa por distintos estados a lo largo de su cilo de vida y podemos poner _hooks_ para ejecutar una función cuando alcanza ese estado. Los principales _hooks_ son:
+### El ciclo de vida de un componente
+Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida.
+
+En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
+
+![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.16e4c08e.png)
+
+**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
+
+**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlaza en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
+```javascript
+// MAL, NO HACER ASÍ
+created: () => {
+    console.log('instancia creada'); 
+}
+```
+
+```javascript
+// BIEN, HACER ASÍ
+created() {
+    console.log('instancia creada'); 
+}
+```
+
+Los principales _hooks_ son:
 - **beforeCreate**: aún no se ha creado el componente (sí la instancia de Vue) por lo que no tenemos acceso a sus variables, etc
 - **created**: se usa por ejemplo para realizar peticiones a servicios externos lo antes posible
 - **beforeMount**: ya se ha generado el componente y compilado su _template_
@@ -303,6 +327,8 @@ Un componente pasa por distintos estados a lo largo de su cilo de vida y podemos
 - **updated**: los cambios ya se han renderizado en la página
 - **beforeUnmount**: antes de que se destruya el componente (en versiones anteriores a Vue3 **beforeDestroy**)
 - **unmounted**: ya se ha destruido el componente (en versiones anteriores a Vue3 **destroyed**)
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-9)
 
 ## Componentes asíncronos
 En proyectos grandes con centenares de componentes podemos hacer que en cada momento se carguen sólo los componentes necesarios de manera que se ahorra mucho tiempo de carga de la página.
@@ -388,33 +414,6 @@ Los estados de la directiva en los que podemos actuar son:
 - **updated** (en Vue2 **componentUpdated**): cuando se actualice el componente que contiene la directiva
 - **beforeMount** (en Vue2 **bind**): cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
 - ...
-
-
-## Filtros
-Son similares a las directivas pero permiten modificar en el _template_ los datos que le llegan, por ejemplo podemos poner texto en mayúsculas, números en formato moneda o ...
-
-Se aplican mediante un _pipe_ y podemos concatenar todos los que queramos. Para definirlos se ponen en la propiedad _filter_ del componente:
-```vue
-<template>
-  ...
-  <p>Precio: { { precio | currency }}</p>
-  ...
-</template>
-
-<script>
-  export default {
-    data: () => ({
-      precio: '',
-    }).
-    filter: {
-      currency(value) {
-        if (!value) return '';
-        return value.toFixed(2)+' €';
-      },
-    },
-  }
-</script>	
-```
 
 ## Imágenes
 Lo habitual es guardar las imágenes en la carpeta `assets`. Para que se carguen correctamente usaremos en su atributo `src` la función `require` con la URL de la imagen. Ejemplo:

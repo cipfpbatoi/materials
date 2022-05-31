@@ -196,7 +196,7 @@ El _Centro de Administración de Windows_ es una herramienta para administrar cu
 
 Para poder utilizarlo primero se tiene que instalar en la máquina desde la que vamos a administrar los servidores. Tenemos las instrucciones en la [documentación de Microsoft](https://docs.microsoft.com/es-es/windows-server/manage/windows-admin-center/deploy/install).
 
-Por defecto utiliza el puerto 6516 pero podemos elegir cualquier otro. Al abrilo por primera vez nos pregunta qué certificado usar: seleccionaremos _Windows Admin Cliente_. A continuación tenemos que **Agregar** los servidores que queramos administrar.
+Por defecto utiliza el puerto 6516 pero podemos elegir cualquier otro. Al abrirlo por primera vez nos pregunta qué certificado usar: seleccionaremos _Windows Admin Cliente_. A continuación tenemos que **Agregar** los servidores que queramos administrar.
 
 Al entrar a una máquina podemos ver información de la misma, parecido a como lo muestra el _Administrador del servidor_:
 

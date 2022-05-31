@@ -204,6 +204,8 @@ export default {
 </script>
 ```
 
+Podemos encontrar más información sobre vee-validate en su [documentación oficial](https://vee-validate.logaretm.com/v4/).
+
 ### Validar con vee-validate y yup
 Vee-validate 4 también permite usar librerías como [**yup**](https://www.npmjs.com/package/yup). En este caso la validación es casi automática como se muestra en la documentación de [vee-validate](https://vee-validate.logaretm.com/v4/guide/components/validation#validating-fields-with-yup). El ejemplo anterior quedaría:
 ```vue
@@ -267,18 +269,16 @@ import { setLocale } from 'yup';
 setLocale({
   mixed: {
     default: 'Campo no válido',
-    required: 'El campo no puede estar vacío aquí'
+    required: 'El campo ${path} no puede estar vacío'
   },
   string: { // sólo las reglas 'min' de campos 'string'
-    min: 'El campo debe tener al menos ${max} caracteres'
+    min: 'El campo ${path} debe tener al menos ${max} caracteres'
   },
   number: { // sólo las reglas 'min' de campos 'number'
     min: 'El valor del campo debe ser mayor que ${min}',
   },
 });
 ```
-
-Podemos encontrar más información sobre vee-validate en su [documentación oficial](https://vee-validate.logaretm.com/v4/).
 
 ## Validar con VeeValidate v3 (para Vue2)
 _VeeValidate_ es una librería que permite validar formularios de una manera más sencilla. Para ello incluye 2 componentes:
