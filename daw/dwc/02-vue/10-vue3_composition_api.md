@@ -319,8 +319,8 @@ import { ref, computed } from "vue";
 
 const productPrice = ref(100)
 
-const offerPrice: computed(() => productPrice.value * 50%)
-const originalPrice: computed(() => productPrice.value)
+const offerPrice = computed(() => productPrice.value * 50%)
+const originalPrice = computed(() => productPrice.value)
 ...
 ```
 
