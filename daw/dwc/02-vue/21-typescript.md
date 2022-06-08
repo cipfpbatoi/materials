@@ -6,6 +6,7 @@
   - [Definir variables](#definir-variables)
     - [Crear custom types](#crear-custom-types)
     - [interfaces](#interfaces)
+    - [Creación automática de interfaces](#creación-automática-de-interfaces)
   - [Tipos genéricos](#tipos-genéricos)
   - [Clases](#clases)
   - [Decoradores](#decoradores)
@@ -30,6 +31,7 @@ export default {
   name: ...,
   ...
 }
+</script>
 ```
 
 Esto con Typescript se haría:
@@ -41,6 +43,7 @@ export default defineComponent({
   name: ...,
   ...
 })
+</script>
 ```
 
 ## Tipos de datos
@@ -97,14 +100,17 @@ type buttonType = 'primary' | 'secondary' | 'success' | 'danger'
 
 let myBtnStyle: buttonType = 'danger'
 ```
+
 Si le asigno un valor que no es uno de los definidos en su tipo se producirá un error.
+
+También puede hacerse con `enum` como en otros lenguajes.
  
 ### interfaces
 Una interface es la definición de los tipos de datos de un objeto, para evitar definirlo como hemos visto antes que es demasiado _verbose_. Por tanto es como definir nu nuevo tipo de datos.
 ```typescript
 type Modules = 'DWEC' | 'DWES' |'DIW' |'DAW' | 'EIE' | 'Inglés'
 
-interface Student: {
+interface Student {
   name: string;
   age: number;
   modules: Modules[];   // o también modules: Array<Modules>
@@ -135,6 +141,11 @@ export default defineComponent({
 Para centralizar la definición de tipos se suelen incluir todos los tipos e interfaces en un fichero que llamaremos `src/types.ts`. Deberemos exportar los tipos y/o interfaces.
 
 Visual Studio Code incluye la extensión **VueDX** que nos informa al escribir código si un objeto tiene o no la propiedad que estamos escribiendo.
+
+### Creación automática de interfaces
+Tenemos utilidades que nos permiten generar automáticamente las interfaces de nuestra aplicación a partir de la documentación de la API o incluso a partir del fichero JSON de los datos. 
+
+Un ejemplo es [Quicktype](https://quicktype.io/typescript) donde pegamos nuestros datos en formato JSON y genera automáticamente las interfaces y _types_ necesarios en _typescript_.
 
 ## Tipos genéricos
 A veces nos gustaría que una función pudiera trabajar con distintos tipos de datos. Por ejemplo, una función para añadir un item a una lista podría ser:

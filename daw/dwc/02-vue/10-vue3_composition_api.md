@@ -9,6 +9,7 @@
     - [_Props_](#props)
     - [_Components_](#components)
     - [_Computed_](#computed)
+    - [router](#router)
     - [watchEffect y watch](#watcheffect-y-watch)
     - [Pinia](#pinia)
   - [Reusabilidad: _composables_](#reusabilidad-composables)
@@ -326,6 +327,15 @@ const originalPrice: computed(() => productPrice.value)
 
 **NOTA**: Todas las variables definidas como _computed_ son automáticamente reactivas.
 
+### router
+Para acceder al _router_ y a la variable _route_ en _composition API_ tenemos que importarlas de _vue-router_ e instanciarlas, ya que no tenemos acceso a _this_:
+```javascript
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+```
+
 ### watchEffect y watch
 _watch_ funciona como en _Vue2_:
 ```javascript
@@ -472,13 +482,16 @@ El componente que quiera usarla haría:
 </script>
 
 <template>
-  ...
+  <div v-if="error">{{ error }}</div>
+  <div v-else>
+    // Aquí mostramos los datos recibidos en la variable 'data'
+  </div>
 </template>
 ```
 
 Y nuestra función haría:
 ```javascript
-// fetch.js
+// useFetch.js
 import { ref } from 'vue'
 
 export function useFetch(url) {
