@@ -1,4 +1,11 @@
-# Introduccion a los Sistemas Operativos 
+# Introducción a los Sistemas Operativos  
+
+* [Hardware y Software](#hardware-y-software)
+* [Componentes físicos: el hardware](#componentes-físicos-el-hardware)
+* [Principales arquitecturas de procesador](#principales-arquitecturas-de-procesador)
+* [Software de base del sistema](#software-de-base-del-sistema)
+
+
 
 # Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
