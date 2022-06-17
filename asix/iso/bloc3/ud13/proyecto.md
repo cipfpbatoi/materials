@@ -5,9 +5,6 @@ Ahora que tenemos la red creada y configurada vamos a darle utilidad
 para nuestros usuarios. En esta parte compartiremos recursos (carpetas e
 impresoras) y estableceremos restricciones para mejorar la seguridad de
 la red.
-:::
-
-::: {#taquesQuestion0b85 .section .block .iDevice_content}
 **Compartición de carpetas**
 
 Recordad que en el servidor habrá una carpeta llamada DatosESO dentro de
@@ -40,53 +37,22 @@ volumen LVM creado para las carpetas personales.
 
 Respecto a las impresoras recordad que tenemos 2 HP color Laserjet en el
 aula informática que forman un grupo llamado HP\_Aula-XX.
-:::
 
-::: {.block .iDevice_buttons .feedback-button .js-required}
-:::
-
-::: {#feedback-quesFeedback0b85 .section .feedback .js-feedback .js-hidden}
-Retroalimentación {#retroalimentación .js-sr-av}
+Retroalimentación
 =================
 
-Usar permisos ACL para las DatosESO y sus subcarpetas
-:::
-:::
-:::
-:::
+Usar permisos ACL para los Datos ESO y sus subcarpetas
 
-Actividades de ampliación 53_Actividadesdeampliacin 
+Actividades de ampliación 
 =========================
 
-::: {.iDevice .emphasis1}
-Caso práctico {#caso-práctico-1 .iDeviceTitle}
+Caso práctico
 -------------
+En la actividad de ampliación de la unidad anterior creamos el domino y los distintos objetos en el servidor CentOS.
 
-::: {.iDevice_inner}
-::: {.iDevice_content_wrapper}
-::: {#ta135_248 .section .block .iDevice_content}
-En la actividad de ampliación de la unidad anterior creamos el domino y
-los distintos objetos en el servidor CentOS.
-:::
+Ahora vamos a compartir en él los directorios e impresoras indicados en la práctica de clase y vamos a convertir a los alumnos en usuarios móviles.
 
-::: {#taquesQuestion0b135 .section .block .iDevice_content}
-Ahora vamos a compartir en él los directorios e impresoras indicados en
-la práctica de clase y vamos a convertir a los alumnos en usuarios
-móviles.
-:::
-:::
-:::
-:::
-
-::: {.iDevice .emphasis1}
-Reflexión {#reflexión .iDeviceTitle}
+Reflexión
 ---------
 
-::: {.iDevice_inner}
-::: {.iDevice_content_wrapper}
-::: {#ta134_246 .block .iDevice_content}
-Investiga sobre las nuevas posibilidades que ofrece NFS v4 frente a la
-versión 3.
-:::
-:::
-:::
+Investiga sobre las nuevas posibilidades que ofrece NFS v4 frente a la versión 3.

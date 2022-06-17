@@ -15,7 +15,6 @@ UD 13 - Compartición de recursos con NFS
 * [Compartición de impresoras. CUPS](#compartición-de-impresoras-cups)
   * [Instalación de CUPS](#instalación-de-cups)
   * [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
-* [Proyecto](#proyecto)
 
 ## Instalación y configuración del servidor NFS
 
@@ -229,7 +228,7 @@ Las otras 2 líneas modificadas habilitan el acceso al servidor y en las página
 
 Ahora ya podemos acceder a *CUPS* desde nuestro cliente:
 
-![CUPS](./media/04-cups.png "CUPS)
+![CUPS](./media/04-cups.png "CUPS")
 
 Desde esta aplicación podemos administrar y mantener el servicio de impresión. Algunas tareas requieren validarse con un usuario que tenga permisos para administrar el servicio. Por defecto los usuarios que pueden administrar el servicio de impresión tiene que pertenecer al grupo **lpadmin**.
 
@@ -244,8 +243,8 @@ En la pestaña "Administración" podemos acceder a todas las operaciones de gest
 
 En la parte derecha de la ventana de administración podemos encontrar algunas opciones importantes:
 
-* Botón "Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado */etc/cups/cupsd.conf*.
-* Botón "Ver archivo de registro de accesos". Para acceder directamente al archivo de registro de CUPS */var/log/cups/access_log*. En este archivo se guardan todas las conexiones realizadas a CUPS.
+* Botón *Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado */etc/cups/cupsd.conf*.
+* Botón *Ver archivo de registro de accesos*. Para acceder directamente al archivo de registro de CUPS */var/log/cups/access_log*. En este archivo se guardan todas las conexiones realizadas a CUPS.
 * Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro */var/log/cups/error_log* donde se guardan todos los errores producidos en CUPS.
 
 Por último, desde esta ventana se puede configurar algunos aspectos del funcionamiento de **CUPS** como permitir compartir impresoras, mostrar impresoras compartidas, u otra opción bastante interesante como permitir administración remota.
@@ -274,9 +273,5 @@ Tampoco tenemos que instalar ningún driver puesto que estos están centralizado
 Además del acceso web a la configuración y administración de CUPS, también han aplicaciones integradas en los diferentes escritorios (por ejemplo system-config-printer en el escritorio GNOME o KDE Print):
 
 ![CUPS](./media/07-cups.png)
-
-## Proyecto
-
-[Proyecto de clase](./proyecto.md)
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses by-nc-sa/4.0/)
