@@ -11,8 +11,14 @@
   * [Administrar recursos Hw](#administrar-recursos-hw)
 * [Proporcionar interfície](#proporcionar-interfície)
 * [Tipus de Sistemes Operatius.](#tipus-de-sistemes-operatius)
-* [Tipus d’aplicacions.](#tipus-daplicacions)
-* [Llicències del programari](#llicències-del-programari)
+* [Tipus d’aplicacions](#tipus-daplicacions)
+  * [Llicències del programari](#llicències-del-programari)
+  * [Llicències no-lliure o privatives](#llicències-no-lliure-o-privatives)
+  * [Llicències de Programari de codi obert](#llicències-de-programari-de-codi-obert)
+  * [Llicències permissives o acadèmiques](#llicències-permissives-o-acadèmiques)
+  * [Llicències amb copyleft fort](#llicències-amb-copyleft-fort)
+  * [Llicències mixtes o amb copyleft suau.](#llicències-mixtes-o-amb-copyleft-suau)
+  * [Creative Commons](#creative-commons)
 
 ## Objetivos de la unidad
 
@@ -146,11 +152,13 @@ En este sentido, los planteamientos que se aplican en los sistemas operativos m�
 
 ## Proporcionar interfície
 
-* El sistema operatiu fa d'intermediari entre aquests elements i el maquinari de l'equip.
-* Respecte als programes d'aplicació els proporciona una sèrie de funcions perquè utilitzen el maquinari sense haver de preocupar-utilitzen el maquinari sense haver de preocupar-se de la complexitat del mateix.
-* A l'usuari lli proporciona una interfície, que pot ser:
-  * De text.
-  * Gráfica.
+El sistema operatiu fa d'intermediari entre aquests elements i el maquinari de l'equip. Respecte als programes d'aplicació els proporciona una sèrie de funcions perquè utilitzen el maquinari sense haver de preocupar-utilitzen el maquinari sense haver de preocupar-se de la complexitat del mateix.
+
+A l'usuari li proporciona una interfície, que pot ser:
+
+* De text.
+
+* Gráfica.
 
 ## Tipus de Sistemes Operatius.
 
@@ -177,9 +185,9 @@ Els SS.OO. Es poden classificar segons diverses paràmetres:
   * Privatius
   * Lliures.
 
-## Tipus d’aplicacions.
+## Tipus d’aplicacions
 
-## Llicències del programari 
+### Llicències del programari
 
 La llicència de programari és, segons el Dret espanyol, el contracte pel qual el titular d'un programa autoritza al llicenciatari a utilitzar-ho, cedint-li els drets necessaris per a aquest ús. 
 
@@ -196,3 +204,154 @@ Per tant la llicència estableix determinats drets i obligacions entre les parts
 Com veiem en el diagrama, cada conjunt (programari lliure, no lliure) inclou determinats subtipus de llicències subtipus de llicències (permissives, copyleft, etc.), que es diferencien entre si per les condicions que s'estableixen en elles.
 
 ![Soft](./media/ud1-02.png)
+
+### Llicències no-lliure o privatives
+
+Es pot dir que hi ha casi tantes llicencies no-lliures com programari propietari. 
+
+* Programari estàndard de distribució massiva: Ms Windows o MacOS.
+* Programari empresarial per parametrització, com SAP.
+* Programari desenvolupat a mida per un client particular.
+
+Les condicions especifiques dependran d’aspectes com:
+
+* Tipus de programari.
+* Posició de les parts que negocien el contracte.-
+* Jurisdicció del lloc on es ven
+
+Per exercir els drets d’aquestes llicencies, l’usuari deurà complir una serie d’obligacions
+
+* Pagament de drets de llicencia.
+* Prohibició de la copia, modificació i redistribució
+* I altres limitacions que interposi el fabricant.
+
+![privativa](./media/ud1-03.png)
+
+Dintre de les llicencies privatives ens trobem les de tipus Freeware, Shareware i Adware.
+
+**Freeware**:
+
+* El seu nom indica “Software gratuït”.
+* No te cap cost.
+* La seva utilització es per temps il·limitat.La seva utilització es per temps il·limitat.
+* No sol incloure el codi font (encara que el podria).
+* Sol incloure una llicencia d’ús en la que es pot redistribuir, però sense fins comercials.
+
+![freeware](./media/ud1-04.png)
+
+**Shareware**:
+
+* El programa es distribueix en limitacions.
+* Pot ser versió demo o d’avaluació.
+* Té funcions o característiques mínima o amb ús restringit a un temps establit.
+* Per aconseguir l’ús del software de manera completa, es requereix un pagament.
+
+![shareware](./media/ud1-05.png)
+
+**Adware**:
+
+* Programa totalment gratuït.
+* Inclou publicitat en el programa, durant la seva instal·lació o durant el seu ús.instal·lació o durant el seu ús.
+* Hi ha programes que poden ser shareware a la mateixa vegada que Adware.
+
+### Llicències de Programari de codi obert
+
+Les llicències de codi obert, permeten entre altres coses:
+
+* Descarregar, instal·lar i executar el software sense limitacions.
+* Descarregar el codi font i estudiarlo.
+* Analitzar les interfaces per fer un software interoperable.
+* Modificar el software per adaptarlo a les seves necessitats, recompilar-ho i executar-ho.
+* Utilitzar part del codi per altre software.
+* Ampliar el Programari original.
+* Integrarlo en un altre Sw (SFA) per millorar les seves funcionalitats.
+* Redistribuir o comunicar públicament el software original.
+* De la mateixa manera, redistribuir el Sw modificat i les extensions (respectant sempre les condicions de la llicencia
+* Crear documentació sobre el software i ficar-la a la venda.
+
+Tipus de llicencia.
+
+* No totes les llicències de codi obert son iguals,
+* Hi ha quasi 70 llicencies OpenSource certificades per OSI.
+* És important conèixer les llicencies sempre que utilitzem un programari de codi obert.
+* La major diferencia radica en les condicions aplicables a la redistribució, en particular en quant al grau de copyleft:redistribució, en particular en quant al grau de copyleft.
+
+![opensource](./media/ud1-06.png)
+
+Apart del copyleft, les llicencies de SFA també es caracteritzen per aplicar condicions addicionals sobre temes que els seus autors han cregut important:
+
+* Prohibir el us del nom del titular perProhibir el us del nom del titular per promoure el Sw. (Apache Sw License)
+* L'abast de la llicencia de patents (MPL, CPL, GPLv3)
+* El dret aplicable i la jurisdicció competent per resoldre conflictes (MPL,CPL)
+* Accés a codi font medis sistemes remots(OSL, CDDL y Affero GPL)
+
+### Llicències permissives o acadèmiques
+
+S'anomenen d'aquesta forma ja que no imposen cap condició particular en quant a la redistribució del software excepte mantenir els avisos legals i les limitacions de garantia i responsabilitat.
+
+Aquest tipus de llicencia és el resultat del desig dels seus autors de compartir el software amb qualsevol finalitat sense imposar obligacions que
+pugen restringir els usos tant personals com comercials, llibres o privatius.
+
+Les més conegudes son:
+
+* **BSD**. (Berkeley Software Distribution. És una llicència que per als seus detractors és pràcticament una llicència de programari libertino, més que lliure. Si crees un programa X i un altre ho vol utilitzar, ho podrà prendre lliurement, només respectant la teva autoria però sense alliberar els canvis que hagin fet.
+
+* **ASL**. (Apache Software License)
+
+### Llicències amb copyleft fort
+
+Són les que exigeixen l'ús de la mateixa llicència per a qualsevol redistribució del programa i de les modificacions que es realitzin del mateix, així com a programes que ho utilitzen o incorporen.
+
+El seu objectiu bàsic és assegurar que qualsevol usuari (directe o indirecte) del programari sempre tingui accés al codi font, sota els termes d'aquesta
+mateixa llicència.
+
+Com a consecuencia, s'impedeix la distribució del programari amb copyleft en aplicacions privatives. 
+
+Això no significa que no es puguin crear i vendre aplicacions comercials amb programari copyleft. Però sí serà una violació de la llicència redistribuir aquest programari sota una altra llicència.
+
+Llicències Amb copyleft fort (General Public License) **GPL**
+
+* Llicència amb codi copyleft mès coneguda.
+* Sw’utilitza en la majoria de programes de GNU.
+* La seva finalitat és protegir els drets dels usuaris finals (usar, compartir, estudiar i modificar) finals (usar, compartir, estudiar i modificar)
+* Els treballs derivats només poden ser distribuïts sota els termes de la mateixa llicència.
+
+![gpl](./media/ud1-07.png)
+
+### Llicències mixtes o amb copyleft suau.
+
+Llicències mixtes o amb copyleft suau.
+
+Inclouen clausules de copyleft sols pel codi original, sense que afecte a altres programes que l’integren o l’utilitzen.
+
+Permetent l'ús del programari per programes que es distribueixin sota una llicència diferent (la Lesser GPL o LGPL).
+
+Permetent la seva incorporació en una obra més àmplia (o "obra major") la llicència de la qual, igualment, pot ser diferent (MPL i CDDL28, entre altres).
+
+**Llicència MPL (Mozilla Public License)**
+
+Compleix completament amb la definició de Programari de codi Obert de la Open Source Initiative (OSI) i amb les llibertats del software lliure enunciades per la Free Software Foundation (FSF) 
+
+Però deixa ja obert el camí a una possible reutilització no lliure del software, si el usuari així ho desitja.
+
+Té els seus orígens en la empresa Netscape Communications per al seu navegador.
+
+Serveix com a llicencia de control per el navegador Firefox i el seu client de correu Thunderbird.
+
+També es àmpliament utilitzat per desenvolupadors i programadors que volen alliberar el seu codi.
+
+![netscape](./media/netscape.jpg)
+
+### Creative Commons
+
+Llicencia que s’aplica a la documentació. Permet elegir al autor quin tipus de dret vol cedir.
+
+* **Reconeixement**: el us de l’obra deu reconèixer l’autoria original.
+* **No comercial**: l’utilització de l’obra queda limitada a un us no comercial.
+* **Sense Obres derivades**: no es pot permetre modificar l’obra per crear-ne un altra.
+* **Compartir igual**: Es permet crear obres derivades sempre que es mantinguen la llicència.
+
+![cc](./media/ud1-08.png)
+
+
+![cc2](./media/ud1-09.png)
