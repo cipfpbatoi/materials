@@ -1,24 +1,25 @@
 # Introducción a los Sistemas Operativos
 
-* [Objetivos de la unidad](#objetivos-de-la-unidad)
-* [Conceptos clave](#conceptos-clave)
-* [Estructura de un sistema informático](#estructura-de-un-sistema-informático)
-  * [Maquinari](#maquinari)
-  * [Programari](#programari)
-* [Arquitectura d’un sistema Operatiu.](#arquitectura-dun-sistema-operatiu)
-  * [Elementos i estructura d'un Sistema Operatiu (SO)](#elementos-i-estructura-dun-sistema-operatiu-so)
-* [Funcions del Sistema Operatiu.](#funcions-del-sistema-operatiu)
-  * [Administrar recursos Hw](#administrar-recursos-hw)
-* [Proporcionar interfície](#proporcionar-interfície)
-* [Tipus de Sistemes Operatius.](#tipus-de-sistemes-operatius)
-* [Tipus d’aplicacions](#tipus-daplicacions)
-  * [Llicències del programari](#llicències-del-programari)
-  * [Llicències no-lliure o privatives](#llicències-no-lliure-o-privatives)
-  * [Llicències de Programari de codi obert](#llicències-de-programari-de-codi-obert)
-  * [Llicències permissives o acadèmiques](#llicències-permissives-o-acadèmiques)
-  * [Llicències amb copyleft fort](#llicències-amb-copyleft-fort)
-  * [Llicències mixtes o amb copyleft suau.](#llicències-mixtes-o-amb-copyleft-suau)
-  * [Creative Commons](#creative-commons)
+- [Introducción a los Sistemas Operativos](#introducción-a-los-sistemas-operativos)
+  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+  - [Conceptos clave](#conceptos-clave)
+  - [Estructura de un sistema informático](#estructura-de-un-sistema-informático)
+    - [Maquinari](#maquinari)
+    - [Programari](#programari)
+  - [Arquitectura d’un sistema Operatiu.](#arquitectura-dun-sistema-operatiu)
+    - [Elementos i estructura d'un Sistema Operatiu (SO)](#elementos-i-estructura-dun-sistema-operatiu-so)
+  - [Funcions del Sistema Operatiu.](#funcions-del-sistema-operatiu)
+    - [Administrar recursos Hw](#administrar-recursos-hw)
+  - [Proporcionar interfície](#proporcionar-interfície)
+  - [Tipus de Sistemes Operatius.](#tipus-de-sistemes-operatius)
+  - [Tipus d’aplicacions](#tipus-daplicacions)
+    - [Llicències del programari](#llicències-del-programari)
+    - [Llicències no-lliure o privatives](#llicències-no-lliure-o-privatives)
+    - [Llicències de Programari de codi obert](#llicències-de-programari-de-codi-obert)
+    - [Llicències permissives o acadèmiques](#llicències-permissives-o-acadèmiques)
+    - [Llicències amb copyleft fort](#llicències-amb-copyleft-fort)
+    - [Llicències mixtes o amb copyleft suau.](#llicències-mixtes-o-amb-copyleft-suau)
+    - [Creative Commons](#creative-commons)
 
 ## Objetivos de la unidad
 
@@ -346,12 +347,11 @@ També es àmpliament utilitzat per desenvolupadors i programadors que volen all
 
 Llicencia que s’aplica a la documentació. Permet elegir al autor quin tipus de dret vol cedir.
 
-* **Reconeixement**: el us de l’obra deu reconèixer l’autoria original.
-* **No comercial**: l’utilització de l’obra queda limitada a un us no comercial.
-* **Sense Obres derivades**: no es pot permetre modificar l’obra per crear-ne un altra.
-* **Compartir igual**: Es permet crear obres derivades sempre que es mantinguen la llicència.
+- **Reconeixement**: el us de l’obra deu reconèixer l’autoria original.
+- **No comercial**: l’utilització de l’obra queda limitada a un us no comercial.
+- **Sense Obres derivades**: no es pot permetre modificar l’obra per crear-ne un altra.
+- **Compartir igual**: Es permet crear obres derivades sempre que es mantinguen la llicència.
 
 ![cc](./media/ud1-08.png)
 
-
-![cc2](./media/ud1-09.png)
+<img src="./media/ud1-09.png" title="CC" width="50%" style="display:flex;justify-content:center;">
