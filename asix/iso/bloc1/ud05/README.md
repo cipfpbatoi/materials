@@ -1,34 +1,153 @@
-Módulo: Administración de sistemas operativos
-=============================================
-
-UT 5 - Comandos 
+UD 5 - Comandos 
 ===============
 
-1º ASIR
--------
+- [UD 5 - Comandos](#ud-5---comandos)
+  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+  - [Conceptos clave](#conceptos-clave)
+  - [Conocimiento previo](#conocimiento-previo)
+- [La interfaz de texto](#la-interfaz-de-texto)
+    - [Conceptos básicos](#conceptos-básicos)
+    - [Scripts](#scripts)
+    - [Sintaxis](#sintaxis)
+    - [Comodines](#comodines)
+- [Rutas absolutas y relativas](#rutas-absolutas-y-relativas)
+- [Comandos en Windows](#comandos-en-windows)
+    - [Obtener ayuda](#obtener-ayuda)
+    - [Sintaxis de los comandos](#sintaxis-de-los-comandos)
+- [para trabajar con Directorios](#para-trabajar-con-directorios)
+    - [dir](#dir)
+    - [cd (o chdir)](#cd-o-chdir)
+    - [md (o mkdir)](#md-o-mkdir)
+    - [rd (o rmdir)](#rd-o-rmdir)
+    - [tree](#tree)
+- [para trabajar con Ficheros {_90_paratrabajarconFicheros .nodeTitle}](#para-trabajar-con-ficheros-_90_paratrabajarconficheros-nodetitle)
+    - [copy](#copy)
+    - [xcopy](#xcopy)
+    - [move](#move)
+    - [ren (o rename)](#ren-o-rename)
+    - [del (o erase)](#del-o-erase)
+    - [attrib](#attrib)
+    - [print](#print)
+- [para trabajar con el contenido de un fichero](#para-trabajar-con-el-contenido-de-un-fichero)
+    - [type](#type)
+    - [more](#more)
+    - [find](#find)
+    - [sort](#sort)
+    - [fc](#fc)
+- [para gestionar la red](#para-gestionar-la-red)
+    - [ipconfig](#ipconfig)
+    - [ping](#ping)
+    - [tracert](#tracert)
+    - [netstat](#netstat)
+    - [nslookup](#nslookup)
+- [para gestionar discos](#para-gestionar-discos)
+    - [chkdsk / scandisk](#chkdsk--scandisk)
+    - [defrag](#defrag)
+    - [format](#format)
+    - [convert](#convert)
+    - [diskpart](#diskpart)
+- [otros comandos](#otros-comandos)
+    - [X:](#x)
+    - [date](#date)
+    - [time](#time)
+    - [echo](#echo)
+    - [shutdown](#shutdown)
+    - [cls](#cls)
+    - [exit](#exit)
+    - [logoff](#logoff)
+- [Redireccionamiento de comandos](#redireccionamiento-de-comandos)
+    - [Dispositivos](#dispositivos)
+    - [Operadores de redireccionamiento](#operadores-de-redireccionamiento)
+- [Ficheros de proceso por lotes](#ficheros-de-proceso-por-lotes)
+- [Comandos en GNU/Linux](#comandos-en-gnulinux)
+    - [Las terminales en Gnu/Linux](#las-terminales-en-gnulinux)
+    - [Ayuda y utilidades](#ayuda-y-utilidades)
+    - [Sintaxis](#sintaxis-1)
+- [para trabajar con directorios](#para-trabajar-con-directorios-1)
+    - [ls](#ls)
+    - [cd](#cd)
+    - [mkdir](#mkdir)
+    - [rmdir](#rmdir)
+    - [pwd](#pwd)
+- [para trabajar con ficheros](#para-trabajar-con-ficheros)
+    - [cp](#cp)
+    - [mv](#mv)
+    - [rm](#rm)
+    - [touch](#touch)
+    - [find](#find-1)
+    - [file](#file)
+    - [stat](#stat)
+    - [gzip](#gzip)
+    - [gunzip](#gunzip)
+    - [tar](#tar)
+- [para trabajar con el contenido de un fichero](#para-trabajar-con-el-contenido-de-un-fichero-1)
+    - [cat](#cat)
+    - [more](#more-1)
+    - [less](#less)
+    - [tail](#tail)
+    - [head](#head)
+    - [sort](#sort-1)
+    - [grep](#grep)
+    - [cut](#cut)
+    - [diff](#diff)
+    - [wc](#wc)
+- [para gestionar permisos](#para-gestionar-permisos)
+    - [chmod](#chmod)
+    - [chown](#chown)
+    - [chgrp](#chgrp)
+- [para gestionar usuarios](#para-gestionar-usuarios)
+    - [whoami](#whoami)
+    - [groups](#groups)
+    - [id](#id)
+    - [who](#who)
+    - [passwd](#passwd)
+    - [useradd](#useradd)
+    - [adduser](#adduser)
+    - [userdel o deluser](#userdel-o-deluser)
+    - [usermod](#usermod)
+    - [groupadd o addgroup](#groupadd-o-addgroup)
+    - [groupdel](#groupdel)
+- [para gestionar la red](#para-gestionar-la-red-1)
+    - [ping](#ping-1)
+    - [ifconfig](#ifconfig)
+    - [dhclient](#dhclient)
+    - [ifup ethX](#ifup-ethx)
+    - [ifdown ethX](#ifdown-ethx)
+    - [nslookup](#nslookup-1)
+- [para gestionar discos](#para-gestionar-discos-1)
+    - [fsck](#fsck)
+    - [mkfs](#mkfs)
+    - [mount](#mount)
+    - [df](#df)
+    - [dd](#dd)
+    - [fdisk](#fdisk)
+    - [parted](#parted)
+- [otros comandos](#otros-comandos-1)
+    - [ps](#ps)
+    - [date](#date-1)
+    - [clear](#clear)
+    - [shutdown, poweroff, halt, reboot, logout, exit](#shutdown-poweroff-halt-reboot-logout-exit)
+    - [su](#su)
+    - [sudo](#sudo)
+    - [uname](#uname)
+    - [hostname](#hostname)
+    - [ln](#ln)
+    - [Dispositivos](#dispositivos-1)
+    - [Operadores de redireccionament](#operadores-de-redireccionament)
+- [Scripts](#scripts-1)
+- [Bibliografía](#bibliografía)
 
-Implantación de Sistemas Operativos 
-===================================
-
-C.F.G.S.: Administración de sistemas informáticos en red
-
-Introducción a la UT 5 
-======================
 
 Objetivos de la unidad
 ----------------------
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
--   Utilizar la interfaz de texto en el sistema operativo
--   Saber utilizar la línea de comandos para realizar tareas
--   Utilizar la interfaz de texto para realizar configuraciones en el
-    equipo
+- Utilizar la interfaz de texto en el sistema operativo
+- Saber utilizar la línea de comandos para realizar tareas
+- Utilizar la interfaz de texto para realizar configuraciones en el equipo
 
-El objetivo de esta unidad no es que el alumno conozca en profundidad el
-uso de los diferentes comandos en Windows y GNU/Linux sino que adquiera
-unos conocimientos básicos del uso de la terminal y tenga una guía de
-referencia donde poder consultar cómo usar los comandos que vaya
+El objetivo de esta unidad no es que el alumno conozca en profundidad el uso de los diferentes comandos en Windows y GNU/Linux sino que adquiera unos conocimientos básicos del uso de la terminal y tenga una guía de referencia donde poder consultar cómo usar los comandos que vaya
 necesitando a lo largo del curso.
 
 Conceptos clave 
@@ -36,127 +155,73 @@ Conceptos clave
 
 Los conceptos más importantes de esta unidad son:
 
--   Funcionamiento de la terminal el Windows y GNU/Linux
--   Principales comandos
--   Redireccionamiento de comandos\
+- Funcionamiento de la terminal el Windows y GNU/Linux
+- Principales comandos
+- Redireccionamiento de comandos
 
 Conocimiento previo
 -------------------
 
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
 
--   cuáles son los sistemas operativos más utilizados en la arquitectura
-    PC
--   cómo utilizar software de virtualización para crear máquinas
-    virtuales
+- cuáles son los sistemas operativos más utilizados en la arquitectura PC
+- cómo utilizar software de virtualización para crear máquinas virtuales
 
 La interfaz de texto 
 ====================
 
-Una de las funciones del sistema operativo es hacer de intermediario
-entre el usuario y el equipo: el sistema operativo le proporciona una
-interfaz para comunicarse con el ordenador. Las interfaces pueden ser de
-dos tipos:
+Una de las funciones del sistema operativo es hacer de intermediario entre el usuario y el equipo: el sistema operativo le proporciona una interfaz para comunicarse con el ordenador. Las interfaces pueden ser de dos tipos:
 
--   **de texto**: el usuario se comunica mediante el teclado escribiendo
-    comandos que el sistema operativo entiende y ejecuta. Esta parte del
-    sistema operativo se llama shell o intérprete de comandos. El shell
-    lee el comando tecleado, lo ejecuta y muestra el resultado por
-    pantalla y le pide al usuario un nuevo comando (mostrándole el
-    carácter de petición de comandos o prompt).
--   **gráfica**: consta de ventanas, iconos y botones con los cuales el
-    usuario interactúa. Son mucho más sencillas de usar para el usuario
-    por lo cual actualmente la mayoría de sistemas operativos
-    proporcionan este tipo de interfaces.
+- **de texto**: el usuario se comunica mediante el teclado escribiendo comandos que el sistema operativo entiende y ejecuta. Esta parte del sistema operativo se llama shell o intérprete de comandos. El shell lee el comando tecleado, lo ejecuta y muestra el resultado por pantalla y le pide al usuario un nuevo comando (mostrándole el carácter de petición de comandos o prompt).
+- **gráfica**: consta de ventanas, iconos y botones con los cuales el usuario interactúa. Son mucho más sencillas de usar para el usuario por lo cual actualmente la mayoría de sistemas operativos proporcionan este tipo de interfaces.
 
-La interfaz que tenían los primeros sistemas operativos para comunicarse
-con el usuario era de texto, en la cual el usuario tenía que escribir
-una orden y esperar los resultados. Desde hace ya muchos años los
-sistemas operativos disponen también de una interfaz gráfica que
-facilita enormemente su uso puesto que ahora no es necesario conocer
-multitud de órdenes. Entonces, ¿por qué usar la línea de órdenes?. Las
-razones son varías:
+La interfaz que tenían los primeros sistemas operativos para comunicarse con el usuario era de texto, en la cual el usuario tenía que escribir una orden y esperar los resultados. Desde hace ya muchos años los sistemas operativos disponen también de una interfaz gráfica que facilita enormemente su uso puesto que ahora no es necesario conocer multitud de órdenes. Entonces, ¿por qué usar la línea de órdenes?. Las razones son varías:
 
--   no todo se puede hacer desde el entorno gráfico
--   muchas veces para hacer una acción tenemos que pasar por muchos
-    menús y ventanas el que trae tiempo
--   es difícil automatizar tareas que hacemos a a menudo (a veces miedo
-    hacerse con macros y otros es imposible)
+- no todo se puede hacer desde el entorno gráfico
+- muchas veces para hacer una acción tenemos que pasar por muchos menús y ventanas el que trae tiempo
+- es difícil automatizar tareas que hacemos a a menudo (a veces miedo hacerse con macros y otros es imposible)
 
 ### Conceptos básicos
 
 La línea de órdenes es una interfaz de usuario de tipo texto para
-interactuar con el sistema operativo. El usuario escribe una orden en el
-símbolo del sistema o **prompt** que se ejecuta al pulsar la tecla
-*Intro*. Un programa, denominado intérprete de comandos o **shell**,
-comprueba si la sintaxis es correcta y ejecuta el comando. Cuando
-finaliza vuelve a mostrar el prompt y podemos escribir otra orden.
+interactuar con el sistema operativo. El usuario escribe una orden en el símbolo del sistema o **prompt** que se ejecuta al pulsar la tecla *Intro*. Un programa, denominado intérprete de comandos o **shell**, comprueba si la sintaxis es correcta y ejecuta el comando. Cuando finaliza vuelve a mostrar el prompt y podemos escribir otra orden.
 
-El prompt es un símbolo que muestra el sistema operativo y que indica
-que está preparado para recibir órdenes. Además muestra información al
-usuario como el directorio actual o el nombre del usuario y el ordenador
-en el caso de Linux.
+El prompt es un símbolo que muestra el sistema operativo y que indica que está preparado para recibir órdenes. Además muestra información al usuario como el directorio actual o el nombre del usuario y el ordenador en el caso de Linux.
 
-![Prompt
-Windows](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_win.png)
+![Prompt Windows](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_win.png)
 
-En Windows el prompt es el símbolo “\>” y muestra el directorio actual:
-C:\\Users\\juan, es decir, el directorio personal del usuario “juan”.
+En Windows el prompt es el símbolo “\>” y muestra el directorio actual: C:\\Users\\juan, es decir, el directorio personal del usuario “juan”.
 
-![Prompt
-linux](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_linux1.png)
+![Prompt linux](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_linux1.png)
 
 En Linux el prompt de cualquier usuario (excepto root) es \$ y la
-información que muestra es el usuario (juan), el nombre del ordenador
-(acerubuntu) y el directorio actual (\~, que es el directorio personal
-del usuario, es decir, /hombre/juan). El símbolo @ separa el usuario y
-el ordenador y el símbolo : separa el ordenador del directorio actual.
+información que muestra es el usuario (juan), el nombre del ordenador (acerubuntu) y el directorio actual (\~, que es el directorio personal del usuario, es decir, /hombre/juan). El símbolo @ separa el usuario y el ordenador y el símbolo : separa el ordenador del directorio actual.
 
-![Prompt
-root](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_linux2.png)
+![Prompt root](https://moodle.cipfpbatoi.es/pluginfile.php/5395/mod_book/chapter/93/prompt_linux2.png)
 
-El Linux el prompt del usuario root es \#. La información mostrada es el
-usuario (root), el ordenador (acerubuntu) y el directorio actual
-(/hombre/juan, es el mismo que antes pero en este caso ese directorio no
-es el directorio personal de root por lo cual no pone \~).
+El Linux el prompt del usuario root es \#. La información mostrada es el usuario (root), el ordenador (acerubuntu) y el directorio actual (/hombre/juan, es el mismo que antes pero en este caso ese directorio no es el directorio personal de root por lo cual no pone \~).
 
-El directorio actual es el directorio en el cual nos encontramos en este
-instante y en el cual se ejecutará la orden. Si, por ejemplo, la orden
-es de crear el directorio “prueba” (mkdir prueba) ese directorio se
-creará en el directorio actual. En los ejemplos anteriores se creará
-dentro de /hombre/juan (en los ejemplos de Linux) y dentro de
-C:\\Users\\juan (en el ejemplo de Windows).
+El directorio actual es el directorio en el cual nos encontramos en este instante y en el cual se ejecutará la orden. Si, por ejemplo, la orden es de crear el directorio “prueba” (mkdir prueba) ese directorio se creará en el directorio actual. En los ejemplos anteriores se creará
+dentro de /hombre/juan (en los ejemplos de Linux) y dentro de C:\\Users\\juan (en el ejemplo de Windows).
 
 ### Scripts
 
-Además de escribir un por uno los comandos a ejecutar también se pueden
-escribir todos en un fichero de texto llamado **script**. Un script
-contiene en cada línea un comando.
+Además de escribir un por uno los comandos a ejecutar también se pueden escribir todos en un fichero de texto llamado **script**. Un script contiene en cada línea un comando.
 
-Ejecutar un script es equivalente a escribir y ejecutar un detrás otro
-todos los comandos que contiene.
+Ejecutar un script es equivalente a escribir y ejecutar un detrás otro todos los comandos que contiene.
 
 Los scripts se utilizan habitualmente para automatizar tareas que
-tenemos que realizar periódicamente en el ordenador. El script incluirá
-los comandos necesarios para hacer esa tarea y el único que tenemos que
-hacer se ejecutarlo (escribir su nombre) desde la línea de comandos o
-incluso programar su ejecución.
+tenemos que realizar periódicamente en el ordenador. El script incluirá los comandos necesarios para hacer esa tarea y el único que tenemos que hacer se ejecutarlo (escribir su nombre) desde la línea de comandos o incluso programar su ejecución.
 
 ### Sintaxis
 
-Un comando es simplemente una palabra en inglés que expresa una
-operación a realizar y que se tiene que teclear a continuación del
-prompt.
+Un comando es simplemente una palabra en inglés que expresa una operación a realizar y que se tiene que teclear a continuación del prompt.
 
-Cuando ejecutamos un comando podemos pasarle uno o más parámetros (unos
-obligatorios y otros opcionales, según el comando). Los parámetros son
-información que recibirá el comando para su ejecución y van después del
-nombre del comando separados por espacios en blanco.
+Cuando ejecutamos un comando podemos pasarle uno o más parámetros (unos obligatorios y otros opcionales, según el comando). Los parámetros son información que recibirá el comando para su ejecución y van después del nombre del comando separados por espacios en blanco.
 
-![mkdir](mkdirProva.png "mkdir")
+![mkdir](./media/mkdirProva.png "mkdir")
 
-En el ejemplo anterior el comando mkdir recibe como parámetro en nombre
-del directorio a crear, en este caso prueba.
+En el ejemplo anterior el comando mkdir recibe como parámetro en nombre del directorio a crear, en este caso prueba.
 
 ### Comodines
 
@@ -232,7 +297,7 @@ del usuario juan (en C:\\Usuarios\\juan). Para los ejemplos nuestro
 directorio actual será “nacional”
 (C:\\Usuarios\\juan\\pedidos\\nacional).
 
-![Estructura de directorios](rutas.png "Estructura de directorios")
+![Estructura de directorios](./media/rutas.png "Estructura de directorios")
 
 Ejemplos:
 
@@ -290,16 +355,14 @@ ese comando:
 
 help copy
 
-![help
-copy](https://moodle.cipfpbatoi.es/pluginfile.php/5396/mod_book/chapter/99/help_copy.png)
+![help copy](https://moodle.cipfpbatoi.es/pluginfile.php/5396/mod_book/chapter/99/help_copy.png)
 
 El mismo podemos obtener tecleando el nombre del comando seguido del
 modificador /?, por ejemplo miedo obtener ayuda sobre copy teclearemos:
 
 copy /?
 
-![help
-copy](https://moodle.cipfpbatoi.es/pluginfile.php/5396/mod_book/chapter/99/help_copy2.png)
+![help copy](https://moodle.cipfpbatoi.es/pluginfile.php/5396/mod_book/chapter/99/help_copy2.png)
 
 ### Sintaxis de los comandos
 
@@ -515,15 +578,11 @@ pueden tener los ficheros son:
 
 Ejemplos:
 
-attrib - Muestra los atributos de todos los ficheros del directorio
-actual
+attrib - Muestra los atributos de todos los ficheros del directorio actual
 
-attrib +H lligme.txt - Pone el atributo H al fichero lligme.txt del
-directorio actual (ahora ese fichero está oculto y no aparece al hacer
-un DIR)
+attrib +H lligme.txt - Pone el atributo H al fichero lligme.txt del directorio actual (ahora ese fichero está oculto y no aparece al hacer un DIR)
 
-attrib -R C:\\boot.ini - Quita el atributo R al fichero boot.ini del
-directorio raíz de C: por lo cual ahora se puede modificar ese fichero
+attrib -R C:\\boot.ini - Quita el atributo R al fichero boot.ini del directorio raíz de C: por lo cual ahora se puede modificar ese fichero
 
 ### print
 

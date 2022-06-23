@@ -8,8 +8,8 @@ El bloque está compuesto por 5 unidades de trabajo:
 - [UD 1 Introducción a los sistemas operativos](ud01): esta es la unidad más teórica de todo el curso y en ella veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay.
 - [UD 2 Virtualización](../../../altres/virtualitzacio/): aquí veremos todo lo relacionado con la virtualización para poder trabajar con máquinas virtuales.
 - [UD 3 Instalación](ud03): en esta unidad instalaremos diferentes sistemas operativos y veremos las cosas básicas a configurar durante el proceso de instalación.
-- UD 4 Sistemas de archivos: en esta unidad conoceremos diferentes sistemas de archivos, la gestión de permisos y la estructura de estos.
-- UD 5 Comandos: en esta unidad conoceremos los principales comandos para Windows y GNU/Linux.
+- [UD 4 Sistemas de archivos](ud04): en esta unidad conoceremos diferentes sistemas de archivos, la gestión de permisos y la estructura de estos.
+- [UD 5 Comandos](ud05): en esta unidad conoceremos los principales comandos para Windows y GNU/Linux.
 
 ## Introducción
 
