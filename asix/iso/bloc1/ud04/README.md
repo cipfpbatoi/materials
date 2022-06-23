@@ -15,9 +15,11 @@
     - [Gestión desde la terminal](#gestión-desde-la-terminal)
     - [Montaje sistema de ficheros](#montaje-sistema-de-ficheros)
   - [Estructura](#estructura)
-  - [Permisos](#permisos)
     - [MS Windows](#ms-windows)
     - [GNU/Linux](#gnulinux)
+  - [Permisos](#permisos)
+    - [MS Windows](#ms-windows-1)
+    - [GNU/Linux](#gnulinux-1)
 
 ## Introducción
 
@@ -387,15 +389,260 @@ Para que el sistema operativo pueda utilizar un dispositivo y acceder a su siste
 - En este sistema sólo existe un directorio raíz por lo que cualquier dispositivo de almacenamiento que queramos utilizar ha de montarse en algún directorio.
 - Se montan automáticamente las particiones indicadas en el fichero de configuración **/etc/fstab**.
 - Los discos USB suelen montarse automáticamente (normalmente bajo la
-carpeta /media).
+carpeta **/media**).
 
 ## Estructura 
 
 Por defecto, cuando instalamos un sistema operativo se crean una serie de directorios donde se almacenan los ficheros del sistema, los programas instalados, etc. Veremos las diferencias entre los dos sistemas operativos con los que estamos trabajando.
 
+### MS Windows
+
+En los sistemas Microsoft el sistema asigna una letra para cada dispositivo de almacenamiento (partición, disco o unidad extraíble). Normalmente, el sistema operativo se instalará en la unidad C:. En esta unidad se crearán los directorios por defecto del sistema operativo.
+
+**\Boot**: Este directorio contiene archivos y directorios utilizados en el arranque del sistema. Normalmente se encuentra en una partición que se crea al instalar el sistema.
+
+**\Archivos de programa**: La mayoría de los programas (incluidos los programas y herramientas que vienen con Windows) instalan los ficheros que necesitan en sub-carpetas dentro de esta carpeta.
+
+**\Archivos de programa x86**: Si nuestro sistema es de 64 bits también se creará esta carpeta donde se instalarán los programas que son de 32 bits.
+
+**\PerfLogs**: Almacena información sobre rendimiento y monitorización del sistema.
+
+**\Usuarios**: La primera vez que entramos en el equipo con una cuenta de usuario, Windows crea una carpeta para la cuenta de usuario en la carpeta *“Usuarios”*. Ésta contiene:
+
+  - Varias sub-carpetas para almacenar datos del usuario: Contactos, Escritorio, Documentos, Música, Videos, etc.
+
+  - Una carpeta oculta AppData que contiene información sobre configuración de nuestra cuenta de usuario y los programas que utiliza.
+
+La carpeta Usuarios también contiene la subcarpeta de Acceso Público en la que se guardan los archivos compartidos entre todos los usuarios del equipo.
+
+**\Windows**: La mayoría de los ficheros críticos del sistema operativo se almacenan en esta carpeta. Es mejor no tocar nada de esta carpeta a no ser que sepamos realmente qué estamos haciendo.
+
+### GNU/Linux
+
+El estándar que detalla los nombres, ubicaciones, contenidos y permisos de los archivos y directorios de cualquier sistema Unix y derivados (como GNU/Linux lo define el FHS **(Filesystem Hierarchy Standard)**.
+
+Es un estándar flexible, por lo que pueden haber pequeñas diferencias entre distribuciones. 
+
+**El directorio raíz ( / )**: Todos los archivos y directorios se encuentran bajo este directorio (no hay uno por unidad como en Windows). No es recomendable crear directorios o archivos directamente en este directorio.
+
+**/home**: Contiene los subdirectorios que son directorios personales de los diferentes usuarios del sistema. Cada directorio de usuario es un lugar donde se localizan los ficheros personales de dicho usuario y también los archivos de configuración propios de cada cual (su perfil).
+
+**/root**: Directorio raíz del usuario root (este usuario no tiene su directorio en /home)
+
+**/etc**:Contiene archivos necesarios para la configuración del sistema y de los diferentes programas instalados. Son ficheros de texto plano que podemos editar para modificar las opciones.
+
+**/boot**: Este directorio contiene todo que necesita el proceso de arranque del sistema.
+
+**/dev**: Este directorio almacena las definiciones de todos los dispositivos, es decir los archivos especiales asociados a cada dispositivo. (El subdirectorio **/dev/null** actúa como agujero negro)
+
+**/media**: Contiene los subdirectorios que se utilizan como puntos del montaje para los medios de almacenamiento extraíble, como por ejemplo ç disquetes, CD-ROM y memorias USB’s.
+
+**/mnt**: Se utiliza para montar particiones de forma temporal en el sistema por parte del usuario.
+
+**/bin**: En este directorio se sitúa el código binario o compilado de los programas y comandos que pueden utilizar todos los usuarios del sistema.
+
+**/sbin**: Como el anterior pero contiene comandos y programas exclusivos de root.
+
+**/srv**: Directorio donde guardar los ficheros y directorios de datos del sistema.
+
+**/tmp**: Directorio donde se guardan los archivos temporales.
+
+**/proc**: El contenido de este directorio es virtual y sus ficheros no existen realmente en disco, sólo están en la memoria. Son archivos que contienen información sobre nuestro sistema.
+
+**/lib**: Contiene librerías compartidas (similar a las DLLs de Windows) necesarias para arrancar el sistema y para los ficheros ejecutables. También contiene módulos del núcleo básicos que permiten el funcionamiento de muchos elementos de hardware.
+
+**/opt**: Contiene paquetes de programas opcionales de aplicaciones que pueden ser compartidas entre los usuarios. Estas aplicaciones no guardan sus configuraciones en este directorio; de este modo, cada usuario puede tener una configuración diferente de una misma aplicación, de forma que se comparte la aplicación pero no las configuraciones de los usuarios, las cuales se
+guardan en su respectivo directorio /home.
+
+**/usr**: También incluye comandos y programas y sus ficheros tienen que ser de sólo lectura. Normalmente en este directorio se almacena el software instalado en el sistema.
 
 ## Permisos 
 
+La mayoría de los sistemas de archivos modernos permiten asignar **permisos** a los archivos para determinados **usuarios y grupos** de usuarios.
+
+Los sistemas de archivo **FAT** no implementan ningún sistema de permisos. Sólo existe un atributo de *"solo lectura“*.
+
+Los sistemas **NTFS** usan listas de control de acceso (**ACLs**) para administrar los permisos.
+
+Las ACLs permiten asignar a cada **usuario o grupo** los permisos que tendrá sobre el archivo o directorio.
+
+Los sistemas **UNIX** y derivados poseen un sistema simple para el manejo de permisos sobre archivos individuales, aunque también permiten usar un sistema de listas de control de acceso (**ACLs**).
+
 ### MS Windows
 
+**Atributos**
+
+Un atributo es una característica de un archivo o carpeta que se aplica a todos los usuarios del sistema.
+
+Existen desde las primeras versiones de **FAT**. Por ejemplo, los atributos *Hidden (Oculto)* o *Read-Only (Solo Lectura)*.
+
+No permiten realizar un control sobre los archivos tan específico como los permisos, implementados a partir del sistema de ficheros **NTFS**.
+
+![atributos](media/ud4-12.png)
+
+- **Oculto (H)**: indica que el fichero no se ve al entrar en su directorio.
+- **Solo lectura (R)**: indica que no podemos modificar el contenido del fichero.
+- **Sistema (S)**: atributo de Windows, indica que se trata de un archivo especial del sistema operativo.
+- **Accedido (A)**: atributo de Windows, se utiliza para hacer copias de seguridad.
+
+**Permisos NTFS**
+
+Los permisos se especifican para cada usuario o grupo de usuarios.
+
+Para gestionar los permisos, abrimos el menú contextual del archivo y seleccionamos la opción Propiedades, pestaña de Seguridad.
+
+Podemos ver:
+  
+- **Ruta** absoluta al recurso
+- **Usuarios y grupos** con permisos sobre este recurso.
+- **Permisos** en función del rol seleccionado.
+
+![ntfs](media/ud4-12.png)
+
+Tipos de permisos NTFS:
+
+- **Permisos especiales**: Controlan cada acción que un usuario puede o no hacer sobre una carpeta o archivo. Son muchos y es bastante compleja su administración.
+- **Permisos estándar**: Son combinaciones de varios permisos especiales para hacer más sencillo su uso.
+
+Normalmente utilizaremos sólo los permisos estándar y si en algún momento necesitamos un mayor grado de control utilizamos los permisos especiales.
+
+**Permisos estándar**
+
+- **Control total**: permite hacer cualquier cosa, incluyendo cambiar los permisos o la propiedad del archivo o carpeta. Este permiso incluye todos los otros.
+- **Modificar**: permite hacer cualquier cosa con el recurso, como leer, modificar o eliminar pero no permite cambiar los permisos. Incluye los permisos de Leer y ejecutar y Escribir.
+- **Leer y ejecutar**: permite leer el recurso y ejecutarlo si se trata de un programa. Si es una carpeta podemos ver su contenido y entrar dentro. Este permiso incluye el permiso de Leer y, en el caso de carpetas, incluye el de Mostrar el contenido.
+- **Mostrar el contenido de la carpeta**: se aplica en carpetas y permite ver su contenido y entrar dentro de la carpeta.
+- **Leer**: permite ver el contenido (si es una carpeta ver los ficheros que contiene pero no entrar dentro) y ver sus atributos y permisos.
+- **Escribir**: si es un fichero permite modificarlo y si es una carpeta permite copiar ficheros dentro pero no eliminar nada ni leerlo (ficheros) o ver su contenido ni entrar (carpetas). 
+
+La mayoría a veces utilizamos sólo los permisos de Control total, Modificar o Leer y ejecutar.
+
+**Permisos especiales**
+
+- **Recorrer carpeta o ejecutar archivo**: permite o impide que el usuario pase por la carpeta para llegar a otros archivos o carpetas (carpeta) o permite ejecutarlo (archivo).
+- **Listar carpeta / Leer datos**: permite que el usuario vea los nombres de fichero y subcarpetas de la carpeta (carpeta) o ver datos del archivo (archivo).
+- **Atributos de lectura**: permite ver los atributos de un archivo o de una carpeta, definidos por el sistema de archivos NTFS.
+- **Atributos extendidos de lectura**: permite ver los atributos extendidos de un archivo o de una carpeta, que están definidos por los programas y pueden variar de uno al otro.
+- **Crear archivos / Escribir datos**: permite crear archivos en la carpeta (carpeta) o hacer cambios en el archivo (archivo).
+- **Crear carpetas / Anexar datos**: permite crear carpetas en la carpeta (carpeta) o añadir datos al final del fichero (archivo).
+- **Atributos de escritura**: permite que el usuario cambie los atributos NTFS de un archivo o de una carpeta.
+- **Atributos extendidos de escritura**: permite que se cambien los atributos extendidos de un archivo o de una carpeta (definidos por los programas y pueden variar de uno al otro).
+- **Eliminar subcarpetas y archivos**: permite eliminar subcarpetas y archivos. Este permiso se aplica sólo en las carpetas.
+- **Eliminar**: permite eliminar el archivo o la carpeta a quien se aplica este permiso.
+- **Leer permisos**: permite leer los permisos del archivo o de la carpeta.
+- **Cambiar permisos**: permite cambiar permisos del archivo o de la carpeta.
+- **Tomar posesión**: permite que el usuario tome posesión del fichero o de la carpeta. El propietario de un archivo o de una carpeta siempre puede cambiar los permisos del fichero o la carpeta.
+
+**Permisos heredados**: Al crear una carpeta o archivo este hereda los permisos de la carpeta o unidad donde se crea.
+
+**Permisos explícitos**: Permisos que añade cualquier usuario autorizado sobre el recurso a parte de los heredados.
+
+**Permisos efectivos**: Que un usuario tenga o no permiso sobre un archivo o carpeta depende de:
+
+- los permisos que posea dicho usuario
+- los permisos de todos los grupos a los que pertenece el usuario
+- los permisos explícitos del objeto
+- los permisos heredados del mismo
+
+Por eso a veces se hace difícil determinar qué permisos reales tenemos sobre algún recurso. Los permisos efectivos permiten ver los permisos vigentes en el recurso.
+
 ### GNU/Linux
+
+**GNU/Linux** utiliza un sistema de permisos más simple que el de NTFS basado en 3 permisos básicos:
+
+- **r (read)**: es el permiso de lectura y permite ver el contenido de un fichero o de una carpeta
+- **w (write)**: es el permiso de escritura y permite modificar ficheros, borrar o crear ficheros y
+subcarpetas nuevos
+- **x (execute)**: en el caso de ficheros permite ejecutarlos (si es un programa ejecutable) y en el caso de carpetas permite entrar dentro
+
+Por defecto no se usan **ACLs** (aunque podemos usarlas). Se definien permisos para:
+
+- **Usuario** propietario del recurso
+- **Grupo** principal al que pertenece el usuario propietario
+- **Otros** usuarios del sistema
+
+A este tipo de permisos se les suela llamar **UGO** (acrónimo de User Group Others).
+
+Al ejecutar el comando **ls -l** veremos los permisos de cada archivo del directorio:
+
+![permisos](media/ud4-14.png)
+
+- **Permisos**: los 10 primeros caracteres nos indican los permisos del fichero.
+- **Enlaces fuertes**: similar a un puntero. Para los directorios, este número indica cuántas carpetas contiene (incluyendo ‘.’ para sí misma y ‘..’ para la carpeta padre)
+- **Usuario propietario**: usuario propietario del fichero
+- **Grupo propietario**: grupo propietario del fichero
+- **Tamaño**: expresado en bytes
+- **Fecha y hora**: de la última modificación
+- **Nombre**: del fichero o directorio
+
+El significado de los permisos es el siguiente:
+
+![permisos](media/ud4-15.png)
+
+- **Tipo de Archivo**: en el caso de ser un fichero, aparece el carácter "-", mientras que para los directorios aparece una "d“ y para los enlaces “l”.
+- **Permisos del propietario** : nos indican, respectivamente, los permisos de lectura, escritura y ejecución para el usuario propietario del fichero. En el caso de tener el permiso correspondiente activado encontramos el carácter correspondiente, "r", "w" o "x", y si no tiene alguno de estos permisos en lugar de la letra del permiso aparece el símbolo "-".
+- **Permisos del grupo propietario**: estos caracteres tienen exactamente el mismo significado que los anteriores, pero hacen referencia a los permisos concedidos a los usuarios del grupo propietario del fichero.
+- **Permisos del resto de usuarios del sistema**: igual que los anteriores, pero para los otros usuarios del sistema que no son el propietario ni pertenecen al grupo propietario.
+
+Los permisos pueden cambiarse desde la interfaz gráfica, de forma similar a Windows.
+
+- **Ninguno**: equivale a los permisos ---
+- **Sólo lectura**: equivale a r--
+- **Lectura y escritura**: equivale a rw-
+- Si marcamos la opción de **“Permite ejecutar este fichero como un programa”** se añade a los anteriores el permiso x, pasando “Sólo lectura” a ser **r-x** y “Lectura y escritura” a **rwx**.
+
+![permisos](media/ud4-16.png)
+
+También para carpetas: 
+
+- Ninguno: ---
+- Sólo listar ficheros: r--
+- Acceder a los ficheros: r-x
+- Crear y suprimir ficheros: rwx
+
+Se puede controlar la herencia mediante la opción *“Aplicar permisos a los archivos contenidos”* 
+
+Cabe recordar que solo el propietario (o root) puede cambiar los permisos.
+
+![permisos](media/ud4-17.png)
+
+**Permisos ACL**
+
+Normalmente con los permisos UGO tenemos suficiente para asignar los permisos necesarios a ficheros y directorios pero en ocasiones necesitamos poder asignar permisos diferentes a diferentes grupos. En ese caso podemos utilizar ACLs en GNU/Linux igual que se hace en Windows.
+
+Al mirar los permisos desde la terminal si un fichero o directorio te establecidos permisos ACL aparece junto en los permisos el símbolo + que nos dice que hay más permisos (los ACL):
+
+![permisos](media/ud4-18.png)
+
+**getfacl**
+
+El comando para ver los permisos ACL de un fichero o directorio es **getfacl**:
+
+- \# file: nombre del fichero o directorio
+- \# owner: usuario propietario
+- \# group: juan - nombre del grupo propietario
+- user::rwx - permisos del usuario propietario
+- group::r-x - permisos del grupo propietario
+- group:alumnos:r-x - permisos del grupo alumnos
+- group:profesores:rwx - permisos del grupo profesores
+- mask::rwx - la máscara indica los permisos máximos que se pueden dar
+- other::r-x - permisos del resto de usuarios
+
+![permisos](media/ud4-19.png)
+
+El comando para asignar permisos ACL de un fichero o directorio es **setfacl**. Tiene los siguientes parámetros:
+
+- **-b** borra permisos
+- **-m** añade permisos a los que ya tuviera
+- **-s** quita los permisos que tuviera y pone los que le indican
+- **-d** (junto a -m o -s) los permisos que ponemos serán para los nuevos ficheros y directorios que se crean dentro de (default) no para el fichero o directorio indicado
+- **-R** aplica el comando también a todos los ficheros y directorios incluidos en ese directorio
+
+**setfacl**
+
+Algunos ejemplos 
+- **setfacl -b provaacl**: Borra todos los permisos ACL de provaacl.
+- **setfacl -R -m g:alumnos:r-x provaacl**: Le da permisos r-x al grupo alumnos sobre el directorio provaacl y todo el que contiene.
+- **setfacl -R -m g:profesores:rwx provaacl**: Le da permisos rwx al grupo profesores sobre el directorio provaacl y todo el que contiene.
+- **setfacl -d -m g:alumnos:r-x provaacl**: Le da permisos r-x por defecto al grupo alumnos sobre los nuevos ficheros o directorios que se crean dentro de provaacl.
+- **setfacl -d -m g:profesores:rwx provaacl**: Le da permisos rwx por defecto al grupo profesores sobre los nuevos ficheros o directorios que se crean dentro de provaacl.
