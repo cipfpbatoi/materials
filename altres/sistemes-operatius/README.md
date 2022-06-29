@@ -5,3 +5,5 @@ En aquesta carpeta trobaras recursos sobre sistemes operatius per a utilitzar en
 * [Particionament de discos](./particions/)
 * [Samba](./samba/)
 * [Comandos de Windows](./comandos-windows/)
+* [Software RAID](./software-raid/)
+* [LVM](./lvm/)

@@ -1,12 +1,12 @@
 # Principals sistemes operatius
-En aquesta unitat de treball coneixerem els sistemes operatius més utilitzats i les seues principals característiques i veurem què hem de trindre en compte abans d'instal·lar un sistema operatiu. Això ens permetrà triar la millor opció per a cada cas. 
+En aquesta unitat de treball coneixerem els sistemes operatius més utilitzats i les seues principals característiques i veurem què hem de tindre en compte abans d'instal·lar un sistema operatiu. Això ens permetrà triar la millor opció per a cada cas. 
 
 ![Principals sistemes oeratius](http://2.bp.blogspot.com/-RvsFmMCJlJQ/Tdh5ZxQ8nqI/AAAAAAAAAAM/Y9RUNBh26Pc/s1600/logotipos-sistema-operativo-historia-anecdotas.jpg)
 
 ## Tipus de sistemes operatius
-El sistema operatiu és el programari responsable de gestionar els recursos d'un equip (ja sigui un ordinador personal, un telèfon mòbil, etc.). Una de les principals funcions és gestionar el maquinari, de manera que els diversos programes no se n'hagin d'ocupar d'això, alleugerint i fent més fàcil així el procés de programació d'aquestes aplicacions. Altra funció important és oferir diversos serveis als programes d'aplicació i als usuaris. Les aplicacions poden accedir a aquests serveis a través de l'**API** (_Application Programming Interface_ o interfície de programació d'aplicacions) o a través de cridaes al sistema. Els usuaris ineractuen amb el sistema per mitjà de la **GUI** (_Graphic User Interface_ o interfície gràfica d'usuari) o per mitjà de l'intèrpret de comandos (**CLI**, _Command Line Interface_).
+El sistema operatiu és el programari responsable de gestionar els recursos d'un equip (ja sigui un ordinador personal, un telèfon mòbil, etc.). Una de les principals funcions és gestionar el maquinari, de manera que els diversos programes no se n'hagin d'ocupar d'això, alleugerint i fent més fàcil així el procés de programació d'aquestes aplicacions. Altra funció important és oferir diversos serveis als programes d'aplicació i als usuaris. Les aplicacions poden accedir a aquests serveis a través de l'**API** (_Application Programming Interface_ o interfície de programació d'aplicacions) o a través de cridades al sistema. Els usuaris interactuen amb el sistema per mitjà de la **GUI** (_Graphic User Interface_ o interfície gràfica d'usuari) o per mitjà de l'intèrpret de comandos (**CLI**, _Command Line Interface_).
 
-La gran majoria d'ordinadors, des de telèfons mòbil, ordinadors personals, videoconsoles fins a supercomputadors, usen algun tipus de sistema operatiu. Però hui en dia molts altres equips electrónics tenen un processador i un maquinari prou complexe com per a justificar que tinguen el seu propi sistema operatiu. A més dels telefons mòbils també ho tenen molts sistemes encastats. Un sistema encastat és un sistema de computació (té un processador) però que només fa unes determinades tasques. Exemples d'aquest sistemes són SmartTV, reproductors multimèdia, routers, navegadors per a cotxes, caixers automàtics i fins i tot microones, frigorífics o llavadores.
+La gran majoria d'ordinadors, des de telèfons mòbil, ordinadors personals, videoconsoles fins a supercomputadors, usen algun tipus de sistema operatiu. Però hui en dia molts altres equips electrònics tenen un processador i un maquinari prou complexe com per a justificar que tinguen el seu propi sistema operatiu. A més dels telèfons mòbils també ho tenen molts sistemes encastats. Un sistema encastat és un sistema de computació (té un processador) però que només fa unes determinades tasques. Exemples d'aquest sistemes són SmartTV, reproductors multimèdia, routers, navegadors per a cotxes, caixers automàtics i fins i tot microones, frigorífics o llavadores.
 
 ### Sistemes operatius de telèfons mòbils
 Un sistema operatiu mòbil controla un dispositiu mòbil igual que un sistema operatiu per a PC controla un ordinador personal. Tanmateix, els sistemes operatius mòbils són prou més simples i estan més orientats a la connectivitat sense fils, els formats multimèdia i les diferents maneres d'introduir informació en ells.
@@ -15,8 +15,8 @@ Alguns dels sistemes operatius mòbils més utilitzats són:
 - Android: és el S.O. que porta la majoria de Smartphones i tablets. Es va crear per a càmeres fotogràfiques però Google el va comprar i el va modificar per a ús en telèfons. Està basat en Linux i és programari lliure
 - iOS: és el S.O. de Apple per als iPhone, iPad i iPod touch. Està basat en el Mac OS X
 - Microsoft Phone: el seu aspecte és similar als Windows per a PC
-- BlackBerry: dissenyat per Research in Motion (RIM) per als terminals BalckBerry
-- Symbian: un sistema operatiu desenvolupat per moltes companyies (Nokia, Sony Ericsson, Samsung, SIemenes, ...) que es va utilitzar el gran varietat de telèfons durant anys encara que avui ha estat substituit per Android en la majoria de terminals (o Ms Phone en els Nokia)
+- BlackBerry: dissenyat per Research in Motion (RIM) per als terminals BlackBerry
+- Symbian: un sistema operatiu desenvolupat per moltes companyies (Nokia, Sony Ericsson, Samsung, Siemens, ...) que es va utilitzar el gran varietat de telèfons durant anys encara que avui ha estat substituït per Android en la majoria de terminals (o Ms Phone en els Nokia)
 - Firefox OS: desenvolupat per Mozilla és programari lliure i està basat en Linux
 - Ubuntu Touch: creat per Canonical i basat en Linux
 
@@ -29,10 +29,10 @@ Les consoles són ordinadors que han de portar el seu sistema operatiu. Alguns e
 ¿Por qué pensáis que se usa FreeBSD y no Linux?
 
 ### Sistemes operatius per a equips encastats
-Ja hem dit que un sistema encastat és un dispossitiu controlat per un processador però que, a diferència d'un ordinador que es pot utilitzar per a moltes tasques, s'utilitza per a realitzar només unes tasques determinades. Normalment són dispossitius amb poca memòria per la qual cosa els seus sistemes operatius han de ser molt petits.
+Ja hem dit que un sistema encastat és un dispositiu controlat per un processador però que, a diferència d'un ordinador que es pot utilitzar per a moltes tasques, s'utilitza per a realitzar només unes tasques determinades. Normalment són dispositius amb poca memòria per la qual cosa els seus sistemes operatius han de ser molt petits.
 
 Molts d'aquest aparells tenen el seu propi sistema operatiu per a controlar-los desenvolupat específicament per a ells però altres utilitzen versions de altres sistemes com:
-- diferents versions de Linux encastat: basat en el kernel de Linux només ocupen unes 2 MB i s'utilitzen en routers (ex. OpenWrt), telèfons i tot tipus de dispossitius electrònics i industrials
+- diferents versions de Linux encastat: basat en el kernel de Linux només ocupen unes 2 MB i s'utilitzen en routers (ex. OpenWrt), telèfons i tot tipus de dispositius electrònics i industrials
 - Windows IoT: la versió de Windows per a equips encastats que substitueix a Windows Embebed i Windows CE (utilitzats en caixers automàtics, sistemes de navegació de cotxes, etc)
 - VxWorks: basat en Linux, podem trobar-lo en fotocopiadores, avions, routers, navegadors GPS o la sonda Mars Reconnaisance Orbiter
 - FreeBSD: igual que trobem versions de Linux també hi ha versions de FreeBSD (que és un S.O. sencer) en equips com televisors, routers, etc
@@ -45,16 +45,16 @@ Els **Cloud Operating Systems** o sistemes operatius online funcionen com un sis
 
 L'objectiu dels sistemes operatius online és reunir aplicacions online en un únic lloc perquè puguem treballar o realitzar qualsevol tasca amb independència de l'ordinador que utilitzem i també ens permet guardar arxius i personalitzar el nostre escriptori virtual.
 
-Altre advantatge és que aquets sistemes són escalables, és a dir, que si en un moment donat necessitem més RAM o CPU podem contractar-la.
+Altre avantatge és que aquests sistemes són escalables, és a dir, que si en un moment donat necessitem més RAM o CPU podem contractar-la.
 
 Alguns dels més utilitzats són:
-- **Amazon Web Services (AWS)**. Amazon també ofereix S.O. com servei a més del seu conegut SaaS (Sotfware as a Service). És gratuit els primers 12 mesos i després molts dels seus serveis continuen sent gratis. Per a empreses ofereix el Amazon AppStream  que permet virtualitzar màquines des del navegador. 
+- **Amazon Web Services (AWS)**. Amazon també ofereix S.O. com servei a més del seu conegut SaaS (Software as a Service). És gratuït els primers 12 mesos i després molts dels seus serveis continuen sent gratis. Per a empreses ofereix el Amazon AppStream  que permet virtualitzar màquines des del navegador. 
 - **Microsoft Azure**. Ens permet tindre una màquina que simula ser un PC amb Windows o Linux. El primer mes és gratuït i després haurem de pagar pel ús.
 - **Google App Engine**. Amb Google Cloud Platform  ens permet configurar les xarxes i equips remots encara que es de pagament i utilitza unes eines específiques que són complexes per a l'usuari bàsic però és una bona alternativa per a una empresa.
 VMWare ha anunciat el seu VMWare Cloud on AWS
 - **Chrome OS**, gratuït
-- **Horbito**, gratuït imultiplataforma
-- i molts altres. Fins i tot podem utilitzar Google Drive com SO en el núvol ja que a banda de espai d'emmagatzemament ofereix programes ofimàtics (documents, fulles de càlcul, presentacions, ...) i la posibilitat d'afegir més programes des de la Google Web Store.
+- **Horbito**, gratuït i multiplataforma
+- i molts altres. Fins i tot podem utilitzar Google Drive com SO en el núvol ja que a banda de espai d'emmagatzemament ofereix programes ofimàtics (documents, fulles de càlcul, presentacions, ...) i la possibilitat d'afegir més programes des de la Google Web Store.
 
 ## Quin Sistema operatiu per a PC triar
 El Sistema operatiu és un element bàsic del nostre equip i tenir instal·lat un sistema o un altre tindrà moltes implicacions sobre el programari que podrem instal·lar, el bon aprofitament del maquinari i la funcionalitat del sistema per a l'usuari.
@@ -71,9 +71,9 @@ La majoria del mercat de sistemes operatius privatius està copat per la empresa
 Tant Microsoft com Apple han desenvolupat sistemes operatius diferents per a servidors i per a clients (també anomenats d'**escriptori**).
 
 ### Sistemes operatius lliures
-Ací podem parlar de multitud de sistemes i/o distribucions. Per simplificar, veurem principalment Ubuntu, Debian i Fedora, encara que hi han altres molt també molt interessants (OpenSuse, Slax, LliureX, Gentoo, Centos, RedHat, etc). També parlarem d'altres sistemes que no són GNU/Linux com FreeBSD i Andriod.
+Ací podem parlar de multitud de sistemes i/o distribucions. Per simplificar, veurem principalment Ubuntu, Debian i Fedora, encara que hi han altres molt també molt interessants (OpenSuse, Slax, LliureX, Gentoo, CentOS, RedHat, etc). També parlarem d'altres sistemes que no són GNU/Linux com FreeBSD i Andriod.
 
-Com en altres temes veurem, el més important no és conèixer una distribució o unaltra, sinó tenir clar els conceptes principals de funcionament d'un sistema operatiu, en el nostre cas un sistema Gnu/Linux.
+Com en altres temes veurem, el més important no és conèixer una distribució o altra, sinó tenir clar els conceptes principals de funcionament d'un sistema operatiu, en el nostre cas un sistema Gnu/Linux.
 
 ### Actividad
 
