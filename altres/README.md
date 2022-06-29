@@ -5,6 +5,8 @@
   * [Particionament de discos](./sistemes-operatius/particions/)
   * [Samba](./sistemes-operatius/samba/)
   * [Comandos de Windows](./sistemes-operatius/comandos-windows/)
+  * [Software RAID](./sistemes-operatius/software-raid/)
+  * [LVM](./sistemes-operatius/lvm/)
 * [Virtualització. Virtualbox](./virtualitzacio/)
 * [Configurar la xarxa en GNU/Linux](./xarxa-linux/)
 * [Crear documentación con Markdown](./markdown/)

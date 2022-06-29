@@ -4,6 +4,7 @@ En aquesta carpeta trobaras recursos sobre sistemes operatius per a utilitzar en
 * [Principals sistemes operatius](./exemples-so/)
 * [Particionament de discos](./particions/)
 * [Samba](./samba/)
+* [Afegir client GNU/Linux a Active Directory](./linux-ad/)
 * [Comandos de Windows](./comandos-windows/)
 * [Software RAID](./software-raid/)
 * [LVM](./lvm/)

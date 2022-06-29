@@ -9,6 +9,7 @@
     - [_Props_](#props)
     - [_Components_](#components)
     - [_Computed_](#computed)
+    - [hooks](#hooks)
     - [router](#router)
     - [watchEffect y watch](#watcheffect-y-watch)
     - [Pinia](#pinia)
@@ -143,7 +144,7 @@ Las funciones podemos ponerlas como _arrow functions_:
 ## setup
 Lo primero que hace un componente que usa esta API es ejecutar su método _setup_, antes de evaluar ninguna otra característica (_data_, _computed_, _hooks_, ...). Por tanto este método no tiene acceso a _this_ como el resto. Para que pueda acceder a datos que pueda necesitar recibe 2 parámetros:
 - __props__: aquí recibe los parámetros pasados al componente. Todos ellos son reactivos y se pueden observar con un _watch_
-- __context__: es un objeto con las propiedades _attrs_, _slots_, _parent_ y _emit_.
+- __context__: es un objeto con las propiedades _attrs_, _slots_, _parent_ y _emit_. Nos permite acceder a lo que antes accedíamos desde _this_.
 
 El _hook_ **`setup()`** se encarga de:
 - tareas de inicialización del componente: todo lo que antes se hacía en _created()_ o _mounted()_
@@ -183,7 +184,7 @@ Esta es la **sintaxis recomendada** cuando usamos SFC por simplicidad y rendimie
 ## Reactividad en Vue3
 En la _composition API_ de Vue3 sólo las variables recogidas en _props_ son reactivas. Cualquier otra declarada en el _setup_ que queramos que lo sea debemos declararla con `ref` si es un tipo primitivo o `reactive` si es un objeto.
 
-La función `ref` envuelve la variable en un objeto reactivo. El valor de la variable estará en su propiedad `.value`, aunque desde el template podemos usarla directamente como hemos visto en el código anterior.
+La función `ref` envuelve la variable en un Proxy reactivo. El valor de la variable estará en su propiedad `.value`, aunque desde el template podemos usarla directamente como hemos visto en el código anterior.
 
 En el caso de variables de tipos no primitivos (objetos, arrays, ...) se declaran con _reactive_ pero en este caso no es necesario usar la propiedad `.value` (es lo mismo que hace el método `data()` en la _options API_):
 ```vue
@@ -235,11 +236,13 @@ const counter = { count: ref(0) }
 let { count } = counter   // count SÍ es reactivo
 ```
 
-Podéis ver esto con más detalle en [Escuela VUE](https://escuelavue.es/tips/ref-vs-reactive-vue-3/?utm_source=newsletter&utm_medium=email&utm_campaign=cuando_usar_ref_vs_reactive_en_vue_3&utm_term=2022-05-29).
-
 También hay métodos para ver si una variable es reactiva:
 - `isRef(variable)`
 - `isReactive(variable)`
+
+Podéis ver esto con más detalle en:
+- [Escuela VUE](https://escuelavue.es/tips/ref-vs-reactive-vue-3/?utm_source=newsletter&utm_medium=email&utm_campaign=cuando_usar_ref_vs_reactive_en_vue_3&utm_term=2022-05-29).
+- [Documentación de Vue](https://vuejs.org/api/reactivity-core.html)
 
 ## Configuraciones básicas
 
@@ -326,6 +329,10 @@ const originalPrice = computed(() => productPrice.value)
 ```
 
 **NOTA**: Todas las variables definidas como _computed_ son automáticamente reactivas.
+
+### hooks
+Se les antepone _on_ (ej, `onMounted`). Ya no son necesarios ni _beforeCreated_ ni _created_ que son sustituidas por el `setup`.
+
 
 ### router
 Para acceder al _router_ y a la variable _route_ en _composition API_ tenemos que importarlas de _vue-router_ e instanciarlas, ya que no tenemos acceso a _this_:
