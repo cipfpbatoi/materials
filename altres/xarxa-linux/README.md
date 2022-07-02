@@ -53,6 +53,13 @@ Per a configurar la xarxa des de la terminal s'utilitzen diferents sistemes sego
 Les principals diferències entre els dos sistemes són, entre uns altres:
 * el fitxer de configuració en _ifupdown_ es de text pla (**`/etc/network/interfaces`**) i en _netplan_ és un fitxer _YAML_ que es troba dins de **`/etc/netplan/`**
 * el servei que gestiona la xarxa  en _ifupdown_ és **`networking`** i en _netplan_ **`systemd-networkd`**
+* per a activar o desactivar una interficie en _ifupdown_ s’utilitzen els comandos `ifup` i `ifdown` i en _netplan_:
+```bash
+  ip link set $targeta up
+  ip link set $targeta down
+```
+
+* per a vore o configurar temporalment la xarxa en en _ifupdown_ tenim el comando `ifconfig` i en _netplan_ s’ha substituït per `ip`
 * en _netplan_ hi ha una nova comanda, **networkctl**, per a veure què dispositius tenim. Amb el paràmetre `status` ens dóna la configuració de cadascun:
 
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-04.png)
@@ -62,13 +69,13 @@ Si li posem el nom d'una targeta ens dona la informació de la mateixa:
 ![Configuració de xarxa](./img/Ubuntu18-xarxa-05.png)
 
 ### Veure la configuració de la xarxa
-Abans s'utilitzava el comando `ifconfig` que es troba en el paquet **net-tools** junt a `route` i altres. Les distribucions modernes en compte d'aquest paquet inclouen el paquet **iproute2util** que sustitueix aquest comando pel comando `ip` que és més potent. Per a veure la configuració escrivim:
+Abans s'utilitzava el comando `ifconfig` que es troba en el paquet **net-tools** junt a `route` i altres. Les distribucions modernes en compte d'aquest paquet inclouen el paquet **iproute2util** que sustitueix aquest comando pel comando `ip` que és més potent. Per a veure la configuració escrivim un dels comandos:
 ```bash
 ip addr show
+ip link show
 ```
 (o simplement `ip a`). 
 
-![ifconfig](./img/ifconfig.png)
 ![ip a](./img/ip-addr.png)
 
 Es tracta de la xarxa d'un equip amb la interfície local (_localhost_ o _lo_), una targeta ethernet cablejada (_enp4s0f0_) i una inalàmbrica (_wlp3s0_). Podem veure només un resum d'aquesta informació amb `ip -br a`.
@@ -82,6 +89,17 @@ ip route show
 (o simplement `ip r`)
 
 ![ip r](./img/ip-route.png)
+
+Ens indica que:
+- tots els paquets amb destinació la xarxa 172.16.20.0/24 eixiran por la targeta **enp0s3**
+- tots els paquets amb destinació la xarxa 192.168.100.0/24 eixiran por la targeta **enp0s8**
+- la resta de paquets aniran a la porta d'enlaç (equip **172.16.20.1**) per la targeta **enp0s3**
+
+Per a vore el DNS mostrem el contingut del fitxer **`/etc/resolv.conf`**:
+
+![resolv.conf](./img/resolv.png)
+
+En aquest cas tenim com DNS principal **127.0.0.1** (és a dir aquesta màquina) i com secundari **8.8.8.8**. No és convenient modificar ací els DNS perquè aquest fitxer és sobrescrit pels serveis que configuren la xarxa.
 
 ### Accions més comuns
 Tant els antics comandos `ifconfig` com `ip` ens permeten canviar al nostra configuració temporalment (per a canviar-la definitivament hem de fer-ho en els fitxers de configuració):
@@ -123,6 +141,8 @@ Al seleccionar la connexió a configurar i prémer el botó **Editar** podem can
 ![Network Manager - vore connexions](./img/ubunu18-xarxa-nm-3-conf.png)
 
 Ací podem configurar la IP, la màscara, la porta d'enllaç i els DNS i ja tenim la nostra targeta configurada.
+
+Podem vore des de la terminal la configuració de _Network Manager_ amb el comando `nmcli`. Fins i tot podem configurar la xarxa amb el comando `nmtui` (_NetworkManager Text User Interface_).
  
 ### Configuració de la xarxa amb ifupdown
 El fitxer de configuració de la xarxa és `/etc/network/interfaces`:
@@ -410,7 +430,7 @@ post-up iptables restore < /etc/iptables.up.rules
 ```
 
 ### Configurar NAT en sistemes amb ifupdown i nftables
-Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables* que tenia certes limitacions. El comando per a configurar-les és `ntf`.
+Des de _Debian 10 (Buster)_  **[nftables](https://wiki.debian.org/nftables)** reemplaça a *iptables* que tenia certes limitacions (podem continuar utilitzar els comandos _iptables_ ja que el nou framework és compatible). El comando per a configurar-les és `ntf`.
 
 Podem utilitzar _nftables_ en distribucions antigues que no ho porten per defecte, només hem d'instal·lar-les i configurar-les:
 
