@@ -1,13 +1,25 @@
 # Sistemas de Archivos
 
 - [Sistemas de Archivos](#sistemas-de-archivos)
-  - [Introducción](#introducción)
-    - [Unidades de almacenamiento](#unidades-de-almacenamiento)
-      - [Estructura lógica](#estructura-lógica)
+  - [Unidades de almacenamiento](#unidades-de-almacenamiento)
+    - [Estructura física de un disco duro HD](#estructura-física-de-un-disco-duro-hd)
+    - [Estructura física de un disco duro SSD](#estructura-física-de-un-disco-duro-ssd)
+    - [Estructura lógica de los discos](#estructura-lógica-de-los-discos)
     - [Almacenamiento de la información](#almacenamiento-de-la-información)
+      - [Archivos](#archivos)
+      - [Directorios](#directorios)
+        - [Directorio raíz](#directorio-raíz)
+      - [Rutas](#rutas)
+        - [Rutas absolutas y relativas](#rutas-absolutas-y-relativas)
   - [Sistemas de archivo](#sistemas-de-archivo)
+    - [Fragmentación del disco](#fragmentación-del-disco)
     - [Journaling](#journaling)
     - [Principales sistemas de archivo](#principales-sistemas-de-archivo)
+      - [FAT (y derivados)](#fat-y-derivados)
+      - [NTFS (New Technology File System)](#ntfs-new-technology-file-system)
+      - [APFS (Apple File System)](#apfs-apple-file-system)
+      - [ext (Extended Filesystem)](#ext-extended-filesystem)
+      - [Otros sistemas de archivo](#otros-sistemas-de-archivo)
   - [Gestión de sistemas de archivo](#gestión-de-sistemas-de-archivo)
     - [Objetivos del sistema de archivos](#objetivos-del-sistema-de-archivos)
     - [Funciones del gestor de archivos](#funciones-del-gestor-de-archivos)
@@ -19,9 +31,11 @@
     - [GNU/Linux](#gnulinux)
   - [Permisos](#permisos)
     - [MS Windows](#ms-windows-1)
+      - [Atributos](#atributos)
+      - [Permisos NTFS](#permisos-ntfs)
     - [GNU/Linux](#gnulinux-1)
-
-## Introducción
+      - [Permisos UGO](#permisos-ugo)
+      - [Permisos ACL](#permisos-acl)
 
 ## Unidades de almacenamiento
 
@@ -270,7 +284,7 @@ Los sistema de archivo más modernos escriben primero en un área llamada _journ
 
 #### FAT (y derivados)
 
-El sistrema de archivos FAT (_File Allocation Table_) es el sistema de archivos que se utilizaba en los primeros PC's. En la actualidad suele usarse normalmente en las unidades USB. Sus principales inconvenientes son:
+El sistema de archivos FAT (_File Allocation Table_) es el sistema de archivos que se utilizaba en los primeros PC's. En la actualidad suele usarse normalmente en las unidades USB. Sus principales inconvenientes son:
 
 - Tamaño máximo del sistema de archivos y de un fichero de 4GB
 - No soporta ACLs ni ningún otro tipo de permiso
@@ -316,7 +330,7 @@ Los que hemos visto son los más comunes pero existen multitud de _FS_ como pode
 
 Diseñado en 2005 por _Sun_ para su sistema operativo _Solaris_ se utiliza en la actualidad en muchos servidores y sistemas _NAS_. Gestiona 1 o más dispositivos y funciona sobre dispositivos lógicos.
 
-En lugar de RAID hardware usa un RAID softwatre llamado _RAID-Z_ similar al RAID-5 lo que proporcina un almacenamiento rápido y muy fiable a precios económicos al usar discos "normales" sin necesidad de controladora RAID. 
+En lugar de RAID hardware usa un RAID software llamado _RAID-Z_ similar al RAID-5 lo que proporciona un almacenamiento rápido y muy fiable a precios económicos al usar discos "normales" sin necesidad de controladora RAID. 
 
 También incorpora la _deduplicación_ que permite que si hay ficheros (o partes) duplicados sólo se guarde una copia de los mismos. Esto ahorra mucho espacio en disco aunque para su gestión se necesita mucha RAM (unos 2 GB de RAM por cada TB de disco).
 
@@ -324,7 +338,7 @@ También incorpora la _deduplicación_ que permite que si hay ficheros (o partes
 
 Se trata de un sistema de ficheros distribuido donde los datos se reparten por diferentes dispositivos. Podemos indicar la cantidad de copias de cada fichero que habrá entre los distintos dispositivos lo que permite una enorme seguridad y fiabilidad ya que podemos hacer que cada fichero esté en varios equipos diferentes de forma que aunque fallen algunos pueda seguir siendo accesible el fichero.
 
-Es una opción de tener un servidor de almacenamiento muy barata y escalable ya que podemos ir añadiendo nuevos dispositivos (nuevos equipos con discos, quie no tienen que ser muy caros) al sistema en cualquier momento.
+Es una opción de tener un servidor de almacenamiento muy barata y escalable ya que podemos ir añadiendo nuevos dispositivos (nuevos equipos con discos, que no tienen que ser muy caros) al sistema en cualquier momento.
 
 ## Gestión de sistemas de archivo
 
@@ -375,10 +389,13 @@ Se puede gestionar cada partición: crear, eliminar, redimensionar, formatear o 
 
 GNU/Linux: Las diferentes distribuciones y los diferentes escritorios tienen herramientas gráficas propias para gestionar los sistemas de archivo, aunque son bastante parecidos.
 
-![linux](./media/ud4-11.png)
+Utilidad 'Discos' de Linux Mint:
 
-**gparted**
+![linux](./media/discos-mint.png)
 
+Programa 'gparted':
+
+![linux](./media/discos-gparted.png)
 
 ### Gestión desde la terminal
 
