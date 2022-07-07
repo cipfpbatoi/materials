@@ -1,4 +1,17 @@
 # Principals sistemes operatius
+- [Principals sistemes operatius](#principals-sistemes-operatius)
+  - [Introducció](#introducció)
+  - [Tipus de sistemes operatius](#tipus-de-sistemes-operatius)
+    - [Sistemes operatius de telèfons mòbils](#sistemes-operatius-de-telèfons-mòbils)
+    - [Sistemes operatius de consoles de jocs](#sistemes-operatius-de-consoles-de-jocs)
+    - [Sistemes operatius per a equips encastats](#sistemes-operatius-per-a-equips-encastats)
+    - [Sistemes operatius en el núvol](#sistemes-operatius-en-el-núvol)
+  - [Quin Sistema operatiu per a PC triar](#quin-sistema-operatiu-per-a-pc-triar)
+    - [Sistemes operatius privatius](#sistemes-operatius-privatius)
+    - [Sistemes operatius lliures](#sistemes-operatius-lliures)
+    - [Actividad](#actividad)
+
+## Introducció
 En aquesta unitat de treball coneixerem els sistemes operatius més utilitzats i les seues principals característiques i veurem què hem de tindre en compte abans d'instal·lar un sistema operatiu. Això ens permetrà triar la millor opció per a cada cas. 
 
 ![Principals sistemes oeratius](http://2.bp.blogspot.com/-RvsFmMCJlJQ/Tdh5ZxQ8nqI/AAAAAAAAAAM/Y9RUNBh26Pc/s1600/logotipos-sistema-operativo-historia-anecdotas.jpg)
@@ -82,7 +95,7 @@ En grups de 2 o 3 persones anem a investigar les avantatges dels diferents siste
 Els sistemes a triar són:
 
 - Sistemes lliures o sistemes privatius (un grup defensarà els sistemes lliures i altre els privatius)
-- Diferents sistemes Windows: Windows 10, Windows 8 / 8.1, Windows 7, Altres Windows
+- Diferents sistemes Windows: Windows 11, Windows 10, Windows 8 / 8.1, Windows 7, Altres Windows
 - Diferents sistemes lliures: Debian, Ubuntu, RedHat, CentOS, ...
 - Sistemes OS X
 - Altres sistemes operatius: BSD, ...

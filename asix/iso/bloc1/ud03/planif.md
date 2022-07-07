@@ -13,17 +13,17 @@ La instalación del sistema operativo es una de las acciones más delicadas que 
 Tanto si queremos realizar una instalación nueva como si queremos actualizar el sistema operativo ya existente, se trata de un proceso muy importante y hay que llevar a cabo una buena planificación. Planificar consiste en enumerar las tareas que tenemos que realizar, estimar el tiempo necesario para llevarlas a cabo y asignar los recursos necesarios (humanos y materiales).
 
 A continuación tenéis algunas de las cosas que se deberán hacer durante el proceso de instalación de un sistema operativo cualquiera. En función de qué sistema sea puede variar un poco, pero en general serán bastantes similares:
-- Haced una copia de seguridad de cualquier información o documentos que tengáis en el disco duro donde queréis hacer la instalación.
-- Recopilad información sobre vuestro ordenador y cualquier otra documentación necesaria antes de empezar la instalación.
-- Consultad las diferentes versiones del sistema para elegir la que mejor se adapte a nuestras necesidades así como la licencia del programa para conocer las obligaciones que tendremos
-- Consultad los requisitos del sistema operativo y comprobad que el hardware que tenemos es compatible con el sistema a instalar y que cumple **holgadamente** con dichos requisitos.
-- **Diseñad las particiones** que haremos para nuestro sistema (tanto para el sistema operativo como para datos) y el sistema de archivos que elegiremos para cada una de ellas. Para ello tendremos en cuenta el tipo de sistema operativo a instalar, si algun otro sistema tiene que acceder también a esa partición, etc. Podemos hacer las particiones antes de empezar la instalación con alguna herramienta de particionamento (como _gparted_, _Partition Magic_, etc) o utilizar el asistente que incluirá el programa de instalación del sistema operativo para hacerlas.
-- Localizad y/o descargad el software del instalador y los ficheros de cualquier driver que necesite nuestra máquina.
-- Configurad los CDs/USBs de arranque, o poned donde corresponda los ficheros de arranque (también se pueden hacer instalaciones automatizadas desde la red).
-- Configurad la secuencia de arranque de la BIOS para que arranque desde el dispositivo donde tenemos los ficheros de arranque de la instalación
-- Arrancad el sistema de instalación.
+- Hacer una copia de seguridad de cualquier información que haya en el disco duro donde se va a hacer la instalación.
+- Recopilar información sobre el ordenador (procesador, cantidad de RAM, espacio en disco, ...) y cualquier otra información necesaria (si tiene algún dispositivo especial, ...) antes de empezar la instalación.
+- Consultar las diferentes versiones del sistema operativo para elegir la que mejor se adapte a nuestras necesidades así como su licencia para conocer las obligaciones que tendremos
+- Consultar los requisitos del sistema operativo y comprobar que el hardware que tenemos es compatible con el sistema a instalar y que cumple **holgadamente** con dichos requisitos.
+- **Diseñar las particiones** que haremos para nuestro sistema (tanto para el sistema operativo como para datos) y el sistema de archivos que elegiremos para cada una de ellas. Para ello tendremos en cuenta el tipo de sistema operativo a instalar, si algun otro sistema tiene que acceder también a esa partición, etc. Podemos hacer las particiones antes de empezar la instalación con alguna herramienta (como _gparted_, _Partition Magic_, etc) o utilizar el asistente que incluye el programa de instalación del sistema operativo para hacerlas.
+- Localizar y/o descargar el software del instalador y los ficheros de cualquier driver que necesite nuestra máquina.
+- Configurar los CDs/USBs de arranque, o poner donde corresponda los ficheros de arranque (también se pueden hacer instalaciones automatizadas desde la red).
+- Configurar la secuencia de arranque de la BIOS para que arranque desde el dispositivo donde tenemos los ficheros de arranque de la instalación
+- Arrancar el sistema de instalación.
 
-A partir de ahora según el sistema a instalar empezará un proceso más o menos parecido, pero con diferencias en algunos aspectos. Una vez instalado el sistema tendremos que comprobar su correcto funcionamiento y a continuación **configurarlo** adecuadamente para adaptarlo a las necesidades del usuario.
+A partir de ahora según el sistema a instalar empezará un proceso más o menos parecido, pero con algunas diferencias. Una vez instalado el sistema tendremos que comprobar su correcto funcionamiento y a continuación **configurarlo** adecuadamente para adaptarlo a las necesidades del usuario.
 
 Finalmente tenemos que **documentar** todo el proceso de instalación y configuración, incluyendo las incidencias que hemos tenido y su solución.
 
@@ -41,7 +41,7 @@ A continuación a modo de ejemplo podéis ver algunas de las principales edicion
 - Windows 10 Home: es la versión estándar y está pensada para usuarios domésticos.
 - Windows 10 Pro: incluye mejoras para profesionales y Pymes como la posibilidad de formar parte de un dominio, escritorio remoto, etc.
 - Windows 10 Enterprise: pensada para grandes empresas, incluye mayores capacidades de protección de los equipos y los datos.
-- Windows 10 Mobile: es la versión para smartphones y tablets. No ha tenido e éxito que se esperaba y Microsoft ha finalizado el soporte a partir de Diciembre de 2019
+- Windows 10 Mobile: es la versión para smartphones y tablets. No ha tenido el éxito que se esperaba y Microsoft ha finalizado el soporte a partir de Diciembre de 2019
 - Windows 10 IoT: para dispositivos como Raspberry
 - y varias más (Windows 10 Enterprise LTSB, Windows 10 Education, Windows 10 Pro for Workstations, ...)
 
@@ -51,13 +51,13 @@ Hay que tener en cuenta que la mejor opción no es siempre la más completa sino
 Cuando instalamos un sistema operativo tenemos la opción de hacer una instalación limpia o bien de hacer una actualización sobre un sistema operativo ya presente.
 
 ### Actualización
-Esta opción nos permite instalar el nuevo sistema operativo sobre otro ya existente en el ordenador. Puede ser una actualización si estamos instalando una versión más moderna del sistema operativo (por ejemplo si pasamos de Windows 10 a Windows 11 o de Ubuntu 20.04 a Ubuntu 22.04) o bien una reparación del sistema porque no arranca o no funciona bien.
+Esta opción nos permite instalar el nuevo sistema operativo sobre otro ya existente en el ordenador. Puede ser una actualización si estamos instalando una versión más moderna del sistema operativo (por ejemplo si pasamos de _Windows 10_ a _Windows 11_ o de _Ubuntu 20.04_ a _Ubuntu 22.04_) o bien una reparación del sistema porque no arranca o no funciona bien.
 
 En el caso de una reparación lo que hacemos es volver a copiar los ficheros del sistema operativo desde el medio de instalación (USB o CD) y se hace porque alguno de esos ficheros se puede haber estropeado haciendo que nuestro sistema no funcione correctamente.
 
 La principal ventaja de una actualización es que se conservan todos los programas instalados así como las diferentes configuraciones de programas y usuarios.
 
-El principal inconveniente es que se mantienen todos los problemas de configuración que tuviera nuestro sistema anterior. Esto es muy importante en Windows puesto que este sistema operativo, especialmente si instalamos y desinstalamos a menudo programas y utilidades, tiene tendencia a ir funcionando cada vez peor y más lento porque algunos programas al desinstalarse no lo hacen correctamente y dejan "restos" en el registro de Windows, etc.
+El principal inconveniente es que se mantienen todos los problemas de configuración que tuviera nuestro sistema anterior. Esto es muy importante en _Windows_ puesto que este sistema operativo, especialmente si instalamos y desinstalamos a menudo programas y utilidades, tiene tendencia a ir funcionando cada vez peor y más lento porque algunos programas al desinstalarse no lo hacen correctamente y dejan "restos" en el registro de Windows, etc.
 
 ### Instalación limpia
 Se hace en un ordenador sin sistema operativo (o si lo tiene vamos a desecharlo, quizá porque el rendimiento de nuestro sistema ha ido degradándose con el tiempo).

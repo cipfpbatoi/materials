@@ -9,13 +9,14 @@
     - [Actualizaciones en GNU/Linux](#actualizaciones-en-gnulinux)
 
 ## Introducción
-Una vez finalizada la instalación todavía tendremos que configurar algunas opciones:
+Una vez finalizada la instalación todavía tendremos que configurar algunas opciones y hacer varias comprobaciones:
 - tendremos que comprobar que todas las particiones del disco están correctamente montadas y, por lo tanto, accesibles desde el sistema operativo
 - también tenemos que comprobar que todos los dispositivos hardware han sido correctamente detectados e instalados sus drivers
-- tenemos que comprobar que la configuración de la red es la correcta si esta es por DHCP o configurarla si es manual
+- tenemos que comprobar que la configuración de la red es correcta si esta por DHCP o configurarla si es manual
+- tenemos que actualizar el equipo para asegurarnos que el sistema operativo tiene los últimos parches de seguridad publicados (esto no lo haremos en el instituto para no saturar la red)
 - tenemos que configurar las actualizaciones del sistema operativo, si queremos que sean automáticas o establecer una política de actualizaciones si tienen que hacerse manualmente
-- tenemos que instalar los programas de aplicación para que el equipo sea útil y los usuarios lo puedan utilizar para realizar su trabajo (lo veremos posteriormente en esta unidad)
 - tenemos que crear los usuarios y grupos necesarios así como carpetas y recursos compartidos y asignar permisos a los recursos del equipo
+- tenemos que instalar los programas de aplicación para que el equipo sea útil y los usuarios lo puedan utilizar para realizar su trabajo (lo veremos posteriormente en esta unidad)
 - finalmente y antes de pasar el equipo a producción tenemos que hacer pruebas de rendimiento del sistema, crear una imagen para recuperarlo fácilmente en caso de caída y establecer el método de restauración, programar copias de seguridad y otras tareas.
 
 ## Comprobación de las particiones
@@ -29,11 +30,11 @@ En GNU/Linux hay diferentes herramientas según la distribución. En _Ubuntu_ (y
 
 ![Utilidad de discos](media/discos.png)
 
-También podemos utilizar las herramientas en modo texto `fdisk` y `parted`:
+También podemos utilizar las herramientas en modo texto `lsblk` y `fdisk`:
+
+![Comando lsblk](media/lsblk.png)
 
 ![Comando fdisk](media/fdisk.png)
-
-![Comando parted](media/parted.png)
 
 ## Controladores de dispositivos
 Una vez instalado nuestro sistema operativo tenemos que comprobar que todo el hardware del equipo está correctamente detectado y configurado. Recordad que cada dispositivo para funcionar necesita un driver o controlador que permite al sistema operativo comunicarse con él.

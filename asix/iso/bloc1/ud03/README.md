@@ -15,6 +15,7 @@ Los conceptos más importantes de esta unidad son:
 
 - El arranque del sistema. BIOS / UEFI
 - Proceso de instalación del sistema operativo
+- Particionament de discos
 - Configuraciones tras instalar el sistema
 - Instalación de aplicaciones
 - El registro de Windows

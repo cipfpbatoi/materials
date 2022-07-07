@@ -8,15 +8,18 @@
     - [Instalación por clonación](#instalación-por-clonación)
     - [Instalaciones desatendidas](#instalaciones-desatendidas)
   - [Dónde instalar el sistema: particionado](#dónde-instalar-el-sistema-particionado)
+    - [Qué son las particiones](#qué-son-las-particiones)
+    - [Tabla particiones Ms-DOS o MBR](#tabla-particiones-ms-dos-o-mbr)
+    - [Tabla particiones GPT](#tabla-particiones-gpt)
   - [Particiones a realizar al instalar el sistema](#particiones-a-realizar-al-instalar-el-sistema)
-    - [Particiones al instalar Windows](#particiones-al-instalar-windows)
-    - [Particiones al instalar GNU/Linux](#particiones-al-instalar-gnulinux)
+    - [Particiones para instalar Windows](#particiones-para-instalar-windows)
+    - [Particiones para instalar GNU/Linux](#particiones-para-instalar-gnulinux)
     - [GNU/Linux con Windows](#gnulinux-con-windows)
   - [Instalación del cargador de arranque Grub](#instalación-del-cargador-de-arranque-grub)
   - [Otras configuraciones básicas al instalar un sistema](#otras-configuraciones-básicas-al-instalar-un-sistema)
     - [Nombre del equipo](#nombre-del-equipo)
     - [Tipos de usuarios](#tipos-de-usuarios)
-      - [Usuarios administrador](#usuarios-administrador)
+      - [Usuarios administradores](#usuarios-administradores)
       - [Usuarios estándar](#usuarios-estándar)
       - [Usuario invitado o _guest_](#usuario-invitado-o-guest)
   - [Repositorios de GNU/Linux](#repositorios-de-gnulinux)
@@ -33,10 +36,10 @@ Respecto al proceso de instalación propiamente dicho aquí vamos a explicar:
 
 ## Desde dónde instalar el sistema
 ### Instalación desde CD o DVD
-Hasta hace poco tiempo la manera más habitual de instalar un sistema operativo era desde el CD o el DVD. En el caso de sistemas privativos era el medio en el cual nos daban el programa al comprarlo en la tienda. En el caso de sistemas libres desde Internet nos descargábamos la ISO (la imagen del CD) que después teníamos que quemar en un CD o DVD. Hay que tener en cuenta que grabar una imagen en un CD no es símplemente grabar un fichero _.iso_ en un CD cómo si fuera un fichero normal sino que en el programa de grabación de CDs tenemos que elegir la opción de _grabar una imagen_ ya que tiene que preparar el CD para que sea arrancable.
+Hasta hace poco tiempo la manera más habitual de instalar un sistema operativo era desde el CD o el DVD. En el caso de sistemas privativos era el medio en el cual nos daban el programa al comprarlo en la tienda. En el caso de sistemas libres desde Internet nos descargábamos la ISO (la imagen del CD) que después teníamos que quemar en un CD o DVD. Hay que tener en cuenta que grabar una imagen en un CD no es símplemente grabar un fichero _.iso_ en un CD cómo si fuera un fichero normal sino que en el programa de grabación de CDs tenemos que elegir la opción de '_grabar una imagen_' ya que tiene que preparar el CD para que sea arrancable.
 
 ### Instalación desde USB
-Ahora es lo más habitual hacer la instalación del sistema desde un dispositivo USB (incluso muchos equipos ni tienen lector de CD).
+Ahora lo más habitual es hacer la instalación del sistema desde un dispositivo USB (incluso muchos equipos ni tienen lector de CD).
 
 En este caso, igual que en el CD, no es suficiente con copiar el fichero ISO o los ficheros de instalación al USB sino que tenemos que hacer que el USB sea arrancable. La manera más sencilla es utilizar cualquier de los programas que encontramos para hacerlo.
 
@@ -53,20 +56,19 @@ Todos estos programas, además de copiar el ficheros de la imagen al USB, lo hac
 Otra opción muy interesante, sobre todo para un informático, es tener en un único USB varias ISOs de sistemas operativos, utilidades, etc. Así con sólo un USB con bastante capacidad podemos tener cubiertas todas las necesidades para instalar sistemas o reparar equipos.
 
 ![multibootusb](media/multibootusb.png)
-MultibootUSB (CC0)
 
-Hay multitud de programas (_Multibootusb_, _Yumi_, ...) y de páginas en internet que nos explican diferentes formas de crear estos USB.
+Hay multitud de programas (_Ventoy_, _Yumi_, ...) y de páginas en internet que nos explican diferentes formas de crear estos USB.
 
 ### Instalación desde la red
 En el caso de tener que instalar muchos equipos a la vez podemos ahorrarnos mucho tiempo haciendo la instalación por red. Para ello necesitaremos tener en la red un servidor que proporcionará a los equipos que lo piden los ficheros necesarios para instalar el sistema operativo.
 
-El arranque desde red es el proceso de arrancar un computador desde una red en vez de un disco local. Los PCs proporcionan una opción en su firmware (BIOS o UEFI) para arrancar desde la red, normalmente por medio del _Preboot eXecution Environment_ (PXE) que es un chip de la tarjeta de red que permite al ordenador iniciarse sin tener un sistema operativo, simplemente ejecutando el programa contenido en este chip. Este programa inicializa la tarjeta de red y hace una petición de IP a un servidor DHCP. A continuación pide los ficheros del sistema operativo, que recibe a través de la red desde un servidor.
+El arranque desde red es el proceso de arrancar un computador desde la red en vez de un disco local. Los PCs proporcionan una opción en su firmware (BIOS o UEFI) para arrancar desde la red, normalmente por medio del _Preboot eXecution Environment_ (PXE) que es un chip de la tarjeta de red que permite al ordenador iniciarse sin tener un sistema operativo, simplemente ejecutando el programa contenido en este chip. Este programa inicializa la tarjeta de red y hace una petición de IP a un servidor DHCP. A continuación pide los ficheros del sistema operativo, que recibe a través de la red desde un servidor.
 
-Para utilizar la carga del sistema desde la red tenemos que poner en la BIOS como primer dispositivo de arranque la opción "_Arranque por LAN_". Si esta opción no está disponible habrá que activar la opción "_onboard LAN Boot ROM_" o similar que suele estar en el menú de Integrated Peripherals de la BIOS. Los equipos muy antiguos no incluyen en la BIOS la opción de arranque por red.
+Para utilizar la carga del sistema desde la red tenemos que poner en la BIOS como primer dispositivo de arranque la opción "_Arranque por LAN_". Si esta opción no está disponible habrá que activar la opción "_onboard LAN Boot ROM_" o similar que suele estar en el menú de _Integrated Peripherals_ de la BIOS. Los equipos muy antiguos no incluyen en la BIOS la opción de arranque por red.
 
 Este proceso se puede utilizar directamente para cargar el sistema operativo desde la red (es como funcionan por ejemplo los terminales ligeros que tenemos en la biblioteca del centro) o para que el servidor envíe los ficheros de instalación del sistema y en este caso se producirá la instalación del sistema operativo en el equipo cliente igual que si estuvimos haciéndolo desde un CD o USB).
 
-Para hacer instalaciones por red existen implementaciones para _Mac OS X_, _Windows_, y _Linux_, como son _NetInstall_, _Windows Deployment Services_ y _DRBL_, respectivamente.
+Para hacer instalaciones por red existen implementaciones para _Mac OS X_, _Windows_, y _Linux_, como _NetInstall_, _Windows Deployment Services (WDS)_ y _DRBL_, respectivamente. En el bloque 2 haremos una práctica para instalar Windows desde la red con _WDS_.
 
 ### Instalación por clonación
 El proceso de preparar un nuevo ordenador para ser utilizado es muy largo y laborioso puesto que tenemos que:
@@ -78,15 +80,15 @@ El proceso de preparar un nuevo ordenador para ser utilizado es muy largo y labo
 
 Si además son muchos los ordenadores que tenemos que instalar y configurar este proceso puede durar días.
 
-La alternativa es hacer todo este proceso en el primer ordenador y después clonar su disco al resto de equipos.
+La alternativa es hacer todo este proceso en un ordenador y después clonar su disco al resto de equipos.
 
-La clonación de un disco es copiar todo su contenido a otro disco o a un fichero "imagen" para restaurarlo posteriormente en el mismo equipo o en otro.
+La clonación de un disco es copiar todo su contenido a otro disco o a un fichero "_imagen_" para restaurarlo posteriormente en el mismo equipo o en otro.
 
 La utilidad de la clonación no se limita a instalar y configurar muchos equipos sino que también es adecuada para:
-- Recuperación del sistema: podemos tener en el ordenador guardada una imagen de nuestro sistema "limpio" que podemos restaurar en cualquier momento en que el sistema no funciono adecuadamente. La mayoría de portátiles incluyen una partición con esta imagen de fábrica
+- Recuperación del sistema: podemos tener en el ordenador guardada una imagen de nuestro sistema "limpio" que podemos restaurar en cualquier momento en que el sistema no funcione adecuadamente. La mayoría de portátiles incluyen de fábrica una partición con esta imagen
 - Copia de seguridad de todo el sistema: podemos hacer una nueva imagen en cualquier momento con todos nuestros programas instalados y configurados para recuperarla muy rápidamente en caso necesario
 - Actualización del disco duro: si nos compramos un disco más grande podemos traspasar todo el que teníamos en el disco antiguo al nuevo
-- Y por supuesto instalación de muchos equipos al mismo tiempo: los equipos quedan instalados con un conjunto de programas estándar, de forma que el usuario puede utilizarlo sin tener que configurarlos e instalarlos.
+-Instalación de muchos equipos al mismo tiempo: los equipos quedan instalados con un conjunto de programas estándar, de forma que el usuario puede utilizarlo sin tener que configurarlos e instalarlos.
 
 Tenemos muchos programas, tanto libres como privativos, que nos permiten hacer clonaciones y normalmente podemos clonar y restaurar todo un disco o sólo las particiones indicadas.
 
@@ -98,9 +100,9 @@ No siempre es posible la clonación. En el caso de los sistemas Windows sólo fu
 
 En cualquier caso si la clonación es para preparar muchos equipos después de clonar tenemos copias idénticas del equipo original y se tienen que modificar algunos parámetros de cada equipo como el nombre del equipo, la dirección de red si fuera estática, etc.
 
-Un ejemplo de software libre de clonación es el programa **[Clonezilla](http://clonezilla.org)**. Podemos encontrar información del programa y su utilización en la página oficial. Allí también encontramos información de la versión servidor denominada DRBL.
+Un ejemplo de software libre de clonación es el programa **[Clonezilla](http://clonezilla.org)**. Podemos encontrar información del programa y su utilización en la página oficial. Además en Internet tenemos muchos manuales que explican por paso como realizar clonaciones de discos y particiones con esta herramienta.
 
-Además en Internet tenemos muchos manuales que explican por paso como realizar clonaciones de discos y particiones con esta herramienta.
+En el módulo de _FDM_ realizaremos prácticas de clonación.
 
 ### Instalaciones desatendidas
 Siempre es tedioso el proceso de instalación de un sistema operativo donde cada cierto tiempo se nos hacen preguntas como qué idioma elegir, en qué partición instalar el sistema o el nombre del equipo o de los usuarios. Incluso en algunos casos tenemos que buscar antes drivers u otros programas. En caso de tener que realizar la instalación de muchos equipos este esfuerzo se multiplica.
@@ -125,14 +127,14 @@ Las cuestiones que podremos personalizar con una instalación desatendida son:
 - Integración de controladores: esta es una cuestión importante a la hora de ahorrarnos tiempo. Instalar a la vez los drivers de nuestra tarjeta gráfica, la impresora, etc nos ahorrará mucho tiempo de configuración después
 - Programas por defecto: al final los ordenadores de nuestra empresa comparten un cuerpo común de programas, que todos utilizan, ya sean ofimàtics, de gestión, etc. y después determinados departamentos tienen sus propios.
 
-También podemos encontrar muchos programas de terceros que simplemente crean el fichero `Autounattended.xml` para hacer instalaciones desatendidas de otros programas útiles (desde antivirus o compresores hasta navegadores o paquetes ofimáticos). Un ejemplo es la web de [ninite](ninite.com).
+También podemos encontrar muchos programas de terceros que simplemente crean el fichero `Autounattended.xml` para hacer instalaciones desatendidas de otros programas útiles (desde antivirus o compresores hasta navegadores o paquetes ofimáticos). Un ejemplo es la web de [ninite](https://ninite.com/).
 
 ![ninite.com](media/ninite.com.png)
 
-En el caso de distribuciones GNU/Linux el funcionamiento es muy similar e incluso la mayoría de herramientas nos permiten elegir qué componentes del sistema operativo instalar y qué otros paquetes queremos incluir en la instalación. Como el proceso de instalación varía mucho de unas distribuciones a otras encontramos diferentes herramientas según qué sea nuestra distribución:
-- para sistemas basados en paquetes .rpm de RedHat podemos utilizar _Kickstart_
-- para sistemas con instalador YAST de SuSE podemos utilizar _AutoYast_
-- para sistemas basados en paquetes .deb (Debian, Ubuntu y derivados) podemos utilizar _Preseed_, o también _Kickstart_
+En el caso de distribuciones GNU/Linux el funcionamiento es muy similar e incluso la mayoría de herramientas nos permiten elegir qué componentes del sistema operativo instalar y qué otros paquetes queremos incluir en la instalación. Como el proceso de instalación varía mucho de unas distribuciones a otras encontramos diferentes herramientas según qué sea nuestra distribución. Algunos ejemplos son:
+- para sistemas basados en paquetes .rpm de _RedHat_ podemos utilizar _Kickstart_
+- para sistemas con instalador YAST de _SuSE_ podemos utilizar _AutoYast_
+- para sistemas basados en paquetes .deb (_Debian_, _Ubuntu_ y derivados) podemos utilizar _Preseed_, o también _Kickstart_
 
 La gran ventaja que tiene todo este trabajo es el ahorro de tiempo. Invertimos tiempo para crear la primera instalación desatendida y después cada vez que tengamos que instalar un equipo nos ahorraremos mucho tiempos y trabajo.
 
@@ -143,54 +145,29 @@ Esto lo practicaremos en el bloque 2 configurando en nuestro servidor instalacio
 ## Dónde instalar el sistema: particionado
 Es la parte más importante y delicada de la instalación de un nuevo sistema operativo y por tanto tenemos que asegurarnos de hacerlo correctamente.
 
-Podemos encontrar la información actualizada de este apartado en [este enlace](../../../../altres/sistemes-operatius/particions)
+Tenemos que saber:
+
+### [Qué son las particiones](../../../../altres/sistemes-operatius/particions)
+
+### [Tabla particiones Ms-DOS o MBR](../../../../altres/sistemes-operatius/particions#taula-de-particions-ms-dos-o-mbr)
+
+### [Tabla particiones GPT](../../../../altres/sistemes-operatius/particions#taula-de-particions-guid-o-gpt)
 
 ## Particiones a realizar al instalar el sistema
-Como dijimos a la hora de planificar, debemos tener cuy claras qué particiones vamos a necesitar para nuestro sistema. 
+Una vez que tenemos claro todo sobre particiones es el momento de decidir qué particiones vamos a necesitar para nuestro sistema.
 
 Siempre tenemos la posibilidad de no indicar las particiones a hacer y dejar que sea el propio asistente el que lo decida, pero en ocasiones esa no es la mejor elección.
 
-### Particiones al instalar Windows
-Cuando instalamos Windows 10, si no le indicamos qué particiones queremos el asistente creará las siguientes:
-- en un disco MBR (BIOS)
-  - partición de **inicio** (50 MB - NTFS): es la partición donde se guarda el gestor de arranque de Windows (_BootMGR_) y el fichero con las opciones de arranque (_BCD_). Esta partición no se monta (no se asigna letra) por lo que el usuario no la ve
-  - partición de **Windows** (NTFS): es la partición que se montará en la letra C: con el sistema operativo y donde se guardarán también los datos de los usuarios (en la carpeta _C:\Usuarios_). Ocupa todo el disco menos el espacio ocupado por las otras 2 particiones pequeñas
-  - **entorno de recuperación de Windows - WinRE** (500 MB - NTFS): tampoco se monta (ni el '_Administrador de Discos_' nos permite asignarle una letra) y contiene el entorno de recuperación (fichero _WinRE.wim_). Se carga si reiniciamos con la letra SHIFT pulsada y es un entorno como el que se carga al arrancar desde el CD de instalación pulsando en 'Reparar el sistema'
+### [Particiones para instalar Windows](../../../../altres/sistemes-operatius/particions#particions-per-a-installar-windows)
 
-![Particiones creadas por el instalador de Windows](./media/AdmDiscosWin10bios.png)
+### [Particiones para instalar GNU/Linux](../../../../altres/sistemes-operatius/particions#particions-per-a-installar-gnulinux)
 
-- en un disco GPT (UEFI)
-  - partición **_EFI System Partition_ - ESP** (100 MB - Fat32): es la partición ESP que debe tener cualquier disco GPT que incluya un sistema operativo ya que es donde se almacenan los gestores de arranque de los diferentes sistemas (_bootmgr.efi_ para Windows, _grubx64.efi_ para algunos Linux, ...)
-  - partición **reservada de Microsoft - MSR** (16 MB): según [Microsoft](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions#microsoft-reserved-partition-msr) es una partición para ayudar con la administración de particiones GPT... 
-  - partición de **Windows** (NTFS): como en MBR
-  - entorno de **recuperación de Windows** (500 MB - NTFS): igual que la que se crea en MBR
-
-![Particiones de disco duro basadas en UEFI/GPT](https://docs.microsoft.com/es-es/windows-hardware/manufacture/desktop/images/dep-win10-partitions-uefi.png)
-
-### Particiones al instalar GNU/Linux
-Por defecto si instalamos GNU/Linux indicando el particionado automático se crearán 2 particiones (si el disco es GPT se creará además la partición ESP):
-- partición **raíz** del sistema operativo (ext4): la partición donde se instalará el sistema y donde estarán todos los ficheros. Se monta en **/** y ocupa todo el espacio de disco menos el dedicado a la partición de _swap_
-- partición de **_swap_** o intercambio (area de intercambio, no ext4): es la partición que utilizará GNU/Linux como memoria virtual del sistema. La regla era que su tamaño fuera el doble que la RAM pero en los equipos actuales con 8 GB o más de RAM bastaría con 2-4 GB. De hecho es casi innecesaria y algunas distribuciones ya no la crean sino que usan un fichero como memoria virtual igual que hace Windows. Sí es necesario un tamaño algo superior a la RAM si se va a usar la hibernación ya que en ese caso el contenido de la RAM se guarda en esta partición. Esta partición no utiliza el sistema de archivos _ext4_ ni ningún otro sino que se gestiona de forma diferente.
-
-En el caso de Ubuntu no se crea partición de swap:
-
-![particiones que crea el instalador de Ubuntu](./media/particionesDefaultUbuntu.png)
-
-Sin embargo es conveniente hacer más particiones, al menos para los datos de los usuarios. Esta partición tendrá también formato _ext4_ y se montará en **/home**.
-
-![particiones mínimas recomendadas al instalar GNU/Linux](./media/particionesRecomendadasUbuntu.png)
-
-Las particiones a las que asignamos un punto de montaje (al menos **/** y si hacemos **/home** también) se añaden al fichero `/etc/fstab` donde habrá una línea para cada partición que deba montarse al arrancar el ordenador.
-
-### GNU/Linux con Windows
-Si al instalar el sistema ya tenemos un Windows instalado en esta máquina el asistente lo detectará y nos mostrará la opción de instalar GNU/Linux junto a Windows. En ese caso nos pedirá que reduzcamos el tamaño de la partición de Windows para dejar sitio a la de Linux. En Debian no aparece esta opción pero podemos entrar a particionado manual y allí redimensionar la partición de Windows y crear en ese espacio las de Debian.
-
-Por defecto las particiones Windows y el resto de particiones que haya en el disco no se montarán automáticamente en GNU/Linux. Si queremos que alguna se monte sólo tenemos que seleccionarla y ponerle un punto de montaje (el directorio en que se montará). Esto añadirá la partición al fichero `/etc/fstab`. Si no siempre podremos montarlas desde el entorno gráfico pinchando sobre ellas o desde la terminal con el comando `mount` o bien podemos añadirlas manualmente a `/etc/fstab` para que se monten siempre al iniciar el sistema.
+### [GNU/Linux con Windows](../../../../altres/sistemes-operatius/particions#gnulinux-amb-windows)
 
 ## Instalación del cargador de arranque Grub
-El último paso al instalar un sistema GNU/Linux es siempre guardar el cargador de arranque Grub para que el sistema puede iniciar, de lo contrario no podríamos arrancarlo (tendríamos que arreglarlo manualmente como se vió en el tema del [arranque de Linux](../../../../altres/sistemes-operatius/arrencada/bios.html#reparar-larrencada-del-sistema-1)).
+El último paso al instalar un sistema GNU/Linux es siempre guardar el cargador de arranque Grub para que el sistema puede iniciar, de lo contrario no podríamos arrancarlo (tendríamos que arreglarlo manualmente como se vió en el tema del [arranque de Linux](../../../../altres/sistemes-operatius/arrencada#arrencada-de-gnulinux-amb-grub-i-bios)).
 
-Siempre debemos guardarlo en el dispositivo desde el que arranca nuestro ordenador (normalmente '**/dev/sda**') lo que significa que se guardará en el MBR para iniciar el proceso de arranque. También si tenemos Windows ya instalado porque queremos que Grub sustituya al cargador por defecto del MBR que sólo nos permite arrancar el Windows.
+Siempre debemos guardarlo en el dispositivo desde el que arranca nuestro ordenador (normalmente '**/dev/sda**') lo que significa que se guardará en el MBR para iniciar el proceso de arranque (o en la partición ESP en caso de un disco GPT). También si tenemos Windows ya instalado porque queremos que Grub sustituya al cargador por defecto de Windows que sólo nos permite arrancar el Windows.
 
 ## Otras configuraciones básicas al instalar un sistema
 Durante el proceso de instalación, además de en qué partición instalar el sistema, nos hacen una serie de preguntas para configurar el mismo. Estas preguntas varían de un sistema a otro pero la mayoría preguntan, entre otras:
@@ -207,7 +184,7 @@ Vamos a ver en más detalle las últimas opciones.
 ### Nombre del equipo
 El nombre de un equipo lo identifica en la red por lo cual su nombre tiene que ser único (si tenemos en la misma red 2 equipos con el mismo nombre tendremos un conflicto y algunos programas no funcionarán correctamente al no poder identificar a los equipos en la red). Tanto en Windows como el GNU/Linux el nombre de un equipo sólo puede contener letras, números y guión (¡¡¡nada de espacios en blanco!!!).
 
-Cuando instalamos el sistema operativo nos preguntan el nombre que tendrá el equipo pero posteriormente podemos cambiarlo en cualquier momento Para cambiar el nombre del equipo en Windows 10 lo podemos hacer desde `Inicio -> Configuración -> Sistema -> Acerca de -> Cambiar nombre de este equipo`. Otra forma que funciona en todos los Windows es desde el _Explorador de archivos_ pulsando sobre el icono de _Este equipo_ con el `botón derecho -> Propiedades`. Después de cambiar el nombre tenemos que reiniciar el equipo para que se aplique el cambio.
+Cuando instalamos el sistema operativo nos preguntan el nombre que tendrá el equipo pero posteriormente podemos cambiarlo en cualquier momento. Para cambiar el nombre del equipo en Windows 10 lo podemos hacer desde `Inicio -> Configuración -> Sistema -> Acerca de -> Cambiar nombre de este equipo`. Otra forma que funciona en todos los Windows es desde el _Explorador de archivos_ pulsando sobre el icono de '_Este equipo_' con el `botón derecho -> Propiedades`. Después de cambiar el nombre tenemos que reiniciar el equipo para que se aplique el cambio.
 
 En GNU/Linux el nombre del equipo se guarda en el fichero `/etc/hostname`. Para cambiarlo sólo tenemos que editar el fichero y escribir allí el nuevo nombre. Este nombre se aplicará cuando reiniciamos el equipo. Normalmente también se guarda en el fichero `/etc/hosts` para que se resuelva sin preguntar al DNS por lo que debemos comprovar si está y si es así cambiarlo también.
 
@@ -236,7 +213,7 @@ batoi@pc-juanbatoi:~$ hostnamectl
 
 Para darle un nuevo nombre se lo pasamos a dicho comando:
 ```bash
-hostname mipc
+hostnamectl set-hostname mipc
 ```
 
 ### Tipos de usuarios
@@ -249,10 +226,10 @@ Para solucionar todo esto se crearon los _usuarios_. Creamos un usuario para cad
 
 Existen 3 tipo de usuarios: administrador, estándar e invitado.
 
-#### Usuarios administrador
+#### Usuarios administradores
 Tienen control total sobre todo el equipo, su configuración y sus datos. En cada sistema tiene que haber al menos uno que es quien lo configura. Es altamente recomendable que este usuario tenga una contraseña para evitar que cualquiera pueda cambiar la configuración del equipo o acceder y, si quiere, eliminar cualquier fichero del mismo.
 
-En Windows siempre existe un usuario de este tipo cuyo nombre es **_Administrador_**, pero que por defecto está deshabilitado. Además el usuario con el cual instalamos el sistema operativo es un usuario de tipo _administrador_. Los usuarios que creamos posteriormente serán de tipo _estándar_ o _administrador_ según elijamos al crearlos. Para que un usuario sea administrador sólo tiene que pertenecer al grupo _**Administradores**_.
+En Windows siempre existe un usuario de este tipo cuyo nombre es **_Administrador_**, pero que por defecto está deshabilitado. Además el usuario con el cual instalamos el sistema operativo es un usuario de tipo _administrador_. Los usuarios que creamos posteriormente serán de tipo _estándar_ o _administrador_ según elijamos al crearlos. Para que un usuario sea administrador sólo tenemos que hacer que pertenezca al grupo _**Administradores**_.
 
 En GNU/Linux siempre hay un usuario administrador llamado **_root_**. El usuario con el cual instalamos Ubuntu y otras distribuciones también es un usuario _administrador_. Desde la terminal un usuario administrador puede ejecutar cualquier orden como si fuera _root_ anteponiéndole el comando **`sudo`**. Por ejemplo puede cambiar el nombre del equipo y llamarlo pc01 escribiendo:
 
@@ -260,7 +237,7 @@ En GNU/Linux siempre hay un usuario administrador llamado **_root_**. El usuario
 sudo hostname pc01
 ```
 
-En Debian el usuario con el cual instalamos el sistema es un usuario normal, por eso durante la instalación se nos pide también la contraseña del usuario _root_. Como en Ubuntu _root_ no tiene contraseña está deshabilitado. Para poder usar esa cuenta debemos primero ponerle una contraseña con
+Como en Ubuntu _root_ no tiene contraseña este usuario está deshabilitado. Para poder usar esa cuenta debemos primero ponerle una contraseña con
 
 ```bash
 sudo passwd root
@@ -273,10 +250,12 @@ sudo su
 
 Para que un usuario sea administrador (pueda hacer _sudo_) sólo es necesario que pertenezca al grupo _**sudo**_.
 
+En Debian el usuario con el cual instalamos el sistema es un usuario normal, por eso durante la instalación se nos pide también la contraseña del usuario _root_. Si queremos que cualquier otro usuario sea administrador (pueda hacer `sudo`) sólo tenemos que añadirlo al grupo _**sudo**_.
+
 #### Usuarios estándar
 Son los usuarios normales del equipo. Pueden configurar su usuario y acceder a sus datos o a datos a los que alguien les dé permisos pero no pueden cambiar la configuración del equipo ni instalar nuevo software. Tienen una carpeta personal con su nombre donde guardan sus ficheros y dentro de la cual pueden hacer cualquier cosa.
 
-Lo más recomendable es trabajar siempre con un usuario _estándar_ y utilizar un usuario _administrador_ sólo cuando tengamos que realizar algún trabajo que así lo requiera.
+Por seguridad lo más recomendable es trabajar siempre con un usuario _estándar_ y utilizar un usuario _administrador_ sólo cuando tengamos que realizar algún trabajo que así lo requiera.
 
 #### Usuario invitado o _guest_
 Es un usuario especial que tienen muchos sistemas para que cualquier persona sin cuenta de usuario en el equipo pueda iniciar sesión en el mismo. Tiene los mismos privilegios que un usuario estándar pero no tiene contraseña.
@@ -296,7 +275,9 @@ Las distribuciones GNU/Linux incluyen sistemas de gestión de paquetes que permi
 
 Cuando instalamos un sistema GNU/Linux desde un CD estamos utilizando este CD como repositorio pero en el proceso de instalación nos pregunta si queremos añadir también repositorios de Internet y cuáles. Al hacerlo le indicamos al sistema que cuando queramos instalar nuevos paquetes los descargue desde estos repositorios.
 
-El fichero donde se guardan los repositorios configurados en el sistema es **`/etc/apt/sources.list`**. En cualquier momento podemos añadir o eliminar repositorios editando este fichero o utilizando las herramientas gráficas que incluye el sistema (como el _Centro de software de Ubuntu_, el programa _Synaptic_, etc).
+El fichero donde se guardan los repositorios configurados en el sistema es **`/etc/apt/sources.list`**. En cualquier momento podemos añadir o eliminar repositorios editando este fichero o utilizando las herramientas gráficas que incluye el sistema (como el _Centro de software de Ubuntu_, el programa _Fuentes de software_ de Linux Mint, etc).
+
+![Fuentes de software](media/FuentesSoftwareMint.png)
 
 Existen varios formatos para empaquetar los paquetes de software. Los más comunes son:
 - formato **`.deb`**, usado por Debian y sus derivados (cómo Ubuntu)
@@ -328,6 +309,8 @@ Después de hacer cambios en este fichero tenemos que recargar la lista de paque
 apt-get update
 ```
 
+Este comando hace que nuestro equipo se conecte con cada uno de los repositorios configurados y se descargue la lista de paquetes que tienen.
+
 ## Tipos de red en Windows
 En los sistemas operativos Windows si estamos conectados en una red cuando instalamos el sistema operativo se nos pregunta el tipo de red que es:
 
@@ -340,4 +323,4 @@ La información que proporcionamos le permite a Windows configurar el cortafuego
 - **Red de trabajo**: indicamos que estamos en una red en el trabajo. Windows configura el cortafuegos en un nivel intermedio
 - **Red pública**: indicamos que estamos en una red pública (por ejemplo en una estación o una cafetería) y no confiamos en el resto de equipos de esta red por lo cual Windows configurará el cortafuegos con las máximas restricciones para evitar que otro usuario conectado a la misma red pueda acceder a nuestro equipo y a la información que guardamos en él.
 
-En versiones posteriores de Windows sólo se nos pregunta **si queremos que los otros equipos de esa red puedan o no ver nuestro equipo**. El redes públicas debemos contestar que **No** y en nuestra red de casa o del trabajo que **Sí** para poder compartir información con los otros equipos de dicha red. 
+En versiones posteriores de Windows sólo se nos pregunta **si queremos que los otros equipos de esa red puedan o no ver nuestro equipo**. El redes públicas debemos contestar que **No** y en nuestra red de casa o del trabajo que **Sí** para poder compartir información con los otros equipos de dicha red.
