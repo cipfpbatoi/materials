@@ -1,10 +1,10 @@
 # VirtualBox
 - [VirtualBox](#virtualbox)
   - [Introducció](#introducció)
-  - [VirtualBox Guest Additions](#virtualbox-guest-additions)
-  - [Compartir carpetes entre la màquina real i la virtual](#compartir-carpetes-entre-la-màquina-real-i-la-virtual)
   - [Importar i exportar màquines virtuales](#importar-i-exportar-màquines-virtuales)
   - [Clonar una màquina virtual](#clonar-una-màquina-virtual)
+  - [VirtualBox Guest Additions](#virtualbox-guest-additions)
+  - [Compartir carpetes entre la màquina real i la virtual](#compartir-carpetes-entre-la-màquina-real-i-la-virtual)
   - [Emmagatzematge en VirtualBox](#emmagatzematge-en-virtualbox)
     - [L'Administrador de mitjans virtuals](#ladministrador-de-mitjans-virtuals)
     - [Afegir un disc addicional a una màquina](#afegir-un-disc-addicional-a-una-màquina)
@@ -20,7 +20,7 @@
   - [Snapshots o Instantànies](#snapshots-o-instantànies)
 
 ## Introducció
-És un programa de virtualització de hardware que permet crear diferents màquines virtuals en l'ordinador en que s'instal·la. Es tracta d'un hipervisor de tipus 2 per tant funciona com un programa més de la màquina _host_. Hi ha versions de VirtualBox per a GNU/Linux, Windows i Mac oS X (entre altres).
+És un programa de virtualització de hardware que permet crear diferents màquines virtuals en l'ordinador en que s'instal·la. Es tracta d'un _hipervisor_ de tipus 2 per tant funciona com un programa més de la màquina _host_. Hi ha versions de VirtualBox per a GNU/Linux, Windows i Mac oS X (entre altres).
 
 Aquest programa va ser creat per l'empresa _**Innotek GmbH**_ que va crear també una versió OSE (_Open Source Edition_) amb llicència GPL (software lliure). Aquesta empresa va ser adquirida per _Sun Microsystems_ en 2008 que va ser comprada per _**Oracle Corporation**_ en 2010 pel que ara el programa es diu _Oracle Virtualbox_. Hi ha una versió amb llicència privativa que és gratis per a ús personal i una **versió OSE** amb llicència GPL.
 
@@ -35,6 +35,22 @@ Per a poder instal·lar sistemes operatius de 64 bits (que és el que farem norm
 ![BIOS no configurada](img/bios.png)
 
 En el [manual de VirtualBox](https://www.virtualbox.org/manual/UserManual.html) podem conèixer més sobre el funcionament d'aquest programa. 
+
+## Importar i exportar màquines virtuales
+En el menú `Arxiu -> Importar/Exportar servei virtualitzat` de VirtualBox trobem opcions per a importar i exportar màquines virtuals.
+
+![Exportar](img/exportar-ova.png)
+
+L'exportació crea un arxiu comprimit en el qual es guarda tota la informació de configuració de la màquina virtual, així com tots els seus discos durs. L'extensió d'aquest tipus de fitxer és **`.ova`**.
+
+La importació d'un fitxer _.ova_ crea una nova màquina virtual exactament igual a la que es va exportar.
+
+## Clonar una màquina virtual
+Ens permet tindre una nova màquina exactament igual a altra que ja tenim. Aquesta opció la trobem en el menú `Màquina -> Clonar`.
+
+La clonació potser de 2 tipus:
+- **completa**: es fa una còpia de tota la màquina, incloent el seu disc dur. Amb això tenim 2 màquines iguals però independents
+- **enllaçada**: no es còpia el disc dur sencer sinó que es fa una instantània del disc dur original (després vorem què és). AIxò fa que la còpia ocupe molt poc espai però a canvi si eliminem la màquina original la màquina clonada deixarà de funcionar perquè el seu disc dur està vinculat al original.
 
 ## VirtualBox Guest Additions
 En cada màquina virtual que creem poder instal·lar les _Guest Additions_ que són un programa amb drivers i millores per al sistema operatiu d'eixa màquina, com:
@@ -56,7 +72,7 @@ A continuació obrim el CD i executem el programa _**VBoxWindowsAdditions.exe**_
 ## Compartir carpetes entre la màquina real i la virtual
 Una carpeta compartida és una carpeta del host accesible des d'una màquina virtual. Per a compartir carpetes hem de tindre instal·lades les _Guest Additions_ en la màquina virtual. La carpeta compartida es crea des de la màquina virtual en el menú `Dispositius -> Carpetes compartides`.
 
-A continuació seleccionem la carpeta del host a compartir, li donem un nom per al guest i marquem les opcions que vulguem (com _Automuntar_ per a que es munte automàticament o _Fer permanent_ per a continuar tenint la carpeta compartida si reiniciem la màquina virtual). També indiquem on volem que es munte aquesta carpeta (en una lletra d'unitat en Windows o un directori en GNU/Linux)
+A continuació seleccionem la carpeta del host a compartir, li donem un nom per al guest i marquem les opcions que vulguem (com '_Automuntar_' per a que es munte automàticament o '_Fer permanent_' per a continuar tenint la carpeta compartida si reiniciem la màquina virtual). També indiquem on volem que es munte aquesta carpeta (en una lletra d'unitat en Windows o un directori en GNU/Linux)
 
 ![Compartir carpeta](img/compartircarpetaconfig.png)
 
@@ -66,21 +82,6 @@ Amb això ja tenim la carpeta muntada on hem indicat
 
 Si no indiquem on s'ha de muntar tindrem la carpeta accesible en una ubicació dins de **vboxsvr** i faltaria muntar-la per comoditat, per exemple en Windows podríem connectar la unidad de xarxa `\\vboxsvr\compartida`.
 
-## Importar i exportar màquines virtuales
-En el menú `Arxiu -> Importar/Exportar servei virtualitzat` de VirtualBox trobem opcions per a importar i exportar màquines virtuals.
-
-![Exportar](img/exportar-ova.png)
-
-L'exportació crea un arxiu comprimit en el qual es guarda tota la informació de configuració de la màquina virtual, així com tots els seus discos durs amb les dades, aplicacions, etc., del sistema operatiu guest. L'extensió d'aquest tipus de fitxer és **`.ova`**.
-
-La importació d'un fitxer ova crea una nova màquina virtual exactament igual a la que es va exportar.
-
-## Clonar una màquina virtual
-Ens permet tndre una nova màquina exactament igual a altra que ja tenim. Aquesta opció la trobem en el menú `Màquina -> Clonar`.
-
-La clonació potser de 2 tipus:
-- **completa**: es fa una còpia de tota la màquina, incloent el seu disc dur. Amb això tenim 2 màquines iguals però independents
-- **enllaçada**: no es còpia el disc dur sencer sinó que es fa una instantània del disc dur original (després vorem què és). AIxò fa que la còpia ocupe molt poc espai però a canvi si eliminem la màquina original (o la portem al altre equip) la màquina clonada deixarà de funcionar perquè el seu disc dur està vinculat al original.
 
 ## Emmagatzematge en VirtualBox
 La part més important del nostre sistema és el disc dur virtual on el tenim instal·lat. Aquest disc dur és un fitxer que es guarda en la màquina real amb extensió **`vdi`** en la carpeta del nostre directori d'inici denominada **VirtualBox VMs**. VirtualBox també pot treballar amb discos de VMware, amb extensió `vmdk` (ens pregunta el format a l'hora de crear un nou disc).
@@ -92,7 +93,7 @@ Una qüestió molt important al crear un nou disc dur és si ho volem d'**expans
 
 ![Administrador de mitjans virtuals](./img/adm-med-virt.png)
 
-Tenim 3 pèstanyes diferents per a gestionar els discs durs, els CDs i els disquetes. En la pestanya dels discs durs podem veure la mesura virtual del disc (la que es pensa que té la màquina virtual que és el màxim que podria arribar a tindre) i la mesura real del disc que és la que ocupa el fitxer vdi en el disc dur real.
+Tenim 3 pestanyes diferents per a gestionar els discs durs, els CDs i els disquetes. En la pestanya dels discs durs podem veure la mesura virtual del disc (la que es pensa que té la màquina virtual que és el màxim que podria arribar a tindre) i la mesura real del disc que és la que ocupa el fitxer vdi en el disc dur real.
 
 Hem de tindre sempre en compte que aquest disc va creixent segons la màquina virtual necessita més espai i per tant ha de tindre espai en el disc dur real on créixer perquè si s'omple el disc dur real pot desbaratar-se el disc dur virtual.
 
@@ -114,7 +115,7 @@ Per a afegir un disc a un controlador existent (IDE o SATA) seleccionem el contr
 
 ![SATA Controller](./img/control-sata.png)
 
-També tenim en la part inferior de l'arbre d'emmagatzematge una icona per a afegir un nou controlador que pot ser SCSI, SAS o de disquette a més de IDE o SATA.
+També tenim en la part inferior de l'arbre d'emmagatzematge una icona per a afegir un nou controlador que pot ser SCSI, SAS o de disquete a més de IDE o SATA.
 
 Si optem per un disc SATA no cal configurar res, igual que passa en la realitat, sinó simplement afegir el disc i indicar en quin port SATA es troba (del 0 al 29).
 

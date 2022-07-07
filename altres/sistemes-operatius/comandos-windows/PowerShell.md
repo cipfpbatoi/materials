@@ -20,11 +20,11 @@
   - [Comandos para gestionar procesos y servicios](#comandos-para-gestionar-procesos-y-servicios)
   - [Comandos para gestionar usuarios](#comandos-para-gestionar-usuarios)
   - [Comandos para gestionar grupos](#comandos-para-gestionar-grupos)
-  - [Otros comandos de administración](#otros-comandos-de-administración)
+  - [Otros comandos útiles](#otros-comandos-útiles)
   - [Saber más](#saber-más)
 
 ## Introducción a PowerShell
-Está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, _Remove_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
+Es el sustituto de la antigua consola _CMD_ y está basado en objetos por lo que en lugar de procesar texto como la mayoría de intérpretes de comandos procesa objetos. A sus comandos se les llama **cmdlets** y están formados por un verbo (_Get_, _Set_, _Remove_, ...) y un nombre de objeto sobre el que realizar la acción (_Location_, _Item_, _Content_, _Process_, _Service_, ...) separados por un **-**.
 
 Por ejemplo, para cambiar al directorio _Windows_ el comando es `cd C:\Windows` y su _cmdlet_ correspondiente es 
 
@@ -34,7 +34,7 @@ Set-Location C:\Windows
 
 donde:
 - **Set** indica la operación a realizar sobre el objeto
-- **Location** es el objeto sobre el que actuamos. _Location_ almacena el directorio actual
+- **Location** es el objeto sobre el que actuamos. El objeto _Location_ almacena el directorio actual
 - _PATH_ el parámetro es la ubicación del directorio al que queremos ir
 
 Y para saber en qué directorio estamos deberíamos ejecutar `Get-Location`.
@@ -46,7 +46,7 @@ Algunos comandos útiles para todo esto son:
 - **`Where-Object`**: es un poderoso filtro que no da acceso a multitud de funciones
 - **`Sort-Object`**: permite ordenar por la propiedad que deseemos
 - **`Export-CSV`**: exporta la salida a formato CSV (texto con separador)
-- **`Measure-Object`**: cuenta los objetos pasado
+- **`Measure-Object`**: cuenta los objetos pasados
 - ...
 
 Ejemplo:
@@ -228,17 +228,18 @@ Ejemplos:
 - `Import-Csv delimitado.txt -Delimiter ";" | Where-Object {$_.Localitat -match "Muro"} | Select-Object 1rCognom, 2nCognom, Nom`: De las líneas del fichero fijo.txt que contengan el texto "Muro" en el campo "Localitat" muestra sólo los campos 1rCognom, 2nCognom y Nom
 
 ## Comandos para gestionar la red
-- **`Get-NetAdapter`**: Muestra las propiedades básicas del adaptador de red
+- **`Get-NetAdapter`**: Muestra los adaptadores de red y sus propiedades básicas
 - **`Get-NetIpAddress`**: Muestra la configuración de la dirección IP, tanto IPv4 como IPv6 y las interfaces de red respectivas
 - **`Get-NetIPConfiguration`**: Muestra información de la configuración de red, interfaces utilizables, direcciones IP y direcciones DNS del sistema.
-- **`Get-NetRoute`**: Muestra toda la tabla de rutas
+- **`Get-NetRoute`**: Muestra toda la tabla de enrutamiento
 - **`Enable-NetAdapter -Name "Ethernet"`**: Activa la interfaz llamada Ethernet
 - **`Disable-NetAdapter -Name "Ethernet"`**: Desactiva la interfaz llamada Ethernet
 - **`Enable-NetAdapter -Name "Ethernet"`**
 - **`Rename-NetAdapter -Name "Ethernet" -NewName "Externa"`**: Renombra un adaptador de red
-- **`Get-NetAdapter -Name "Ethernet" | Remove-NetIPAddress`**: Elimina la IP de adaptador "Ethernet"
-- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.25 -PrefixLength "24" -DefaultGateway 192.168.1.1`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24 y la puerta de enlace 192.168.1.1
-- **`Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 10.0.0.2`**: Se asigna a la interfaz "Ethernet" el DNS 10.0.2.2
+- **`Remove-NetIPAddress -InterfaceAlias "Ethernet"`**: Elimina la IP del adaptador "Ethernet"
+- **`Remove-NetRoute -InterfaceAlias "Ethernet"`**: Elimina la _gateway_ y las rutas del adaptador "Ethernet"
+- **`New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.25 -PrefixLength 24 -DefaultGateway 192.168.1.1`**: Se asigna a la interfaz "Ethernet" la IP 192.168.1.25/24 y la puerta de enlace 192.168.1.1
+- **`Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 10.0.0.2, 8.8.8.8`**: Se asigna a la interfaz "Ethernet" los DNS 10.0.2.2 y 8.8.8.8
 - **`Test-NetConnection -ComputerName 8.8.8.8`**: Realiza un ping a 8.8.8.8
 - **`Test-NetConnection 8.8.8.8 -TraceRoute`**: Ejecuta un tracert a 8.8.8.8
 - **`Resolve-DnsName google.com`**: Ejecuta un Nslookup a google.com
@@ -329,10 +330,15 @@ Ejemplos:
 - `New-ADGroup -Name "Professors del matí" -SamAccountName ProfesMati -GroupCategory Security -GroupScope Global -DisplayName "Professors del matí" -Path "OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN" -Description "Members of this group are teachers in the morning courses"`: añade un nuevo grupo global llamado ProfesMati en la OU '1rCurs' que está dentro de la OU 'ASIX' del dominio Batoi.lan
 - `Add-ADGroupMember -Identity ProfesMati -Members jsegura,lmanzaneque`: añade los usuarios jsegura y lmanzaneque al grupo ProfesMati
 
-## Otros comandos de administración
+## Otros comandos útiles
+- **`Get-Member`**: lista las propiedades que tenemos disponibles de un comando para consultar/mostrar/filtrar, etc
+- **`Get-Date`** : Obtiene la fecha
+- **`Clear-Host`** : Limpia la terminal
+- **`Read-Host`** : Lee lo que se escribe en la terminal (normalmente para guardarlo en una variable)
 - **`Rename-Computer -Name pc01`**: renombra este ordenado a pc01
+- **`Stop-Computer`**: para la máquina
 - **`Restart-Computer`**: reinicia la máquina
-- **`Add-Computer ACME`**: añade este ordenado al dominio ACME (es el nombre NetBIOS del dominio)
+- **`Add-Computer ACME`**: añade este ordenador al dominio ACME (es el nombre NetBIOS del dominio)
 
 
 ## Saber más
