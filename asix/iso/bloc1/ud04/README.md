@@ -158,11 +158,9 @@ Es el primer directorio o carpeta en una jerarquía. Contiene todos los subdirec
 
 En sistemas tipo **Unix**, se identifica con el carácter **/**. Todos los accesos al sistema de ficheros, incluyendo los otros discos y particiones, se encuentran en la jerarquía dentro del directorio raíz.
 
-En los sistemas Windows cada partición tiene un directorio raíz individual
-(nombrado ***letra***:***\\***, por ejemplo para una determinada partición C su directorio raíz se llama ***C***:***\***) y no hay un directorio raíz común que las contenga a todas ellas.
+En los sistemas Windows cada partición tiene un directorio raíz individual (nombrado **letra**:**\\**, por ejemplo para una determinada partición **C** su directorio raíz se llama **C**:**\**) y no hay un directorio raíz común que las contenga a todas ellas.
 
-
-	<img src="./media/ud4-06.png" width="50%">
+<img src="./media/ud4-06.png" width="50%">
 
 #### Rutas
 
@@ -246,6 +244,7 @@ La mayoría de los sistemas operativos pueden trabajar con varios sistemas de fi
 Los sistemas de archivos proveen métodos para crear, copiar y eliminar tanto archivos como directorios así como para garantizar el acceso seguro a los archivos.
 
 Cuando elegimos un sistema de archivos para formatear un medio debemos tener en cuenta:
+
 - La medida máxima que ese sistema permite para un fichero.
 - Capacidad máxima del sistema de ficheros (es decir, medida máxima de cada partición)
 - Cómo gestiona los permisos de ficheros y directorios.
