@@ -4,7 +4,7 @@
   * [Principals sistemes operatius](./sistemes-operatius/exemples-so/)
   * [Particionament de discos](./sistemes-operatius/particions/)
   * [Samba](./sistemes-operatius/samba/)
-  * [Comandos de Windows](./sistemes-operatius/comandos-windows/)
+  * [La interfície de text. Comandos](./sistemes-operatius/comandos/)
   * [Software RAID](./sistemes-operatius/software-raid/)
   * [LVM](./sistemes-operatius/lvm/)
 * [Virtualització. Virtualbox](./virtualitzacio/)
