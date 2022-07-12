@@ -1,7 +1,7 @@
 # La consola CMD
 - [La consola CMD](#la-consola-cmd)
   - [Obtener ayuda](#obtener-ayuda)
-  - [Sintaxis de los comandos de la consola](#sintaxis-de-los-comandos-de-la-consola)
+  - [Sintaxis de los comandos](#sintaxis-de-los-comandos)
   - [Comandos para trabajar con Directorios y Ficheros](#comandos-para-trabajar-con-directorios-y-ficheros)
     - [Cambiar de directorio](#cambiar-de-directorio)
     - [Ver el contenido de un directorio](#ver-el-contenido-de-un-directorio)
@@ -21,6 +21,7 @@
   - [Comandos para gestionar la red](#comandos-para-gestionar-la-red)
     - [CMD](#cmd)
   - [Comandos para gestionar discos](#comandos-para-gestionar-discos)
+  - [Otros comandos](#otros-comandos)
 
 ## Obtener ayuda
 Podemos obtener la lista de comandos y una breve explicación de lo que hacen con el comando `help`.
@@ -37,7 +38,7 @@ copy /?
 help copy
 ```
 
-## Sintaxis de los comandos de la consola
+## Sintaxis de los comandos
 Normalmente para ejecutar un comando ponemos uno o más parámetros para que el comando haga exactamente lo que queremos. Esto hace que en ocasiones sea compleja la forma de utilizar un comando y muchas veces tenemos que ir a la ayuda para hacer lo que queremos.
 
 ![Help COPY](./media/helpCopy.png)
@@ -222,9 +223,33 @@ Compara el contenido de los ficheros pasado como parámetro y muestra por pantal
 - **`nslookup`**: Resuelve el nombre de dominio indicado, mostrando cuál es su IP
 
 ## Comandos para gestionar discos
-- **`diskpart`**: Se trata de un programa en modo texto que permite gestionar las particiones de nuestros discos
 - **`chkdsk`**: Permite comprobar un sistema de archivos FAT o NTFS. Ejemplo: `chkdsk E:`
 - **`defrag`**: Desfragmenta el sistema de archivos que le indicamos. Ejemplo: `defrag E:`
 - **`format`**: Formatea una partición con sistema de archivos FAT o NTFS. Ejemplo: `format E:`
+- **`diskpart`**: Se trata de un programa en modo texto que permite gestionar las particiones de nuestros discos
 - **`convert`**: Convierte una partición FAT a NTFS sin perder los datos
 
+## Otros comandos
+- **`X:`**: Cambia a la unidad X. Ejemplo: `D:`
+- **`date`**: Muestra la fecha actual y permite cambiarla. Ejemplos:
+  - `date`: Muestra la fecha actual y nos pregunta por la nueva fecha
+  - `date 24/3/2022:`: Cambia la fecha actual a 24/3/2022
+  - `date /T:`: Muestra la fecha actual
+- **`time`**: Igual qur la anterior pero para ver y cambiar la hora
+- **`echo`**: Muestra en la terminal lo que le pongamos. Ejemplo: `echo HOLA`
+- **`shutdown`**:Permite apagar el ordenador. Modificadores:
+  - `/s`: Apaga el equipo
+  - `/r`: Reinicia el equipo
+  - `/h`: Hiberna el equipo
+  - `/l`: Cierra la sesión
+  - `/t`: Permite especificar un tiempo (en según) de espera antes apagar
+  - `/a`: Anula el apagado del equipo, si estamos todavía en el tiempo de espera
+  - `/c`: Comentario de la causa de la apagado
+  - `/m`: Permite apagar otro equipo de la red
+  - Ejemplos:
+  - `shutdown /s`: Apaga el equipo
+  - `shutdown /s /t 300`: Apaga el equipo dentro de 5 minutos (300 según)
+  - `shutdown /s /t 300 /c  "El ordenador se va a apagar en 5 minutos"`: Apaga el equipo dentro de 5 minutos y muestra el mensaje indicado
+  - `shutdown /s /t 300 /m \\pc-23`: Apaga dentro de 5 minutos el equipo de la red denominado "pc-23"
+- **`cls`**: Borra la pantalla
+- **`exit`**: Cierra la terminal
