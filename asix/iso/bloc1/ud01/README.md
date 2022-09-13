@@ -48,10 +48,12 @@ Los conceptos más importantes de esta unidad son:
 * El ordenador és la herramienta que nos permite el procesamiento automático de la información.
 * Un ordenador no és más que una máquina formada per elementos mecánicos y electrónicos.
 * El que diferencia un ordenador de otras máquinas es que el ordenador és programable, és decir, que puede recibir instrucciones que le indican com tiene que funcionar.
-* El ordinador es una màquina composta per elements físics( electrònics i elèctrics). Aço s’anomena comunment Hardware o maquinari.
-* Aquest maquinari necessita d'ordres o instruccions que fan funcionar el maquinari d'una manera determinada. Podem anomenar programa a un conjunt d'instruccions que lianomenar programa a un conjunt d'instruccions que li permeten a l'ordinador fer una tasca. Al conjunt de tots els elements no físics, és a dir, de tots els programes de l'ordinador se l'anomena Programari o Software.
-* Dins del programari hi ha un especial, anomenat programari de base, que fa possible que l'ordinador funcione: el Sistema Operatiu. 
-* Entre el programari i el maquinari hi ha altre tipus d'element: el Firmware.
+* El ordenador se una máquina compuesta por elementos físicos (electrónicos y eléctricos).
+* Esto se denomina comúnmente **Hardware**.
+* Este hardware necesita de órdenes o instrucciones que hacen funcionar el **hardware** de una manera determinada. 
+* Podemos denominar programa a un conjunto de instrucciones que la denominamos programa a un conjunto de instrucciones que le permiten al ordenador hacer una tarea. Al conjunto de todos los elementos no físicos, es decir, de todos los programas del ordenador se lo denomina **Software**.
+* Dentro del **software** hay un especial, llamado **software de base**, que hace posible que el ordenador funciono: el *Sistema Operativo*.
+* Entre el **software** y el **hardware** hay otro tipo de elemento: el **Firmware**.
 
 ### Maquinari
   
