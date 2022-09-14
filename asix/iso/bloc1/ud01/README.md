@@ -4,20 +4,19 @@
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
   - [Estructura de un sistema informático](#estructura-de-un-sistema-informático)
-    - [Maquinari](#maquinari)
-    - [Programari](#programari)
-  - [Arquitectura d’un sistema Operatiu.](#arquitectura-dun-sistema-operatiu)
-    - [Elementos i estructura d'un Sistema Operatiu (SO)](#elementos-i-estructura-dun-sistema-operatiu-so)
-  - [Funcions del Sistema Operatiu.](#funcions-del-sistema-operatiu)
-    - [Administrar recursos Hw](#administrar-recursos-hw)
-  - [Proporcionar interfície](#proporcionar-interfície)
-  - [Tipus de Sistemes Operatius.](#tipus-de-sistemes-operatius)
-  - [Tipus d’aplicacions](#tipus-daplicacions)
-    - [Llicències del programari](#llicències-del-programari)
-    - [Llicències no-lliure o privatives](#llicències-no-lliure-o-privatives)
-    - [Llicències de Programari de codi obert](#llicències-de-programari-de-codi-obert)
-    - [Llicències permissives o acadèmiques](#llicències-permissives-o-acadèmiques)
-    - [Llicències amb copyleft fort](#llicències-amb-copyleft-fort)
+    - [Hardware](#hardware)
+    - [Software](#software)
+  - [Arquitectura de un sistema Operativo.](#arquitectura-de-un-sistema-operativo)
+    - [Elementos y estructura de un Sistema Operativo (SO)](#elementos-y-estructura-de-un-sistema-operativo-so)
+  - [Funciones del Sistema Operativo.](#funciones-del-sistema-operativo)
+    - [Administrar recursos Hardware](#administrar-recursos-hardware)
+  - [Proporcionar una interfaz](#proporcionar-una-interfaz)
+  - [Tipos de Sistemas Operativos.](#tipos-de-sistemas-operativos)
+  - [Licencias](#licencias)
+    - [Licencias no-libres o privativas](#licencias-no-libres-o-privativas)
+    - [Licencias de sofware de codigo abierto](#licencias-de-sofware-de-codigo-abierto)
+    - [Licencias permisivas o académicas](#licencias-permisivas-o-académicas)
+    - [Licencias con copyleft fuerte](#licencias-con-copyleft-fuerte)
     - [Llicències mixtes o amb copyleft suau.](#llicències-mixtes-o-amb-copyleft-suau)
     - [Creative Commons](#creative-commons)
 
@@ -55,66 +54,65 @@ Los conceptos más importantes de esta unidad son:
 * Dentro del **software** hay un especial, llamado **software de base**, que hace posible que el ordenador funciono: el *Sistema Operativo*.
 * Entre el **software** y el **hardware** hay otro tipo de elemento: el **Firmware**.
 
-### Maquinari
+### Hardware
   
 ![Arquitectura](media/Arquitecturaneumann.jpg)
 
-Anem a veure a grans trets alguns dels components més importants d'un ordinador. 
-  
-* ***Unitat Central de Procés*** (CPU): és l'element encarregat del control i execució de les operacions que es realitzen dins de l'ordinador. La CPU esta format per les seguents parts:
-  * **Unitat de Control**: és la part que pensa de l'ordinador. La seua funció és rebre cada instrucció d'un programa interpretar-la i enviar a cada dispositiu les senyal de control necessàries per a executar-la.
-  * **Unitat Aritmètica-Lógica**: és l'encarregada de realitzar operacions aritmètiques i lògiques sobre les dades.
-  * **Registres**: emmagatzemen temporalment la informació amb la qual està treballant la CPU (la instrucció que està executant-se i les dades sobre els quals opera eixa instrucció).
-  
-* ***La Memòria***: és on s'emmagatzema la informació, tant instruccions com dades. Es pot dividir en:
-  * Memòria d'emmagatzematge massiu o secundària.
-  * Memòria interna o principal o RAM.
-  * Memoria Cache
-  * Memoria ROM BIOS.
-  
-* Unitats d'entrada/eixida i busos: Serveix per comunicar el processador i la resta dels components interns de l'ordinador, amb els perifèrics d'entrada/eixida i les memòries d'emmagatzematge extern o auxiliars.extern o auxiliars
-  
-* Els busos són les línies per les quals viatja la informació entre els diferents components de l'ordinador.
-  
-* Perifèrics: són dispositius maquinari amb els quals l'usuari pot interactuar amb l'ordinador.
-  * Els perifèrics es connecten a l'ordinador mitjançant els anomenats ports.
-  * Els perifèrics necessiten d'un programa especial que hem d'instal·lar en l'ordinador per a poder usar-los. 
+Vamos a ver a grandes rasgos algunos de los componentes más importantes de un ordenador. 
+ 
+* ***Unidad Central de Proceso*** (CPU): es el elemento encargado del control y ejecución de las operaciones que se realizan dentro del ordenador. La CPU esta formado por las *siguientes partes:
+ * **Unidad de Control**: es la parte que piensa del ordenador. Su función es recibir cada instrucción de un programa interpretarla y enviar a cada dispositivo las señal de control necesarias para ejecutarla.
+ * **Unidad Aritmética-*Lógica**: es la encargada de realizar operaciones aritméticas y lógicas sobre los datos.
+ * **Registros**: almacenan temporalmente la información con la cual está trabajando la CPU (la instrucción que está ejecutándose y los datos sobre los cuales opera esa instrucción).
+ 
+* ***La Memoria***: es donde se almacena la información, tanto instrucciones como datos. Se puede dividir en:
+ * Memoria de almacenamiento masivo o secundaria.
+ * Memoria interna o principal o RAM.
+ * Memoria Cache
+ * Memoria ROM.
+ 
+* ***Unidades de entrada/salida y buses***: Sirve para comunicar el procesador y el resto de los componentes internos del ordenador, con los periféricos de entrada/salida y las memorias de almacenamiento externo o auxiliares.externo o auxiliares
+ 
+* Los ***buses*** son las líneas por las cuales viaja la información entre los diferentes componentes del ordenador.
+ 
+* ***Periféricos***: son dispositivos hardware con los cuales el usuario puede interactuar con el ordenador.
+ * Los periféricos se conectan al ordenador mediante los llamados puertos.
+ * Los periféricos necesitan de un programa especial que tenemos que instalar en el ordenador para poder usarlos. 
 
-Arquitectures de CPU. L'element més important per executar una instrucció es el procesador. Els passos per executar una instrucció son.
+Arquitecturas de CPU. El elemento más importante para ejecutar una instrucción es el procesador. Los pasos para ejecutar una instrucción:
 
-1. Es llig la instrucció de memòria1.Es llig la instrucció de memòria.
-2. Es decodifica la instrucció (què s'ha de fer).
-3. Es troben els dades necessaris per a processar la instrucció.
-4. Es processa la instrucció.
-5. S'escriuen els resultats en memòria.
+1. Se lee la instrucción de memoria.
+2. Se decodifica la instrucción (qué se tiene que hacer).
+3. Se encuentran los datos necesarios para procesar la instrucción.
+4. Se procesa la instrucción.
+5. Se escriben los resultados en memoria.
 
-No tots els processadors funcionen igual. Cadascun les realitza d’una forma diferent. Té conjunt d’instruccions que pot executar. L’arquitectura més comú es la PC. Les que han sortit posteriorment, normalment son compatibles en aquesta. Un Sistema Operatiu. Nomes es pot executar sobre una màquina amb l’arquitectura pel que s’ha dissenyat. 
+No todos los procesadores funcionan igual. Cada uno las realiza de una forma diferente. Tiene conjunto de instrucciones que puede ejecutar. La arquitectura más común se la PC. Las que han salido posteriormente, normalmente sueño compatibles en esta. Un Sistema Operativo. Solamente se puede ejecutar sobre una máquina con la arquitectura por el que se ha diseñado. 
 
 
-### Programari
+### Software
 
-Existeixen 2 tipus de programari principalment:
+Existen 2 tipos de software principalmente:
 
-* Programari de base o sistema
-* Programari d'aplicació
+* Software de base o sistema
+* Software de aplicación
 
-El programari d'aplicacions és el conjunt de programes i paquets informàtics instal·lats per l'usuari per a realitzar tasques concretes com editar textos, retocar fotografies, realitzar càlculs, etc.realitzar càlculs, etc. Programari de sistema o de base són aquells programes que fan possible que l'ordinador funcione i es puga comunicar amb l'usuari.El programari de base ho constitueixen el sistema operatiu amb el qual treballa l'ordinador, els drivers que permeten el funcionament dels distints perifèrics (que són específics per a aqueix sistema operatiu) i altres programes d'utilitat.
+El software de aplicaciones es el conjunto de programas y paquetes informáticos instalados por el usuario para realizar tareas concretas como editar textos, retocar fotografías, realizar cálculos, etc.realizar cálculos, etc. Software de sistema o de base son aquellos programas que hacen posible que el ordenador funciono y se pueda comunicar con el usuario.El software de base lo constituyen el sistema operativo con el cual trabaja el ordenador, los drivers que permiten el funcionamiento de los distintos periféricos (que son específicos para ese sistema operativo) y otros programas de utilidad.
 
-El sistema operatiu és també el qual proporciona la interfície d'usuari mitjançant la qual l'usuari es comunica amb
-l'ordinador i li indica el que desitja fer a cada moment.
+El sistema operativo es también el cual proporciona la interfaz de usuario mediante la cual el usuario se comunica con el ordenador y le indica el que desea hacer en cada momento.
 
 ![prog](./media/ud1-01.png)
 
-## Arquitectura d’un sistema Operatiu.
+## Arquitectura de un sistema Operativo.
 
-El sistema operatiu és el programari bàsic de l'ordinador sense el qual aquest no funciona. Gestiona tots els recursos maquinari del sistema i proporciona la base sobre la qual s'executa el programari d'aplicació. A més proporciona a l'usuari la forma de comunicar-se. A més proporciona a l'usuari la forma de comunicar-se amb l'ordinador mitjançant una interfície de text o gràfica.
+El sistema operativo es el software básico del ordenador sin el cual este no funciona. Gestiona todos los recursos hardware del sistema y proporciona la base sobre la cual se ejecuta el software de aplicación. Además proporciona al usuario la forma de comunicarse. Además proporciona al usuario la forma de comunicarse con el ordenador mediante una interfaz de texto o gráfica.
 
-Per exemple, quan un usuari vol guardar un fitxer en el disc dur simplement li indica el sistema operatiu el nom del fitxer i en quina carpeta ho desitja guardar, sent el S.O. el qual es preocuparà de cercar sectors buits en el disc
-dur.
+Por ejemplo, cuando un usuario quiere guardar un fichero en el disco duro simplemente le indica el sistema operativo el nombre del fichero y en qué carpeta lo desea guardar, siendo el S.O. el cual se preocupará de buscar sectores vacíos en el disco
+duro.
 
-No tots els sistemes operatius es poden instal·lar en qualsevol sistema informàtic, ni tots els equips poden suportar qualsevol sistema operatiu.
+No todos los sistemas operativos se pueden instalar en cualquier sistema informático, ni todos los equipos pueden soportar cualquier sistema operativo.
 
-### Elementos i estructura d'un Sistema Operatiu (SO)
+### Elementos y estructura de un Sistema Operativo (SO)
 
 Como podemos imaginar, un sistema operativo es un programa muy complejo que debe estar muy bien organizado y estructurado internamente para llevar a cabo su trabajo de una forma muy eficiente. En este sentido, los sistemas operativos se subdividen en diferentes componentes que se encuentran especializados en aspectos muy concretos del mismo.
 
@@ -140,184 +138,185 @@ En este sentido, los planteamientos que se aplican en los sistemas operativos m�
 * Micronúcleo. n este tipo de sistemas, el núcleo sólo contiene la implementación de servicios básicos como el soporte de acceso a memoria de bajo nivel, la administración de tareas y la comunicación entre procesos (también conocida como IPC, del inglés, Inter-Process Communication).
 * Núcleo híbrido. Este tipo de arquitectura consiste básicamente en un esquema de micronúcleo que incluye algo de código complementario para hacerlo más rápido, aunque buena parte de las funciones del sistema operativo siguen ejecutándose en modo usuario.
 
-## Funcions del Sistema Operatiu.
+## Funciones del Sistema Operativo.
 
-### Administrar recursos Hw
+### Administrar recursos Hardware
 
-* El S.O no és més que un programa que dirigeix al processador en l'ocupació dels recursos del sistema. 
-* El kernel (nucli) es una part del S.O que sempre esta en la memoria principal.esta en la memoria principal.
-* Per a realitzar les funcions d'administració del maquinari els SO han de proporcionar determinats serveis:
-  * Gestió de execució de programes.
-  * Gestió de memoria.
-  * Administració de perifèrics.
-  * Gestió de sistema de arxius
-  * Altres funcions, com gestió de xarxa o de usuaris...
+El S.O no es más que un programa que dirige al procesador en la ocupación de los recursos del sistema. 
+* El **kernel** (núcleo) se una parte del S.O que siempre esta en la memoria principal.
+* Para realizar las funciones de administración del hardware los sistemas operativos tienen que proporcionar determinados servicios:
+ * Gestión de ejecución de programas.
+ * Gestión de memoria.
+ * Administración de periféricos.
+ * Gestión de sistema de archivos
+ * Otros funciones, como gestión de red o de usuarios...
 
-## Proporcionar interfície
+## Proporcionar una interfaz
 
-El sistema operatiu fa d'intermediari entre aquests elements i el maquinari de l'equip. Respecte als programes d'aplicació els proporciona una sèrie de funcions perquè utilitzen el maquinari sense haver de preocupar-utilitzen el maquinari sense haver de preocupar-se de la complexitat del mateix.
+El sistema operativo hace de intermediario entre estos elementos y el hardware del equipo. Respecto a los programas de aplicación los proporciona una serie de funciones porque utilizan el hardware sin tener que utilizan el hardware sin tener que preocuparse de la complejidad del mismo.
 
-A l'usuari li proporciona una interfície, que pot ser:
+Al usuario le proporciona una interfaz, que puede ser:
 
-* De text.
-
+* De texto.
 * Gráfica.
 
-## Tipus de Sistemes Operatius.
 
-Els SS.OO. Es poden classificar segons diverses paràmetres:
+## Tipos de Sistemas Operativos.
 
-* Segons la forma d’explotació.
-  * Procés per lots.
-  * Procés en temps compartit o reial.
-* Segons el nombre d’usuaris
-  * Monousuari
-  * Multiusuari.
-* Segons el nombre de tasques o processos.oSegons el nombre de tasques o processos.
-  * Monotasca.
-  * Multitasca.
-* Segons el nombre de processadors.
-  * Monoprocessador.
-  * Multiprocessador.
-* Segons com ofereix els serveis.
-  * Sistemes operatius d’escriptori.
-  * Sistemes Operatius en xarxa.
-  * Sistema centralitzat.
-  * Sistemes distribuïts.
-* Segons la llicencia d’us.
-  * Privatius
-  * Lliures.
+Los sistemas operativos se pueden clasificar según varios parámetros:
 
-## Tipus d’aplicacions
+* Según la forma de explotación.
+ * Proceso por lotes.
+ * Proceso en tiempo compartido o real.
+* Según el número de usuarios
+ * Monousuario
+ * multiusuario.
+* Según el número de tareas o procesos.*
+ * Monotarea.
+ * Multitarea.
+* Según el número de procesadores.
+ * Monoprocessador.
+ * Multiprocesador.
+* Según cómo ofrece los servicios.
+ * Sistemas operativos de escritorio.
+ * Sistemas Operativos en red.
+ * Sistema centralizado.
+ * Sistemas distribuidos.
+* Según la licencia de os.
+ * Privativos
+ * Libres.
 
-### Llicències del programari
 
-La llicència de programari és, segons el Dret espanyol, el contracte pel qual el titular d'un programa autoritza al llicenciatari a utilitzar-ho, cedint-li els drets necessaris per a aquest ús. 
+## Licencias 
 
-La llicència de programari compleix una dobleLa llicència de programari compleix una doble funció:
 
-* Assegurar els drets de l'usuari (les autoritzacions)
-* Reservar i protegir els drets del titular (els drets no cedits i les condicions que ha de complir l'usuari).
+La licencia de software es, según el Derecho español, el contrato por el cual el titular de un programa autoriza al usuario a utilizarlo, cediéndole los derechos necesarios para este uso. 
 
-Per tant la llicència estableix determinats drets i obligacions entre les parts. I és en aquest punt on es diferencien les llicències del programari de codi obert (Open Source Software) i les llicències no lliures o privatives:les llicències no lliures o privatives:
+La licencia de software cumple una doble función:
 
-* programari de codi obert concedeixen amplis drets a l'usuari (inclosos els de modificar el programari i tornar a distribuir-ho)
-* Les llicencies no lliures solen limitar o imposar condicions dràstiques.
+* Asegurar los derechos del usuario (las autorizaciones)
+* Reservar y proteger los derechos del titular (los derechos no cedidos y las condiciones que tiene que cumplir el usuario).
 
-Com veiem en el diagrama, cada conjunt (programari lliure, no lliure) inclou determinats subtipus de llicències subtipus de llicències (permissives, copyleft, etc.), que es diferencien entre si per les condicions que s'estableixen en elles.
+Por lo tanto la licencia establece determinados derechos y obligaciones entre las partes. Y es en este punto donde se diferencian las licencias del software de código abierto (**Open Source Software**) y las licencias no libres o privativas:las licencias no libres o privativas:
+
+* Software de código abierto conceden amplios derechos al usuario (incluidos los de modificar el software y volver a distribuirlo)
+* Las licencias no libres suelen limitar o imponer condiciones drásticas.
+
+Cómo vemos en el diagrama, cada conjunto (software libre, no libre) incluye determinados subtipo de licencias subtipos de licencias (permisivas, copyleft, etc.), que se diferencian entre sí por las condiciones que se establecen en ellas.
 
 ![Soft](./media/ud1-02.png)
 
-### Llicències no-lliure o privatives
+### Licencias no-libres o privativas
 
-Es pot dir que hi ha casi tantes llicencies no-lliures com programari propietari. 
+Se puede decir que hay tantas licencias no-libres como software propietario. 
 
-* Programari estàndard de distribució massiva: Ms Windows o MacOS.
-* Programari empresarial per parametrització, com SAP.
-* Programari desenvolupat a mida per un client particular.
+* Software estándar de distribución masiva: Ms Windows o MacOS.
+* Software empresarial por parametrización, como SAP.
+* Software desarrollado a medida por un cliente particular.
 
-Les condicions especifiques dependran d’aspectes com:
+Las condiciones especificas dependerán de aspectos como:
 
-* Tipus de programari.
-* Posició de les parts que negocien el contracte.-
-* Jurisdicció del lloc on es ven
+* Tipo de software
+* Posición de las partes que negocian el contrato
+* Jurisdicción del lugar donde se vende
 
-Per exercir els drets d’aquestes llicencies, l’usuari deurà complir una serie d’obligacions
+Para ejercer los derechos de estas licencias, el usuario deberá de cumplir una serio de obligaciones
 
-* Pagament de drets de llicencia.
-* Prohibició de la copia, modificació i redistribució
-* I altres limitacions que interposi el fabricant.
+* Pago de derechos de licencia.
+* Prohibición de la copia, modificación y redistribución
+* Y otras limitaciones que interponga el fabricante.
 
 ![privativa](./media/ud1-03.png)
 
-Dintre de les llicencies privatives ens trobem les de tipus Freeware, Shareware i Adware.
+Dentro de les licencias privativas nos encontramos las de tipo *Freeware*, *Shareware* y *Adware*.
 
 **Freeware**:
 
-* El seu nom indica “Software gratuït”.
-* No te cap cost.
-* La seva utilització es per temps il·limitat.La seva utilització es per temps il·limitat.
-* No sol incloure el codi font (encara que el podria).
-* Sol incloure una llicencia d’ús en la que es pot redistribuir, però sense fins comercials.
+* Su nombre indica *Software gratuito*.
+* No tiene ningún coste.
+* Su utilización se por tiempo ilimitado.
+* No suele incluir el código fuente (aunque lo podría).
+* Suele incluir una licencia de uso en la que se puede redistribuir.
 
 ![freeware](./media/ud1-04.png)
 
 **Shareware**:
 
-* El programa es distribueix en limitacions.
-* Pot ser versió demo o d’avaluació.
-* Té funcions o característiques mínima o amb ús restringit a un temps establit.
-* Per aconseguir l’ús del software de manera completa, es requereix un pagament.
+* El programa se distribuye en limitaciones.
+* Puede ser versión demo o de evaluación.
+* Tiene funciones o características mínima o con uso restringido a un tiempo establecido.
+* Para conseguir el uso del software de manera completa, se requiere un pago.
 
 ![shareware](./media/ud1-05.png)
 
 **Adware**:
 
-* Programa totalment gratuït.
-* Inclou publicitat en el programa, durant la seva instal·lació o durant el seu ús.instal·lació o durant el seu ús.
-* Hi ha programes que poden ser shareware a la mateixa vegada que Adware.
+* Programa totalmente gratuito.
+* Incluye publicidad en el programa, durante su instalación o durante su uso.instalación o durante su uso.
+* Hay programas que pueden ser *shareware a la misma vez que *Adware.
 
-### Llicències de Programari de codi obert
+### Licencias de sofware de codigo abierto
 
-Les llicències de codi obert, permeten entre altres coses:
+Las licencias de código abierto, permiten entre otras cosas:
 
-* Descarregar, instal·lar i executar el software sense limitacions.
-* Descarregar el codi font i estudiarlo.
-* Analitzar les interfaces per fer un software interoperable.
-* Modificar el software per adaptarlo a les seves necessitats, recompilar-ho i executar-ho.
-* Utilitzar part del codi per altre software.
-* Ampliar el Programari original.
-* Integrarlo en un altre Sw (SFA) per millorar les seves funcionalitats.
-* Redistribuir o comunicar públicament el software original.
-* De la mateixa manera, redistribuir el Sw modificat i les extensions (respectant sempre les condicions de la llicencia
-* Crear documentació sobre el software i ficar-la a la venda.
+* Descargar, instalar y ejecutar el software sin limitaciones.
+* Descargar el código fuente y estudiarlo.
+* Analizar las interfaces para hacer un software interoperable.
+* Modificar el software por adaptarlo a sus necesidades, recompilarlo y ejecutarlo.
+* Utilizar parte del código por otro software.
+* Ampliar el Software original.
+* Integrarlo en otro softaware para mejorar sus funcionalidades.
+* Redistribuir o comunicar públicamente el software original.
+* Del mismo modo, redistribuir el software modificado y las extensiones (respetando siempre las condiciones de la licencia
+* Crear documentación sobre el software y meterla en la venta.
 
-Tipus de llicencia.
+Tipo de licencia.
 
-* No totes les llicències de codi obert son iguals,
-* Hi ha quasi 70 llicencies OpenSource certificades per OSI.
-* És important conèixer les llicencies sempre que utilitzem un programari de codi obert.
-* La major diferencia radica en les condicions aplicables a la redistribució, en particular en quant al grau de copyleft:redistribució, en particular en quant al grau de copyleft.
+* No todas las licencias de código abierto sueño iguales,
+* Hay casi 70 licencias **OpenSource** certificadas por *OSI*.
+* Es importante conocer las licencias siempre que utilizamos un software de código abierto.
+* La mayor diferencia radica en las condiciones aplicables a la redistribución, en particular en en cuanto al grado de copyleft:redistribución, en particular en en cuanto al grado de copyleft.
 
 ![opensource](./media/ud1-06.png)
 
-Apart del copyleft, les llicencies de SFA també es caracteritzen per aplicar condicions addicionals sobre temes que els seus autors han cregut important:
+Aparte del copyleft, las licencias se caracterizan para aplicar condiciones adicionales sobre temas que sus autores han creído importante:
 
-* Prohibir el us del nom del titular perProhibir el us del nom del titular per promoure el Sw. (Apache Sw License)
-* L'abast de la llicencia de patents (MPL, CPL, GPLv3)
-* El dret aplicable i la jurisdicció competent per resoldre conflictes (MPL,CPL)
-* Accés a codi font medis sistemes remots(OSL, CDDL y Affero GPL)
+* Prohibir lo os del nombre del titular para promover el software. (Apache Software License)
+* El alcance de la licencia de patentes (MPL, CPL, GPLv3)
+* El derecho aplicable y la jurisdicción competente para resolver conflictos (MPL,CPL)
+* Acceso a código fuente medios sistemas remotos(OSL, CDDL y Affero GPL)
 
-### Llicències permissives o acadèmiques
 
-S'anomenen d'aquesta forma ja que no imposen cap condició particular en quant a la redistribució del software excepte mantenir els avisos legals i les limitacions de garantia i responsabilitat.
+### Licencias permisivas o académicas
 
-Aquest tipus de llicencia és el resultat del desig dels seus autors de compartir el software amb qualsevol finalitat sense imposar obligacions que
-pugen restringir els usos tant personals com comercials, llibres o privatius.
+Se denominan de esta forma puesto que no imponen ninguna condición particular en en cuanto a la redistribución del software excepto mantener los avisos legales y las limitaciones de garantía y responsabilidad.
 
-Les més conegudes son:
+Este tipo de licencia es el resultado del deseo de sus autores de compartir el software con cualquier finalidad sin imponer obligaciones que
+suben restringir los usos tanto personales como comerciales, libros o privativos.
 
-* **BSD**. (Berkeley Software Distribution. És una llicència que per als seus detractors és pràcticament una llicència de programari libertino, més que lliure. Si crees un programa X i un altre ho vol utilitzar, ho podrà prendre lliurement, només respectant la teva autoria però sense alliberar els canvis que hagin fet.
+Las más conocidas son:
 
-* **ASL**. (Apache Software License)
+* ***BSD**. (Berkeley Software Distribution). Es una licencia que para sus detractores es prácticamente una licencia de software libe, más que libre. Si creas un programa X y otro lo quiere utilizar, lo podrá tomar libremente, solo respetando tu autoría pero sin liberar los cambios que hayan hecho.
 
-### Llicències amb copyleft fort
+* ***ASL**. (Apache Software License)
 
-Són les que exigeixen l'ús de la mateixa llicència per a qualsevol redistribució del programa i de les modificacions que es realitzin del mateix, així com a programes que ho utilitzen o incorporen.
+### Licencias con copyleft fuerte
 
-El seu objectiu bàsic és assegurar que qualsevol usuari (directe o indirecte) del programari sempre tingui accés al codi font, sota els termes d'aquesta
-mateixa llicència.
+Son las que exigen el uso de la misma licencia para cualquier redistribución del programa y de las modificaciones que se realicen del mismo, así como a programas que lo utilicen o incorporan.
 
-Com a consecuencia, s'impedeix la distribució del programari amb copyleft en aplicacions privatives. 
+Su objetivo básico es asegurar que cualquier usuario (directo o indirecto) del software siempre tenga acceso al código fuente, bajo los términos de esta
+misma licencia.
 
-Això no significa que no es puguin crear i vendre aplicacions comercials amb programari copyleft. Però sí serà una violació de la llicència redistribuir aquest programari sota una altra llicència.
+Como *consecuencia, se impide la distribución del software con copyleft en aplicaciones privativas. 
 
-Llicències Amb copyleft fort (General Public License) **GPL**
+Esto no significa que no se puedan crear y vender aplicaciones comerciales con software copyleft. Pero sí será una violación de la licencia redistribuir este software bajo otra licencia.
 
-* Llicència amb codi copyleft mès coneguda.
-* Sw’utilitza en la majoria de programes de GNU.
-* La seva finalitat és protegir els drets dels usuaris finals (usar, compartir, estudiar i modificar) finals (usar, compartir, estudiar i modificar)
-* Els treballs derivats només poden ser distribuïts sota els termes de la mateixa llicència.
+Licencias Con copyleft fuerte (General *Public *License) ***GPL***
+
+* Licencia con código copyleft *mès conocida.
+* Software se utiliza en la mayoría de programas de GNU.
+* Su finalidad es proteger los derechos de los usuarios finales (usar, compartir, estudiar y modificar) finales (usar, compartir, estudiar y modificar)
+* Los trabajos derivados solo pueden ser distribuidos bajo los términos de la misma licencia.
 
 ![gpl](./media/ud1-07.png)
 
