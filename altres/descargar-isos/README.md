@@ -1,11 +1,11 @@
 # Desplegar ISOs i OVAs en el aula
-En el Centre tenim un servidor (`descargaiso.cipfpbatoi.lan`) on qualsevol pot deixar ISOs i OVAs per a que tots els pugam utilitzar. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
+En el Centre tenim un servidor (`descargasiso.cipfpbatoi.lan`) on qualsevol pot deixar ISOs i OVAs per a que tots els pugam utilitzar. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
 
 Podem pujar o baixar fitxers mitjançant `scp` (des de la terminal) o des de l'explorador d'arxius amb el protocol `sftp` (entorn gràfic).
 
 Per a fer-ho gràficament obrim l'_Explorador d'arxius_ i en la barra d'addresses posem 
 ```uri
-sftp://diso@descargaiso.cipfpbatoi.lan/home/diso/REPOSITORI
+sftp://diso@descargasiso.cipfpbatoi.lan/home/diso/REPOSITORI
 ```
 (si no podem escriure en la barra perquè només ens ixen les icones polsem `Ctrl+L`).
 
