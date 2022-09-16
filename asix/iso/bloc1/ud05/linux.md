@@ -1,10 +1,10 @@
 
-Comandos en GNU/Linux
+Comandos en GNU/**GNU/Linux**
 =====================
 
-- [Comandos en GNU/Linux](#comandos-en-gnulinux)
+- [Comandos en GNU/**GNU/Linux**](#comandos-en-gnugnulinux)
   - [Introducción](#introducción)
-  - [Las terminales en Gnu/Linux](#las-terminales-en-gnulinux)
+  - [Las terminales en **GNU/Linux**](#las-terminales-en-gnulinux)
   - [Ayuda y utilidades](#ayuda-y-utilidades)
   - [Sintaxis](#sintaxis)
   - [para trabajar con directorios](#para-trabajar-con-directorios)
@@ -83,15 +83,15 @@ Comandos en GNU/Linux
 
 ## Introducción
 
-La línea de comandos de Linux es una herramienta muy potente que nos permite realizar cualquier acción en el sistema. En Linux el entorno gráfico es una opción y, de hecho, podemos instalar el sistema operativo sin entorno gráfico con todas sus funcionalidades (se hace en servidores para optimizar los recursos).
+La línea de comandos de **GNU/Linux** es una herramienta muy potente que nos permite realizar cualquier acción en el sistema. En **GNU/Linux** el entorno gráfico es una opción y, de hecho, podemos instalar el sistema operativo sin entorno gráfico con todas sus funcionalidades (se hace en servidores para optimizar los recursos).
 
-Aunque podemos hacer cualquier cosa necesitamos los permisos necesarios para hacerlo. Por eso hay muchos comandos que sólo los puede ejecutar el superusuario **root**. Cómo vieron anteriormente el prompt de cualquier usuario normal acaba en el carácter **\$** y el de root en **\#**.
+Aunque podemos hacer cualquier cosa necesitamos los permisos necesarios para hacerlo. Por eso hay muchos comandos que sólo los puede ejecutar el *superusuario* **root**. Cómo vieron anteriormente el prompt de cualquier usuario normal acaba en el carácter **\$** y el de root en **\#**.
 
-Otra cuestión importante es que cuando el usuario **root** ejecuta un comando el sistema operativo considera que sabe qué está haciendo y no nos pedirá confirmaciones, simplemente lo hace. Por eso tenemos que tener mucha cura cuando somos root en un sistema Linux. La recomendación es que siempre trabajamos como un usuario normal y sólo cuando tenemos que ejecutar un comando que necesita permisos de superusuario nos convertimos en **root**.
+Otra cuestión importante es que cuando el usuario **root** ejecuta un comando el sistema operativo considera que sabe qué está haciendo y no nos pedirá confirmaciones, simplemente lo hace. Por eso tenemos que tener mucha cura cuando somos root en un sistema **GNU/Linux**. La recomendación es que siempre trabajamos como un usuario normal y sólo cuando tenemos que ejecutar un comando que necesita permisos de superusuario nos convertimos en **root**.
 
-El comando para cambiar de usuario es su y se le pasa como parámetro el usuario que queremos entrar. Si no le pasamos ningún parámetro se supone que queremos ser root. Ejemplo:
+El comando para cambiar de usuario es *su* y se le pasa como parámetro el usuario que queremos entrar. Si no le pasamos ningún parámetro se supone que queremos ser **root**. Ejemplo:
 
-**su jmonllor** - pasamos a ser el usuario jmonllor (después de escribir su contraseña)
+**su jmonllor** - pasamos a ser el usuario *jmonllor* (después de escribir su contraseña)
 
 **su -** pasamos a ser el usuario **root** (si escribimos la contraseña de **root**, muy importante el **-**)
 
@@ -99,24 +99,24 @@ También es posible ejecutar un comando que necesita permisos de root desde nues
 
 En el caso de Ubuntu esta es la manera de trabajar por defecto y el usuario con que instalamos el sistema pertenece al grupo de sudoers. De hecho durante el proceso de instalación no se nos pide la contraseña de root por lo cual no podemos acceder como **root** (podemos hacerlo con el comando **sudo su**). En el caso de **Debian** el usuario que se crea durante la instalación es un usuario normal (no puede hacer sudo) pero si se nos pide la contraseña de root para acceder como **root**.
 
-## Las terminales en Gnu/Linux
+## Las terminales en **GNU/Linux**
 
-Linux por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde n es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son del 1 al 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (en algunas distribuciones la terminal gráfica se encuentra en la número 8).
+**GNU/Linux** por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde n es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son del 1 al 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (en algunas distribuciones la terminal gráfica se encuentra en la número 8).
 
 Cada terminal tiene un nombre que es **ttyN**, donde N es el número de terminal (es decir tty1, tty2, ..., tty7).
 
-Además dentro de la terminal gráfica podemos abrir tantas pseudoterminales cómo queramos, cada una en su ventana. El nombre de
+Además dentro de la terminal gráfica podemos abrir tantas *pseudoterminales* cómo queramos, cada una en su ventana. El nombre de
 estas terminales es **pts/N**.
 
 **Ejemplo** - Abre desde el entorno gráfico un par de terminales y además accede con el usuario **root** desde la primera terminal de texto. Ahora desde cualquier terminal de las que tienes abiertas teclea la orden **who** que muestra los usuarios logueados en este momento. Aparecerá algo pareciendo a:
 
 ![who](./media/who.png)
 
-En GNU/Linux podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en /bin/bash) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**/etc/passwd**) entre otras informaciones de cada usuario se almacena cuál es su shell.
+En **GNU/Linux** podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en /bin/bash) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**/etc/passwd**) entre otras informaciones de cada usuario se almacena cuál es su shell.
 
 ## Ayuda y utilidades
 
-En Linux podemos obtener ayuda de un comando de diferentes maneras. La más completa y utilizada es utilizando el comando **man** seguido del nombre del comando que queremos. Por ejemplo:
+En **GNU/Linux** podemos obtener ayuda de un comando de diferentes maneras. La más completa y utilizada es utilizando el comando **man** seguido del nombre del comando que queremos. Por ejemplo:
 
 ```bash
 
@@ -130,11 +130,11 @@ Esto nos muestra la página del manual en lo referente al comando indicado. Para
 
 También podemos obtener ayuda de algunos comandos con **help** y el nombre del comando (ejemplo help cd) y otros con el nombre del comando con la opción --help (ejemplo cp --help).
 
-En Linux no hay que escribir el comando entero sino que podemos utilizar la función de **autocompletar**: por ejemplo si queremos reiniciar el ordenador en cuenta de escribir el comando reboot entero podemos escribir reb y pulsar el tabulador para que aparezca el resto del comando. Si hay varios comandos que empiezan por los caracteres que hemos escrito aparece una lista de todos ellos al pulsar el tabulador dos veces (por ejemplo si en vez de escribir reb escribimos sólo re al pulsar el tabulador no pasa nada pero al volver a pulsarlo aparecen todos los comandos que empiezan por re, incluyendo reboot).
+En **GNU/Linux** no hay que escribir el comando entero sino que podemos utilizar la función de **autocompletar**: por ejemplo si queremos reiniciar el ordenador en cuenta de escribir el comando reboot entero podemos escribir reb y pulsar el tabulador para que aparezca el resto del comando. Si hay varios comandos que empiezan por los caracteres que hemos escrito aparece una lista de todos ellos al pulsar el tabulador dos veces (por ejemplo si en vez de escribir reb escribimos sólo re al pulsar el tabulador no pasa nada pero al volver a pulsarlo aparecen todos los comandos que empiezan por re, incluyendo reboot).
 
-La función de autocompletar también funciona para los nombres de ficheros y directorios y es conveniente utilizarla por comodidad pero también porque así evitamos equivocarnos a la hora de escribir.
+La función de **autocompletar** también funciona para los nombres de ficheros y directorios y es conveniente utilizarla por comodidad pero también porque así evitamos equivocarnos a la hora de escribir.
 
-También utilizaremos a a menudo la utilidad de Linux de guardar los comandos que ya hemos escrito de forma que podemos volver a escribirlos sólo pulsando las flechas de cursor arriba y bajo. Podemos ver la lista de comandos almacenada con el comando **history**.
+También utilizaremos a a menudo la utilidad de **GNU/Linux** de guardar los comandos que ya hemos escrito de forma que podemos volver a escribirlos sólo pulsando las flechas de cursor arriba y bajo. Podemos ver la lista de comandos almacenada con el comando **history**.
 
 ## Sintaxis
 
@@ -178,7 +178,7 @@ Ejemplos:
 
 - **cd ..** - Cambia al directorio padre del actual
 
-- **cd ~** - Cambia al directorio de inicio del usuario (~ en Gnu/Linux hace referencia a ese directorio)
+- **cd ~** - Cambia al directorio de inicio del usuario (~ en Gnu/**GNU/Linux** hace referencia a ese directorio)
 
 ### mkdir
 
@@ -523,7 +523,7 @@ Desactiva la interfaz de red indicada
 
 Resuelve el nombre de dominio indicado, mostrando qué es su IP
 
-[Listado](https://www.linuxparty.es/2-amd/10782-10-comandos-ip-utiles-para-configurar-interfaces-de-red.html)
+[Listado](https://www.**GNU/Linux**party.es/2-amd/10782-10-comandos-ip-utiles-para-configurar-interfaces-de-red.html)
 
 ## para gestionar discos
 
@@ -615,7 +615,7 @@ Permite ejecutar el comando pasado como parámetro con permisos de root. Sólo p
 
 Muestra información del sistema operativo y del ordenador. Opciones:
 
-- **-s** muestra el nombre del kernel (Linux)
+- **-s** muestra el nombre del kernel (**GNU/Linux**)
 - **-r** muestra la versión del kernel
 - **-n** muestra el nombre del equipo
 - **-a** muestra toda la información
@@ -634,7 +634,7 @@ Crea un nuevo enlace a un fichero. Un enlace es como darle otro nombre al ficher
 
 ### Dispositivos
 
-En Linux los dispositivos se tratan como ficheros. Cada dispositivo tiene un fichero asociado dentro del directorio /dev. Los más comunes son:
+En **GNU/Linux** los dispositivos se tratan como ficheros. Cada dispositivo tiene un fichero asociado dentro del directorio /dev. Los más comunes son:
 
 - **unidades de almacenamiento**: los discos duros, unidades USB, etc se identifican como sdX. El primer disco llevar es /dev/sda y su primera partición es /dev/sda1. En caso de disco duros IDE en cuenta de sdX se identifican como hdX.
 - **terminales**: se identifican cono ttyX. La terminal gráfica es la 7, es decir, /dev/tty7
@@ -649,7 +649,7 @@ También hay un dispositivo especial que es como un agujero negro donde desapare
 
 ### Operadores de redireccionamiento
 
-El redireccionamento en GNU/Linux es exactamente igual que en Windows. Cómo hemos comentado la entrada y salida por defecto son el teclado y el monitor respectivamente.
+El redireccionamento en GNU/**GNU/Linux** es exactamente igual que en Windows. Cómo hemos comentado la entrada y salida por defecto son el teclado y el monitor respectivamente.
 
 Pero es posible redireccionar la entrada y la salida para que se utilizo otro dispositivo, un fichero o, incluso, otro comando. Los operadores que lo hacen posible son:
 
