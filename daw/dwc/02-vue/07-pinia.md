@@ -13,11 +13,49 @@ Tabla de contenidos
 ## Introducción
 Es un '_State Management Pattern_' basado en el patrón **Flux** que sirve para controlar el flujo de datos en una aplicación. Sustituye a la anterior librería usada en _Vue 2_ llamada _Vuex_.
 
-En Vue la comunicación entre componentes se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos. Ya vimos que cuando distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
+Según la filosofía de _Vue_ cada componente es una unidad funcional que contiene 3 partes:
+- **estado**: los datos o _source of truth_ que maneja en componente
+- **vista**: la representación del _estado_ que se ve en la aplicación
+- **acciones**: la forma en que el _estado_ puede cambiar para reaccionar a entradas del usuario en  la _vista_
+
+Por ejemplo, el componente _contador_ sería:
+
+```vue
+<script>
+export default {
+  // state
+  data() {
+    return {
+      count: 0
+    }
+  },
+  // actions
+  methods: {
+    increment() {
+      this.count++
+    }
+  }
+}
+</script>
+
+<!-- view -->
+<template>
+  {{ count }}
+  <button @click="increment">Increment</button>
+</template>
+```
+
+Esto es lo que se llama **_one-way data flow_**:
+
+![one-way data flow](https://vuejs.org/assets/state-flow.a8bc738e.png)
+
+El problema lo tenemos cuando un componente necesita acceder a datos (_state_) de otro componente. 
+
+En Vue la comunicación entre componentes padre-hijo se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos. Y vimos que si distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
 
 El uso de _Pinia_ es imprescindible en aplicaciones de tamaño medio o grande pero incluso para aplicaciones pequeñas nos ofrece ventajas frente a un _store pattern_ hecho por nosotros como soporte para las _DevTools_ y para _Server Side Rendering_ o uso de Typescript. 
 
-Como ya dijimos, no debemos almacenar todos los datos en el _store_, sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
+Como ya dijimos, no debemos almacenar todos los datos en el _store centralizado_ sino sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
 ## Instalar y configurar Pinia
 A día de hoy, al crear nuestro proyecto con _vue-cli_ tenemos en las opciones una para que incluya Vuex pero no Pinia. Marcar aquí la opción haría que la instalación y configuración de la herramienta se haga automáticamente. Al no poder hacerlo debemos hacerlo nosotros manualmente:
@@ -43,12 +81,17 @@ Al crear un almacén pondremos en él todas las variables que vaya a usar más d
 ```javascript
 import { defineStore } from 'pinia'
 
-export const useConterStore = defineStore('main', {
-  state: () => {
+export const useConterStore = defineStore('CounterStore', {
+  state() {
     return {
       count: 0
     }
   },
+  // o usando arrow functions
+  // state: () => ({
+  //  count: 0
+  // }),
+
   actions: {
     increment () {
       this.count++
@@ -68,6 +111,7 @@ Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro alma
 
 ## Usar Pinia
 En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos:
+
 ```javascript
 //MyComponent.vue
 import { useConterStore } from '../stores/conterStore';
@@ -118,36 +162,21 @@ En ocasiones no necesitamos una variable del _state_ sino cierta información so
 import { defineStore } from 'pinia'
 
 export const useToDoStore = defineStore('todo', {
-  state: () => {
-    return {
-      /** @type { { title: string, id: number, isFinished: boolean }[]} */
+  state: () => ({
+      /** @type { { title: string, id: number, done: boolean }[]} */
       todos: [
         { id: 1, title: '...', done: true },
         { id: 2, title: '...', done: false }
       ],
-      /** @type {'all' | 'finished' | 'unfinished'} */
-      filter: 'all',
-      // type will be automatically inferred to number
       nextId: 3,
-      /** @type { string[]} */
-      errors: [],
-    }
-  },
+  }),
   getters: {
     // reciben como primer parámetro el 'state'
-    finishedTodos: (state) => state.todos.filter((todo) => todo.isFinished),
-    unfinishedTodos: (state) => state.todos.filter((todo) => !todo.isFinished),
+    finishedTodos: (state) => state.todos.filter((todo) => todo.done),
+    unfinishedTodos: (state) => state.todos.filter((todo) => !todo.done),
     /**
-     * @returns { { title: string, id: number, isFinished: boolean }[]}
+     * @returns { { title: string, id: number, done: boolean }[]}
      */
-    filteredTodos(state) {
-      if (this.filter === 'finished') {
-        return this.finishedTodos
-      } else if (this.filter === 'unfinished') {
-        return this.unfinishedTodos
-      }
-      return this.todos
-    },
   },
   actions: {
     // any amount of arguments, return a promise or not
@@ -155,7 +184,7 @@ export const useToDoStore = defineStore('todo', {
         this.todos.push({
           title,
           id: this.nextId,
-          isFinished: false
+          done: false
         })
         this.nextId++
     },
@@ -165,7 +194,7 @@ export const useToDoStore = defineStore('todo', {
 
 Cada _getter_ recibe como primer parámetro el _state_ del almacén.
 
-Dentro de los componentes se usan como cualquier variable:
+Dentro de los componentes se usan como cualquier variable del _state_:
 ```javascript
 export default {
   ...
@@ -199,19 +228,19 @@ Cada vez que se llama a una acción se registra en las _DevTools_ y podemos ver 
 Las acciones pueden hacer llamadas asíncronas. Lo normal es llamar a la BBDD y cuando el servidor responda modificaremos los datos del _store_. 
 ```javascript
 import { defineStore } from 'pinia'
+import TodoService from '../services/TodoService.js'
 
 export const useToDoStore = defineStore('todo', {
   state: () => {
     return {
       todos: [],
       nextId: 0,
-      errors: [],
     }
   },
   actions: {
     async addTodo(title) {
       try {
-        const newToDo = await axios.post({ 
+        const newToDo = await TodoService.addTodo({ 
           title, 
           id: this.nextId + 1, 
           isFinished: false 
@@ -219,7 +248,7 @@ export const useToDoStore = defineStore('todo', {
         this.nextId++
         this.todos.push(newToDo)
       } catch(error) {
-        this.errors.push(error);
+        throw error;
       }
     },
   },

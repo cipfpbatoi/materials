@@ -333,6 +333,7 @@ const originalPrice = computed(() => productPrice.value)
 ### hooks
 Se les antepone _on_ (ej, `onMounted`). Ya no son necesarios ni _beforeCreated_ ni _created_ que son sustituidas por el `setup`.
 
+Podéis ver esto con más detalle en la [documentación de Vue](https://vuejs.org/api/composition-api-lifecycle.html).
 
 ### router
 Para acceder al _router_ y a la variable _route_ en _composition API_ tenemos que importarlas de _vue-router_ e instanciarlas, ya que no tenemos acceso a _this_:
@@ -611,3 +612,5 @@ export default {
 Algunos enlaces útiles:
 - [How to Create Reusable Components with the Vue 3 Composition API](https://www.sitepoint.com/vue-composition-api-reusable-components/)
 - [Why I Love Vue 3's Composition API](https://mokkapps.de/blog/why-i-love-vue-3-s-composition-api/)
+
+Podemos encontrar infinidad de _composables_ que podemos usar en nuestro código en la página [VueUse](https://vueuse.org/).

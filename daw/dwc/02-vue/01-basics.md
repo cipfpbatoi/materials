@@ -5,7 +5,7 @@
   - [Estructura de una aplicación Vue](#estructura-de-una-aplicación-vue)
     - [HTML](#html)
     - [Javascript](#javascript)
-  - [La instancia _Vue_](#la-instancia-vue)
+  - [Estilos de _API_](#estilos-de-api)
   - [_Binding_ de variables](#binding-de-variables)
     - [Enlace unidireccional: interpolación {\{...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
@@ -18,7 +18,7 @@
 ## Introducción
 El uso de un framework nos facilita enormemente el trabajo a la hora de crear una aplicación. Vue es un framework progresivo para la construcción de interfaces de usuario y aplicaciones desde el lado del cliente. Lo de framework "progresivo" significa que su núcleo es pequeño pero está diseñado para crecer: su núcleo está enfocado sólo en la capa de visualización pero es fácil añadirle otras bibliotecas o proyectos existentes (algunos desarrollados por el mismo equipo de Vue) que nos permitan crear complejas SPA.
 
-Su código es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados, _Angular_ desarrollado por Google y _React_ desarrollado por Facebook.
+Su código es _opensource_ y fue creado por el desarrollador independiente [Evan You](https://evanyou.me/), lo que lo diferencia de los otros 2 frameworks más utilizados: __Angular__ desarrollado por _Google_ y __React__ desarrollado por _Facebook_.
 
 Vue tiene una curva de aprendizaje menor que otros frameworks y es extremadamente rápido y ligero.
 
@@ -27,8 +27,7 @@ Este material está basado en la [guía oficial de Vue](https://vuejs.org/guide/
 **¿Qué framework es mejor?**
 Depende de la aplicación a desarrollar y de los gustos del programador. Tenéis algunos enlaces al respecto:
 * [Comparativa VueJs](https://vuejs.org/v2/guide/comparison.html)
-* [Comparativa Openwebminars](https://openwebinars.net/blog/los-6-mejores-frameworks-javascript/?utm_source=customer-io&utm_medium=newsletter)
-* [Openwebminars: Vue vs Angular](https://openwebinars.net/blog/vue-vs-angular/)
+* [Openwebminars: Vue vs React vs Angular](https://openwebinars.net/blog/vuejs-vs-react/)
 * [Carlos Azaustre: Vue vs Angular (vídeo)](https://www.youtube.com/watch?v=jTtab_rnvic)
 * [Angular vs React vs Vue: Which Framework to Choose in 2021](https://www.codeinwp.com/blog/angular-vs-vue-vs-react/)
 * ...
@@ -39,7 +38,7 @@ Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 * **Rendimiento**: Vue hace uso del concepto de _Virtual DOM_ igual que React por lo que también ofrece muy buen rendimiento
 
 ## Usar Vue
-Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN. Si queremos usar la nueva versión Vue 3 usaremos cualquier CDN como:
+Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde cualquier CDN como:
 ```html
 <script src="https://unpkg.com/vue@next"></script>
 
@@ -48,84 +47,89 @@ Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde un CDN. S
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.21/vue.cjs.js" integrity="sha512-2e2aXOh4/FgkCAUyurkjk0Uw4m1gPcExFwb1Ai4Ajjg97se/FEWfrLG1na4mq8cgOzouc8qLIqsh0EGksPGdqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 ```
 
-Para utilizar Vue 2 podemos usar los CDN:
-```html
-<!-- development version, includes helpful console warnings -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-```
-o
-```html
-<!-- production version, optimized for size and speed -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-```
-
 Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
 
-Nosotros estamos usando _VSCode_ como editor. Para que reconozca correctamente los ficheros _.vue_ debemos instalar el _plugin_ **Vetur**. Si vamos a usar Vue3 con Typescript podemos instalar el _plugin_ **Volar**.
+Nosotros estamos usando _VSCode_ como editor. Para que reconozca correctamente los ficheros _.vue_ debemos instalar el _plugin_ **Volar**.
 
 ## Estructura de una aplicación Vue
-Vamos a crear la aplicación con Vue que mostrará un saludo. En el HTML necesitamos enlazar la librería de Vue y creamos un elemento (en nuestro caso un DIV) que contendrá la aplicación. En Vue 3:
+Vamos a crear la aplicación con Vue que mostrará un contador y un botón para actualizarlo:
 
-<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="dyzZgeY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-  <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/dyzZgeY">
-  Vue3 Hello world</a> by Juan Segura (<a href="https://codepen.io/juanseguravasco">@juanseguravasco</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+```javascript
+Vue.createApp({
+  data() {
+    return {
+      count: 0
+    }
+  },
+  methods: {
+    increment() {
+      this.count++
+    }
+  }
+}).mount('#app')
+```
 
-En Vue 2:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
 
-<script async src="//jsfiddle.net/juansegura/psk853hL/embed/"></script>
+    <div id="app">
+      <button @click="increment">
+        Count is: {{ count }}
+      </button>
+    </div>
+
+    <!-- Import Js -->
+    <script src="./main.js"></script>
+  </body>
+</html>
+```
+
+Podéis ver su funcionamiento en la [documentación oficial de Vue](https://vuejs.org/guide/introduction.html#what-is-vue) o en [CodePen](https://codepen.io/juanseguravasco/pen/abYweqQ).
+
+En este ejemplo podemos ver las 2 principales características de Vue:
+- __Renderizado declarativo__: Vue amplía HTML con una sintaxis que nos permite declarar en HTML una salida basada en un dato Javascript
+- __Reactividad__: Vue hace un seguimiento de las variables Javascript y modifica el DOM cuando alguna cambia
 
 ### HTML
 En el HTML debemos vincular los scripts de la librería de Vue y de nuestro código. 
 
 Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele poner como id _app_) que en este caso es un `<div>`.
 
-Dentro de ese elemento es donde podemos usar expresiones de Vue (fuera del mismo se ignorarán). En este ejemplo se usa el _moustache_ ( **{\{ ... }}** ) que muestra en la página la variable o expresión Javascript que contiene.
+Dentro de ese elemento es donde podemos usar expresiones de Vue (fuera del mismo se ignorarán). En este ejemplo se usa
+- el _moustache_ **{\{ ... }}** que muestra en la página la variable o expresión Javascript que contiene
+- la directiva **@click** que ejecuta el código indicado al hacer _click_ sobre el elemento que la contiene
 
 ### Javascript
-En el fichero JS debemos crear un nuevo objeto Vue que recibe como parámetro un objeto con varias propiedades. En **Vue 2**:
-* *el*: el elemento que contendrá la aplicación identificado en notación CSS
-* *data*: objeto donde definiremos todas las variables que vamos a usar en la vista. En nuestro caso sólo tenemos una que es _message_. A cada variable le debemos dar un valor inicial.
-* pueden haber más como *methods* (objeto con métodos que podemos llamar desde la vista), *props* (array de variables que se 
-pasan de inicio, usado en componentes), *computed* (propiedades calculadas), etc. que veremos más adelante.
+En el fichero JS debemos crear la aplicación con el método _createApp_ al que se le pasa un objeto con una serie de opciones y montarla en el elemento del HTML donde se ejecutará dicha aplicación. En nuestro caso las opciones pasadas son:
+- **data**: aquí es donde se define el _estado_ de la aplicación, es decir, los datos de la misma. Es una función que devuelve un objeto donde cada dato será una propiedad. Estos datos son reactivos y accesibles desde el HTML
+- **methods**: definimos métodos de la aplicación que pueden ser llamados desde el HTML
 
-En **Vue 3** la sintaxis para crear la aplicación es ligeramente diferente:
-```javascript
-var app = Vue.createApp({
-  data() {
-    return {
-      message: 'Hello Vue!'
-    }
-  }
-})
-app.mount('#app')
-```
+Fijaos que para hacer referencia desde Javascript a una variable (o a un método) hay que anteponerle **_this_**.
 
-Las principales diferencias son:
-- la instancia se crea con el método _`createApp`_ en vez de con el constructor de Vue
-- el elemento en que se montará la aplicación no se incluye como una propiedad del objeto que se pasa al crear la aplicación sino que se indica en el método _`mount`_
-- la propiedad _data_ no es un objeto sino una función que devuelve ese objeto (esto sucede igual en los componentes de Vue2 como veremos más adelante).
-
-## La instancia _Vue_
-La instancia que hemos creado (al igual que cada componente) recibe un objeto de opciones con las siguientes propiedades:
-* **el** (sólo en Vue2): el elemento que contendrá la aplicación identificado en notación CSS (**#** para id, **.** para clase, ...). Si hubiera más de 1 elemento identificado así se cogería sólo el primero (es como hacer un querySelector del mismo)
-* **data**: objeto (o función) donde definiremos todas las variables que vamos a usar en la vista. Las variables que sólo se usan en javascript las definiremos con **let** en el método donde vayamos a usarlas. Todas las variables definidas en _data_ son accesibles desde la vista poniendo **{\{ su_nombre }}** y desde el código JS poniendo **`this.su_nombre`**
+Además de las opciones _data_ y _methods_ podemos definir otras como:
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
 ```javascript
-data: {
+data() {
+  return {
     nombre: 'Juan',
     apellido: 'Segura', 
+  }
 },
 computed: {
-    nombreCompleto() {
-        return this.nombre + ' ' + this.apellido;
-    }
+  nombreCompleto() {
+    return this.nombre + ' ' + this.apellido;
+  }
 }
 ```
 
-* **methods**: objeto con métodos que también podemos llamar desde la vista
 * **_hooks_** (eventos del ciclo de vida de la instancia): para ejecutar código en determinados momentos: **'created'**, **'mounted'**, **'updated'**, **'destroyed'**. Ej.:
 
 ```javascript
@@ -134,51 +138,70 @@ created() {
 }
 ```
 
-## _Binding_ de variables
-En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#step-1) tenemos un tutorial guiado donde podemos probar cada una de las funcionalidades de Vue. En la parte superior izquierda nos pregunta por nuestras preferencias: de momento escogeremos **Options** y **HTML**.
+## Estilos de _API_
+La forma en que hemos programado estos ejemplos no es la más recomendable por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones. Con ella dividiremos nuestra aplicación en componentes llamados _Single File Components_ que incluirán en un único fichero tanto la lógica del componente (Javascript) como su presentación (HTML).
 
-Para probar el funcionamiento de los ejemplos de este tutorial conviene que nos descarguemos los ficheros y los abramos en local.
-
-Fichero HTML:
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Hello world</title>
-</head>
-<body>
-
-  <div id="app">
-    <p>{ { message }}</p>
-  </div>
-
-  <script src="https://unpkg.com/vue"></script>
-  <script src="01-HelloWorld.js"></script>
-</body>
-</html>
-```
-Nuestro código debemos cargarlo después de cargar la librería y de crear el elemento HTML que contenga la aplicación.
-
-Fichero JS en Vue3:
-```javascript
-var miApp = Vue.createApp({
+Vue3 proporciona 2 formas diferentes de programar:
+- **_Options API_**: la lógica de un componente se establece en las distintas propiedades de un objeto, a las que se accede mediante _this_ que apunta a la instancia del componente. Es la que veremos ahora
+```vue
+<script>
+export default {
+  // Properties returned from data() become reactive state
+  // and will be exposed on `this`.
   data() {
     return {
-      message: 'Hello Vue.js!'
+      count: 0
     }
+  },
+
+  // Methods are functions that mutate state and trigger updates.
+  // They can be bound as event listeners in templates.
+  methods: {
+    increment() {
+      this.count++
+    }
+  },
+
+  // Lifecycle hooks are called at different stages
+  // of a component's lifecycle.
+  // This function will be called when the component is mounted.
+  mounted() {
+    console.log(`The initial count is ${this.count}.`)
   }
-}).mount('#app');
+}
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
 ```
 
-Fichero JS en Vue2:
-```javascript
-var miApp = new Vue({
-  el: '#app',
-  data: {
-    message: 'Hello Vue.js!'
-  }
+- **_Composition API_**_: es algo más compleja pero mejora la reutilización de código y su organización por funcionalidades. Indicada para aplicaciones grandes la veremos al final del bloque
+```vue
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// reactive state
+const count = ref(0)
+
+// functions that mutate state and trigger updates
+function increment() {
+  count.value++
+}
+
+// lifecycle hooks
+onMounted(() => {
+  console.log(`The initial count is ${count.value}.`)
 })
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
 ```
+
+## _Binding_ de variables
+En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#step-1) tenemos un tutorial guiado donde podemos probar cada una de las funcionalidades de Vue. En la parte superior izquierda nos pregunta por nuestras preferencias: de momento escogeremos **Options** y **HTML**.
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-2)
 

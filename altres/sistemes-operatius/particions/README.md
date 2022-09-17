@@ -7,8 +7,7 @@
   - [Taula de particions Ms-DOS o MBR](#taula-de-particions-ms-dos-o-mbr)
     - [MBR](#mbr)
     - [Tipus de particions](#tipus-de-particions)
-    - [Còpia de seguretat del MBR](#còpia-de-seguretat-del-mbr)
-  - [## Taula de Particions GUID o GPT](#-taula-de-particions-guid-o-gpt)
+  - [Taula de Particions GUID o GPT](#taula-de-particions-guid-o-gpt)
     - [Estructura de GPT](#estructura-de-gpt)
   - [Particions per a instal·lar Windows](#particions-per-a-installar-windows)
     - [Instal·lar Windows amb BIOS+MBR](#installar-windows-amb-biosmbr)
@@ -40,7 +39,7 @@ Cada partició rep el nom del disc seguit d'un número que indica quina partici�
 
 Per exemple, un disc dur MBR amb 2 particions primàries i una estesa que conté 3 particions lògiques es veuria com:
 
-![particions linux](./img/particions.png)
+![particions linux](./img/particions.png "programa gparted amb disc MBR")
 
 En l'exemple anterior trobem les particions:
 * sda1: primera partició primària, amb format FAT32
@@ -55,7 +54,7 @@ En Windows els discos s'identifiquen con **Disco0** el 1r, **Disco1** el 2n, etc
 ### Veure les nostres particions
 En Windows podem veure els diferents discos i particions que tenim al nostre equip des de l'**Administrador de disc** que trobem dins d'**Adminstracío d'equips** (es pot obrir, per exemple, des del `menú contextual de 'Equip' -> Administrar`):
 
-![Administrador de disc](./img/adm-discos.png)
+![Administrador de disc](./img/adm-discos.png "Administrador de discos de Windows")
 
 En la part de dalt ('_Volumen_') trobem totes les particions de tots els discos i el la de baix els diferents discos.
 
@@ -72,6 +71,8 @@ I també hi ha programes que podem instal·lar en qualsevol distribució, com _g
 ![gparted](./img/discos-gparted.png "gparted: el mateix disc de la imatge anterior")
 
 Des de la terminal en tots els sistemes Linux podem veure els discos i particions de l'equip amb els comandos `lsblk` o  `fdisk -l` (cal ser administrador per a poder executar fdisk).
+
+![lsblk (CC0)](./img/lsblk.png)
 
 ![fdisk (CC0)](./img/fdisk.png)
 
@@ -108,34 +109,7 @@ En la imatge anterior podem veure un disc dur de 233 GB particionat de la següe
 * Una partició primària de 28 GB amb sistema d'arxius ext4
 * Altra partició primària de 54 GB també amb sistema d'arxius ext4
 
-### Còpia de seguretat del MBR
-En UNIX es pot fer una còpia i restaurar el MBR des de la consola. Ho farem amb l'ordre `dd` que copia els bytes indicats del dispositiu d'entrada (especificat per _if_) en el dispositiu d'eixida (especificat per _of_).
-
-Per a fer la còpia de seguretat, executarem:
-```bash
-dd if=/dev/sda of=mbr.backup bs=512 count=1
-```
-
-Estem dient-li que del dispositiu `/dev/sda` (és a dir el primer disc dur, si volem altre canviarem això) copie al dispositiu d'eixida (el fitxer `mbr.backup` que després haurem de guardar en un USB o altre lloc) 1 bloc (`count=1`) de 512 bytes (bs=512).
-
-Per a restaurar-lo:
-```bash
-dd if=mbr.backup of=/dev/sda
-```
-
-Si el nostre disc utilitza el sistema GPT en compte de l'MBR (ho veurem en el pròxim apartat) i volem fer una còpia de seguretat de l'arrencada del disc hem de copiar els primers 63 sectors del disc (que equivalen al primer cilindre del disc) i no només el primer sector. La instrucció seria:
-```bash
-dd if=/dev/sda of=gpt.backup count=63
-```
-
-Per a esborrar el contingut de l'MBR podem posar els bytes del MBC a zero (però no tot el MBR perquè perdríem també la taula de particions).
-```bash
-dd if=/dev/zero of=/dev/sda bs=446 count=1
-```
-
-En els sistemes operatius de Microsoft no podem accedir a l'MBR.
-
-## ## Taula de Particions GUID o GPT
+## Taula de Particions GUID o GPT
 La _GUID Partition Table_ (GPT) és un estàndard de particionament de discos que vol solucionar les limitacions de l'MBR:
 * MBR només permet fer 4 particions primàries (per això posteriorment es van crear les particions lògiques) però GPT permet fins a 128 particions primàries en un disc
 * En MBR la mida màxima d'una unitat són 2,2 TB front als 9,4 ZB que permet direccionar GPT

@@ -107,12 +107,17 @@ Los principales ficheros y directorios creados son:
 * `babel.config.js`: configuración de Babel
 * `public/index.html`: html con un div donde se cargará la app
 * `node_modules`: librerías de las dependencias
+* `public`: lugar donde dejar elementos estáticos que no pasarán por _webpack_
 * `src`: todo nuestro código
-    * `assets/`: nuestros CSS, imágenes, etc
-    * `main.js`: JS principal que carga componentes y crea la instancia de Vue que carga el componente principal llamado _App.vue_ y lo renderiza en _#app_
-    * `App.vue`: es el componente principal y constituye nuestra página de inicio del proyecto. Aquí cargaremos la cabecera, el menú,... y los diferentes componentes
+    * `assets/`: nuestros CSS, imágenes, etc. Elementos estáticos que _webpack_ procesará y optimizará
     * `components/`: carpeta que contendrá los ficheros .vue de los diferentes componentes
         * `HelloWorld.vue`: componente de ejemplo llamado por App.vue
+    * `router/`: carpeta con los ficheros del router si usamos _vue-_router_
+    * `store/`: carpeta con los ficheros del store si usamos _pinia_ o _vuex_
+    * `views`: si usamos _vue-router_ aquí pondremos los componentes que constituyen una vista de la aplicación
+    * `App.vue`: es el componente principal y constituye nuestra página de inicio del proyecto. Aquí cargaremos la cabecera, el menú,... y los diferentes componentes
+    * `main.js`: JS principal que crea la instancia de Vue que carga el componente principal llamado _App.vue_ y lo renderiza en _#app_
+
 
 #### package.json
 Aquí se configura nuestra aplicación:
