@@ -138,7 +138,15 @@ class Alumno {
 Este código fallaría porque dentro de _nomAlum_ la variable _this_ ya no hace referencia al objeto Alumno sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
 
 Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
-1. Pasárselo como parámetro
+3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
+```javascript
+    getInfo() {
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
+        let nomAlum = () => this.nombre + ' ' + this.apellidos
+    }
+```
+
+1. Pasándole _this_ como parámetro a la función
 ```javascript
     getInfo() {
         return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
@@ -156,14 +164,6 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
         function nomAlum() {
             return that.nombre + ' ' + that.apellidos      // Aquí this no es el objeto Alumno
         }
-    }
-```
-
-3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
-```javascript
-    getInfo() {
-        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
-        let nomAlum = () => this.nombre + ' ' + this.apellidos
     }
 ```
 
@@ -208,7 +208,7 @@ let user = new User("john")
 console.log(user.getRoles()) // Uncaught TypeError: user.getRoles is not a function
 ```
 
-### toString() y valueOf()
+### toString()
 Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se llama al método **_.toString()_** del mismo, que por defecto devuelve la cadena `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
 ```javascript
 class Alumno {
@@ -220,6 +220,7 @@ class Alumno {
 
 let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19);
 console.log('Alumno:' + cpo)     // imprime 'Alumno: Pérez Ortíz, Carlos'
+                                // en vez de 'Alumno: [object Object]'
 ```
 
 Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02-arrays.md):
@@ -233,13 +234,20 @@ misAlumnos.sort(function(alum1, alum2) {
 });   
 ```
 
-**NOTA**: si las cadenas a comparar pueden tener acentos u otros caracteres propios del idioma deberíamos usar el
-método `.localeCompare()` para comparar las cadenas. La forma correcta de ordenar un array de objetos por un campo alfabético sería:
+**NOTA**: si las cadenas a comparar pueden tener acentos u otros caracteres propios del idioma ese código no funcionará bien. La forma correcta de comparar cadenas es usando el
+método `.localeCompare()`. El código anterior debería ser:
+```javascript
+misAlumnos.sort(function(alum1, alum2) {
+    return alum1.apellidos.localeCompare(alum2.apellidos)
+});   
+```
+
+que con _arrow function_ quedaría:
 ```javascript
 misAlumnos.sort((alum1, alum2) => alum1.apellidos.localeCompare(alum2.apellidos) )
 ```
 
-o si queremos comparar por 2 campos
+o si queremos comparar por 2 campos ('apellidos' y 'nombre')
 ```javascript
 misAlumnos.sort((alum1, alum2) => (alum1.apellidos+alum1.nombre).localeCompare(alum2.apellidos+alum2.nombre) )
 ```
@@ -249,7 +257,22 @@ Pero con el método _toString_ que hemos definido antes podemos hacer directamen
 misAlumnos.sort() 
 ```
 
-Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.toString()_ pero si sobrecargamos el método **_.valueOf()_** será este el que se usará en comparaciones:
+**NOTA**: si queremos ordenar un array de objetos por un campo numérico lo mas sencillo es restar dicho campo:
+```javascript
+misAlumnos.sort((alum1, alum2) => alum1.edad - alum2.edad)
+```
+
+> EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
+
+> EJERCICIO: Crea 5 productos y guárdalos en un array. Crea las siguientes funciones (todas reciben ese array como parámetro):
+> - prodsSortByName: devuelve un array con los productos ordenados alfabéticamente
+> - prodsSortByPrice: devuelve un array con los productos ordenados por importe
+> - prodsTotalPrice: devuelve el importe total del los productos del array, con 2 decimales
+> - prodsWithLowUnits: además del array recibe como segundo parámetro un nº y devuelve un array con todos los productos de los que quedan menos de los unidades indicadas
+> - prodsList: devuelve una cadena que dice 'Listado de productos:' y en cada línea un guión y la información de un producto del array
+
+### valueOf()
+Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.toString()_ pero si definimos un método **_.valueOf()_** será este el que se usará en comparaciones:
 ```javascript
 class Alumno {
     ...
@@ -263,21 +286,12 @@ let aat = new Alumno('Ana', 'Abad Tudela', 23)
 console.log(cpo < aat)     // imprime true ya que 19<23
 ```
 
-> EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de una manera más adecuada
-
-> EJERCICIO: Crea 5 productos y guárdalos en un array. Crea las siguientes funciones (todas reciben ese array como parámetro):
-> - prodsSortByName: devuelve un array con los productos ordenados alfabéticamente
-> - prodsSortByPrice: devuelve un array con los productos ordenados por importe
-> - prodsTotalPrice: devuelve el importe total del los productos del array, con 2 decimales
-> - prodsWithLowUnits: además del array recibe como segundo parámetro un nº y devuelve un array con todos los productos de los que quedan menos de los unidades indicadas
-> - prodsList: devuelve una cadena que dice 'Listado de productos:' y en cada línea un guión y la información de un producto del array
-
-## POO en ES5
+## POO en JS5
 Las versiones de Javascript anteriores a ES2015 no soportan clases ni herencia. Este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
 
 En Javascript un objeto se crea a partir de otro (al que se llama _prototipo_). Así se crea una cadena de prototipos, el primero de los cuales es el objeto _null_.
 
-Si queremos emular el comportamiento de las clases, para crear el constructor se crea una función con el nombre del objeto y para crear los métodos se aconseja hacerlo en el _prototipo_ del objeto para que no se cree una copia del mismo por cada instancia que creemos:
+Si queremos emular en JS5 el comportamiento de las clases, para crear el constructor se crea una función con el nombre del objeto y para crear los métodos se aconseja hacerlo en el _prototipo_ del objeto para que no se cree una copia del mismo por cada instancia que creemos:
 ```javascript
 function Alumno(nombre, apellidos, edad) {
     this.nombre = nombre
