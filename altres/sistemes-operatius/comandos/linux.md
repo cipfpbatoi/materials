@@ -66,6 +66,7 @@
     - [df](#df)
     - [dd](#dd)
     - [fdisk](#fdisk)
+    - [cfdisk](#cfdisk)
     - [parted](#parted)
   - [Otros comandos](#otros-comandos)
     - [ps](#ps)
@@ -480,6 +481,11 @@ Se trata de un programa en modo texto que permite gestionar las particiones del 
 
 Con la opción **`-l`** muestra todos los discos del sistema con sus particiones:
 ![fdisk](./media/fdisk.png)
+
+### cfdisk
+
+Igual que el anterior pero con una interface visual (en modo texto) que nos facilita el trabajo
+![cfdisk](./media/cfdisk.png)
 
 ### parted
 Se trata de una utilidad similar a la anterior.

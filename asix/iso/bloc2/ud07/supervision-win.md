@@ -1,27 +1,31 @@
-# Supervisión del sistema
-- [Supervisión del sistema](#supervisión-del-sistema)
+# Supervisión de un sistema Windows
+- [Supervisión de un sistema Windows](#supervisión-de-un-sistema-windows)
   - [Introducción](#introducción)
+  - [Administrador del servidor](#administrador-del-servidor)
   - [Administrador de tareas](#administrador-de-tareas)
   - [Monitor de recursos](#monitor-de-recursos)
   - [Visor de eventos](#visor-de-eventos)
   - [Monitor de confiabilidad](#monitor-de-confiabilidad)
   - [Monitor de rendimiento](#monitor-de-rendimiento)
+  - [Windows Admin Center (WAC)](#windows-admin-center-wac)
+  - [Windows Update](#windows-update)
 
 ## Introducción
-Es imprescindible conocer lo que está sucediendo en el sistema tanto para resolver problemas como para mejorar el rendimiento del mismo. Para ello comprobaremos el rendimiento del sistema antes de ponerlo en producción y lo volveremos a comprobar si a lo largo de la vida del equipo hay problemas o si llega un momento en el que no responde con la suficiente rapidez a su carga de trabajo. Esto nos permitirá conocer qué elemento es el cuello de botella que debemos mejorar para mejorar el funcionamiento general del equipo.
+Los sistemas Windows nos proporcionan varias herramientas que podemos utilizar para supervisar y monitorizar el sistema. Las más importantes son:
+- El Administrador del servidor
+- El Administrador de tareas
+- El Monitor de recursos
+- El Visor de eventos
+- El monitor de confiabilidad
+- El monitor de rendimiento
+- Windows Admin Center (WAC)
 
-Algunas definiciones de conceptos relacionados con el rendimiento del sistema son:
-- **Evaluación del rendimiento de un sistema informático**: es una medida de la calidad en el uso del hardware respecto a un conjunto de programas denominado "carga del sistema" donde puede existir interacción con usuarios.
-- **Carga del sistema**: conjunto de programas que se ejecutan en el sistema para satisfacer las necesidades de los usuarios. Suele ser un conjunto complejo y variable en el tiempo.
-- **Benchmark** (en castellano, comparativa o análisis): programa informático o un conjunto de programas que tienen como objetivo estimar el rendimiento de un elemento concreto o la totalidad del sistema y ​​poder comparar los resultados con máquinas similares.
-- **Cuello de botella**: situación que se da cuando un dispositivo del sistema informático recibe muchas peticiones y está muy saturado de trabajo, mientras que el resto de dispositivos están ociosos esperando su respuesta. Se trata de encontrar el dispositivo en el que se encuentra el cuello de botella porque mejorando su rendimiento mejorará el de todo el sistema.
+Para gestionar las actualizaciones dispone del servicio **Windows Update** y su herramienta gráfica de configuración.
 
-¿Cuándo debemos realizar una evaluación del rendimiento? Puede ser útil evaluar el rendimiento de un equipo cuando:
-- se fabrica una nueva máquina
-- se desea diseñar un sistema informático nuevo
-- se desea seleccionar un sistema informático entre varias alternativas
-- se desea planificar la capacidad de un sistema informático
-- se desea ajustar un sistema informático (operaciones de mantenimiento)
+## Administrador del servidor
+Desde aquí tenemos un completo resumen del estado general de cada servidor que nos permite determinar su estado actual así como detectar eventos registrados que puedan afectar a su funcionamiento.
+
+![Administrador del servidor]()
 
 ## Administrador de tareas
 En sistemas Windows podemos obtener importante información del `Administrador de tareas de Windows`, que nos muestra los programas, procesos y servicios que están en ejecución. Tiene varias pestañas con información sobre:
@@ -91,3 +95,19 @@ La información que recoge se reúne en **Conjuntos de Recopiladores de datos** 
 
 ![Monitor de Rendimiento](media/MonitorRendimiento.png)
 
+## Windows Admin Center (WAC)
+
+## Windows Update
+Esta herramienta gestiona las actualizaciones del sistema y permite configurar:
+- cuándo se descargarán las actualizaciones (se puede programar la hora o ponerlo en manual)
+- si se instalan automáticamente o debe ser el administrador quien las instale. En un servidor debe ser el administrador quien decida cuándo instalar cada actualización ya que algunas pueden requerir el reinicio del sistema o incluso podrían acer que algo deje de funcionar correctamente
+- opciones de reinicio: cuándo reinicar el equipo tras instalar una actualización que lo requiera: inmediatamente, manualmente por el administrador o a la hora programada aquí
+- opciones avanzadas: permite indicar si descargar sólo actualizaciones de seguridad o también de características así como descargar también actualizaciones de otros programas de Microsoft
+
+![Windows update]()
+
+El servicio que gestiona esta herramienta se llama _Windows Update_ (**_wuausrv_**) y deberíamos tenerlo siempre activo.
+
+También pueden configurarse las actualizaciones mediante una GPO que encontramos en **_'Configuración de equipo -> Plantillas adminitrativas -> Componentes de Windows -> Windows Update'_**, lo que nos permite configurar las actualizaciones de todos los equipos del sistema automáticamente.
+
+![GPO Windows Update]()
