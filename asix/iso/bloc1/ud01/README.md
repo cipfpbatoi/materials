@@ -46,12 +46,12 @@ Los conceptos más importantes de esta unidad son:
 
 * El ordenador és la herramienta que nos permite el procesamiento automático de la información.
 * Un ordenador no és más que una máquina formada per elementos mecánicos y electrónicos.
-* El que diferencia un ordenador de otras máquinas es que el ordenador és programable, és decir, que puede recibir instrucciones que le indican com tiene que funcionar.
+* El que diferencia un ordenador de otras máquinas es que el ordenador és programable, és decir, que puede recibir instrucciones que le indican como tiene que funcionar.
 * El ordenador se una máquina compuesta por elementos físicos (electrónicos y eléctricos).
 * Esto se denomina comúnmente **Hardware**.
 * Este hardware necesita de órdenes o instrucciones que hacen funcionar el **hardware** de una manera determinada. 
 * Podemos denominar programa a un conjunto de instrucciones que la denominamos programa a un conjunto de instrucciones que le permiten al ordenador hacer una tarea. Al conjunto de todos los elementos no físicos, es decir, de todos los programas del ordenador se lo denomina **Software**.
-* Dentro del **software** hay un especial, llamado **software de base**, que hace posible que el ordenador funciono: el *Sistema Operativo*.
+* Dentro del **software** hay un especial, llamado **software de base**, que hace posible que el ordenador funcione: el *Sistema Operativo*.
 * Entre el **software** y el **hardware** hay otro tipo de elemento: el **Firmware**.
 
 ### Hardware
@@ -165,27 +165,32 @@ Al usuario le proporciona una interfaz, que puede ser:
 
 Los sistemas operativos se pueden clasificar según varios parámetros:
 
-* Según la forma de explotación.
- * Proceso por lotes.
- * Proceso en tiempo compartido o real.
-* Según el número de usuarios
- * Monousuario
- * multiusuario.
-* Según el número de tareas o procesos.*
- * Monotarea.
- * Multitarea.
-* Según el número de procesadores.
- * Monoprocessador.
- * Multiprocesador.
-* Según cómo ofrece los servicios.
- * Sistemas operativos de escritorio.
- * Sistemas Operativos en red.
- * Sistema centralizado.
- * Sistemas distribuidos.
-* Según la licencia de os.
- * Privativos
- * Libres.
-
+* Según la **forma de explotación**:
+  * Proceso por lotes.
+  * Proceso en tiempo compartido o real.
+* Según el **número de usuarios**:
+  * Monousuario: son aquellos que únicamente soportan un usuario a la vez y todos los dispositivos de hardware están a disposición de ese usuario y no pueden
+ser utilizados por otros hasta que éste no finalice su uso. Ejemplos: DOS, Windows 3.x/98/ME/XP.
+  * Multiusuario: dan servicio a más de un usuario a la vez. Los usuarios pueden compartir dispositivos externos de almacenamiento, periféricos de salida,
+acceso a una misma base de datos instalada en el ordenador principal, etc. Los usuarios pueden utilizar el ordenador principal de la siguiente forma: mediante
+terminales (teclado y monitor) o bien mediante ordenadores clientes conectados al servidor. Ejemplos: UNIX, Windows NT Server, Windows 2000 Server, etc.
+* Según el **número de tareas o procesos**:
+  * Monotarea: son aquellos que sólo permiten una tarea a la vez por usuario. Puede darse el caso de un sistema multiusuario y monotarea, en el cual se admiten
+varios usuarios al mismo tiempo, pero cada uno de ellos puede estar haciendo sólo una tarea a la vez. Ejemplos: DOS, Windows 9x.
+  * Multitarea: es aquel en el que se permite al usuario estar realizando varios trabajos al mismo tiempo. Para ello, la CPU comparte el tiempo de uso del procesador entre los deferentes programas que se desean ejecutar. Ejemplos: Windows NT4.0, Windows 200, Windows XP Professional, Windows 2003 Server, UNIX, etc.
+* Según el **número de procesadores**.
+  * Monoprocessador: En este tipo de SO, el ordenador sólo tiene un procesador y por lo tanto, únicamente se ejecuta un proceso a la vez. Sin embargo, permiten la
+multitarea haciendo que el sistema realice una tarea rotatoria con intercambio muy rápido. Algunos ejemplos de SSOO monoproceso son: DOS y todos los que se puedan instalar en este tipo de sistemas informáticos. El resto, aunque potencialmente puedan ser multitarea (Windows NT, Unix, Linux, Novell) o pseudo
+multitarea (Windows 9x, ME), si funcionan con un solo procesador se catalogan como monotarea.
+  * Multiprocesador: Cuentan con más de un procesador y permiten realizar varios procesos simultáneamente y por lo tanto, varias tareas. Ejemplos de este tipo de SO son: Windows NT 4.0, Windows 2000/2003, Windows XP, Linux, Unix, etc.
+* Según **cómo ofrece los servicios**.
+  * Sistemas operativos de escritorio.
+  * Sistemas Operativos en red.
+  * Sistema centralizado.
+  * Sistemas distribuidos.
+* Según **la licencia**.
+  * Privativos
+  * Libres.
 
 ## Licencias 
 
@@ -355,4 +360,4 @@ Llicencia que s’aplica a la documentació. Permet elegir al autor quin tipus d
 
 ![cc](./media/ud1-08.png)
 
-<img src="./media/ud1-09.png" title="CC" width="50%" style="display:flex;justify-content:center;">
+<img src="./media/ud1-09.png" title="CC" width="25%" style="display:flex;justify-content:center;">
