@@ -258,7 +258,7 @@ Dentro de les licencias privativas nos encontramos las de tipo *Freeware*, *Shar
 
 * Programa totalmente gratuito.
 * Incluye publicidad en el programa, durante su instalación o durante su uso.instalación o durante su uso.
-* Hay programas que pueden ser *shareware a la misma vez que *Adware.
+* Hay programas que pueden ser shareware a la misma vez que Adware.
 
 ### Licencias de sofware de codigo abierto
 
@@ -270,7 +270,7 @@ Las licencias de código abierto, permiten entre otras cosas:
 * Modificar el software por adaptarlo a sus necesidades, recompilarlo y ejecutarlo.
 * Utilizar parte del código por otro software.
 * Ampliar el Software original.
-* Integrarlo en otro softaware para mejorar sus funcionalidades.
+* Integrarlo en otro software para mejorar sus funcionalidades.
 * Redistribuir o comunicar públicamente el software original.
 * Del mismo modo, redistribuir el software modificado y las extensiones (respetando siempre las condiciones de la licencia
 * Crear documentación sobre el software y meterla en la venta.
@@ -301,9 +301,9 @@ suben restringir los usos tanto personales como comerciales, libros o privativos
 
 Las más conocidas son:
 
-* ***BSD**. (Berkeley Software Distribution). Es una licencia que para sus detractores es prácticamente una licencia de software libe, más que libre. Si creas un programa X y otro lo quiere utilizar, lo podrá tomar libremente, solo respetando tu autoría pero sin liberar los cambios que hayan hecho.
+* **BSD**. (Berkeley Software Distribution). Es una licencia que para sus detractores es prácticamente una licencia de software libe, más que libre. Si creas un programa X y otro lo quiere utilizar, lo podrá tomar libremente, solo respetando tu autoría pero sin liberar los cambios que hayan hecho.
 
-* ***ASL**. (Apache Software License)
+* **ASL**. (Apache Software License)
 
 ### Licencias con copyleft fuerte
 
@@ -312,13 +312,13 @@ Son las que exigen el uso de la misma licencia para cualquier redistribución de
 Su objetivo básico es asegurar que cualquier usuario (directo o indirecto) del software siempre tenga acceso al código fuente, bajo los términos de esta
 misma licencia.
 
-Como *consecuencia, se impide la distribución del software con copyleft en aplicaciones privativas. 
+Como consecuencia, se impide la distribución del software con copyleft en aplicaciones privativas. 
 
 Esto no significa que no se puedan crear y vender aplicaciones comerciales con software copyleft. Pero sí será una violación de la licencia redistribuir este software bajo otra licencia.
 
-Licencias Con copyleft fuerte (General *Public *License) ***GPL***
+***GPL*** (General Public License) 
 
-* Licencia con código copyleft *mès conocida.
+* Licencia con código copyleft más conocida.
 * Software se utiliza en la mayoría de programas de GNU.
 * Su finalidad es proteger los derechos de los usuarios finales (usar, compartir, estudiar y modificar) finales (usar, compartir, estudiar y modificar)
 * Los trabajos derivados solo pueden ser distribuidos bajo los términos de la misma licencia.
@@ -326,8 +326,6 @@ Licencias Con copyleft fuerte (General *Public *License) ***GPL***
 ![gpl](./media/ud1-07.png)
 
 ### Llicències mixtes o amb copyleft suau.
-
-Llicències mixtes o amb copyleft suau.
 
 Inclouen clausules de copyleft sols pel codi original, sense que afecte a altres programes que l’integren o l’utilitzen.
 
@@ -358,6 +356,6 @@ Llicencia que s’aplica a la documentació. Permet elegir al autor quin tipus d
 - **Sense Obres derivades**: no es pot permetre modificar l’obra per crear-ne un altra.
 - **Compartir igual**: Es permet crear obres derivades sempre que es mantinguen la llicència.
 
-![cc](./media/ud1-08.png)
+<img src="./media/ud1-08.png" title="CC" width="50%">
 
-<img src="./media/ud1-09.png" title="CC" width="25%" style="display:flex;justify-content:center;">
+<img src="./media/ud1-09.png" title="CC" width="25%">
