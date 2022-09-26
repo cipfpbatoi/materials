@@ -14,7 +14,7 @@
   - [Tipos de Sistemas Operativos.](#tipos-de-sistemas-operativos)
   - [Licencias](#licencias)
     - [Licencias no-libres o privativas](#licencias-no-libres-o-privativas)
-    - [Licencias de sofware de codigo abierto](#licencias-de-sofware-de-codigo-abierto)
+    - [Licencias de software de código abierto](#licencias-de-software-de-código-abierto)
     - [Licencias permisivas o académicas](#licencias-permisivas-o-académicas)
     - [Licencias con copyleft fuerte](#licencias-con-copyleft-fuerte)
     - [Llicències mixtes o amb copyleft suau.](#llicències-mixtes-o-amb-copyleft-suau)
@@ -87,7 +87,7 @@ Arquitecturas de CPU. El elemento más importante para ejecutar una instrucción
 4. Se procesa la instrucción.
 5. Se escriben los resultados en memoria.
 
-No todos los procesadores funcionan igual. Cada uno las realiza de una forma diferente. Tiene conjunto de instrucciones que puede ejecutar. La arquitectura más común se la PC. Las que han salido posteriormente, normalmente sueño compatibles en esta. Un Sistema Operativo. Solamente se puede ejecutar sobre una máquina con la arquitectura por el que se ha diseñado. 
+No todos los procesadores funcionan igual. Cada uno las realiza de una forma diferente. Tiene conjunto de instrucciones que puede ejecutar. La arquitectura más común se la PC. Las que han salido posteriormente, normalmente son compatibles con en esta. Un Sistema Operativo. Solamente se puede ejecutar sobre una máquina con la arquitectura por el que se ha diseñado. 
 
 
 ### Software
@@ -202,7 +202,7 @@ La licencia de software cumple una doble función:
 * Asegurar los derechos del usuario (las autorizaciones)
 * Reservar y proteger los derechos del titular (los derechos no cedidos y las condiciones que tiene que cumplir el usuario).
 
-Por lo tanto la licencia establece determinados derechos y obligaciones entre las partes. Y es en este punto donde se diferencian las licencias del software de código abierto (**Open Source Software**) y las licencias no libres o privativas:las licencias no libres o privativas:
+Por lo tanto la licencia establece determinados derechos y obligaciones entre las partes. Y es en este punto donde se diferencian las licencias del software de código abierto (**Open Source Software**) y las licencias no libres o privativas:
 
 * Software de código abierto conceden amplios derechos al usuario (incluidos los de modificar el software y volver a distribuirlo)
 * Las licencias no libres suelen limitar o imponer condiciones drásticas.
@@ -257,10 +257,10 @@ Dentro de les licencias privativas nos encontramos las de tipo *Freeware*, *Shar
 **Adware**:
 
 * Programa totalmente gratuito.
-* Incluye publicidad en el programa, durante su instalación o durante su uso.instalación o durante su uso.
+* Incluye publicidad en el programa, durante su instalación o durante su uso.
 * Hay programas que pueden ser shareware a la misma vez que Adware.
 
-### Licencias de sofware de codigo abierto
+### Licencias de software de código abierto
 
 Las licencias de código abierto, permiten entre otras cosas:
 
@@ -277,11 +277,11 @@ Las licencias de código abierto, permiten entre otras cosas:
 
 Tipo de licencia.
 
-* No todas las licencias de código abierto sueño iguales,
+* No todas las licencias de código abierto son iguales,
 * Hay casi 70 licencias **OpenSource** certificadas por *OSI*.
 * Es importante conocer las licencias siempre que utilizamos un software de código abierto.
-* La mayor diferencia radica en las condiciones aplicables a la redistribución, en particular en en cuanto al grado de copyleft:redistribución, en particular en en cuanto al grado de copyleft.
-
+* La mayor diferencia radica en las condiciones aplicables a la redistribución, en particular en en cuanto al grado de copyleft.
+  
 ![opensource](./media/ud1-06.png)
 
 Aparte del copyleft, las licencias se caracterizan para aplicar condiciones adicionales sobre temas que sus autores han creído importante:
@@ -356,6 +356,6 @@ Llicencia que s’aplica a la documentació. Permet elegir al autor quin tipus d
 - **Sense Obres derivades**: no es pot permetre modificar l’obra per crear-ne un altra.
 - **Compartir igual**: Es permet crear obres derivades sempre que es mantinguen la llicència.
 
-<img src="./media/ud1-08.png" title="CC" width="50%">
+<img src="./media/ud1-08.png" title="CC" width="60%">
 
 <img src="./media/ud1-09.png" title="CC" width="25%">
