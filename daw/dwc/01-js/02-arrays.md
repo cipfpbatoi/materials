@@ -2,7 +2,7 @@
 - [Arrays](#arrays)
   - [Introducción](#introducción)
   - [Operaciones con Arrays](#operaciones-con-arrays)
-    - [lenght](#lenght)
+    - [length](#length)
     - [Añadir elementos](#añadir-elementos)
     - [Eliminar elementos](#eliminar-elementos)
     - [splice](#splice)
@@ -53,7 +53,7 @@ console.log(a[6])  // imprime undefined
 ## Operaciones con Arrays
 Vamos a ver los principales métodos y propiedades de los arrays.
 
-### lenght
+### length
 Esta propiedad devuelve la longitud de un array: 
 ```javascript
 let a = ['Lunes', 'Martes', 2, 4, 6]
