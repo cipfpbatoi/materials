@@ -1,0 +1,2 @@
+	  deb http://mirror.cipfpbatoi.es/debian bullseye main contrib non-free
+	  deb http://mirror.cipfpbatoi.es/debian-security bullseye-security main contrib non-free
