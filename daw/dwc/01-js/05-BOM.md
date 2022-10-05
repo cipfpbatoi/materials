@@ -5,11 +5,11 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Browser Object Model (BOM)](#browser-object-model-bom)
-  - [Introducción](#introducci%C3%B3n)
+  - [Introducción](#introducción)
   - [Timers](#timers)
   - [Objetos del BOM](#objetos-del-bom)
     - [Objeto window](#objeto-window)
-      - [Diálogos](#di%C3%A1logos)
+      - [Diálogos](#diálogos)
     - [Objeto location](#objeto-location)
     - [Objeto history](#objeto-history)
     - [Otros objetos](#otros-objetos)
@@ -37,21 +37,39 @@ Ambas funciones devuelven un identificador que nos permitirá cancelar la ejecuc
 
 Ejemplo:
 ```javascript
-let idTimeout=setTimeout(function() {
-	alert('Timeout que se ejecuta al cabo de 1 seg.')
-}, 1000);
+const idTimeout = setTimeout(() => alert('Timeout que se ejecuta al cabo de 1 seg.'), 1000);
 
-let i=1;
-let idInterval=setInterval(function() {
+let i = 1;
+const idInterval = setInterval(() => {
 	alert('Interval cada 3 seg. Ejecución nº: '+ i++);
-   if (i==5) {
-      clearInterval(idInterval);
-      alert('Fin de la ejecución del Interval');
+  if (i === 5) {
+    clearInterval(idInterval);
+    alert('Fin de la ejecución del Interval');
 	}
 }, 3000);
 ```
 
 > EJERCICIO: Ejecuta en la consola cada una de esas funciones
+
+En lugar de definir la función a ejecutar podemos llamar a una función que ya exista:
+```javascript
+function showMessage() {
+  alert('Timeout que se ejecuta al cabo de 1 seg.')
+}
+
+const idTimeout=setTimeout(showMessage, 1000);
+```
+
+Pero en ese caso hay que poner sólo el nombre de la función, sin `()` ya que si los ponemos se ejecutaría la función en ese momento y no transcurrido el tiempo indicado.
+
+Si necesitamos pasarle algún parámetro a la función lo añadiremos como parámetros de `setTimeout` o `setInterval` después del intervalo:
+```javascript
+function showMessage(msg) {
+  alert(msg)
+}
+
+const idTimeout = setTimeout(showMessage, 1000, 'Timeout que se ejecuta al cabo de 1 seg.');
+```
 
 ## Objetos del BOM
 Al contrario que para el DOM, no existe un estándar de BOM pero es bastante parecido en los diferentes navegadores. 
