@@ -1,0 +1,12 @@
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy main restricted
+
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates main restricted
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy universe
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates universe
+
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-backports main restricted universe multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security main restricted
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security universe
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security multiverse

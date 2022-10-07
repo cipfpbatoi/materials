@@ -56,6 +56,9 @@ Si anem a fer la instal·lació d'un Ubuntu amb entorn gràfic farem el següent
 
 * Desactivar la xarxa de la màquina virtual.
 * Realitzar la instal·lació
-* Una vegada finalitzada podem modificar el sources.list.
-
+* Cal eliminar l'arquitectura i386 i per això:
+  * dpkg --print-foreign-architectures
+  * dpkg --remove-architecture i386
+  * dpkg --print-foreign-architectures
+* Una vegada finalitzada podem modificar el [sources.list](./ubuntu22.04/sources.list).
 
