@@ -111,9 +111,7 @@ estas terminales es **pts/N**.
 
 **Ejemplo** - Abre desde el entorno gráfico un par de terminales y además accede con el usuario **root** desde la primera terminal de texto. Ahora desde cualquier terminal de las que tienes abiertas teclea la orden **who** que muestra los usuarios logueados en este momento. Aparecerá algo pareciendo a:
 
-![who](./media/who.png)
-
-<img src="media/who.png">
+![who](media/who.png)
 
 En **GNU/Linux** podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en /bin/bash) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**/etc/passwd**) entre otras informaciones de cada usuario se almacena cuál es su shell.
 
@@ -127,7 +125,7 @@ man cp
 
 ```
 
-<img src="media/mancp.png">
+![mancp](media/mancp.png)
 
 Esto nos muestra la página del manual en lo referente al comando indicado. Para salir del manual pulsamos la tecla **q** (quit = salir).
 
