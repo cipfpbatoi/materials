@@ -24,7 +24,7 @@ Comandos en GNU/**GNU/Linux**
     - [gzip](#gzip)
     - [gunzip](#gunzip)
     - [tar](#tar)
-  - [para trabajar con el contenido de un fichero](#para-trabajar-con-el-contenido-de-un-fichero)
+  - [Para trabajar con el contenido de un fichero](#para-trabajar-con-el-contenido-de-un-fichero)
     - [cat](#cat)
     - [more](#more)
     - [less](#less)
@@ -35,11 +35,11 @@ Comandos en GNU/**GNU/Linux**
     - [cut](#cut)
     - [diff](#diff)
     - [wc](#wc)
-  - [para gestionar permisos](#para-gestionar-permisos)
+  - [Para gestionar permisos](#para-gestionar-permisos)
     - [chmod](#chmod)
     - [chown](#chown)
     - [chgrp](#chgrp)
-  - [para gestionar usuarios](#para-gestionar-usuarios)
+  - [Para gestionar usuarios](#para-gestionar-usuarios)
     - [whoami](#whoami)
     - [groups](#groups)
     - [id](#id)
@@ -58,7 +58,7 @@ Comandos en GNU/**GNU/Linux**
     - [ifup ethX](#ifup-ethx)
     - [ifdown ethX](#ifdown-ethx)
     - [nslookup](#nslookup)
-  - [para gestionar discos](#para-gestionar-discos)
+  - [Para gestionar discos](#para-gestionar-discos)
     - [fsck](#fsck)
     - [mkfs](#mkfs)
     - [mount](#mount)
@@ -195,13 +195,15 @@ Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
 
 Elimina el directorio que le pasamos como parámetro, que tiene que estar vacío. Ejemplos:
 
-**rmdir clientes** - Elimina el directorio clientes que hay dentro del directorio actual
+- **rmdir clientes** - Elimina el directorio clientes que hay dentro del directorio actual
 
-**rmdir /home/juan/clientes** - Elimina el directorio clientes de la ubicación indicada
+- **rmdir /home/juan/clientes** - Elimina el directorio clientes de la ubicación indicada
 
 ### pwd
 
 Muestra la ruta absoluta del directorio actual.
+
+- **pwd**
 
 ## para trabajar con ficheros
 
@@ -209,11 +211,11 @@ Muestra la ruta absoluta del directorio actual.
 
 Copia el fichero o ficheros especificados como primer parámetro en el directorio especificado como segundo parámetro. Ejemplos:
 
-**cp leeme.txt ..** - Copia el fichero leeme.txt del directorio actual a su directorio padre
+- **cp leeme.txt ..** - Copia el fichero leeme.txt del directorio actual a su directorio padre
 
-**cp /home/juan/* /media/KINGSTON** - Copia todos los ficheros que del directorio /hombre/juan al directorio indicado (seguramente un disco USB)
+- **cp /home/juan/* /media/KINGSTON** - Copia todos los ficheros que del directorio /hombre/juan al directorio indicado (seguramente un disco USB)
 
-El comando **cp** NO copia directorios a menos que utilizamos la opción -R (recursivo). Ejemplo:
+El comando **cp** ***NO*** copia directorios a menos que utilizamos la opción -R (recursivo). Ejemplo:
 
 **cp -R /home/juan/* /media/KINGSTON** - Copia todos los ficheros y subdirectorios del directorio /hombre/juan al directorio indicado
 
@@ -243,6 +245,7 @@ Con la opción -R elimina directorios con todo su contenido:
 ### touch
 
 Crea un nuevo fichero vacío si no existe con el nombre que le pasamos como parámetro o actualiza la fecha de acceso.
+- touch pepe.txt
 
 ### find
 
@@ -256,7 +259,7 @@ Busca ficheros en la ruta pasada como primer parámetro que cumplan las condicio
 
 Ejemplos:
 
-- **find . -name “\*.odt”** - Busca en el directorio actual (y sus subdirectorios) todos los ficheros con extensión odt
+- **find . -name “*.odt”** - Busca en el directorio actual (y sus subdirectorios) todos los ficheros con extensión odt
 - **find / -perm 770** - Busca desde el directorio raíz todos los ficheros con permisos 770
 - **find / -user batoi** - Busca desde el directorio raíz todos los ficheros del usuario batoi
 - **find /var -size +1000000c** - Busca en /var y subdirectorios todos los ficheros de medida superior a 1.000.000 bytes
@@ -290,10 +293,10 @@ Agrupa o desagrupa los ficheros pasados como parámetro. También tiene una opci
 
 tar permite no poner el guion (-) ante las opciones. Ejemplos:
 
-- **tar -cvfz /home/juan/etc.tar.gz /etc** - Crea en /hombre/juan el fichero etc.tar.gz con todo el contenido del directorio /etc comprimido
-- **tar -xfz etc.tar.gz** - Extrae donde estamos todo el contenido del fichero agrupado y comprimido etc.tar.gz
+- **tar -zcvf /home/juan/etc.tar.gz /etc** - Crea en /home/juan el fichero etc.tar.gz con todo el contenido del directorio /etc comprimido
+- **tar -zxf etc.tar.gz** - Extrae donde estamos todo el contenido del fichero agrupado y comprimido etc.tar.gz
 
-## para trabajar con el contenido de un fichero
+## Para trabajar con el contenido de un fichero
 
 ### cat
 
@@ -303,15 +306,21 @@ Muestra por pantalla el contenido del fichero o ficheros pasados como parámetro
 
 Igual que el anterior pero si el contenido del fichero ocupa más de una pantalla lo muestra pantalla a pantalla, esperando a que el usuario pulse una tecla para mostrar la siguiente pantalla.
 
+- **more pepe.txt**
+- **ls -l | more**
+
 ### less
 
 Igual que more pero permite también volver atrás en el fichero.
+
+- **less pepe.txt**
+- **ls -l | less**
 
 ### tail
 
 Muestra por pantalla las últimas líneas del fichero pasado como parámetro, por defecto 10. La opción -f va mostrando las últimas líneas según va creciendo el fichero (se utiliza para ver como cambian ficheros de log). Ejemplo:
 
-**tail -f /var/logs/squid/acces.log** - Va mostrando por pantalla las ultimas líneas del fichero acces.log donde se guardan las páginas de Internet visitadas por los alumnos
+- **tail -f /var/logs/squid/acces.log** - Va mostrando por pantalla las ultimas líneas del fichero acces.log donde se guardan las páginas de Internet visitadas por los alumnos
 
 ### head
 
@@ -369,9 +378,11 @@ A todos estos comandos (cat, grep, cut, sort, tail, ...) se los denomina filtros
 
 ### diff
 
-Compara el contenido de los ficheros pasado como parámetro y muestra por pantalla las líneas que tengan alguna diferencia. Ejemplo:
+Compara el contenido de los ficheros pasado como parámetro y muestra por pantalla las líneas que tengan alguna diferencia. 
 
-diff fichero1.txt fichero2.txt - Muestra por pantalla las líneas que sean diferentes entre los ficheros fichero1.txt y fichero2.txt del directorio actual
+Ejemplo:
+
+- **diff fichero1.txt fichero2.txt** - Muestra por pantalla las líneas que sean diferentes entre los ficheros fichero1.txt y fichero2.txt del directorio actual
 
 ### wc
 
@@ -380,7 +391,7 @@ Muestra el número de líneas, palabras y letras del fichero pasado como paráme
 - **wc -l /etc/passwd**
 - **cat /etc/passwd | wc -l**
 
-## para gestionar permisos
+## Para gestionar permisos
 
 ### chmod
 
@@ -426,7 +437,7 @@ Igual que el anterior permite el uso de la opción -R para funcionar recursivame
 
 Permite cambiar el grupo propietario de los ficheros o directorios pasados por parámetro.
 
-## para gestionar usuarios
+## Para gestionar usuarios
 
 ### whoami
 
@@ -442,13 +453,16 @@ Muestra el id y el nombre del usuario, el gid y el nombre de su grupo principal 
 
 ### who
 
-Muestra los usuarios conectados al sistema ahora
+Muestra los usuarios conectados al sistema ahora.
+
+![who](media/who.png)
+
 
 ### passwd
 
 Permite especificar una nueva contraseña para el usuario pasado como parámetro (o para el usuario actual si no pasamos ningún usuario).
 
-También permite bloquear (con el parámetro **-l**) o desbloquear (con **-u**) una cuenta de usuario.
+También permite bloquear (con el parámetro **-l**) o desbloquear (con **-u**) una cuenta de usuario. Entre otras opciones.
 
 ### useradd
 
@@ -526,7 +540,7 @@ Resuelve el nombre de dominio indicado, mostrando qué es su IP
 
 [Listado](https://www.**GNU/Linux**party.es/2-amd/10782-10-comandos-ip-utiles-para-configurar-interfaces-de-red.html)
 
-## para gestionar discos
+## Para gestionar discos
 
 ### fsck
 
@@ -536,15 +550,17 @@ Permite comprobar un sistema de archivos (hay versiones para los diferentes FS) 
 
 ### mkfs
 
-Formatea una partición con sistema de archivos ext, FAT, NTFS, etc. Ejemplo: 
+Formatea una partición con sistema de archivos ext, FAT, NTFS, etc. 
 
 - **mkfs.ext4 /dev/sda1**
+- **mkfs -t ext4 /dev/sda2**
 
 ### mount
 
 Monta una partición en una carpeta para poderla utilizar. Hay que indicar el dispositivo que queremos montar y en qué directorio se montará (el directorio debe existir). Ejemplo: 
 
-- **mount /dev/sda1 /mnt**
+- **mount /dev/sda1 /mnt** - Monta partición en directorio /mnt
+- mount - Muestra particiones, etc montadas en el sistema
 
 La partición permanecerá montada hasta que la desmontemos con **umount** o hasta que reiniciemos la máquina. Si queremos que una partición se monte automáticamente cada vez que iniciamos el equipo hay que añadir una línea con sus opciones al fichero **/etc/fstab**.
 
@@ -578,13 +594,15 @@ Con la opción **-l** muestra todos los discos del sistema con sus particiones:
 
 ### cfdisk
 
-Igual que el anterior pero con una interface visual (en modo texto) que nos facilita el trabajo
+Igual que el anterior pero con una interface visual (en modo texto) que nos facilita el trabajo.
+
+![cfdisk](./media/cfdisk.png)
 
 ### parted
 
 Se trata de una utilidad similar a fdisk pero que permite gestionar también discos con tipo de partición GPT.
 
-![parted](parted2.png "parted")
+![parted](./media/parted2.png)
 
 ## otros comandos
 
@@ -683,5 +701,7 @@ Para ejecutar un script tenemos dos formas:
 
 - Escribir el nombre del shell a utilizar seguido del nombre del script (ejemplo: **bash haz_backup.sh**)
 - Dar permisos de ejecución al fichero. En ese caso se puede ejecutar directamente escribiendo su nombre (precedido de la ruta si no se encuentra en el PATH, por ejemplo: **./haz_backup.sh**)
+
+
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses/by-nc-sa/4.0/)
