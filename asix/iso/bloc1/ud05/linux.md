@@ -7,13 +7,13 @@ Comandos en GNU/**GNU/Linux**
   - [Las terminales en **GNU/Linux**](#las-terminales-en-gnulinux)
   - [Ayuda y utilidades](#ayuda-y-utilidades)
   - [Sintaxis](#sintaxis)
-  - [para trabajar con directorios](#para-trabajar-con-directorios)
+  - [Para trabajar con directorios](#para-trabajar-con-directorios)
     - [ls](#ls)
     - [cd](#cd)
     - [mkdir](#mkdir)
     - [rmdir](#rmdir)
     - [pwd](#pwd)
-  - [para trabajar con ficheros](#para-trabajar-con-ficheros)
+  - [Para trabajar con ficheros](#para-trabajar-con-ficheros)
     - [cp](#cp)
     - [mv](#mv)
     - [rm](#rm)
@@ -51,14 +51,17 @@ Comandos en GNU/**GNU/Linux**
     - [usermod](#usermod)
     - [groupadd o addgroup](#groupadd-o-addgroup)
     - [groupdel](#groupdel)
-  - [para gestionar la red](#para-gestionar-la-red)
+  - [Para gestionar la red](#para-gestionar-la-red)
     - [ping](#ping)
     - [ifconfig](#ifconfig)
     - [dhclient](#dhclient)
     - [ifup ethX](#ifup-ethx)
     - [ifdown ethX](#ifdown-ethx)
     - [nslookup](#nslookup)
-  - [Para gestionar discos](#para-gestionar-discos)
+    - [ip](#ip)
+    - [ss](#ss)
+    - [NET-TOOLS VS IPROUTE](#net-tools-vs-iproute)
+  - [Para gestionar dispositivos de bloque](#para-gestionar-dispositivos-de-bloque)
     - [fsck](#fsck)
     - [mkfs](#mkfs)
     - [mount](#mount)
@@ -67,7 +70,9 @@ Comandos en GNU/**GNU/Linux**
     - [fdisk](#fdisk)
     - [cfdisk](#cfdisk)
     - [parted](#parted)
-  - [otros comandos](#otros-comandos)
+    - [blkid](#blkid)
+    - [lsblk](#lsblk)
+  - [Otros comandos](#otros-comandos)
     - [ps](#ps)
     - [date](#date)
     - [clear](#clear)
@@ -151,7 +156,7 @@ En primer lugar escribimos el nombre del comando y a continuación las opciones 
 
 Respecto a los argumentos, algunos comandos no tienen, otros tienen argumentos opcionales y otros obligatorios. Tendremos que escribir la sintaxis correcta de cada comando para que se ejecuto (recordáis que podemos obtener ayuda con **man**).
 
-## para trabajar con directorios
+## Para trabajar con directorios
 
 ### ls
 
@@ -205,7 +210,7 @@ Muestra la ruta absoluta del directorio actual.
 
 - **pwd**
 
-## para trabajar con ficheros
+## Para trabajar con ficheros
 
 ### cp
 
@@ -512,7 +517,7 @@ Crea el grupo pasado por parámetro
 
 Borra el grupo pasado por parámetro.
 
-## para gestionar la red
+## Para gestionar la red
 
 ### ping
 
@@ -538,9 +543,31 @@ Desactiva la interfaz de red indicada
 
 Resuelve el nombre de dominio indicado, mostrando qué es su IP
 
-[Listado](https://www.**GNU/Linux**party.es/2-amd/10782-10-comandos-ip-utiles-para-configurar-interfaces-de-red.html)
+### ip 
 
-## Para gestionar discos
+- **ip addr:** Show information for all addresses
+- **ip link**: Show information for all interfaces
+- **ip route**: List all of the route entries
+- **ip addr add 192.168.1.1/24 dev em1**: Add address 192.168.1.1 with netmask 24 to device em1
+- **ip addr del 192.168.1.1/24 dev em1**: Remove address 192.168.1.1/24 from device em1
+- **ip route add default via 192.168.1.1 dev em1:** Add a default route (for all addresses) via the local gateway 192.168.1.1 that can be reached on device em1
+- **ip route delete 192.168.1.0/24 via 192.168.1.1**: Delete the route for 192.168.1.0/24 via the gateway at
+192.168.1.1
+
+### ss 
+
+Display socket statistics.
+
+- **ss -a**: Show all sockets (listening and non-listening)
+- **ss -e**: Show detailed socket information
+- **ss -o**: Show timer information
+- **ss -n**: Do not resolve addresses
+
+### NET-TOOLS VS IPROUTE 
+
+![Compare](./media/compareipnet.png)
+
+## Para gestionar dispositivos de bloque
 
 ### fsck
 
@@ -560,7 +587,7 @@ Formatea una partición con sistema de archivos ext, FAT, NTFS, etc.
 Monta una partición en una carpeta para poderla utilizar. Hay que indicar el dispositivo que queremos montar y en qué directorio se montará (el directorio debe existir). Ejemplo: 
 
 - **mount /dev/sda1 /mnt** - Monta partición en directorio /mnt
-- mount - Muestra particiones, etc montadas en el sistema
+- **mount** - Muestra particiones, etc montadas en el sistema
 
 La partición permanecerá montada hasta que la desmontemos con **umount** o hasta que reiniciemos la máquina. Si queremos que una partición se monte automáticamente cada vez que iniciamos el equipo hay que añadir una línea con sus opciones al fichero **/etc/fstab**.
 
@@ -604,7 +631,28 @@ Se trata de una utilidad similar a fdisk pero que permite gestionar también dis
 
 ![parted](./media/parted2.png)
 
-## otros comandos
+### blkid
+
+Enumerará todos los dispositivos disponibles con su Identificador único universal (UUID), el TIPO del sistema de archivos y la ETIQUETA, si está configurada.
+
+Algunas opciones:
+
+- **blkid -po udev /dev/sda1**
+- **blkid -U a3e1edd2-e3b0-45b0-b703-e6e0e360a524**
+  
+### lsblk
+
+El comando lsblk nos muestra información de todos los dispositivos de bloque (discos duros, SSD, memorias flash, CD-ROM…).
+
+Algunas opciones:
+
+ - **-o NAME,MODEL,SERIAL,FSTYPE,MOUNTPOINT** nos muestra el nombre, modelo, número de serie, punto de montaje y tipo de sistema de archivos
+ - **-m** Nos muestra información sobre los permisos
+ - **-f** Nos muestra información sobre el sistema de ficheros y equivale a **-o NAME,FSTYPE,LABEL,UUID,FSAVAIL,FSUSE%,MOUNTPOINT**
+
+![lsblk](./media/lsblk.png)
+
+## Otros comandos
 
 ### ps
 
