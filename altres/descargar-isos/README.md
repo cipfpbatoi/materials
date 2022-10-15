@@ -1,4 +1,11 @@
 # Desplegar ISOs i OVAs en el aula
+- [Desplegar ISOs i OVAs en el aula](#desplegar-isos-i-ovas-en-el-aula)
+  - [Repositori d'imatges](#repositori-dimatges)
+  - [Enviar un fitxer als alumnes per UDP](#enviar-un-fitxer-als-alumnes-per-udp)
+    - [Resum](#resum)
+  - [Muntar un servidor web en el nostre equip](#muntar-un-servidor-web-en-el-nostre-equip)
+    - [Crear i configurar el servidor web](#crear-i-configurar-el-servidor-web)
+    - [Utilitzar el servidor web](#utilitzar-el-servidor-web)
 
 ## Repositori d'imatges
 En el Centre tenim un servidor (`descargasiso.cipfpbatoi.lan`) on qualsevol pot deixar ISOs i OVAs per a que tots els pugam utilitzar. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
