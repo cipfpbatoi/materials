@@ -21,6 +21,7 @@
   - [Comandos para gestionar usuarios](#comandos-para-gestionar-usuarios)
   - [Comandos para gestionar grupos](#comandos-para-gestionar-grupos)
   - [Otros comandos útiles](#otros-comandos-útiles)
+  - [Instalar comandos de ActiveDirectory en PowerShell](#instalar-comandos-de-activedirectory-en-powershell)
   - [Saber más](#saber-más)
 
 ## Introducción a PowerShell
@@ -290,7 +291,9 @@ Ejemplos:
 - `Set-Service wuauserv -StartupType Disabled`: Deshabilita el servicio wuauserv (no se podrá arrancar hasta que se configure como _Manual_ o _Automatic_)
 
 ## Comandos para gestionar usuarios
-Para trabajar con los usuarios tenemos los comandos:
+Para trabajar con los usuarios tenemos comandos `...-Local...` para trabajar con usuarios locales y `...-AD...` para trabajar con usuarios de _Active Directory_. Si no nos aparecen los comandos de _active Directory_ debemos [instalar ese módulo](#instalar-comandos-de-activedirectory-en-powershell) para Powershell.
+
+Los comandos más habituales son:
 - **`Get-LocalUser`** / **`Get-ADUser`**: muestra las cuentas de usuarios locales de ese equipo / de Active Directory
 - **`New-LocalUser`** / **`New-ADUser`**: Crea una nueva cuenta de usuario local / de AD
 - **`Set-LocalUser`** / **`Set-ADUser`**: Establece o modifica una propiedad de una cuenta de usuario
@@ -340,6 +343,23 @@ Ejemplos:
 - **`Restart-Computer`**: reinicia la máquina
 - **`Add-Computer ACME`**: añade este ordenador al dominio ACME (es el nombre NetBIOS del dominio)
 
+## Instalar comandos de ActiveDirectory en PowerShell
+Si no nos aparecen los comandos de PowerShell en la máquina debemos instalar ese módulo. En el controlador del dominio ya estará instalado por defecto pero no lo estará en otros servidores miembro ni en los clientes.
+
+Para instalarlo en un Windows Server, si lo tenemos disponible basta con ejecutar:
+```powershell
+Import-Module -Name ActiveDirectory
+```
+
+Si no está disponible podemos instalarlo con:
+```powershell
+Install-WindowsFeature -Name “RSAT-AD-PowerShell” -IncludeAllSubFeature
+```
+
+Para instalarlo en el cliente podemos ejecutar: 
+```powershell
+Get-WindowsCapability -Name RSAT.ActiveDirectory* -Online | Add-WindowsCapability -Online
+```
 
 ## Saber más
 En Internet hay infinidad de páginas y tutoriales sobre Powershell. Te recomiendo el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).
