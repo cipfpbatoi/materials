@@ -22,7 +22,9 @@ Se trata de una herramienta desde la que gestionar todo el almacenamiento del se
 
 ![Servicios de archivo y almacenamiento - Volúmenes](media/servarch-vol.png)
 
-- Recursos compartidos: aquí podemos ver los recursos compartidos en cualquier volumen e información sobre ellos:
+- Recursos compartidos: aquí podemos ver los recursos compartidos en cualquier volumen e información sobre ellos. En el servidor siempre tendremos al menos 2 recursos compartidos:
+  - NETLOGON: se crea en los DC y se usa en el inicio de sesión de los usuarios (aquí se guardan los scripts de inicio de sesión)
+  - SYSVOL: guarda secuencia de comandos de inicio de sesión
 
 ![Servicios de archivo y almacenamiento - Recursos](media/servarch-recursos.png)
 
@@ -36,9 +38,13 @@ Podemos compartir recursos usando el protocolo SMB/CIFS (el nativo de Windows) o
 
 Si compartimos un recurso desde a opción _Básico_ nos pregunta dónde crear la carpeta, su nombre y los permisos NTFS que tendrá. Por defecto en SMB asigna el permiso _Control total_ a _Todos_. Podemos _personalizar_ tanto los permisos NTFS como los SMB desde el asistente o después de crear el recurso, desde el `botón derecho -> Propiedades`.
 
+[![Crear recurso compartido](media/Compartir-1.png)](media/Compartir-1.ogx)
+
 Si instalamos el **_Administrador de recursos del servidor de archivos_** podemos crear un nuevo recurso compartido usando la opción _Avanzado_ que además de las opciones del _Básico_ nos permite indicar:
 - el uso de esa carpeta (si es para archivos de un usuario -como su carpeta particular-, de un grupo -ficheros que usa un grupo de usuarios-, archivos de copia de seguridad o archivos de programa)
 - si queremos establecer cuotas en la carpeta (lo veremos más adelante).
+
+[![Crear recurso compartido avanzado](media/Compartir-2.png)](media/Compartir-2.ogx)
 
 ### Compartir una carpeta desde la terminal
 Algunos comandos de utilidad para trabajar con carpetas compartidas son:
