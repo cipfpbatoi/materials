@@ -80,6 +80,8 @@ Si queremos asegurar la máxima compatibilidad debemos usar la versión ES5 (per
 ### La consola del navegador
 Es la herramienta que más nos va a ayudar a la hora de depurar nuestro código. Abrimos las herramientas para el desarrollador (en Chrome y Firefox pulsando la tecla _F12_) y vamos a la pestaña _Consola_:
 
+![Consola](./img/Consola.png)
+
 Allí vemos mensajes del navegador como errores y advertencias que genera el código y todos los mensajes que pongamos en el código para ayudarnos a depurarlo (cusando los comandos **console.log** y **console.error**).
 
 Además en ella podemos escribir instrucciones Javascript que se ejecutarán mostrando su resultado. También la usaremos para mostrar el valor de nuestras variables y para probar código que, una vez que funcione correctamente, lo copiaremos a nuestro programa.
@@ -87,6 +89,10 @@ Además en ella podemos escribir instrucciones Javascript que se ejecutarán mos
 > EJERCICIO: abre la consola y prueba las funciones _alert_, _confirm_ y _prompt_.
 
 Siempre depuraremos los programas desde aquí (ponemos puntos de interrupción, vemos el valor de las variables, ...).
+
+![Consola - depurar](./img/Consola-depurar.png)
+
+Es fundamental dedicar tiempo a saber utilizar la consola porque nos facilitará enormemente la tarea de depurar nuestro código. Podéis encontrar infinidad de páginas en internet donde nos explican en profundidad el uso de la consola, como [Debugging en el navegador](https://es.javascript.info/debugging-chrome).
 
 ### Editores
 Podemos usar el que más nos guste, desde editores tan simples como NotePad++ hasta complejos IDEs. La mayoría soportan las últimas versiones de la sintaxis de Javascript (Netbeans, Eclipse, Visual Studio, Sublime, Atom, Kate, Notepad++, ...). Yo voy a utilizar [**Visual Studio Code**](https://code.visualstudio.com/) o [**Sublime text**](https://www.sublimetext.com/) por su sencillez y por los plugins que incorpora para hacer más cómodo mi trabajo. En _Visual Studio Code_ instalaré algún _plugin_ como:
