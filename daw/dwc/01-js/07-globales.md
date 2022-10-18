@@ -46,6 +46,11 @@ console.log( String(3.84) )                  // imprime '3.84'
 console.log( String([24, 3. 12]) )           // imprime '24,3,12'
 console.log( {nombre: 'Marta', edad: 26} )   // imprime "[object Object]"
 ```
+* `Boolean(valor)`: convierte el valor pasado a un booleano. Sería el resultado de tenerlo como condición en un `if`. Muchas veces en vez de usar esto usamos la doble negación `!!` que da el mismo resultado. Ejemplos:
+```javascript
+console.log( Boolean('Hola') )      // Equivaldría a !!'Hola'. Imprime true
+console.log( Boolean(0) )           // Equivaldría a !!0. Imprime false
+```
 * `isNaN(valor)`: devuelve _true_ si lo pasado NO es un número o no puede convertirse en un número. Ejemplos:
 ```javascript
 console.log( isNaN(3.84) )            // imprime false
@@ -90,7 +95,7 @@ Pero además tenemos los tipos de objetos nativos, que no dependen del navegador
 
 Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho más eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera un objeto y tenemos acceso a todas sus propiedades y métodos (`num.toFixed(2)`).
 
-Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string), [Boolean](./01-sintaxis.html#boolean) y [_Array_](./02-arrays.html) y aquí vamos a ver las del resto.
+Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string), [Boolean](./01-sintaxis.html#boolean) y [_Array_](./02-arrays.html) y aquí vamos a ver las de **Math** y **Date** y en el apartado de validar formularios las de **RegExp**.
 
 ## Objeto Math
 Proporciona constantes y métodos para trabajar con valores numéricos:
