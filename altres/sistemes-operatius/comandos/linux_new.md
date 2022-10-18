@@ -4,8 +4,10 @@ Comandos en GNU/**GNU/Linux**
 
 - [Comandos en GNU/**GNU/Linux**](#comandos-en-gnugnulinux)
   - [Introducción](#introducción)
-  - [Las terminales en **GNU/Linux**](#las-terminales-en-gnulinux)
-  - [Ayuda y utilidades](#ayuda-y-utilidades)
+    - [Comandos de administración](#comandos-de-administración)
+    - [Autocompletado](#autocompletado)
+    - [Las terminales en Gnu/Linux](#las-terminales-en-gnulinux)
+  - [Ayuda](#ayuda)
   - [Sintaxis](#sintaxis)
   - [Para trabajar con directorios](#para-trabajar-con-directorios)
     - [ls](#ls)
@@ -89,72 +91,83 @@ Comandos en GNU/**GNU/Linux**
 
 ## Introducción
 
-La línea de comandos de **GNU/Linux** es una herramienta muy potente que nos permite realizar cualquier acción en el sistema. En **GNU/Linux** el entorno gráfico es una opción y, de hecho, podemos instalar el sistema operativo sin entorno gráfico con todas sus funcionalidades (se hace en servidores para optimizar los recursos).
+La línea de comandos de Linux es una herramienta muy potente que nos permite realizar cualquier acción en el sistema. En Linux el entorno gráfico es una opción y, de hecho, podemos instalar el sistema operativo sin entorno gráfico con todas sus funcionalidades (se hace en servidores para optimizar los recursos).
 
-Aunque podemos hacer cualquier cosa necesitamos los permisos necesarios para hacerlo. Por eso hay muchos comandos que sólo los puede ejecutar el *superusuario* **root**. Cómo vieron anteriormente el prompt de cualquier usuario normal acaba en el carácter **\$** y el de root en **\#**.
+Aunque podemos hacer cualquier cosa necesitamos los permisos necesarios para hacerlo. Por eso hay muchos comandos que sólo los puede ejecutar el administrador **root**. Cómo vimos anteriormente el prompt de cualquier usuario normal acaba en el carácter **\$** y el de _root_ en **\#**.
 
-Otra cuestión importante es que cuando el usuario **root** ejecuta un comando el sistema operativo considera que sabe qué está haciendo y no nos pedirá confirmaciones, simplemente lo hace. Por eso tenemos que tener mucha cura cuando somos root en un sistema **GNU/Linux**. La recomendación es que siempre trabajamos como un usuario normal y sólo cuando tenemos que ejecutar un comando que necesita permisos de superusuario nos convertimos en **root**.
+Cuando el usuario **root** ejecuta un comando el sistema operativo considera que sabe qué está haciendo y no nos pedirá confirmaciones, simplemente lo hace. Por eso tenemos que tener mucho cuidado cuando seamos _root_ en un sistema Linux. La recomendación es que siempre trabajamos como un usuario normal y sólo cuando tengamos que ejecutar un comando que necesita permisos de administrador nos convirtamos en *root*.
 
-El comando para cambiar de usuario es *su* y se le pasa como parámetro el usuario que queremos entrar. Si no le pasamos ningún parámetro se supone que queremos ser **root**. Ejemplo:
+### Comandos de administración
+Como hemos dicho, algunos comandos sólo puede ejecutarlos _root_. El comando para cambiar de usuario es `su` y se le pasa como parámetro el usuario al que queremos cambiar. Si no le pasamos ningún parámetro se supone que queremos ser _root_. Ejemplo:
+```bash
+su jmonllor
+```
 
-**su jmonllor** - pasamos a ser el usuario *jmonllor* (después de escribir su contraseña)
+pasamos a ser el usuario jmonllor (después de escribir su contraseña)
 
-**su -** pasamos a ser el usuario **root** (si escribimos la contraseña de **root**, muy importante el **-**)
+```bash
+su
+```
 
-También es posible ejecutar un comando que necesita permisos de root desde nuestro usuario anteponiéndole el comando sudo. Para hacer esto nuestro usuario tiene que pertenecer al grupo de usuarios que pueden hacer sudo (**sudoers**).
+pasamos a ser el usuario **root** (si escribimos la contraseña de **root**). Es lo mismo que `su root`.
 
-En el caso de Ubuntu esta es la manera de trabajar por defecto y el usuario con que instalamos el sistema pertenece al grupo de sudoers. De hecho durante el proceso de instalación no se nos pide la contraseña de root por lo cual no podemos acceder como **root** (podemos hacerlo con el comando **sudo su**). En el caso de **Debian** el usuario que se crea durante la instalación es un usuario normal (no puede hacer sudo) pero si se nos pide la contraseña de root para acceder como **root**.
+**IMPORTANTE**: si nos convertimos en otro usuario no se cambian algunas de las variables de entorno (prueba a hacer `echo $USER`), lo que puede ser un problema. Para hacer que se cambien deberíamos siempre ejecutar este comando con el parámetro **`-`**:
+```bash
+su -
+su jmonllor -
+```
 
-## Las terminales en **GNU/Linux**
+También es posible ejecutar un comando que necesita permisos de _root_ desde nuestro usuario anteponiéndole el comando `sudo`. Para hacer esto nuestro usuario tiene que pertenecer al grupo de usuarios administradores (**sudo**).
 
-**GNU/Linux** por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde n es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son del 1 al 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (en algunas distribuciones la terminal gráfica se encuentra en la número 8).
+En el caso de Ubuntu esta es la manera de trabajar por defecto: el usuario con que instalamos el sistema pertenece al grupo **sudo**. De hecho durante el proceso de instalación no se nos pide la contraseña de root por lo cual no podemos acceder como **root** (podemos hacerlo con el comando **sudo su**). 
+
+En el caso de **Debian** el usuario que se crea durante la instalación es un usuario normal (no puede hacer `sudo`) pero se nos pide la contraseña de _root_ para poder acceder como *root* cuando queramos.
+
+### Autocompletado
+
+En Linux no hay que escribir el comando entero sino que podemos utilizar la función de **autocompletar**: por ejemplo si queremos reiniciar el ordenador en cuenta de escribir el comando `reboot` entero podemos escribir `reb` y pulsar el _tabulador_ para que aparezca el resto del comando. Si hay varios comandos que empiezan por los caracteres que hemos escrito aparece una lista de todos ellos al pulsar el tabulador _dos_ veces (por ejemplo si en vez de escribir `reb` escribimos sólo `re` al pulsar el tabulador no pasa nada pero al volver a pulsarlo aparecen todos los comandos que empiezan por _re_, incluyendo `reboot`).
+
+La función de autocompletar también funciona para los nombres de ficheros y directorios y es conveniente utilizarla por comodidad pero también porque así evitamos equivocarnos a la hora de escribir.
+
+También utilizaremos a a menudo la utilidad de Linux de guardar los comandos que ya hemos escrito de forma que podemos volver a escribirlos sólo pulsando las flechas de cursor arriba y bajo. Podemos ver la lista de comandos almacenada con el comando **`history`**.
+
+### Las terminales en Gnu/Linux
+Linux por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde _n_ es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son las terminales de la 1 a la 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (normalmente, aunque puede ser la 8 u otra según la distribución).
 
 Cada terminal tiene un nombre que es **ttyN**, donde N es el número de terminal (es decir tty1, tty2, ..., tty7).
 
-Además dentro de la terminal gráfica podemos abrir tantas *pseudoterminales* cómo queramos, cada una en su ventana. El nombre de
+Además dentro de la terminal gráfica podemos abrir tantas pseudoterminales cómo queramos, cada una en su ventana. El nombre de
 estas terminales es **pts/N**.
 
 **Ejemplo** - Abre desde el entorno gráfico un par de terminales y además accede con el usuario **root** desde la primera terminal de texto. Ahora desde cualquier terminal de las que tienes abiertas teclea la orden **who** que muestra los usuarios logueados en este momento. Aparecerá algo pareciendo a:
 
-![who](media/who.png)
+![who](./media/who.png)
 
-En **GNU/Linux** podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en /bin/bash) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**/etc/passwd**) entre otras informaciones de cada usuario se almacena cuál es su shell.
+En GNU/Linux podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en `/bin/bash`) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**`/etc/passwd`**) entre otras informaciones de cada usuario se almacena cuál es su shell.
 
-## Ayuda y utilidades
-
-En **GNU/Linux** podemos obtener ayuda de un comando de diferentes maneras. La más completa y utilizada es utilizando el comando **man** seguido del nombre del comando que queremos. Por ejemplo:
+## Ayuda
+En Linux podemos obtener ayuda de un comando de diferentes maneras. La más completa y utilizada es utilizando el comando **man** seguido del nombre del comando que queremos. Por ejemplo:
 
 ```bash
-
 man cp
-
 ```
 
-![mancp](media/mancp.png)
+![man cp](./media/mancp.png)
 
-Esto nos muestra la página del manual en lo referente al comando indicado. Para salir del manual pulsamos la tecla **q** (quit = salir).
+Esto nos muestra la página del manual en lo referente al comando indicado. Para salir del manual pulsamos la tecla **q** (_quit_ = salir).
 
-También podemos obtener ayuda de algunos comandos con **help** y el nombre del comando (ejemplo help cd) y otros con el nombre del comando con la opción --help (ejemplo cp --help).
-
-En **GNU/Linux** no hay que escribir el comando entero sino que podemos utilizar la función de **autocompletar**: por ejemplo si queremos reiniciar el ordenador en cuenta de escribir el comando reboot entero podemos escribir reb y pulsar el tabulador para que aparezca el resto del comando. Si hay varios comandos que empiezan por los caracteres que hemos escrito aparece una lista de todos ellos al pulsar el tabulador dos veces (por ejemplo si en vez de escribir reb escribimos sólo re al pulsar el tabulador no pasa nada pero al volver a pulsarlo aparecen todos los comandos que empiezan por re, incluyendo reboot).
-
-La función de **autocompletar** también funciona para los nombres de ficheros y directorios y es conveniente utilizarla por comodidad pero también porque así evitamos equivocarnos a la hora de escribir.
-
-También utilizaremos a a menudo la utilidad de **GNU/Linux** de guardar los comandos que ya hemos escrito de forma que podemos volver a escribirlos sólo pulsando las flechas de cursor arriba y bajo. Podemos ver la lista de comandos almacenada con el comando **history**.
+También podemos obtener ayuda de algunos comandos con **help** y el nombre del comando (ejemplo `help cd`) y otros con el nombre del comando con la opción _--help_ (ejemplo `cp --help`).
 
 ## Sintaxis
-
 La sintaxis general de cualquier comando es:
 
 ```bash 
-
 comando [ -o | --opción ] [argumentos]
-
 ```
 
-En primer lugar escribimos el nombre del comando y a continuación las opciones que queremos (o ninguna) y después los argumentos que le pasamos. Para escribir cada opción normalmente podemos elegir entre la forma normal (ejemplo **--all**) o la reducida (ejemplo **-a**). Fijaos que la forma reducida sólo es una letra y está precedida de un signo menos (-) mientras que la forma normal es una palabra y siempre está precedida de dos signos menos (**--**).
+En primer lugar escribimos el nombre del comando y a continuación las opciones que queremos (o ninguna) y después los argumentos que le pasamos. Para escribir cada opción normalmente podemos elegir entre la forma normal (ejemplo **`--all`**) o la reducida (ejemplo **`-a`**). Fijaos que la forma reducida sólo es una letra y está precedida de un signo menos (-) mientras que la forma normal es una palabra y siempre está precedida de dos signos menos (**`--`**).
 
-Respecto a los argumentos, algunos comandos no tienen, otros tienen argumentos opcionales y otros obligatorios. Tendremos que escribir la sintaxis correcta de cada comando para que se ejecuto (recordáis que podemos obtener ayuda con **man**).
+Respecto a los argumentos, algunos comandos no tienen, otros tienen argumentos opcionales y otros obligatorios. Tendremos que escribir la sintaxis correcta de cada comando para que se ejecuto (recordáis que podemos obtener ayuda con **`man`**).
 
 ## Para trabajar con directorios
 
@@ -250,7 +263,9 @@ Con la opción -R elimina directorios con todo su contenido:
 ### touch
 
 Crea un nuevo fichero vacío si no existe con el nombre que le pasamos como parámetro o actualiza la fecha de acceso.
-- touch pepe.txt
+
+- **touch pepe.txt**
+- **touch -t 203801181205. pep.txt** 
 
 ### find
 
@@ -276,6 +291,8 @@ Indica el tipo del fichero pasado como parámetro.
 ### stat
 
 Muestra las características del fichero que le pasamos como parámetro: nombre, permisos, medida, fecha, propietario, i-nodo, etc.
+
+![stat](./media/stat.png)
 
 ### gzip
 
@@ -312,20 +329,21 @@ Muestra por pantalla el contenido del fichero o ficheros pasados como parámetro
 Igual que el anterior pero si el contenido del fichero ocupa más de una pantalla lo muestra pantalla a pantalla, esperando a que el usuario pulse una tecla para mostrar la siguiente pantalla.
 
 - **more pepe.txt**
-- **ls -l | more**
+- **ls -l \| more**
 
 ### less
 
 Igual que more pero permite también volver atrás en el fichero.
 
 - **less pepe.txt**
-- **ls -l | less**
+- **ls -l \| less**
 
 ### tail
 
 Muestra por pantalla las últimas líneas del fichero pasado como parámetro, por defecto 10. La opción -f va mostrando las últimas líneas según va creciendo el fichero (se utiliza para ver como cambian ficheros de log). Ejemplo:
 
 - **tail -f /var/logs/squid/acces.log** - Va mostrando por pantalla las ultimas líneas del fichero acces.log donde se guardan las páginas de Internet visitadas por los alumnos
+- **ls -l \| tail -n+2** Muestro a partir de la 2ª línea. 
 
 ### head
 
@@ -338,7 +356,8 @@ Ordena las líneas contenidas en un fichero de texto. Si no cambiamos las opcion
 Opciones:
 
 - **-r** Ordena de forma inversa
-- **-f** no diferencia mayúsculas y minúsculas
+- **-f** No diferencia mayúsculas y minúsculas
+- **-kn** Donde *n* es la clave a ordenar   
 
 Ejemplos:
 
@@ -394,7 +413,7 @@ Ejemplo:
 Muestra el número de líneas, palabras y letras del fichero pasado como parámetro.
 
 - **wc -l /etc/passwd**
-- **cat /etc/passwd | wc -l**
+- **`cat /etc/passwd | wc -l`**
 
 ## Para gestionar permisos
 
