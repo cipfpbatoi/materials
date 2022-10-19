@@ -11,3 +11,4 @@
 * [Configurar la xarxa en GNU/Linux](./xarxa-linux/)
 * [Crear documentación con Markdown](./markdown/)
 * [Pasar-li una ISO als alumnes](./descargar-isos)
+* [Configuració mirror locals](./mirrors/)

@@ -469,7 +469,10 @@ Muestra un resumen de todas las particiones montadas en el sistema y el espacio 
 ![df](./media/df.png)
 
 ### dd
-Permite copiar directamente bloques a o desde un dispositivo, como el disco duro. Ejemplo: 
+Permite copiar directamente bloques a o desde un dispositivo, como el disco duro.
+
+Ejemplo: 
+
 - **`dd if=/dev/sda of=copia\_mbr count=1 bs=512`**
 
 Este ejemplo copia 1 bloque (_count=1_) de 512 bytes (_bs=512_) del primer disco duro (_/dev/sda_) a un fichero llamado _copia_mbr_. Este primer bloque del disco duro es el **MBR** por lo que estamos haciendo una copia del MBR en un fichero.
@@ -490,12 +493,16 @@ Igual que el anterior pero con una interface visual (en modo texto) que nos faci
 ### parted
 Se trata de una utilidad similar a la anterior.
 
-![parted](parted2.png "parted")
+![parted](./media/parted2.png)
 
 ## Otros comandos
 
 ### ps
-Falta este comandos
+Comando para ver información relacionada con los procesos en un sistema **Process Status**.
+
+- **`ps -aux`**: -a indica a ps que muestre todos los procesos de todos los usuarios, -u implica un formato orientado al usuario.
+- **`ps -r`** Ver todos los procesos en ejecución.
+- **`ps -A`**: Mostrar todos los procesos en ejecución
 
 ### date
 Muestra la fecha y hora actuales del ordenador

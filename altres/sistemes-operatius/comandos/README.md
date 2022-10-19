@@ -122,9 +122,10 @@ Ver la [página de comandos de Windows](ConsolaCMD.md).
 Ver la [página de comandos de Powershell](./PowerShell.md).
 
 ## Comandos de GNU/Linux
-Ver la [página de comandos de GNU/Linux](./linux.md).
+Ver la [página de comandos de GNU/Linux](./linux_new.md).
 
 ## Redireccionamiento de comandos
+
 La comunicación de la terminal con el exterior se hace, por defecto, mediante 3 dispositivos:
 - dispositivo estándar de **entrada**, que es el **teclado** (es el dispositivo por el que se introduce la información)
 - dispositivo estándar de **salida**, que es el **monitor** (es por donde el sistema muestra la información al usuario)

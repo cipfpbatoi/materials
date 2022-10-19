@@ -674,8 +674,12 @@ Algunas opciones:
 ## Otros comandos
 
 ### ps
+Muestra información sobre los procesos del sistema. A continuación se muestran algunos ejemplos.
 
-Falta este comandos
+- **`ps -aux`**: Muestra todos los procesos del sistema, mostrando UID y otras características de cada proceso. 
+- **`ps -A`**: Muestra todos los procesos del sistema.
+- **`ps -u USUARIO`**: Muestra los procesos de USUARIO.
+
 
 ### date
 
@@ -697,9 +701,14 @@ Permiten apagar el ordenador (shutdown -h, poweroff y halt), reiniciarlo (shutdo
 
 Permite cambiar al usuario indicado como parámetro o a root si no indicamos ninguno.
 
+- **su -**
+- **su**
+
 ### sudo
 
 Permite ejecutar el comando pasado como parámetro con permisos de root. Sólo pueden usarlo los usuarios con permisos de administración (sudoers)
+
+- **sudo apt install apache2**
 
 ### uname
 
@@ -710,6 +719,8 @@ Muestra información del sistema operativo y del ordenador. Opciones:
 - **-n** muestra el nombre del equipo
 - **-a** muestra toda la información
 
+![uname](./media/uname-a.png)
+
 ### hostname
 
 Muestra el nombre del equipo y si le pasamos un nuevo nombre cambia el nombre del equipo (pero sólo por esta sesión, para cambiarlo para siempre tenemos que hacerlo en el fichero **/etc/hostname**)
@@ -718,7 +729,7 @@ Muestra el nombre del equipo y si le pasamos un nuevo nombre cambia el nombre de
 
 Crea un nuevo enlace a un fichero. Un enlace es como darle otro nombre al fichero (que ahora tendrá dos nombres diferentes pero existe sólo un fichero). Opciones:
 
-**-s** lo que crea es un nuevo enlace simbólico, que es como un acceso directo
+**-s** lo que crea es un nuevo enlace simbólico, que es como un acceso directo.
 
 ## Redireccionamiento de comandos
 
