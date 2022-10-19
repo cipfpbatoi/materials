@@ -43,7 +43,7 @@ Los contenidos de esta unidad son los siguientes:
 - [La interfaz de texto](../../../../altres/sistemes-operatius/comandos)
 - [Comandos de la consola CMD](../../../../altres/sistemes-operatius/comandos/ConsolaCMD.md)
 - [Comandos PowerShell](../../../../altres/sistemes-operatius/comandos/PowerShell.md)
-- [Comandos de GNU/Linux](linux.md)
+- [Comandos de GNU/Linux](../../../../altres/sistemes-operatius/comandos/linux_new.md)
 
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org licenses/by-nc-sa/4.0/)
