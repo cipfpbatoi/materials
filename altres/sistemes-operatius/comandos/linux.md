@@ -1,8 +1,8 @@
 
-Comandos en GNU/**GNU/Linux**
+Comandos en **GNU/Linux**
 =====================
 
-- [Comandos en GNU/**GNU/Linux**](#comandos-en-gnugnulinux)
+- [Comandos en **GNU/Linux**](#comandos-en-gnulinux)
   - [Introducción](#introducción)
     - [Comandos de administración](#comandos-de-administración)
     - [Autocompletado](#autocompletado)
@@ -180,7 +180,7 @@ pasamos ningún parámetro muestra el contenido del directorio actual.
 Principales opciones:
 
 - **-l** muestra toda la información de cada fichero y directorio
-- **-h** muestra la medida de los ficheros en formato “humano” (en KB, MB, etc en vez de en bytes)
+- **-h** muestra la medida de los ficheros en formato "humano" (en KB, MB, etc en vez de en bytes)
 - **-a** muestra también los ficheros y directorios ocultos
 - **-R** recursivo. Muestra también el contenido de cada subdirectorio
 
@@ -205,25 +205,25 @@ Ejemplos:
 
 Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
 
-- **mkdir clientes** - Crea un directorio llamado clientes dentro del directorio actual
+- **`mkdir clientes`** - Crea un directorio llamado clientes dentro del directorio actual
 
-- **mkdir ../clientes** - Crea un directorio llamado clientes en el directorio paro del actual
+- **`mkdir ../clientes`** - Crea un directorio llamado clientes en el directorio paro del actual
 
-- **mkdir /home/juan/clientes** - Crea el directorio clientes en /home/juan
+- **`mkdir /home/juan/clientes`** - Crea el directorio clientes en /home/juan
 
 ### rmdir
 
 Elimina el directorio que le pasamos como parámetro, que tiene que estar vacío. Ejemplos:
 
-- **rmdir clientes** - Elimina el directorio clientes que hay dentro del directorio actual
+- **`rmdir clientes`** - Elimina el directorio clientes que hay dentro del directorio actual
 
-- **rmdir /home/juan/clientes** - Elimina el directorio clientes de la ubicación indicada
+- **`rmdir /home/juan/clientes`** - Elimina el directorio clientes de la ubicación indicada
 
 ### pwd
 
 Muestra la ruta absoluta del directorio actual.
 
-- **pwd**
+- **`pwd`**
 
 ## Para trabajar con ficheros
 
@@ -231,13 +231,13 @@ Muestra la ruta absoluta del directorio actual.
 
 Copia el fichero o ficheros especificados como primer parámetro en el directorio especificado como segundo parámetro. Ejemplos:
 
-- **cp leeme.txt ..** - Copia el fichero leeme.txt del directorio actual a su directorio padre
+- **`cp leeme.txt ..`** - Copia el fichero leeme.txt del directorio actual a su directorio padre
 
-- **cp /home/juan/* /media/KINGSTON** - Copia todos los ficheros que del directorio /hombre/juan al directorio indicado (seguramente un disco USB)
+- **`cp /home/juan/* /media/KINGSTON`** - Copia todos los ficheros que del directorio /hombre/juan al directorio indicado (seguramente un disco USB)
 
-El comando **cp** ***NO*** copia directorios a menos que utilizamos la opción -R (recursivo). Ejemplo:
+El comando **`cp`** ***NO*** copia directorios a menos que utilizamos la opción -R (recursivo). Ejemplo:
 
-**cp -R /home/juan/* /media/KINGSTON** - Copia todos los ficheros y subdirectorios del directorio /hombre/juan al directorio indicado
+**`cp -R /home/juan/* /media/KINGSTON`** - Copia todos los ficheros y subdirectorios del directorio /hombre/juan al directorio indicado
 
 ### mv
 
@@ -255,19 +255,19 @@ Este comando también se utiliza para cambiar el nombre de un fichero o director
 
 Elimina el fichero o ficheros pasados como parámetro. Ejemplos:
 
-- **rm leeme.txt** - Borra el fichero leeme.txt del directorio actual
-- **rm /home/juan/*.odt** - Borra todos los ficheros con extensión odt del directorio indicado
+- **`rm leeme.txt`** - Borra el fichero leeme.txt del directorio actual
+- **`rm /home/juan/*.odt`** - Borra todos los ficheros con extensión odt del directorio indicado
 
 Con la opción -R elimina directorios con todo su contenido:
 
-- rm **-R /home/juan/pruebas** - Borra el directorio indicado (pruebas) con todos los ficheros y directorios que contenga
+- **`rm -R /home/juan/pruebas`** - Borra el directorio indicado (pruebas) con todos los ficheros y directorios que contenga
 
 ### touch
 
 Crea un nuevo fichero vacío si no existe con el nombre que le pasamos como parámetro o actualiza la fecha de acceso.
 
-- **touch pepe.txt**
-- **touch -t 203801181205. pep.txt** 
+- **`touch pepe.txt`**
+- **`touch -t 203801181205. pep.txt`** 
 
 ### find
 
@@ -281,10 +281,10 @@ Busca ficheros en la ruta pasada como primer parámetro que cumplan las condicio
 
 Ejemplos:
 
-- **find . -name “*.odt”** - Busca en el directorio actual (y sus subdirectorios) todos los ficheros con extensión odt
-- **find / -perm 770** - Busca desde el directorio raíz todos los ficheros con permisos 770
-- **find / -user batoi** - Busca desde el directorio raíz todos los ficheros del usuario batoi
-- **find /var -size +1000000c** - Busca en /var y subdirectorios todos los ficheros de medida superior a 1.000.000 bytes
+- **`find . -name "*.odt"`** - Busca en el directorio actual (y sus subdirectorios) todos los ficheros con extensión odt
+- **`find / -perm 770`** - Busca desde el directorio raíz todos los ficheros con permisos 770
+- **`find / -user batoi`** - Busca desde el directorio raíz todos los ficheros del usuario batoi
+- **`find /var -size +1000000c`** - Busca en /var y subdirectorios todos los ficheros de medida superior a 1.000.000 bytes
 
 ### file
 
@@ -317,8 +317,8 @@ Agrupa o desagrupa los ficheros pasados como parámetro. También tiene una opci
 
 tar permite no poner el guion (-) ante las opciones. Ejemplos:
 
-- **tar -zcvf /home/juan/etc.tar.gz /etc** - Crea en /home/juan el fichero etc.tar.gz con todo el contenido del directorio /etc comprimido
-- **tar -zxf etc.tar.gz** - Extrae donde estamos todo el contenido del fichero agrupado y comprimido etc.tar.gz
+- **`tar -zcvf /home/juan/etc.tar.gz /etc`** - Crea en /home/juan el fichero etc.tar.gz con todo el contenido del directorio /etc comprimido
+- **`tar -zxf etc.tar.gz`** - Extrae donde estamos todo el contenido del fichero agrupado y comprimido etc.tar.gz
 
 ## Para trabajar con el contenido de un fichero
 
@@ -365,8 +365,8 @@ Opciones:
 
 Ejemplos:
 
-- **sort alumnos.txt** - Muestra el contenido del fichero alumnos.txt ordenado
-- **sort -r alumnos.txt** - Muestra el contenido del fichero en orden inverso
+- **`sort alumnos.txt`** - Muestra el contenido del fichero alumnos.txt ordenado
+- **`sort -r alumnos.txt`** - Muestra el contenido del fichero en orden inverso
 
 ### grep
 
@@ -380,7 +380,7 @@ Opciones:
 
 Ejemplo:
 
-- **`grep ”juan” alumnos.txt`** - Muestra las líneas del fichero alumnos.txt que contengan el texto juan, es decir, todos los alumnos que se denominan juan
+- **`grep "juan" alumnos.txt`** - Muestra las líneas del fichero alumnos.txt que contengan el texto juan, es decir, todos los alumnos que se denominan juan
 
 ### cut
 
@@ -399,7 +399,7 @@ Ejemplos:
 
 - **`cut -c 4-12 alumnos.txt`** - Muestra los caracteres del 4 al 12 de cada línea del fichero alumnos.txt (que será un fichero con campos de ancho fijo y entre los caracteres 4 y 12 tendremos por ejemplo el nombre del
 alumno)
-- **`cut -f 6 -d ”:” /etc/passwd`** - Muestra el sexto campo del fichero passwd que contiene la lista de usuarios del sistema. En este fichero el sexto campo es la carpeta personal del usuario y el carácter que delimita
+- **`cut -f 6 -d ":" /etc/passwd`** - Muestra el sexto campo del fichero passwd que contiene la lista de usuarios del sistema. En este fichero el sexto campo es la carpeta personal del usuario y el carácter que delimita
 cuando acaba un campo es **:**
 
 A todos estos comandos (cat, grep, cut, sort, tail, ...) se los denomina filtros porque reciben unos datos de entrada, los filtran o modifican y devuelven una salida que es esos datos modificados.
@@ -716,7 +716,7 @@ Permiten apagar el ordenador (shutdown -h, poweroff y halt), reiniciarlo (shutdo
 
 - **`poweroff`**: Apaga ahora el equipo
 - **`shutdown -h now`**: Apaga (-h) ahora el equipo
-- **`shutdown -r 10:15 “El servidor va a reiniciarse”`**: Reinicia (-r) el equipo a las 10:15 y muestra antes el mensaje
+- **`shutdown -r 10:15 "El servidor va a reiniciarse"`**: Reinicia (-r) el equipo a las 10:15 y muestra antes el mensaje
 
 ### su
 
@@ -787,7 +787,7 @@ Ejemplos:
 - **`ls /home/juan >> ficheros_de_juan`** - La lista de ficheros del directorio indicado la añade al fichero llamado ficheros_de_juan. Si ya existe el fichero añadirá la lista al final
 - **`sort alumnas.txt > alumnos_ordenado.txt`** - Copia el contenido del fichero alumnos.txt ordenado al fichero alumnos_ordenado.txt
 - **`ls -l | more`** - Muestra el contenido del directorio actual con detalles pantalla a pantalla 
-- **`grep “Alcoi” alumnos.txt | sort >> alumnos_ordenado.txt`** - Filtra en el fichero alumnos.txt las líneas que contengan la palabra Alcoi, envía esas líneas al comando sort que las ordena y el resultado (los alumnos que son de Alcoi, ordenados) se añade al fichero alumnos_ordenado.txt
+- **`grep "Alcoi" alumnos.txt | sort >> alumnos_ordenado.txt`** - Filtra en el fichero alumnos.txt las líneas que contengan la palabra Alcoi, envía esas líneas al comando sort que las ordena y el resultado (los alumnos que son de Alcoi, ordenados) se añade al fichero alumnos_ordenado.txt
 - **`touch /root/prueba 2> errores.txt`** - Crea dentro del directorio root un fichero vacío denominado prueba. Si hay un error en vez de mostrarlo por pantalla lo escribirá en el fichero errores.txt
 
 ## Shell Scripts
