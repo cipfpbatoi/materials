@@ -1,4 +1,5 @@
 # Implantación de Sistemas Operativos
+
 Apuntes de módulo **Implantación de Sistemas Operativos** (ISO) de 1º del CFGS **Administración de Sistemas Informáticos y Redes** (ASIR).
 
 ![Logo ISO](administrador_sistemas_operativos.png)
@@ -35,6 +36,9 @@ Los resultados de aprendizaje relacionados con el módulo son los siguientes:
 - Bloque 4: Administración de redes heterogéneas.
 
 ## Licencia
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Este obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional</a>.
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+<br />Este obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional</a>.
 
 Todos los apuntes de este módulo se comparten bajo esta licencia.

@@ -122,7 +122,7 @@ Ver la [página de comandos de Windows](ConsolaCMD.md).
 Ver la [página de comandos de Powershell](./PowerShell.md).
 
 ## Comandos de GNU/Linux
-Ver la [página de comandos de GNU/Linux](./linux_new.md).
+Ver la [página de comandos de GNU/Linux](./linux.md).
 
 ## Redireccionamiento de comandos
 
