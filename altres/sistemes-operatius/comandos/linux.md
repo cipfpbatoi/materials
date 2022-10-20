@@ -90,6 +90,7 @@ Comandos en **GNU/Linux**
     - [Dispositivos](#dispositivos)
     - [Operadores de redireccionamiento](#operadores-de-redireccionamiento)
   - [Shell Scripts](#shell-scripts)
+    - [Depuración de Shell scripts](#depuración-de-shell-scripts)
 
 ## Introducción
 
@@ -779,7 +780,7 @@ Pero es posible redireccionar la entrada y la salida para que se utilizo otro di
 - **\>**: redirecciona la salida al fichero o dispositivo indicado. Si se un fichero lo creará (y si ya existe lo truncará, es decir, eliminará su contenido)
 - **\>\>**: redirecciona la salida a un fichero y, si ya existe, lo añade al final
 - **2\>**: redirecciona la salida de error a un fichero o dispositivo
-- **|**: redirecciona la salida del comando a su izquierda a la entrada del comando a su derecha. Se utiliza habitualmente con los filtros (more, find y suerte).
+- **`|`**: redirecciona la salida del comando a su izquierda a la entrada del comando a su derecha. Se utiliza habitualmente con los filtros (more, find y suerte).
 
 Ejemplos:
 
@@ -801,6 +802,14 @@ Para ejecutar un script tenemos dos formas:
 - Escribir el nombre del shell a utilizar seguido del nombre del script (ejemplo: **bash haz_backup.sh**)
 - Dar permisos de ejecución al fichero. En ese caso se puede ejecutar directamente escribiendo su nombre (precedido de la ruta si no se encuentra en el PATH, por ejemplo: **./haz_backup.sh**)
 
+### Depuración de Shell scripts
+
+- `x`: **Traza**. Expande cada orden simple, e imprime por pantalla la orden con sus argumentos, y a continuación su salida.
+- `v`: **Verbose**. Imprime en pantalla cada elemento completo del script (estructura de control, …) y a continuación su salida.
+
+También es posible depurar sólo parte del script insertando en él los siguientes comando. 
+- **`set -x`**
+- **`set -v`**
 
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses/by-nc-sa/4.0/)
