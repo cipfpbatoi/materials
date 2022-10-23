@@ -1,12 +1,14 @@
 # Validación de formularios
 Índice:
-- [Introducción](#introducción)
-  - [Validación incorporada en HTML5](#validación-incorporada-en-html5)
-  - [Validación mediante Javascript](#validación-mediante-javascript)
-  - [Ejemplo](#ejemplo)
-- [Expresiones regulares](#expresiones-regulares)
-  - [Patrones](#patrones)
-  - [Métodos](#m%C3%A9todos)
+- [Validación de formularios](#validación-de-formularios)
+  - [Introducción](#introducción)
+    - [Validación del navegador incorporada en HTML5](#validación-del-navegador-incorporada-en-html5)
+    - [Validación mediante la API de validación de formularios](#validación-mediante-la-api-de-validación-de-formularios)
+      - [Ejemplo](#ejemplo)
+    - [yup](#yup)
+  - [Expresiones regulares](#expresiones-regulares)
+    - [Patrones](#patrones)
+    - [Métodos](#métodos)
 
 
 ## Introducción
@@ -27,7 +29,7 @@ La ventaja de la primera opción es que no tenemos que escribir código sino sim
 
 Además, al final de este tema, veremos una pequeña introducción a las expresiones regulares en Javascript.
 
-### Validación incorporada en HTML5
+### Validación del navegador incorporada en HTML5
 Funciona añadiendo atributos a los campos del formulario que queremos validar. Los más usados son:
 - **required**: indica que el campo es obligatorio. La valdación fallará si no hay nada escrito en el input. En el caso de un grupo de _radiobuttons_ se pone sobre cualquiera de ellos (o sobre todos) y obliga a que haya seleccionada una opción cualquiera del grupo
 - **pattern**: obliga a que el contenido del campo cumpla la expresión regular indicada. Por ejemplo para un código postal sería `pattern="^[0-9]{5}$"`
@@ -45,34 +47,36 @@ input:invalid {
 
 La validación se realiza al enviar el formulario y al encontrar un error se muestra, se detiene la validación del resto de campos y no se envía el formulario.
 
-### Validación mediante API de validación de formularios
+### Validación mediante la API de validación de formularios
 Mediante Javscript tenemos acceso a todos los campos del formulario por lo que podemos hacer la validación como queramos, pero es una tarea pesada, repetitiva y que provoca código spaguetti difícil de leer y mantener más adelante.
 
-Para hacerla más simple podemos usar la [API de validación de formularios](https://developer.mozilla.org/en-US/docs/Web/API/Constraint_validation) de HTML5 que nos da la ventaja de:
-- los requisitos de validación de cada campo están como atributos HTML de dicho campo por lo que son fáciles de ver
-- no tenemos que comprobar nosotros si el contenido del campo cumple o no esos requisitos sino que lo comprueba el navegador y nosotros mediante la API sólo preguntamos si se cumplen o no
-- automáticamente pone a los campos las clases _:valid_ o _:invalid_ por lo que no tenemos que añadirles clases para desacarlos
+Para hacerla más simple podemos usar la [API de validación de formularios](https://developer.mozilla.org/en-US/docs/Web/API/Constraint_validation) de HTML5 que permite que sea el navegador quien se encargue de comprobar la validez de cada campo pero las acciones (mostrar mensajes de error, no enviar el formulario, ...) las realizamos desde Javascript.
 
-Esta API nos proporciona estas propiedades y métodos:
+Esto nos da la ventaja de:
+- los requisitos de validación de cada campo están como atributos HTML de dicho campo por lo que son fáciles de ver
+- nos evitamos la mayor parte del código dedicada a comprobar si el contenido del campo es válido. Nosotros mediante la API sólo preguntamos si se cumplen o no y tomamos las medidas adecuadas
+- aprovechamos las pseudo-clases _:valid_ o _:invalid_ que el navegador pone automáticamente a los campos por lo que no tenemos que añadirles clases para desacarlos
+
+Las principales propiedades y métodos que nos proporciona esta API son:
 - **checkValidity()**: método que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
 - **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador
 - **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que tiene propiedades booleanas para saber qué requisito del campo es el que falla:
-  - **valueMissing**: indica si no se cumple la restricción _required_ (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
-  - **typeMismatch**: indica si el contenido del campo no cumple con su atributo _type_ (ej. type="email")
-  - **patternMismatch**: indica si no se cumple con el _pattern_ indicado
-  - **tooShort** / **tooLong**: indica si no se cumple el atributo _minlength_/_maxlength_
-  - **rangeUnderflow** / **rangeOverflow**: indica si no se cumple el atributo _min_ / _max_
-  - **stepMismatch**: indica si no se cumple el atributo _step_ del campo
-  - **customError**: indica al campo se le ha puesto un error personalizado con _setCustomValidity_
+  - **valueMissing**: indica si no se cumple el atributo **_required_** (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
+  - **typeMismatch**: indica si el contenido del campo no cumple con su atributo **_type_** (ej. type="email")
+  - **patternMismatch**: indica si no se cumple con el **_pattern_** indicado en su atributo
+  - **tooShort** / **tooLong**: indican si no se cumple el atributo **_minlength_** o **_maxlength_** respectivamente
+  - **rangeUnderflow** / **rangeOverflow**: indica si no se cumple el atributo **_min_** / **_max_**
+  - **stepMismatch**: indica si no se cumple el atributo **_step_** del campo
+  - **customError**: indica al campo se le ha puesto un error personalizado con **_setCustomValidity_**
   - **valid**: indica si es campo es válido
   -   - ...
-- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Nos permite personalizar el mensaje del navegador. Para quitar este error se hace `setCustomValidity('')`
+- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Para quitar este error se hace `setCustomValidity('')`
 
-EN la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp) podéis ver algún ejemplo básico de esto. También a continuación tenéis un ejemplo simple de cómo validar un campo que es obligatorio y que su tamaño debe estar entre 5 y 50 caracteres:
+En la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp) podéis ver algún ejemplo básico de esto. También a continuación tenéis un ejemplo simple del valor de las diferentes propiedades involucradas en la validación de un campo de texto que es obligatorio y cuyo tamaño debe estar entre 5 y 50 caracteres:
 
 <script async src="//jsfiddle.net/juansegura/vbdrxjsz/embed/"></script>
 
-Para validar un formulario nosotros pero usando esta API debemos añadir al FORM el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
+Para validar un formulario nosotros pero usando esta API debemos añadir al \<FORM> el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
 #### Ejemplo
 Un ejemplo sencillo de validación de un formulario podría ser:
@@ -80,18 +84,13 @@ Un ejemplo sencillo de validación de un formulario podría ser:
 
 ```html
 <form novalidate>
-  <p>
-    <label for="nombre">
-      <span>Por favor, introduzca su nombre (entre 5 y 50 caracteres): </span>
-      <input type="text" id="nombre" name="nombre" required minlength="5" maxlength="50">
-      <span class="error"></span>
-    </label>
-    <label for="mail">
-      <span>Por favor, introduzca una dirección de correo electrónico: </span>
-      <input type="email" id="mail" name="mail" required minlength="8">
-      <span class="error"></span>
-    </label>
-  </p>
+  <label for="nombre">Por favor, introduzca su nombre (entre 5 y 50 caracteres): </span>
+  <input type="text" id="nombre" name="nombre" required minlength="5" maxlength="50">
+  <span class="error"></label>
+  <br />
+  <label for="mail">Por favor, introduzca una dirección de correo electrónico: </label>
+  <input type="email" id="mail" name="mail" required minlength="8">
+  <span class="error"></span>
   <button type="submit">Enviar</button>
 </form>
 ```
@@ -222,7 +221,7 @@ console.log(str.replace(/am/gi, function(match) {
 })); // Imprime "I -AM- -AM-azed in -AM-erica"
 ```
 
-No vamos a profundizar más sobre las expresiones regulares. Es muy fácil encontrar por internet la que necesitemos (para validar un e-mail, un NIF, un CP, ...). Podemos aprender más en:
+No vamos a profundizar más sobre las expresiones regulares. Es muy fácil encontrar por internet la que necesitemos en cada caso (para validar un e-mail, un NIF, un CP, ...). Podemos aprender más en:
 * [w3schools](http://www.w3schools.com/jsref/jsref_obj_regexp.asp)
 * [regular-expressions.info](http://www.regular-expressions.info/)
 * [html5pattern](http://html5pattern.com/) atributo
