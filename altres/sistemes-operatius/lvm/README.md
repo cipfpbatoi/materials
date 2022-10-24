@@ -26,18 +26,18 @@ Algunas de las ventajas que proporciona LVM son:
 
 Como hemos dicho antes un LVM se compone de tres partes:
 
--   Volúmenes físicos (PV): Son los discos o las particiones del disco duro con sistema de archivos LVM.
--   Volúmenes lógicos (LV): es el equivalente a una partición en un sistema tradicional. El LV es visible como un dispositivo estándar de bloques, por lo cual puede contener un sistema de archivos
--   Grupos de volúmenes (VG): es como el disco duro virtual del cual creamos nuestros volúmenes lógicos (LV).
+- **Volúmenes físicos** (PV, _phisical volume_): Son los discos o las particiones del disco duro con sistema de archivos LVM.
+- **Volúmenes lógicos** (LV, _logical volume_): es el equivalente a una partición en un sistema tradicional. El LV es visible como un dispositivo estándar de bloques, por lo cual puede contener un sistema de archivos
+- **Grupos de volúmenes** (VG, _volume group_): es como el disco duro virtual del cual creamos nuestros volúmenes lógicos (LV).
 
-Hay muchas herramientas gráficas para gestionar LVM como system-config-lvm pero nosotros utilizaremos la consola de comandos o el propio Webmin que ya tenemos instalado.
+Hay muchas herramientas gráficas para gestionar LVM como **_system-config-lvm_** pero nosotros utilizaremos la consola de comandos o el propio Webmin que ya tenemos instalado.
 
-Ejemplo
+Ejemplo de uso
 -------
 
 ![lvm](lvm.png)
 
-En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si todavía no lo tenemos instalado.
+En primer lugar para utilizar lvm tenemos que instalar el paquete ***lvm2*** si todavía no lo tenemos instalado (sólo en distribuciones antiguas).
 
 A continuación crearemos y configuraremos nuestros volúmenes. Primeramente crearemos los volúmenes físicos de las particiones en que vamos a utilizar LVM. Por ejemplo para utilizar la partición sda3 haremos:
 
@@ -51,13 +51,13 @@ Ahora creamos el grupo de volúmenes que contendrá nuestros volúmenes lógicos
 
     vgcreate volgroup_01 /dev/sda3 /dev/sda4 /dev/sda5
 
-Con el comando vgscan podemos ver los grupos creados y con pvscan los volúmenes físicos.
+Con el comando **`vgscan`** podemos ver los grupos creados y con pvscan los volúmenes físicos.
 
 Por último sólo queda crear los volúmenes lógicos que utilizaremos. Por ejemplo crearemos un llamado volumen\_01 de 2 GB:
 
     lvcreate -L2G -n volumen_01 volgroup_01
 
-Con lvscan podemos ver los volúmenes lógicos creados.
+Con **`lvscan`** podemos ver los volúmenes lógicos creados.
 
 Ahora ya podemos darle formato y montarlo como cualquier otra partición:
 
@@ -78,8 +78,14 @@ Como por ejemplo tenemos más espacio en el grupo podemos aumentar los volúmene
 
     lvextend -L +3G /dev/volgroup_01/volumen\_01
 
-Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir en cuenta porque esta operación es peligrosa y podríamos perder los datos:
+Por último tenemos que ampliar nuestro sistema de ficheros ext4 del volumen. Tenemos que ir con cuidado porque esta operación es peligrosa y podríamos perder los datos:
 
     resize2fs /dev/volgroup_01/volumen_01 5G
 
-Ya tendríamos 5 GB en nuestro volumen en cuenta de las 2 iniciales.
+Ya tendríamos 5 GB en nuestro volumen en lugar de las 2 iniciales.
+
+Por ejemplo, queremos ampliar en 5 GB la partición del sistema operativo (llamada _ubuntu-lv_ que está en el volumen _ubuntu-vg_). Supondremos que tennemos espacio suficiente sin usar en el volumen. Los comandos a ejecutar serían:
+```bash
+lvextend -L +5G /dev/ubuntu-vg/ubuntu-lv
+resize2fs /dev/ubuntu-vg/ubuntu-lv
+```
