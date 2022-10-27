@@ -59,7 +59,7 @@ Esto nos da la ventaja de:
 
 Las principales propiedades y métodos que nos proporciona esta API son:
 - **checkValidity()**: método que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
-- **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador
+- **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador. Si es válido esta propiedad es una cadena vacía
 - **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que tiene propiedades booleanas para saber qué requisito del campo es el que falla:
   - **valueMissing**: indica si no se cumple el atributo **_required_** (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
   - **typeMismatch**: indica si el contenido del campo no cumple con su atributo **_type_** (ej. type="email")
@@ -126,6 +126,46 @@ input:invalid {
 }
 ```
 
+Estamos usando 
+- `validationMessage` para mostrar el posible error de cada campo, o quitar el error cuando el campo sea válido
+- `checkValidity()` para no enviar/procesar el formulario si contiene errores
+
+Si no nos gusta el mensaje del navegador y queremos personalizarlo podemos hacer una función que reciba un \<input> y usando su propiedad `validity` devuelva un mensaje en función del error detectado:
+```javascript
+function customErrorValidationMessage(input) {
+  if (input.checkValidity()) {
+    return ''
+  }
+  if (input.validity.valueMissing) {
+    return 'Este campo es obligatorio'
+  }
+  if (input.validity.tooShort) {
+    return `Debe tener al menos ${input.minLength} caracteres` 
+  }
+  // Y seguiremos comprobando cada atributo que hayamos usado en el HTML
+  return 'Error en el campo'   // por si se nos ha olvidado comprobar algo
+}
+```
+
+Y ahora en vez de `nombreError.textContent = nombre.validationMessage` haremos `nombreError.textContent = customErrorValidationMessage(nombre)`.
+
+Si tenemos que validar algo que no puede hacerse mediante atributos HTML (por ejemplo si el nombre de usuario ya está en uso) deberemos hacer la validación "a mano" y en caso de no ser válido ponerle un error con `.setCustomValidation()`, pero debemos recordar quitar el error si todo es correcto o el formulario siempre será inválido. Modificando el ejemplo:
+```javascript
+const nombre = document.getElementById('nombre');
+const nombreError = document.querySelector('#nombre + span.error');
+
+if (nombreEnUso(nombre)) {
+  nombre.setCustomValidation('Ese nombre de usuario ya está en uso')
+} else {
+  nombre.setCustomValidation('')  // Se quita el error personalizado
+}
+form.addEventListener('submit', (event) => {
+  if(!form.checkValidity()) {
+    ...
+  }
+})
+```
+
 ### yup
 Existen múltiples librerías que facilitan enormenmente el tedioso trabajo de validar un formulario. Un ejemplo es [yup](https://www.npmjs.com/package/yup).
 
@@ -144,7 +184,7 @@ La potencia de las expresiones regulares es que podemos usar patrones para const
   * `[^abc]`: cualquiera excepto los indicados
   * `[a-z]`: cualquier minúscula (el carácter '-' indica el rango entre 'a' y 'z', incluidas)
   * `[a-zA-Z]`: cualquier letra
-* **( | )** (_pipe_): debe coincidir con una de las opciones indocadas:
+* `( | )` (_pipe_): debe coincidir con una de las opciones indocadas:
   * `(x|y)`: la letra x o la y (sería equivalente a `[xy]`
   * `(http|https)`: cualquiera de las 2 palabras
 * **Metacaracteres**:
