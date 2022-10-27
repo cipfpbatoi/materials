@@ -35,7 +35,8 @@ deb http://mirrord.cipfpbatoi.lan/debian-security bullseye-security main contrib
 
 ## Mirror Ubuntu 22.04
 
-[http://mirroru.cipfpbatoi.lan](http://mirroru.cipfpbatoi.lan)
+[http://mirroru.cipfpbatoi.lan/ubuntu](http://mirroru.cipfpbatoi.lan/ubuntu)
+
 
 El mirror d'Ubuntu conté les seccions:
 
@@ -62,3 +63,19 @@ Si anem a fer la instal·lació d'un Ubuntu amb entorn gràfic farem el següent
   * dpkg --print-foreign-architectures
 * Una vegada finalitzada podem modificar el [sources.list](./ubuntu22.04/sources.list).
 
+
+```bash
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy main restricted
+
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates main restricted
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy universe
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates universe
+
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-updates multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-backports main restricted universe multiverse
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security main restricted
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security universe
+deb http://mirroru.cipfpbatoi.lan/ubuntu jammy-security multiverse
+
+``` 
