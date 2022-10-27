@@ -12,7 +12,7 @@
 
 ## Conceptos clave
 Los conceptos más importantes de esta unidad son:
-- Rendimiento y monitprización
+- Rendimiento y monitorización
 
 ## Conocimiento previo
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
@@ -24,6 +24,7 @@ Los contenidos de esta unidad son los siguientes:
 1. [Supervisión y monitorización del sistema](introd.md)
 2. [Supervisión del sistema en Windows](supervision-win.md)
 3. [Auditoría del sistema en Windows](auditoria-win.md)
+4. [Registros de eventos en Windows](logs-win.md)
 
 ## Caso práctico
 

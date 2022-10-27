@@ -1,5 +1,5 @@
-# Supervisión del sistema
-- [Supervisión del sistema](#supervisión-del-sistema)
+# Supervisión y monitorización del sistema
+- [Supervisión y monitorización del sistema](#supervisión-y-monitorización-del-sistema)
   - [Introducción](#introducción)
   - [Tareas del administrador del sistema](#tareas-del-administrador-del-sistema)
   - [Conceptos relacionados con la supervisión](#conceptos-relacionados-con-la-supervisión)
@@ -40,8 +40,9 @@ Algunas definiciones de conceptos relacionados con el rendimiento del sistema so
 - **Cuello de botella**: situación que se da cuando un dispositivo del sistema informático recibe muchas peticiones y está muy saturado de trabajo, mientras que el resto de dispositivos están ociosos esperando su respuesta. Se trata de encontrar el dispositivo en el que se encuentra el cuello de botella porque mejorando su rendimiento mejorará el de todo el sistema.
 
 ¿Cuándo debemos realizar una evaluación del rendimiento? Puede ser útil evaluar el rendimiento de un equipo cuando:
-- se fabrica una nueva máquina
 - se desea diseñar un sistema informático nuevo
 - se desea seleccionar un sistema informático entre varias alternativas
 - se desea planificar la capacidad de un sistema informático
 - se desea ajustar un sistema informático (operaciones de mantenimiento)
+- se va a poner en producción un nuevo equipo
+- hay problemas con un equipo o no ofrece un buen rendimiento
