@@ -1,7 +1,7 @@
 # Registros de un sistema Windows
 - [Registros de un sistema Windows](#registros-de-un-sistema-windows)
   - [Introducción](#introducción)
-  - [El Registro de Windows](#el-registro-de-windows)
+  - [El Visor de eventos](#el-visor-de-eventos)
   - [Propiedades de un evento](#propiedades-de-un-evento)
     - [Propiedades del archivo de registro](#propiedades-del-archivo-de-registro)
 
@@ -10,8 +10,8 @@ Continuamente se producen eventos en el sistema, algunos normales (como un inici
 
 El sistema operativo o una aplicación guarda en un fichero de _log_ un evento mientras ocurre para su examen posterior. Es un componente importante de cualquier sistema operativo y que tenemos que tener controlado, por ejemplo respecto a posibles ataques de seguridad, son la prueba que hemos sido atacados.
 
-## El Registro de Windows
-El principal registro que tenemos es el **Registro de Windows** que tiene 4 registros principales sobre eventos:
+## El Visor de eventos
+El principal registro que tenemos es el **Visor de eventos** que tiene 4 registros principales sobre eventos:
 
 ![Visor de eventos](./media/visor-eventos.png)
 
