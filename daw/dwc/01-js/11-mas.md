@@ -1,26 +1,16 @@
 # Más cosas a aprender en Javascript
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [Más cosas a aprender en Javascript](#m%C3%A1s-cosas-a-aprender-en-javascript)
+- [Más cosas a aprender en Javascript](#más-cosas-a-aprender-en-javascript)
+  - [Introducción](#introducción)
   - [WebComponents](#webcomponents)
   - [WebSockets](#websockets)
   - [WebWorkers](#webworkers)
   - [Typescript](#typescript)
-- [y jQuery](#jquery)
+  - [jQuery](#jquery)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## Introducción
+Hace unos años Javscript era considerado un lenguaje de programación de segunda categoría, que se usaba para hacer molestas páginas web. Hoy en día el navegador es la aplicación más importante de un equipo y con él, además de navegar, se ejecutan todo tipo de aplicaciones. Además HTML5 y JavaScript han pasado de estar solo en nuestro navegador a ser un pilar básico de las plataformas móviles, de aplicaciones de escritorio e incluso JavaScript lo encontramos en servidores (con _Node.js_) o como lenguaje estándar de algunos entornos de escritorio (como _GNOME_ para Linux).
 
-Hace unos años Javscript era considerado un lenguaje de programación de segunda categoría, que se usaba para hacer molestas páginas web. Hoy en día el navegador es la aplicación más importante de un equipo y con él, además de navegar, se ejecutan todo tipo de aplicaciones. Además HTML5 y JavaScript han pasado de estar solo en nuestro navegador a ser un pilar básico de las plataformas móviles, de aplicaciones de escritorio e incluso JavaScript lo encontramos en servidores (con Node.js) o como lenguaje estándar de algunos entornos de escritorio (como GNOME para Linux).
-
-Por ello HTML5 y Javascript siguen su contínuo crecimiento... y su contínua evolución que les permite hacer cada vez más cosas. En esta página vamos a hablar muy brevemente de algunas de las características que están incorporando:
-* [Web Components](#WebComponents)
-* [Web Sockets](#WebSockets)
-* [Web Workers](#WebWorkers)
-* [Typescript](#Typescript)
-* ...
+Por ello HTML5 y Javascript siguen su contínuo crecimiento... y su contínua evolución que les permite hacer cada vez más cosas. En esta página vamos a hablar muy brevemente de algunas de las características que están incorporando.
 
 ## WebComponents
 Son distintas tecnologías que podemos usar (todas o alguna de ellas) para crear componentes reutilizables para nuestras páginas HTML. Las tecnologías que hay tras los Web Components son:
@@ -166,7 +156,7 @@ Saber más:
 * [Wikipedia - Typescript](https://en.wikipedia.org/wiki/TypeScript)
 * [Typescriptlang](https://www.typescriptlang.org/)
 
-# jQuery
+## jQuery
 Se trata de una biblioteca que nos facilita enormemente el trabajo con el DOM ya que tiene "atajos" para muchas instrucciones, por ejemplo para poner 'Hola mundo' como contenido de un elemento cuya _id_ es `mensaje`:
 ```javascript
 // Código con Javascript sólo
@@ -180,10 +170,10 @@ Otra ventaja de jQuery es que permite trabajar con conjuntos de elementos sin te
 ```javascript
 // Código con Javascript sólo
 Array.from(document.querySelectorAll('p.importante'))
-.forEach(parrafo => parrafo.addEventListener('click', () => alert('Párrafo pinchado))
+.forEach(parrafo => parrafo.addEventListener('click', () => alert('Párrafo pinchado'))
 
 // Código con jQuery
-$('p.importante').click(() => alert('Párrafo pinchado))
+$('p.importante').click(() => alert('Párrafo pinchado'))
 ```
 
 Como vemos, básicamente nos permite hacer lo mismo pero escribiendo mucho menos código. También incluye funciones para cosas que en Javascript requieren varias líneas de código como animaciones o Ajax. Por ejemplo una pertición para mostrar en una tabla con id _posts_ todos los posts del servidor _jsonplaceholder_ tendremos que hacer:
@@ -207,21 +197,21 @@ function getPosts() {   // Función que pide los datos al servidor
   })
 }
 
-function renderPosts()    // Función que los muestra en la página
-      getPosts(idUser)
-        .then((posts) => {
-          document.querySelector('#posts tbody').innerHTML = ''; // borramos su contenido
-          posts.forEach((post) => {
-            const newPost = document.createElement('tr');
-            newPost.innerHTML = `
-                <td>${post.userId}</td>
-                <td>${post.id}</td>
-                <td>${post.title}</td>
-                <td>${post.body}</td>`;
-            document.querySelector('#posts tbody').appendChild(newPost);
-          })
-        })
-        .catch((error) => console.error(error))
+function renderPosts() {   // Función que los muestra en la página
+  getPosts(idUser)
+    .then((posts) => {
+      document.querySelector('#posts tbody').innerHTML = ''; // borramos su contenido
+      posts.forEach((post) => {
+        const newPost = document.createElement('tr');
+        newPost.innerHTML = `
+          <td>${post.userId}</td>
+          <td>${post.id}</td>
+          <td>${post.title}</td>
+          <td>${post.body}</td>`;
+        document.querySelector('#posts tbody').appendChild(newPost);
+      })
+    })
+    .catch((error) => console.error(error))
 }
 ```
 
@@ -230,21 +220,21 @@ Usando jQuery es mucho más sencillo. En primer lugar no hay que hacer la funci�
 // Código con jquery
 const SERVER = 'https://jsonplaceholder.typicode.com';
 
-function renderPosts()    // Función que los muestra en la página
-      $.get(SERVER + '/posts')
-        .done((posts) => {
-          $('#posts tbody').text('');    // borramos el contenido de la tabla
-          posts.forEach(post => $('#posts tbody').append(
-              `<tr>
-                <td>${post.userId}</td>
-                <td>${post.id}</td>
-                <td>${post.title}</td>
-                <td>${post.body}</td>
-              </tr>`
-          ))
-        })
-        .fail((error) => console.error(error))
+function renderPosts() {   // Función que los muestra en la página
+  $.get(SERVER + '/posts')
+    .done((posts) => {
+      $('#posts tbody').text('');    // borramos el contenido de la tabla
+      posts.forEach(post => $('#posts tbody').append(
+        `<tr>
+          <td>${post.userId}</td>
+          <td>${post.id}</td>
+          <td>${post.title}</td>
+          <td>${post.body}</td>
+        </tr>`
+      ))
+    })
+    .fail((error) => console.error(error))
 }
 ```
 
-Encontraréis infinidad de tutoriales por Internet donde aprender jQuery, por ejemplo unos vídeos de [Didacticode](https://didacticode.com/) que podéis encontrar en [https://didacticode.com/curso/curso-de-jquery/](https://didacticode.com/curso/curso-de-jquery/) (tienes que registraros para tener acceso a muchos cursos de Javascript y "derivados") o directamente en su [canal de Youtube](https://www.youtube.com/channel/UCPbFiM-HA4lwJH12JXdXxDA).
+Encontraréis infinidad de tutoriales por Internet donde aprender _jQuery_, por ejemplo unos vídeos de [Didacticode](https://didacticode.com/) que podéis encontrar en [https://didacticode.com/curso/curso-de-jquery/](https://didacticode.com/curso/curso-de-jquery/) (tenéis que registraros para tener acceso a muchos cursos de Javascript y "derivados" pero vale la pena) o directamente en su [canal de Youtube](https://www.youtube.com/channel/UCPbFiM-HA4lwJH12JXdXxDA).

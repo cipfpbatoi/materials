@@ -70,43 +70,41 @@ Podemos obtener más información de esta API [MDN web docs](https://developer.m
 ## Almacenamiento en el cliente: API Storage
 Antes de HTML5 la única manera que tenían los programadores de guardar algo en el navegador del cliente (como sus preferencias, su idioma predeterminado para nuestra web, etc) era utilizando _cookies_. Las cookies tienen muchas limitaciones y es engorroso trabajar con ellas. 
 
-HTML5 incorpora la API de Local Storage para subsanar esto. Además existen otros métodos de almacenamiento en el cliente más avanzados como [IndexedDB](https://developer.mozilla.org/es/docs/Web/API/IndexedDB_API) (es un estándar del W3C).
+HTML5 incorpora la [API de Storage](https://developer.mozilla.org/es/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) para subsanar esto. Además existen otros métodos de almacenamiento en el cliente más avanzados como [IndexedDB](https://developer.mozilla.org/es/docs/Web/API/IndexedDB_API) (es un estándar del W3C pero aún con poco soporte entre los navegadores).
 
-El funcionamiento de la API Storage es muy sencillo: si el navegador la soporta dentro del objeto _window_ tendremos los objetos **localStorage** y **sessionStorage** donde podremos almacenar información en el espacio de almacenamiento local (5 MB o 10 MB por sitio web según el navegador, que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en localStorage nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en sessionStorage se elimina automáticamente al cerrar la sesión el usuario.
+El funcionamiento de la API Storage es muy sencillo: dentro del objeto _window_ tendremos los objetos **localStorage** y **sessionStorage** donde podremos almacenar información en el espacio de almacenamiento local (5 o 10 MB por sitio web según el navegador, que es mucho más de lo que teníamos con las cookies). La principal diferencia entre ellos es que la información almacenada en _localStorage_ nunca expira, permanece allí hasta que la borremos (nosotros o el usuario) mientras que la almacenada en _sessionStorage_ se elimina automáticamente al cerrar la sesión el usuario.
 
-Mediante Javascript puedo saber si el navegador soporta o no esta API simplemente mirando su `typeof`:
-
+Sólo los navegadores muy antiguos (Internet Explorer 7 y anteriores) no soportan esta característica. Puedo saber si el navegador soporta o no esta API simplemente mirando su `typeof`:
 ```javascript
-if (typeof(Storage) === "undefined")    // NO está soportado
+if (typeof(Storage) === 'undefined')    // NO está soportado
 ```
 
-Tanto localStorage como sessionStorage son como un objeto global al que tengo acceso desde el código. Lo que puedo hacer con ellos es:
-* Guardar un dato: `localStorage.setItem("dato", "valor")` o también `localStorage.dato = "valor"`
-* Recuperar un dato: `let miDato=localStorage.getItem("dato")` o también `let miDato = localStorage.dato`
-* Borrar datos: `localStorage.removeItem("dato")` para borrar 'dato'. Si quiero borrar TODO lo que tengo `localStorage.clear()`
-* Guardar un objetos (o arrays): lo guardamos en JSON, `localStorage.setItem("dato", JSON.stringify("objeto"))`
-* Recuperar el objeto: ` ler miObjeto = JSON.parse(localStorage.getItem("dato"))`
-* Cómo saber cuántos datos tenemos: `localStorage.length`
+Tanto _localStorage_ como _sessionStorage_ son como un objeto global al que tengo acceso desde el código. Lo que puedo hacer con ellos es:
+* **Guardar** un dato: `localStorage.setItem('dato', 'valor')` o también `localStorage.dato = 'valor'`
+* **Recuperar** un dato: `let miDato=localStorage.getItem('dato')` o también `let miDato = localStorage.dato`
+* **Borrar** datos: `localStorage.removeItem('dato')` para borrar 'dato'. Si quiero borrar TODO lo que tengo `localStorage.clear()`
+* Saber **cuántos** datos tenemos: `localStorage.length`
 
-Cada vez que cambia la información que tenemos en nuestro localStorage se produce el evento **storage**. Si, por ejemplo, queremos que una ventana actualice su información si otra cambia algún dato del storage haremos:
-
+Sólo podemos guardar objetos primitivos (cadenas, números, ...) por lo que si queremos guardar un objeto o un array hay que convertirlo a una cadena JSON con `localStorage.setItem('dato', JSON.stringify('objeto'))`. Para recuperar el objeto haremos `let miObjeto = JSON.parse(localStorage.getItem('dato'))`.
+ 
+Cada vez que cambia la información que tenemos en nuestro localStorage se produce un evento **storage**. Si, por ejemplo, queremos que una ventana actualice su información si otra cambia algún dato del storage haremos:
 ```javascript
 window.addEventListener("storage", actualizaDatos);
 ```
 
 y la función 'actualizaDatos' podrá leer de nuevo lo que hay y actuar en consecuencia.
 
-> EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. GUarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStorage? ¿Y las de sessionStorage?
+> EJERCICIO: comprueba qué tienes almacenado en el localStorage y el sessionStorage de tu navegador. Guarda y recupera algunas variables. Luego cierra el navegador y vuelve a abrir la página. ¿Están las variables guardadas en localStorage? ¿Y las de sessionStorage?
 
 Puedes ver un ejemplo [en este vídeo](https://www.youtube.com/watch?v=ASQQUSFtr8g&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=65) de cómo almacenar en el _Storage_ datos del usuario.
 
 ### A tener en cuenta
 _localStorage_, _sessionStorage_ y _cookies_ almacenan información en un navegador específico del cliente, y por tanto:
-* No podemos asegurar que permanecen ahí
+* No podemos asegurar que permanece ahí
 * Puede ser borrada/manipulada
-* Puede ser leída, por lo que no adecuada para almacenar información sensible pero sí para preferencias del usuario, marcadores de juegos, etc
+* Puede ser leída, por lo que NO es adecuada para almacenar información sensible pero sí para preferencias del usuario, marcadores de juegos, etc
 
-Podríamos usar localStorage para almacenar localmente los datos con los que trabaja una aplicación web. Así conseguiríamos minimizan los accesos al servidor y que la velocidad de la aplicación será mucho mayor al trabajar con datos locales. Pero periódicamente debemos sincronizar la información con el servidor.
+Podríamos usar _localStorage_ para almacenar localmente los datos con los que trabaja una aplicación web. Así conseguiríamos minimizan los accesos al servidor y que la velocidad de la aplicación sea mucho mayor al trabajar con datos locales. Pero periódicamente debemos sincronizar la información con el servidor.
 
 ### Storage vs cookies
 Ventajas de localStorage:
@@ -114,8 +112,8 @@ Ventajas de localStorage:
 * Todas las cookies del dominio se envían al servidor con cada petición al mismo lo que aumenta el tráfico innecesariamente
 
 Ventajas de las cookies:
-* Soportadas por navegadores antiguos
-* Las cookies ofrecen algo de protección frente a XSS (Cross-Site Scripting)/Script injection
+* Soportadas por navegadores muy antiguos
+* Las cookies ofrecen algo de protección frente a _XSS_ (_Cross-Site Scripting_) y _Script injection_
 
 ### Cookies
 Son pequeños ficheros de texto y tienen las siguientes limitaciones:
@@ -123,14 +121,14 @@ Son pequeños ficheros de texto y tienen las siguientes limitaciones:
 * Máximo 4 KB por cookie, si nos pasamos se truncará
 * Máximo 20 cookies por dominio
 
-Cada cookie puede almacenar los siguientes datos:
+Cada cookie almacena los siguientes datos:
 * Nombre de la cookie (obligatorio)
 * Valor de la misma
-* expires: timestamp en que se borrará (si no pone nada se borra al salir del dominio)
-* max-age: en lugar de _expires_ podemos indicar aquí los segundos que durará la cookie antes de expirar
-* path: ruta desde dónde es accesible (/: todo el dominio, /xxx: esa carpeta y subcarpetas). Si no se pone nada sólo lo será desde la carpeta actual
-* domain: dominio desde el que es accesible. Si no ponemos nada lo será desde este dominio y sus subdominios
-* secure: si aparece indica que sólo se enviará esta cookie con https
+* _expires_: timestamp en que se borrará (si no pone nada se borra al salir del dominio)
+* _max-age_: en lugar de _expires_ podemos indicar aquí los segundos que durará la cookie antes de expirar
+* _path_: ruta desde dónde es accesible (/: todo el dominio, /xxx: esa carpeta y subcarpetas). Si no se pone nada sólo lo será desde la carpeta actual
+* _domain_: dominio desde el que es accesible. Si no ponemos nada lo será desde este dominio y sus subdominios
+* _secure_: si aparece indica que sólo se enviará esta cookie con https
 
 Un ejemplo de cookie sería:
 
@@ -139,15 +137,16 @@ username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC;
 ```
 
 Se puede acceder a las cookies desde **document.cookie** que es una cadena con las cookies de nuestras páginas. Para trabajar con ellas conviene que creemos funciones para guardar, leer o borrar cookies, por ejemplo:
+
 * Crear una nueva cookie
 
 ```javascript
 function setCookie(cname, cvalue, cexpires, cpath, cdomain, csecure) {
-  document.cookie = cname + "=" + cvalue + 
-    (cexpires?";expires="+cexpires.toUTCString():"") + 
-    (cpath?";path="+cpath:"") + 
-    (cdomain?";domain="+cdomain:"") + 
-    (csecure?";secure":"")
+  document.cookie = cname + '=' + cvalue + 
+    (cexpires?';expires='+cexpires.toUTCString():'') + 
+    (cpath?';path='+cpath:'') + 
+    (cdomain?';domain='+cdomain:'') + 
+    (csecure?';secure':'')
 }
 ```
 
@@ -155,20 +154,20 @@ function setCookie(cname, cvalue, cexpires, cpath, cdomain, csecure) {
 
 ```javascript
 function getCookie(cname) {
-    if(document.cookie.length>0){
-        start = document.cookie.indexOf(cname + "=")
-        if (start!=-1) {   // Existe la cookie, busquemos dónde acaba su valor
+    if(document.cookie.length > 0){
+        start = document.cookie.indexOf(cname + '=')
+        if (start != -1) {   // Existe la cookie, busquemos dónde acaba su valor
             //El inicio de la cookie, el nombre de la cookie mas les simbolo '='
             start = start + nombre.length + 1
             //Buscamos el final de la cookie (es el simbolo ';')
-            end = document.cookie.indexOf(";",start + cname.length + 1)
+            end = document.cookie.indexOf(';', start + cname.length + 1)
             if (end === -1) {   // si no encuentra el ; es que es la última cookie
-                end=document.cookie.length;
+                end = document.cookie.length;
             }
-            return document.cookie.substring(start + cname.length + 1, end))
+            return document.cookie.substring(start + cname.length + 1, end)
         }
     }
-    return ""   // Si estamos aquí es que no hemos encontrado la cookie
+    return ''   // Si estamos aquí es que no hemos encontrado la cookie
 }
 ```
 
@@ -176,7 +175,7 @@ function getCookie(cname) {
 
 ```javascript
 function delCookie(cname) {
-    return document.cookie = cname + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    return document.cookie = cname + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 }
 ```
 
@@ -201,16 +200,16 @@ navigator.geolocation.getCurrentPosition(
   (error) => {
     switch(error.code) {
       case error.PERMISSION_DENIED: // El usuario no autoriza al navegador a acceder a la localización
-        msg = "El usuario ha denegado la petición de geolocalización"
+        msg = 'El usuario ha denegado la petición de geolocalización'
         break
       case error.POSITION_UNAVAILABLE: // No se puede obtener la localización
-        msg = "La información de localización no está disponible."
+        msg = 'La información de localización no está disponible.'
         break
       case error.TIMEOUT: // Ha expirado el tiempo para obtener la localización
-        msg = "Ha expirado el tiempo para obtener la localización"
+        msg = 'Ha expirado el tiempo para obtener la localización'
         break
       case error.UNKNOWN_ERROR:
-        msg = "Se ha producido un error desconocido."
+        msg = 'Se ha producido un error desconocido.'
         break
     }
     muestra_error(msg)
@@ -258,7 +257,7 @@ Una vez hecho para incluir un mapa en nuestra web debemos cargar la librería pa
   src="https://maps.googleapis.com/maps/api/js?key=ESCRIBE_AQUI_TU_API_KEY&callback=initMap">
 </script>
 ```
-(el parámetro callback será el encargado de llamar a la función initMap() que inicie el mapa)
+(el parámetro _callback_ será el encargado de llamar a la función _initMap()_ que inicie el mapa)
 
 Ahora incluir un mapa es tán sencillo como crear un nuevo objeto de tipo _Map_ que recibe el elemento DOM donde se pintará (un div normalmente) y un objeto con los parámetros del mapa (como mínimo su centro y el zoom):
 
@@ -266,7 +265,7 @@ Ahora incluir un mapa es tán sencillo como crear un nuevo objeto de tipo _Map_ 
 let map
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 38.6909085, lng: -0.4963000000000193},
+    center: { lat: 38.6909085, lng: -0.4963000000000193 },
     zoom: 12
   })
 }
@@ -276,7 +275,7 @@ Por su parte añadir un marcador es igual de simple. Creamos una instancia de la
 
 ```javascript
 let marker = new google.maps.Marker({
-  position: {lat: 38.6909085, lng: -0.4963000000000193},
+  position: { lat: 38.6909085, lng: -0.4963000000000193 },
   map: map,
   title: 'CIP FP Batoi'
 })
