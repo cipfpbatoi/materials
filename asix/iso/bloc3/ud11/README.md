@@ -114,11 +114,11 @@ Una de las tareas más importantes a la hora de planificar la instalación del s
 
 En GNU/Linux siempre usaremos una partición para swap pero, además de ella, podemos usar una única partición para datos y sistema o usar varias particiones. En este caso algunos de los directorios que podríamos montar en particiones diferentes son:
 
--   /home: es donde se crean las carpetas personales de los usuarios. Siempre es recomendable montarlo en una partición diferente.
--   /srv o similar: es donde se recomienda que se guarden los datos compartidos en el servidor. También debería estar en su propia partición
--   /var: en este directorio se guarda información que puede crecer rápidamente como los logs del sistema, los paquetes que se descargan, etc.
--   /usr: aquí es donde se instala la mayoría del software
--   /tmp: es donde se guardan los ficheros temporales. Aquí se crean y eliminan ficheros con mucha frecuencia
+-   **/home**: es donde se crean las carpetas personales de los usuarios. Siempre es recomendable montarlo en una partición diferente.
+-   **/srv** o similar: es donde se recomienda que se guarden los datos compartidos en el servidor. También debería estar en su propia partición
+-   **/var**: en este directorio se guarda información que puede crecer rápidamente como los logs del sistema, los paquetes que se descargan, etc.
+-   **/usr**: aquí es donde se instala la mayoría del software
+-   **/tmp**: es donde se guardan los ficheros temporales. Aquí se crean y eliminan ficheros con mucha frecuencia
 
 La ventaja de separar muchos directorios en su propia partición es que limitamos los problemas que pudieran haber a esa partición (si /var está en su propia partición y se llena el sistema no se colapsa) pero es difícil calcular el espacio que cada una necesitará en el futuro por lo que podríamos encontrarnos con varias particiones con mucho espacio de sobra mientras alguna se llena. Este inconveniente se puede solucionar usando particiones LVM.
 
@@ -176,12 +176,12 @@ Además, si tenemos el nombre antiguo en el fichero **/etc/hosts** lo tendríamo
 
 ### Gestionar usuarios y grupos
 
-Comandos para crear usuarios useradd y adduser. La diferencia es que adduser nos preguntará la información que necesita y a useradd se la tenemos que proporcionar como parámetros del comando. Otros comandos útiles son:
+Comandos para crear usuarios **useradd** y **adduser**. La diferencia es que **adduser** nos preguntará la información que necesita y a **useradd** se la tenemos que proporcionar como parámetros del comando. Otros comandos útiles son:
 
--   Para cambiar una contraseña: passwd usuario
--   Comandos para crear grupos: groupadd y addgroup
--   Para añadir un usuario a un grupo: adduser usuario grupo
--   Para modificar un usuario usermod (con los mismos parámetros que useradd).
+-   Para cambiar una contraseña: **passwd usuario**
+-   Comandos para crear grupos: **groupadd** y **addgroup**
+-   Para añadir un usuario a un grupo: **adduser usuario grupo**
+-   Para modificar un usuario **usermod** (con los mismos parámetros que useradd).
 
 Toda la gestión de usuarios, grupos, etc se gestiona con ficheros de texto. Los más importantes son:
 
@@ -201,7 +201,7 @@ Para ver los datos de un usuario: id usuario
 
 ![id](imgs/id.png "id")
 
-Para ver sólo los grupos a que pertenece un usuario: groups usuario
+Para ver sólo los grupos a que pertenece un usuario: **groups usuario**
 
 Utilidades
 ==========
@@ -211,7 +211,7 @@ Documento sobre diferente [utilidades](./utilidades.md) para realizar copias de 
 Servicios
 =========
 
-Con el sistema de inicio SysV el comando para iniciar o parar servicios era **service**:
+Con el sistema de inicio **SysV** el comando para iniciar o parar servicios era **service**:
 
     service networking restart
 
@@ -221,15 +221,15 @@ Aunque también se podían parar, arrancar, reiniciar, ... los servicios utiliza
 
 Ahora, con el sistema de inicio **systemd**, el comando es **systemctl** y su funcionamiento es bastante similar.. Las principales acciones son:
 
--   status: muestra la inormación del servicio indicado (entre otros si está o no activo)
--   stop: para el servicio
--   start: inicia el servicio
--   restart: para el servicio y vuelve a iniciarlo
--   reload: vuelve a cargar la configuración del servicio (si hemos hecho cambios)
--   enable: para que el servicio arranco automáticamente al iniciar el sistema
--   disable: para que no arranco automáticamente (si volamos lo tendremos que arrancar manualmente)
--   mask: enmascara un servicio de forma que no se pueda iniciar ni siquiera manualmente. Para poder mascarar un servicio tiene que estar parado
--   unmask: desenmarcara un servicio para que se pueda iniciar manualmente (con start) o automàticamente (con enable)
+-   **status**: muestra la información del servicio indicado (entre otros si está o no activo)
+-   **stop**: para el servicio
+-   **start**: inicia el servicio
+-   **restart**: para el servicio y vuelve a iniciarlo
+-   **reload**: vuelve a cargar la configuración del servicio (si hemos hecho cambios)
+-   **enable**: para que el servicio arranco automáticamente al iniciar el sistema
+-   **disable**: para que no arranco automáticamente (si volamos lo tendremos que arrancar manualmente)
+-   **mask**: enmascara un servicio de forma que no se pueda iniciar ni siquiera manualmente. Para poder mascarar un servicio tiene que estar parado
+-   **unmask**: desenmarcara un servicio para que se pueda iniciar manualmente (con start) o automàticamente (con enable)
 
 Ejemplos: para que el bluetooth se inicie al arrancar el sistema:
 
@@ -276,11 +276,11 @@ La lista de repositorios se configura en ***/etc/apt/sources.list*** aunque las 
 
 Cada línea del fichero configura un repositorio. Su sintaxis es:
 
-{deb | deb-src} URL_del_repositorio versión tipo_de_paquetes
+{deb \| deb-src} URL_del_repositorio versión tipo_de_paquetes
 
 -   en primer lugar indicamos si queremos bajar paquetes ya compilados (deb) o el código fuente para compilarlo (deb-src)
 -   URL del repositorio
--   versíón de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos version-updates en Ubuntu o version/updates en Debian y para parches de seguridad version-security (o version/security)
+-   versión de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos version-updates en Ubuntu o version/updates en Debian y para parches de seguridad version-security (o version/security)
 -   tipo de software que queremos (main, restricted, universe, multiverse en Ubuntu o main, contrib, non-free en Debian). Podemos poner más de un tipo separados por espacio
 
 Ejemplo de fichero:
@@ -293,7 +293,7 @@ Después de hacer cambios en un fichero tenemos que recargar la lista de paquete
 
 También es conveniente recargar la lista antes de instalar algún paquete para asegurarnos de instalar la versión más reciente.
 
-Para añadir un nuevo respositorio al sistema usamos el comando:
+Para añadir un nuevo repositorio al sistema usamos el comando:
 
     add-apt-repository nuevo-repositorio
 
@@ -324,24 +324,24 @@ Para desinstalar un paquete se hace con apt-get remove nombre\_del\_paquete. Eje
 
     apt-get remove sl
 
-Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando dpkg -i nombre_del_paquete.deb
+Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando *dpkg -i nombre_del_paquete.deb*
 
 Este comando no instala las dependencias. Si no se completa la instalación del paquete porque faltan dependencias ejecutaremos **apt-get install -f** para que se instalen automáticamente.
 
 Resumen de comandos relacionados con el software:
 
--   Para instalar un paquete: apt-get install nombre_del_paquete
--   Para reinstalar un paquete: apt-get --reinstall install nombre_del_paquete
--   Para reconfigurar un paquete (sin volverlo a instalar): dpkg-reconfigure nombre\_del\_paquete
--   Para descargar el código fuente de un paquete: apt-get source nombre_del_paquete
--   Para desinstalar un paquete: apt-get [--purge] remove nombre_del_paquete
+-   Para instalar un paquete: **apt-get install nombre_del_paquete**
+-   Para reinstalar un paquete: **apt-get --reinstall install nombre_del_paquete**
+-   Para reconfigurar un paquete (sin volverlo a instalar): **dpkg-reconfigure nombre\_del\_paquete**
+-   Para descargar el código fuente de un paquete: **apt-get source nombre_del_paquete**
+-   Para desinstalar un paquete: **apt-get [--purge] remove nombre_del_paquete**
     Con la opción --purge eliminamos también todos los ficheros de configuración del paquete
--   Para actualizar todos los paquetes: apt-get upgrade
--   Para actualizar la versión instalada: apt-get dist-upgrade
--   Para buscar paquetes relacionados con algo: apt-cache search que_busco
--   Para obtener más información sobre un paquete: apt-cache show nombre_del_paquete
--   Para instalar un paquete .deb que hemos descargado nosotros previamente: dpkg -y nombre_del_paquete.deb
-    Si tiene dependencias no resueltas fallará la instalación. Para que se instalan las dependencias no resueltas y se vuelva a intentar la instalación de un paquete que ha fallado: apt-get -f install
+-   Para actualizar todos los paquetes: **apt-get upgrade**
+-   Para actualizar la versión instalada: **apt-get dist-upgrade**
+-   Para buscar paquetes relacionados con algo: **apt-cache search que_busco**
+-   Para obtener más información sobre un paquete: **apt-cache show nombre_del_paquete**
+-   Para instalar un paquete .deb que hemos descargado nosotros previamente: **dpkg -y nombre_del_paquete.deb**
+    Si tiene dependencias no resueltas fallará la instalación. Para que se instalan las dependencias no resueltas y se vuelva a intentar la instalación de un paquete que ha fallado: **apt-get -f install**
 
 ### Paquetes rpm
 
@@ -363,7 +363,7 @@ Desde el entorno gráfico la gestión de paquetes es muy parecida a la de Debian
 Discos y particiones
 ====================
 
-En GNU/Linux todos los dispositivos se tratan como ficheros, la mayoría de los cuales se encuentran en el directorio ***/dev***. Los discos se denominan ***sdX*** (el primer disco sda, el segundo sdb, etc) y las particiones dentro de cada disco se denominan con un número del 1 al 4 para particiones primarias (y extendida) y a partir del 5 para particiones lógicas(discos MBR). 
+En GNU/Linux todos los dispositivos se tratan como ficheros, la mayoría de los cuales se encuentran en el directorio ***/dev***. Los discos se denominan ***sdX*** (el primer disco sda, el segundo sdb, etc) y las particiones dentro de cada disco se denominan con un número del 1 al 4 para particiones primarias (y extendida) y a partir del 5 para particiones lógicas(discos **MBR**). 
 
 Para ver los discos que tenemos en el sistema podemos ejecutar el comando:
 
@@ -404,13 +404,13 @@ Para montar automáticamente una partición añadiremos una línea al fichero */
 
 ![fstab](imgs/fstab.png "fstab")
 
-NOTA: *dump* no se usa y se pone un 0, *pass* es para decir si queremos que la partición se compruebe o no al iniciar el sistema
+NOTA: *dump* no se usa y se pone un 0, *pass* es para decir si queremos que la partición se compruebe o no al iniciar el sistema y el orden.
 
 Después de modificar el fichero para montar su contenido ejecutamos:
 
     mount -a
 
-Cómo hemos visto para montar una partición podemos utilizar su nombre (/dev/sd...) o su UUID que es un identficador de la partición.
+Cómo hemos visto para montar una partición podemos utilizar su nombre (/dev/sd...) o su **UUID** que es un identficador de la partición.
 
 Para conocer el UUID de una partición: **blkid**
 
