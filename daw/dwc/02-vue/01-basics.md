@@ -7,10 +7,10 @@
     - [Javascript](#javascript)
   - [Estilos de _API_](#estilos-de-api)
   - [_Binding_ de variables](#binding-de-variables)
-    - [Enlace unidireccional: interpolación {\{...}}](#enlace-unidireccional-interpolación-)
+    - [Enlace unidireccional: interpolación {{...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
-  - [[Vue devtools]](#vue-devtools)
+  - [\[Vue devtools\]](#vue-devtools)
   - [Extensiones para el editor de código](#extensiones-para-el-editor-de-código)
   - [Otras utilidades](#otras-utilidades)
   - [Cursos de Vue](#cursos-de-vue)
@@ -82,7 +82,7 @@ Vue.createApp({
 
     <div id="app">
       <button @click="increment">
-        Count is: {{ count }}
+        Count is: { { count }}
       </button>
     </div>
 
@@ -116,6 +116,7 @@ Fijaos que para hacer referencia desde Javascript a una variable (o a un método
 
 Además de las opciones _data_ y _methods_ podemos definir otras como:
 * **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
+  
 ```javascript
 data() {
   return {
@@ -142,7 +143,8 @@ created() {
 La forma en que hemos programado estos ejemplos no es la más recomendable por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones. Con ella dividiremos nuestra aplicación en componentes llamados _Single File Components_ que incluirán en un único fichero tanto la lógica del componente (Javascript) como su presentación (HTML).
 
 Vue3 proporciona 2 formas diferentes de programar:
-- **_Options API_**: la lógica de un componente se establece en las distintas propiedades de un objeto, a las que se accede mediante _this_ que apunta a la instancia del componente. Es la que veremos ahora
+- **_Options API_**: la lógica de un componente se establece en las distintas propiedades de un objeto, a las que se accede mediante _this_ que apunta a la instancia del componente. Es la que veremos ahora.
+
 ```vue
 <script>
 export default {
@@ -177,6 +179,7 @@ export default {
 ```
 
 - **_Composition API_**_: es algo más compleja pero mejora la reutilización de código y su organización por funcionalidades. Indicada para aplicaciones grandes la veremos al final del bloque
+
 ```vue
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -206,15 +209,22 @@ En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#st
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-2)
 
 ### Enlace unidireccional: interpolación {\{...}}
-Hemos creado una variable _miApp_ que contiene nuestro objeto Vue y que podemos ver y manipular desde la consola. Si cambiamos el valor de la variable _message_
-
-```javascript
-miApp.message = "Hola Vue!";
+Donde queramos mostrar en la vista el valor de una variable simplemente la ponemos entre dobles llaves:
+```html
+<p>Contador: {\{ counter }}</p>
 ```
 
-vemos que cambia lo que muestra nuestra página.
+Y en el código Javascript sólo tenemos que declarar esa variable dentro del objeto devuelto por _data()_:
 
-Esto es porque Vue (al igual que Angular o React) enlazan el DOM y los datos de forma que cualquier cambio en uno se refleja automáticamente en el otro.
+```javascript
+  data() {
+    return {
+      counter: 0
+    }
+  }
+```
+
+Podemos ver esa variable y manipularla desde la consola, y si cambiamos su valor vemos que cambia lo que muestra nuestra página. Esto es porque Vue (al igual que Angular o React) enlazan el DOM y los datos de forma que cualquier cambio en uno se refleja automáticamente en el otro.
 
 ### Enlazar a un atributo: v-bind
 Para mostrar un dato en el DOM usamos la interpolación **{\{  }}** pero si queremos nostrarlo como atributo de una etiqueta debemos usar `v-bind`:
@@ -280,12 +290,12 @@ NOTA: Si por algún motivo queremos trabajar sin servidor web (desde file://...)
 ## Extensiones para el editor de código
 Cuando empecemos a trabajar con componentes usaremos ficheros con extensión **.vue** que integran el HTML, el JS y el CSS de cada componente. Para que nuestro editor los detecte correctamente es conveniente instalar la extensión para Vue.
 
-En el caso de _Visual Studio Code_ esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión **Vetur** que se usa con _Vue 2_). En _Sublime Text_ tenemos el plugin **Vue Syntax Highlight**.
+En el caso de **_Visual Studio Code_** esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión _Vetur_ que se usa con _Vue 2_). En **_Sublime Text_** tenemos el plugin **Vue Syntax Highlight**.
 
 ## Otras utilidades
 _Vue 3_ permite utilizar directamente _Typescript_ en nuestros componentes simplemente indicándolo al definir el SFC (lo veremos al llegar allí).
 
-Respecto a los _tests_ se recomienda usar _Jest_ para los test unitarios y _Cypress_ para los E2E, como se indica en la [documentación oficial](https://vuejs.org/guide/scaling-up/tooling.html#testing).
+Respecto a los _tests_ se recomienda usar _Vitest_ para los test unitarios y _Cypress_ para los E2E, como se indica en la [documentación oficial](https://vuejs.org/guide/scaling-up/testing.html) aunque también puede usarse _Jest_ u otras herramientas.
 
 ## Cursos de Vue
-Podem trobar molts cursos en internet, alguns 'ells gratuïts. Per exemple els creadors de Vue tenen la web [Vue Mastery](https://www.vuemastery.com) on podem trobar des de cursos d'iniciació (gratuïts) fins els més avançats.
+Podemos encontrar muchos cursos en internet, algunos de ellos gratuitos. Por ejemplo los creadores de Vue tienen la web [Vue Mastery](https://www.vuemastery.com) donde podemos encontrar desde cursos de iniciación (gratuitos) hasta los mas avanzados.
