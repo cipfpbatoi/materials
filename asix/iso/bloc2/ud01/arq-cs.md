@@ -3,6 +3,7 @@
   - [Qué es una red](#qué-es-una-red)
   - [Tipos de red](#tipos-de-red)
   - [Arquitectura cliente/servidor (C/S)](#arquitectura-clienteservidor-cs)
+    - [Tipos de arquitecturas C/S](#tipos-de-arquitecturas-cs)
   - [Funciones del servidor](#funciones-del-servidor)
 
 ## Qué es una red
@@ -62,6 +63,15 @@ Este tipo de arquitectura también tiene inconvenientes, como:
 - Disponibilidad: El cliente no podrá acceder a los datos ni a las impresoras ni posiblemente a Internet si el servidor no está disponible.
 
 Por tanto en este tipo de redes el servidor debe estar bien dimensionado y el administrador debe tomar las decisiones adecuadas para minimizar el riesgo de caída de un servidor y restablecer el servicio lo más rápidamente posible si esto llega a suceder.
+
+### Tipos de arquitecturas C/S
+En este tipo de arquitecturas las tareas se reparten entre los clientes y los servidores. En función de la cantidad de trabajo que se realiza en unos y otros podemos hablar de:
+- Clientes pesados (_Thick Client, Thin Server_): el cliente es un equipo normal que realiza tareas tanto de presentación como de aplicación (es él quien ejecuta las aplicaciones). Su principal ventaja es la flexibilidad que ofrece, además de que los servidores no tienen que ser tan potentes
+- Clientes ligeros (_Thick Server, Thin Client_): el cliente sólo se encarga de la presentación, ejecutándose las aplicaciones en el servidor (que debe ser más potente para poder ejecutar las aplicaciones de todos los clientes). La principal ventaja es el ahorro en hardware y en consumo así como la facilidad de administración de los clientes
+
+Hay incluso redes de tipo _Zero Client_ donde el cliente sólo es una terminal conectada al servidor. Este tipo de clientes era muy habitual en los principios de la informática con los servidores de tipo _mainframe_.
+
+Hoy en día es muy habitual los _clientes web_ que son equipos que se comunican con el servidor y acceden a sus servicios a través del nevagador web.
 
 ## Funciones del servidor
 Hay muchos tipos de servicios que puede prestar un servidor:
