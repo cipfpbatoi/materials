@@ -16,7 +16,7 @@ UD 11 - Instalación de un servidor con software libre
 - [Finalización de la instalación](#finalización-de-la-instalación)
 - [Configuración básica del servidor](#configuración-básica-del-servidor)
     - [Nombre del equipo](#nombre-del-equipo)
-    - [Gestionar usuarios y grupos](#gestionar-usuarios-y-grupos)
+    - [Gestión usuarios y grupos](#gestión-usuarios-y-grupos)
   - [***/etc/passwd***](#etcpasswd)
   - [***/etc/group***](#etcgroup)
   - [***/etc/shadow***](#etcshadow)
@@ -174,16 +174,28 @@ En vez de cambiar el contenido del fichero **/etc/hostname** podemos cambiarlo c
 
 Además, si tenemos el nombre antiguo en el fichero **/etc/hosts** lo tendríamos que cambiar por el nuevo (normalmente tendremos solo localhost así que no habrá que hacer nada).
 
-### Gestionar usuarios y grupos
+### Gestión usuarios y grupos
 
-Comandos para crear usuarios **useradd** y **adduser**. La diferencia es que **adduser** nos preguntará la información que necesita y a **useradd** se la tenemos que proporcionar como parámetros del comando. Otros comandos útiles son:
+Algunos comandos para la gestión de usuarios y grupos:
+- **adduser** o **useradd**: permite la creación de nuevos usuarios.
+- **usermod**, **chfn**, **chsh** y **chage**: usados para la modificación de un usuario.
+- **deluser** o **userdel**: comando para la eliminación de usuarios.
+- **passwd**: para cambiar la contraseña de un usuario y modificar otras características. 
+- **addgroup** o **groupadd**: usado para añadir un grupo.
+- **groupmod**: permite modificar un grupo.
+- **groupdel** o **delgroup**: se utiliza para eliminar un grupo.
+- **gpasswd**: comando diseñado para cambiar la contraseña de un grupo.
+- **whoami**: para saber qué usuario somos.
+- **groups**: para obtener información de los grupos a los que pertenecemos.
+- **id**: nos muestra tanto el usuario como los grupos.
+- **su**: comando para cambiar de usuario.
+- **who** o **w**: sirve para saber cuáles usuarios están conectados en la máquina en un determinado momento.
 
--   Para cambiar una contraseña: **passwd usuario**
--   Comandos para crear grupos: **groupadd** y **addgroup**
--   Para añadir un usuario a un grupo: **adduser usuario grupo**
--   Para modificar un usuario **usermod** (con los mismos parámetros que useradd).
+Los comandos para crear usuarios **useradd** y **adduser**. La diferencia es que **adduser** nos preguntará la información que necesita y a **useradd** se la tenemos que proporcionar como parámetros del comando.
 
-Toda la gestión de usuarios, grupos, etc se gestiona con ficheros de texto. Los más importantes son:
+Algunos de estos comandos utilizan utilizan algunos valores establecidos por defecto de los siguientes ficheros: **/etc/login.defs**, **/etc/useradd**, **/etc/default/useradd**.
+
+La gestión de usuarios, grupos, etc se basa en unos ficheros de texto. Los más importantes son:
 
  ***/etc/passwd***  
 ------------------
