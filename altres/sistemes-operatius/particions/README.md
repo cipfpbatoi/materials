@@ -33,7 +33,7 @@ Hi ha moltes raons per a tindre més d'una partició al nostre disc dur:
 * Alguns sistemes operatius aconsellen tindre més d'una partició, per exemple, els sistemes GNU/Linux recomanen tindre una partició d'intercanvi (swap) per a la memòria virtual o els sistemes Windows que recomanen tindre els fitxers d'arrencada en una partició diferent a la del sistema operatiu.
 
 ### Nom de les particions
-En sistemes basats en Unix (com Gnu/Linux), cada disc té un nom de tipus **sdX** (el 1r disc es diu **sda**, el 2n disc **sdb**, etc). Recorda que qualsevol pen drive, disc SSD, etc que connectem a l'ordinador és un nou disc i rebrà un nom d'aquest tipus. El prefix _sd_ venia de _SATA disc_.
+En sistemes basats en Unix (com Gnu/Linux), cada disc té un nom de tipus **sdX** (el 1r disc es diu **sda**, el 2n disc **sdb**, etc). Recorda que qualsevol pen drive, disc SSD, etc que connectem a l'ordinador és un nou disc i rebrà un nom d'aquest tipus. El prefix _sd_ vol dir _SATA disc_. Si es tracta d'un disc NVME en compte de _sdX_ es dirà _nvmeX_.
 
 Cada partició rep el nom del disc seguit d'un número que indica quina partició és dins del disc. Per exemple la primera partició del primer disc s'anomena **sda1**, la 2a **sda2**, etc. La primera partició del segon disc seria **sdb1**. En el cas de discos MBR, les particions lògiques (després vorem què són) rebren números a partir del 5. Així la primera partició lògica del primer disc es diu **sda5** i la 2a **sda6**.
 
@@ -49,7 +49,7 @@ En l'exemple anterior trobem les particions:
   * sda6: segona partició lògica, per a la memòria virtual d'un sistema Linux (swap)
   * sda7: tercera partició lògica, amb NTFS
 
-En Windows els discos s'identifiquen con **Disco0** el 1r, **Disco1** el 2n, etc. Les particions quan es munten rebren una lletra (C:, D:, E:, ...) però només es munten les particions amb format NTFS o FAT.
+En Windows els discos s'identifiquen com **Disco0** el 1r, **Disco1** el 2n, etc. Les particions quan es munten rebren una lletra (C:, D:, E:, ...) però només es munten les particions amb format NTFS o FAT.
 
 ### Veure les nostres particions
 En Windows podem veure els diferents discos i particions que tenim al nostre equip des de l'**Administrador de disc** que trobem dins d'**Adminstracío d'equips** (es pot obrir, per exemple, des del `menú contextual de 'Equip' -> Administrar`):
@@ -70,7 +70,7 @@ I també hi ha programes que podem instal·lar en qualsevol distribució, com _g
 
 ![gparted](./img/discos-gparted.png "gparted: el mateix disc de la imatge anterior")
 
-Des de la terminal en tots els sistemes Linux podem veure els discos i particions de l'equip amb els comandos `lsblk` o  `fdisk -l` (cal ser administrador per a poder executar fdisk).
+Des de la terminal en tots els sistemes Linux podem veure els discos i particions de l'equip amb els comandos `lsblk` o  `fdisk -l` (cal ser administrador per a poder executar _fdisk_).
 
 ![lsblk (CC0)](./img/lsblk.png)
 

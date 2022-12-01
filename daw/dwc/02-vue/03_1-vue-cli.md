@@ -3,6 +3,8 @@
   - [Introducción](#introducción)
   - [Instalación](#instalación)
   - [Creación de un nuevo proyecto](#creación-de-un-nuevo-proyecto)
+    - [vue create](#vue-create)
+    - [npm init vue@latest](#npm-init-vuelatest)
     - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
     - [_Build and Deploy_ de nuestra aplicación](#build-and-deploy-de-nuestra-aplicación)
     - [_Scaffolding_ creado](#scaffolding-creado)
@@ -10,9 +12,9 @@
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
   - [SFC (_Single File Component_)](#sfc-single-file-component)
     - [Secciones de un Single File Component](#secciones-de-un-single-file-component)
-      - [\<template>](#template)
-      - [\<script>](#script)
-      - [\<style>](#style)
+      - [\<template\>](#template)
+      - [\<script\>](#script)
+      - [\<style\>](#style)
       - [Custom blocks](#custom-blocks)
   - [Añadir nuevos paquetes y plugins](#añadir-nuevos-paquetes-y-plugins)
     - [Bootstrap](#bootstrap)
@@ -31,18 +33,18 @@ Aunque puede usarse _Vue_ como hemos visto, enlazándolo directamente en el _ind
   * minimizar el código generado
 * Incluye herramientas que facilitan el desarrollo
 
-La versión actual es la 4 que ha cambiado de una arquitectura basada en plantillas a una basada en plugins lo que mejora enormemente su rendimiento. Podemos encontrar toda la documentación en [Vue CLI](https://cli.vuejs.org/).
+La versión actual es la 5. Podemos encontrar toda la documentación en [Vue CLI](https://cli.vuejs.org/).
 
 ## Instalación
 Para usar **vue-cli** necesitamos tener instalado **npm** (el gestor de paquetes de Node.js). Si no lo tenemos instalaremos **node.js**. 
 
-Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero no es lo recomendado porque nos instalará una versión poco actualizada por lo que es mejor [instalarlo desde NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu)_ siguiendo las instrucciones que se indican y que básicamente son:
+Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero no es lo recomendado porque nos instalará una versión poco actualizada por lo que es mejor [instalarlo desde NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu) siguiendo las instrucciones que se indican y que básicamente son:
 ```bash
 curl -sL https://deb.nodesource.com/setup_X.y | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-(cambiaremos _X.y_ por la versión que queramos, vue-cli recomienda al menos la 10.x).
+(cambiaremos _X.y_ por la versión que queramos, vue-cli recomienda al menos la 16.x).
 
 También podemos [descargarlo desde NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombrepaquete_`).
 
@@ -54,19 +56,43 @@ npm install -g @vue/cli
 La opción -g es para que lo instale globalmente en el sistema y no tengamos que instalar una copia para cada proyecto.
 
 ## Creación de un nuevo proyecto
-Para crear un nuevo proyecto haremos:
+Para crear un nuevo proyecto tenemos 2 formas:
+- `vue create`
+- `npm init vue@latest` (recomendada)
+
+### vue create
+Hasta la versión 4 de _vue-cli_ esta era la única forma de crear un proyecto Vue:
 ```bash
 vue create _<directorio_proyecto>_
 ```
+
 Vue nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3 por defecto con los plugins para _Babel_ y _esLint_ (mäs adelante podremos añadir más si los necesitamos) o bien la opción **manual** donde escogemos que plugins instalar para el proyecto de entre los siguientes:
 
 ![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
+
+Se crea un directorio para el proyecto, se crea en él el fichero **_package.json_** con la configuración del proyecto y se instalan sus dependencias (hace automáticamente un `npm install`). Una vez creado entramos en el directorio del proyecto y ejecutamos:
+```bash
+npm run serve
+```
+
+lo que ejecuta un servidor web en el puerto **8080** donde se sirve nuestra aplicación.
 
 También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
 ```bash
 vue ui
 ```
-Este comando arranca un servidor web en el puerto 8000 y abre el navegador para gestionar nuestros proyectos.
+
+Este comando arranca un servidor web en el puerto 8080 y abre el navegador para gestionar nuestros proyectos.
+
+### npm init vue@latest
+Al ejecutar este comando se nos pregunta el nombre del proyecto a crear y se creará el directorio para el mismo con el **_package.json_** del proyecto en su interior. En este caso no se instalan las dependencias por lo que tenemos que instalarlas nosotros (`npm install`) y a continuación ejecutar:
+```bash
+npm run dev
+```
+
+lo que ejecuta un servidor web en el puerto **5173** donde se sirve nuestra aplicación.
+
+La principal diferencia respecto a la forma anterior de crear proyectos es que así el proyecto creado usará **_Vite_** en lugar de _Babel_ o _webpack_, que es más eficiente a la hora de gestionar nuestro código tanto en desarrollo como en producción.
 
 ### Ejemplo proyecto por defecto
 Una vez creado entramos a la carpeta y ejecutamos en la terminal

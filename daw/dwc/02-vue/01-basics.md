@@ -40,11 +40,7 @@ Las razones de que veamos Vue en vez de Angular o React son, en resumen:
 ## Usar Vue
 Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde cualquier CDN como:
 ```html
-<script src="https://unpkg.com/vue@next"></script>
-
-<script src="https://unpkg.com/vue@3.2.21/dist/vue.global.prod.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.21/vue.cjs.js" integrity="sha512-2e2aXOh4/FgkCAUyurkjk0Uw4m1gPcExFwb1Ai4Ajjg97se/FEWfrLG1na4mq8cgOzouc8qLIqsh0EGksPGdqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 ```
 
 Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
