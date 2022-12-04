@@ -105,13 +105,25 @@ Dentro de ese elemento es donde podemos usar expresiones de Vue (fuera del mismo
 
 ### Javascript
 En el fichero JS debemos crear la aplicación con el método _createApp_ al que se le pasa un objeto con una serie de opciones y montarla en el elemento del HTML donde se ejecutará dicha aplicación. En nuestro caso las opciones pasadas son:
-- **data**: aquí es donde se define el _estado_ de la aplicación, es decir, los datos de la misma. Es una función que devuelve un objeto donde cada dato será una propiedad. Estos datos son reactivos y accesibles desde el HTML
-- **methods**: definimos métodos de la aplicación que pueden ser llamados desde el HTML
+- **data**: aquí es donde se define el _estado_ de la aplicación, es decir, los datos de la misma. Es una **función** que _devuelve un objeto_ donde cada dato será una propiedad. Estos datos son reactivos y accesibles desde el HTML
+
+```javascript
+Vue.createApp({
+  data() {
+    return {
+      count: 0,
+      msg: 'Hola',
+      ...
+    }
+  },
+```
+
+- **methods**: es un objeto donde cada propiedad es un método de la aplicación que puede ser llamado desde el HTML
 
 Fijaos que para hacer referencia desde Javascript a una variable (o a un método) hay que anteponerle **_this_**.
 
 Además de las opciones _data_ y _methods_ podemos definir otras como:
-* **computed**: son variables cuyo valor hay que calcularlo usando una función. Por ejemplo:
+* **computed**: es un objeto con funciones que devuelven una variable cuyo valor hay que calcularlo. Por ejemplo:
   
 ```javascript
 data() {

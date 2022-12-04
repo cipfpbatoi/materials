@@ -230,8 +230,9 @@ delTodo() {
 ``` 
 
 y en el componente **_todo-list_** lo escuchamos y llamamos al método que borre el item:
-```vue
-<template>
+```javascript
+export default {
+  template: `
     <div>
       <h2>{{ title }}</h2>
       <ul>
@@ -245,22 +246,18 @@ y en el componente **_todo-list_** lo escuchamos y llamamos al método que borre
       <add-item></add-item>
       <br>
       <del-all></del-all>
-    </div>
-</template>
-
-<script>
-  ...
+    </div>`,
   methods: {
     delTodo(index){
       this.todos.splice(index,1);
     },
   }
-</script>
+}
 ``` 
 
 **NOTA**: En componentes y _props_ se hace la conversión automáticamente entre los nombres en Javascript escritos en camelCase y los usados en HTML en kebab-case pero esto no sucede con los eventos, por lo que en el código deberemos nombrarlos también en kebab-case.
 
-Igual que un componente declara las _props_ que recibe, también puede declarar los eventos que emite. Esto es opcional pero proporciona mayor claridad al código:
+Igual que un componente declara las _props_ que recibe, también puede declarar los eventos que emite. Esto es opcional **muy recomendable** ya que proporciona mayor claridad al código:
 ```javascript
 // TodoItem.vue
 ...
@@ -304,7 +301,7 @@ Componente **_todo-item.vue_**
 ``` 
 
 ### Definir y validar eventos
-Como hemos dicho, los eventos que emite un componente pueden (y se recomienda por claridad) definirse en la opción _emits_:
+Como hemos dicho, los eventos que emite un componente pueden (y se recomienda) definirse en la opción _emits_:
 ```javascript
 app.component('todo-item', {
   emits: ['toogle-done', 'dblclick'],
@@ -353,34 +350,28 @@ export const store = reactive({
 Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
 
 Componente `compA.vue`
-```vue
-<template>
-  <p>Mensaje: { { message}} </p>
-</template>
-
-<script>
+```javascript
 import { store } from '../store/'
-  ...
+
+export default {
+  template: `<p>Mensaje: { { message}} </p>`,
   data() {
     return {
-      store,
+      store,  // recordad que equivale a store: store,
       // y a continuación el resto de data del componente
       ...
     }
   },
   ...
-</script>
+}
 ```
 
 Componente `compB.vue`
-```vue
-<template>
-  <button @click="delMessage">Borrar mensaje</button>
-</template>
-
-<script>
+```javascript
 import { store } from '../store/'
-  ...
+
+export default {
+  template: `<button @click="delMessage">Borrar mensaje`,
   data() {
     return {
       store,
@@ -394,8 +385,7 @@ import { store } from '../store/'
     }
   },
   ...
-})
-</script>
+}
 ```
 
 Desde cualquier componente podemos modificar el contenido de **store** y esos cambios se reflejarán automáticamente tanto en la vista de todos ellos.
@@ -405,18 +395,22 @@ Esta forma de trabajar tiene un grave inconveniente: como el valor de cualquier 
 Para evitarlo podemos usar un patrón de almacén (_store pattern_) que veremos en el siguiente apartado.
 
 ### $root y $parent
-Todos los componentes tienen acceso además de a sus propios datos declarados en `data()`, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `new Vue`). Por ejemplo:
+Todos los componentes tienen acceso a:
+- sus variables locales, declaradas en `data()`
+- los parámetros que le han pasado como `props` (que no deberían cam,biarse)
+- y además, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `Vue.createApp()`) a los que accede desde el objeto **`$root`**
+ 
+Por ejemplo:
 
 ```javascript
-new Vue({
-  el: '#app',
+Vue.createApp({
   data: {
     message: 'Hola',
   },
   methods: {
     getInfo() {
   ...
-}
+}).mount('#app')
 ```
 
 Desde cualquier componente podemos hacer cosas como:
@@ -455,25 +449,25 @@ export const store={
 ```
 
 Componente `compA.vue`
-```vue
-<script>
-import { store } from '/src/datos.js'
-  ...
+```javascript
+import { store } from '../store/'
+
+export default {
+  template: `<p>Mensaje: { { message}} </p>`,
   data() {
     return {
       sharedData: store.state,
-      // o aún mejor declaramos sólo las variables que necesitemos, ej
+      // o aún mejor declaramos sólo las variables que necesitemos, ej:
       // message: store.state.message,
       ...
     }
   },
   ...
-</script>
+}
 ```
 
 Componente `compB.vue`
-```vue
-<script>
+```javascript
 import { store } from '/src/datos.js'
   ...
   methods: {
@@ -482,7 +476,6 @@ import { store } from '/src/datos.js'
     }
   },
   ...
-</script>
 ```
 
 **IMPORTANTE**: no podemos machacar ninguna variable del _state_ si es un objeto o un array, por ejemplo para borrar los datos de un array no podemos hacer
@@ -501,7 +494,7 @@ clearProductsAction () {
 }
 ```
 
-Esto se soluciona usando librerías de gestión de estado como _Pinia_ o _Vuex_.
+Esto se soluciona usando librerías de gestión de estado como _Pinia_ o su antecesor _Vuex_.
 
 ## Pinia
 Es una librería para gestionar los estados en una aplicación Vue. Ofrece un almacenamiento centralizado para todos los componentes con unas reglas para asegurar que un estado sólo cambia de determinada manera. Es el método a utilizar en aplicaciones medias y grandes y le dedicaremos todo un tema más adelante. En Vue2 y anteriores la librería que se usaba es _Vuex_.
@@ -603,7 +596,7 @@ El atributo _slot_ podemos ponérselo a cualquier etiqueta (no tiene que ser \<t
 ```
 
 # Aplicación de ejemplo
-Vamos a hacer que funcione la aplicación que tenemos hecha en **vue-cli**.
+Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_.
 
 ## Solución con _Store pattern_
 Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde varios componentes. En él incluimos métodos para añadir un nuevo _todo_, para borrar uno, para cambiar el estado de un _todo_ y para borrarlos todos.

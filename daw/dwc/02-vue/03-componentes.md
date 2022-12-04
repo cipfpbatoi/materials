@@ -3,11 +3,10 @@
   - [Introducción](#introducción)
   - [Usar un componente](#usar-un-componente)
   - [Parámetros: _props_](#parámetros-props)
-  - [A tener en cuenta](#a-tener-en-cuenta)
-    - [En Vue2 _template_ debe contener un único elemento](#en-vue2-template-debe-contener-un-único-elemento)
-    - [_data_ debe ser una función](#data-debe-ser-una-función)
-    - [Registrar un componente localmente](#registrar-un-componente-localmente)
   - [Ejemplo de aplicación](#ejemplo-de-aplicación)
+  - [Separación de componentes en ficheros. _SFC_](#separación-de-componentes-en-ficheros-sfc)
+    - [Crear un SFC](#crear-un-sfc)
+    - [Usar un SFC](#usar-un-sfc)
 
 
 ## Introducción
@@ -46,11 +45,10 @@ En definitiva nuestra aplicación será como un árbol de componentes con la ins
 ![Árbol de componentes](https://vuejs.org/assets/components.7fbb3771.png)
 
 ## Usar un componente
-Para usarlo basta con crearlo con `app.component` (`Vue.component` en Vue2), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad _template_ con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
+Para usarlo basta con crearlo con **`app.component`** (`Vue.component` en Vue2), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad **_template_** con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```vue
-// sintaxis de Vue3
 const app = Vue.createApp({
   ...
 })
@@ -74,29 +72,25 @@ app.component('todo-item', {
 app.mount('#app')
 ```
 
-```vue
-// sintaxis de Vue2
-Vue.component('todo-item', {
-  template: `
-    <li>
-      <input type="checkbox" v-model="elem.done">
-      <del v-if="elem.done">
-        {{ elem.title }}
-      </del>
-      <span v-else>
-        {{ elem.title }}
-      </span>
-    </li>`,
-  data: ()=>({
-    elem: { title: 'Cosa a hacer', done: true }
-  })
+**NOTA**: En Vue2 la propiedad _template_ sólo podía tener un nodo principal. En VUe3 esta limitación no existe aunque en _dev-tools_ se depura más fácilmente si solo hay 1. Si queremos más los envolvemos en otra etiqueta (normalmente un <div>):
+
+```javascript
+// MAL en Vue2
+Vue.component('my-comp', {
+  template: `<input id="query">
+             <button id="search">Buscar</button>`,
 })
 
-const app = new Vue({
-...
+// BIEN en Vue2
+Vue.component('my-comp', {
+  template: `<div>
+               <input id="query">
+               <button id="search">Buscar</button>
+             </div>`,
+})
 ```
 
-El nombre de un componente puede estar en _PascalCase_ (MyComponentName) o en _kebab-case_ (my-component-name). Lo recomendado es que en Javascript lo pongamos en PascalCase y en el HTML en kebab-case (Vue hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
+El nombre de un componente puede estar en _PascalCase_ (MyComponentName) o en _kebab-case_ (my-component-name). Lo recomendado es que en Javascript lo pongamos en _PascalCase_ y en el HTML en _kebab-case_ (_Vue_ hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
 
 Ahora ya podemos usar el componente en nuestro HTML:
 ```html
@@ -123,6 +117,8 @@ Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta est�
 ```
 De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un \<ul> deben ser \<li> o los de un \<tr> deben ser \<td>).
 
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-11)
+
 ## Parámetros: _props_
 Podemos pasar parámetros a un componente añadiendo atributos a su etiqueta:
 ```html
@@ -144,6 +140,8 @@ app.component('todo-item', {      // En Vue2: Vue.component('todo-item', {
       ...`
 })
 ```
+
+| Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-12)
 
 Se pueden declarar las _props_ recibidas como un array de cadenas (`props: ['todo']`), aunque si los declaramos como un objeto podemos hacer ciertas comprobaciones (en este caso que se recibe un _String_).
 
@@ -183,137 +181,12 @@ En nuestro caso queremos un componente _todo-item_ para cada elemento del array 
 >  ...
 ></ul>
 
-**IMPORTANTE**: al usar _v-for_ en un componente debemos indicarle en la propiedad _key_ la clave de cada elemento. Si no tuviera ninguna podemos usar como clave su índice en el array:
+**IMPORTANTE**: al usar _v-for_ en un componente debemos indicarle obligatoriamente en la propiedad _key_ la clave de cada elemento. Si no tuviera ninguna podemos usar como clave su índice en el array como vimos al hablar de _v-for_:
 
 ```html
 <ul>
   <todo-item v-for="(item, index) in todos" :key="index" :todo="item"></todo-item>
 </ul>
-```
-
-## A tener en cuenta
-A la hora de definir componentes hay un par de cosa que debemos tener en cuenta
-
-### En Vue2 _template_ debe contener un único elemento
-El template de un componente debe tener un único elemento raíz por lo que, si queremos tener más de uno hay que englobarlos en un elemento (normalmente un <div>):
-
-```javascript
-// MAL
-Vue.component('my-comp', {
-  template: `<input id="query">
-             <button id="search">Buscar</button>`,
-})
-
-// BIEN
-Vue.component('my-comp', {
-  template: `<div>
-               <input id="query">
-               <button id="search">Buscar</button>
-             </div>`,
-})
-```
-
-NOTA: Vue3 no tiene esta limitación y podemos poner más de un elemento en su _template_ aunque a la hora de depurar es mejor tener sólo uno.
-
-### _data_ debe ser una función
-Además de las variables que se le pasan a un componente en _props_ este puede tener sus propias variables internas (definidas en _data_) y sus propios métodos, _hooks_, etc.
-
-Pero mientras que en Vue2 _data_ en la instancia de Vue es un objeto en un componente debe ser una función que devuelve ese objeto (en Vue3 ya es así incluso en la instancia de Vue):
-
-```javascript
-// En la instancia Vue
-const app = Vue.createApp({
-  data: {
-    message: 'Hello',
-    counter: 0
-  }
-})
-```
-
-```javascript
-// En un componente
-app.component('my-comp', {
-  data: function() {
-    return {
-      message: 'Hello',
-      counter: 0
-    }
-  }
-})
-```
-
-o con la notación ES2015
-```javascript
-// Componente
-app.component('my-comp', {
-  data() {
-    return {
-      message: 'Hello',
-      counter: 0
-    }
-  }
-})
-```
-
-También podemos ponerlo en notación de _arrow function_:
-```javascript
-app.component('my-comp', {
-  data: ()=>({
-      message: 'Hello',
-      counter: 0
-  })
-})
-```
-
-NOTA: he puesto el objeto devuelto entre paréntesis para que se sepa que es un objeto y no las llaves que abren la función a ejecutar.
-
-### Registrar un componente localmente
-Un componente registrado como hemos visto es _global_ y puede usarse en cualquier instancia raíz de Vue creada posteriormente (con _new Vue()_ ) y también dentro de subcomponentes de dicha instancia.
-
-Pero eso no es lo más correcto ya que lo normal, igual que con las variables, es registrarlo
-localmente donde vaya a usarse, de forma que sólo se pueda usar dentro de la instancia Vue o del subcomponente en que se registra.
-
-En ese caso el componente a registrar se guarda en un objeto
-```javascript
-const ComponentA={ /* .... */ }
-```
-y se registra en cada instancia o subcomponente en que quiera usarse:
-```javascript
-// Para usarlo en la instancia raíz
-new Vue({
-  el: '#app',
-  components: {
-    'component-a': ComponentA,
-  }
-})
-
-// Para usarlo en un subcomponente
-var ComponentB={ 
-  ...,
-  components: {
-    'component-a': ComponentA,
-  }
-}
-```
-
-NOTA: al ser igual el nombre de la propiedad (_component-a_) y su valor (_ComponentA_) podemos usar la notación de ES2015 y no poner el valor:
-```javascript
-  components: {
-    ComponentA,
-  }
-```
-
-Cuando trabajamos con componentes lo normal es que no estén en el mismo fichero sino que cada componente se guarde en su propio fichero (con extensión _.vue_) y se importe donde vaya a usarse:
-```javascript
-// fichero ComponentB.vue
-import ComponentA from './ComponentA.vue'
-
-export default { 
-  ...,
-  components: {
-    ComponentA,
-  }
-}
 ```
 
 ## Ejemplo de aplicación
@@ -325,7 +198,7 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 * add-item: incluye el formulario para añadir una nueva tarea (el input y el botón)
 * del-all: el botón para borrar toda la lista
   
-**Solución en sintaxis Vue3:**
+**Solución**
 
 <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="wvqjJjY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
   <span>See the Pen <a href="https://codepen.io/juanseguravasco/pen/wvqjJjY">
@@ -334,27 +207,96 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 </p>
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
-**Solución en sintaxis Vue2:**
-
-<script async src="//jsfiddle.net/juansegura/3yoLvmnt/embed/"></script>
-
 **Pasos que he hecho**:
-1. Creo el componente que mostrará la lista: _todo-list_.
+1. Creamos la instancia principal de Vue. No tiene _data_ ni _methods_ ni ningún otro elemento porque está todo en los componentes
+2. Creo el componente encargado de renderizar un elemento de la lista de tares, _todo-item_. 
+    - recibirá un objeto con la tarea a mostrar
+    - su template será el <li> que tenía en el HTML pero quitando el _v-for_ porque él sólo se encarga de mostrar 1 item
+    - el método para borrarlo al hacer doble click ya no puede funcionar porque el componente no tiene acceso al array de tareas. De momento sólo ponemos un _alert_ que nos diga que lo queremos borrar
+3. Creo el componente _add-item_.
+    - su _template_ será el \<input> y el \<button> que teníamos en el HTML, pero como sólo puede haber un elemento en el template los incluimos dentro de un <div>
+    - no recibe ningún parámetro pero sí tiene una variable propia, _newTodo_, que quitamos del componente principal para añadirla a este componente
+    - el método addTodo ya no funciona porque no tengo acceso al array de tareas así que de momento muestro un _alert_ con lo que querría añadir
+4. Creo el componente _del-all_
+    - su _template_ es el botón
+    - ni recibe parámetros ni tiene variables propias
+    - con el método pasa lo mismo que en los otros casos así que simplemente muestro un _alert_
+5. Creo el componente que mostrará la lista: _todo-list_.
     - Su _template_ es un div que incluye el título (que será una variable para poderlo reutilizar) y la lista con las tareas a mostrar. Cada una de ellas será un subcomponente llamado _todo-item_
     - como parámetro recibirá el título de la lista como hemos indicado antes
     - llama al subcomponente _todo-item_ para cada tarea (v-for) y le pasa la tarea que debe mostrar
     - sus datos será el array de tareas
     - Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
-1. Creo el componente al que llama el anterior, _todo-item_. 
-    - recibirá un objeto con la tarea a mostrar
-    - su template será el <li> que tenía en el HTML pero quitando el _v-for_ porque él sólo se encarga de mostrar 1 item
-    - el método para borrarlo al hacer doble click ya no puede funcionar porque el componente no tiene acceso al array de tareas. De momento sólo ponemos un _alert_ que nos diga que lo queremos borrar
-1. Creo el componente _add-item_.
-    - su _template_ será el \<input> y el \<button> que teníamos en el HTML, pero como sólo puede haber un elemento en el template los incluimos dentro de un <div>
-    - no recibe ningún parámetro pero sí tiene una variable propia, _newTodo_, que quitamos del componente principal para añadirla a este componente
-    - el método addTodo ya no funciona porque no tengo acceso al array de tareas así que de momento muestro un _alert_ con lo que querría añadir
-1. Creo el componente _del-all_
-    - su _template_ es el botón
-    - ni recibe parámetros ni tiene variables propias
-    - con el método pasa lo mismo que en los otros casos así que simplemente muestro un _alert_
   
+
+## Separación de componentes en ficheros. _SFC_
+La utilidad de separar nuestra aplicación en componentes es que cada uno de ellos puede guardarse en su propio fichero y así no tenemos un fichero con demasiado código. A estos ficheros que contienen un componente se les llama _Single File Component (SFC)_.
+
+### Crear un SFC
+Creamos el fichero (con extensión _.js_) en el que definimos el componente. Aquí NO creamos el componente sino que simplemente ponemos el objeto que lo forma (el segundo parámetro del `app.component()`) y lo exportamos:
+```javascript
+export default{
+    props: ['todo'],
+    template: 
+      `<li @dblclick="delTodo">
+        <label>
+          <input type="checkbox" v-model="todo.done">
+          <del v-if="todo.done">
+            {{ todo.title }}
+          </del>
+          <span v-else>
+            {{ todo.title }}
+          </span>
+        </label>
+      </li>`,
+    methods: {
+      delTodo() {
+        alert('Quiero borrar "' + this.todo.title + '"');
+      }
+    }
+  }
+```
+
+### Usar un SFC
+Donde queramos usar este componente (puede ser en otro componente o en la instancia raíz de _Vue_) debemos:
+- importar el SFC
+- registrar el componente: lo anotamos dentro de una propiedad llamada _components_
+
+Siguiendo con el ejemplo de antes, en el componente que muestra la lista (_todo-list_) haremos:
+
+```javascript
+import TodoItem from './TodoItem.js'
+
+export default {
+    components: {
+      TodoItem,    // recordad que equivale a TodoItem: TodoItem,
+    },
+    data() {
+        ...
+    }
+}
+```
+
+Y en la instancia principal importamos y registramos todos los componentes que usa:
+
+```javascript
+import TodoList from './TodoList.js'
+import TodoAdd from './TodoAdd.js'
+import TodoDellAll from './TodoDellAll.js'
+
+var myApp=Vue.createApp({
+    components:  {
+        TodoList,
+        TodoAdd,
+        TodoDellAll,
+    }
+})
+```
+
+Para que el navegador entienda la sentencia `import` debemos indicar que el script que lo contiene es de tipo **module**:
+```html
+  <script type="module" src="index.js"></script>
+```
+
+**NOTA**: esto sólo funciona si abrimos la aplicación desde un servidor web, no desde local (sí _http://..._, no _file://..._). Si no tenéis ninguno podéis instalar la extensión **Live Server** de Visual Studio Code para ejecutar este programa.
+
