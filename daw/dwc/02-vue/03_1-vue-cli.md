@@ -84,6 +84,8 @@ vue ui
 
 Este comando arranca un servidor web en el puerto 8080 y abre el navegador para gestionar nuestros proyectos.
 
+![Proyecto de plantilla simple](./img/vue-webpack-simple-app.png)
+
 ### npm init vue@latest
 Al ejecutar este comando se nos pregunta el nombre del proyecto a crear y se creará el directorio para el mismo con el **_package.json_** del proyecto en su interior. En este caso no se instalan las dependencias por lo que tenemos que instalarlas nosotros (`npm install`) y a continuación ejecutar:
 ```bash
@@ -97,12 +99,12 @@ La principal diferencia respecto a la forma anterior de crear proyectos es que a
 ### Ejemplo proyecto por defecto
 Una vez creado entramos a la carpeta y ejecutamos en la terminal
 ```bash
-npm run serve
+npm run dev
 ```
 
-Este script compila el código, muestra si hay errores, lanza un servidor web en el puerto 8080 y carga el proyecto en el navegador (http://localhost:8080). Si cambiamos cualquier fichero JS de _src_ recompila y recarga la página automáticamente. La página generada es:
+Este script compila el código, muestra si hay errores, lanza un servidor web en el puerto 5173 y carga el proyecto en el navegador (http://localhost:5173). Si cambiamos cualquier fichero JS de _src_ recompila y recarga la página automáticamente. La página generada es:
 
-![Proyecto de plantilla simple](./img/vue-webpack-simple-app.png)
+![Proyecto de plantilla simple](./img/vue-vite-sample-app.png)
 
 ### _Build and Deploy_ de nuestra aplicación
 Normalmente trabajaremos con algún gestor de versiones como _git_. Para subir nuestro proyecto al repositorio lo creamos (el _GitHub_, _GitLab_ o donde queramos) y ejecutamos desde la carpeta del proyecto:
@@ -121,21 +123,19 @@ npm run build
 
 Este comando genera los JS y CSS para subir a producción dentro de la carpeta _dist_. El contenido de esta carpeta es lo que debemos subir a nuestro servidor de producción.
 
-También podemos ejecutar el comando `npm run lint` para ejecutar esta herramienta y comprobar nuestro código.
-
 ### _Scaffolding_ creado
 Se ha creado la carpeta con el nombre del proyecto y dentro el scaffolding para nuestro proyecto:
 
-![Directorios del proyecto de plantilla simple](./img/vue-webpack-simple-folders.png)
+![Directorios del proyecto de plantilla simple](./img/vue-vite-sample-folders.png)
 
 Los principales ficheros y directorios creados son:
 * `package.json`: configuración del proyecto (nombre, autor, ...) y dependencias
-* `babel.config.js`: configuración de Babel
-* `public/index.html`: html con un div donde se cargará la app
+* `vite.config.js`: configuración de Vite
+* `index.html`: html con un div donde se cargará la app
 * `node_modules`: librerías de las dependencias
-* `public`: lugar donde dejar elementos estáticos que no pasarán por _webpack_
+* `public`: lugar donde dejar elementos estáticos que no pasarán por _vite_
 * `src`: todo nuestro código
-    * `assets/`: nuestros CSS, imágenes, etc. Elementos estáticos que _webpack_ procesará y optimizará
+    * `assets/`: nuestros CSS, imágenes, etc. Elementos estáticos que _vite_ procesará y optimizará
     * `components/`: carpeta que contendrá los ficheros .vue de los diferentes componentes
         * `HelloWorld.vue`: componente de ejemplo llamado por App.vue
     * `router/`: carpeta con los ficheros del router si usamos _vue-_router_
@@ -148,12 +148,11 @@ Los principales ficheros y directorios creados son:
 #### package.json
 Aquí se configura nuestra aplicación:
 * **name, version, author, license**, ...: configuración general de la aplicación
-* **scripts**: ejecutan entornos de configuración para webpack. Por defecto tenemos 3:
-  * **serve**: lanza el servidor web de webpack y configura webpack y vue para el entorno de desarrollo
+* **scripts**: ejecutan entornos de configuración para webpack:
+  * **dev**: lanza el servidor web de vite y configura vue para el entorno de desarrollo
   * **build**: crea los ficheros JS y CSS dentro de **/dist** con todo el código de la aplicación
-  * **lint**: lanza el linter
-* **dependences**: se incluyen las librerías y plugins que utiliza nuestra aplicación en producción. Todas las dependencias se instalan dentro de **/node-modules**. Posteriormente veremos como añadir nuevas dependencias
-* **devDependencies**: igual pero son paquetes que sólo se usan en desarrollo (babel, webpack, etc). También se instalan dentro de node-modules pero no estarán cuando se genere el código para producción. Para instalar una nueva dependencia de desarrollo ejecutaremos `npm install nombre-del-paquete -D` (la opción -D la añade a package.json pero como dependencia de desarrollo).
+* **dependences**: se incluyen las librerías y plugins que utiliza nuestra aplicación en producción. Todas las dependencias se instalan dentro de **/node-modules**.  Para instalar una nueva dependencia de desarrollo ejecutaremos `npm install nombre-del-paquete -S` (la opción -S la añade a package.json como dependencia de producción).
+* **devDependencies**: igual pero son paquetes que sólo se usan en desarrollo (vite, etc). También se instalan dentro de node-modules pero no estarán cuando se genere el código para producción. Para instalar una nueva dependencia de desarrollo ejecutaremos `npm install nombre-del-paquete -D` (la opción -D la añade a package.json pero como dependencia de desarrollo).
 
 #### Estructura de nuestra aplicación
 **Fichero index.html:**
@@ -163,45 +162,63 @@ Simplemente tiene el \<div> _app_ que es el que contendrá la aplicación.
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
+import './assets/main.css'
 
 createApp(App).mount('#app')
-
 ```
+
 Es el fichero JS principal. Importa la utilidad _createApp_ de la librería _Vue_ y el componente _App.vue_. Crea la instancia de Vue con el componente definido en _App.vue_ y lo renderiza en el elemento _#app_.
 
 **Fichero App.vue:**
-Es el componente principal de la aplicación, el que contiene el _layout_ de la página. Se trata de un _SFC (Single File Component)_ y lo que contiene dentro de la etiqueta _\<template>_ es lo que se renderizará en el div _app_ que hay en _index.html_. Si contiene algún otro componente se indica aquí dónde renderizarlo (en este caso <HelloWorld>).
+Es el componente principal de la aplicación, el que contiene el _layout_ de la página. Se trata de un _SFC (Single File Component)_ y lo que contiene dentro de la etiqueta _\<template>_ es lo que se renderizará en el div _app_ que hay en _index.html_. Si contiene algún otro componente se indica aquí dónde renderizarlo (en este caso <HelloWorld> y <TheWelcome>).
 
 En el siguiente apartado explicaremos qué es un _SFC_ y qué partes lo forman. De momento veamos qué contiene cada sección:
 
 _template_
 ```html
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <header>
+    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+
+    <div class="wrapper">
+      <HelloWorld msg="You did it!" />
+    </div>
+  </header>
+
+  <main>
+    <TheWelcome />
+  </main>
 </template>
 ```
-Muestra la imagen del logo (las imágenes y otros ficheros como ficheros .css se guardan dentro de **/src/assets/**) y el subcomponente _HelloWorld_.
+
+Muestra la imagen del logo (las imágenes y otros ficheros como ficheros .css se guardan dentro de **/src/assets/**) y los subcomponentes _HelloWorld_ y _TheWelcome_.
 
 _script_
 ```javascript
+<script setup>
+import HelloWorld from './components/HelloWorld.vue'
+import TheWelcome from './components/TheWelcome.vue'
+</script>
+```
+
+Importa y registra el componente _HelloWorld_ que se muestra en el template. Está en forma de _Composition API_. En forma de _Options API_ sería:
+```javascript
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import TheWelcome from './components/TheWelcome.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    TheWelcome
   }
 }
 </script>
 ```
-Importa y registra el componente _HelloWorld_ que se muestra en el template.
 
 _style_
-Aquí se definen los estilos de este componente. Como la etiqueta NO tiene el atributo _scoped_ (`<style scoped>`) significa que los estilos aquí definidos se aplicarán a TODOS los componentes.
+Aquí se definen los estilos de este componente. Como la etiqueta SÍ tiene el atributo _scoped_ (`<style scoped>`) significa que los estilos aquí definidos se aplicarán SÓLO a este componente, no a sus subcomponentes.
 
 **Fichero components/HelloWorld.vue:**
 Es el componente que muestra el texto que aparece bajo la imagen. Recibe como parámetro el título a mostrar. Veamos qué contiene cada sección:
@@ -209,36 +226,48 @@ Es el componente que muestra el texto que aparece bajo la imagen. Recibe como pa
 _template_
 ```html
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-       ...
+  <div class="greetings">
+    <h1 class="green">{{ msg }}</h1>
+    <h3>
+      You’ve successfully created a project with
+      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
+      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+    </h3>
   </div>
 </template>
 ```
+
 Muestra el _msg_ recibido como parámetro y varios apartados con listas.
 
 _script_
+```javascript
+<script setup>
+defineProps({
+  msg: {
+    type: String,
+    required: true
+  }
+})
+</script>
+```
+
+Recibe el parámetro _msg_ que es de tipo String. En sintaxis _Options API_ sería:
 ```javascript
 <script>
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: {
+      type: String,
+      required: true
+    }
   }
 }
 </script>
 ```
-Recibe el parámetro _msg_ que es de tipo String.
 
 _style_
-Aquí la etiqueta SÍ tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos aquí definidos se aplicarán sólo a este componente.
+También tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos aquí definidos se aplicarán sólo a este componente.
 
 ## SFC (_Single File Component_)
 Declarar los componentes con `app.component()` en el fichero JS de la instancia como hicimos en el tema anterior genera varios problemas:
@@ -412,9 +441,9 @@ Y ya podemos incluir el componente en el HTML:
 ```
 
 ## Depurar el código en la consola
-Podemos seguir depurando nuestro código, poniendo puntos de interrupción y usando todas las herramientas que nos proporciona la consola mientras estamos en modo de depuración (si hemos abierto la aplicación con `npm run serve`).
+Podemos seguir depurando nuestro código, poniendo puntos de interrupción y usando todas las herramientas que nos proporciona la consola mientras estamos en modo de depuración (si hemos abierto la aplicación con `npm run dev`).
 
-Para localizar nuestros fichero varemos que en nuestras fuentes de software aparece **webpack** y dentro nuestras carpetas con el código (**src**, ...):
+Si estamos usando _webpack_, para localizar nuestros fichero varemos que en nuestras fuentes de software aparece **webpack** y dentro nuestras carpetas con el código (**src**, ...):
 
 ![Depurar en la consola](./img/console-webpack.png)
 
