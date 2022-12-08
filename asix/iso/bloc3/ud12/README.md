@@ -1,557 +1,279 @@
-Módulo: Implantación de Sistemas Operativos
-============================================
+Módulo: Implantación de sistemas operativos
+===========================================
 
-UD 12 - Centralización de la información con LDAP
---------------------------------------------------
+UD 12 - Compartición de recursos con NFS
+-----------------------------------------
 
-![ldap](./media/LDAPworm.gif)
+- [Módulo: Implantación de sistemas operativos](#módulo-implantación-de-sistemas-operativos)
+  - [UD 12 - Compartición de recursos con NFS](#ud-12---compartición-de-recursos-con-nfs)
+  - [Instalación y configuración del servidor NFS](#instalación-y-configuración-del-servidor-nfs)
+  - [Configuración del servidor](#configuración-del-servidor)
+  - [Compartir recursos](#compartir-recursos)
+    - [squash](#squash)
+    - [Permisos sobre las carpetas compartidas](#permisos-sobre-las-carpetas-compartidas)
+    - [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
+- [Configuración del cliente](#configuración-del-cliente)
+    - [Perfiles móviles de usuarios LDAP](#perfiles-móviles-de-usuarios-ldap)
+  - [Compartición de impresoras. CUPS](#compartición-de-impresoras-cups)
+    - [Instalación de CUPS](#instalación-de-cups)
+    - [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
 
-* [UD 12 - Centralización de la información con LDAP](#ud-12---centralización-de-la-información-con-ldap)
-* [Objetivos](#objetivos)
-* [Conceptos clave](#conceptos-clave)
-* [Introducción a LDAP](#introducción-a-ldap)
-* [Los objetos del directorio](#los-objetos-del-directorio)
-  * [Instalación y configuración](#instalación-y-configuración)
-  * [Configuración desde la terminal](#configuración-desde-la-terminal)
-  * [LDAP Account Manager](#ldap-account-manager)
-  * [phpldapadmin y otros](#phpldapadmin-y-otros)
-  * [Otras herramientas](#otras-herramientas)
-* [Buscar elementos del directorio](#buscar-elementos-del-directorio)
-* [Modificar entradas del directorio](#modificar-entradas-del-directorio)
-* [Borrar entradas del directorio](#borrar-entradas-del-directorio)
-* [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
-  * [Instalación cliente Debian 11 Bullseye](#instalación-cliente-debian-11-bullseye)
-  * [Instalación en el cliente](#instalación-en-el-cliente)
-  * [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
-* [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
-  * [Configuración del servicio NSS](#configuración-del-servicio-nss)
-  * [Configuración de PAM](#configuración-de-pam)
-  * [Ajustes de la configuración](#ajustes-de-la-configuración)
-  * [Perfiles móviles](#perfiles-móviles)
-* [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
-  * [Configurar SSSD](#configurar-sssd)
-* [Proyecto](#proyecto)
-* [Bibliografía](#bibliografía)
-
-Introducción
-============
-
-Objetivos
----------
-
-Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
-
-* Implementar dominios.
-* Administrar cuentas de usuario y cuentas de equipo.
-* Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
-* Crear y administrar grupos.
-* Organizar los objetos del dominio para facilitar su administración.
-* Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
-* Incorporar equipos al dominio.
-* Bloquear accesos no autorizados al dominio.
-
-Conceptos clave
----------------
-
-Los conceptos más importantes de esta unidad son:
-
-* LDAP
-* Configuración de un servidor LDAP
-* Administración del directorio
-* Configuración de un cliente LDAP
-
-## Introducción a LDAP
+## Instalación y configuración del servidor NFS
 
 
-LDAP son las siglas de *Lightweight Directory Access Protocol* (Protocolo Ligero de Acceso a Directorios) y es un protocolo cliente-servidor que permite el acceso a un servicio de directorio ordenado y distribuido para buscar información en la red.
+Para compartir directorios entre equipos de la red tenemos varias opciones. El protocolo **NFS** es el método utilizado como nativo en GNU/Linux. Esta opción es adecuada cuando todos los equipos que forman parte de la red utilizan el sistema GNU/Linux. Otra posibilidad es utilizar el protocolo de archivos compartidos utilizado en sistemas Microsoft llamado **SMB/CIFS** e implementado para sistemas GNU/Linux como **Samba**. La ventaja de utilizar **Samba** se que pueden acceder a los recursos compartidos con un cliente GNU/Linux o Windows.
 
-Un directorio es una base de datos especial donde las consultas son frecuentes pero las actualizaciones no tanto. Sus datos son objetos que tienen atributos y están organizados de forma jerárquica. Un ejemplo sería el directorio telefónico, que consiste en una serie de nombres (de personas y empresas) que están ordenados alfabéticamente por poblaciones, y cada nombre tiene como atributos una dirección y un número de teléfono.
+**NFS** (*Network File System*) es un protocolo para sistemas de archivos distribuidos en una red de área local y posibilita que diferentes sistemas conectados a una misma red accedan a ficheros remotos cómo si se tratara de locales. El protocolo **NFS** está incluido por defecto en la mayoría de distribuciones Linux y también en los sistemas OSX de Apple y algunas versiones de Windows (como Windows 8 Enterprise).
 
-El directorio se organiza como un árbol y tiene una entrada para cada objeto que almacena. Cada entrada consta de un conjunto de atributos y un atributo tiene un nombre (el tipo de atributo) y uno o más valores.
+El ordenador que actúa como servidor **exporta** ciertos directorios de su sistema de archivos para que los clientes tengan acceso a ellos. Para poder acceder a los archivos remotos, los clientes deben montar cada directorio exportado por el servidor en algún punto de su sistema de archivos (igual que hace con las particiones de su disco).
 
-LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentificació centralizada de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
+## Configuración del servidor
 
-Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Algunas de las más usadas son:
+El paquete a instalar en el servidor es **nfs-kernel-server**. También se instalará el paquete **nfs-common**. El servicio **nfs-kernel-server** arranca dos demonios:
 
-* **Active Directory**: es la implementación que utiliza Microsoft para sus dominios
-* **openLDAP**: es una implementación libre y es la más usada en sistemas GNU/Linux
-* Otras: Apache DS, Oracle Internet Directory, Novell Directory Services, etc.
+* **nfsd**: es el encargado de procesar las peticiones de los clientes para acceder a los ficheros exportados.
+* **mountd**: se encarga de las peticiones de montaje de los sistemas de archivos NFS por parte de los clientes.
 
-## Los objetos del directorio
+El fichero e que se configuran los directorios a exportar es **/etc/exports**. Sólo se pueden exportar directorios locales y que no se pueden exportar subdirectorios de un directorio exportado (a menos que se encuentran en diferentes dispositivos físicos).
 
-Un directorio es como un árbol cuya raíz es un dominio (un objeto de tipo DC) y del que cuelgan los diferentes objetos. Tenemos todo tipo de objetos pero los más comunes son:
+## Compartir recursos
 
-* **dominio**: es el objeto raíz del directorio
-* **unidades organizativas (ou)**: son contenedores de otros objetos y nos permiten organizar los objetos
-* **usuarios**: representan a personas de nuestra organización
-* **grupos**: son agrupaciones de usuarios
-* otros objetos: equipos, impresoras, ...
+El archivo **/etc/exports** contendrá una línea por cada directorio exportado, en la cual se indicará la ruta completa al mismo seguida por ciertos parámetros que permiten especificar qué ordenadores tienen derecho a montar remotamente el directorio exportado, y con qué tipo de acceso.
 
-Un ejemplo de directorio sería:
+Ejemplo de fichero:
 
-![ldap](./media/ldap.png "ldap")
+![nfs](./media/00-nfs.png)
 
-**LDAP** suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
+dónde /srv/nfs/C1 es la ruta al directorio exportado, a continuación aparece a quien se exporta el recurso (nombres, IPs o rangos de IP -ej. 192.168.1.0/24) y entre paréntesis las opciones que especifica el tipo de acceso. Sólo se pone espacio entre un cliente y otro. Entre las diferentes opciones se pone sólo coma.
 
-Cada objeto tiene un identificador único llamado **Nombre Distinguido** (**Distinguished Name**, **DN**) que consta de su **Relative Distinguished Name** (**RDN**) construido por el atributo identificativo del objeto, seguido del **DN** del objeto padre. Si lo comparamos con ficheros el **RDN** sería como el nombre del fichero y el **DN** su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
+Como cliente podemos poner:
 
-En el esquema anterior, el **DN** del objeto **jnadie** sería:
+* el nombre **DNS** o la **IP** de un equipo
+* comodines (\* y ?) para sustituir todo el nombre o una parte del mismo (como 192.168.221.*, 192:168.*.*o* -en este caso será accesible a todo el mundo)
+* un intervalo de **IPs**, como 192.168.1.30 (las 30 primeras IP de la red 192.168.1.0)
+* si tenemos un servidor **NIS** podemos poner nombre de grupos precedidos por @ (como @clientes_nfs)
 
-    uid=jnadie,ou=Users,dc=example,dc=com
+Respecto a las opciones, las más comunes son (en negrita tenéis la predeterminada):
 
-y su **RDN** sería simplemente:
+* **rw** / **ro**: modo lectura-escritura o sólo lectura
+* **root_squash** / **no_root_squash** / **all_squash**: 
+  * **root_squash** indica que un usuario identificado como root tendrá acceso al directorio compartido sólo con privilegios de usuario anónimo. De esta forma se ha degradado al root al usuario local de privilegios más bajos protegiendo así los archivos en el servidor NFS. Esta opción se conoce también con el nombre de 'aplastamiento del root'. Para el resto de usuarios se intenta conservar su *UID* y *GID* en el servidor.
+  * **no_root_squash** desactiva la opción anterior, es decir, los accesos realizados como root desde el cliente serán también de root en el servidor NFS.
+  * **all_squash** indica que todos los clientes, incluido root, tendrán acceso al directorio con privilegios de un usuario anónimo. No se mantienen los *UID* y *GID* de ningún usuario.
+  * Si se utiliza alguna de las opciones squash podemos indicar cuál el el *UID* y *GID* del usuario con el que se quiere que se acceda, en lugar del anónimo. En este caso hemos de indicar a continuación de la opción squash lo siguiente:*(rw,all_squash,anonuid=1002,anongid=1002)*
+* **anonuid** / **anongid**: permite establecer el uid o el gid del usuario al que realizar el mapeo de las opciones squash para que sea diferente del usuario anónimo.
+* **subtree_check** / **no_subtree_check**: subtree_check comprueba los directorios superiores al compartido para verificar sus permisos. Si no se hace esa comprobación la transferencia de la lista de archivos será más rápida pero menos segura.
+* **fsid=0:** significa que al montarlo en el cliente no hay que poner la ruta a la carpeta en el servidor sino que se comparte desde la raíz. Por ejemplo si queremos compartir /srv/datos/public y ponemos esta opción al montar la carpeta en el cliente pondremos que monte **servidor:/public** y no **servidor:/sv/datos/public**
+* **async**: las escrituras se harán asíncronamente. lo que mejora el rendimiento pero pueden perderse datos si se corta la conexión.
+* **wdelay** / **no_wdelay**: activada permite que no se escriba en disco inmediatamente para mejorar el rendimiento. Tiene que ir con la opción sync.
 
-    uid=jnadie
-
-Habitualmente se utiliza el formato **LDIF** para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una línea:
+Otro ejemplo de fichero **/etc/exports**:
 
 ```bash
-dn: uid=jnadie,ou=Users,dc=example,dc=com
-    uid: jnadie
-    uidNumber: 5012
-    cn: Juan Nadie
-    givenName: Juan
-    sn: Nadie
-    telephoneNumber: +34 888 555 6789
-    telephoneNumber: +34 888 555 1233
-    mail: jnadie@example.com
-    manager: uid=cperez,ou=Jefes,dc=example,dc=com
-    objectClass: inetOrgPerson
-    objectClass: organizationalPerson
-    objectClass: person
-    objectClass: top
+/net *.mi_empresa.com(rw) 
+/srv/compartida 192.168.1.0/255.255.255.0(rw) 192.168.2.0/255.255.255.0(rw)
+/prueba (ro) 
+/home/jperez pc1.mi_empresa.com(rw)
+/datos/ftp/public (ro)
 ```
 
-Como veis, el **DN** se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
+En el ejemplo anterior, el servidor **NFS** exporta cinco directorios:
 
-En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo y después su valor. Algunos nombres de atributo son:
+* **/net**: Accesible desde cualquier computadora del dominio mi_empresa.com, en modo de lectura/escritura (rw = read/write).
+* **/srv/compartida**: Accesible desde cualquier computadora de las redes 192.168.1.0 y 192.168.2.0, en modo de lectura/escritura (rw = read/write).
+* **/prueba**: Accesible desde cualquier equipo, en modo de sólo lectura (ro = read only)
+* **/home/jperez**: Accesible sólo desde la computadora pc1.mi_empresa.com, en modo de lectura/escritura.
+* **/datos/ftp/public**: Accesible desde cualquier computadora (de cualquier dominio), pero en modo de sólo lectura (ro = read only).
 
-* **dn**: Distinguished Name. Siempre está en la primera línea
-* **dc**: Domain Component. Es una parte del dominio. Si hay más de un nivel (lo habitual) habrá más de un atributo de. Por ejemplo www.google.es (3 niveles) se expresaría como dc=www,dc=google,dc=es
-* **cn**: Common Name (ej.: Juan Nadie)
-* **givenName**: nombre de pila (Juan)
-* **sn**: apellidos (Nadie)
-* **ou**: unidad organizativa
-* **object class**: tipo de objeto. En función de su tipo tendrá unos atributos u otros (por ejemplo un objeto persona tendrá nombre apellidos, teléfono, ... mientras que un objeto grupo tendrá nombre, miembros, ...). Los tipos de objetos que tenemos y qué atributos tiene cada tipo viene definido por el **esquema** que estemos usando. Un objeto puede tener más de un tipo (por lo que tendrá los atributos definidos en los esquemas de todos ellos).
-
-### Instalación y configuración
-
-Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio.
-
-Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd** y nos pedirá la siguiente información:
-
-* el nombre del dominio LDAP (si no lo proporcionamos será **nodomain**)
-* el nombre de nuestra organización (es informativo y por eso puede tener espacios u otros caracteres)
-* la contraseña del administrador del dominio
-* el motor de base de datos a utilizar (se recomienda el MDB)
-* si queremos o no que se borre el directorio si desinstalamos el programa
-* si queremos mover la base de datos antigua porque no interfiera con la que se creará ahora. La antigua se moverá a /var/backups
-* si queremos que se pueda usar el protocolo LDAPv2. Sólo lo haremos si tenemos programas o equipos muy antiguos
-
-Esto crea automáticamente el objeto raíz del directorio con el nombre de nuestro dominio y el objeto administrador del dominio (usuario **admin**) con la contraseña proporcionada. Podemos volver a ejecutarlo cuando queramos y se creará un nuevo directorio.
-
-[installLDAP.ogv](./media/installLDAP.ogv)
-
-### Configuración desde la terminal
-
-
-Algunos comandos para trabajar con **LDAP**:
-
-* **slapcat**: muestra todo el contenido del directorio en formato *LDIF*
-* **ldapadd**: permite añadir nuevos nodos al directorio. Sus parámetros más importantes son:
-  * *-D* “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
-  * *-W*: para que nos pida la contraseña en vez de escribirla en la orden
-  * *-f* fichero: nombre del fichero con la información del nodo a crear en formato *LDIF*
-* **ldapdelete**: elimina un objeto del directorio
-* **ldapsearch**: busca objetos en el directorio
-* **ldappasswd**: cambia la contraseña de un usuario
-
-Por ejemplo, para borrar todo nuestro directorio ejecutamos la orden:
+Después de cualquier cambio sobre el archivo **/etc/exports** tenemos que ejecutar la siguiente orden para actualizar la tabla de NFS
 
 ```bash
-    ldapdelete -r -D "dn administrador" -W "dc=nuestroDominio,dc.lan”
+    exportfs -arv
 ```
 
-Para cambiar la contraseña de un usuario:
+(**-a** exporta todos los directorios, **-r** eliminará las entradas antiguas y **-v** nos mostrará el resultado en la consola)
+
+Para reiniciar el servicio **NFS** ejecutamos la orden:
 
 ```bash
-    ldappasswd -D "dn del administrador" -W -s nueva_contraseña "dn del usuario"
+/etc/init.d/nfs-kernel-server restart
 ```
 
-(ATENCIÓN: "*dn administrador*" quiere decir el *dn* de tu administrador: **cn=admin,dc=nuestroDominio,dc=lan**, o el que sea)
-
-Ejemplo: tenemos que crear una **OU** denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una **OU** es su nombre (atributo llamado *ou*) y es un objeto de las clases *top* y *organizationalUnit*. El **RDN** de este tipo de objeto es su único atributo: *ou*.
-
-Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuarios.ldif* con la información de la nuestra OU:
-
-![ldap](./media/01-ou.png "ldap")
-
-A continuación ejecutamos la orden **ldapadd** para crearla:
+Podemos ver los directorios exportados por una máquina con la orden:
 
 ```bash
-    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=es” -W -f OU_usuarios.ldif
+    showmount -e nombre_o_ip_pc
 ```
 
-Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la información.
+### squash
 
-Para eliminar esta **OU** ejecutaremos el comando **ldapdelete**:
+Los permisos que tendrá cada usuario que accede a un directorio compartido desde el cliente son los correspondientes a su **uid** en el servidor. Es decir, si el **uid** del usuario jomuoru en el equipo cliente es el 1000 tendrá sobre las carpetas compartidas en el servidor los permisos que tenga el usuario 1000 del servidor (a menos que hagamos la exportación con la opción **all_squash**).
+
+Por ejemplo, imaginemos un directorio llamado prueba que pertenece al usuario con **uid** 1000 del servidor llamado *vperez* y al grupo con **gid** 1000 llamado profes con permisos 750. Desde el servidor veríamos algo como:
 
 ```bash
-    ldapdelete -D “cn=admin,dc=cipfpbatoi,dc.es” -W “OU=Usuarios,dc=cipfpbatoi,dc.es”
+drwxr-x---  2  vperez  profes  prueba
 ```
 
-Cada tipo de objeto tendrá unos atributos obligatorios y otros opcionales y esto viene definido en el esquema que sigue dicho objeto (indicado por su objectClass). Un objeto puede (y suele) tener varios objectClass por lo que tiene atributos definidos en varios esquemas.
-
-Los principales objetos con que trabajaremos son:
-
-| **Objeto**               | **RDN**            | **Atributos**      | **objectClass**    |
-|---|---|---|---|
-| Unidad <br> organizativa | ou                 | ou: nombre         | organizationalUnit |
-| Grupo | cn | **cn**: nombre del grupo <br> **gidNumber**: gid <br> **memberUid**: uid de los miembros, separados por coma | posixGroup |
-| Usuario | cn o uid | **uid**: login del usuario <br> **uidNumber**: nº id <br> **gidNumber**: nº grupo principal <br> **sn**: apellidos <br> **cn**: nombre para mostrar del usuario <br> **homeDirectory**:ruta de su home <br> **loginShell**: shell del usuario <br> Además podemos especificar muchos más atributos cómo: <br> - **givenName**: nombre <br> - **userPassword**: contraseña <br> - **displayName**: nombre para mostrar <br> - **mail**: su e-mail <br> - **shadowExpire**, **shadowFlag**, **shadowWarning**, **shadowMin**, **shadowMax**, …: opciones de password   | inetOrgPerson <br> posixAccount <br> shadowAccount |
-
-**IMPORTANTE**: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000, nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
-
-Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP **/etc/openldap/schema**. Algunos de los más comunes son:
-
-* /etc/openldap/schema/core.schema
-* /etc/openldap/schema/cosine.schema
-* /etc/openldap/schema/inetorgperson.schema
-* /etc/openldap/schema/nis.schema
-
-Si además vamos a necesitar que el servidor **LDAP** almacene cuentas **Samba** tendremos que asegurarnos que **LDAP** conoce la estructura y los datos necesarios de una cuenta **Samba** mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
-
-### LDAP Account Manager
-
-
-Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramienta (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
-
-Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor **LDAP**.
-
-La configuración inicial puede hacerse desde el entorno gráfico en la opción **LAM configuration**. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
-
-A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el dominio, el dn del administrador y las *OU* que utilizar por defecto para crear nuevos usuarios, grupos y equipos. No hace falta configurar los *UID* y *GID* porque por defecto ya utiliza valores superiores a 10000.
-
-Una vez configurado ya podríamos crear nuestros objetos:
-
-[lam.ogv](./media/lam.ogv)
-
-Tras crear los objetos hacemos un **slapcat** para comprobar que se han creado correctamente:
-
-[slapcat.ogv](./media/slapcat.ogv)
-
-### phpldapadmin y otros
-
-
-Otra herramienta web muy utilizada para administrar el directorio es **phpLDAPAdmin**. Lo instalamos con el paquete del mismo nombre.
-
-Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nuestras necesidades. Este archivo es **/etc/phpldapadmin/config.php**.
-
-Las opciones a modificar son:
-
-* Modificar la base o raíz del Directorio.
-  
-  ```bash
-
-    $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
-  ```
-
-* Configurar el usuario administrador por defecto.
-  
-  ```bash
-    $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
-  ```
-
-* Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos
-  
-  ```bash
-    $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
-  ```
-
-* También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea:
-  
-  ```bash
-    $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
-  ```
-
-Ahora podemos acceder a esta herramienta desde el navegador con **<http://mi_servidor_ldap/phpldapadmin>**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
-
-***ATENCIÓN***: cuando añadimos un usuario desde **phpldapAdmin** utiliza por defecto como *RDN* el *cn* del usuario en vez de la *uid*. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus *objectClass* (*account*, *posixAccount* y *shadowAccount*) y su *RDN* (*userid*, por que **phpldapadmin** denomina así al atributo *uid*).
-
-### Otras herramientas
-
-Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es **Webmin** que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
-
-Otras herramientas (también de software libre como todas las que hemos visto) son **GOsa** o **Web2ldap**.
-
-## Buscar elementos del directorio
-
-Como hemos visto más arriba, la utilidad de línea de comandos que permite realizar búsquedas en el directorio **LDAP** es *ldapsearch*. Se trata de una utilidad con multitud de opciones, pero aquí vamos a hacer un uso básico de ella.
-
-Por ejemplo, podríamos buscar todos los usuarios usando la siguiente sintaxis:
-```bash
-
-ldapsearch -xLLL -b "dc=iso,dc=lan" uid=* sn givenName mail
-
-```
-Parámetros:
-
-- **-x**  indica que usaremos autentificación simple.
-- **-LLL** sirve para que la salida sea simple del tipo LDAPv1.
-- **-b** va seguida del punto del árbol donde debe comenzar la búsqueda. En este caso, dc=iso,dc=lan. Después se incluye la condición que deberán cumplir los objetos buscados. En el ejemplo, cualquier valor (*) para el atributo uid.
-- Por último, se incluye el nombre de los atributos que queremos obtener en el resultado de la consulta.
-
-## Modificar entradas del directorio
-
-El comando que usaremos en este caso es **ldapmodify**, que permite cambiar el contenido de cualquier atributo, añadir atributos nuevos, eliminarlos etc.
-
-Dado que la sintaxis es más compleja nos apoyaremos en un archivo *LDIF* que especifique los cambios que necesitamos realizar. En nuestro caso, el archivo tendrá el siguiente aspecto:
+Ahora exportamos este directorio y lo montamos en el cliente en una carpeta llamada prueba. En dicho cliente el usuario 1000 es juan y el grupo 1000 es alumnos. Al mirar los permisos de dicho directorio veríamos:
 
 ```bash
-  dn: uid=jomuoru,ou=usuarios,dc=iso,dc=lan
-  changetype: modify
-  replace: mail
-  mail: jomuoru@iso.lan
+[drwxr-x---  2  juan  alumnos prueba]
 ```
 
-Como puedes suponer, la primera línea identifica la cuenta en la que realizaremos el cambio. La segunda indica el tipo de operación a realizar, la tercera identifica el atributo y, por último, la cuarta incluye el nuevo valor que debe asignarle.
+Por tanto el usuario juan acaba de adquirir permisos sobre dicho directorio simplemente por tener el mismo uid que tiene el propietario del directorio en el servidor.
 
-Por último, ejecutamos la utilidad **ldapmodify**, indicándole el nombre del archivo donde se encuentran los datos:
+Todos estos problemas desaparecerán al utilizar nuestros usuarios **LDAP** ya que en ellos hemos usado valores de **UID** y **GID** superiores a 5000 y así no coincidirán con ningún usuario local del cliente ni del servidor (con **UID** y **GID** superiores a 1000 o inferiores si son usuarios o grupos del sistema).
+
+Aunque nosotros no vamos a profundizar en las opciones de compartición de **NFS** la versión **NFSv4** sí permite la compartición en función de los usuarios utilizando diversas métodos de autentificación (kerberos con **ACLs** podría ser una).
+
+### Permisos sobre las carpetas compartidas
+
+Como hemos dicho las carpetas aparecerán como pertenecientes al usuario/grupo que en cada cliente coincida con el **uid/gid** del propietario en el servidor. Para evitar esto al crear la carpeta a compartir se suele cambiar su propietario a **nobody/nogroup**:
 
 ```bash
-  ldapmodify -x -D cn=admin,dc=iso,dc=lan -W -f modify.ldif
+ chown nobody:nogroup /srv/compartida
 ```
 
-## Borrar entradas del directorio
+Además si queremos que sea de lectura y escritura compartiremos la carpeta con las opciones **rw** y **all_squash** para que cualquier usuario pueda escribir en ella.
 
-La utilidad que permite eliminar entradas del directorio se llama **ldapdelete**. Para utilizarla, sólo tenemos que aportar los datos del objeto a borrar y los datos de la cuenta administrador que debe permitirlo. La sintaxis será como sigue:
+Sin embargo, si la carpeta que estamos compartiendo es para almacenar los perfiles móviles de los usuarios las opciones con las que la debemos compartir son **rw** y **no_root_squash**. Esto es porque la primera vez que el usuario inicie sesión se crea su carpeta (en este caso en el servidor) y el root del equipo cliente debe cambiar su propietario para que pertenezca al usuario que inicia la sesión para lo que debe hacer un **chown** que sólo root puede ejecutar (por lo que tiene que tener los permisos de root en el servidor que es donde se está guardando la carpeta).
+
+### Compartir recursos gráficamente
+
+Al igual que para **LDAP** tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos *Webmin* que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de **NFS**:
+
+![Webmin](./media/01-nfs.png "Webmin")
+
+Desde aquí podemos modificar la configuración de los directorios exportados o exportado nuevos:
+
+![Webmin](./media/02-nfs.png "Webmin")
+
+Configuración del cliente  
+=========================
+
+En el cliente el paquete a instalar es el ***nfs-common***.
+
+Los directorios remotos se montan localmente del mismo modo que cualquier otro sistema de archivos: manualmente por medio del comando **mount**, o añadiéndolos a **/etc/fstab** para se montan automáticamente al iniciar el sistema operativo.
+
+En los dos casos, la sintaxis para especificar un directorio remoto es la siguiente:
 
 ```bash
-  ldapdelete -x -W -D 'cn=admin,dc=iso,dc=lan' "uid=jomuoru,ou=usuarios,dc=iso,dc=lan"
+nombre_del_host:directorio_remoto
 ```
 
-## Configuración del cliente LDAP
-
-Una vez instalado y configurado el servidor **LDAP**, nos queda configurar nuestros clientes de red para que utilicen el servidor para autentificar los usuarios.
-
-De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. En temas posteriores (integración de sistemas heterogéneos) ya veremos como hacerlo para clientes Windows.
-
-En el proceso de validación de los usuarios en el cliente mediante un servidor **LDAP** van a participar dos servicios:
-
-* **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero *PAM* permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas **GNU/Linux** (login, ssh, su, ...) utilizan *PAM* y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
-* **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**. Para que un usuario pueda entrar en el sistema _PAM_ debe autorizarlo (si cumple los requisitos, por ejemplo que usuario+contraseña son correctos) pero se necesita más información del mismo, como a qué grupos pertenece o cuál es la ruta de su carpeta personal. Esta información la proporciona _NSS_. En el fichero `/etc/nsswitch.conf` es donde configura _NSS_ dónde debe buscar la información de los usuarios, grupos, etc.
-
-
-### Instalación cliente Debian 11 Bullseye
-
-En este apartado describimos el procedimiento para realizar la instalación/configuración utilizando el paquete **libpam-ldapd**. **libpam-ldapd** es una alternativa más nueva al **libpam-ldap** original. **libpam-ldapd** usa el mismo backend (**nslcd**) que **libnss-ldapd** y, por lo tanto, también comparte el mismo archivo de configuración (*/etc/nslcd.conf*) para los parámetros de conexión **LDAP**.
-
-Instalación del paquete:
-
-![libpam-ldapd](media/1-ldapd.png)
-
-Configuración de la dirección del servidor ldap:
-
-![libpam-ldapd](media/2-ldapd.png)
-
-Configuración de **nslc** con el DN de nuestro dominio:
-
-![libpam-ldapd](media/3-ldapd.png)
-
-Configurando la fuente de datos LDAP para los diferentes servicios: 
-
-![libpam-ldapd](media/4-ldapd.png)
-
-Ahora podemos ejecutar el comando: 
+Por ejemplo, para montar manualmente el directorio */net* del equipo *srvNFS* en */usr/local* del equipo cliente, se tiene que ejecutar el siguiente comando:
 
 ```bash
-
-pam-auth-update
+mount -t nfs srvNFS:/net /usr/local
 ```
 
-y seleccionamos la opción *Create home directory*. Para que cree el directorio del usuario al validarse. 
-
-![libpam-ldapd](media/5-ldapd.png)
-
-### Instalación en el cliente
-
-Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
-
-* **libnss-ldap**: permite al servicio **NSS** obtener información administrativa a través de un servidor **LDAP**
-* **libpam-ldap**: permite al servicio **PAM** utilizar un servidor LDAP para autenticar usuarios
-* **nscd**: este servicio implementa una caché para acelerar el uso de LDAP y así evitar continuas consultas al servidor por parte del cliente. Este paquete no es necesario, pero sí recomendable.
-
-La instalación de este paquetes también nos seleccionará otros adicionales cómo: **auth-client-config,** **ldap-auth-client** y **ldap-auth-config**.
-
-### Configuración del cliente ldap
-
-La instalación de los paquetes finaliza con la configuración del módulo de autentificació de ldap (**ldap-auth-config**). La configuración que hacemos se almacena en el fichero **/etc/ldap.conf**. Este se utiliza tanto por el servicio de autenticación PAM como por el servicio de nombres NSS. Si posteriormente tenemos que cambiar esta configuración podemos editar el fichero o, más fácilmente reconfigurarlo con el comando **dpkg-reconfigure ldap-auth-config**.
-
-La configuración de este paquete nos pide la siguiente información:
-
-* el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para evitar problemas con el DNS. (NOTA: utilizar el protocolo ldap, no ldapi)
-* El DN de nuestro dominio
-* la versión del protocolo LDAP a utilizar (la misma que configuramos en el servidor)
-* si queremos que las contraseñas se guarden en un archivo independiente al que sólo root tenga acceso (como pasa con /etc/shadow)
-* si queremos que sea obligatorio identificarse para hacer consultas al directorio
-* el DN del administrador de LDAP (el que configuramos en el servidor)
-* su contraseña
-
-## Configuración de NSS y PAM
-
-### Configuración del servicio NSS
-
-El siguiente paso es configurar el servicio NSS editando el fichero ***/etc/nsswitch.conf***:
-
-![ldap](./media/02-nsswitch.png "ldap")
-
-En este fichero se configura dónde se debe buscar la información de los diferentes tipos de objetos, entre ellos:
-
-* Los nombres de usuario, especificados en el archivo de configuración con la línea que empieza por **passwd**
-* Los nombres de grupos, especificados en el archivo de configuración con la línea que empieza por **group**
-* Las contraseñas de usuario, especificadas en el archivo de configuración con la línea que empieza por **shadow**
-
-Indicaremos que la información sobre nombres de usuario, grupos y contraseñas primero se busque en los archivos locales (files o compat) y después mediante el servicio LDAP (ldap). Este orden es importante puesto que si se busca primero en LDAP, si por algún motivo no se puede acceder al servidor LDAP para realizar la validación, no sería posible acceder al equipo.
-
-Por lo tanto las líneas en nuestro archivo ***/etc/nsswitch.conf*** quedarían como muestra la imagen anterior.
-
-Respecto a las máquinas (hosts) primero las busca en el fichero local (***/etc/hosts***) y si no las encuentra pregunta al DNS. Esto no es necesario cambiarlo.
-
-Podemos probar que NSS está funcionando con la orden **getent** (primeramente tendremos que reiniciar el cliente porque tengan efecto los cambios hechos):
+Si queremos que el montaje se realice automáticamente al iniciar el cliente se tiene que añadir la siguiente línea en */etc/fstab*:
 
 ```bash
-    getent passwd
+srvNFS:/net /usr/local nfs rw,auto,noatime,nolock,bg,nfsvers=3,intr,actimeo=1800,rsize=8192,wsize=8192 0 0
 ```
 
-Esta orden mostrará por pantalla la información de usuarios contenida en el archivo ***/etc/passwd***. Si funciona NSS, además de la lista de usuarios locales, mostrará información de los usuarios creados en el directorio LDAP del servidor.
+Algunas opciones de mount son:
 
-Podemos consultar el logs del sistema referentes a validación, ***/var/log/auth.log***, para comprobar y ver posibles problemas.
+* **bg**: realiza el montaje en background. Si el servidor NFS no está disponible, el cliente reintentará montar el directorio posteriormente.
+* **ro/rw**: monta los dispositivo con acceso de sólo lectura o de lectura y escritura respectivamente
+* **async**: permite hacer las operaciones de escritura asíncronamente
+* **auto/noauto**: para que el dispositivo se monto automáticamente al iniciar (o con mount -a) (opción auto) o que se tenga que montar explícitamente (noauto)
+* **user/nouser**: permite que cualquier usuario pueda montar el dispositivo (user) o que sólo pueda hacerlo root (nouser)
+* **rsize=n,wsize=n**: indica la medida de bloque para operaciones de lectura (rsize) y escritura (wsize). El valor por defecto es 1024 pero podemos mejorar el rendimiento subiéndolo a, por ejemplo, 8192
+* **nfsvers=n**: versión de nfs utilizada. Por defecto es la 4 pero si usamos la 3 especificaremos nfsvers=3 (si no lo hacemos funciona igual pero aparecen de propietarios nobody y nogroup en el cliente)
 
-### Configuración de PAM
+**NOTA**: aunque un usuario tenga permisos para escribir en una carpeta compartida con NFS no lo podrá hacer si no los tinen también sobre la carpeta en la cual se monta.
 
-El siguiente paso sería configurar **PAM** para que utilice el servicio proporcionado por **LDAP**. Los archivos de configuración de **PAM** se almacenan en el directorio **/etc/palmo.d**.
+### Perfiles móviles de usuarios LDAP
 
-Podemos configurar **PAM** sin editar manualmente los archivos de configuración con el comando **pam-auth-update**:
+Ya tenemos configurado el directorio **LDAP** de forma que desde cualquier cliente puedo iniciar sesión con cualquier usuario del directorio. Pero su carpeta personal (que incluye su perfil y sus datos) se crea en cada máquina cliente lo cual es un problema si el usuario no tiene un único ordenador cliente asignado.
 
-![ldap](./media/03-pam.png "ldap")
+El siguiente paso es que las carpetas personales de los usuarios móviles se creen en el servidor y se montan automáticamente en los clientes. Los pasos a hacer son:
 
-Tenemos que asegurarnos que tenemos marcada la opción de **LDAP Authentication** (también la de *Unix* que es la autenticación por defecto). Lo normal es que esto se haya configurado automáticamente al instalar los paquetes.
+  - Crear una carpeta en el servidor donde almacenar los **homes** de los usuarios móviles y compartirla con **NFS** de lectura y escritura para todos los clientes. Por ejemplo, **/home/movil**. Cambia el propietario de la carpeta a *nobody:nogroup*. Exporta la carpeta:
 
-Para probar que **PAM** funciona correctamente podemos utilizar el comando **pamtest** (se encuentra en el paquete **libpam-dotfile** que tendremos que instalar, pero atención que se encuentra en los repositorios universe).
+   ```bash
+   /home/movil        *(rw,sync,no_root_squash,no_subtree_check)
+   ```
 
-Es necesario especificar 2 parámetros: el servicio para el que queremos probar la autenticación mediante **PAM** y el usuario que queremos validar en el servicio. Por ejemplo, para comprobar la validación del usuario *batoi* a través del servicio de cambio de contraseñas se ejecutaría la orden:
+  - Montar automáticamente en los clientes el directorio con las carpetas personales de los usuarios móviles que hemos exportado anteriormente. Para ello crearemos una carpeta **/home/movil** en el cliente donde montaremos de forma automática la carpeta del servidor *NFS*.
+   
+ ![perfilesm](./media/movil0.png)
 
-```bash
-    pamtest passwd batoi
-```
+  - Asegurar de que el **homeDirectory** de los usuarios del directorio **LDAP** es el correcto (*/home/movil/usuario*)
+  - Si hemos configurado **LDAP** para que se creen automáticamente las carpetas de los usuarios la primera vez que inician sesión no será necesario hacer nada más. Si no habrá que crear dentro de */home/movil* manualmente la carpeta para cada usuario. Además tenemos que copiar dentro del perfil por defecto y ponerle el propietario y permisos adecuados:
+    1. Creamos la carpeta: ***mkdir /home/movil/jsegura***
+    2. Copiamos el perfil: ***cp /etc/skel/.* /hombre/movil/jsegura***
+    3. Cambiamos el propietario y el grupo: ***chown 5001:5000 /home/movil/jsegura***
+    4. Asignamos los permisos adecuados: ***chmod -R 750 /home/movil/jsegura***
 
-Podemos probar otros servicios como *login* o *ssh*. Una vez configurado el servicio.
+![perfilesm](media/movil1.png)
 
-En cualquier caso también podemos probar que el usuario se autentifica correctamente iniciando sesión con este usuario desde la terminal (desde el entorno gráfico aún no podrá iniciar sesión porque no se puede crear su perfil de usuario).
-
-### Ajustes de la configuración
-
-
-Todavía quedan para hacer un par de ajustes para mejorar el funcionamiento de **LDAP** en el cliente.
-
-Tendríamos que hacer que la primera vez que un usuario del directorio **LDAP** se valida en un equipo cliente se cree de forma automática su directorio home en el equipo con un perfil por defecto igual que sucede la primera vez que iniciamos sesión con un usuario local.
-
-Para eso vamos a modificar el archivo de configuración de *PAM* **/usr/share/pam-configs/ldap** y añadiremos como primera línea del bloque *Session* la siguiente línea:
-
-```bash
-    required        pam\_mkhomedir.so skel=/etc/skel umask=0022
-```
-
-![ldap](./media/06-config.jpg "ldap")
-
-En ella especificamos:
-
-* que se cree el directorio del usuario la primera vez que inicia sesión
-* que se copie en el mismo el perfil por defecto (que se encuentra en ***/etc/skel***. Este perfil incluye archivos ocultos (como .profile, bash_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
-* que se establezca su *máscara* en 0022, lo que dará *permisos* 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos *umask 0027*
-
-Si no hacemos esto, tendríamos que crear manualmente en todos los equipos clientes los directorios home de todos los usuarios **LDAP**.
-
-Otro aspecto que es aconsejable ajustar es que la configuración por defecto no permite que un usuario LDAP puede cambiar su contraeña desde el equipo cliente con la orden *passwd*.
-
-Para permitirlo tenemos que quitar el parámetro *use_authtok* en la línea donde aparece en la sección *Password* en el mismo archivo, **/usr/share/pam-configs/ldap**:
-
-![ldap](./media/05-config.jpg "ldap")
-
-La línea:
-
-```bash
-
-    [success=end user_unknow=ignore default=die] pam_ldap.so use_authtoktry_first_pass
-```
-
-pasaría a:
-
-```bash
-    [success=end user_unknow=ignore default=die] pam_ldap.so try_first_pass
-```
-
-Para que estos cambios tengan efecto debemos volver a ejecutar el comando
-
-```bash
-    pam-auth-update
-```
+## Compartición de impresoras. CUPS  
 
 
-### Perfiles móviles
+CUPS es el sistema de impresión común de **Unix** (Common Unix Printing System) y proporciona las tareas básicas de gestión de impresión y de colas de impresión. Está basado en el Internet Printing Protocolo (**IPP**).
 
-Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
+### Instalación de CUPS
 
-## Configuración del cliente LDAP con SSSD
+El paquete a instalar (aunque posiblemente ya esté instalado en la mayoría de sistemas) es ***cups*** e instala un servicio con el mismo nombre. El registro se guarda en diferentes ficheros dentro del directorio **/var/log/cups/**.
 
-En lugar de utilizar sólo estas librerías podemos utilizar el _demonio_ _**SSSD**_ para autenticar e identificar un usuario contra un servidor LDAP remoto (incluyendo Microsoft _Active DIrectory_). Este sistema incluye sus propios módulos PAM y NSS diferentes de los _"standalone"_ que hemos visto en el apartado anterior. 
+Para su administración incluye un gestor web en el puerto *631*. Por defecto cups está configurado para acceder a este gestor sólo desde el equipo local. Para poder acceder desde otros equipos (como tenemos que hacer nosotros porque en el servidor no tenemos entorno gráfico ni navegador) tenemos que cambiar la configuración en el fichero **/etc/cups/cupsd.conf**:
 
-Una ventaja de SSSD sobre las librerías PAM y NSS _standalone_ es que SSSD guarda una caché (en `/var/lib/sss/db`) que permite acceder al cliente en caso de que el servidor LDAP no esté activo en ese momento.
+![CUPS](./media/03-cups.png "CUPS")
 
-### Configurar SSSD
-La configuración se realiza en `/etc/sssd/sssd.conf` (donde podemos configurar valores por defecto) y en los ficheros `.conf` que hay dentro del directorio  `/etc/sssd/sssd.conf.d` que se cargan después y por tanto sobreescriben sus valores. Todos estos ficheros deben ser propiedad de root y sólo él debe tener acceso.
+En la primera línea indica que podemos acceder desde cualquier equipo. Por defecto pone localhost y nosotros podríamos también poner una IP o una red (por ejemplo 192.168.100.*:631).
 
-El fichero de configuración debe tener las secciones (más información en `man sssd.conf`):
-- **[sssd]**: debe al menos incluir una opción **domains** con una lista (separada por comas) de los distintos proveedores de autenticación/identidad (se les llama _domains_)
-- **[domain/nombre_del_dominio]**: para cada proveedor hay que incluir una sección donde se configura, al menos:
-  - **auth_provider**: proveedor de autenticación de este dominio (ldap, krb5, ad, ...)
-  - **id_provider**: proveedor de identidad (ldap, archivos, ...)
-  - **access_provider**: proveedor de acceso, que define qué usuarios tienen acceso al sistema (aunque se identifique correctamente si no cumple los criterios de este proveedor no podrá acceder). Los valores permitidos son ldap, krb5, ad, simple -permite si está en la lista-, denegar -siempre deniega-, permitir -siempre permite-, ...
-  - **chpass_provider**: quién se encarga de los cambios de contraseña (ldap, krb5, ad, none -no se permite-, ...)
-  - otras líneas dependiendo de las opciones elegidas. Podemos obtener más información en `man sssd-ldap`, `man sssd-krb5`, `man sssd-ad`, ...
-- **[pam]**: configuraciones adicionales de PAM (por ejemplo límite de días que permitirá el acceso _offline_ sin el servidor LDAP disponible)
-- **[nss]**: configuraciones adicionales de NSS (como excluir usuarios o grupos del sistema)
+Las otras 2 líneas modificadas habilitan el acceso al servidor y en las páginas de administración del mismo. Aquí también podemos permitir acceder desde una IP concreta, una red o desde cualquier cliente (cómo en nuestro caso).
 
-Ejemplo de configuración para un servicio LDAP en el dominio acme.lan:
-```text
-[sssd]
-domains=ldapacme
-[domain/ldapacme]
-auth_provider=ldap
-id_provider=ldap
-ldap_uri=ldaps://ldapserver.acme.lan
-ldap_search_base=dc=acme,dc=lan
-ldap_tls_reqcert=allow
-```
+Ahora ya podemos acceder a *CUPS* desde nuestro cliente:
 
-NOTA: la última línea es si el servidor usa un certificado autofirmado para TLS
+![CUPS](./media/04-cups.png "CUPS")
 
-<small>Fuente: [https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd](https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd)</small>
+Desde esta aplicación podemos administrar y mantener el servicio de impresión. Algunas tareas requieren validarse con un usuario que tenga permisos para administrar el servicio. Por defecto los usuarios que pueden administrar el servicio de impresión tiene que pertenecer al grupo **lpadmin**.
 
-## Proyecto
+En la pestaña "Administración" podemos acceder a todas las operaciones de gestión, por ejemplo:
 
+* Añadir una nueva impresora
+* Administrar impresoras
+* Administrar clases
+* Administrar trabajos de impresión
 
-* [Proyecto de clase](./proyecto.md)
+![CUPS](./media/05-cups.png)
 
-## Bibliografía
+En la parte derecha de la ventana de administración podemos encontrar algunas opciones importantes:
 
+* Botón *Editar archivo de configuración". Para acceder directamente al archivo de configuración de CUPS denominado */etc/cups/cupsd.conf*.
+* Botón *Ver archivo de registro de accesos*. Para acceder directamente al archivo de registro de CUPS */var/log/cups/access_log*. En este archivo se guardan todas las conexiones realizadas a CUPS.
+* Botón "Ver archivo de registro de errores". Botón que visualiza el archivo de registro */var/log/cups/error_log* donde se guardan todos los errores producidos en CUPS.
 
-* [https://wiki.debian.org/LDAP/PAM](https://wiki.debian.org/LDAP/PAM)
-* [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
-* [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
-* [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
-* [Autenticación centralizada mediante OpenLDAP](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
-* [Gentoo Linux](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
-* [https://wiki.debian.org/LDAP](https://wiki.debian.org/LDAP)
-  
-Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+Por último, desde esta ventana se puede configurar algunos aspectos del funcionamiento de **CUPS** como permitir compartir impresoras, mostrar impresoras compartidas, u otra opción bastante interesante como permitir administración remota.
+
+Para que CUPS funcione como servidor de impresión tiene que marcarse la opción "*Compartir impresoras conectadas a este sistema*".
+
+Para añadir una nueva impresora el asistente va preguntando todo lo necesario. Lo primero que nos pregunta es como se conecta la impresora a nuestro servidor. Lo más habitual es que la impresora se detecte automáticamente, y ya tendremos las opciones correctas marcadas por defecto. Si esto no pasa (es lo que nos pasará a nosotros porque estamos instalando una impresora inventada) tendremos que contestar como se conectará nuestra impresora:
+
+![CUPS](./media/06-cups.png)
+
+* Si es una impresora local elegiremos el puerto utilizado en la parte de arriba (opciones rojas).
+* Si es una impresora de red elegiremos el protocolo a utilizar en la parte de bajo (opciones azules): el protocolo nativo de CUPS es ipp (por defecto en el puerto 631) pero si nuestra impresora no soporta este protocolo elegiremos AppSocket (por defecto funciona sobre el puerto 9100).
+
+Respecto a las clases son el equivalente a los grupo de impresoras de Windows. La principal diferencia es que aquí tenemos que instalar cada impresora del grupo por separado (pueden ser de diferente marca al contrario que en Windows) y después creamos la clase.
+
+Para obtener más información de como instalar y configurar las impresoras podemos consultar la página oficial del CUPS en [http://www.cups.org]([http://www.cups.org])
+
+### Acceso a una impresora desde un equipo cliente
+
+El uso de CUPS en el servidor facilita la configuración de impresoras en los equipos cliente puesto que prácticamente no se requiere ninguna tarea de configuración.
+
+Por defecto, la mayor parte de las distribuciones GNU/Linux de escritorio incluyen CUPS como gestor de impresión, de forma que cuando detectan un servidor de impresión a la red con impresoras compartidas, estas se hacen accesibles inmediatamente en los equipos clientes.
+
+Tampoco tenemos que instalar ningún driver puesto que estos están centralizados en el servidor de impresión.
+
+Además del acceso web a la configuración y administración de CUPS, también han aplicaciones integradas en los diferentes escritorios (por ejemplo system-config-printer en el escritorio GNOME o KDE Print):
+
+![CUPS](./media/07-cups.png)
+
+Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](<http://creativecommons.org> licenses by-nc-sa/4.0/)

@@ -5,6 +5,6 @@ En este bloque veremos cómo gestionar la red informática de una empresa utliza
 
 El bloque está compuesto por 3 unidades de trabajo:
 
-- [UD 11 - Instalación y configuración de un servidor](./ud11): en esta unidad veremos cómo instalar y configurar diversos servidores.
-- [UD 12 - Centralización de la información con LDAP](./ud12): crearemos un dominio y en él diferentes usuarios, grupos, etc.
-- [UD 13 - Compartición de recursos con NFS](./ud13): compartiremos carpetas e impresoras y estableceremos los permisos de acceso.
+- [UD 10 - Instalación y configuración de un servidor](./ud10): en esta unidad veremos cómo instalar y configurar diversos servidores.
+- [UD 11 - Centralización de la información con LDAP](./ud11): crearemos un dominio y en él diferentes usuarios, grupos, etc.
+- [UD 12 - Compartición de recursos con NFS](./ud12): compartiremos carpetas e impresoras y estableceremos los permisos de acceso.

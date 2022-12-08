@@ -1,701 +1,559 @@
 Módulo: Implantación de Sistemas Operativos
 ============================================
 
-UD 11 - Instalación de un servidor con software libre
------------------------------------------------------
+UD 11 - Centralización de la información con LDAP
+--------------------------------------------------
+
+![ldap](./media/LDAPworm.gif)
 
 - [Módulo: Implantación de Sistemas Operativos](#módulo-implantación-de-sistemas-operativos)
-  - [UD 11 - Instalación de un servidor con software libre](#ud-11---instalación-de-un-servidor-con-software-libre)
+  - [UD 11 - Centralización de la información con LDAP](#ud-11---centralización-de-la-información-con-ldap)
 - [Introducción](#introducción)
   - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-- [Planificación de la instalación](#planificación-de-la-instalación)
-- [Sistemas de archivo y particionamiento](#sistemas-de-archivo-y-particionamiento)
-- [Instalación](#instalación)
-- [Finalización de la instalación](#finalización-de-la-instalación)
-- [Configuración básica del servidor](#configuración-básica-del-servidor)
-    - [Nombre del equipo](#nombre-del-equipo)
-    - [Gestión usuarios y grupos](#gestión-usuarios-y-grupos)
-  - [***/etc/passwd***](#etcpasswd)
-  - [***/etc/group***](#etcgroup)
-  - [***/etc/shadow***](#etcshadow)
-- [Utilidades](#utilidades)
-- [Servicios](#servicios)
-- [Red](#red)
-- [Repositorios](#repositorios)
-- [Instalación de software](#instalación-de-software)
-    - [Paquetes rpm](#paquetes-rpm)
-- [Discos y particiones](#discos-y-particiones)
-- [RAID](#raid)
-- [LVM](#lvm)
-- [ACL](#acl)
-- [Cuotas](#cuotas)
-- [Programar tareas](#programar-tareas)
-- [Acceso remoto](#acceso-remoto)
-- [Retroalimentación](#retroalimentación)
-    - [Elección del sistema](#elección-del-sistema)
-    - [Planificación de la instalación](#planificación-de-la-instalación-1)
-    - [Creación de la máquina virtual](#creación-de-la-máquina-virtual)
+  - [Introducción a LDAP](#introducción-a-ldap)
+  - [Los objetos del directorio](#los-objetos-del-directorio)
     - [Instalación y configuración](#instalación-y-configuración)
-    - [Documentar la instalación](#documentar-la-instalación)
-    - [Ejemplo de instalación y configuración de la máquina CentOS](#ejemplo-de-instalación-y-configuración-de-la-máquina-centos)
-      - [Configurar la red](#configurar-la-red)
-    - [Instalación de Debian/Ubuntu](#instalación-de-debianubuntu)
-      - [Configuración inicial de las particiones](#configuración-inicial-de-las-particiones)
-      - [Configuración de la red](#configuración-de-la-red)
-      - [Creación de las particiones para datos](#creación-de-las-particiones-para-datos)
-- [Bibliografía](#bibliografía)
+    - [Configuración desde la terminal](#configuración-desde-la-terminal)
+    - [LDAP Account Manager](#ldap-account-manager)
+    - [phpldapadmin y otros](#phpldapadmin-y-otros)
+    - [Otras herramientas](#otras-herramientas)
+  - [Buscar elementos del directorio](#buscar-elementos-del-directorio)
+  - [Modificar entradas del directorio](#modificar-entradas-del-directorio)
+  - [Borrar entradas del directorio](#borrar-entradas-del-directorio)
+  - [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
+    - [Instalación cliente Debian 11 Bullseye](#instalación-cliente-debian-11-bullseye)
+    - [Instalación en el cliente](#instalación-en-el-cliente)
+    - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
+  - [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
+    - [Configuración del servicio NSS](#configuración-del-servicio-nss)
+    - [Configuración de PAM](#configuración-de-pam)
+    - [Ajustes de la configuración](#ajustes-de-la-configuración)
+    - [Perfiles móviles](#perfiles-móviles)
+  - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
+    - [Configurar SSSD](#configurar-sssd)
+  - [Proyecto](#proyecto)
+  - [Bibliografía](#bibliografía)
 
 Introducción
 ============
 
-Objetivos 
+Objetivos
 ---------
 
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 
--   Realizar instalaciones de diferentes sistemas operativos.
--   Aplicar técnicas de actualización y recuperación del sistema.
--   Solucionar incidencias del sistema y del proceso de inicio.
--   Elaborar documentación de soporte relativa a las instalaciones efectuadas y a las incidencias detectadas.
--   Instalar, configurar y verificar protocolos de red
--   Administrar cuentas de usuario y cuentas de equipo.
--   Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
--   Comparar diversos sistemas de archivos y analizado sus diferencias y ventajas de implementación.
--   Describir la estructura de directorios del sistema operativo.
--   Identificar los directorios contenedores de los archivos de configuración del sistema (binarios, órdenes y librerías).
--   Utilizar herramientas de administración de discos para crear particiones, unidades lógicas, volúmenes simples y volúmenes distribuidos.
+* Implementar dominios.
+* Administrar cuentas de usuario y cuentas de equipo.
+* Centralizar la información personal de los usuarios del dominio mediante el uso de perfiles móviles y carpetas personales.
+* Crear y administrar grupos.
+* Organizar los objetos del dominio para facilitar su administración.
+* Utilizar máquinas virtuales para administrar dominios y verificar su funcionamiento.
+* Incorporar equipos al dominio.
+* Bloquear accesos no autorizados al dominio.
 
 Conceptos clave
 ---------------
 
 Los conceptos más importantes de esta unidad son:
 
--   La red informática
--   Arquitectura cliente/servidor
--   Principales sistemas operativos de servidor
+* LDAP
+* Configuración de un servidor LDAP
+* Administración del directorio
+* Configuración de un cliente LDAP
 
-Conocimiento previo
--------------------
+## Introducción a LDAP
 
-Antes de comenzar esta unidad de trabajo el alumno debería saber:
 
--   cuáles son los sistemas operativos de servidor más utilizados en la arquitectura PC
--   cómo utilizar software de virtualización para crear máquinas virtuales
--   gestionar unidades de almacenamiento y sus particiones
--   cuáles son los sistemas de archivo utilizados por los sistemas GNU/Linux
--   cómo montar particiones en sistemas GNU/Linux
--   cómo utilizar la terminal para realizar tareas básicas en una máquina
+LDAP son las siglas de *Lightweight Directory Access Protocol* (Protocolo Ligero de Acceso a Directorios) y es un protocolo cliente-servidor que permite el acceso a un servicio de directorio ordenado y distribuido para buscar información en la red.
 
-Planificación de la instalación
-===============================
+Un directorio es una base de datos especial donde las consultas son frecuentes pero las actualizaciones no tanto. Sus datos son objetos que tienen atributos y están organizados de forma jerárquica. Un ejemplo sería el directorio telefónico, que consiste en una serie de nombres (de personas y empresas) que están ordenados alfabéticamente por poblaciones, y cada nombre tiene como atributos una dirección y un número de teléfono.
 
-Al igual que vimos al hablar de los servidores en Windows, el primer paso es realizar un análisis del sistema para determinar si necesitamos montar una red de tipo cliente/servidor.
+El directorio se organiza como un árbol y tiene una entrada para cada objeto que almacena. Cada entrada consta de un conjunto de atributos y un atributo tiene un nombre (el tipo de atributo) y uno o más valores.
 
-En caso afirmativo habremos de decidir qué servidor es el que mejor se adapta a nuestras necesidades, teniendo en cuenta nuestros recursos tanto económicos como humanos. De todo esto no vamos a explicar nada porque todo lo visto en la parte de Windows es también aplicable aquí (planificación, requisitos, ...).
+LDAP puede usarse para muchas cosas. Nosotros lo usaremos para realizar la autentificació centralizada de los usuarios de nuestra red (entre otras cosas almacenaremos la información de autenticación: usuario y contraseña) pero podría usarse para gestionar libretas o calendarios compartidos, gestionar una infraestructura de clave pública (PKI), ...
 
-Si nuestra elección es un servidor de software libre tenemos muchas opciones diferentes y habremos de elegir la más adecuada a nuestras circunstancias. Entre las más utilizadas se encuentran:
+Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Algunas de las más usadas son:
 
--   **Debian**: es uno de los sistemas más utilizados por ser de los más eficientes en la gestión de los recursos del sistema. En caso de decantarnos por esta distribución deberemos escoger qué versión instalar. Para un servidor la opción recomendada es la versión estable (en la actualidad la versión 11 llamada **Bullseye**) aunque, en función de nuestras necesidades,  también podríamos decantarnos por la versión testing (actualmente la 12 llamada **Bookworm**). 
-  
-  ![Bullseye](imgs/bullseye.jpg)
-  
--   **Ubuntu Server**: también es muy utilizada y se trata de una distribución específica para servidores (o sea, que en la imagen de la misma se incluyen paquetes que suelen usarse en servidores en vez de paquetes de clientes). En este caso es más que recomendable instalar la última versión **LTS** que tiene soporte para 5 años ya que en caso de instalar una versión "normal" deberemos estar actualizando la versión de nuestro servidor cada 6 meses. En la actualidad la versión LTS és la 20.04 de nombre (**Focal Fossa**).
--   **Cent OS**: es un fork de RHEL y desde 2014 cuenta con el apoyo de Red Hat. Se trata de una distribución muy utilizada al estar basada en la Red Hat Enterprise Linux que es muy robusta. La versión actual es la 8
--   Alguna distribución de pago, como **RHEL** o **SuSE Linux Enterprise Server**: en este caso contamos con el plus del soporte ofrecido por la empresa que mantiene el sistema. El precio de las licencias suele ser sensiblemente inferior al de Windows Server.
+* **Active Directory**: es la implementación que utiliza Microsoft para sus dominios
+* **openLDAP**: es una implementación libre y es la más usada en sistemas GNU/Linux
+* Otras: Apache DS, Oracle Internet Directory, Novell Directory Services, etc.
 
-Una vez elegido el sistema a instalar deberemos comprobar que el equipo sobre el que vamos a instalarlo cumple holgadamente con sus requisitos técnicos. En el caso del software libre estos requisitos dependerán de muchas cosas, especialmente del entorno gráfico que instalaremos ya que los requerimientos cambian mucho de un entorno de escritorio a otro. En caso de no instalar entorno gráfico (que es lo que nosotros haremos) los requisitos del sistema serán muy inferiores.
+## Los objetos del directorio
 
-Sistemas de archivo y particionamiento
-======================================
+Un directorio es como un árbol cuya raíz es un dominio (un objeto de tipo DC) y del que cuelgan los diferentes objetos. Tenemos todo tipo de objetos pero los más comunes son:
 
-Una de las tareas más importantes a la hora de planificar la instalación del servidor es decidir las particiones que haremos y qué sistema de archivos usaremos en cada una.
+* **dominio**: es el objeto raíz del directorio
+* **unidades organizativas (ou)**: son contenedores de otros objetos y nos permiten organizar los objetos
+* **usuarios**: representan a personas de nuestra organización
+* **grupos**: son agrupaciones de usuarios
+* otros objetos: equipos, impresoras, ...
 
-En GNU/Linux siempre usaremos una partición para swap pero, además de ella, podemos usar una única partición para datos y sistema o usar varias particiones. En este caso algunos de los directorios que podríamos montar en particiones diferentes son:
+Un ejemplo de directorio sería:
 
--   **/home**: es donde se crean las carpetas personales de los usuarios. Siempre es recomendable montarlo en una partición diferente.
--   **/srv** o similar: es donde se recomienda que se guarden los datos compartidos en el servidor. También debería estar en su propia partición
--   **/var**: en este directorio se guarda información que puede crecer rápidamente como los logs del sistema, los paquetes que se descargan, etc.
--   **/usr**: aquí es donde se instala la mayoría del software
--   **/tmp**: es donde se guardan los ficheros temporales. Aquí se crean y eliminan ficheros con mucha frecuencia
+![ldap](./media/ldap.png "ldap")
 
-La ventaja de separar muchos directorios en su propia partición es que limitamos los problemas que pudieran haber a esa partición (si /var está en su propia partición y se llena el sistema no se colapsa) pero es difícil calcular el espacio que cada una necesitará en el futuro por lo que podríamos encontrarnos con varias particiones con mucho espacio de sobra mientras alguna se llena. Este inconveniente se puede solucionar usando particiones LVM.
+**LDAP** suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
 
-Lo que sí es importante es separar los datos de la partición del sistema.
+Cada objeto tiene un identificador único llamado **Nombre Distinguido** (**Distinguished Name**, **DN**) que consta de su **Relative Distinguished Name** (**RDN**) construido por el atributo identificativo del objeto, seguido del **DN** del objeto padre. Si lo comparamos con ficheros el **RDN** sería como el nombre del fichero y el **DN** su nombre completo, incluyendo la ruta (que sería el nombre completo del directorio que lo contiene, que es su objeto padre).
 
-Una vez decididas las particiones que haremos hay que decidir el sistema de archivos que tendrá cada una. Podemos elegir un sistema como ReiserFS que es muy eficiente aunque lo más habitual es usar un ext, en concreto la última versión que es **ext4**. Si hay alguna partición a la que tenga que acceder un sistema Windows instalado en esta máquina el sistema de ficheros deberá ser NTFS (pero esto no es nada normal en un servidor).
+En el esquema anterior, el **DN** del objeto **jnadie** sería:
 
-Por último decidiremos si vamos a usar algún nivel de **RAID** y si usaremos o no **LVM** que es un administrador de volúmenes virtuales (similar a los discos dinámicos de Windows). Podemos encontrar más información sobre LVM en:
+    uid=jnadie,ou=Users,dc=example,dc=com
 
--   RAID: [https://es.wikipedia.org/wiki/RAID](https://es.wikipedia.org/wiki/RAID) 
--   [Software RAID](https://cipfpbatoi.github.io/materials/altres/software-raid/)
--   LVM: [http://es.wikipedia.org/wiki/Logical\_Volume\_Manager](http://es.wikipedia.org/wiki/Logical_Volume_Manager)
--   [LMV2](https://cipfpbatoi.github.io/materials/altres/lvm/)
+y su **RDN** sería simplemente:
 
+    uid=jnadie
 
-Instalación
-===========
+Habitualmente se utiliza el formato **LDIF** para describir un objeto. En él se define el **DN** del objeto en la primera línea seguido del **RDN** y demás atributos del objeto, cada uno en una línea:
 
-[Instalación](./instalacion.md) de diferentes distribuciones GNU/Linux. 
+```bash
+dn: uid=jnadie,ou=Users,dc=example,dc=com
+    uid: jnadie
+    uidNumber: 5012
+    cn: Juan Nadie
+    givenName: Juan
+    sn: Nadie
+    telephoneNumber: +34 888 555 6789
+    telephoneNumber: +34 888 555 1233
+    mail: jnadie@example.com
+    manager: uid=cperez,ou=Jefes,dc=example,dc=com
+    objectClass: inetOrgPerson
+    objectClass: organizationalPerson
+    objectClass: person
+    objectClass: top
+```
 
-Finalización de la instalación
-==============================
+Como veis, el **DN** se construye como el nombre de un fichero pero de derecha a izquierda en vez de izquierda a derecha (el elemento raíz está a la derecha y vamos descendiendo hasta el objeto en cuestión que está a la izquierda).
 
-Una vez realizada la instalación, y antes de configurar el sistema, es conveniente hacer una serie de comprobaciones:
+En cada atributo lo que aparece antes del símbolo ":" es el nombre del atributo y después su valor. Algunos nombres de atributo son:
 
--   Estado de los dispositivos: comprobar que todos los dispositivos que tenemos se han detectado y funcionan correctamente.
--   Configuración de la red: es fundamental que sea correcta. Podemos comprobarlo con órdenes como **ip**, **ping** o **nslookup**.
--   Registros de eventos: mediante los logs del sistema, podemos comprobar que no haya errores o advertencias que indican que algo no funciona correctamente. Podemos ejecutar también un **dmesg** para visualizar la información de arranque de nuestro sistema. También podemos entrar al directorio de logs (***/var/log***) y comprobar los diferentes registros de nuestro sistema.
--   Particiones: también es conveniente comprobar que el sistema detecta correctamente todos los discos y las particiones hechas. Para ver todos los discos de los sistema tenemos la orden **fdisk -l** y para ver las particiones montadas el comando **df**. También podemos obtener estas informaciones con **lsblk**. Para montar una partición se hace con mount y al arrancar se montan todas las particiones indicadas en el fichero */etc/fstab*.
-
-Una vez comprobado todo esto es conveniente reiniciar el equipo para comprobar que lo hace correctamente. A continuación deberíamos actualizar el sistema para asegurarnos de tener las últimas versiones de los paquetes y todos los parches de seguridad. Podemos hacerlo con el comando **apt-get upgrade** (nosotros no lo haremos para no sobrecargar la red).
-
-Después convendría hacer una imagen del servidor limpio, y guardarla para poder restaurarlo en caso de problemas. También sería interesante hacer una cuando instalemos el software adicional y realizamos todas las configuraciones, pero antes de ponerlo en explotación y permitir la conexión de los clientes de nuestra red.
-
-Configuración básica del servidor
-=================================
-
-Todas las configuraciones indicadas aquí son para equipos basados en *Debian* (como el propio Debian o Ubuntu). En otras distribuciones como *CentOS* estas pueden variar significativamente (por ejemplo CentOS y también Fedora, RedHat o Suse utilizan el sistema de paquetes .rpm en vez del .deb y cambia todo lo referido a los repositorios, instalación de software, etc).
-
-Además haremos un repaso de los principales comandos que usaremos en la configuración de un sistema GNU/Linux, ya que hemos hecho la instalación sin entorno gráfico.
-
-### Nombre del equipo
-
-El comando para ver y cambiar el nombre del equipo es hostname. Este cambio sólo será efectivo hasta que reiniciamos el equipo puesto que al iniciar GNU/Linux el sistema lee el nombre del equipo del fichero ***/etc/hostname*** que es donde tenemos que cambiar el nombre del equipo para que el cambio sea permanente.
-
-En Ubuntu 18.04 y posteriores, si existe el fichero **/etc/cloud/cloud.cfg** (si no no hay que hacer esto), tenemos que cambiar la línea *preserve\_hostname* de **false** a **true** para que se conserve el nombre puesto en **/etc/hostname** después de reiniciar:
-
-    preserve_hostname: true
-
-En vez de cambiar el contenido del fichero **/etc/hostname** podemos cambiarlo con el comando **hostnamectl**:
-
-    hostnamectl set-hostname nuevo-nombre
-
-Además, si tenemos el nombre antiguo en el fichero **/etc/hosts** lo tendríamos que cambiar por el nuevo (normalmente tendremos solo localhost así que no habrá que hacer nada).
-
-### Gestión usuarios y grupos
-
-Algunos comandos para la gestión de usuarios y grupos:
-- **adduser** o **useradd**: permite la creación de nuevos usuarios.
-- **usermod**, **chfn**, **chsh** y **chage**: usados para la modificación de un usuario.
-- **deluser** o **userdel**: comando para la eliminación de usuarios.
-- **passwd**: para cambiar la contraseña de un usuario y modificar otras características. 
-- **addgroup** o **groupadd**: usado para añadir un grupo.
-- **groupmod**: permite modificar un grupo.
-- **groupdel** o **delgroup**: se utiliza para eliminar un grupo.
-- **gpasswd**: comando diseñado para cambiar la contraseña de un grupo.
-- **whoami**: para saber qué usuario somos.
-- **groups**: para obtener información de los grupos a los que pertenecemos.
-- **id**: nos muestra tanto el usuario como los grupos.
-- **su**: comando para cambiar de usuario.
-- **who** o **w**: sirve para saber cuáles usuarios están conectados en la máquina en un determinado momento.
-
-Los comandos para crear usuarios **useradd** y **adduser**. La diferencia es que **adduser** nos preguntará la información que necesita y a **useradd** se la tenemos que proporcionar como parámetros del comando.
-
-Algunos de estos comandos utilizan utilizan algunos valores establecidos por defecto de los siguientes ficheros: **/etc/login.defs**, **/etc/useradd**, **/etc/default/useradd**.
-
-La gestión de usuarios, grupos, etc se basa en unos ficheros de texto. Los más importantes son:
-
- ***/etc/passwd***  
-------------------
-![passwd](imgs/passwd.png)
-
-***/etc/group***
-----------------
-![group](imgs/group.png)
-
-***/etc/shadow***
------------------
-![shadow](imgs/shadow.png)
-
-Para ver los datos de un usuario: id usuario
-
-![id](imgs/id.png "id")
-
-Para ver sólo los grupos a que pertenece un usuario: **groups usuario**
-
-Utilidades
-==========
-
-Documento sobre diferente [utilidades](./utilidades.md) para realizar copias de seguridad.
-
-Servicios
-=========
-
-Con el sistema de inicio **SysV** el comando para iniciar o parar servicios era **service**:
-
-    service networking restart
-
-Aunque también se podían parar, arrancar, reiniciar, ... los servicios utilizando los scripts que hay en **/etc/init.d/**:
-
-    /etc/init.d/networking restart
-
-Ahora, con el sistema de inicio **systemd**, el comando es **systemctl** y su funcionamiento es bastante similar.. Las principales acciones son:
-
--   **status**: muestra la información del servicio indicado (entre otros si está o no activo)
--   **stop**: para el servicio
--   **start**: inicia el servicio
--   **restart**: para el servicio y vuelve a iniciarlo
--   **reload**: vuelve a cargar la configuración del servicio (si hemos hecho cambios)
--   **enable**: para que el servicio arranco automáticamente al iniciar el sistema
--   **disable**: para que no arranco automáticamente (si volamos lo tendremos que arrancar manualmente)
--   **mask**: enmascara un servicio de forma que no se pueda iniciar ni siquiera manualmente. Para poder mascarar un servicio tiene que estar parado
--   **unmask**: desenmarcara un servicio para que se pueda iniciar manualmente (con start) o automàticamente (con enable)
-
-Ejemplos: para que el bluetooth se inicie al arrancar el sistema:
-
-    systemctl enable bluetooth.service
-
-para reiniciarlo:
-
-    systemctl restart bluetooth.service
-
-si queremos pararlo:
-
-    systemctl stop bluetooth.service
-
-si queremos que no se pueda iniciar ni manualmente:
-
-    systemctl mask bluetooth.service
-
-Otras opciones útiles son:
-
--   systemctl list-unidos --type service --ajo
-
-lista todos los servicios del sistema (si solo queremos ver los activos no pondremos la opción **--all**).
-
--   systemctl list-unido-filas --state=failed
-
-lista todos los servicios que han fallado al iniciar el sistema.
-
-Red
-===
-
-Puedes encontrar la información actualizada de cómo configurar la red en:
-
-- [Configuración de red](https://cipfpbatoi.github.io/materials/asix/iso/bloc3/ud11/red)
-- Configuración de red en Debian [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
-- SystemdNetworkd: [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
-- SystemdNetworkd: [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
-
-Repositorios
-============
-
-Un repositorio es una ubicación de un servidor de Internet desde donde el sistema descarga e instala actualizaciones y nuevos paquetes. Podemos tener tantos repositorios como deseemos. Los **estándar** contienen paquetes que han sido probados y construidos para nuestra versión del sistema operativo. Además puedo añadir otros para paquetes no incluidos en los repositorios estándar.
-
-La lista de repositorios se configura en ***/etc/apt/sources.list*** aunque las últimas distribuciones las configuran en ficheros dentro de ***/etc/apt/sources.list.d/***.
-
-Cada línea del fichero configura un repositorio. Su sintaxis es:
-
-{deb \| deb-src} URL_del_repositorio versión tipo_de_paquetes
-
--   en primer lugar indicamos si queremos bajar paquetes ya compilados (deb) o el código fuente para compilarlo (deb-src)
--   URL del repositorio
--   versión de la cual queremos los paquetes (tiene que ser la que tengamos instalada). Para descargar actualizaciones ponemos version-updates en Ubuntu o version/updates en Debian y para parches de seguridad version-security (o version/security)
--   tipo de software que queremos (main, restricted, universe, multiverse en Ubuntu o main, contrib, non-free en Debian). Podemos poner más de un tipo separados por espacio
-
-Ejemplo de fichero:
-
-![sources.list](imgs/sourceslist.png)
-
-Después de hacer cambios en un fichero tenemos que recargar la lista de paquetes de los repositorios con el comando
-
-    apt-get update
-
-También es conveniente recargar la lista antes de instalar algún paquete para asegurarnos de instalar la versión más reciente.
-
-Para añadir un nuevo repositorio al sistema usamos el comando:
-
-    add-apt-repository nuevo-repositorio
-
-Instalación de software
-=======================
-
-Antes de descargar software es conveniente actualizar la lista de paquetes para asegurarnos de instalar las últimas versiones de los paquetes (**apt-get update**).
-
-Tenemos muchas formas de instalar software en nuestro sistema.
-
-Para instalar nuevas funcionalidades enteras podemos utilizar diferentes herramienta.
-
-[https://wiki.debian.org/es/PackageManagement/PkgTools](https://wiki.debian.org/es/PackageManagement/PkgTools)
-
-![Instalar software](imgs/tasksel.png "Instalar software")
-
-Nos muestra diferentes usos que podemos darle al sistema y al marcar un se encarga de instalar todos los paquetes necesarios.
-
-La forma más habitual para instalar un paquete es el comando **apt-get**. Ejemplo:
-
-    apt-get install cowsay
-
-Esta herramienta descarga el paquete del repositorio y lo instala en el equipo. Si el paquete tiene dependencias también las instalará. Si no conocemos el nombre del paquete podemos buscar en el repositorio con apt-cache search nombre_del_paquete. Ejemplo:
-
-    apt-cache search sl
-
-Para desinstalar un paquete se hace con apt-get remove nombre\_del\_paquete. Ejemplo:
-
-    apt-get remove sl
-
-Otra posibilidad es descargar nosotros directamente el paquete desde Internet (por ejemplo con el comando wget). Una vez descargado lo instalamos con el comando *dpkg -i nombre_del_paquete.deb*
-
-Este comando no instala las dependencias. Si no se completa la instalación del paquete porque faltan dependencias ejecutaremos **apt-get install -f** para que se instalen automáticamente.
-
-Resumen de comandos relacionados con el software:
-
--   Para instalar un paquete: **apt-get install nombre_del_paquete**
--   Para reinstalar un paquete: **apt-get --reinstall install nombre_del_paquete**
--   Para reconfigurar un paquete (sin volverlo a instalar): **dpkg-reconfigure nombre\_del\_paquete**
--   Para descargar el código fuente de un paquete: **apt-get source nombre_del_paquete**
--   Para desinstalar un paquete: **apt-get [--purge] remove nombre_del_paquete**
-    Con la opción --purge eliminamos también todos los ficheros de configuración del paquete
--   Para actualizar todos los paquetes: **apt-get upgrade**
--   Para actualizar la versión instalada: **apt-get dist-upgrade**
--   Para buscar paquetes relacionados con algo: **apt-cache search que_busco**
--   Para obtener más información sobre un paquete: **apt-cache show nombre_del_paquete**
--   Para instalar un paquete .deb que hemos descargado nosotros previamente: **dpkg -y nombre_del_paquete.deb**
-    Si tiene dependencias no resueltas fallará la instalación. Para que se instalan las dependencias no resueltas y se vuelva a intentar la instalación de un paquete que ha fallado: **apt-get -f install**
-
-### Paquetes rpm
-
-Todo lo que hemos explicado sobre la gestión de software se refiere a las distribuciones basadas en Debian (como Ubuntu, Mint, etc) que utilizan el empaquetado .deb para los paquetes de software.
-
-Pero RedHat y las distribuciones derivadas de él como Fedora, CentOS, ... y otros como SuSE o Mandriva utilizan paquetes .rpm (RedHat Package Management). Los paquetes de software tienen extensión .rpm y, al igual que en Debian, el sistema de gestión hace el seguimiento de las dependencias de cada paquete para instalar todo el necesario.
-
-En este caso la herramienta básica es el comando rpm (equivalente al dpkg de Debian) pero habitualmente utilizaremos la herramienta más sencilla yum (equivale a apt-get) y up2date para resolver dependencias. Desde la interfaz GUI disponemos de programas como yumex o gpk-apllication.
-
-Desde el entorno gráfico la gestión de paquetes es muy parecida a la de Debian. Desde la línea de comandos las órdenes más comunes a utilizar son:
-
--   Para conocer el nombre de un paquete: yum search palabra\_que\_buscamos
--   Para instalar un paquete: yum install nombre\_del\_paquete
-    Nuestro equipo contactará con el repositorio donde se encuentra el paquete, lo descargará y lo instalará automáticamente. Si este paquete necesitara tener otros instalados (tiene dependencias sin satisfacer) también se descargarán e instalarán.
--   Para actualizar un paquete: yum update nombre\_del\_paquete
--   Para desinstalar un paquete: yum remove nombre\_del\_paquete
--   Para más información podemos utilizar la ayuda de yum con: man yum
-
-Discos y particiones
-====================
-
-En GNU/Linux todos los dispositivos se tratan como ficheros, la mayoría de los cuales se encuentran en el directorio ***/dev***. Los discos se denominan ***sdX*** (el primer disco sda, el segundo sdb, etc) y las particiones dentro de cada disco se denominan con un número del 1 al 4 para particiones primarias (y extendida) y a partir del 5 para particiones lógicas(discos **MBR**). 
-
-Para ver los discos que tenemos en el sistema podemos ejecutar el comando:
-
-    lsblk
-
-Para poder utilizar una partición debe estar montada. Por defecto en el sistema tenemos montadas únicamente las particiones indicadas al hacer la instalación, ya que se añadieron al fichero ***/etc/fstab***. Este fichero contiene una línea por cada partición que queremos montar y cada vez que reiniciamos el equipo se lee y se montan todas las particiones incluidas en el mismo.
-
-Para ver las particiones o carpetas montadas utilizamos el comando df o mount.
-
-![df](imgs/df.png "df")
-
-Para particionar un disco duro desde la terminal (por ejemplo /dev/sdb):
-
-    fdisk /dev/sdb
-
-Ahora utilizamos los comandos de fdisk (m para obtener ayuda):
-
--   p: mostrar las particiones
--   o: crear una nueva tabla de particiones MSDOS
--   n: crear una nueva partición (tendremos que especificar si primaria o lógica, su nº y dónde empieza y dónde acaba).
--   w: para escribir los cambios al disco
-
-Una vez hecha la partición se formatea con mkfs (por ejemplo /dev/sdb1 con FS ext4):
-
-    mkfs.ext4 /dev/sdb1
-
-Para comprobar una partición: 
-    
-    fsck /dev/sdb1
-
-Para montar una partición mount [-t tipo\_de\_FS] partición punto\_de\_montaje. Ejemplo: 
-
-    mount /dev/sdb1 /datos
-
-Para montar automáticamente una partición añadiremos una línea al fichero */etc/fstab*:
-
-    nombre_particion_o_uuid_o_dispositivo punto_de_montaje fs opciones dump pass
-
-![fstab](imgs/fstab.png "fstab")
-
-NOTA: *dump* no se usa y se pone un 0, *pass* es para decir si queremos que la partición se compruebe o no al iniciar el sistema y el orden.
-
-Después de modificar el fichero para montar su contenido ejecutamos:
-
-    mount -a
-
-Cómo hemos visto para montar una partición podemos utilizar su nombre (/dev/sd...) o su **UUID** que es un identficador de la partición.
-
-Para conocer el UUID de una partición: **blkid**
-
-![blkid](imgs/blkid.png "blkid")
-
-Para desmontar una partición utilzamos el comando umount punto_de_montaje. Ejemplo: 
-
-    umount /datos
-
-RAID
-====
-
-Documentación para la gestión de [RAIDs](../../../../altres/software-raid/README.md) por software. 
-
-LVM
-===
-
-Documentación para la gestión de [Volúmenes](../../../../altres/lvm/README.md) en GNU/Linux.
-
-ACL
-===
-
-Documentación para la gestión de [ACL](./acl.md).
-
-Cuotas
-======
-
-Documentación para la gestión de [cuotas](./cuotas.md) de discos. 
-
-
-Programar tareas
-================
-
-Para programar tareas tenemos los comandos crontab y at.
-
-El comando at permite ejecutar una orden en un determinado momento:
-
-    at cuando_queremos_que_se_ejecute
-
-A continuación (dentro de la terminal de at) escribimos los comandos a ejecutar como si estuvimos haciendo un script. Para acabar pulsamos Ctrl+D y volvemos a la consola.
-
-Para indicar cuando queremos que se ejecute podemos poner una hora determinada o una hora de un día. También podemos indicar un intervalo a partir de ahora.
-
-Respecto a las tareas programadas tenemos un servicio llamado ***crond*** que cada minuto ejecuta las tareas programadas para ese minuto.
-
-Las tareas se guardan en un fichero de texto llamado ***crontab*** con información de la tarea a ejecutar y de cuando a de ejecutarse. Cada usuario crea y edita su propio fichero con el comando:
-
-    crontab -e
-
-En cada línea ponemos una tarea a ejecutar con el siguiente formato:
-
-    minuto hora día_del_mes mes día_semana comando
-
--   minuto: valor entre 0 y 59
--   hora: valor entre 0 y 23
--   día_del_mes: valor entre 1 y 31
--   mes: valor entre 1 y 12
--   día_semana: valor entre 0 y 6 (0 = domingo)
-
-También podemos indicar rangos de valores (con -) o listas (con ,). Ejemplos:
-
--   1 0 * * * shutdown -h now: apaga el ordenador todos los días a las 00:01 h.
--   1 0 * * 5 shutdown -h now: apaga el ordenador todos los viernes a las 00:01 h.
--   0,15,30,45 * * * * shutdown -h now: apaga el ordenador todas las horas de todos los días cada 15 minutos
--   /15 * * * * shutdown -h now: apaga el ordenador todas las horas de todos los días cada 15 minutos
--   0 12 * * 1-5 shutdown -h now: apaga el ordenador a las 12:00 h. de lunes a viernes
-
-Los principales parámetros del comando crontab son:
-
--   -e: para editar el fichero y añadir o eliminar tareas
--   -l: para ver las tareas programadas
--   -r: para eliminar el fichero
-
-Cada usuario tiene su propio fichero y las tareas programadas en él se ejecutan con los permisos de ese usuario. En ***/etc/crontab*** tenemos el fichero de root que contiene un campo más: antes del comando tenemos que indicar el usuario que ejecutará ese comando (podemos poner root o cualquier otro). Todas las tareas que necesitan permisos de root para ejecutarse las tendremos que programar en este fichero. Ejemplo:
-
-1 0 * * 5 root nice -19 tar -czf /copias/homes.tar.gz /home
-
-El usuario root ejecuta a las 00:01 de cada viernes el comando tar para hacer una copia de seguridad de todo el contenido de la carpeta /home con prioridad 19 (es decir con la menor posible)
-
-NOTA: tened en cuenta que las tareas no se ejecutan en una terminal “normal” por lo cual no mostrarán nada por pantalla. Si queremos ver algo tenemos que redireccionar la salida de los comandos a un fichero y posteriormente ver su contenido.
-
-Acceso remoto
-=============
-
-A a menudo los servidores no se encuentran accesibles físicamente (porque están en otro lugar, p.e. en un proveedor de housing o en nuestro CPD sin monitor ni teclado) y tenemos que acceder a ellos remotamente.
-
-El método más sencillo es mediante ssh. Normalmente al instalar el sistema ya se instala un cliente ssh para conectarnos en otros equipos pero el que ahora necesitamos es el servidor ssh. El paquete que instalaremos es ***openssh-server***.
-
-Una vez instalado se configura en el fichero ***/etc/ssh/sshd\_config***. Las principales opciones a configurar son:
-
--   ListenAddress: aquí podemos indicar la IP de nuestro equipo que aceptará conexiones por ssh. Si no ponemos nada (o 0.0.0.0) se aceptarán por todas nuestras interfaces de red
--   PermitRootLogin: si permitimos (yes) o no (no) que se conecte el usuario root. Por razones de seguridad es mejor no permitir conectarse a root sino a otro usuario que después se convertirá en root en el sistema
--   AllowUsers: aquí ponemos los nombres de los usuarios que se pueden conectar por ssh. Si no ponemos esta opción se podrán conectar todos los usuarios del sistema
-
-Después de hacer modificaciones en el fichero tenemos que reiniciar (o recargar) el servicio ***ssh***.
-
-
-Retroalimentación
-=================
-
-### Elección del sistema
-
-Aquí las posibilidades que tenemos son casi ilimitadas.
-
-Podríamos optar por un sistema operativo de pago como RedHat o SuSE Linux que nos ofrecen soporte pero como queremos minimizar los costes todo lo posible no vamos a escoger estas opciones.
-
-Para poder evaluar diferentes opciones vamos a crear 3 servidores virtuales e instalar en cada uno de ellos una distribución diferente. Escogeremos un Debian (porque es la base de muchas distribuciones y una de las que mejor utiliza los recursos hardware), un Ubuntu Server (porque es una distribución muy extendida) y un CentOS (porque es una de las distribuciones más utilizadas en servidores y está basada en RHEL lo que nos aportará experiencia en este tipo de sistemas).
-
-Ahora debemos decidir qué versión instalaremos de cada sistema:
-
--   Debian: instalaremos la versión **stable** (Debian 11) ya que en el servidor damos más importancia a su estabilidad que a poder usar las últimas versiones de las herramientas
--   Ubuntu: vamos a escoger la última versión LTS, en nuestro caso la 20.04. Así no nos veremos obligados a actualizar el servidor cada 6 meses y en esta versión tendremos soporte durante 5 años (aunque posiblemente al cabo de 2 años actualizaremos el sistema a la siguiente versión LTS)
--   CentOS: instalaremos la última versión.
-
-En los 3 casos hay versiones para arquitecturas de 32 y 64 bits y nosotros escogeremos esta última.
-
-Además podemos instalar el servidor con o sin entorno gráfico. Nosotros haremos la instalación sin entorno gráfico para así tener todos los recursos del servidor a disposición de los clientes.
-
-Ahora hemos de ver los requisitos de cada sistema. Estos varían mucho en función sobre todo del entorno de escritorio a instalar. Como no instalaremos entorno gráfico los requisitos son realmente bajos por lo que en los 3 casos podemos instalar sin problemas la versión de 64 bits.
-
-### Planificación de la instalación
-
-Una vez elegido el sistema vamos a planificar cómo lo instalaremos.
-
-En primer lugar hemos de comprobar que nuestra máquina cumpla holgadamente los requisitos del sistema y vemos que es así.
-
-Respecto a copias de seguridad, etc no debemos preocuparnos al estar instalando el sistema en un equipo nuevo. Sí debemos comprobar que el hardware de nuestro equipo sea compatible con el sistema operativo.
-
-Nos queda pensar en cómo organizaremos el espacio e disco. Lo ideal sería tener varios discos para separar completamente el sistema y los datos e incluso poder montar algún tipo de RAID en ellos. Pero la información que tendremos en el servidor no es vital y realizaremos copias de seguridad de los datos por lo que funcionaremos con el único disco que tenemos para no aumentar el coste. Lo que sí haremos es particiones diferentes para el sistema y para los datos. En concreto haremos las siguientes particiones:
-
--   /: la del sistema operativo. Le daremos 100 GB
--   /home: para los datos personales de los usuarios locales. Le daremos 100 GB
--   /home/móvil: para los datos personales de los usuarios del dominio. Le daremos 300 GB
--   /srv: para los datos que compartiremos en la red. A esta le daremos el resto del disco, 600 GB
--   y por supuesto la partición de swap. Con 2 GB tendremos suficiente
-
-También vamos a utilizar el sistema LVM para así poder redimensionar cualquier partición que se nos quede pequeña.
-
-NOTA: lo de separar los homes de los usuarios locales y del dominio es para facilitarnos su gestión en los clientes como veremos en la próxima unidad
-
-### Creación de la máquina virtual
-
-Si instaláramos sobre el ordenador que se nos propone tendríamos toda la RAM para el servidor y el TB de disco duro pero esto es una práctica que debemos hacer en una máquina virtual en nuestro PC de clase por lo que la RAM y disco duro que tendremos será mucho menor.
-
-A cada uno de nuestros servidores (recordad que vamos a instalar 3) le asignaremos entre 512 MB y 1 GB de RAM (en función de la cantidad  de RAM que tenga nuestro PC) que es mucho más de los requerimientos de cada sistema.
-
-Respecto al disco, ya que en VirtualBox son gratis ;-), podemos crear un disco duro de 15 GB para el sistema y los home de los usuarios locales y otro de 10 GB para datos (que repartiremos al 50% entre /home/movil y /srv). Durante la instalación indicaremos que queremos usar LVM en el disco, por lo que se creará una pequeña partición sin LVM para el arranque del sistema (que montará en /boot, ya que Linux no puede arrancar desde un volumen virtual) y el resto del disco será otra partición añadida a un grupo de volumen llamado...
-
-En cuanto a la red tendrá 2 tarjetas de red:
-
--   la externa la configuraremos como NAT o Adaptador puente
-    -   si la configuramos como NAT la GW será la 10.0.2.2 y su IP la 10.0.2.100
-    -   si la configuramos como Adaptador puente su GW será la IP interna del servidor de clase y su IP alguna que no se esté usando en la clase (por ejemplo la acabada en 1xx o 2xx siendo xx nuestro número de ordenador de clase. En mi caso será la 192.168.221.199)
--   la interna será de tipo interna conectada a una red que llamaremos "Aula" y su IP será la 192.168.100.1. No tendrá GW
--   respecto al DNS pondremos el mismo que tenga nuestro PC de clase
+* **dn**: Distinguished Name. Siempre está en la primera línea
+* **dc**: Domain Component. Es una parte del dominio. Si hay más de un nivel (lo habitual) habrá más de un atributo de. Por ejemplo www.google.es (3 niveles) se expresaría como dc=www,dc=google,dc=es
+* **cn**: Common Name (ej.: Juan Nadie)
+* **givenName**: nombre de pila (Juan)
+* **sn**: apellidos (Nadie)
+* **ou**: unidad organizativa
+* **object class**: tipo de objeto. En función de su tipo tendrá unos atributos u otros (por ejemplo un objeto persona tendrá nombre apellidos, teléfono, ... mientras que un objeto grupo tendrá nombre, miembros, ...). Los tipos de objetos que tenemos y qué atributos tiene cada tipo viene definido por el **esquema** que estemos usando. Un objeto puede tener más de un tipo (por lo que tendrá los atributos definidos en los esquemas de todos ellos).
 
 ### Instalación y configuración
 
-Instalaremos cada sistema sin entorno gráfico y sin instalar ningún servicio adicional. Los instalaremos más tarde. En cuanto a los discos podemos hacer una instalación automática con LVM y posteriormente configurar el disco de datos o hacer un particionamiento manual para configurarlo todo.
+Los paquetes que tenemos que instalar en el servidor para instalar openLDAP son **slapd** y **ldap-utils**. El primero es el servicio LDAP y el segundo utilidades para gestionar el dominio.
 
-En cuanto al nombre del equipo elegiremos algo como srvAulaDebian, srvAulaUbuntu, ...
+Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del administrador y se crea un directorio cuya raíz es **nodomain** y que incluye el cn **admin**. Para crear un nuevo directorio con nuestros datos ejecutaremos **dpkg-reconfigure slapd** y nos pedirá la siguiente información:
 
-A continuación vamos a configurar nuestro servidor:
+* el nombre del dominio LDAP (si no lo proporcionamos será **nodomain**)
+* el nombre de nuestra organización (es informativo y por eso puede tener espacios u otros caracteres)
+* la contraseña del administrador del dominio
+* el motor de base de datos a utilizar (se recomienda el MDB)
+* si queremos o no que se borre el directorio si desinstalamos el programa
+* si queremos mover la base de datos antigua porque no interfiera con la que se creará ahora. La antigua se moverá a /var/backups
+* si queremos que se pueda usar el protocolo LDAPv2. Sólo lo haremos si tenemos programas o equipos muy antiguos
 
--   comprobaremos si todo el hardware se a instalado correctamente y que se puede acceder a las particiones hechas durante la instalación
--   configuraremos la red con los valores indicados antes
--   configuraremos el enrutamiento para que el servidor permita salir a los clientes de la red interna
--   crearemos y configuraremos las particiones para datos con LVM ya que en la instalación no las hago
--   instalaremos Webmin en el servidor para poder configurarlo desde una máquina con entorno gráfico
+Esto crea automáticamente el objeto raíz del directorio con el nombre de nuestro dominio y el objeto administrador del dominio (usuario **admin**) con la contraseña proporcionada. Podemos volver a ejecutarlo cuando queramos y se creará un nuevo directorio.
 
-### Documentar la instalación
+[installLDAP.ogv](./media/installLDAP.ogv)
 
-Durante el proceso de instalación y configuración del servidor habré ido creando la documentación del mismo. Recordad que esta documentación deberemos ir adaptándola a los diferentes cambios que hagamos en nuestra máquina.
-
-### Ejemplo de instalación y configuración de la máquina CentOS
-
-En la teoría hemos visto cómo instalar un sistema CentOS. Nosotros lo haremos en la máquina virtual que hemos hecho con 2 tarjetas de red y 2 discos duros.
-
-#### Configurar la red
-
-Si no hemos configurado la red correctamente durante la instalación deberemos hacerlo ahora. Pero en las distribuciones basadas en RedHat se hace de forma diferente.
-
-El comando para ver la configuración actual no es ifconfig sino **ip add**. Las interfaces no se llaman ethX sino enp0sX o similar.
-
-Si no se muestran las interfaces de red o su configuración no es correcta la cambiaremos en el fichero /etc/sysconfig/network-scripts/enp0sX o como se llame nuestra tarjeta. Allí establecemos:
-
--   BOOTPROTO=static (para indicar que la IP será estática)
--   IPV6INIT=no (para deshabilitar IPv6)
--   IPV6\_AUTOCONF=no (para que no se autoconfigure la IPv6)
--   ONBOOT=yes (para que se habilite la tarjeta al iniciar)
--   IPADDR0=192.168.221.199 (para indicar nuestra IP)
--   PREFIX0=24 (para indicar la máscara)
--   GATEWAY0=192.168.221.1 (para nuestra puerta de enlace)
--   DNS1=172.27.111.5 (para el DNS)
-
-Una vez hecho esto detenemos el Network Manager:
-
-    systemctl stop NetworkManager
-    systemctl disable NetworkManager
-
-y reiniciamos el servicio de red:
-
-    systemctl restart network.service
-
-Ahora ya nuestra configuración debe ser la correcta.
+### Configuración desde la terminal
 
 
-### Instalación de Debian/Ubuntu
+Algunos comandos para trabajar con **LDAP**:
 
-Como ya hemos hecho muchas instalaciones de estos sistemas no vamos a mostrarlo de nuevo. Simplemente decir que en la instalación no instalaremos ninguna funcionalidad de las que nos proponen (no queremos el Entorno de escritorio ni ningún servidor).
+* **slapcat**: muestra todo el contenido del directorio en formato *LDIF*
+* **ldapadd**: permite añadir nuevos nodos al directorio. Sus parámetros más importantes son:
+  * *-D* “dn del usuario”: para especificar las credenciales del usuario que añade el nodo. En nuestro caso será admin (pondremos -D “dn=admin,dc=nuestroDominio,dc=lan“)
+  * *-W*: para que nos pida la contraseña en vez de escribirla en la orden
+  * *-f* fichero: nombre del fichero con la información del nodo a crear en formato *LDIF*
+* **ldapdelete**: elimina un objeto del directorio
+* **ldapsearch**: busca objetos en el directorio
+* **ldappasswd**: cambia la contraseña de un usuario
 
-![Debian](imgs/01debian.png "Debian")
+Por ejemplo, para borrar todo nuestro directorio ejecutamos la orden:
 
-Respecto al particionado tendremos un disco para el sistema y otro para los datos. De momento simplemente en el primer disco instalaremos el sistema normalmente pero con la opción de LVM y crearemos una partición adicional para /home. Posteriormente crearemos volúmenes lógicos en el segundo disco para /home/movil y /srv.
+```bash
+    ldapdelete -r -D "dn administrador" -W "dc=nuestroDominio,dc.lan”
+```
 
-Respecto a la red nuestro servidor tendrá 2 tarjetas de red (la externa y la interna del aula.
+Para cambiar la contraseña de un usuario:
 
-#### Configuración inicial de las particiones
+```bash
+    ldappasswd -D "dn del administrador" -W -s nueva_contraseña "dn del usuario"
+```
 
-Como hemos dicho durante la instalación sólo configuramos 1 disco duro y al configurarlo con LVM vemos que tendemos /dev/sda1 montado en /boot (los ficheros de arranque en una partición sin LVM) y el sistema raíz, /home y el swap montados de particiones LVM /dev/mapper/...
+(ATENCIÓN: "*dn administrador*" quiere decir el *dn* de tu administrador: **cn=admin,dc=nuestroDominio,dc=lan**, o el que sea)
 
-#### Configuración de la red
+Ejemplo: tenemos que crear una **OU** denominada *Usuarios* en nuestro directorio llamado *cipfpbatoi.es*. El único atributo obligatorio de una **OU** es su nombre (atributo llamado *ou*) y es un objeto de las clases *top* y *organizationalUnit*. El **RDN** de este tipo de objeto es su único atributo: *ou*.
 
-Respecto a la red el contenido del fichero /etc/network/interfaces será:
+Lo primero que tenemos que hacer es crear un fichero que denominaremos *ou_usuarios.ldif* con la información de la nuestra OU:
 
-![Debian](imgs/02debian.png "Debian")
+![ldap](./media/01-ou.png "ldap")
 
-Tras eso debemos activar el enrutamiento. El comando a añadir a /etc/rc.local es:
+A continuación ejecutamos la orden **ldapadd** para crearla:
 
-    iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j SNAT --to 192.168.221.199
+```bash
+    ldapadd -D “cn=admin,dc=cipfpbatoi,dc=es” -W -f OU_usuarios.ldif
+```
 
-#### Creación de las particiones para datos
+Con **-D** le indicamos las credenciales de quien crea el nodo (admin), con **-W** le decimos que nos pida la contraseña en vez de escribirla en el comando. Con **-f** le indicamos el fichero que contiene la información.
 
-Ahora configuraremos el segundo disco duro de 10 GB que es el que utilizaremos para datos y que configuraremos con LVM.
+Para eliminar esta **OU** ejecutaremos el comando **ldapdelete**:
 
-En primer lugar lo particionamos:
+```bash
+    ldapdelete -D “cn=admin,dc=cipfpbatoi,dc.es” -W “OU=Usuarios,dc=cipfpbatoi,dc.es”
+```
 
-    fdisk /dev/sdb
+Cada tipo de objeto tendrá unos atributos obligatorios y otros opcionales y esto viene definido en el esquema que sigue dicho objeto (indicado por su objectClass). Un objeto puede (y suele) tener varios objectClass por lo que tiene atributos definidos en varios esquemas.
 
-Crearemos una única partición porque todo el disco va a ir al grupo de volúmenes (el disco virtual) de LVM.
+Los principales objetos con que trabajaremos son:
 
-Luego formateamos la partición con ext2. No lo hacemos con ext4 porque esta partición en realidad no la vamos a utilizar sino que se va a LVM y las que usaremos son las particiones virtuales que hagamos allí y que sí formatearemos con ext4.
+| **Objeto**               | **RDN**            | **Atributos**      | **objectClass**    |
+|---|---|---|---|
+| Unidad <br> organizativa | ou                 | ou: nombre         | organizationalUnit |
+| Grupo | cn | **cn**: nombre del grupo <br> **gidNumber**: gid <br> **memberUid**: uid de los miembros, separados por coma | posixGroup |
+| Usuario | cn o uid | **uid**: login del usuario <br> **uidNumber**: nº id <br> **gidNumber**: nº grupo principal <br> **sn**: apellidos <br> **cn**: nombre para mostrar del usuario <br> **homeDirectory**:ruta de su home <br> **loginShell**: shell del usuario <br> Además podemos especificar muchos más atributos cómo: <br> - **givenName**: nombre <br> - **userPassword**: contraseña <br> - **displayName**: nombre para mostrar <br> - **mail**: su e-mail <br> - **shadowExpire**, **shadowFlag**, **shadowWarning**, **shadowMin**, **shadowMax**, …: opciones de password   | inetOrgPerson <br> posixAccount <br> shadowAccount |
 
-    mkfs.ext4  /dev/sdb1
+**IMPORTANTE**: para evitar conflictos con los usuarios y grupos locales que se numeran a partir del 1000, nosotros utilizaremos números a partir de **10000** para los **uidNumber** y **gidNumber** de usuarios y grupos del directorio.
 
-Ahora indicamos que esa partición se usará con LVM:
+Los esquemas que podemos utilizar son los incluidos en directorio del servidor LDAP **/etc/openldap/schema**. Algunos de los más comunes son:
 
-    pvcreate /dev/sdb1
+* /etc/openldap/schema/core.schema
+* /etc/openldap/schema/cosine.schema
+* /etc/openldap/schema/inetorgperson.schema
+* /etc/openldap/schema/nis.schema
 
-La añadimos a un nuevo grupo de volúmenes al que llamaremos datosLVM:
+Si además vamos a necesitar que el servidor **LDAP** almacene cuentas **Samba** tendremos que asegurarnos que **LDAP** conoce la estructura y los datos necesarios de una cuenta **Samba** mediante la inclusión del correspondiente fichero de esquema **samba.schema**.
 
-    vgcreate datosLVM /dev/sdb1
+### LDAP Account Manager
 
-Y hacemos 2 particiones virtuales, una para datos del servidor (la llamaré datosSrv) y otra para las carpetas personales de los usuarios del dominio (la llamaré homeDominio):
 
-    lvcreate -L4G -n datosSrv datosLVM
-    lvcreate -L4G -n homeDominio datosLVM
+Como hemos visto la gestión del directorio desde la terminal es bastante engorrosa. Por ello existen multitud de herramienta (normalmente vía web) que nos permiten gestionar nuestro directorio gráficamente.
 
-Las formateamos con ext4:
+Para utilizar este programa instalamos el paquete **ldap-account-manager** y ya podemos abrir desde el navegador en [http://localhost/lam](http://localhost/lam). En nuestro caso como no lo abriremos desde el servidor (no tenemos navegador ni entorno gráfico) sino desde otra máquina en vez de localhost deberemos poner la IP o el nombre de nuestro servidor **LDAP**.
 
-    mkfs.ext4 datosSrv
-    mkfs.ext4 homeDominio
+La configuración inicial puede hacerse desde el entorno gráfico en la opción **LAM configuration**. Lo primero que deberíamos que configurar es la contraseña a utilizar en este programa que por defecto es lam.
 
-Y las montamos (las añado a /etc/fstab para que se monten siempre):
+A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el dominio, el dn del administrador y las *OU* que utilizar por defecto para crear nuevos usuarios, grupos y equipos. No hace falta configurar los *UID* y *GID* porque por defecto ya utiliza valores superiores a 10000.
 
-    /dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
-    /dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
+Una vez configurado ya podríamos crear nuestros objetos:
 
-y hago un mount -a para que se monten ahora sin tener que reiniciar el servidor)
+[lam.ogv](./media/lam.ogv)
 
-    mount -a
+Tras crear los objetos hacemos un **slapcat** para comprobar que se han creado correctamente:
 
-Bibliografía
-============
+[slapcat.ogv](./media/slapcat.ogv)
 
+### phpldapadmin y otros
+
+
+Otra herramienta web muy utilizada para administrar el directorio es **phpLDAPAdmin**. Lo instalamos con el paquete del mismo nombre.
+
+Lo primero a hacer es ajustar el archivo de configuración para adaptarlo a nuestras necesidades. Este archivo es **/etc/phpldapadmin/config.php**.
+
+Las opciones a modificar son:
+
+* Modificar la base o raíz del Directorio.
+  
+  ```bash
+
+    $servers-\>setValue('server', 'base',array('dc=cipfpbatoi,dc=es'));
+  ```
+
+* Configurar el usuario administrador por defecto.
+  
+  ```bash
+    $servers-\>setValue('login', 'bind\_id', 'cn=admin,dc=cipfpbatoi,dc=es');
+  ```
+
+* Otro parámetro que se puede configurar en este archivo es el nombre de la base de datos
+  
+  ```bash
+    $servers-\>setValue('server', 'name', 'Gestión de Usuarios del Aula');
+  ```
+
+* También es conveniente cambiar los números de gid y uid que se darán a los objetos que se crean para evitar que puedan coincidir con grupos y usuarios locales. Nosotros utilizaremos números a partir del 5000. Para lo cual añadiremos esta línea:
+  
+  ```bash
+    $servers-\>setValue('auto\_number','min',array( 'uidnumber'=\>5000, 'gidnumber'=\>5000));
+  ```
+
+Ahora podemos acceder a esta herramienta desde el navegador con **<http://mi_servidor_ldap/phpldapadmin>**, y después de validarse con el usuario administrador, ya podremos acceder a la información de la base de datos.
+
+***ATENCIÓN***: cuando añadimos un usuario desde **phpldapAdmin** utiliza por defecto como *RDN* el *cn* del usuario en vez de la *uid*. Lo que tenemos que hacer es añadir en vez de un usuario un objeto por defecto (objeto Predeterminado o Default) y allí elegir sus *objectClass* (*account*, *posixAccount* y *shadowAccount*) y su *RDN* (*userid*, por que **phpldapadmin** denomina así al atributo *uid*).
+
+### Otras herramientas
+
+Existen multitud de herramientas para gestionar nuestro directorio. Una de ellas es **Webmin** que nos permite realizar algunas acciones pero no es tan completo ni fácil de usar como los 2 vistos anteriormente.
+
+Otras herramientas (también de software libre como todas las que hemos visto) son **GOsa** o **Web2ldap**.
+
+## Buscar elementos del directorio
+
+Como hemos visto más arriba, la utilidad de línea de comandos que permite realizar búsquedas en el directorio **LDAP** es *ldapsearch*. Se trata de una utilidad con multitud de opciones, pero aquí vamos a hacer un uso básico de ella.
+
+Por ejemplo, podríamos buscar todos los usuarios usando la siguiente sintaxis:
+```bash
+
+ldapsearch -xLLL -b "dc=iso,dc=lan" uid=* sn givenName mail
+
+```
+Parámetros:
+
+- **-x**  indica que usaremos autentificación simple.
+- **-LLL** sirve para que la salida sea simple del tipo LDAPv1.
+- **-b** va seguida del punto del árbol donde debe comenzar la búsqueda. En este caso, dc=iso,dc=lan. Después se incluye la condición que deberán cumplir los objetos buscados. En el ejemplo, cualquier valor (*) para el atributo uid.
+- Por último, se incluye el nombre de los atributos que queremos obtener en el resultado de la consulta.
+
+## Modificar entradas del directorio
+
+El comando que usaremos en este caso es **ldapmodify**, que permite cambiar el contenido de cualquier atributo, añadir atributos nuevos, eliminarlos etc.
+
+Dado que la sintaxis es más compleja nos apoyaremos en un archivo *LDIF* que especifique los cambios que necesitamos realizar. En nuestro caso, el archivo tendrá el siguiente aspecto:
+
+```bash
+  dn: uid=jomuoru,ou=usuarios,dc=iso,dc=lan
+  changetype: modify
+  replace: mail
+  mail: jomuoru@iso.lan
+```
+
+Como puedes suponer, la primera línea identifica la cuenta en la que realizaremos el cambio. La segunda indica el tipo de operación a realizar, la tercera identifica el atributo y, por último, la cuarta incluye el nuevo valor que debe asignarle.
+
+Por último, ejecutamos la utilidad **ldapmodify**, indicándole el nombre del archivo donde se encuentran los datos:
+
+```bash
+  ldapmodify -x -D cn=admin,dc=iso,dc=lan -W -f modify.ldif
+```
+
+## Borrar entradas del directorio
+
+La utilidad que permite eliminar entradas del directorio se llama **ldapdelete**. Para utilizarla, sólo tenemos que aportar los datos del objeto a borrar y los datos de la cuenta administrador que debe permitirlo. La sintaxis será como sigue:
+
+```bash
+  ldapdelete -x -W -D 'cn=admin,dc=iso,dc=lan' "uid=jomuoru,ou=usuarios,dc=iso,dc=lan"
+```
+
+## Configuración del cliente LDAP
+
+Una vez instalado y configurado el servidor **LDAP**, nos queda configurar nuestros clientes de red para que utilicen el servidor para autentificar los usuarios.
+
+De momento, configuraremos la validación de usuarios desde equipos GNU/Linux. En temas posteriores (integración de sistemas heterogéneos) ya veremos como hacerlo para clientes Windows.
+
+En el proceso de validación de los usuarios en el cliente mediante un servidor **LDAP** van a participar dos servicios:
+
+* **PAM** (*Pluggable Authentication Module*): permite configurar en el sistema varios métodos de autenticación de usuarios. El método de autenticación por defecto es el de usuario y contraseña pero *PAM* permite utilizar otros métodos como un servidor **LDAP**, identificación biométrica (como la huella digital, la voz, etc). La mayor parte de las aplicaciones y herramientas en los sistemas **GNU/Linux** (login, ssh, su, ...) utilizan *PAM* y esto permite cambiar el método de autenticación sin hacer cambios directamente en las aplicaciones.
+* **NSS** (*Name Service Switch*): permite a las aplicaciones obtener información sobre usuarios, grupos, contraseñas, etc, de diferentes fuentes. Lo habitual es obtener esta información de archivos locales (*/etc/passwd*, */etc/group* y */etc/shadow*), pero **NSS** permite utilizar además otras fuentes como un servidor **NIS** o un servidor **LDAP**. Para que un usuario pueda entrar en el sistema _PAM_ debe autorizarlo (si cumple los requisitos, por ejemplo que usuario+contraseña son correctos) pero se necesita más información del mismo, como a qué grupos pertenece o cuál es la ruta de su carpeta personal. Esta información la proporciona _NSS_. En el fichero `/etc/nsswitch.conf` es donde configura _NSS_ dónde debe buscar la información de los usuarios, grupos, etc.
+
+
+### Instalación cliente Debian 11 Bullseye
+
+En este apartado describimos el procedimiento para realizar la instalación/configuración utilizando el paquete **libpam-ldapd**. **libpam-ldapd** es una alternativa más nueva al **libpam-ldap** original. **libpam-ldapd** usa el mismo backend (**nslcd**) que **libnss-ldapd** y, por lo tanto, también comparte el mismo archivo de configuración (*/etc/nslcd.conf*) para los parámetros de conexión **LDAP**.
+
+Instalación del paquete:
+
+![libpam-ldapd](media/1-ldapd.png)
+
+Configuración de la dirección del servidor ldap:
+
+![libpam-ldapd](media/2-ldapd.png)
+
+Configuración de **nslc** con el DN de nuestro dominio:
+
+![libpam-ldapd](media/3-ldapd.png)
+
+Configurando la fuente de datos LDAP para los diferentes servicios: 
+
+![libpam-ldapd](media/4-ldapd.png)
+
+Ahora podemos ejecutar el comando: 
+
+```bash
+
+pam-auth-update
+```
+
+y seleccionamos la opción *Create home directory*. Para que cree el directorio del usuario al validarse. 
+
+![libpam-ldapd](media/5-ldapd.png)
+
+### Instalación en el cliente
+
+Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
+
+* **libnss-ldap**: permite al servicio **NSS** obtener información administrativa a través de un servidor **LDAP**
+* **libpam-ldap**: permite al servicio **PAM** utilizar un servidor LDAP para autenticar usuarios
+* **nscd**: este servicio implementa una caché para acelerar el uso de LDAP y así evitar continuas consultas al servidor por parte del cliente. Este paquete no es necesario, pero sí recomendable.
+
+La instalación de este paquetes también nos seleccionará otros adicionales cómo: **auth-client-config,** **ldap-auth-client** y **ldap-auth-config**.
+
+### Configuración del cliente ldap
+
+La instalación de los paquetes finaliza con la configuración del módulo de autentificació de ldap (**ldap-auth-config**). La configuración que hacemos se almacena en el fichero **/etc/ldap.conf**. Este se utiliza tanto por el servicio de autenticación PAM como por el servicio de nombres NSS. Si posteriormente tenemos que cambiar esta configuración podemos editar el fichero o, más fácilmente reconfigurarlo con el comando **dpkg-reconfigure ldap-auth-config**.
+
+La configuración de este paquete nos pide la siguiente información:
+
+* el nombre o IP del servidor LDAP. Nos recomienda utilizar la IP para evitar problemas con el DNS. (NOTA: utilizar el protocolo ldap, no ldapi)
+* El DN de nuestro dominio
+* la versión del protocolo LDAP a utilizar (la misma que configuramos en el servidor)
+* si queremos que las contraseñas se guarden en un archivo independiente al que sólo root tenga acceso (como pasa con /etc/shadow)
+* si queremos que sea obligatorio identificarse para hacer consultas al directorio
+* el DN del administrador de LDAP (el que configuramos en el servidor)
+* su contraseña
+
+## Configuración de NSS y PAM
+
+### Configuración del servicio NSS
+
+El siguiente paso es configurar el servicio NSS editando el fichero ***/etc/nsswitch.conf***:
+
+![ldap](./media/02-nsswitch.png "ldap")
+
+En este fichero se configura dónde se debe buscar la información de los diferentes tipos de objetos, entre ellos:
+
+* Los nombres de usuario, especificados en el archivo de configuración con la línea que empieza por **passwd**
+* Los nombres de grupos, especificados en el archivo de configuración con la línea que empieza por **group**
+* Las contraseñas de usuario, especificadas en el archivo de configuración con la línea que empieza por **shadow**
+
+Indicaremos que la información sobre nombres de usuario, grupos y contraseñas primero se busque en los archivos locales (files o compat) y después mediante el servicio LDAP (ldap). Este orden es importante puesto que si se busca primero en LDAP, si por algún motivo no se puede acceder al servidor LDAP para realizar la validación, no sería posible acceder al equipo.
+
+Por lo tanto las líneas en nuestro archivo ***/etc/nsswitch.conf*** quedarían como muestra la imagen anterior.
+
+Respecto a las máquinas (hosts) primero las busca en el fichero local (***/etc/hosts***) y si no las encuentra pregunta al DNS. Esto no es necesario cambiarlo.
+
+Podemos probar que NSS está funcionando con la orden **getent** (primeramente tendremos que reiniciar el cliente porque tengan efecto los cambios hechos):
+
+```bash
+    getent passwd
+```
+
+Esta orden mostrará por pantalla la información de usuarios contenida en el archivo ***/etc/passwd***. Si funciona NSS, además de la lista de usuarios locales, mostrará información de los usuarios creados en el directorio LDAP del servidor.
+
+Podemos consultar el logs del sistema referentes a validación, ***/var/log/auth.log***, para comprobar y ver posibles problemas.
+
+### Configuración de PAM
+
+El siguiente paso sería configurar **PAM** para que utilice el servicio proporcionado por **LDAP**. Los archivos de configuración de **PAM** se almacenan en el directorio **/etc/palmo.d**.
+
+Podemos configurar **PAM** sin editar manualmente los archivos de configuración con el comando **pam-auth-update**:
+
+![ldap](./media/03-pam.png "ldap")
+
+Tenemos que asegurarnos que tenemos marcada la opción de **LDAP Authentication** (también la de *Unix* que es la autenticación por defecto). Lo normal es que esto se haya configurado automáticamente al instalar los paquetes.
+
+Para probar que **PAM** funciona correctamente podemos utilizar el comando **pamtest** (se encuentra en el paquete **libpam-dotfile** que tendremos que instalar, pero atención que se encuentra en los repositorios universe).
+
+Es necesario especificar 2 parámetros: el servicio para el que queremos probar la autenticación mediante **PAM** y el usuario que queremos validar en el servicio. Por ejemplo, para comprobar la validación del usuario *batoi* a través del servicio de cambio de contraseñas se ejecutaría la orden:
+
+```bash
+    pamtest passwd batoi
+```
+
+Podemos probar otros servicios como *login* o *ssh*. Una vez configurado el servicio.
+
+En cualquier caso también podemos probar que el usuario se autentifica correctamente iniciando sesión con este usuario desde la terminal (desde el entorno gráfico aún no podrá iniciar sesión porque no se puede crear su perfil de usuario).
+
+### Ajustes de la configuración
+
+
+Todavía quedan para hacer un par de ajustes para mejorar el funcionamiento de **LDAP** en el cliente.
+
+Tendríamos que hacer que la primera vez que un usuario del directorio **LDAP** se valida en un equipo cliente se cree de forma automática su directorio home en el equipo con un perfil por defecto igual que sucede la primera vez que iniciamos sesión con un usuario local.
+
+Para eso vamos a modificar el archivo de configuración de *PAM* **/usr/share/pam-configs/ldap** y añadiremos como primera línea del bloque *Session* la siguiente línea:
+
+```bash
+    required        pam\_mkhomedir.so skel=/etc/skel umask=0022
+```
+
+![ldap](./media/06-config.jpg "ldap")
+
+En ella especificamos:
+
+* que se cree el directorio del usuario la primera vez que inicia sesión
+* que se copie en el mismo el perfil por defecto (que se encuentra en ***/etc/skel***. Este perfil incluye archivos ocultos (como .profile, bash_history, ...) y, si iniciamos sesión en el entorno gráfico, también el resto de carpetas por defecto (Descargas, Documentos, Escritorio, etc).
+* que se establezca su *máscara* en 0022, lo que dará *permisos* 755 y 644 para nuevos directorios y ficheros respectivamente en esa carpeta. Si quisiéramos por ejemplo que el resto de usuarios no tengan acceso pondríamos *umask 0027*
+
+Si no hacemos esto, tendríamos que crear manualmente en todos los equipos clientes los directorios home de todos los usuarios **LDAP**.
+
+Otro aspecto que es aconsejable ajustar es que la configuración por defecto no permite que un usuario LDAP puede cambiar su contraeña desde el equipo cliente con la orden *passwd*.
+
+Para permitirlo tenemos que quitar el parámetro *use_authtok* en la línea donde aparece en la sección *Password* en el mismo archivo, **/usr/share/pam-configs/ldap**:
+
+![ldap](./media/05-config.jpg "ldap")
+
+La línea:
+
+```bash
+
+    [success=end user_unknow=ignore default=die] pam_ldap.so use_authtoktry_first_pass
+```
+
+pasaría a:
+
+```bash
+    [success=end user_unknow=ignore default=die] pam_ldap.so try_first_pass
+```
+
+Para que estos cambios tengan efecto debemos volver a ejecutar el comando
+
+```bash
+    pam-auth-update
+```
+
+
+### Perfiles móviles
+
+Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
+
+## Configuración del cliente LDAP con SSSD
+
+En lugar de utilizar sólo estas librerías podemos utilizar el _demonio_ _**SSSD**_ para autenticar e identificar un usuario contra un servidor LDAP remoto (incluyendo Microsoft _Active DIrectory_). Este sistema incluye sus propios módulos PAM y NSS diferentes de los _"standalone"_ que hemos visto en el apartado anterior. 
+
+Una ventaja de SSSD sobre las librerías PAM y NSS _standalone_ es que SSSD guarda una caché (en `/var/lib/sss/db`) que permite acceder al cliente en caso de que el servidor LDAP no esté activo en ese momento.
+
+### Configurar SSSD
+La configuración se realiza en `/etc/sssd/sssd.conf` (donde podemos configurar valores por defecto) y en los ficheros `.conf` que hay dentro del directorio  `/etc/sssd/sssd.conf.d` que se cargan después y por tanto sobreescriben sus valores. Todos estos ficheros deben ser propiedad de root y sólo él debe tener acceso.
+
+El fichero de configuración debe tener las secciones (más información en `man sssd.conf`):
+- **[sssd]**: debe al menos incluir una opción **domains** con una lista (separada por comas) de los distintos proveedores de autenticación/identidad (se les llama _domains_)
+- **[domain/nombre_del_dominio]**: para cada proveedor hay que incluir una sección donde se configura, al menos:
+  - **auth_provider**: proveedor de autenticación de este dominio (ldap, krb5, ad, ...)
+  - **id_provider**: proveedor de identidad (ldap, archivos, ...)
+  - **access_provider**: proveedor de acceso, que define qué usuarios tienen acceso al sistema (aunque se identifique correctamente si no cumple los criterios de este proveedor no podrá acceder). Los valores permitidos son ldap, krb5, ad, simple -permite si está en la lista-, denegar -siempre deniega-, permitir -siempre permite-, ...
+  - **chpass_provider**: quién se encarga de los cambios de contraseña (ldap, krb5, ad, none -no se permite-, ...)
+  - otras líneas dependiendo de las opciones elegidas. Podemos obtener más información en `man sssd-ldap`, `man sssd-krb5`, `man sssd-ad`, ...
+- **[pam]**: configuraciones adicionales de PAM (por ejemplo límite de días que permitirá el acceso _offline_ sin el servidor LDAP disponible)
+- **[nss]**: configuraciones adicionales de NSS (como excluir usuarios o grupos del sistema)
+
+Ejemplo de configuración para un servicio LDAP en el dominio acme.lan:
+```text
+[sssd]
+domains=ldapacme
+[domain/ldapacme]
+auth_provider=ldap
+id_provider=ldap
+ldap_uri=ldaps://ldapserver.acme.lan
+ldap_search_base=dc=acme,dc=lan
+ldap_tls_reqcert=allow
+```
+
+NOTA: la última línea es si el servidor usa un certificado autofirmado para TLS
+
+<small>Fuente: [https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd](https://www.javieranto.com/kb/GNU-Linux/pr%C3%A1cticas/Servidor%20LDAP%20389DS/#login-ldap-desde-cliente-con-sssd)</small>
+
+## Proyecto
+
+
+* [Proyecto de clase](./proyecto.md)
+
+## Bibliografía
+
+
+* [https://wiki.debian.org/LDAP/PAM](https://wiki.debian.org/LDAP/PAM)
+* [LDAP-Linux-Como: Introducción - TLDP-ES](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+* [Documentation - OpenLdap.org](https://www.openldap.org/doc/)
+* [Instalar y configurar el servidor LDAP de Linux](https://likegeeks.com/es/servidor-ldap-de-linux/)
+* [Autenticación centralizada mediante OpenLDAP](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+* [Gentoo Linux](https://wiki.gentoo.org/wiki/Centralized_authentication_using_OpenLDAP/es)
+* [https://wiki.debian.org/LDAP](https://wiki.debian.org/LDAP)
+  
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
