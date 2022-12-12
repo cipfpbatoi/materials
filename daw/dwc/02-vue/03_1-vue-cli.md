@@ -368,7 +368,7 @@ Si queremos usar un nuevo paquete en nuestra aplicación lo instalaremos con _np
 npm install nombre-paquete
 ```
 
-Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **`--save`** o **`-S`** (si se trata de una dependencia de producción) o bien **`--dev`** o **`-D`** (si es una dependencia de desarrollo). Ej.:
+Este comando sólo instala el paquete en _node-modules_. Para que lo añada a las dependencias del _package.json_  le pondremos la opción **`--save`** o **`-S`** (si se trata de una dependencia de producción) o bien **`--dev`** o **`-D`** (si es una dependencia de desarrollo). Si no ponemos nada se considerará una dependencia de producción. Ej.:
 ```bash
 npm install -S axios
 ```
@@ -393,11 +393,27 @@ Podemos utilizar _Bootstrap 5_ directamente en Vue ya que esta versión no neces
 
 Para usarlo simplemente lo instalaremos como una dependencia de producción y después lo añadimos al fichero `src/main.js`:
 ```javascript
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap"
+import "bootstrap/dist/css/bootstrap.css"
 ```
 
-Para usar los iconos de _Bootstrap 5_ debemos importar el css y ya podemos incluir los iconos en etiquetas _\<i>_ como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Por ejemplo, incluimos en el _\<style>_ del componente **App.vue**:
+Recuerda que siempre es conveniente importar _Bootstrap_ antes de importar nuestro propio CSS (antes de la línea `import './assets/main.css'`). Si necesitamos algún componente de _Bootstrap_ que utilice javascript importaríamos también su javascript en el fichero _main.js_ pero en este caso después de montar la aplicación vue:
+
+```javascript
+// src/main.js
+import { createApp } from 'vue'
+import App from './App.vue'
+
+import "bootstrap/dist/css/bootstrap.css"
+import './assets/main.css'
+
+createApp(App).mount('#app')
+
+import "bootstrap/dist/js/bootstrap.js"
+```
+
+Para usar los iconos de _Bootstrap 5_ podemos instalar el paquete _bootstrap-icons_ o bien importar el css, tal y como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Una vez hecho ya podemos incluir los iconos en etiquetas _\<i>_.
+
+Por ejemplo, si importamos el CSS incluiremos en el _\<style>_ del componente **App.vue**:
 ```javascript
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 ```
@@ -407,7 +423,7 @@ y donde queramos incluir el icono de la papelera, por ejemplo, incluimos:
 <i class="bi bi-trash"></i>
 ```
 
-Respecto a los componentes de _Bootstrap_, para que funcionen sólo tenemos que usar los atributos `data-bs-`, por ejemplo para hacer un botón colapsable haremos:
+Respecto a los componentes de _Bootstrap_, para que funcionen sólo tenemos que usar los atributos `data-bs-` (recuerda que muchos de estos componenetes necesitan su javascript por lo que deberemos importarlo como se ha explicado antes). Por ejemplo para hacer un botón colapsable haremos:
 ```html
 <button 
   class="btn btn-primary" 
@@ -443,7 +459,7 @@ Y ya podemos incluir el componente en el HTML:
 ## Depurar el código en la consola
 Podemos seguir depurando nuestro código, poniendo puntos de interrupción y usando todas las herramientas que nos proporciona la consola mientras estamos en modo de depuración (si hemos abierto la aplicación con `npm run dev`).
 
-Si estamos usando _webpack_, para localizar nuestros fichero varemos que en nuestras fuentes de software aparece **webpack** y dentro nuestras carpetas con el código (**src**, ...):
+Si estamos usando _webpack_ no podemos ver nuestro código directamente sino que nuestros fichero se localizan dentro del apartado **webpack**:
 
 ![Depurar en la consola](./img/console-webpack.png)
 
