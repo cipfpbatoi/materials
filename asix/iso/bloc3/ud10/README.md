@@ -435,12 +435,12 @@ Para desmontar una partición utilzamos el comando umount punto_de_montaje. Ejem
 RAID
 ====
 
-Documentación para la gestión de [RAIDs](https://cipfpbatoi.github.io/materials/altres/sistemes-operatius/software-raid/README.md) por software. 
+Documentación para la gestión de [RAIDs](../../../altres/sistemes-operatius/software-raid/README.md) por software. 
 
 LVM
 ===
 
-Documentación para la gestión de [Volúmenes](https://cipfpbatoi.github.io/materials/altres/sistemes-operatius/lvm/README.md) en GNU/Linux.
+Documentación para la gestión de [Volúmenes](../../../altres/sistemes-operatius/lvm/README.md) en GNU/Linux.
 
 ACL
 ===
