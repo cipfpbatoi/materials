@@ -411,7 +411,7 @@ createApp(App).mount('#app')
 import "bootstrap/dist/js/bootstrap.js"
 ```
 
-Para usar los iconos de _Bootstrap 5_ podemos instalar el paquete _bootstrap-icons_ o bien importar el css, tal y como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Una vez hecho ya podemos incluir los iconos en etiquetas _\<i>_.
+Para usar los iconos de _Bootstrap 5_ podemos instalar el paquete _bootstrap-icons_ o bien importarlos en el CSS desde su CDN, tal y como se explica en la [documentación de Bootstrap](https://icons.getbootstrap.com/#install). Una vez hecho ya podemos incluir los iconos en etiquetas _\<i>_.
 
 Por ejemplo, si importamos el CSS incluiremos en el _\<style>_ del componente **App.vue**:
 ```javascript

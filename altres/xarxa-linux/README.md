@@ -209,6 +209,8 @@ Si volem configurar una altra targeta i que siguen ambdues estàtiques:
 
 **ATENCIÓ**: ha d'haver-hi un espai entre els : i el valor de l'opció i no pot haver-hi espais al final d'una línia.
 
+**NOTA**: en versions d'Ubuntu anteriors a la 22.04 per q configurar la porta d'enllaç en compte de la secció `routes` s'afegia una línia amb `gateway4` (en l'exemple en compte de les 3 línies de _routes_ tendríem una línia amb `gateway4: 10.0.2.2`).
+
 Perquè s'apliquen els canvis no és necessari reiniciar el servei de xarxa sinó que n'hi ha prou amb fer:
 ```bash
 netplan apply
@@ -243,6 +245,7 @@ Totes les configuracions es guarden en fitxers en `/etc/systemd/network` de tipu
 
 Exemples
 - Adaptador cablejat utilitzant DHCP: `/etc/systemd/network/wired.network`
+
 ```ini
 [Match]
 Name=enp1s0
@@ -252,6 +255,7 @@ DHCP=ipv4
 ```
 
 - Adaptador cablejat utilitzat una IP estàtica: `/etc/systemd/network/static.network`
+
 ```ini
 [Match]
 Name=enp1s0
