@@ -5,6 +5,8 @@
     - [Añadir vue-router a un proyecto Vue2 ya creado](#añadir-vue-router-a-un-proyecto-vue2-ya-creado)
     - [Añadir vue-router a un proyecto Vue3 ya creado](#añadir-vue-router-a-un-proyecto-vue3-ya-creado)
   - [Crear las rutas](#crear-las-rutas)
+    - [Rutas dinámicas](#rutas-dinámicas)
+    - [Opciones de cada ruta](#opciones-de-cada-ruta)
   - [Crear un menú](#crear-un-menú)
   - [Saltar a una ruta](#saltar-a-una-ruta)
   - [Paso de parámetros](#paso-de-parámetros)
@@ -14,14 +16,14 @@
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
 ## Introducción
-Como comentamos al principio Vue nos va a permitir crear SPA (_Single Page Applications_) lo que significa que sólo se cargará una pagina: _index.html_. Sin embargo nuestra aplicación estará dividida en diferentes vistas que el usuario percibirá como si fueran páginas diferentes y el encargado de gestionar la navegación entre estas vistas/páginas es **Vue-router** que es otra de las librerías del "ecosistema" de Vue (en este caso realizada por los desarrolladores de Vue).
+Como comentamos al principio Vue nos va a permitir crear SPA (_Single Page Applications_) lo que significa que sólo se cargará una pagina: _index.html_. Sin embargo nuestra aplicación estará dividida en diferentes vistas que el usuario percibirá como si fueran páginas diferentes y el encargado de gestionar la navegación entre estas vistas/páginas es **vue-router** que es otra de las librerías del "ecosistema" de Vue (en este caso realizada por los desarrolladores de Vue).
 
 En resumen, en nuestra aplicación (normalmente en el _App.vue_) tendremos una etiqueta `<router-view>` y lo que hará _vue-router_ es cargar en esa etiqueta el componente que corresponda en función de la ruta que haya en la barra de direcciones del navegador. Por ejemplo si la URL es **/products** cargará un componente llamado _ProductsTable_ (que mostrará una tabla con todos los productos de la aplicación) y si la URL es **/newprod** cargará un componente llamado _ProductForm_ con un formulario para añadir un nuevo producto.
 
 Lo que hacemos para configurar _vue-router_ es definir rutas que _mapean_ componentes de nuestra aplicación a rutas URL de forma que cuando se pone determinada ruta en el navegador se carga en nuestra página el componente indicado. También permite tener subrutas que mapeen subcomponentes dentro de otros.
 
 ## Instalación
-Si al crear nuestro proyecto _Vue_ vamos a la opción _manual_ y seleccionamos el **Router** no es necesario hacer nada porque se configura todo automáticamente. 
+La forma más sencilla es escoger la opción de _Vue-router_ al crear nuestro proyecto _Vue_. En este caso no es necesario hacer nada porque se instala y configura todo automáticamente. 
 
 ### Añadir vue-router a un proyecto Vue2 ya creado
 Si queremos añadirlo a un proyecto ya creado previamente tendremos que configurarlo manualmente como haciendo:
@@ -77,14 +79,17 @@ new Vue({
 - en el _scaffolding_ del proyecto es recomendable crear una nueva carpeta _views_ donde guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación. En un proyecto nuevo se nos creará automáticamente.
 
 ### Añadir vue-router a un proyecto Vue3 ya creado
-Vue3 sólo soporta versiones _vue-router_ superiores a la 4.x. Para asegurarnos que la instala ejecutaremos:
+Si queremos añadirlo a un proyecto ya creado previamente tendremos que instalarlo y configurarlo manualmente nosotros. 
+
+Los paso son:
+
+1. se instala el paquete **vue-router** como dependencia de producción:
 ```bash
-npm install -S vue-router@next
+npm install -S vue-router
 ```
 
-(o editaremos a mano la versión en el _package.json_)
+2. se crea el fichero de rutas, por ejemplo en **/src/router/index.js**. Aquí se define para cada ruta de nuestra aplicación el componente que debe cargarse. Su contenido es
 
-El resto es todo igual excepto que en el fichero de rutas cambia las primeras líneas y el objeto que se exporta:
 ```javascript
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
@@ -111,7 +116,8 @@ const router = createRouter({
 export default router
 ```
 
-Y en el fichero _main.js_ se haría:
+- se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$router`:
+
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -120,8 +126,10 @@ import router from './router' // <---
 createApp(App).use(router).mount('#app')
 ```
 
+- en el _scaffolding_ del proyecto es recomendable crear una nueva carpeta _views_ donde guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación (es decir, nuestros componentes ahora se dividen en 2 tipos: los que renderizan una "página", que irán a _Views_ y los que son parte de una página, que irán a _Components_).
+
 ## Crear las rutas
-Las rutas de nuestra aplicación las definiremos en el fichero **_router/index.js_**. Allí creamos la instancia para nuestras rutas (el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
+Las rutas de nuestra aplicación las definiremos en un fichero Javascript (por defecto **_/src/router/index.js_**). Allí creamos la instancia para nuestras rutas (el objeto que exportamos) y la configuramos. También debemos importar todos los componentes que definamos en el router:
 ```javascript
 import { createWebHistory, createRouter } from 'vue-router'
 
@@ -162,10 +170,20 @@ const router = createRouter({
 export default router
 ```
 
+Cada vez que cambie la URL en el navegador no cambiará todo el layout sino que sólo se cargará en la etiqueta 
+
+```html
+<router-view></router-view>
+```
+
+el componente indicado para esa ruta. Dicha etiqueta estará normalmente en el fichero _App.vue_.
+
 El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (piensa que en realidad no se están cargando diferentes páginas sino partes de una única página ya que es una SPA). Esta es la opción que escogeremos siempre en las aplicaciones SPA, aunque si nuestro servidor web usa ASP.NET o JSP habrá que decirle que ignore las URLs porque ya se ocupa de ellas Vue. La alternativa sería usar `createWebHashHistory()` pero en ese caso las rutas en vez de ser algo como `http://localhost:8080/products` serían  `http://localhost:8080/#products`.
 
+### Rutas dinámicas
 _VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_: la ruta `/edit/` seguida de algo más (ej. `/edit/5`) hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `this.$route.params.id` la parte final de la ruta. Si añadimos a la ruta la opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ con valor 5).
 
+### Opciones de cada ruta
 Para cada ruta que queramos mapear hay que definir:
 * **path**: la url que hará que se cargue el componente
 * **component**: el componente que se cargará donde se encuentre la etiqueta **\<router-view>** en el HTML
@@ -174,12 +192,6 @@ Además de esas propiedades podemos indicar:
 * **name**: le damos a la ruta un nombre que luego podemos usar para referirnos a ella
 * **props**: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se incluye esta opción el componente tendrá que acceder al parámetro _id_ desde `this.$route.params.id` 
 
-Cada vez que pongamos una nueva URL en el navegador no cambiará todo el layout sino que sólo se cargará el componente indicado para esa ruta. En el fichero _App.vue_, en la parte del HTML en que queramos que se carguen los diferentes componentes de nuestra SPA incluiremos la etiqueta:
-```html
-<router-view></router-view>
-```
-
-Y es donde al cambiar la URL se cargará el componente indicado para la ruta actual.
 
 ## Crear un menú
 Seguramente querremos un menú en nuestra SPA que nos permita ir a las diferentes rutas (que provocarán que se carguen los componentes). Para ello usaremos la etiqueta **\<router-link>**. Ejemplo:
@@ -195,27 +207,28 @@ Si le hemos puesto la propiedad _name_ a una ruta podemos hacer un enlace a ella
 <router-link to="{name: 'nombre_de_la_ruta'}">Home</router-link>
 ```
 
-Se puede hacer (aunque no es lo normal) una opción de menú a una ruta dinámica y pasarle el parámetro deseado. Por ejemplo para editar el usuario 5 haremos:
+Se podría hacer (aunque no es normal) una opción de menú a una ruta dinámica y pasarle el parámetro deseado. Por ejemplo para editar el usuario 5 haríamos:
 ```html
 <router-link to="{name: 'edit', params: {id: 5}}">Editar usuario 5</router-link>
 ```
 En este caso es necesario que la ruta dinámica tenga un _name_.
 
 ## Saltar a una ruta
-Al hacer `.use(router)` en el fichero _main.js_ (o declarar la variable `router` en Vue2) hacemos que esa variable (el router) esté disponible para todos los componentes desde `this.$router`. Esto nos permite acceder al router desde un componente para, por ejemplo, cambiar a una ruta.
+Al hacer `.use(router)` en el fichero _main.js_ estamos declarando esa variable (_router_) en la instancia principal de la aplicación por lo que estará disponible para todos los componentes desde `this.$router`. Esto nos permite acceder al router desde un componente para, por ejemplo, cambiar a una ruta.
 
-Podemos cargar la ruta que queramos desde JS con
+El código para cambiar la ruta desde Javascript es
 ```javascript
 this.$router.push(ruta)
 ```
+
 Tenemos varios métodos para navegar por código:
 * **`.push(newUrl)`**: salta a la ruta _newUrl_ y la añade al historial
 * **`.replace(newURL)`**: salta a la nueva ruta pero reemplaza en el historial la ruta actual por esta
 * **`.go(num)`**: permite saltar el num. de páginas indicadas adelante (ej. _this.$router.go(1)_) o atrás (_.go(-1)_) por el historial
 
-Estos métodos son equivalentes a los métodos _history.push()_, _history.replace()_ y _history.go()_ de JS.
+Estos métodos son equivalentes a los métodos _history.push()_, _history.replace()_ y _history.go()_ de Javascript.
 
-Además podemos pasar a push() y replace() funciones _callback_ que se ejecutarán al cambiar la ruta si todo va bien o si hay algún error.
+Además podemos pasar a `push()` y `replace()` funciones _callback_ que se ejecutarán al cambiar la ruta si todo va bien o si hay algún error.
 ```javascrip
 this.$router.push(location, onComplete?, onAbort?)
 ```
@@ -223,13 +236,13 @@ this.$router.push(location, onComplete?, onAbort?)
 También podemos obtener toda la ruta con `this.$route.fullPath`.
 
 ## Paso de parámetros
-Se pueden pasar parámetros a la ruta:
+La forma de pasar parámetros a la ruta es:
 
 ```javascript
 this.$router.push({ name: 'users', params: { id: 123 }})
 ```
 
-salta a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123 (si la ruta definida en _users_ fuera _/usuarios_ la URL cargada será `/usuarios/123`). En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.params.id` obtenemos el valor `123`). Podemos pasar cualquier objeto como parámetro.
+esto hace que se salte a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123. En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.params.id` obtenemos el valor `123`). Podemos pasar cualquier objeto como parámetro.
 
 También se puede pasar una _query_ a la ruta:
 ```javascript
@@ -275,7 +288,9 @@ Podemos consultar toda la información referente al router de Vue en [https://ro
 ## Cambio de parámetros en una ruta
 Si cambiamos a la misma ruta pero con distintos parámetros Vue reutiliza la instancia del componente y no vuelve a lanzar sus _hooks_ (created, mounted, ...). Esto hará que no se ejecute el código que tengamos allí. Por ejemplo supongamos que en una ruta '/edit/5' al cargar el componente se pide el registro 5 y se muestra en la página. Si a continuación cargamos la ruta '/edit/8' seguiremos viendo los datos del registro 5).
 
-La forma de solucionar esto es usar el elemento 'beforeRouteUpdate' y realizar allí la carga de los datos:
+Podemos solucionar esto desde el _router_ o desde el componente.
+
+Desde el _router_ podemos usar el elemento `beforeRouteUpdate` y realizar allí la carga de los datos:
 ```javascrip
 beforeRouteUpdate (to, from, next) {
     // Código que responde al cambio. En 'to' tenemos la ruta anterior y en 'from' la nueva
@@ -285,7 +300,7 @@ beforeRouteUpdate (to, from, next) {
 } 
 ```
 
-También podríamos usar un _watcher_ para detectar el cambio en la ruta:
+Desde el componente podemos usar un _watcher_ para detectar el cambio en la ruta:
 ```javascrip
 watch: {
     '$route' (to, from) {
@@ -293,6 +308,8 @@ watch: {
     }
 } 
 ```
+
+Cada vez que cambie el valor de _$route_ se ejecutará ese código y recibirá en el parámetro _to_ la nueva ruta y en _from_ el valor anterior de la variable. Veremos los _watchers_ más adelante o podéi consultar la [documentación de Vue](https://vuejs.org/guide/essentials/watchers.html).
 
 ## Vistas  con nombre y Subvistas
 Podemos cargar más de un componente usando varias etiquetas `<router-view>`. Por ejemplo si nestra página constará de 3  componentes (uno en la cabecera, otro el principal y otro en un _aside_ pondremos en el HTML:

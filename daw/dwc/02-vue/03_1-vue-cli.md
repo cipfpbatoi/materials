@@ -3,13 +3,13 @@
   - [Introducción](#introducción)
   - [Instalación](#instalación)
   - [Creación de un nuevo proyecto](#creación-de-un-nuevo-proyecto)
-    - [vue create](#vue-create)
     - [npm init vue@latest](#npm-init-vuelatest)
     - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
-    - [_Build and Deploy_ de nuestra aplicación](#build-and-deploy-de-nuestra-aplicación)
+    - [vue create](#vue-create)
     - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
+    - [_Build and Deploy_ de nuestra aplicación](#build-and-deploy-de-nuestra-aplicación)
   - [SFC (_Single File Component_)](#sfc-single-file-component)
     - [Secciones de un Single File Component](#secciones-de-un-single-file-component)
       - [\<template\>](#template)
@@ -56,35 +56,13 @@ npm install -g @vue/cli
 La opción -g es para que lo instale globalmente en el sistema y no tengamos que instalar una copia para cada proyecto.
 
 ## Creación de un nuevo proyecto
-Para crear un nuevo proyecto tenemos 2 formas:
-- `vue create`
-- `npm init vue@latest` (recomendada)
+Para crear un nuevo proyecto ejecutamos:
 
-### vue create
-Hasta la versión 4 de _vue-cli_ esta era la única forma de crear un proyecto Vue:
 ```bash
-vue create _<directorio_proyecto>_
+npm init vue@latest
 ```
 
-Vue nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3 por defecto con los plugins para _Babel_ y _esLint_ (mäs adelante podremos añadir más si los necesitamos) o bien la opción **manual** donde escogemos que plugins instalar para el proyecto de entre los siguientes:
-
-![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
-
-Se crea un directorio para el proyecto, se crea en él el fichero **_package.json_** con la configuración del proyecto y se instalan sus dependencias (hace automáticamente un `npm install`). Una vez creado entramos en el directorio del proyecto y ejecutamos:
-```bash
-npm run serve
-```
-
-lo que ejecuta un servidor web en el puerto **8080** donde se sirve nuestra aplicación.
-
-También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
-```bash
-vue ui
-```
-
-Este comando arranca un servidor web en el puerto 8080 y abre el navegador para gestionar nuestros proyectos.
-
-![Proyecto de plantilla simple](./img/vue-webpack-simple-app.png)
+En versiones anteriores de vue-cli se creaba un nuevo proyecto con `vue create` y aún puede hacerse así pero la manera recomendada es la anterior.
 
 ### npm init vue@latest
 Al ejecutar este comando se nos pregunta el nombre del proyecto a crear y se creará el directorio para el mismo con el **_package.json_** del proyecto en su interior. En este caso no se instalan las dependencias por lo que tenemos que instalarlas nosotros (`npm install`) y a continuación ejecutar:
@@ -106,22 +84,28 @@ Este script compila el código, muestra si hay errores, lanza un servidor web en
 
 ![Proyecto de plantilla simple](./img/vue-vite-sample-app.png)
 
-### _Build and Deploy_ de nuestra aplicación
-Normalmente trabajaremos con algún gestor de versiones como _git_. Para subir nuestro proyecto al repositorio lo creamos (el _GitHub_, _GitLab_ o donde queramos) y ejecutamos desde la carpeta del proyecto:
+### vue create
+Hasta la versión 4 de _vue-cli_ la forma de crear un proyecto Vue era ejecutando `vue create <directorio_proyecto>` pero ahora se recomienda hacerlo como hemos visto antes (`npm init vue@latest`).
+
+Al hacerlo con _vue create_ nos ofrece la opción de crear el nuevo proyecto para Vue2 o Vue3, por defecto con los plugins para _Babel_ y _esLint_ (mäs adelante podremos añadir más si los necesitamos) o bien la opción **manual** donde escogemos que plugins instalar para el proyecto de entre los siguientes:
+
+![Nuevo Proyecto Manual](https://cli.vuejs.org/cli-select-features.png)
+
+Se crea un directorio para el proyecto, se crea en él el fichero **_package.json_** con la configuración del proyecto y se instalan sus dependencias (hace automáticamente un `npm install`). Una vez creado entramos en el directorio del proyecto y ejecutamos:
 ```bash
-git init
-git add .
-git remote add origin https://github.com/mi-usuario/mi-proyecto
-git commit -m "Primer commit"
-git push -u origin main
+npm run serve
 ```
 
-Cuando nuestra aplicación esté lista para subir a producción ejecutaremos el script:
+En este caso se levanta un servidor web en el puerto **8080** donde se sirve nuestra aplicación.
+
+También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
 ```bash
-npm run build
+vue ui
 ```
 
-Este comando genera los JS y CSS para subir a producción dentro de la carpeta _dist_. El contenido de esta carpeta es lo que debemos subir a nuestro servidor de producción.
+Este comando arranca un servidor web en el puerto 8080 y abre el navegador para gestionar nuestros proyectos.
+
+![Proyecto de plantilla simple](./img/vue-webpack-simple-app.png)
 
 ### _Scaffolding_ creado
 Se ha creado la carpeta con el nombre del proyecto y dentro el scaffolding para nuestro proyecto:
@@ -268,6 +252,23 @@ export default {
 
 _style_
 También tiene el atributo _scoped_ (`<style scoped>`) por lo que los estilos aquí definidos se aplicarán sólo a este componente.
+
+### _Build and Deploy_ de nuestra aplicación
+Normalmente trabajaremos con algún gestor de versiones como _git_. Para subir nuestro proyecto al repositorio lo creamos (en _GitHub_, _GitLab_ o donde queramos) y ejecutamos desde la carpeta del proyecto:
+```bash
+git init
+git add .
+git remote add origin https://github.com/mi-usuario/mi-proyecto
+git commit -m "Primer commit"
+git push -u origin main
+```
+
+Cuando nuestra aplicación esté lista para subir a producción ejecutaremos el script:
+```bash
+npm run build
+```
+
+Este comando genera los JS y CSS para subir a producción dentro de la carpeta _dist_. El contenido de esta carpeta es lo único que debemos subir a nuestro servidor de producción.
 
 ## SFC (_Single File Component_)
 Declarar los componentes con `app.component()` en el fichero JS de la instancia como hicimos en el tema anterior genera varios problemas:
