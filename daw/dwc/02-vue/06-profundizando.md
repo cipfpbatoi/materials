@@ -429,24 +429,30 @@ Vue permite controlar transiciones en nuestra aplicación poniendo el código CS
 ## Entornos
 En Vue tenemos normalmente 3 entornos o _modos_, el de **development**, el de **test** y el de **production**. Las variables de entorno las guardaremos en uno de los siguientes ficheros:
 - **.env**: se cargan en todos los modos
-- **.env.local**: se cargan en todos los modos pero son ignordas por git
-- **.env.[modo]**: se cargan sólo en todos el modo indicado 
+- **.env.local**: se cargan en todos los modos pero son ignoradas por git
+- **.env.[modo]**: se cargan sólo en el modo indicado 
 - **.env.[modo].local**: ídem pero son ignordas por git
 
 En contenido de estos ficheros son variables en forma `clave=valor`:
 ```javascript
 // fichero .env
 TITULO=Mi proyecto
-VUE_APP_API=https://localhost/api
+VITE_API=https://localhost/api
 ```
 
-Si el nombre de la variable comienza por `VUE_APP_` será accesible desde el código con `process.env.nombreVariable`:
+Si el nombre de la variable comienza por `VITE_` será accesible desde el código a través de `import.meta.env.nombreVariable`:
+```javascript
+// <script> de componente
+console.log(process.env.VITE_API);
+```
+
+Podemos saber en qué entorno se está ejecutando la aplicación consultando el valor de la variable `import.meta.env.MODE`.
+
+Si no estamos usando _Vite_ sino _webpack_ el nombre de las variables debe comenzar por `VUE_APP_` y será accesible desde el código con `process.env.nombreVariable`:
 ```javascript
 // <script> de componente
 console.log(process.env.VUE_APP_API);
 ```
-
-Podemos saber en qué entorno se está ejecutando la aplicación consultando el valor de la variable `process.env.NODE_ENV`.
 
 ## Guards del router
 Son _hooks_ que podemos controlar en distintos momentos, algunos desde el componente y otros desde el _router_. Podemos ponerlos para todas las rutas, para una ruta en concreto o en el componente.
@@ -487,4 +493,3 @@ En un componente también puedo definir los _hooks_:
 - **beforeRouteEnter(to, from, next)**
 - **beforeRouteUpdate(to, from, next)**
 - **beforeRouteLeave(to, from, next)**
-
