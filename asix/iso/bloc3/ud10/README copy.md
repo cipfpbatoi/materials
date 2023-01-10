@@ -29,8 +29,23 @@ UD 10 - Instalación de un servidor con software libre
 - [Discos y particiones](#discos-y-particiones)
 - [RAID](#raid)
 - [LVM](#lvm)
+- [ACL](#acl)
+- [Cuotas](#cuotas)
 - [Programar tareas](#programar-tareas)
 - [Acceso remoto](#acceso-remoto)
+- [Retroalimentación](#retroalimentación)
+    - [Elección del sistema](#elección-del-sistema)
+    - [Planificación de la instalación](#planificación-de-la-instalación-1)
+    - [Creación de la máquina virtual](#creación-de-la-máquina-virtual)
+    - [Instalación y configuración](#instalación-y-configuración)
+    - [Documentar la instalación](#documentar-la-instalación)
+    - [Ejemplo de instalación y configuración de la máquina CentOS](#ejemplo-de-instalación-y-configuración-de-la-máquina-centos)
+      - [Configurar la red](#configurar-la-red)
+    - [Instalación de Debian/Ubuntu](#instalación-de-debianubuntu)
+      - [Configuración inicial de las particiones](#configuración-inicial-de-las-particiones)
+      - [Configuración de la red](#configuración-de-la-red)
+      - [Creación de las particiones para datos](#creación-de-las-particiones-para-datos)
+- [Bibliografía](#bibliografía)
 
 Introducción
 ============
@@ -259,7 +274,7 @@ Red
 
 Puedes encontrar la información actualizada de cómo configurar la red en:
 
-- [Configuración de red](https://cipfpbatoi.github.io/materials/asix/iso/bloc3/ud10/red)
+- [Configuración de red](https://cipfpbatoi.github.io/materials/asix/iso/bloc3/ud11/red)
 - Configuración de red en Debian [https://www.debian.org/doc/manuals/debian-reference/ch05.es.html](https://www.debian.org/doc/manuals/debian-reference/ch05.en.html)
 - SystemdNetworkd: [https://wiki.debian.org/SystemdNetworkd](https://wiki.debian.org/SystemdNetworkd)
 - SystemdNetworkd: [https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol)](https://wiki.archlinux.org/title/Systemd-networkd_(Espa%C3%B1ol))
@@ -427,6 +442,16 @@ LVM
 
 Documentación para la gestión de [Volúmenes](../../../../altres/sistemes-operatius/lvm/README.md) en GNU/Linux.
 
+ACL
+===
+
+Documentación para la gestión de [ACL](./acl.md).
+
+Cuotas
+======
+
+Documentación para la gestión de [cuotas](./cuotas.md) de discos. 
+
 
 Programar tareas
 ================
@@ -494,5 +519,183 @@ Una vez instalado se configura en el fichero ***/etc/ssh/sshd\_config***. Las pr
 
 Después de hacer modificaciones en el fichero tenemos que reiniciar (o recargar) el servicio ***ssh***.
 
+
+Retroalimentación
+=================
+
+### Elección del sistema
+
+Aquí las posibilidades que tenemos son casi ilimitadas.
+
+Podríamos optar por un sistema operativo de pago como RedHat o SuSE Linux que nos ofrecen soporte pero como queremos minimizar los costes todo lo posible no vamos a escoger estas opciones.
+
+Para poder evaluar diferentes opciones vamos a crear 3 servidores virtuales e instalar en cada uno de ellos una distribución diferente. Escogeremos un Debian (porque es la base de muchas distribuciones y una de las que mejor utiliza los recursos hardware), un Ubuntu Server (porque es una distribución muy extendida) y un CentOS (porque es una de las distribuciones más utilizadas en servidores y está basada en RHEL lo que nos aportará experiencia en este tipo de sistemas).
+
+Ahora debemos decidir qué versión instalaremos de cada sistema:
+
+-   Debian: instalaremos la versión **stable** (Debian 11) ya que en el servidor damos más importancia a su estabilidad que a poder usar las últimas versiones de las herramientas
+-   Ubuntu: vamos a escoger la última versión LTS, en nuestro caso la 20.04. Así no nos veremos obligados a actualizar el servidor cada 6 meses y en esta versión tendremos soporte durante 5 años (aunque posiblemente al cabo de 2 años actualizaremos el sistema a la siguiente versión LTS)
+-   CentOS: instalaremos la última versión.
+
+En los 3 casos hay versiones para arquitecturas de 32 y 64 bits y nosotros escogeremos esta última.
+
+Además podemos instalar el servidor con o sin entorno gráfico. Nosotros haremos la instalación sin entorno gráfico para así tener todos los recursos del servidor a disposición de los clientes.
+
+Ahora hemos de ver los requisitos de cada sistema. Estos varían mucho en función sobre todo del entorno de escritorio a instalar. Como no instalaremos entorno gráfico los requisitos son realmente bajos por lo que en los 3 casos podemos instalar sin problemas la versión de 64 bits.
+
+### Planificación de la instalación
+
+Una vez elegido el sistema vamos a planificar cómo lo instalaremos.
+
+En primer lugar hemos de comprobar que nuestra máquina cumpla holgadamente los requisitos del sistema y vemos que es así.
+
+Respecto a copias de seguridad, etc no debemos preocuparnos al estar instalando el sistema en un equipo nuevo. Sí debemos comprobar que el hardware de nuestro equipo sea compatible con el sistema operativo.
+
+Nos queda pensar en cómo organizaremos el espacio e disco. Lo ideal sería tener varios discos para separar completamente el sistema y los datos e incluso poder montar algún tipo de RAID en ellos. Pero la información que tendremos en el servidor no es vital y realizaremos copias de seguridad de los datos por lo que funcionaremos con el único disco que tenemos para no aumentar el coste. Lo que sí haremos es particiones diferentes para el sistema y para los datos. En concreto haremos las siguientes particiones:
+
+-   /: la del sistema operativo. Le daremos 100 GB
+-   /home: para los datos personales de los usuarios locales. Le daremos 100 GB
+-   /home/móvil: para los datos personales de los usuarios del dominio. Le daremos 300 GB
+-   /srv: para los datos que compartiremos en la red. A esta le daremos el resto del disco, 600 GB
+-   y por supuesto la partición de swap. Con 2 GB tendremos suficiente
+
+También vamos a utilizar el sistema LVM para así poder redimensionar cualquier partición que se nos quede pequeña.
+
+NOTA: lo de separar los homes de los usuarios locales y del dominio es para facilitarnos su gestión en los clientes como veremos en la próxima unidad
+
+### Creación de la máquina virtual
+
+Si instaláramos sobre el ordenador que se nos propone tendríamos toda la RAM para el servidor y el TB de disco duro pero esto es una práctica que debemos hacer en una máquina virtual en nuestro PC de clase por lo que la RAM y disco duro que tendremos será mucho menor.
+
+A cada uno de nuestros servidores (recordad que vamos a instalar 3) le asignaremos entre 512 MB y 1 GB de RAM (en función de la cantidad  de RAM que tenga nuestro PC) que es mucho más de los requerimientos de cada sistema.
+
+Respecto al disco, ya que en VirtualBox son gratis ;-), podemos crear un disco duro de 15 GB para el sistema y los home de los usuarios locales y otro de 10 GB para datos (que repartiremos al 50% entre /home/movil y /srv). Durante la instalación indicaremos que queremos usar LVM en el disco, por lo que se creará una pequeña partición sin LVM para el arranque del sistema (que montará en /boot, ya que Linux no puede arrancar desde un volumen virtual) y el resto del disco será otra partición añadida a un grupo de volumen llamado...
+
+En cuanto a la red tendrá 2 tarjetas de red:
+
+-   la externa la configuraremos como NAT o Adaptador puente
+    -   si la configuramos como NAT la GW será la 10.0.2.2 y su IP la 10.0.2.100
+    -   si la configuramos como Adaptador puente su GW será la IP interna del servidor de clase y su IP alguna que no se esté usando en la clase (por ejemplo la acabada en 1xx o 2xx siendo xx nuestro número de ordenador de clase. En mi caso será la 192.168.221.199)
+-   la interna será de tipo interna conectada a una red que llamaremos "Aula" y su IP será la 192.168.100.1. No tendrá GW
+-   respecto al DNS pondremos el mismo que tenga nuestro PC de clase
+
+### Instalación y configuración
+
+Instalaremos cada sistema sin entorno gráfico y sin instalar ningún servicio adicional. Los instalaremos más tarde. En cuanto a los discos podemos hacer una instalación automática con LVM y posteriormente configurar el disco de datos o hacer un particionamiento manual para configurarlo todo.
+
+En cuanto al nombre del equipo elegiremos algo como srvAulaDebian, srvAulaUbuntu, ...
+
+A continuación vamos a configurar nuestro servidor:
+
+-   comprobaremos si todo el hardware se a instalado correctamente y que se puede acceder a las particiones hechas durante la instalación
+-   configuraremos la red con los valores indicados antes
+-   configuraremos el enrutamiento para que el servidor permita salir a los clientes de la red interna
+-   crearemos y configuraremos las particiones para datos con LVM ya que en la instalación no las hago
+-   instalaremos Webmin en el servidor para poder configurarlo desde una máquina con entorno gráfico
+
+### Documentar la instalación
+
+Durante el proceso de instalación y configuración del servidor habré ido creando la documentación del mismo. Recordad que esta documentación deberemos ir adaptándola a los diferentes cambios que hagamos en nuestra máquina.
+
+### Ejemplo de instalación y configuración de la máquina CentOS
+
+En la teoría hemos visto cómo instalar un sistema CentOS. Nosotros lo haremos en la máquina virtual que hemos hecho con 2 tarjetas de red y 2 discos duros.
+
+#### Configurar la red
+
+Si no hemos configurado la red correctamente durante la instalación deberemos hacerlo ahora. Pero en las distribuciones basadas en RedHat se hace de forma diferente.
+
+El comando para ver la configuración actual no es ifconfig sino **ip add**. Las interfaces no se llaman ethX sino enp0sX o similar.
+
+Si no se muestran las interfaces de red o su configuración no es correcta la cambiaremos en el fichero /etc/sysconfig/network-scripts/enp0sX o como se llame nuestra tarjeta. Allí establecemos:
+
+-   BOOTPROTO=static (para indicar que la IP será estática)
+-   IPV6INIT=no (para deshabilitar IPv6)
+-   IPV6\_AUTOCONF=no (para que no se autoconfigure la IPv6)
+-   ONBOOT=yes (para que se habilite la tarjeta al iniciar)
+-   IPADDR0=192.168.221.199 (para indicar nuestra IP)
+-   PREFIX0=24 (para indicar la máscara)
+-   GATEWAY0=192.168.221.1 (para nuestra puerta de enlace)
+-   DNS1=172.27.111.5 (para el DNS)
+
+Una vez hecho esto detenemos el Network Manager:
+
+    systemctl stop NetworkManager
+    systemctl disable NetworkManager
+
+y reiniciamos el servicio de red:
+
+    systemctl restart network.service
+
+Ahora ya nuestra configuración debe ser la correcta.
+
+
+### Instalación de Debian/Ubuntu
+
+Como ya hemos hecho muchas instalaciones de estos sistemas no vamos a mostrarlo de nuevo. Simplemente decir que en la instalación no instalaremos ninguna funcionalidad de las que nos proponen (no queremos el Entorno de escritorio ni ningún servidor).
+
+![Debian](imgs/01debian.png "Debian")
+
+Respecto al particionado tendremos un disco para el sistema y otro para los datos. De momento simplemente en el primer disco instalaremos el sistema normalmente pero con la opción de LVM y crearemos una partición adicional para /home. Posteriormente crearemos volúmenes lógicos en el segundo disco para /home/movil y /srv.
+
+Respecto a la red nuestro servidor tendrá 2 tarjetas de red (la externa y la interna del aula.
+
+#### Configuración inicial de las particiones
+
+Como hemos dicho durante la instalación sólo configuramos 1 disco duro y al configurarlo con LVM vemos que tendemos /dev/sda1 montado en /boot (los ficheros de arranque en una partición sin LVM) y el sistema raíz, /home y el swap montados de particiones LVM /dev/mapper/...
+
+#### Configuración de la red
+
+Respecto a la red el contenido del fichero /etc/network/interfaces será:
+
+![Debian](imgs/02debian.png "Debian")
+
+Tras eso debemos activar el enrutamiento. El comando a añadir a /etc/rc.local es:
+
+    iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j SNAT --to 192.168.221.199
+
+#### Creación de las particiones para datos
+
+Ahora configuraremos el segundo disco duro de 10 GB que es el que utilizaremos para datos y que configuraremos con LVM.
+
+En primer lugar lo particionamos:
+
+    fdisk /dev/sdb
+
+Crearemos una única partición porque todo el disco va a ir al grupo de volúmenes (el disco virtual) de LVM.
+
+Luego formateamos la partición con ext2. No lo hacemos con ext4 porque esta partición en realidad no la vamos a utilizar sino que se va a LVM y las que usaremos son las particiones virtuales que hagamos allí y que sí formatearemos con ext4.
+
+    mkfs.ext4  /dev/sdb1
+
+Ahora indicamos que esa partición se usará con LVM:
+
+    pvcreate /dev/sdb1
+
+La añadimos a un nuevo grupo de volúmenes al que llamaremos datosLVM:
+
+    vgcreate datosLVM /dev/sdb1
+
+Y hacemos 2 particiones virtuales, una para datos del servidor (la llamaré datosSrv) y otra para las carpetas personales de los usuarios del dominio (la llamaré homeDominio):
+
+    lvcreate -L4G -n datosSrv datosLVM
+    lvcreate -L4G -n homeDominio datosLVM
+
+Las formateamos con ext4:
+
+    mkfs.ext4 datosSrv
+    mkfs.ext4 homeDominio
+
+Y las montamos (las añado a /etc/fstab para que se monten siempre):
+
+    /dev/datosLVM/datosSrv    /srv    ext4    defaults,acl    0  0
+    /dev/datosLVM/homeDominio /home/movil    ext4    defaults,acl    0  0
+
+y hago un mount -a para que se monten ahora sin tener que reiniciar el servidor)
+
+    mount -a
+
+Bibliografía
+============
 
 Obra publicada con [Licencia Creative Commons Reconocimiento No comercial Compartir igual 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
