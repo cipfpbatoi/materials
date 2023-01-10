@@ -575,17 +575,17 @@ Com hem vist hi ha moltes coses a configurar per a que un equip puga connectar-s
 
 Si tenim un mètode de què comprovar evitarem "tocar" configuracions que tenim correctament per provar coses. Els pasos a fer són:
 
-1. **Vore la configuració de la xarxa** d'eixe equip per a comprovar que tot és correcte (IP, màscara, porta d'enllaç i DNS). Ho farem amb `networkctl status` (si és un client Windows amb `ipconfig /all`)
+1. **Vore la configuració de la xarxa** d'eixe equip per a comprovar que tot és correcte (IP, màscara, porta d'enllaç i DNS). Ho farem amb `networkctl status` (si és un equip Windows amb `ipconfig /all`)
 
 2. **Fer un `ping` a la porta d'enllaç**. Si la configuració és correcta fem un _ping_ a la porta d'enllaç que ens ha mostrat el comando del pas anterior. Si falla pot ser:
   - _ip i gw estan en xarxes diferents_: recorda que la ip ha d'estar en la mateixa xarxa que la porta d'enllaç
-  - _el cable_: el cable que ix del nostre equip ha d'arribar al mateix switch al que va el de la nostra porta d'enllaç. Si és una màquina virtual s'hem d'assegurar que el nom de la targeta interna del client i del servidor és el mateix (és el nom del switch virtual que es crea)
-  - _el firewall_: el firewall dels Windows clients (Windows 10, ...) NO permet el pas dels pings. Per això no farem ping al client sinó des del client al servidor. Si hem de fer ping a un client Windows abans hem de afegir una regla al seu firewall per a mpermetre els paquets ICMP (o deshabilitar el firewall mentre fem el ping)
+  - _el cable_: el cable que ix del nostre equip ha d'arribar al mateix switch al que va el de la nostra porta d'enllaç. Si és una màquina virtual s'hem d'assegurar que el nom de la targeta interna del client i del servidor és el mateix (és el nom del switch virtual que es crea). Si la màquina te vàries targetes de xarxa hem d'assegurar-nos de quina és cadascuna comprovant la MAC de Virtualbox amb la del sistema operatiu.
+  - _el firewall_: el firewall dels Windows clients (Windows 10, ...) NO permet el pas dels pings. Per això no farem ping al client sinó des del client al servidor. Si el servidor és Windows Server 2022 o posterior i el client no està afegit al domini el Firewall talla els pings i haurem d'afegir una regla al firewall per a permetre els paquets ICMP (o deshabilitar el firewall i tornar-ho a habilitar tras comprovar el ping)
 
-3. **Fer un `ping` a un equip de fora de la xarxa**. Si el ping anterior ha funcionat farem un ping a un equip de fora, per exemple al 8.8.8.8 (si estem en l'institut podem fer-ho al nostre servidor 172.16.20.1 perquè el router no deixa eixir els pings fora). Si falla és
+3. **Fer un `ping` a un equip de fora de la xarxa**. Si el ping anterior ha funcionat farem un ping a un equip de fora, per exemple al 8.8.8.8 (si estem en l'institut podem fer-ho al servidor del centre, el 172.16.20.1, perquè el router no deixa eixir els pings fora). Si falla és
   - _l'enrutament_: en la nostra porta d'enllaç no s'ha fet l'enrutament correctament i tenim que arreglar-lo
 
-4. **Fer un `nslookup`** per a comprovar el DNS. El farem  a algun servidor de internet (per exemple a _google.com_) i si estem dins d'un domini també al nostre domini. Si falla:
+4. **Fer un `nslookup`** per a comprovar el DNS. El farem  a algun servidor de internet (per exemple a _google.com_) i, si estem dins d'un domini, també al nostre domini. Si falla:
   - Si fallen els 2 `nslookup` és que no hem posat una adreça de DNS en el nostre equip o la que hem posat no és un servidor DNS
   - Si falla el del nostre domini però funciona el de _google.com_ és que el nostre DNS no és el DC del nostre domini i per tant no sap que hem creat un domini (per exemple hem posat 8.8.8.8 però Google no sap que tenim un domini propi)
   - Si funciona el del domini pero falla el de _google.com_ és que el DNS en el nostre DC no funciona correctament o no te bé el seu _reenviador_ (que hauria de ser, per exemple, el DNS de Google)
