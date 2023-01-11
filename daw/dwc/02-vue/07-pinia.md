@@ -3,7 +3,7 @@ Tabla de contenidos
 - [Pinia](#pinia)
   - [Introducción](#introducción)
   - [Instalar y configurar Pinia](#instalar-y-configurar-pinia)
-  - [Crear el store](#crear-el-store)
+  - [Crear un store](#crear-un-store)
   - [Usar Pinia](#usar-pinia)
     - [Getters](#getters)
     - [Actions](#actions)
@@ -58,30 +58,31 @@ El uso de _Pinia_ es imprescindible en aplicaciones de tamaño medio o grande pe
 Como ya dijimos, no debemos almacenar todos los datos en el _store centralizado_ sino sólo los que necesitan varios componentes (los datos privados de un componente deben permanecer en él).
 
 ## Instalar y configurar Pinia
-A día de hoy, al crear nuestro proyecto con _vue-cli_ tenemos en las opciones una para que incluya Vuex pero no Pinia. Marcar aquí la opción haría que la instalación y configuración de la herramienta se haga automáticamente. Al no poder hacerlo debemos hacerlo nosotros manualmente:
-- se instala el paquete **pinia**
-```bash
-npm install -S pinia
-```
+La forma más sencilla de utilizar _Pinia_ es incluirla a la hora de crear nuestro proyecto cuando nos pregunta si queremos usarla. Esto hace que la instalación y configuración de la herramienta se haga automáticamente. 
 
-- se importa _pinia_ en el **main.js** añadiendo:
+Al entrar en nuestro nuevo proyecto vemos que dentro de `/src` se ha creado una carpeta llamada `stores/` donde crearemos los distintos almacenes de datos (podemos tener sólo uno o varios).
 
+Para poder usar _Pinia_ en los distintos componentes vemos que en el fichero `main.js` se importa la función `createPinia()` y se indica que se use en la instancia de Vue:
 ```javascript
-...
-import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia' // <---
+import App from './App.vue'
+import router from './router'
 
-createApp(App).use(createPinia())...mount('#app')
+createApp(App).use(createPinia()).use(router).mount('#app')
 ```
 
-## Crear el store
-Ahora hay que crear el fichero del store. Podemos tener todos los datos en un único fichero o, si son muchos, hacer ficheros diferentes. Por ejemplo para la aplicación de 'ToDo' podemos crear su store en **/src/stores/toDoStore.js**. 
+Si queremos usar _Pinia_ en un proyecto existente donde no la seleccionamos al crear el proyecto deberemos instalar la librería como dependencia de producción y modificar el fichero `main.js` para que pueda usarse, como hemos visto arriba. Luego crearemos la carpeta `/src/stores/` y en ella los almacenes que queramos usar. 
+
+## Crear un store
+Ahora hay que crear el fichero del store. Podemos tener todos los datos en un único fichero o, si son muchos, hacer ficheros diferentes. Por ejemplo para la aplicación de 'ToDo' podemos crear su store en **/src/stores/toDo.js**. 
 
 Al crear un almacén pondremos en él todas las variables que vaya a usar más de un componente (dentro de **`state`**) y los métodos para acceder a ellas y modificarlas (dentro de **`actions`**), por ejemplo, para compartir un contador haríamos:
 
 ```javascript
 import { defineStore } from 'pinia'
 
-export const useConterStore = defineStore('CounterStore', {
+export const useCounterStore = defineStore('counter', {
   state() {
     return {
       count: 0
@@ -109,46 +110,42 @@ Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro alma
 
 ![DevTools - Pinia](./img/DevTools-Pinia.png)
 
-## Usar Pinia
-En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos:
+Si al crear el proyecto hemos incorporado _Pinia_ nos ha creado un almacén de ejemplo como el anterior, pero escrito con la sintaxis de _Compositon API_ que sería:
 
 ```javascript
-//MyComponent.vue
-import { useConterStore } from '../stores/conterStore';
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 
-export default {
-  ...
-  computed: {
-    count() {
-      return useConterStore.count  // state
-    }
-  },
-  methods: {
-    increment() {
-      return useConterStore.increment  // actions
-    },
-    decrement() {
-      return useConterStore.decrement  // actions
-    },
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(0)
+  function increment() {
+    count.value++
   }
-}
+  function increment() {
+    count.value--
+  }
+
+  return { count, increment, decrement }
+})
 ```
 
-Para hacerlo más sencillo podemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente:
+## Usar Pinia
+En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente:
+
 ```javascript
 //MyComponent.vue
-import { useConterStore } from '../stores/conterStore';
+import { useCounterStore } from '../stores/conterStore';
 import { mapState, mapActions } from 'pinia';
 
 export default {
   ...
   computed: {
-    ...mapState(useConterStore, {
+    ...mapState(useCounterStore, {
       count: 'count',
     })
   },
   methods: {
-    ...mapActions(useConterStore, ['increment', 'decrement'])
+    ...mapActions(useCounterStore, ['increment', 'decrement'])
   }
 }
 ```
