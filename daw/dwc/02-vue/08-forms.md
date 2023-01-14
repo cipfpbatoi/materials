@@ -11,6 +11,8 @@
     - [Ejemplo](#ejemplo)
 - [Validar formularios](#validar-formularios)
   - [Validar con VeeValidate v4 y posteriores (para Vue3)](#validar-con-veevalidate-v4-y-posteriores-para-vue3)
+    - [Validar otros inputs](#validar-otros-inputs)
+    - [Usar un _schema_](#usar-un-schema)
     - [Validar con vee-validate y yup](#validar-con-vee-validate-y-yup)
     - [Personalizar los mensajes de yup](#personalizar-los-mensajes-de-yup)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
@@ -125,13 +127,40 @@ La forma de instalarla es
 npm install vee-validate -S
 ```
 
-Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field />` y la etiqueta `<form>` por el componente `<Form />` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. Los _inputs_ ya no necesitan `v-model` porque sus valores se recibirán en el objeto _values_. 
+Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field>` y la etiqueta `<form>` por el componente `<Form>` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. 
 
-Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devolverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar.
+Los _inputs_ ya no necesitan `v-model` porque sus valores se guardarán en el objeto _values_ pero sí necesitan atributo `name` que es el nombre del campo en que se guardará el valor de ese _input_ deontro del objeto que recibe como parámetro la función manejadora del `@submit`.
+
+Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devolverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar. Si alguna de las funciones de validación no devuelve _true_ no se ejecuta la función manejadora del _submit_.
 
 Habrá que importar los componentes de`'vee-validate'` que se usen (_Form_, _Field_, _ErrorMessage_) y registrarlos.
 
-Ejemplo (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue](https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue)):
+Al no usar `v-model` para darle un valor por defecto a los inputs (por ejemplo, si estamos editando un objeto que ya tiene valores) le pasaremos el objeto con los valores al componente `<Form>` en un atributo llamado `initial-values`. 
+
+Por ejemplo si estamos editando el objeto
+```javascript
+product = {
+  name: 'Ratón óptico',
+  price: '8.95'
+}
+```
+
+el formulario sería:
+```html
+  <Form :initial-values="product" @submit="onSubmit">
+    <Field name="name" type="text" />
+    <ErrorMessage name="name" />
+
+    <Field name="price" type="text" />
+    <ErrorMessage name="price" />
+    
+    <button type="submit">Guardar</button>
+  </Form>
+```
+
+Si el objeto _product_ está vacío el formulario aparecerá en blanco pero si contiene datos se mostrarán en el formulario.
+
+A continuación tenéis un ejemplo completo de un formulario para validar un email y una contraseña (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue](https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue)):
 ```vue
 <template>
   <div id="app">
@@ -195,6 +224,86 @@ export default {
 ```
 
 Podemos encontrar más información sobre vee-validate en su [documentación oficial](https://vee-validate.logaretm.com/v4/).
+
+### Validar otros inputs
+Para validar un `<select>` simplemente lo cambiamos por un `<Field as="select">`. Ejemplo:
+```html
+<Field as="select" name="autor" class="form-control" required>
+  <option value="">--- Selecciona autor ---</option>
+  <option v-for="autor in autores" :key="autor.id"
+  :value="autor.id">
+    {{ autor.nombre + ' ' + autor.apellidos }}
+  </option>
+</Field>
+<ErrorMessage name="autor" />
+```
+
+En el caso de un _checkbox_ o un _radiobutton_ simplemente añadimos al `Field` un atributo `type` indicando su tipo:
+```html
+<Field name="drink" type="radio" value="Water" /> Water
+<Field name="drink" type="radio" value="Tea" /> Tea
+<Field name="drink" type="radio" value="Coffee" /> Coffee
+```
+
+Si se trata de varios _checkbox_ con el mismo atributo _name_ en _values_ se recibirá un array con los _values_ de los elementos marcados.
+
+Para un _textarea_ pondremos un `<Field as="textarea">`.
+
+### Usar un _schema_
+El problema de validar los datos así es que tenemos varias funciones independientes que validan los distintos _inputs_ lo que dispersa el código de la vaidación.
+
+Podemos ponerlas todas como propiedades de un objeto que le pasamos como atributo al `Form`, evitando además tener que poner los atributos `rules` en cada `Field` a validar.
+
+El ejemplo anterior quedaría:
+```vue
+<template>
+  <div id="app">
+    <Form :validation-schema="mySchema" @submit="onSubmit">
+      <Field name="email" type="email" />
+      <ErrorMessage name="email" />
+
+      <Field name="password" type="password" />
+      <ErrorMessage name="password" />
+
+      <button>Sign up</button>
+    </Form>
+  </div>
+</template>
+
+<script>
+import { Form, Field, ErrorMessage } from "vee-validate";
+
+export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  data() {
+    return {
+      mySchema = {
+        email: (value) => {
+          if (!value) return "This field is required";
+          const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+          if (!regex.test(value)) return "This field must be a valid email";
+          return true;
+        },
+        password: (value) => {
+          if (!value) return "This field is required";
+          if (value.length < 8) return "The length of this field must be at least 8 characters";
+          return true;
+        }
+      }
+    }
+  },
+  methods: {
+    onSubmit(values) {
+      console.log(values);
+    },
+  },
+};
+</script>
+```
 
 ### Validar con vee-validate y yup
 Vee-validate 4 también permite usar librerías como [**yup**](https://www.npmjs.com/package/yup). En este caso la validación es casi automática como se muestra en la documentación de [vee-validate](https://vee-validate.logaretm.com/v4/guide/components/validation#validating-fields-with-yup). El ejemplo anterior quedaría:
