@@ -181,7 +181,15 @@ el componente indicado para esa ruta. Dicha etiqueta estará normalmente en el f
 El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (piensa que en realidad no se están cargando diferentes páginas sino partes de una única página ya que es una SPA). Esta es la opción que escogeremos siempre en las aplicaciones SPA, aunque si nuestro servidor web usa ASP.NET o JSP habrá que decirle que ignore las URLs porque ya se ocupa de ellas Vue. La alternativa sería usar `createWebHashHistory()` pero en ese caso las rutas en vez de ser algo como `http://localhost:8080/products` serían  `http://localhost:8080/#products`.
 
 ### Rutas dinámicas
-_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_: la ruta `/edit/` seguida de algo más (ej. `/edit/5`) hará que se cargue el componente _UserEdit_ y que dicho componente reciba en un parámetro llamado `this.$route.params.id` la parte final de la ruta. Si añadimos a la ruta la opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ con valor 5).
+_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_:
+```javascript
+{
+  path: '/edit/:id',
+  component: UserEdit
+}
+```
+
+Esa ruta coincidirá con cualquier URL que comience por _/edit/_ y tenga algo más. Lo que haya tras la última _/_ lo asignará el _router_ a una variable llamada _id_ (el nombre que pongamos tras el carácter `:`) y dicha variable la recibirá el componente _UserEdit_ en un parámetro accesible desde `this.$route.params.id`. Si añadimos a la ruta la opción `props: true` haremos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ que será accesible desde `this.id` directamente).
 
 ### Opciones de cada ruta
 Para cada ruta que queramos mapear hay que definir:
@@ -204,12 +212,14 @@ Cuando accedemos a una ruta su elemento \<router-link> adquiere la clase _.route
 
 Si le hemos puesto la propiedad _name_ a una ruta podemos hacer un enlace a ella con
 ```html
-<router-link to="{name: 'nombre_de_la_ruta'}">Home</router-link>
+<router-link :to="{name: 'nombre_de_la_ruta'}">Home</router-link>
 ```
+
+Fijaos que hemos de _bindear_ el traibuto `to` porque ya no le pasamos el texto sino una variable.
 
 Se podría hacer (aunque no es normal) una opción de menú a una ruta dinámica y pasarle el parámetro deseado. Por ejemplo para editar el usuario 5 haríamos:
 ```html
-<router-link to="{name: 'edit', params: {id: 5}}">Editar usuario 5</router-link>
+<router-link :to="{name: 'edit', params: {id: 5}}">Editar usuario 5</router-link>
 ```
 En este caso es necesario que la ruta dinámica tenga un _name_.
 
@@ -242,14 +252,25 @@ La forma de pasar parámetros a la ruta es:
 this.$router.push({ name: 'users', params: { id: 123 }})
 ```
 
-esto hace que se salte a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123. En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.params.id` obtenemos el valor `123`). Podemos pasar cualquier objeto como parámetro.
+esto hace que se salte a la ruta con _name_ users y le pasa como parámetro una _id_ de valor 123. En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `this.$route.params.nombreparam` (en el ejemplo en `this.$route.params.id` obtenemos el valor `123`). 
+
+Se puede pasar más de un parámetro pero para que los pueda recibir el componente hay que ponerlos todos en el _router_. Por ejemplo para hacer un `this.$router.push({ name: 'books', params: { autor: 12, tema: 4 }})`
+
+la ruta en el _router_ debería contener ambas variables:
+```javascript
+path: '/books/author/:autor/topic/:tema'
+```
+
+Podemos pasar también un objeto como parámetro pero antes debemos convertirlo a texto con `JSON.stringify()`. Sin embargo no es muy conveniente porque la URL quedaría demasiado larga y "sucia".
 
 También se puede pasar una _query_ a la ruta:
 ```javascript
 this.$router.push({ path: '/register', query: { plan: 'private' }})
 ```
 
-salta a la URL `/register?plan=private`. En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos el objeto, en el ejemplo `{ plan: 'private' }`).
+salta a la URL `/register?plan=private`. En el componente que se carga obtenemos la query pasada con `this.$route.query` (obtenemos un objeto, en el ejemplo `{ plan: 'private' }`).
+
+**IMPORTANTE**: Tened en cuenta que lo que se pasa como parámetro o consulta aparecerá en la URL por lo que no debemos enviar información sensible y no se recomienda enviar algo muy largo (como un objeto o array) para evitar que la URL quede "sucia".
 
 ## El objeto $route
 Es un objeto que contiene información de la ruta actual (no confundir con _$router_). Algunas de sus propiedades son:
