@@ -27,7 +27,7 @@ Las directivas de grupo son conjuntos de reglas que controlan el entorno de trab
 
 Para gestionar las directivas se utilizan los **GPO** (_Group Policy Object_, Objetos de Directiva de Grupo).
 
-Se pueden configurar directivas en cualquier equipo Windows desde el _Administrador del equipo_. Estas directivas se llaman _**Directivas Locales_** y se aplican a ese equipo y los usuarios que lo utilicen. Pero también es posible definir directivas en el dominio para que se apliquen a todos (o algunos según deseemos) los equipos y/o los usuarios del dominio. En caso de conflicto entre una política local o una del dominio siempre tiene preferencia la del dominio.
+Se pueden configurar directivas en cualquier equipo Windows desde el _Administrador del equipo_. Estas directivas se llaman _**Directivas Locales_** y se aplican a ese equipo y los usuarios que lo utilicen. Pero también es posible definir directivas en el dominio para que se apliquen a todos (o algunos, según deseemos) los equipos y/o los usuarios del dominio. En caso de conflicto entre una política local o una del dominio siempre tiene preferencia la del dominio.
 
 Las directivas del dominio pueden aplicarse para un sitio (y afectará a todos los dominios del lugar), para el dominio (y en ese caso afectarán a todos los objetos del dominio) o a nivel de unidad organizativa (y se aplicarán sólo a los objetos de esa OU).
 
@@ -67,7 +67,7 @@ En **Vínculos** podemos ver a qué contenedores está vinculada. En este caso e
 - a uno o varios sitios: se aplicará a los objetos que haya dentro de esos sitios
 - a una o varias OU: se aplicará sólo a los objetos creados en ellas
 
-En **Filtrado de seguridad** establecemos a qué objetos de dichos contenedores se aplicará. Por defecto tenemos el grupo **Usuarios autentificados** por lo que se aplicará a todos los usuarios y a todos los equipos (ya que todos pertenecen a ese grupo). Si quisiéramos que se aplique sólo a uno o varios grupos concretos eliminaríamos este grupo y añadiríamos los grupos que queramos. En ese caso debemos añadir también el grupo **Equipos del dominio** o bien algún grupo que creemos al que añadamos los equipos en los que debe actuar esta directiva ya que algunas directivas necesitan que el equipo (además del usuario) tenga permisos de lectura sobre la directiva para que se le pueda aplicar.
+En **Filtrado de seguridad** establecemos a qué objetos de dichos contenedores se aplicará. Por defecto tenemos el grupo **Usuarios autenticados** que incluye a todos los **usuarios** y a todos los **equipos**. Si quisiéramos que se aplique sólo a uno o varios grupos concretos de usuarios eliminaríamos este grupo y añadiríamos los grupos que queramos, pero en ese caso debemos añadir también el grupo **Equipos del dominio** o bien algún grupo que creemos al que añadamos los equipos sobre los que debe actuar esta directiva ya que algunas directivas necesitan que el equipo (además del usuario) tenga permisos de lectura sobre la directiva para que se le pueda aplicar.
 
 Además tenemos el **Filtrado WMI** que nos permite poner cualquier tipo de filtro que se comprobará en el equipo cliente antes de aplicar dicha directiva (por ejemplo qué tipo de S.O. tiene o qué programas tiene instalados).
 
@@ -84,7 +84,7 @@ Podemos saber qué directivas están aplicándose efectivamente al usuario actua
 rsop.msc
 ```
 
-Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente suede tardar 10-20 minutos en replicarse a todos los DC, pero puede ser más). Para actualizar las directivas y hacer que se aplican inmediatamente las que acabamos de crear utilizamos el comando:
+Hay que tener en cuenta que las directivas no se aplican inmediatamente sino que sólo se actualizan cada cierto tiempo (normalmente suede tardar 10-20 minutos en replicarse a todos los DC, pero puede ser más). Para actualizar las directivas y hacer que las que acabamos de crear se apliquen inmediatamente ejecutamos en el DC el comando:
 ```cmd
 gpupdate /force
 ```

@@ -113,6 +113,11 @@ Install-ADDSForest `
     -InstallDNS -Confirm:$false `
 ```
 
+Por defecto no están instalados los comandos Powershell para gestionar _Active Directory_. Para instalarlos debemos ejecutar:
+```powershell
+Install-WindowsFeature -Name "RSAT-AD-PowerShell" -IncludeAllSubFeature
+```
+
 ### Degradar un controlador de dominio
 Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace desinstalando el rol de **Servicios de dominio de Active Directory**.
 
@@ -196,6 +201,8 @@ dism /online /add-capability /CapabilityName:Rsat.GroupPolicy.Management.Tools~~
 
 ## Windows Admin Center (WAC)
 El _Centro de Administración de Windows_ es una herramienta para administrar cualquier sistema Windows y que se ejecuta desde un navegador web. Cada vez que iniciamos el _Administrador del servidor_ nos aparece un mensaje animándonos a usar esta herramienta.
+
+Se trata de una solución basada en navegador cuyo objetivo es unificar todas las herramientas necesarias para administrar un equipo así como mejorar la seguridad en la administración remota.
 
 Para poder utilizarlo primero se tiene que instalar en la máquina desde la que vamos a administrar los servidores. Tenemos las instrucciones en la [documentación de Microsoft](https://docs.microsoft.com/es-es/windows-server/manage/windows-admin-center/deploy/install).
 
