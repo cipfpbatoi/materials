@@ -128,6 +128,11 @@ Si vamos a necesitar hacer este tipo de _ping_ lo que deberíamos hacer es añad
 
 Para crear esa regla con _PowerShell_ haremos:
 ```powershell
+New-NetFirewallRule -DisplayName "Allow inbound ICMPv4" -Direction Inbound -Protocol ICMPv4 -IcmpType 8 -RemoteAddress 192.168.200.0/24 -Action Allow
+```
+
+Si queremos permitir pings desde distintas redes podemos añadir una regla para cada red o indicar en una sól regla todas las redes desde las que permitiremos el ping, por ejemplo:
+```powershell
 $ips = @("192.168.0.11-192.168.0.40", "192.168.100.10-192.168.100.200", "192.168.200.0/24")
 New-NetFirewallRule -DisplayName "Allow inbound ICMPv4" -Direction Inbound -Protocol ICMPv4 -IcmpType 8 -RemoteAddress $ips -Action Allow
 ```
@@ -137,17 +142,7 @@ Podemos habilitar y deshabilitar una regla de firewall con `Enable-NetFirewallRu
 Disable-NetFirewallRule –DisplayName "Allow inbound ICMPv4"
 ```
 
-Y para eliminar una regla usaremos `Remove-NetFirewallRule`.
-
-Además de usando Powershel podemos configurar el firewall con `netsh`. La regla anterior se añadiría con:
-```powershell
-netsh advfirewall firewall add rule name="Allow inbound ICMPv4" protocol=icmpv4:8,any dir=in action=allow
-```
-
-y se eliminaría con:
-```powershell
-netsh advfirewall firewall add rule name="Allow inbound ICMPv4" protocol=icmpv4:8,any dir=in action=block
-```
+Y para eliminar una regla usaremos `Remove-NetFirewallRule` (**OJO**: no usarla NUNCA sin indicar un _DisplayName_ o eliminará TODAS las reglas existentes).
 
 Para mostrar todas las reglas usamos el _cmdlet_ `Get-NetFirewallRule`. Para mostrar las direcciones IP de una regla en concreto usamos `Get-NetFirewallAddressFilter` y para mostrar sus puertos `Get-NetFirewallPortFilter`:
 ```powershell
@@ -170,6 +165,16 @@ Enabled, Profile, Direction, Action
 ```
 
 Podemos obtener más información de cómo configurar el _Firewall_ usando Powershell en páginas como [Reparar.info](https://reparar.info/configuracion-de-reglas-de-firewall-de-windows-con-powershell/) o usando `netsh advfirewall` en páginas como [esta](https://docs.microsoft.com/es-es/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior) de Microsoft con ejemplos para habilitar programas o abrir puertos.
+
+Además de usando Powershel podemos configurar el firewall con `netsh`. La regla anterior se añadiría con:
+```powershell
+netsh advfirewall firewall add rule name="Allow inbound ICMPv4" protocol=icmpv4:8,any dir=in action=allow
+```
+
+y se eliminaría con:
+```powershell
+netsh advfirewall firewall add rule name="Allow inbound ICMPv4" protocol=icmpv4:8,any dir=in action=block
+```
 
 ### Versión de evaluación
 La versión que hemos instalado es la versión  de evaluación y sólo podemos utilizarla durante un tiempo determinado antes de adquirir una licencia. Podemos ver el tiempo que nos queda con el comando:

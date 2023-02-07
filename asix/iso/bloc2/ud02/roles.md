@@ -75,17 +75,6 @@ New-NetNat -Name "Enruta red 100" -InternalIPInterfaceAddressPrefix 192.168.100.
 
 Podemos añadir más de una regla para enrutar diferentes redes internas. Para ver las regals que tenemos creadas ejecutamos `Get-NetNat`.
 
-Para hacerlo mediante comandos `netsh` debemos instalar el rol de enrutamiento (**_Routing_**) y configurarlo. Por ejemplo, suponemos que el equipo tiene 2 adaptadores de red llamados _WAN_ (el que sale a internet) y _LAN_ (el que va a la red interna que queremos enrutar). Los comandos a ejecutar serían:
-```powershell
-Install-WindowsFeature Routing -IncludeManagementTools
-# Install-RemoteAccess -VpnType Vpn
-
-netsh routing ip nat install
-netsh routing ip nat add interface WAN
-netsh routing ip nat set interface WAN mode=full
-netsh routing ip nat add interface LAN
-```
-
 ## Instalación del dominio
 Para que nuestro servidor sea un controlador de dominio (DC, Domain Controller) debemos instalar el rol de **Servicio de dominio de Active Directory**.
 
@@ -102,7 +91,13 @@ Vamos a explicar las diferentes opciones que hemos escogido durante la configura
 Tras configurar el dominio se reiniciará el servidor que, cuando vuelva a arrancar, ya será un DC.
 
 ### Instalar el dominio desde la terminal
-El comando para crear el dominio ACME.LAN con PowerShell sería:
+Deberemos instalar el rol **AD-Domain-Services** y posteriormente configurarlo con `Install-ADDSForest`:
+```powershell
+Install-WindowsFeature AD-Domain-Services
+Install-ADDSForest
+```
+
+Powershell pedirá el nombre del nevo dominio y la contraseña del administrador. También podemos poner todos los parámetros para que no pida nada (adecuado si queremos ponerlo en un script). El comando para crear el dominio ACME.LAN sería:
 ```powershell
 $dominioFQDN = "ACME.LAN"
 $dominioNETBIOS = "ACME"
@@ -118,12 +113,19 @@ Install-ADDSForest `
     -InstallDNS -Confirm:$false `
 ```
 
+Por defecto no están instalados los comandos Powershell para gestionar _Active Directory_. Para instalarlos debemos ejecutar:
+```powershell
+Install-WindowsFeature -Name "RSAT-AD-PowerShell" -IncludeAllSubFeature
+```
+
 ### Degradar un controlador de dominio
 Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace desinstalando el rol de **Servicios de dominio de Active Directory**.
 
 En la ventana de 'quitar las características' requeridas marcaremos debajo la casilla de 'Quitar herramientas de administración'. Posteriormente aparece una ventana informándonos que se debe 'Disminuir el nivel de este DC'. Pulsamos en ella y al final aparecerá una pantalla indicándonos todos los roles que hospeda este DC. Tras marcar la casilla 'COntinuar con la eliminación' se procederá a la misma.
 
 Si estamos degradando el último controlador del dominio se eliminará el mismo, perdiéndose toda la información que contenía. El servidor pasará a ser un servidor independiente. Si por el contrario aún quedan otros controladores de dominio la única cosa que estamos haciendo es que este servidor pasará a ser un servidor miembro del dominio sin funciones de controlador (que las harán el resto de controladores que aún queden en el dominio).
+
+Para eliminar un controlador de dominio desde Powershell ejecutaremos `Uninstall-ADDSDomainController`.
 
 ### Añadir un cliente al dominio
 En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor, es decir:
@@ -191,8 +193,16 @@ En versiones de Windows 10 anteriores a la 1809 se instala una actualización qu
 
 Puedes ampliar la información sobre RSAT en la [web de Microsoft](https://docs.microsoft.com/es-es/troubleshoot/windows-server/system-management-components/remote-server-administration-tools).
 
+También podemos instalar RSAT desde la consola con el comando:
+
+```powershell
+dism /online /add-capability /CapabilityName:Rsat.GroupPolicy.Management.Tools~~~~0.0.1.0 /CapabilityName:Rsat.Dns.Tools~~~~0.0.1.0 /CapabilityName:Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0
+```
+
 ## Windows Admin Center (WAC)
 El _Centro de Administración de Windows_ es una herramienta para administrar cualquier sistema Windows y que se ejecuta desde un navegador web. Cada vez que iniciamos el _Administrador del servidor_ nos aparece un mensaje animándonos a usar esta herramienta.
+
+Se trata de una solución basada en navegador cuyo objetivo es unificar todas las herramientas necesarias para administrar un equipo así como mejorar la seguridad en la administración remota.
 
 Para poder utilizarlo primero se tiene que instalar en la máquina desde la que vamos a administrar los servidores. Tenemos las instrucciones en la [documentación de Microsoft](https://docs.microsoft.com/es-es/windows-server/manage/windows-admin-center/deploy/install).
 

@@ -27,6 +27,7 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 Los contenidos de esta unidad son los siguientes:
 1. [Directivas](directivas.md)
 2. [Ejemplos](ejemplos.md)
+3. [Configuración avanzada](avanzada.md)
 
 ## Caso práctico
 Crearemos las directivas necesarias para conseguir que:
