@@ -23,7 +23,7 @@ UD 11 - Centralización de la información con LDAP
   - [Borrar entradas del directorio](#borrar-entradas-del-directorio)
   - [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
     - [Instalación cliente Debian 11 Bullseye](#instalación-cliente-debian-11-bullseye)
-    - [Instalación en el cliente](#instalación-en-el-cliente)
+    - [Instalación en otros clientes](#instalación-en-otros-clientes)
     - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
   - [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
     - [Configuración del servicio NSS](#configuración-del-servicio-nss)
@@ -375,7 +375,7 @@ y seleccionamos la opción *Create home directory*. Para que cree el directorio 
 
 ![libpam-ldapd](media/5-ldapd.png)
 
-### Instalación en el cliente
+### Instalación en otros clientes
 
 Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
 
