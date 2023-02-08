@@ -11,7 +11,8 @@
   - [Saltar a una ruta](#saltar-a-una-ruta)
   - [Paso de parámetros](#paso-de-parámetros)
   - [El objeto $route](#el-objeto-route)
-  - [Redireccionamiento. Not found](#redireccionamiento-not-found)
+  - [Ruta no encontrada: 404 Not found](#ruta-no-encontrada-404-not-found)
+  - [Redireccionamiento](#redireccionamiento)
   - [Cambio de parámetros en una ruta](#cambio-de-parámetros-en-una-ruta)
   - [Vistas  con nombre y Subvistas](#vistas--con-nombre-y-subvistas)
 
@@ -279,32 +280,43 @@ Es un objeto que contiene información de la ruta actual (no confundir con _$rou
 * **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
 * **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
 
-## Redireccionamiento. Not found
-En una ruta podemos poner una redirección a otra en lugar de un componente. Es lo que haremos para que si se carga una ruta inexistente nos cargue un componente que le indique al usuario que la ruta no existe.
+## Ruta no encontrada: 404 Not found
+Si en nuestra aplicación cargamos una ruta que no coincide con ninguna de las definidas en el _router_ no se cargará ningún componente en el _RouterView_.
 
-Para ello haremos una ruta para el componente _CompNotFound_ y luego una ruta genérica (\*) que redirija a la anterior:
+Una mejora de esto es crear una vista con lo que queramos mostrar ('404 - La página no existe' o algo similar) y hacer una ruta que cargue dicho componente.
+
+Si llamamos a esa vista `PathNotFound.vue` la ruta a crear sería:
 ```javascript
-  routes: [
-    ...
-    {
-      path: '/not-found',
-      name: '404',
-      component: CompNotFound,
-    },
-    {
-      path: '*',
-      redirect: {
-        name: '404',
-      },
-    }
-  ]
+{ 
+  path: '/:pathMatch(.*)*', 
+  component: PathNotFound 
+},
 ```
 
-La ruta genérica siempre debe ser la última.
+Esta ruta hay que ponerla la última ya que coincidirá con cualquier URL (usa una expresión regular y la dice que la ruta coincida con '*').
 
-**NOTA**: en **Vue3** en lugar de `path: '*'` debemos poner `path: "/:pathMatch(.*)*"`
+## Redireccionamiento
+En el _router_ puedo también poner una ruta que haga una redirección a otra en lugar de cargar un componente.
+```javascript
+{ 
+  path: '/a', 
+  redirect: '/b' 
+},
+```
 
-Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
+Lo que hace es que si se pone una URL `/a` la cambia automáticamente a `/b` y se buscará una ruta que coincida con esa.
+
+También podemos poner _alias_ a una ruta de forma que se cargue un componente tanto si la URL es una como otra (en este caso no se cambiaría la URL):
+```javascript
+{ 
+  path: '/a', 
+  component: A,
+  alias: '/b' 
+},
+```
+
+Podés obtener más información en la [documentación de Vue-router](https://v3.router.vuejs.org/guide/essentials/redirect-and-alias.html#redirect).
+
 
 ## Cambio de parámetros en una ruta
 Si cambiamos a la misma ruta pero con distintos parámetros Vue reutiliza la instancia del componente y no vuelve a lanzar sus _hooks_ (created, mounted, ...). Esto hará que no se ejecute el código que tengamos allí. Por ejemplo supongamos que en una ruta '/edit/5' al cargar el componente se pide el registro 5 y se muestra en la página. Si a continuación cargamos la ruta '/edit/8' seguiremos viendo los datos del registro 5).
@@ -371,3 +383,5 @@ Definiremos la ruta del siguiente modo:
   ]
 }
 ```
+
+Podemos consultar toda la información referente al router de Vue en [https://router.vuejs.org/](https://router.vuejs.org/).
