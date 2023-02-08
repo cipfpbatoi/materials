@@ -7,6 +7,7 @@
   * [Samba](./sistemes-operatius/samba/)
   * [Software RAID](./sistemes-operatius/software-raid/)
   * [LVM](./sistemes-operatius/lvm/)
+  * [Deshabilitar Windows Update](./sistemes-operatius/windows-update/)
 * [Virtualització. Virtualbox](./virtualitzacio/)
 * [Configurar la xarxa en GNU/Linux](./xarxa-linux/)
 * [Crear documentación con Markdown](./markdown/)
