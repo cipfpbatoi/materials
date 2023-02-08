@@ -78,6 +78,8 @@ Si por algún motivo queremos que nuestro equipo no se actualice (NO RECOMENDABL
 
 ![Detener Windows Update](media/detenerWindowsUpdate.png)
 
+Esta forma de deshabilitar las actualizaciones automáticas no es definitiva ya que este servicio se volverá a habilitar. Para desactivarlas definitivamente debemos configurarlo en una directiva de grupo, como se explica en los apuntes de [Deshabilitar Windows Update](https://cipfpbatoi.github.io/materials/altres/sistemes-operatius/windows-update/).
+
 ### Actualizaciones instaladas
 Podemos ver las actualizaciones que ha ido instalando Windows Update en el equipo. Aparecen en `Panel de control -> Programas -> Programas y características -> Actualizaciones instaladas`. También podemos pulsar “Ver historial de actualizaciones” desde la ventana de Windows Update y allá pulsar el enlace “Actualizaciones instaladas”.
 
