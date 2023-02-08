@@ -8,3 +8,4 @@ En aquesta carpeta trobaras recursos sobre sistemes operatius per a utilitzar en
 * [Afegir client GNU/Linux a Active Directory](./linux-ad/)
 * [Software RAID](./software-raid/)
 * [LVM](./lvm/)
+* [Deshabilitar Windows Update](./windows-update/)
