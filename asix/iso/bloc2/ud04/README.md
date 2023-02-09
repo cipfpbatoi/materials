@@ -36,7 +36,9 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 Los contenidos de esta unidad son los siguientes:
 1. [Permisos y derechos](permisos.md)
 2. [Servicios de archivo y almacenamiento](servarch.md)
-3. [Compartir impresoras](impr.md)
+3. [Administrador de recursos del servidor de archivos (FSRM)](fsrm.md)
+4. [iSCSI y otros servicios de archivo](iscsi.md)
+5. [Compartir impresoras](impr.md)
 
 ## Caso práctico
 Compartiremos 2 carpetas en el servidor:
