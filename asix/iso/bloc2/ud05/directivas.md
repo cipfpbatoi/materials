@@ -4,7 +4,7 @@
   - [Administrador de directivas de grupo](#administrador-de-directivas-de-grupo)
     - [Qué hace una directiva y a quién se aplica](#qué-hace-una-directiva-y-a-quién-se-aplica)
       - [A quién se aplica](#a-quién-se-aplica)
-      - [Quá hace la directiva](#quá-hace-la-directiva)
+      - [Qué hace la directiva](#qué-hace-la-directiva)
     - [Directivas aplicadas efectivamente](#directivas-aplicadas-efectivamente)
     - [Deshabilitar una GPO](#deshabilitar-una-gpo)
     - [Administrar directivas locales](#administrar-directivas-locales)
@@ -27,7 +27,7 @@ Las directivas de grupo son conjuntos de reglas que controlan el entorno de trab
 
 Para gestionar las directivas se utilizan los **GPO** (_Group Policy Object_, Objetos de Directiva de Grupo).
 
-Se pueden configurar directivas en cualquier equipo Windows desde el _Administrador del equipo_. Estas directivas se llaman _**Directivas Locales_** y se aplican a ese equipo y los usuarios que lo utilicen. Pero también es posible definir directivas en el dominio para que se apliquen a todos (o algunos, según deseemos) los equipos y/o los usuarios del dominio. En caso de conflicto entre una política local o una del dominio siempre tiene preferencia la del dominio.
+Se pueden configurar directivas en cualquier equipo Windows desde el _Editor de Directivas de grupo local (gpedit.msc)_. Estas directivas se llaman _**Directivas Locales_** y se aplican a ese equipo y los usuarios que lo utilicen. Pero también es posible definir directivas en el dominio para que se apliquen a todos (o algunos, según deseemos) los equipos y/o los usuarios del dominio. En caso de conflicto entre una política local o una del dominio siempre tiene preferencia la del dominio.
 
 Las directivas del dominio pueden aplicarse para un sitio (y afectará a todos los dominios del lugar), para el dominio (y en ese caso afectarán a todos los objetos del dominio) o a nivel de unidad organizativa (y se aplicarán sólo a los objetos de esa OU).
 
@@ -71,7 +71,7 @@ En **Filtrado de seguridad** establecemos a qué objetos de dichos contenedores 
 
 Además tenemos el **Filtrado WMI** que nos permite poner cualquier tipo de filtro que se comprobará en el equipo cliente antes de aplicar dicha directiva (por ejemplo qué tipo de S.O. tiene o qué programas tiene instalados).
 
-#### Quá hace la directiva
+#### Qué hace la directiva
 Para saber qué configura este GPO iremos a la pestaña de **Configuración**. Al pulsar sobre mostrar todo vemos lo siguiente:
 
 ![GPO - Configuración](media/GPOconfig.png)
@@ -107,13 +107,13 @@ Si lo que queremos se desvincular una GPO de un contenedor para que no se apliqu
 Podemos eliminar una GPO o desvincularla desde su menú contextual. Si la desvinculamos la GPO continúa existiendo pero no se aplicará a los contenedores a los que está vinculada.
 
 ### Administrar directivas locales
-Como hemos comentado, además de las directivas que tenemos en el servidor podemos crear directivas en cada equipo (también en los clientes).
+Como hemos comentado, además de las directivas del dominio podemos crear directivas locales en el servidor (también en los clientes desde _gpedit.msc_).
 
 Se gestionan desde `Inicio->Herramientas administrativas->Directivas de seguridad local`:
 
 ![Directivas locales](media/GPOlocal.png)
 
-No tiene todas las opciones de las directivas de Active Directory pero sí podemos configurar muchas cosas en el cliente.
+No tiene todas las opciones de las directivas de Active Directory pero sí podemos configurar muchas cosas en el equipo.
 
 ## Crear un nuevo GPO
 Podemos crear un nuevo GPO desde _Objetos de directiva de grupo_ y en su menú contextual seleccionamos **Nuevo** y le damos el nombre que queramos al nuevo GPO. Este GPO no se encuentra vinculado a ningún contenedor (el dominio o una OU). Para que se aplique a alguno vamos al contenedor al que queramos aplicarlo y desde su menú contextual seleccionamos **Vincular GPO existente** y elegimos el GPO creado.

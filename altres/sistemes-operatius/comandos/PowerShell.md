@@ -235,7 +235,6 @@ Ejemplos:
 - **`Get-NetRoute`**: Muestra toda la tabla de enrutamiento
 - **`Enable-NetAdapter -Name "Ethernet"`**: Activa la interfaz llamada Ethernet
 - **`Disable-NetAdapter -Name "Ethernet"`**: Desactiva la interfaz llamada Ethernet
-- **`Enable-NetAdapter -Name "Ethernet"`**
 - **`Rename-NetAdapter -Name "Ethernet" -NewName "Externa"`**: Renombra un adaptador de red
 - **`Remove-NetIPAddress -InterfaceAlias "Ethernet"`**: Elimina la IP del adaptador "Ethernet"
 - **`Remove-NetRoute -InterfaceAlias "Ethernet"`**: Elimina la _gateway_ y las rutas del adaptador "Ethernet"

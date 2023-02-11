@@ -26,7 +26,7 @@ Existen más de 3000 opciones de configuración de directiva de grupo, aparte de
 
 La seguridad es algo fundamental en todas las organizaciones y hay que tenerla muy presenta a la hora de decidir la política a aplicar a equipos y usuarios.
 
-Para facilitar la creación de un entorno seguro Microsoft publica las líneas básicas de seguridad (_Security Baselines_) que son unas directivas ya configuradas con opciones recomendables para muchas organizaciones. En cualquier cada organización debería analizar las amenazas a que está expuesta para establecer la política más adecuada para protegerse frente a las mismas, pero esto puede ser un buen punto de partida.
+Para facilitar la creación de un entorno seguro Microsoft publica las líneas básicas de seguridad (_Security Baselines_) que son unas directivas ya configuradas con opciones recomendables para muchas organizaciones. En cualquier caso cada organización debería analizar las amenazas a que está expuesta para establecer la política más adecuada para protegerse frente a las mismas, pero esto puede ser un buen punto de partida.
 
 Podemos encontrar más información en la [web de Microsoft](https://learn.microsoft.com/es-es/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines) desde donde podemos [descargarnos](https://www.microsoft.com/en-us/download/details.aspx?id=55319) las diferentes _baselines_ que existen hasta el momento. Tenemos para Windows 10, Windows 11, Windows Server 2012 R2, Windows Server 2022, Microsoft 365 Apps, Microsoft Edge, ... Hay que tener en cuenta que hay versiones diferentes para las distintas versiones y compilaciones de Windows por lo que debemos asegurarnos de usar sólo la adecuada para nuestra compilación.
 
@@ -49,5 +49,10 @@ Podéis consultar cómo establecer filtros WMI en la [web de Microsoft](https://
 ## Configuración de seguridad avanzada
 Además de Microsoft otras organizaciones publican configuraciones predeterminadas para mejorar la seguridad en sistemas Windows.
 
-En España el _Centro Criptográfico Nacional_ publica guías para mejorar la seguridad informática de instituciones y empresas en diferentes entornos. EN [este enlace](https://www.ccn-cert.cni.es/guias/guias-series-ccn-stic/500-guias-de-entornos-windows.html) podemos encontrar diferentes guías para entornos Windows.
+En España el _Centro Criptográfico Nacional_ publica guías para mejorar la seguridad informática de instituciones y empresas en diferentes entornos. En [este enlace](https://www.ccn-cert.cni.es/guias/guias-series-ccn-stic/500-guias-de-entornos-windows.html) podemos encontrar diferentes guías para entornos Windows, como por ejemplo para:
+- Windows Server 2019 (DC o servidor independiente)
+- Windows Server 2019 como servidor de ficheros
+- Windows 10 (miembro de dominio)
+- Windows 10 (cliente independiente)
+- etc
 

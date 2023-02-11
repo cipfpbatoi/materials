@@ -7,7 +7,7 @@
     - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
     - [Configurar la red](#configurar-la-red)
     - [Actualizar el servidor](#actualizar-el-servidor)
-    - [Administrar el servidor desde la terminal](#administrar-el-servidor-desde-la-terminal)
+    - [Configurar el servidor con _Powershell_](#configurar-el-servidor-con-powershell)
     - [El Firewall](#el-firewall)
     - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
@@ -94,25 +94,41 @@ No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Win
 
 **Recordad que nosotros deshabilitaremos las actualizaciones automáticas para no colapsar la red del instituto.**
 
-### Administrar el servidor desde la terminal
+### Configurar el servidor con _Powershell_
 Si hemos instalado el servidor sin entorno de escritorio debemos usar la terminal para configurarlo. Al arrancar el servidor automáticamente se abre la herramienta de texto **sconfig** nos permite configurar de forma sencilla e intuitiva muchas de las cosas más habituales:
 
 ![sconfig](media/sconfig.png)
 
-Además podemos usar directament _PowerShell_. Algunos comandos que tendremos que usar son:
+Además podemos usar directament _PowerShell_. Algunos comandos que podemos usar son:
 - Para cambiar el nombre del servidor:
 ```powershell
 Rename-Computer -NewName MISERVIDOR
 Restart-Computer -force
 ```
 
-- Para configurar la red podemos usar Powershell o **netsh**:
+- Para ver el nombre de cada interfaz de red usamos el comando `Get-NetIPInterface`.
+
+- Para configurar la red podemos usar _Powershell_ o _netsh_:
 ```powershell
-Get-NetAdapter –name $redInterna | Remove-NetIPAddress -Confirm:$false
-Get-NetAdapter –name $redInterna | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24
+Get-NetAdapter –name Ethernet | Remove-NetIPAddress -Confirm:$false
+Get-NetAdapter –name Ethernet | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24 -DefaultGateway 192.168.1.1
 ```
 
-- Para ver el nombre de cada interfaz de red usamos el comando `Get-NetIPInterface`.
+- Si queremos habilitar DHCP ejecutamos:
+```powershell
+Set-NetIPInterfce -InterfaceAlias Ethernet -Dhcp Enabled
+```
+
+- Para obtener la tabla de enrutamiento usamos `Get-NetRoute`
+- Para establecer los DNS haremos:
+```powershell
+Set-DNSClientServerAddress -InterfaceAlias Ethernet -ServerAddresses ("192.168.1.1", "8.8.8.8")
+```
+
+- Si queremos deshabilitar IPv6 usamos `Disable-NetAdapterBinding` (para saber el nombre de las opciones que tenemos usamos `Get-NetAdapterBinding`):
+```powershell
+Disable-NetAdapterBinding –name $redInterna -ComponentID ms_tcpip6
+```
 
 Podemos encontrar muchos comandos de configuración en la página de [Administración de un servidor Server Core](https://docs.microsoft.com/es-es/windows-server/administration/server-core/server-core-administer) de Microsoft.
 

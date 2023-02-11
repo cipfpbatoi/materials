@@ -15,6 +15,7 @@
     - [Usar un _schema_](#usar-un-schema)
     - [Validar con vee-validate y yup](#validar-con-vee-validate-y-yup)
     - [Personalizar los mensajes de yup](#personalizar-los-mensajes-de-yup)
+    - [Validación personalizada con yup](#validación-personalizada-con-yup)
 - [Inputs en subcomponentes](#inputs-en-subcomponentes)
   - [v-model en subcomponente input](#v-model-en-subcomponente-input)
     - [Ejemplo](#ejemplo-1)
@@ -377,6 +378,18 @@ setLocale({
     min: 'El valor del campo debe ser mayor que ${min}',
   },
 });
+```
+
+### Validación personalizada con yup
+Si lo que queremos validar no lo hace ningún validador de _yup_ podemos crear nuestra propia regla usando el validador `test()` que como 1º parámetro recibe el nombre de la regla, como 2º el mensaje de error a mostrar y como 3º una función que recibe el valor del campo y devolverá _true/false_ indicando si es válido o no. Por ejemplo el campo _seed_ debe ser múltiplo de 7:
+
+```javascipt
+const mySchema = yup.object({
+  seed: yup.number().required().test('seven-multiplo', 'El valor debe ser múltiplo de 7', (value) => {
+    return !(value % 7)
+  },
+  ...
+})
 ```
 
 # Inputs en subcomponentes
