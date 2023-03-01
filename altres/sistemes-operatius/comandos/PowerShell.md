@@ -361,6 +361,10 @@ Get-WindowsCapability -Name RSAT.ActiveDirectory* -Online | Add-WindowsCapabilit
 ```
 
 ## Saber más
-En Internet hay infinidad de páginas y tutoriales sobre Powershell. Te recomiendo el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).
+En Internet hay infinidad de páginas y tutoriales sobre Powershell. 
+
+En la [web de Microsoft](https://learn.microsoft.com/es-es/powershell/) encontramos recursos para aprender Powershell.
+
+Para aprender scripts hay multitud de enlaces como el libro [Scripts en PowerShell: Guia para principiantes](http://somebooks.es/scripts-powershell-guia-principiantes/) de [SomeBooks](http://somebooks.es/).
 
 También hay gran cantidad de cursos disponibles, como el de [Automatización de tareas administrativas mediante PowerShell](https://docs.microsoft.com/es-es/learn/paths/powershell/) de Microsoft.

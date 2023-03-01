@@ -416,10 +416,24 @@ Los estados de la directiva en los que podemos actuar son:
 - ...
 
 ## Imágenes
-Lo habitual es guardar las imágenes en la carpeta `assets`. Para que se carguen correctamente usaremos en su atributo `src` la función `require` con la URL de la imagen. Ejemplo:
+Lo habitual es guardar las imágenes en la carpeta `assets`. Ejemplo:
 ```html
 <td>  
-  <img :src="require('../assets/elPatitoFeo.jpeg')" height="100px" alt="El Patito Feo">
+  <img src="../assets/img/elPatitoFeo.jpeg" height="100px" alt="El Patito Feo">
+</td>
+```
+
+Si se trata de imágenes estáticas también podemos simplemente ponerlas dentro de la carpeta `public` y hacer referencia a ellas usando **ruta absoluta**:
+```html
+<td>  
+  <img src="/img/elPatitoFeo.jpeg" height="100px" alt="El Patito Feo">
+</td>
+```
+
+Si usamos _webpack_ en lugar de _Vite_, para que se carguen correctamente usaremos en su atributo `src` la función `require` con la URL de la imagen:
+```html
+<td>  
+  <img :src="require('../assets/img/elPatitoFeo.jpeg')" height="100px" alt="El Patito Feo">
 </td>
 ```
 
