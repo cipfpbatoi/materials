@@ -1,10 +1,4 @@
 # Bl2. UD 3 - Administración centralizada del dominio
-- [Bl2. UD 3 - Administración centralizada del dominio](#bl2-ud-3---administración-centralizada-del-dominio)
-  - [Contenidos](#contenidos)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-  - [Caso práctico](#caso-práctico)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

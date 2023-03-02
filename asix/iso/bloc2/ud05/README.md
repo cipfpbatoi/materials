@@ -1,10 +1,4 @@
 # Bl2. UD 5 - Directivas
-- [Bl2. UD 5 - Directivas](#bl2-ud-5---directivas)
-  - [Contenidos](#contenidos)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-  - [Caso práctico](#caso-práctico)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

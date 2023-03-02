@@ -1,9 +1,4 @@
 # Bl2. UD 6 - Configuración avanzada del dominio
-- [Bl2. UD 6 - Configuración avanzada del dominio](#bl2-ud-6---configuración-avanzada-del-dominio)
-  - [Contenidos](#contenidos)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-  - [Caso práctico](#caso-práctico)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

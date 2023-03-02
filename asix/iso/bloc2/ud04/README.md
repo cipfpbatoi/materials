@@ -1,10 +1,4 @@
 # Bl2. UD 4 - Compartición de recursos en el dominio
-- [Bl2. UD 4 - Compartición de recursos en el dominio](#bl2-ud-4---compartición-de-recursos-en-el-dominio)
-  - [Contenidos](#contenidos)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-  - [Caso práctico](#caso-práctico)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

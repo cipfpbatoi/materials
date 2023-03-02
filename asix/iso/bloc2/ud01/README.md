@@ -1,14 +1,4 @@
 # Bl2. UD 1 - Introducción a los dominios
-- [Bl2. UD 1 - Introducción a los dominios](#bl2-ud-1---introducción-a-los-dominios)
-  - [Contenidos](#contenidos)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimientos previos](#conocimientos-previos)
-  - [Caso práctico](#caso-práctico)
-    - [Fases en la implantación de un sistema informático](#fases-en-la-implantación-de-un-sistema-informático)
-    - [Análisis del sistema](#análisis-del-sistema)
-    - [Diseño del sistema](#diseño-del-sistema)
-
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

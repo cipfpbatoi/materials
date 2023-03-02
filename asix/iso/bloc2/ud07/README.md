@@ -1,10 +1,4 @@
 # Bl2. UD 7 - Supervisión y monitorización del sistema
-- [Bl2. UD 7 - Supervisión y monitorización del sistema](#bl2-ud-7---supervisión-y-monitorización-del-sistema)
-  - [Contenidos](#contenidos)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimiento previo](#conocimiento-previo)
-  - [Caso práctico](#caso-práctico)
-  - [Bibliografía](#bibliografía)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:

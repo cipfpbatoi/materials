@@ -1,10 +1,4 @@
 # Bl2. UD 2 - Instalación de Windows Server
-- [Bl2. UD 2 - Instalación de Windows Server](#bl2-ud-2---instalación-de-windows-server)
-  - [Contenidos](#contenidos)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
-  - [Conceptos clave](#conceptos-clave)
-  - [Conocimientos previos](#conocimientos-previos)
-  - [Caso práctico](#caso-práctico)
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:
