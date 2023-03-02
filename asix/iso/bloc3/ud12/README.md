@@ -11,9 +11,9 @@ UD 12 - Compartición de recursos con NFS
   - [Compartir recursos](#compartir-recursos)
     - [squash](#squash)
     - [Permisos sobre las carpetas compartidas](#permisos-sobre-las-carpetas-compartidas)
-    - [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
-- [Configuración del cliente](#configuración-del-cliente)
+  - [Configuración del cliente](#configuración-del-cliente)
     - [Perfiles móviles de usuarios LDAP](#perfiles-móviles-de-usuarios-ldap)
+  - [Compartir recursos gráficamente](#compartir-recursos-gráficamente)
   - [Compartición de impresoras. CUPS](#compartición-de-impresoras-cups)
     - [Instalación de CUPS](#instalación-de-cups)
     - [Acceso a una impresora desde un equipo cliente](#acceso-a-una-impresora-desde-un-equipo-cliente)
@@ -139,18 +139,7 @@ Además si queremos que sea de lectura y escritura compartiremos la carpeta con 
 
 Sin embargo, si la carpeta que estamos compartiendo es para almacenar los perfiles móviles de los usuarios las opciones con las que la debemos compartir son **rw** y **no_root_squash**. Esto es porque la primera vez que el usuario inicie sesión se crea su carpeta (en este caso en el servidor) y el root del equipo cliente debe cambiar su propietario para que pertenezca al usuario que inicia la sesión para lo que debe hacer un **chown** que sólo root puede ejecutar (por lo que tiene que tener los permisos de root en el servidor que es donde se está guardando la carpeta).
 
-### Compartir recursos gráficamente
-
-Al igual que para **LDAP** tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos *Webmin* que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de **NFS**:
-
-![Webmin](./media/01-nfs.png "Webmin")
-
-Desde aquí podemos modificar la configuración de los directorios exportados o exportado nuevos:
-
-![Webmin](./media/02-nfs.png "Webmin")
-
-Configuración del cliente  
-=========================
+## Configuración del cliente  
 
 En el cliente el paquete a instalar es el ***nfs-common***.
 
@@ -210,6 +199,18 @@ El siguiente paso es que las carpetas personales de los usuarios móviles se cre
     4. Asignamos los permisos adecuados: ***chmod -R 750 /home/movil/jsegura***
 
 ![perfilesm](media/movil1.png)
+
+
+## Compartir recursos gráficamente
+
+Al igual que para **LDAP** tenemos muchas herramientas gráficas para configurar nuestro servidor **NFS**. Nosotros utilizaremos *Webmin* que ya tenemos instalado. Dentro de Red encontramos el elemento Exportaciones de **NFS**:
+
+![Webmin](./media/01-nfs.png "Webmin")
+
+Desde aquí podemos modificar la configuración de los directorios exportados o exportado nuevos:
+
+![Webmin](./media/02-nfs.png "Webmin")
+
 
 ## Compartición de impresoras. CUPS  
 
