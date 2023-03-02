@@ -1,10 +1,16 @@
 # Bl2. UD 5 - Directivas
 - [Bl2. UD 5 - Directivas](#bl2-ud-5---directivas)
+  - [Contenidos](#contenidos)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimiento previo](#conocimiento-previo)
-  - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
+
+## Contenidos
+Los contenidos de esta unidad son los siguientes:
+1. [Directivas](directivas.md)
+2. [Ejemplos](ejemplos.md)
+3. [Configuración avanzada](avanzada.md)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
@@ -22,12 +28,6 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - cómo utilizar software de virtualización para crear máquinas virtuales
 - cómo gestionar los usuarios, grupos y recursos del dominio
 - cómo utilizar la terminal para realizar tareas básicas en una máquina
-
-## Contenidos
-Los contenidos de esta unidad son los siguientes:
-1. [Directivas](directivas.md)
-2. [Ejemplos](ejemplos.md)
-3. [Configuración avanzada](avanzada.md)
 
 ## Caso práctico
 Crearemos las directivas necesarias para conseguir que:

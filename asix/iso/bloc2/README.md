@@ -1,5 +1,5 @@
 # Bloque 2: Administración de Dominios con sistemas privativos - Windows
-En este bloque veremos cómo gestionar la red informática de una empresa y todos sus elementos utilizando dominios. Para gestionar el dominio utilizaremos software privativo, en concreto usaremos servidores Windows Server (2019) mientras que en el siguiente bloque veremos cómo gestionar la red pero usando software libre.
+En este bloque veremos cómo gestionar la red informática de una empresa y todos sus elementos utilizando _Active Directory_ que es la implementación que hace Microsoft del protocolo LDAP de gestión de dominios. Para gestionar el dominio utilizaremos software privativo, en concreto usaremos servidores Windows Server mientras que en el siguiente bloque veremos cómo gestionar la red pero usando software libre.
 
 El bloque está compuesto por las unidades de trabajo:
 - [UD 1 - Introducción a los dominios](./ud01): en esta unidad veremos qué es una red cliente/servidor y que es un dominio

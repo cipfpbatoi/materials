@@ -1,10 +1,15 @@
 # Bl2. UD 3 - Administración centralizada del dominio
 - [Bl2. UD 3 - Administración centralizada del dominio](#bl2-ud-3---administración-centralizada-del-dominio)
+  - [Contenidos](#contenidos)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimiento previo](#conocimiento-previo)
-  - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
+
+## Contenidos
+Los contenidos de esta unidad son los siguientes:
+1. [Objetos del dominio](objetos.md)
+2. [Usuarios móviles](usrmoviles.md)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
@@ -19,7 +24,6 @@ Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
 - Bloquear accesos no autorizados al dominio.
 - Hacer cumplir los requerimientos de seguridad.
 
-
 ## Conceptos clave
 Los conceptos más importantes de esta unidad son:
 - Usuarios del dominio
@@ -28,7 +32,6 @@ Los conceptos más importantes de esta unidad son:
 - Unidades organizativas
 - Herramientas de administración del dominio
 
-
 ## Conocimiento previo
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - qué es un dominio
@@ -36,11 +39,6 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - tipos de usuarios en Windows
 - tipos de grupos en Windows
 - crear y administrar usuarios y grupos
-
-## Contenidos
-Los contenidos de esta unidad son los siguientes:
-1. [Objetos del dominio](objetos.md)
-2. [Usuarios móviles](usrmoviles.md)
 
 ## Caso práctico
 Crearemos los usuarios para los 150 alumnos y los profesores (tenemos sus datos en un fichero) y los 4 grupos que usaran el aula (de 1r a 4r de la ESO).

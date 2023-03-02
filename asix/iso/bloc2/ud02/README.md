@@ -1,10 +1,16 @@
 # Bl2. UD 2 - Instalación de Windows Server
 - [Bl2. UD 2 - Instalación de Windows Server](#bl2-ud-2---instalación-de-windows-server)
+  - [Contenidos](#contenidos)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimientos previos](#conocimientos-previos)
-  - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
+
+## Contenidos
+Los contenidos de esta unidad son los siguientes:
+1. [Instalación de Windows Server](instal.md)
+2. [Instalar roles y características](roles.md)
+3. [Administrar discos](discos.md)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
@@ -30,12 +36,6 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - cuáles son los sistemas de archivo utilizados por los sistemas Microsoft y sus ventajas e inconvenientes
 - cómo asignar permisos a ficheros y carpetas en sistemas de archivo NTFS
 - cómo utilizar la terminal para realizar tareas básicas en una máquina
-
-## Contenidos
-Los contenidos de esta unidad son los siguientes:
-1. [Instalación de Windows Server](instal.md)
-2. [Instalar roles y características](roles.md)
-3. [Administrar discos](discos.md)
 
 ## Caso práctico
 Una vez realizado el análisis y diseño del sistema llega el momento de implementarlo. Nuestro trabajo ahora será instalar y configurar los sistemas operativos de los diferentes equipos del sistema, crear y configurar el dominio y añadir los equipos clientes al mismo.

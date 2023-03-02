@@ -1,14 +1,17 @@
 # Bl2. UD 7 - Supervisión y monitorización del sistema
 - [Bl2. UD 7 - Supervisión y monitorización del sistema](#bl2-ud-7---supervisión-y-monitorización-del-sistema)
-  - [Objetivos de la unidad](#objetivos-de-la-unidad)
+  - [Contenidos](#contenidos)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimiento previo](#conocimiento-previo)
-  - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
   - [Bibliografía](#bibliografía)
 
-## Objetivos de la unidad
-
+## Contenidos
+Los contenidos de esta unidad son los siguientes:
+1. [Supervisión y monitorización del sistema](introd.md)
+2. [Supervisión del sistema en Windows](supervision-win.md)
+3. [Auditoría del sistema en Windows](auditoria-win.md)
+4. [Registros de eventos en Windows](logs-win.md)
 
 ## Conceptos clave
 Los conceptos más importantes de esta unidad son:
@@ -18,13 +21,6 @@ Los conceptos más importantes de esta unidad son:
 Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - cómo configurar el sistema informático
 - cómo utilizar la terminal para realizar tareas básicas en una máquina
-
-## Contenidos
-Los contenidos de esta unidad son los siguientes:
-1. [Supervisión y monitorización del sistema](introd.md)
-2. [Supervisión del sistema en Windows](supervision-win.md)
-3. [Auditoría del sistema en Windows](auditoria-win.md)
-4. [Registros de eventos en Windows](logs-win.md)
 
 ## Caso práctico
 

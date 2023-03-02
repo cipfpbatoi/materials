@@ -1,10 +1,18 @@
 # Bl2. UD 4 - Compartición de recursos en el dominio
 - [Bl2. UD 4 - Compartición de recursos en el dominio](#bl2-ud-4---compartición-de-recursos-en-el-dominio)
+  - [Contenidos](#contenidos)
   - [Objetivos de la unidad](#objetivos-de-la-unidad)
   - [Conceptos clave](#conceptos-clave)
   - [Conocimiento previo](#conocimiento-previo)
-  - [Contenidos](#contenidos)
   - [Caso práctico](#caso-práctico)
+
+## Contenidos
+Los contenidos de esta unidad son los siguientes:
+1. [Permisos y derechos](permisos.md)
+2. [Servicios de archivo y almacenamiento](servarch.md)
+3. [Administrador de recursos del servidor de archivos (FSRM)](fsrm.md)
+4. [iSCSI y otros servicios de archivo](iscsi.md)
+5. [Compartir impresoras](impr.md)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
@@ -31,14 +39,6 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 - cuáles son los sistemas de archivo utilizados por los sistemas Microsoft y sus ventajas e inconvenientes
 - cómo asignar permisos a ficheros y carpetas en sistemas de archivo NTFS
 - cómo utilizar la terminal para realizar tareas básicas en una máquina
-
-## Contenidos
-Los contenidos de esta unidad son los siguientes:
-1. [Permisos y derechos](permisos.md)
-2. [Servicios de archivo y almacenamiento](servarch.md)
-3. [Administrador de recursos del servidor de archivos (FSRM)](fsrm.md)
-4. [iSCSI y otros servicios de archivo](iscsi.md)
-5. [Compartir impresoras](impr.md)
 
 ## Caso práctico
 Compartiremos 2 carpetas en el servidor:
