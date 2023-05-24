@@ -258,7 +258,7 @@ Un ordinador amb arrencada UEFI necessita una partició en el disc dur anomenada
 En la imatge anterior podem veure la partició EFI d'un equip amb Windows, Debian i Ubuntu instal·lats. En el panel de la dreta podem veure el contingut de la carpeta d'arrencada de Windows amb el carregador (BootMgr) i el menú d'opcions d'inici (BCD).
 
 #### Secure Boot
-És una opció de UEFI que impedeix que s'execute un carregador si no està signat digitalment per una entitat reconeguda pel sistema. Normalment els equips que comprem inclouen la signatura de Microsoft i per tant poden arrancar els carregadors de Windows però hi ha algunes distribucions GNU/Linux que tenen també el seu carregador signat per Microsoft per a poder arrancar amb _Secure Boot_. Si no podem afegir altres signatures a la nostra UEFI o desactivar aquesta opció.
+És una opció de UEFI que impedeix que s'execute un carregador si no està signat digitalment per una entitat reconeguda pel sistema. Normalment els equips que comprem inclouen la signatura de Microsoft i per tant poden arrancar els carregadors de Windows però hi ha algunes distribucions GNU/Linux que tenen també el seu carregador signat per Microsoft per a poder arrancar amb _Secure Boot_. També podem afegir altres signatures a la nostra UEFI o desactivar aquesta opció.
 
 ### Reparar l'arrencada
 Si el nostre ordinador amb UEFI no arranca podem accedir a la shell de UEFI des d'on podem intentar arreglar l'arrencada del sistema o podem arrancar des d'un USB amb algun gestor d'arrencada per a UEFI com **rEFInd**, **Boot Repair** o altres.
@@ -282,9 +282,9 @@ FS0:\> bcfg boot add 0 fs0:\EFI\debian\grubx64.efi "Debian"
 Per a finalitzar eixim amb `exit` i ja tenim el carregador arreglat.
 
 #### I si Linux no arranca?
-Cada sistema operatiu que instal·lem crearà dins de la partició EFI una carpeta amb el seu nom (Microsoft, Debian, Ubuntu, Apple, etc) dins de la qual hi ha un fitxer anomenat _NomfitxerArquitectura.efi_ (per exemple **bootx64.efi** o **grubx64.efi**) que és el carregador d'eixe sistema operatiu. A més crea una variable en la NVRAM (Non-Volatile RAM) de UEFI que apunta a eixe carregador per a que aparega eixa opció en el menú al arrancar (si només hi ha una opció no apareix el menú).
+Cada sistema operatiu que instal·lem crearà dins de la partició EFI una carpeta amb el seu nom (Microsoft, Debian, Ubuntu, Apple, etc) dins de la qual hi ha un fitxer anomenat _NomfitxerArquitectura.efi_ (per exemple **bootmgfw.efi** o **grubx64.efi**) que és el carregador d'eixe sistema operatiu. A més crea una variable en la NVRAM (Non-Volatile RAM) de UEFI que apunta a eixe carregador per a que aparega eixa opció en el menú al arrancar (si només hi ha una opció no apareix el menú).
 
-Si el firmware no troba cap opció al arrancar directament carrega el fitxer **`EFI/boot/bootx64.efi`** que és un carregador per defecte, dins del directori boot que no pertany a cap sistema operatiu. Microsoft quan instal·la un sistema a més de posar el seu carregador dins de `EFI/Microsoft` sobreescriu el carregador per defecte amb el seu carregador de manera que per defecte arranque Windows.
+Si el firmware no troba cap opció d'arrencada carrega directament el fitxer **`EFI/boot/bootx64.efi`** que és un carregador per defecte, dins del directori boot que no pertany a cap sistema operatiu. Microsoft quan instal·la un sistema a més de posar el seu carregador dins de `EFI/Microsoft` sobreescriu el carregador per defecte amb el seu carregador de manera que per defecte arranque Windows.
 
 Això no hauria de ser un problema però hi ha alguns equips amb una implementació dèbil d'EFI on els carregadors no es registren correctament en la NVRAM per la qual cosa només arranquen el carregador per defecte, és a dir, el de Windows (font: [http://mjg59.livejournal.com/138188.html](http://mjg59.livejournal.com/138188.html)).
 
@@ -328,6 +328,6 @@ umount /mnt/boot/efi
 umount /mnt
 ```
 
-Ara ja podem reiniciar el nostre sistema i apareixerà el menú de Grub per a tria quin sistema operatiu carregar.
+Ara ja podem reiniciar el nostre sistema i apareixerà el menú de Grub per a triar quin sistema operatiu carregar.
 
 (Font [https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader](https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader) )

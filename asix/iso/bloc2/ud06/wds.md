@@ -46,7 +46,11 @@ Una vez que el servidor está configurado y funcionando debemos añadir las imá
 
 Al instalar el sistema en el cliente aparecerá una ventana donde seleccionar cuál de estas imágenes instalaremos y el resto del proceso será igual que si lo estuviéramos instalando desde una imagen local (en el DVD o USB).
 
-La máxima utilidad de WDS es cuando lo usamos junto a _MDT_ que nos permite personalizar esas imágenes para que no pregunte determinadas opciones (las guarda en un fichero) o incluso ninguna, y que permite instalar aplicaciones además del sistema operativo lo que dejaría nuestro equipo listo para funcionar.
+La máxima utilidad de WDS es cuando lo usamos junto a _Microsoft Deployment Toolkiy (MDT)_ que nos permite personalizar esas imágenes para que no pregunte determinadas opciones (las guarda en un fichero) o incluso ninguna (instalación desatendida), y que permite instalar aplicaciones además del sistema operativo lo que dejaría nuestro equipo listo para funcionar.
+
+Podéis obtener información de cómo utilizar WDS con esta herramienta en numerosas páginas como:
+- <https://pc-solucion.es/unidad/9-instalacion-y-configuracion-de-wds/#Windows_ADK>
+- <https://rdr-it.com/es/wds-instalacion-y-configuracion/7/>
 
 ## Instalación de los clientes
 Necesitamos que los clientes a los que queramos instalar el sistema operativo arranquen por red, para lo quen habrá que habilitar en la BIOS el arranque PXE.

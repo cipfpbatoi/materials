@@ -54,7 +54,7 @@ Al abrir la herramienta **Servicios** podemos ver todos los servicios del sistem
 
 Si abrimos un servicio podemos pararlo, arrancarlo, ... y establecer cómo será su inicio
 
-![Servicios - detalles](media/servicios-detalles.png)
+![Servicios - detalles](media/servicios-detalle.png)
 
 ## Monitor de recursos
 Es similar a la pestaña de _Rendimiento_ del _Administrador de tareas_ pero nos proporciona mucha más información sobre el uso de CPU, Disco, Red y Memoria por parte de los diferentes procesos en ejecución.

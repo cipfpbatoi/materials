@@ -166,13 +166,15 @@ Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servido
 Si lo probáis con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
 
 ## Organizar las peticiones
-Que cada componente haga llamadas a _axios_ tiene el inconveniente de que cada uno crea su propia instancia, además de que tenemos las peticiones a la API desperdigadas por el código. Para mejorar la legibilidad del código vamos a crear un fichero que será donde estén las peticiones a _axios_ de forma que nuestros componentes queden más limpios. Podríamos llamar al fichero _services/TodoService.js_ y allí creamos las funciones que laman a la API:
+Que cada componente haga llamadas a _axios_ tiene el inconveniente de que cada uno crea su propia instancia, además de que tenemos las peticiones a la API desperdigadas por el código. Para mejorar la legibilidad del código vamos a crear un fichero que será donde estén las peticiones a _axios_ de forma que nuestros componentes queden más limpios. Otra ventaja de centralizar las peticiones es que cosas como la URL a la que hacer la petición la definimos en un único sitio.
+
+Podríamos llamar al fichero _services/TodoService.js_ y allí creamos las funciones que laman a la API:
 ```javascript
 import axios from 'axios';
 
 const apiClient = axios.create({
+  // estamos creando un 'axios' personailizado con las opciones que necesitemos para no tener que indicarlas cada vez
   baseURL: 'http://localhost:3000',
-  withCredentials: false,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
@@ -239,12 +241,12 @@ const apiClient = axios.create({
 })
 
 const todos = {
-    getAll: () => axios.get(`/todos`),
-    getOne: (id) => axios.get(`/todos/${id}`),
-    create: (item) => axios.post(`/todos`, item),
-    modify: (item) => axios.put(`/todos/${item.id}`, item),
-    delete: (id) => axios.delete(`/todos/${id}`),
-    toogleDone: (item) => axios.put(`/categories/${item.id}`, {
+    getAll: () => apiClient.get(`/todos`),
+    getOne: (id) => apiClient.get(`/todos/${id}`),
+    create: (item) => apiClient.post(`/todos`, item),
+    modify: (item) => apiClient.put(`/todos/${item.id}`, item),
+    delete: (id) => apiClient.delete(`/todos/${id}`),
+    toogleDone: (item) => apiClient.put(`/categories/${item.id}`, {
       id: item.id,
       title: item.title, 
       done: !item.done
@@ -252,11 +254,11 @@ const todos = {
 };
 
 const categories = {
-    getAll: () => axios.get(`/categories`),
-    getOne: (id) => axios.get(`/categories/${id}`),
-    create: (item) => axios.post(`/categories`, item),
-    modify: (item) => axios.put(`/categories/${item.id}`, item),
-    delete: (id) => axios.delete(`/categories/${id}`),
+    getAll: () => apiClient.get(`/categories`),
+    getOne: (id) => apiClient.get(`/categories/${id}`),
+    create: (item) => apiClient.post(`/categories`, item),
+    modify: (item) => apiClient.put(`/categories/${item.id}`, item),
+    delete: (id) => apiClient.delete(`/categories/${id}`),
 };
 
 
@@ -284,16 +286,16 @@ export class APIService{
   constructor(){
   }
   getTodos() {
-    return axios.get('/todos')
+    return apiClient.get('/todos')
   }
   delTodo(id){
-    return axios.delete('/todos/'+id)
+    return apiClient.delete('/todos/'+id)
   },
   addTodo(newTodo) {
-    return axios.post('/todos', newTodo)
+    return apiClient.post('/todos', newTodo)
   },
   toogleDone(todo) {
-    return axios.put('/todos/'+todo.id, {
+    return apiClient.put('/todos/'+todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
@@ -306,7 +308,7 @@ Y en los componentes donde queramos usarlo importamos la clase y creamos una ins
 ```javascript
 import { APIService } from '../APIService';
 
-const apiService=new APIService();
+const apiService = new APIService();
 
 export default {
   ...
@@ -326,17 +328,25 @@ export default {
 ### El fichero _.env_
 Se trata de un fichero donde guardar las configuraciones de la aplicación y la ruta del servidor es una constante que estaría mejor en este fichero que en el código como hemos hecho nosotros. 
 
-Vue puede acceder a todas las variables de _.env_ que comiencen por VUE_APP_ por medio del objeto `process.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
+Vue por medio de _Vite_ puede acceder a todas las variables de _.env_ que comiencen por VITE_ por medio del objeto `import.meta.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
 ```javascript
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: meta.import.env.VITE_RUTA_API,
   ...
 })
 ```
 
-Y en el fichero **_,env_** ponemos
+Y en el fichero **_.env_** ponemos
 ```bash
-VUE_APP_RUTA_API=http://localhost:3000
+VITE_RUTA_API=http://localhost:3000
+```
+
+Si usamos Vue con _webpack_ las variables de _.env_ deben comenzar por VUE_APP_ y accedemos a ellas por medio del objeto `process.env` por lo que en el fichero `.env` definiríamos la variable `VUE_APP_RUTA_API=http://localhost:3000` y en nuestro código pondría:
+```javascript
+const apiClient = axios.create({
+  baseURL: process.env.VUE_APP_RUTA_API,
+  ...
+})
 ```
 
 El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.

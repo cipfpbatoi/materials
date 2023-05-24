@@ -773,3 +773,5 @@ Si necesitamos hacer este tipo de peticiones necesitamos que el servidor  al que
 El navegador comprobará las cabeceras de respuesta y si el dominio indicado por ella coincide con el dominio desde el que se hizo la petición, esta se permitirá.
 
 Como en desarrollo normalmente no estamos en el dominio de producción (para el que se permitirán las peticiones) podemos instalar en el navegador la extensión _allow CORS_ que al activarla deshabilita la seguridad CORS en el navegador.
+
+Podéis ampliar la información en numerosaas páginas web como ["Entendiendo CORS y aplicando soluciones"](https://www.enmilocalfunciona.io/entendiendo-cors-y-aplicando-soluciones/).

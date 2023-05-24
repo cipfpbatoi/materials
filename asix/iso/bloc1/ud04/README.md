@@ -558,10 +558,10 @@ Normalmente utilizaremos sólo los permisos estándar y si en algún momento nec
 
 - **Control total**: permite hacer cualquier cosa, incluyendo cambiar los permisos o la propiedad del archivo o carpeta. Este permiso incluye todos los otros.
 - **Modificar**: permite hacer cualquier cosa con el recurso, como leer, modificar o eliminar pero no permite cambiar los permisos. Incluye los permisos de Leer y ejecutar y Escribir.
-- **Leer y ejecutar**: permite leer el recurso y ejecutarlo si se trata de un programa. Si es una carpeta podemos ver su contenido y entrar dentro. Este permiso incluye el permiso de Leer y, en el caso de carpetas, incluye el de Mostrar el contenido.
+- **Lectura y ejecución**: permite leer el recurso y ejecutarlo si se trata de un programa. Si es una carpeta podemos ver su contenido y entrar dentro. Este permiso incluye el permiso de Leer y, en el caso de carpetas, incluye el de Mostrar el contenido.
 - **Mostrar el contenido de la carpeta**: se aplica en carpetas y permite ver su contenido y entrar dentro de la carpeta.
-- **Leer**: permite ver el contenido (si es una carpeta ver los ficheros que contiene pero no entrar dentro) y ver sus atributos y permisos.
-- **Escribir**: si es un fichero permite modificarlo y si es una carpeta permite copiar ficheros dentro pero no eliminar nada ni leerlo (ficheros) o ver su contenido ni entrar (carpetas). 
+- **Lectura**: permite ver el contenido (si es una carpeta ver los ficheros que contiene pero no entrar dentro) y ver sus atributos y permisos.
+- **Escritura**: si es un fichero permite modificarlo y si es una carpeta permite copiar ficheros dentro pero no eliminar nada ni leerlo (ficheros) o ver su contenido ni entrar (carpetas). 
 
 La mayoría a veces utilizamos sólo los permisos de Control total, Modificar o Leer y ejecutar.
 
@@ -617,7 +617,7 @@ Al ejecutar el comando **ls -l** veremos los permisos de cada archivo del direct
 ![permisos](media/ud4-14.png)
 
 - **Permisos**: los 10 primeros caracteres nos indican los permisos del fichero.
-- **Enlaces fuertes**: similar a un puntero. Para los directorios, este número indica cuántas carpetas contiene (incluyendo ‘.’ para sí misma y ‘..’ para la carpeta padre)
+- **Enlaces fuertes**: similar a un puntero. Para los ficheros indica cuántos nombres tiene el fichero y para los directorios cuántas carpetas contiene (incluyendo `.` para sí misma y `..` para la carpeta padre)
 - **Usuario propietario**: usuario propietario del fichero
 - **Grupo propietario**: grupo propietario del fichero
 - **Tamaño**: expresado en bytes
@@ -635,19 +635,19 @@ El significado de los permisos es el siguiente:
 
 Los permisos pueden cambiarse desde la interfaz gráfica, de forma similar a Windows.
 
-- **Ninguno**: equivale a los permisos ---
-- **Sólo lectura**: equivale a r--
-- **Lectura y escritura**: equivale a rw-
-- Si marcamos la opción de **“Permite ejecutar este fichero como un programa”** se añade a los anteriores el permiso x, pasando “Sólo lectura” a ser **r-x** y “Lectura y escritura” a **rwx**.
+- **Ninguno**: equivale a los permisos `---`
+- **Sólo lectura**: equivale a `r--`
+- **Lectura y escritura**: equivale a `rw-`
+- Si marcamos la opción de **“Permite ejecutar este fichero como un programa”** se añade a los anteriores el permiso `x`, pasando “Sólo lectura” a ser `r-x` y “Lectura y escritura” a `rwx`.
 
 ![permisos](media/ud4-16.png)
 
 También para carpetas: 
 
-- Ninguno: ---
-- Sólo listar ficheros: r--
-- Acceder a los ficheros: r-x
-- Crear y suprimir ficheros: rwx
+- Ninguno: `---`
+- Sólo listar ficheros: `r--`
+- Acceder a los ficheros: `r-x`
+- Crear y suprimir ficheros: `rwx`
 
 Se puede controlar la herencia mediante la opción *“Aplicar permisos a los archivos contenidos”* 
 
@@ -673,7 +673,7 @@ La información que muestra es:
 ```bash
 # file: nombre del fichero o directorio
 # owner: usuario propietario
-# group: juan - nombre del grupo propietario
+# group: nombre del grupo propietario
 user::rwx - permisos del usuario propietario
 group::r-x - permisos del grupo propietario
 group:alumnos:r-x - permisos del grupo alumnos

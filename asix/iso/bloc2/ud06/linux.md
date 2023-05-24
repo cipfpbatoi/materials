@@ -12,7 +12,7 @@
       - [Linux Mint](#linux-mint)
       - [Lubuntu](#lubuntu)
   - [Al instalar Ubuntu](#al-instalar-ubuntu)
-  - [Canonila _ADsys_](#canonila-adsys)
+  - [Canonical _ADsys_](#canonical-adsys)
 
 ## Introducción
 Aunque no es lo más habitual en ocasiones debemos añadir clientes GNU/Linux al dominio. Hay diferentes formas de hacerlos:
@@ -217,7 +217,7 @@ Si marcamos esta opción en la siguiente pantalla nos pide el nombre del dominio
 
 ![Configurar AD](media/InstalUbuntuADconfig.png)
 
-## Canonila _ADsys_
+## Canonical _ADsys_
 **NOTA**: esta librería sólo está disponible para suscriptores de [Ubuntu Advantage](https://ubuntu.com/advantage).
 
 Desde Ubuntu Desktop 22.04 se incluye en el sistema esta librería que es un cliente de AD y que proporciona muchas más funcionalidades que las que teníamos sólo con SSSD (autenticación y unas pocas GPO), aunque también puede instalarse en la versión 20.04.
