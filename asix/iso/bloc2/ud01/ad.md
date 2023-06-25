@@ -48,13 +48,13 @@ Por tanto para tener tolerancia a fallos respecto al DC en nuestra red debemos h
 **IMPORTANTE**: un DC sólo debería dedicarse a autenticar usuarios y a servidor DNS. Como mucho le podríamos poner un servicio ligero como DHCP pero no es recomendable que haga también de servidor de ficheros, de impresión o de aplicaciones. Tampoco debería hacer nunca de servidor de comunicaciones ya que contiene información muy importante y no debería estar expuesto a internet sino protegido dentro de la LAN.
 
 ## Roles FSMO
-Si nuestra infraestructura de red consta de un sólo dominio con un único DC es muy sencilla su administración pero cuando tenemos un bosque con varios dominios y subdominios gestionados por diferentes DC (cada dominio/subdominio debe contar con su propio DC) la cosa puede complicarse.
+Si nuestra infraestructura de red consta de un sólo dominio con un único DC es muy sencilla su administración pero cuando tenemos un bosque con varios dominios y subdominios gestionados por diferentes DC (cada dominio/subdominio debe contar al menos con un DC pero pueden haber más) la cosa puede complicarse.
 
 Por ejemplo podría suceder que dos administradores estén creando simultáneamente 2 subdominios con el mismo nombre. O que en 2 DC se estén creando 2 usuarios y se les esté asignando el mismo identificador (SID) a ambos.
 
 Para solucionar los problemas derivados de la administración distribuida del bosque Microsoft ha definido 5 roles cada uno de los cuales que sólo puede ejecutarse en un único DC del bosque llamado _Maestro de operaciones único flexible_ (**FSMO**). Estos roles son:
-- Maestro de esquema
-- Patrón de nomenclatura de dominio
+- Maestro de esquema (uno por bosque)
+- Patrón de nomenclatura de dominio (uno por bosque)
 - Patrón de RID
 - Emulador PDC
 - Maestro de infraestructura
@@ -66,21 +66,21 @@ NETDOM QUERY FSMO
 
 **Maestro de Esquema (Schema Master)**
 
-Hay 1 por bosque (estará en un DC del dominio raíz). Es el único que puede hacer modificaciones en el esquema de directorio y, una vez hechas, las replica al resto de DC.
+Hay 1 por bosque (estará en un DC del dominio raíz). Es el único que puede hacer modificaciones en el esquema de directorio (por ejemplo cambiar el nivel funcional del bosque) y, una vez hechas, las replica al resto de DC.
 
-**Maestro de Nomenclatura de Dominios (Domain Naming Master)**
+**Maestro de Nombres de Dominios (Domain Naming Master)**
 
 También es único en el bosque y su función es garantizar de que los nombres de los Dominios que se agreguen al bosque sean únicos. Es el único que añade o elimina dominios del directorio.
 
-**Maestro RID (Relative IDentifier Master)**
+**Maestro de ID relativo (Relative IDentifier Master)**
 
 Hay 1 maestro por dominio y se encarga de asignar RIDs a los DC de ese dominio. A cada DC le asigna 500 RID (a partir del 1000) y cuando le quedan menos de 50 vuelve a solicitar al RID Master otros 500. Así se asegura de que 2 DC distintos no puedan asignar un mismo RID a 2 objetos.
 
-**Maestro Controlador Principal de Dominio (PDC Emulator)**
+**Emulador del Controlador Principal de Dominio (PDC Emulator)**
 
-Antiguamente sólo el PDC podía efectuar cambios en el dominio. Este rol se mantiene por compatibilidad y además se encarga de gestionar el tiempo en el dominio. Este es el equipo que obtiene la hora de una fuente externa y todos los demás usarán la hora de este DC.
+Antiguamente en cada dominio sólo hablia un DC principal (PDC) y el resto eran DC de backup (BDC). Sólo el PDC podía efectuar cambios en el dominio. Este rol se mantiene por compatibilidad y además se encarga de gestionar el tiempo en el dominio (obtiene la hora de una fuente externa y todos los demás usarán la hora de este DC).
 
-Además tiene otras funciones como procesar los bloqueos de cuenta o recibir preferentemente los cambios de contraseña de los usuarios.
+Además tiene otras funciones como procesar los bloqueos de cuenta, recibir los cambios de contraseña de los usuarios o administar los objetos de directiva de grupo (GPO) del dominio.
 
 **Maestro de Infraestructura (Infrastructure Master)**
 

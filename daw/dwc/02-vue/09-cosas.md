@@ -1,15 +1,32 @@
 # Siguientes cosas a aprender en Vue
 Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
+- [Siguientes cosas a aprender en Vue](#siguientes-cosas-a-aprender-en-vue)
   - [Autenticación](#autenticación)
+    - [Store](#store)
+    - [API](#api)
+    - [Login.vue](#loginvue)
+    - [Router](#router)
   - [Paso a producción](#paso-a-producción)
   - [Vuetify](#vuetify)
+    - [Instalación](#instalación)
+    - [Crear el layout](#crear-el-layout)
+    - [Saber más](#saber-más)
   - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-vue)
+    - [Quasar](#quasar)
+    - [Vue Native](#vue-native)
+    - [Ionic Vue](#ionic-vue)
   - [Nuxt](#nuxt)
   - [Conclusión](#conclusión)
   - [Angular](#angular)
   - [Vue con Laravel](#vue-con-laravel)
+    - [Creación del proyecto](#creación-del-proyecto)
+    - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
+    - [Configuramos Laravel](#configuramos-laravel)
+    - [Compilamos Vue](#compilamos-vue)
+    - [Creamos la API](#creamos-la-api)
+    - [Saber más](#saber-más-1)
 
 ## Autenticación
 Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que le hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
@@ -193,13 +210,13 @@ npm run build
 ```
 
 Crea un directorio **_dist_** con lo qie hay que subir a producción:
-- **index.html**: HTML minimizado
-- **ficheros .css** y el _source.map_
-- **imágenes**: las que hay en _static_ y en _assets_ (estas últimas procesadas,  minimizadas y optimizadas)
-- **favicon.ico**
-- **ficheros.js**: nuestro código (_app.js_), _manifest.js_ (para _Progressive Web App) y las librerías (_vendor.js_) con sus correspondientes _source.map_
+- **index.html**: HTML 
+- **ficheros que hay en `/public`**: imágenes, CSS y cualquier otro fichero estático que hubiera en la carpeta `/public`, como _favicon.ico_
+- **assets**: todo lo que ha compilado _Vite_ optimizado y minimizado:
+  - **index-xxxx.js**: fichero con todo nuestro código Javascript más el de las librerías usadas
+  - **index-xxxx-css**:  fichero con todo nuestro CSS
+  - imágenes y otros archivos que hubiera en _assets_
 
-Los _source.map_ son útiles para compilar pero no hay que subirlos a producción.
 
 ## Vuetify
 Son varias las librerías para Vue que nos facilitan enormemente la creación de nuestros componentes ya que nos dan un código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Entre ellas están [Material Design](https://material.io/design), [ElementUI](https://element.eleme.io/#/es), [Vuetify](https://vuetifyjs.com) y muchas otras.

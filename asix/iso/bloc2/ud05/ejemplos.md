@@ -75,7 +75,7 @@ Cuando publicamos un programa el usuario lo tiene a su disposición para instala
 
 Los programas a instalar deben estar en un punto de distribución de software del servidor, que es una **carpeta compartida** con permisos de acceso para los usuarios. Allí copiaremos los paquetes .msi y el resto de archivos y carpetas necesarios para instalar el programa.
 
-Una vez creado el punto de distribución tenemos que crear el GPO que se encargo de distribuir el programa y, a continuación, vincularlo a los contenedores adecuados. Esta GPO se configura desde `Configuración de equipo o de usuario (según deseemos)->Configuración de software -> Instalación de software` y desde el menú contextual seleccionamos **Nuevo**.
+Una vez creado el punto de distribución tenemos que crear el GPO que se encargo de distribuir el programa y, a continuación, vincularlo a los contenedores adecuados. Esta GPO se configura desde `Configuración de equipo o de usuario (según deseemos)->Directivas->Configuración de software -> Instalación de software` y desde el menú contextual seleccionamos **Nuevo**.
 
 Podéis ver un [vídeo de ejemplo](media/GPOsw.ogv) de cómo distribuir el programa 7-zip a todos los alumnos de 4º de la ESO.
 

@@ -5,6 +5,7 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [2.1-Objetos](./02.1-objetos.md): Introducción a los objetos en Javascript
 * [2.2-Arrays](./02.2-arrays.md): Métodos. _Functional Programming_. Referencia vs copia. Rest y Spread. Desestructuración de arrays. Map. Set
 * [3-Programación Orientada a Objetos](./03-oop.md): Introducción. Clases. POO en JS5
+  * [3.1-vite](./03.1-vite.md): Cómo usar vite
   * [3.1-webpack](./03.1-webpack.md): Cómo usar webpack
 * [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
   * [4.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
@@ -18,21 +19,21 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [12-Tests](./12-tests.md): Testear JS con Jest
 
 # Introducción a Javascript
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-Tabla de contenidos
-
-  - [Introducción](#introducci%C3%B3n)
+- [BLOQUE 1 - El lenguaje Javascript](#bloque-1---el-lenguaje-javascript)
+- [Introducción a Javascript](#introducción-a-javascript)
+  - [Introducción](#introducción)
+    - [Un poco de historia](#un-poco-de-historia)
+    - [Soporte en los navegadores](#soporte-en-los-navegadores)
   - [Herramientas](#herramientas)
     - [La consola del navegador](#la-consola-del-navegador)
     - [Editores](#editores)
     - [Editores on-line](#editores-on-line)
     - [npm](#npm)
-  - [Incluir javascript en una página web](#incluir-javascript-en-una-p%C3%A1gina-web)
-  - [Mostrar información](#mostrar-informaci%C3%B3n)
-- [Bibliografía](#bibliograf%C3%ADa)
+    - [git](#git)
+  - [Incluir javascript en una página web](#incluir-javascript-en-una-página-web)
+  - [Mostrar información](#mostrar-información)
+- [Bibliografía](#bibliografía)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introducción
 En las páginas web el elemento fundamental es el fichero HTML con la información a mostrar en el navegador. Posteriormente surgió la posibilidad de "decorar" esa información para mejorar su apariencia, lo que dio lugar al CSS. Y también se pensó en dar dinamismo a las páginas y apareció el lenguaje Javascript.
@@ -164,9 +165,9 @@ También se pueden escribir las funciones sin _window._ (es decir `alert('Hola')
 Si queremos mostrar una información para depurar nuestro código no utilizaremos _alert(mensaje)_ sino `console.log(mensaje)` o `console.error(mensaje)`. Estas funciones muestran la información pero en la consola del navegador. La diferencia es que _console.error_ la muestra como si fuera un error de Javascript.
 
 # Bibliografía
-* Curso 'Programación con JavaScript'. CEFIRE Xest. Arturo Bernal Mayordomo
+* Curso "Programación con JavaScript". CEFIRE Xest. Arturo Bernal Mayordomo
 * [Curso de JavaScript y TypeScript](https://www.youtube.com/playlist?list=PLiZCpIzKtvqvt4tcQV4SAvaJn7QMdwUbd) de Arturo Bernal en Youtube
 * [MDN Web Docs](https://developer.mozilla.org/es/docs/Web/JavaScript). Moz://a. https://developer.mozilla.org/es/docs/Web/JavaScript
 * [Introducción a JavaScript](http://librosweb.es/libro/javascript/). Librosweb. http://librosweb.es/libro/javascript/
-* [Curso de Javascript (Desarrollo web en entorno cliente)](https://www.youtube.com/playlist?list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o). Ada Lovecode - Didacticode (90 vídeos)
-* [Apuntes Desarrollo Web en Entorno Cliente (DWEC)](https://github.com/sergarb1/ApuntesDWEC). García Barea, Sergi
+* [Curso de Javascript (Desarrollo web en entorno cliente)](https://www.youtube.com/playlist?list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o). Ada Lovecode - Didacticode (90 vídeos) de Laura Folgado
+* [Apuntes Desarrollo Web en Entorno Cliente (DWEC)](https://github.com/sergarb1/ApuntesDWEC). Sergi García Barea

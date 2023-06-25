@@ -117,9 +117,9 @@ Los principales ficheros y directorios creados son:
 * `vite.config.js`: configuración de Vite
 * `index.html`: html con un div donde se cargará la app
 * `node_modules`: librerías de las dependencias
-* `public`: lugar donde dejar elementos estáticos que no pasarán por _vite_
+* `public`: lugar donde dejar elementos estáticos que no pasarán por _vite_. Podemos poner imágenes, CSS, etc y lo referenciaremos de forma ABSOLUTA como si estuviera en `/`
 * `src`: todo nuestro código
-    * `assets/`: nuestros CSS, imágenes, etc. Elementos estáticos que _vite_ procesará y optimizará
+    * `assets/`: nuestros CSS, imágenes, etc. Elementos que _vite_ procesará y optimizará
     * `components/`: carpeta que contendrá los ficheros .vue de los diferentes componentes
         * `HelloWorld.vue`: componente de ejemplo llamado por App.vue
     * `router/`: carpeta con los ficheros del router si usamos _vue-_router_
