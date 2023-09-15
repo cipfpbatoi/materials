@@ -3,10 +3,8 @@
   - [Introducción](#introducción)
   - [Instalación](#instalación)
   - [Creación de un nuevo proyecto](#creación-de-un-nuevo-proyecto)
-    - [npm init vue@latest](#npm-init-vuelatest)
-    - [Ejemplo proyecto por defecto](#ejemplo-proyecto-por-defecto)
     - [vue create](#vue-create)
-    - [_Scaffolding_ creado](#scaffolding-creado)
+  - [_Scaffolding_ creado](#scaffolding-creado)
       - [package.json](#packagejson)
       - [Estructura de nuestra aplicación](#estructura-de-nuestra-aplicación)
     - [_Build and Deploy_ de nuestra aplicación](#build-and-deploy-de-nuestra-aplicación)
@@ -36,24 +34,12 @@ Aunque puede usarse _Vue_ como hemos visto, enlazándolo directamente en el _ind
 La versión actual es la 5. Podemos encontrar toda la documentación en [Vue CLI](https://cli.vuejs.org/).
 
 ## Instalación
-Para usar **vue-cli** necesitamos tener instalado **npm** (el gestor de paquetes de Node.js). Si no lo tenemos instalaremos **node.js**. 
+Para usar **vue-cli** necesitamos tener instalado **npm** (el gestor de paquetes de Node.js). Si no lo tenemos lo instalaremos como se comentó al [configurar el entorno](../entorno.md). 
 
-Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero no es lo recomendado porque nos instalará una versión poco actualizada por lo que es mejor [instalarlo desde NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu) siguiendo las instrucciones que se indican y que básicamente son:
-```bash
-curl -sL https://deb.nodesource.com/setup_X.y | sudo -E bash -
-sudo apt-get install -y nodejs
-```
-
-(cambiaremos _X.y_ por la versión que queramos, vue-cli recomienda al menos la 16.x).
-
-También podemos [descargarlo desde NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombrepaquete_`).
-
-Una vez instalado **npm** Vue-cli se instala con
+Instalaremos _vue-cli_ de forma global para tenerlo disponible en cada proyecto que creemos:
 ```bash
 npm install -g @vue/cli
 ```
-
-La opción -g es para que lo instale globalmente en el sistema y no tengamos que instalar una copia para cada proyecto.
 
 ## Creación de un nuevo proyecto
 Para crear un nuevo proyecto ejecutamos:
@@ -64,25 +50,18 @@ npm init vue@latest
 
 En versiones anteriores de vue-cli se creaba un nuevo proyecto con `vue create` y aún puede hacerse así pero la manera recomendada es la anterior.
 
-### npm init vue@latest
-Al ejecutar este comando se nos pregunta el nombre del proyecto a crear y se creará el directorio para el mismo con el **_package.json_** del proyecto en su interior. En este caso no se instalan las dependencias por lo que tenemos que instalarlas nosotros (`npm install`) y a continuación ejecutar:
+Al ejecutar este comando se nos pregunta el nombre del proyecto a crear y se creará el directorio para el mismo con el **_package.json_** del proyecto en su interior con la configuración del proyecto. 
+
+Lo primero que haremos es entrar al directorio del proyecto e instalar las dependencias (`npm install`) y a continuación ejecutar:
 ```bash
 npm run dev
 ```
 
-lo que ejecuta un servidor web en el puerto **5173** donde se sirve nuestra aplicación.
-
-La principal diferencia respecto a la forma anterior de crear proyectos es que así el proyecto creado usará **_Vite_** en lugar de _Babel_ o _webpack_, que es más eficiente a la hora de gestionar nuestro código tanto en desarrollo como en producción.
-
-### Ejemplo proyecto por defecto
-Una vez creado entramos a la carpeta y ejecutamos en la terminal
-```bash
-npm run dev
-```
-
-Este script compila el código, muestra si hay errores, lanza un servidor web en el puerto 5173 y carga el proyecto en el navegador (http://localhost:5173). Si cambiamos cualquier fichero JS de _src_ recompila y recarga la página automáticamente. La página generada es:
+Este script compila el código, muestra si hay errores, lanza un servidor web en el puerto 5173 y carga el proyecto en el navegador (http://localhost:5173). Si cambiamos cualquier fichero del directorio _src_ recompila y recarga la página automáticamente. La página generada es:
 
 ![Proyecto de plantilla simple](./img/vue-vite-sample-app.png)
+
+El proyecto creado usa **_Vite_**, que es más eficiente que _webpack_ a la hora de gestionar nuestro código tanto en desarrollo como en producción.
 
 ### vue create
 Hasta la versión 4 de _vue-cli_ la forma de crear un proyecto Vue era ejecutando `vue create <directorio_proyecto>` pero ahora se recomienda hacerlo como hemos visto antes (`npm init vue@latest`).
@@ -98,7 +77,7 @@ npm run serve
 
 En este caso se levanta un servidor web en el puerto **8080** donde se sirve nuestra aplicación.
 
-También podemos crear y gestionar nuestros proyectos desde el entorno gráfico ejecutando el comando:
+También podemos crear y gestionar nuestros proyectos desde un entorno gráfico ejecutando el comando:
 ```bash
 vue ui
 ```
@@ -107,7 +86,9 @@ Este comando arranca un servidor web en el puerto 8080 y abre el navegador para 
 
 ![Proyecto de plantilla simple](./img/vue-webpack-simple-app.png)
 
-### _Scaffolding_ creado
+La principal diferencia respecto a la forma anterior de crear proyectos es que así el proyecto creado usará **_Webpack_** en lugar de _Vite_, que no es tan eficiente a la hora de gestionar nuestro código por lo que se recomienda crear los proyectos con `npm init vue@latest`.
+
+## _Scaffolding_ creado
 Se ha creado la carpeta con el nombre del proyecto y dentro el scaffolding para nuestro proyecto:
 
 ![Directorios del proyecto de plantilla simple](./img/vue-vite-sample-folders.png)

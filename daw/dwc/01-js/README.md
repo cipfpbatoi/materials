@@ -28,8 +28,6 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
     - [La consola del navegador](#la-consola-del-navegador)
     - [Editores](#editores)
     - [Editores on-line](#editores-on-line)
-    - [npm](#npm)
-    - [git](#git)
   - [Incluir javascript en una página web](#incluir-javascript-en-una-página-web)
   - [Mostrar información](#mostrar-información)
 - [Bibliografía](#bibliografía)
@@ -84,9 +82,11 @@ Es la herramienta que más nos va a ayudar a la hora de depurar nuestro código.
 
 ![Consola](./img/Consola.png)
 
-Allí vemos mensajes del navegador como errores y advertencias que genera el código y todos los mensajes que pongamos en el código para ayudarnos a depurarlo (cusando los comandos **console.log** y **console.error**).
+Allí vemos mensajes del navegador como errores y advertencias que genera el código y todos los mensajes que pongamos en el código para ayudarnos a depurarlo (usando los comandos **console.log** y **console.error**).
 
 Además en ella podemos escribir instrucciones Javascript que se ejecutarán mostrando su resultado. También la usaremos para mostrar el valor de nuestras variables y para probar código que, una vez que funcione correctamente, lo copiaremos a nuestro programa.
+
+Podemos obtener ayuda sobre el funcionamiento de la consola en la web de [Mozilla](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html).
 
 > EJERCICIO: abre la consola y prueba las funciones _alert_, _confirm_ y _prompt_.
 
@@ -118,31 +118,6 @@ Algunos de los más conocidos son [Codesandbox](https://codesandbox.io/), [Fiddl
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-### npm
-**npm** es el gestor de paquetes del framework Javascript **Node.js** y suele utilizarse en programación *frontend* como gestor de dependencias de la aplicación. Esto significa que será la herramienta que se encargará de descargar y poner a disposición de nuestra aplicación todas las librerías Javascript que vayamos a utilizar, por ejemplo para hacer los tests de nuestros programas (en algunas prácticas haremos o pasaremos tests unitarios ya hechos para comprobar que nuestros programas funcionan correctamente y, sobre todo, que continúan haciéndolo tras realizar alguna modificación en ellos).
-
-Para instalar _npm_ tenemos que instalar _NodeJS_. Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero posiblemente nos instalará una versión poco actualizada por lo que es mejor instalarlo desde [NodeSource](https://nodejs.org/es/download/package-manager/#distribuciones-de-linux-basadas-en-debian-y-ubuntu) siguiendo las instrucciones que allí se indican, que básicamente son ejecutar:
-
-```bash
-curl -sL https://deb.nodesource.com/setup_X.y | sudo -E bash -
-sudo apt-get install -y nodejs
-```
-
-(cambiaremos X.y por la versión que queramos, normalmente la últma versión estable).
-
-También podemos descargarlo directamente desde [NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i _nombre_del_paquete_`).
-
-Con eso ya tendremos _npm_ en nuestro equipo. Podemos comprovar la versión que tenemos con:
-```bash
-npm -v
-```
-
-### git
-Usaremos repositorios git para la entrega de las prácticas y servirá también para poder realizar el control de versiones. Para instalarlo simplemente habrá que instalar el paquete _git_ (`apt-get install git`).
-
-Podem gestionar git des de la consola o qui vulga es pot instal·lar una extensió per a utilitzar-lo des de l'entorn de programació. En el cas de Visual Studio el trobem en 
-[https://code.visualstudio.com/docs/editor/versioncontrol](https://code.visualstudio.com/docs/editor/versioncontrol).
 
 ## Incluir javascript en una página web
 El código Javascript va entre etiquetas _\<script>_. Puede ponerse en el _\<head>_ o en el _\<body>_. Funciona como cualquier otra etiqueta y el navegador la interpreta cuando llega a ella (va leyendo y ejecutando el fichero línea a línea). Podéis ver en [este vídeo](https://www.youtube.com/watch?v=AQn22gjtSWQ&list=PLI7nHlOIIPOJtTDs1HVJABswW-xJcA7_o&index=2) un ejemplo muy simple de cómo se ejecuta el código en el HEAD y en el BODY.
