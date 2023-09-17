@@ -1,4 +1,17 @@
 # Configurar el entorno de trabajo
+- [Configurar el entorno de trabajo](#configurar-el-entorno-de-trabajo)
+  - [Herramientas que usaremos](#herramientas-que-usaremos)
+    - [Navegadores web](#navegadores-web)
+      - [Extensiones para los navegadores](#extensiones-para-los-navegadores)
+    - [Editor](#editor)
+      - [Extensiones para el editor](#extensiones-para-el-editor)
+    - [npm / yarn](#npm--yarn)
+    - [git](#git)
+    - [Vite](#vite)
+    - [Tests](#tests)
+  - [Instalar npm](#instalar-npm)
+    - [Instalar librerías con _npm_](#instalar-librerías-con-npm)
+
 
 ## Herramientas que usaremos
 Necesitamos configurar nuestro equipo con todas las herramientas que utilizaremos en este módulo. En todos los casos hay versiones tanto para GNU/Linux como para Windows y Mac OS X.
@@ -31,9 +44,6 @@ Utilizaremos _git_ para el control de versiones por lo que deberemos instalarlo.
 
 Quien no quiera usar la consola y prefiera hacerlo desde el editor deberá instalar la extensión correspondiente
 
-### Tests
-Para testear nuestros programas utilizaremos _Jest_. Lo instalaremos con npm de manera global para poderlo usar en distintos proyectos. 
-
 ### Vite
 Es un _module bundler_ (como _Webpack_). Su función es unir todo el código de los distintos ficheros javascript en un único fichero que es el que se importa en el _index.html_ y lo mismo con los ficheros CSS.
 
@@ -43,6 +53,11 @@ Además proporcionan otras ventajas:
 - ofuscan el código al minimizarlo lo que dificulta que el usuario pueda ver en la consola lo que hace el programa y manipularlo
 
 Además _Vite_ incorpora un servidor de desarrollo para hacer más cómoda la creación y prueba de nuestros proyectos.
+
+### Tests
+Para testear nuestros programas utilizaremos [_Jest_](https://jestjs.io/es-ES/). Lo instalaremos con npm de manera global para poderlo usar en distintos proyectos. Podéis ver un breve resumen de cómo usar test en los [apuntes](./tests.md).
+
+En los casos que deseemos testear una aplicación en la que usemos _Vite_ la librería que usaremos es _Vitest_ que está basada en _Jest_.
 
 
 ## Instalar npm

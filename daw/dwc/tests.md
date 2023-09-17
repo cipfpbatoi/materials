@@ -12,7 +12,8 @@ o podemos instalarlo globalmente para usarlo en varios proyectos (`npm i -g jest
 }
 ```
 
-Ahora vamos a implementar una función de suma en el fichero _sum.js_:
+## Crear un fichero de test
+Hemos implementado una función de suma en el fichero _sum.js_:
 ```javascript
 function sum(a, b) {
   return a + b;
@@ -20,7 +21,7 @@ function sum(a, b) {
 module.exports = sum;
 ```
 
-y su correspondiente test que guaremos en el fichero _sum.test.js_:
+y queremos crear tests para probarla. Crearemo el fichero _sum.test.js_ con el siguiente contenido:
 ```javascript
 const sum = require('./sum');
 
@@ -41,7 +42,7 @@ expects(data).toBe(value);
 ```
 
 Los marcadores que podemos usar son:
-- .toBe(value): el resultado debe ser igual al valor
+- .toBe(value): el resultado debe ser igual al valor indicado
 - .toEqual(value): igual pero para comparar objetos
 - .toBeNull: igual a null
 - .toBeUndefined: igual a undefined
@@ -49,7 +50,7 @@ Los marcadores que podemos usar son:
 - .toBeTruthy: igual a true
 - .toBeFalsy: igual a false
 
-A todos ellos se les puede anteponer _.not._ para negarlos (ej. `expect(sum(2, 2)).toBe(3)`)
+A todos ellos se les puede anteponer _.not._ para negarlos (ej. `expect(sum(2, 2)).not.toBe(3)`)
 
 Para comparar números:
 - .toBetoBeGreaterThan(value)
@@ -79,6 +80,6 @@ test('the data is peanut butter', () => {
 });
 ```
 
-También podemos testear otras funciones asíncronas como _callback_, _resolve_/reject_, _async/await_, ... en la [documentación](https://jestjs.io/docs/en/asynchronous). 
+También podemos testear otras funciones asíncronas como _callback_, _resolve_/reject_, _async/await_, ... en la [documentación](https://jestjs.io/docs/en/asynchronous) podéis ver cómo hacerlo. 
 
 Podemos ver ejemplos de todo esto en [TecnoPS](http://tecnops.es/testing-en-javascript-con-jest-parte-1-de-2/), en [este vídeo](https://www.youtube.com/watch?v=7r4xVDI2vho) y en muchas otras páginas.

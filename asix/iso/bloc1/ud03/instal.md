@@ -111,7 +111,9 @@ Por ello conveniente automatizar el proceso lo más posible para ahorrarnos tiem
 
 Hay herramientas que básicamente lo que hacen es generar un fichero con las respuestas que queremos dar a las diferentes preguntas que nos hace el programa de instalación del sistema operativo, de forma que este programa lee las respuestas de ese fichero en lugar de hacernos las preguntas durante la instalación.
 
-En el caso de Windows, Microsoft proporciona una herramienta gratuita llamada **WSIM** (_Windows System Image Manager_) incluida en el _Windows Assessment and Deployment Kit_ (Windows ADK) que podemos descargar de la web de Microsoft. Esta herramienta genera un fichero en formato XML llamado `Autounattend.xml` que tenemos que copiar en la carpeta raíz del dispositivo desde el que instalaremos el sistema (el disco USB o el DVD). En la web de Microsoft encontramos las opciones de configuración que tenemos que incluir en el fichero de respuestas para evitar la aparición de la interfaz de usuario al instalar:
+En el caso de Windows, podemos hacerlo con **Sysprep** que permite generalizar una imagen para instalarla en muchos equipos (elimina el SID del equipo y otras informaciones especifícas). Encontraremos cómo hacerlo en [Microsoft Learn](https://learn.microsoft.com/es-es/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation?view=windows-11).
+
+Si queremos generar un fichero de respuestas debemos usar la herramienta gratuita de Microsoft **WSIM** (_Windows System Image Manager_) incluida en el _Windows Assessment and Deployment Kit_ (Windows ADK) que podemos descargar de la web de Microsoft. Esta herramienta genera un fichero en formato XML llamado `Autounattend.xml` que tenemos que copiar en la carpeta raíz del dispositivo desde el que instalaremos el sistema (el disco USB o el DVD). En la web de Microsoft encontramos las opciones de configuración que tenemos que incluir en el fichero de respuestas para evitar la aparición de la interfaz de usuario al instalar:
 
 [http://technet.microsoft.com/es-es/library/dd744272(v=ws.10).aspx](http://technet.microsoft.com/es-es/library/dd744272(v=ws.10).aspx)
 
@@ -119,7 +121,7 @@ En Internet podemos encontrar muchos vídeos y tutoriales de cómo hacerlo. Por 
 
 [https://todosobrewindows.com/como-crear-windows-10-usb-o-iso-desatendidos/](https://todosobrewindows.com/como-crear-windows-10-usb-o-iso-desatendidos/)
 
-De todas formas la opción más cómoda es utilizar un programa de terceros, como _NT-Lite_, que nos ayude a crearlas. Se trata de programas que nos ayudan a personalizar el sistema, sus componentes, los controladores que incorpora o los programas que se instalarán por defecto.
+De todas formas la opción más cómoda es utilizar un programa de terceros, como _NT-Lite_ u otros, que nos ayude a crearlas. Se trata de programas que nos ayudan a personalizar el sistema, sus componentes, los controladores que incorpora o los programas que se instalarán por defecto.
 
 Las cuestiones que podremos personalizar con una instalación desatendida son:
 - Selección de los componentes del sistema operativo que instalamos por defecto, por ejemplo es muy habitual no instalar por defecto algunas opciones que no vamos a utilizar en la empresa como pueden ser juegos, etc
@@ -132,15 +134,15 @@ También podemos encontrar muchos programas de terceros que simplemente crean el
 ![ninite.com](media/ninite.com.png)
 
 En el caso de distribuciones GNU/Linux el funcionamiento es muy similar e incluso la mayoría de herramientas nos permiten elegir qué componentes del sistema operativo instalar y qué otros paquetes queremos incluir en la instalación. Como el proceso de instalación varía mucho de unas distribuciones a otras encontramos diferentes herramientas según qué sea nuestra distribución. Algunos ejemplos son:
+- para sistemas basados en paquetes .deb (_Debian_, _Ubuntu_ y derivados) podemos utilizar _Preseed_, o también _Kickstart_
 - para sistemas basados en paquetes .rpm de _RedHat_ podemos utilizar _Kickstart_
 - para sistemas con instalador YAST de _SuSE_ podemos utilizar _AutoYast_
-- para sistemas basados en paquetes .deb (_Debian_, _Ubuntu_ y derivados) podemos utilizar _Preseed_, o también _Kickstart_
 
 La gran ventaja que tiene todo este trabajo es el ahorro de tiempo. Invertimos tiempo para crear la primera instalación desatendida y después cada vez que tengamos que instalar un equipo nos ahorraremos mucho tiempos y trabajo.
 
 Sin embargo este tipo de instalaciones también tienen sus inconvenientes. La principal dificultad en la empresa radica en la administración de las licencias de los programas. Es conveniente administrar bien la instalación para que cada programa tenga la licencia necesaria, sobre todo para poder tener después el apoyo adecuado para cada aplicación.
 
-Esto lo practicaremos en el bloque 2 configurando en nuestro servidor instalaciones desatendidas para los clientes.
+Esto lo practicaremos en el proyecto final configurando en nuestro servidor instalaciones desatendidas para los clientes.
 
 ## Dónde instalar el sistema: particionado
 Es la parte más importante y delicada de la instalación de un nuevo sistema operativo y por tanto tenemos que asegurarnos de hacerlo correctamente.

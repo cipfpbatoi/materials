@@ -42,3 +42,10 @@ Si cumple todos los requisitos se informará por consola que la contraseña intr
 
 ### Ejercicio 1.1.e: dni
 Haz una función a la que se le pasa un dni y devuelva true si es válido o false si no lo es. Tras comprobar que se le ha pasado 8 números y una letra, todo junto (ej.: 12345678Z o 00112233a) comprobará si la letra es correcta lo que se sabe cogiendo el resto de dividir el número entre 23 y viendo si corresponde a la letra correspondiente de esta lista T, R, W, A, G, M, Y, F, P, D, X, B, N, J, Z, S, Q, V, H, L, C, K, E (0=T, 1=R, ...).
+
+### Ejercicio 1.1.f: romanos
+Haz una función que reciba un número romano y lo convierta en arábigo
+
+### Ejercicio 1.1.g: más romanos
+Haz la función inversa a la anterior: recibe un número arábigo y lo convierta en 
+romano
