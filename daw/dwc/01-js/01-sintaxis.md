@@ -536,7 +536,7 @@ Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://d
 Javascript nos permite hacer muchas cosas que otros lenguajes no nos dejan por lo que debemos ser cuidadosos para no cometer errores de los que no se nos va a avisar.
 
 ### 'use strict'
-Si ponemos siempre esta sentencia al principio de nuestro código el intérprete nos avisará si usamos una variale sin declarar (muchas vecees por equivocarnos al escrbir su nombre). En concreto fuerza al navegador a no permitir:
+Si ponemos siempre esta sentencia al principio de nuestro código el intérprete nos avisará si usamos una variale sin declarar (muchas veces por equivocarnos al escrbir su nombre). En concreto fuerza al navegador a no permitir:
 * Usar una variable sin declarar
 * Definir más de 1 vez una propiedad de un objeto
 * Duplicar un parámetro en una función
@@ -564,16 +564,19 @@ No se debería estar comprobando lo devuelto por una función para ver si se ha 
 function muestraDatos(datos) {
    ...
    const nombreMes = getNombreMes(datos.mes);
-   if (nombreMes === null) {
+   if (nombreMes === false) {
        alert('El mes ' + datos.mes + ' es erróneo');
    }
    ...
 }
 
 function getNombreMes(mes) {
-   mes = mes - 1; // Ajustar el número de mes al índice del array (1 = Ene, 12 = Dic)
-   var meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
-   return meses[mes];
+  const meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+
+  if (isNaN(mes) || mes < 1 || mes > 12) {
+    return false
+  }
+  return meses[mes - 1]
 }
 ```
 
@@ -583,7 +586,7 @@ function getNombreMes(mes) {
 function muestraDatos(datos) {
    ...
    try {
-      const nombreMes = getNombreMes(datos.mes);
+      var nombreMes = getNombreMes(datos.mes);
    } catch(err) {
       alert(err)
    }
@@ -591,12 +594,12 @@ function muestraDatos(datos) {
 }
 
 function getNombreMes(mes) {
-   mes = mes - 1; // Ajustar el número de mes al índice del array (1 = Ene, 12 = Dic)
-   var meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic");
-   if (meses[mes] === null) {
-       throw 'El mes ' + mes + ' es erróneo';
-   }
-   return meses[mes];
+  const meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+
+  if (isNaN(mes) || mes < 1 || mes > 12) {
+       throw 'El mes ' + mes + ' es erróneo'
+  }
+  return meses[mes - 1]
 }
 ```
 
