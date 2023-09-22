@@ -1,11 +1,11 @@
 # Programación orientada a Objetos en Javascript
 - [Programación orientada a Objetos en Javascript](#programación-orientada-a-objetos-en-javascript)
   - [Introducción](#introducción)
-    - [Ojo con _this_](#ojo-con-this)
   - [Herencia](#herencia)
   - [Métodos estáticos](#métodos-estáticos)
   - [Método _toString()_](#método-tostring)
   - [Método _valueOf()_](#método-valueof)
+  - [Ojo con _this_](#ojo-con-this)
   - [Programación orientada a objetos en JS5](#programación-orientada-a-objetos-en-js5)
   - [Bibliografía](#bibliografía)
 
@@ -23,59 +23,11 @@ class Alumno {
     }
 }
 
-let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19)
-console.log(cpo.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
+let alumno1 = new Alumno('Carlos', 'Pérez Ortiz', 19)
+console.log(alumno1.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
-> EJERCICIO: Crea una clase Productos con las propiedades y métodos del ejercicio anterior. Además tendrá un método getInfo que devolverá: '_Nombre_ (_categoría_): _unidades_ uds x _precio_ € = _importe_ €'. Crea 3 productos diferentes.
-
-### Ojo con _this_
-Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
-```javascript
-class Alumno {
-    ...
-    getInfo() {
-        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
-        function nomAlum() {
-            return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
-        }
-    }
-}
-```
-
-Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia al objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
-
-Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
-3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
-```javascript
-    getInfo() {
-        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
-        let nomAlum = () => this.nombre + ' ' + this.apellidos
-    }
-```
-
-1. Pasándole _this_ como parámetro a la función
-```javascript
-    getInfo() {
-        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
-        function nomAlum(alumno) {
-            return alumno.nombre + ' ' + alumno.apellidos
-        }
-    }
-```
-
-2. Guardando el valor en otra variable (como _that_)
-```javascript
-    getInfo() {
-        let that = this;
-        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años'
-        function nomAlum() {
-            return that.nombre + ' ' + that.apellidos      // Aquí this no es el objeto Alumno
-        }
-    }
-```
-
-4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos)
+> EJERCICIO: Crea una clase Productos con las propiedades _name_, _category_, _units_ y _price_ y los métodos _total_ que devuelve el importe del producto y _getInfo_ que devolverá: '_Name_ (_category_): _units_ uds x _price_ € = _total_ €'. Crea 3 productos diferentes.
 
 ## Herencia
 Una clase puede heredar de otra utilizando la palabra reservada **extends** y heredará todas sus propiedades y métodos. Podemos sobrescribirlos en la clase hija (seguimos pudiendo llamar a los métodos de la clase padre utilizando la palabra reservada **super** -es lo que haremos si creamos un constructor en la clase hija-).
@@ -115,6 +67,8 @@ console.log(User.getRoles()) // ["user", "guest", "admin"]
 let user = new User("john")
 console.log(user.getRoles()) // Uncaught TypeError: user.getRoles is not a function
 ```
+
+Suelen usarse para crear funciones de la aplicación.
 
 ## Método _toString()_
 Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se llama al método **_.toString()_** del mismo, que por defecto devuelve la cadena `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
@@ -180,7 +134,7 @@ misAlumnos.sort((alum1, alum2) => alum1.edad - alum2.edad)
 > - prodsList: devuelve una cadena que dice 'Listado de productos:' y en cada línea un guión y la información de un producto del array
 
 ## Método _valueOf()_
-Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método _.toString()_ pero si definimos un método **_.valueOf()_** será este el que se usará en comparaciones:
+Al comparar objetos (con >, <, ...) se usa el valor devuelto por el método **_.valueOf()_** para realizar la comparación:
 ```javascript
 class Alumno {
     ...
@@ -193,6 +147,56 @@ let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19)
 let aat = new Alumno('Ana', 'Abad Tudela', 23)
 console.log(cpo < aat)     // imprime true ya que 19<23
 ```
+
+Si este método no existiera será _.toString()_ el que se usaría.
+
+## Ojo con _this_
+Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
+```javascript
+class Alumno {
+    ...
+    getInfo() {
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
+        function nomAlum() {
+            return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
+        }
+    }
+}
+```
+
+Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia al objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
+
+Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
+3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
+```javascript
+    getInfo() {
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
+        let nomAlum = () => this.nombre + ' ' + this.apellidos
+    }
+```
+
+1. Pasándole _this_ como parámetro a la función
+```javascript
+    getInfo() {
+        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
+        function nomAlum(alumno) {
+            return alumno.nombre + ' ' + alumno.apellidos
+        }
+    }
+```
+
+2. Guardando el valor en otra variable (como _that_)
+```javascript
+    getInfo() {
+        let that = this;
+        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años'
+        function nomAlum() {
+            return that.nombre + ' ' + that.apellidos      // Aquí this no es el objeto Alumno
+        }
+    }
+```
+
+4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos)
 
 ## Programación orientada a objetos en JS5
 > **NOTA**: este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.
