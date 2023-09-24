@@ -30,8 +30,8 @@ Antes de comenzar esta unidad de trabajo el alumno debería saber:
 
 ## Contenidos
 Los contenidos de esta unidad son los siguientes:
-- [Arranque del sistema](../../../../altres/sistemes-operatius/arrencada)
 - [Planificación de la instalación](./planif.md)
+- [Arranque del sistema](../../../../altres/sistemes-operatius/arrencada)
 - [Proceso de instalación](instal.md)
 - [Configuración del sistema](config.md)
 - [Otras acciones](otras.md)

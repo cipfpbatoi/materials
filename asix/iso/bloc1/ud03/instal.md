@@ -15,6 +15,7 @@
     - [Particiones para instalar Windows](#particiones-para-instalar-windows)
     - [Particiones para instalar GNU/Linux](#particiones-para-instalar-gnulinux)
     - [GNU/Linux con Windows](#gnulinux-con-windows)
+  - [Volúmenes lógicos](#volúmenes-lógicos)
   - [Instalación del cargador de arranque Grub](#instalación-del-cargador-de-arranque-grub)
   - [Otras configuraciones básicas al instalar un sistema](#otras-configuraciones-básicas-al-instalar-un-sistema)
     - [Nombre del equipo](#nombre-del-equipo)
@@ -165,6 +166,25 @@ Siempre tenemos la posibilidad de no indicar las particiones a hacer y dejar que
 ### [Particiones para instalar GNU/Linux](../../../../altres/sistemes-operatius/particions#particions-per-a-installar-gnulinux)
 
 ### [GNU/Linux con Windows](../../../../altres/sistemes-operatius/particions#gnulinux-amb-windows)
+
+## Volúmenes lógicos
+Separar la información en diferentes particiones nos ofrece muchas ventajas pero tiene un problema: al final las particiones se acaban llenando y es necesario ampliar el espacio de almacenamiento.
+
+Cuando se llena una partición la única solución que había es comprar un nuevo disco más grande y pasar los datos de la antigua partición al nuevo disco, lo que lleva mucho tiempo y a su vez plantea algunos problemas.
+
+Los volúmenes lógicos vienen a solventar este problema ya que permiten ampliar una partición (llamadas volúmenes lógicos) con particiones de otros disco de forma que para el usuario se ven como un único espacio de almacenamiento.
+
+El funcionamiento es el siguiente:
+- se asignan discos físicos o particiones físicas como espacio de almacenamiento para el sistema virtual: al final los datos deben estar en sectores de los discos físicos
+- sobre el total de espacio físico asignado se crea uno o varios discos vidtuales, en GNU/Linux llamados _grupos de volumen (VG, Volume group)_
+- en dichos discos virtuales podemos crear particiones virtuales llamadas _volúmenes lógicos (LV, Logical volume)_
+- dichos LV se formatean con un sistema de ficheros y se utilizan para almacenar información
+
+Si un LV se queda sin espacio se amplía usando espacio libre del VG, y si en este no quedara más espacio libre se puede añadir al VG un nuevo disco físico (o una nueva partición física) de manera que se amplia su espacio libre.
+
+En Windows este sistema se llama **Discos dinámicos** y permiten tanto crear volúmenes lógicos distribuidos en varios discos como volúmenes con tolerancia a fallos (RAID).
+
+En GNU/Linux este sistema se llama [**LVM**](https://cipfpbatoi.github.io/materials/altres/sistemes-operatius/lvm/) (_Logical volume manager_).
 
 ## Instalación del cargador de arranque Grub
 El último paso al instalar un sistema GNU/Linux es siempre guardar el cargador de arranque Grub para que el sistema puede iniciar, de lo contrario no podríamos arrancarlo (tendríamos que arreglarlo manualmente como se vió en el tema del [arranque de Linux](../../../../altres/sistemes-operatius/arrencada#arrencada-de-gnulinux-amb-grub-i-bios)).
