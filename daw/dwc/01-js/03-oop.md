@@ -5,6 +5,7 @@
   - [Métodos estáticos](#métodos-estáticos)
   - [Método _toString()_](#método-tostring)
   - [Método _valueOf()_](#método-valueof)
+  - [Organizar el código](#organizar-el-código)
   - [Ojo con _this_](#ojo-con-this)
   - [Programación orientada a objetos en JS5](#programación-orientada-a-objetos-en-js5)
   - [Bibliografía](#bibliografía)
@@ -149,6 +150,11 @@ console.log(cpo < aat)     // imprime true ya que 19<23
 ```
 
 Si este método no existiera será _.toString()_ el que se usaría.
+
+## Organizar el código
+Lo más conveniente es guardar cada clase en su propio fichero, que llamaremos como la clase con la extensión `.class.js`. Por ejemplo el fichero de la clase _Users_ seria `users.class.js`.
+
+En dicho fichero exportamos la clase (con `export` o `export default` porque sólo hay 1) y donde queramos usarla la importamos (`import { Users } from 'users.class'` o `import Users from 'users.class'`, según cómo la hayamos exportado).
 
 ## Ojo con _this_
 Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:

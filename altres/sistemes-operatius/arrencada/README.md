@@ -8,7 +8,7 @@
     - [Arrencada de Windows](#arrencada-de-windows)
       - [Reparar l'arrencada del sistema](#reparar-larrencada-del-sistema)
       - [Canviar les opcions d'arrencada en Windows](#canviar-les-opcions-darrencada-en-windows)
-    - [Arrencada de GNU/Linux amb Grub2 i BIOS](#arrencada-de-gnulinux-amb-grub2-i-bios)
+    - [Arrencada de GNU/Linux amb Grub i BIOS](#arrencada-de-gnulinux-amb-grub-i-bios)
       - [Canviar les opcions de configuració de Grub](#canviar-les-opcions-de-configuració-de-grub)
       - [Reparar l'arrencada del sistema](#reparar-larrencada-del-sistema-1)
         - [Utilitzant un LiveCD de GNU/Linux](#utilitzant-un-livecd-de-gnulinux)
@@ -41,7 +41,7 @@ El procés de carregar el S.O. tindrà vàries fases:
 
 Aquest procés tarda alrededor d'un minut en els sistemes operatius moderns, encara que en els servidors pot tardar varis minuts.
 
-Ara anem a vore en detall el procés d'[arrencada del sistema amb BIOS](#arrencada-de-gnulinux-amb-grub2-i-bios) (o amb UEFI funcionant en mode _Legacy BIOS_) i el procés d'[arrencada del sistema amb UEFI](#arrencada-del-sistema-amb-uefi).
+Ara anem a vore en detall el procés d'[arrencada del sistema amb BIOS](#arrencada-de-gnulinux-amb-grub-i-bios) (o amb UEFI funcionant en mode _Legacy BIOS_) i el procés d'[arrencada del sistema amb UEFI](#arrencada-del-sistema-amb-uefi).
 
 ## Arrencada del sistema amb BIOS
 
@@ -91,14 +91,14 @@ La manera en que arranca l'ordinador és pràcticament igual des de Windows 7. E
   * Executa **Winlogo.exe** que executa **Lsass.exe** (Autoritat de seguretat local) que mostra la pantalla d'inici demanant usuari i contrasenya
   * Si son correctes executa **Userinit.exe** que carrega l'Escriptori de l'usuari
 
-| NOTA: A partir de Windows 8 en molts sistemes només quan apaguen l'equip en compte de tancar les sessions dels usuaris, aturar els serveis i apagar la màquina el que es fa és només tancar les sessions dels usuaris i hibernar la màquina (es guarda el contingut de la memòria en un fitxer anomenat _hiberfil.sys_). Això té l'avantatge que el sistema s'inicia molt ràpidament perquè no han de carregar-se els drivers i iniciar el sistema operatiu i els serveis.
+| NOTA: En molts sistemes amb Winwows 8 quan apaguen l'equip en compte de tancar les sessions dels usuaris, aturar els serveis i apagar la màquina el que es fa és només tancar les sessions dels usuaris i hibernar la màquina (es guarda el contingut de la memòria en un fitxer anomenat _hiberfil.sys_). Això té l'avantatge que el sistema s'inicia molt ràpidament perquè no han de carregar-se els drivers i iniciar el sistema operatiu i els serveis.
 
-| Per a que l'ordinador s'ature completament i poder així entrar en la BIOS hem d'apagar-lo en Windows amb la tecla _majúscules_ polsada. 
-
-| Si volem desactivar per a sempre la hibernació hem d'obrir una terminal d'Administrador (busquem _cmd_ i en el menú contextual triem '_Executar com administrador_') i executar el comando:
+| Per a que l'ordinador s'ature completament i poder així entrar en la BIOS hem d'apagar-lo en Windows amb la tecla _majúscules_ polsada. Si volem desactivar per a sempre la hibernació hem d'obrir una terminal d'Administrador (busquem _cmd_ i en el menú contextual triem '_Executar com administrador_') i executar el comando:
 ```bash
 powercfg -h como
 ```
+
+| També podem fer-ho des de l'entorn gràfic amb Panel de control -> Sistema y seguridad -> Opciones de energía -> Cambiar lo que hacen los botones de encendido.
 
 #### Reparar l'arrencada del sistema
 Si es danya el MBR o algun fitxer d'arranque l'equip no podrà arrancar correctament. El que hem de fer és introduir el CD d'instal·lació de Windows i arrancar l'equip. Una vegada iniciem amb el CD, cal triar l'opció de "**Reparar l'equip**" en compte de continuar amb l'opció d'instal·lació del sistema.
@@ -145,8 +145,8 @@ L'eina `BCDEDIT` permet configurar qualsevol opció d'arrencada en el menú BCD 
 * `bcdedit /? copy`: mostra informació sobre la acció copy que copia una entrada del menú amb un altre nom
 
 
-### Arrencada de GNU/Linux amb Grub2 i BIOS
-Tenim molts carregadors per als sistemes Linux però el més utilitzat és **Grub2**.
+### Arrencada de GNU/Linux amb Grub i BIOS
+Tenim molts carregadors per als sistemes Linux però el més utilitzat és **Grub**.
 
 En realitat _Grub_ no és un gestor d'arrencada només de GNU/Linux sinó que pot carregar qualsevol sistema operatiu (és un gestor d'arrencada múltiple). Una de les característiques més interessants d'aquest gestor és que podem canviar tots els paràmetres en l'arrencada mitjançant el sistema d'ordres de consola de _Grub_.
 
@@ -188,11 +188,11 @@ Els passos a seguir són:
 ```bash
   sudo mount /dev/sda3 /mnt
 ```
-5. Si hem fet algun canvi en els sistemes que teníem instal·lats (com instal·lar un nou Windows) hem d-actualitzar el menú de Grub2 amb:
+5. Si hem fet algun canvi en els sistemes que teníem instal·lats (com instal·lar un nou Windows) hem d-actualitzar el menú de Grub amb:
 ```bash
   sudo update-grub
 ```
-1. Executar l'ordre `grub-install` com es descriu a continuació. Açò reinstal·larà els fitxers de Grub2 en la partició muntada i corregirà el MBR:
+1. Executar l'ordre `grub-install` com es descriu a continuació. Açò reinstal·larà els fitxers de Grub en la partició muntada i corregirà el MBR:
 ```bash
   sudo grub-install --root-directory=/mnt/ /dev/sda
 ```
@@ -206,7 +206,7 @@ En el pas 6 compte de instal·lar grub des d'un directori podem _rootear_ eixe d
   sudo mount --bind /dev /mnt/dev
 ```
 
-Una vegada fet fem `chroot` sobre el punt de muntatge:
+Una vegada fet executem `chroot` sobre el punt de muntatge:
 ```bash
   sudo chroot /mnt
 ```
@@ -221,7 +221,7 @@ I per últim reiniciem l'equip.
 NOTA: recorda canviar els noms de discs i particions (_sda_, _sda3_, ...) pels adequats en el teu sistema.
 
 ##### Amb SuperGrubDisc2
-Es tracta de un LiveCD que permet arrencar un equip des de la qualsevol partició del disc. El que fa és mirar en el disc de l'equip els sistemes operatius instal·lats i mostra un menú on triem el que volem arrancar. Una vegada dins, com ja estem en el linux nostre només cal fer:
+Es tracta de un LiveCD que permet arrencar un equip des de la qualsevol partició del disc. El que fa és mirar en el disc de l'equip els sistemes operatius instal·lats i mostra un menú on triem el que volem arrancar. Una vegada dins, com ja estem en el nostre linux només cal fer:
 1. Actualitzar el menú _Grub_ amb `sudo update-grub` si hem fet algun canvi en el disc (per exemple si hem instal·lat un nou Windows)
 2. Executar l'ordre `grub-install`. Açò reinstal·larà els fitxers de _Grub_ de la partició actual en la seua correcta ubicació i també corregirà el MBR.
 ```bash
@@ -263,7 +263,9 @@ En la imatge anterior podem veure la partició EFI d'un equip amb Windows, Debia
 ### Reparar l'arrencada
 Si el nostre ordinador amb UEFI no arranca podem accedir a la shell de UEFI des d'on podem intentar arreglar l'arrencada del sistema o podem arrancar des d'un USB amb algun gestor d'arrencada per a UEFI com **rEFInd**, **Boot Repair** o altres.
 
-Des de la shell de UEFI podem arreglar el problema afegint una opció per a que arranque el carregador que li indiquem. En primer lloc anem a veure els dispositius que tenim:
+La forma més senzilla es des de l'entorn gràfic de la nostra BIOS/UEFI. Allí podrem vore les diferents opcions d'arrancada així com eliminar alguna o afegir noves.
+
+També podem afegir una opció des de la shell de UEFI per a que arranque el carregador que li indiquem. En primer lloc anem a veure els dispositius que tenim:
 ```bash
 Shell> map
 ```
@@ -284,7 +286,7 @@ Per a finalitzar eixim amb `exit` i ja tenim el carregador arreglat.
 #### I si Linux no arranca?
 Cada sistema operatiu que instal·lem crearà dins de la partició EFI una carpeta amb el seu nom (Microsoft, Debian, Ubuntu, Apple, etc) dins de la qual hi ha un fitxer anomenat _NomfitxerArquitectura.efi_ (per exemple **bootmgfw.efi** o **grubx64.efi**) que és el carregador d'eixe sistema operatiu. A més crea una variable en la NVRAM (Non-Volatile RAM) de UEFI que apunta a eixe carregador per a que aparega eixa opció en el menú al arrancar (si només hi ha una opció no apareix el menú).
 
-Si el firmware no troba cap opció d'arrencada carrega directament el fitxer **`EFI/boot/bootx64.efi`** que és un carregador per defecte, dins del directori boot que no pertany a cap sistema operatiu. Microsoft quan instal·la un sistema a més de posar el seu carregador dins de `EFI/Microsoft` sobreescriu el carregador per defecte amb el seu carregador de manera que per defecte arranque Windows.
+Si el firmware no troba cap opció d'arrencada carrega directament el fitxer **`EFI/boot/bootx64.efi`** que és un carregador per defecte, dins del directori boot que no pertany a cap sistema operatiu. Algunes versions del sistemes de Microsoft quan instal·len el sistema a més de posar el seu carregador dins de `EFI/Microsoft` sobreescriuen el carregador per defecte amb el seu carregador de manera que per defecte arranque Windows.
 
 Això no hauria de ser un problema però hi ha alguns equips amb una implementació dèbil d'EFI on els carregadors no es registren correctament en la NVRAM per la qual cosa només arranquen el carregador per defecte, és a dir, el de Windows (font: [http://mjg59.livejournal.com/138188.html](http://mjg59.livejournal.com/138188.html)).
 
