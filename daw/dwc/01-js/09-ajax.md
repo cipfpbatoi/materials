@@ -20,6 +20,7 @@
     - [_async / await_](#async--await)
       - [Gestión de errores en _async/await_](#gestión-de-errores-en-asyncawait)
     - [Hacer varias peticiones simultáneamente. Promise.all](#hacer-varias-peticiones-simultáneamente-promiseall)
+  - [El fichero _.env_](#el-fichero-env)
   - [Single Page Application](#single-page-application)
   - [Resumen de llamadas asíncronas](#resumen-de-llamadas-asíncronas)
   - [CORS](#cors)
@@ -389,7 +390,7 @@ La solución es que todo el código, no sólo de la petición Ajax sino también
 
 <script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
-Este código sí que funcionaría pero tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos. Por tanto nuestro código es poco claro.
+Este código sí que funcionaría pero tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos. Y sabemos que una función no debería tener 2 responsabilidades diferentes (obtener los datos del servidor y renderizarlos en la página).
 
 ### Funciones _callback_
 Esto se podría mejorar usando una función **_callback_**. La idea es que creamos una función que procese los datos (`renderPosts`) y se la pasamos a `getPosts` para que la llame cuando tenga los datos:
@@ -399,7 +400,7 @@ Esto se podría mejorar usando una función **_callback_**. La idea es que cream
 Hemos creado una función que se ocupa de renderizar los datos y se la pasamos a la función que gestiona la petición para que la llame cuando los datos están disponibles. Utilizando la función _callback_ hemos conseguido que _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los pasa a la encargada de pintarlos en la tabla.
 
 ### Promesas
-Sin embargo hay una forma más limpia de resolver una función asíncrona y que el código se parezca al primero que hicimos que no funcionaba, donde la función `getPosts()` sólo debía ocuparse de obtener los datos y devolverlos a quien se los pidió:
+Sin embargo hay una forma más limpia de resolver una función asíncrona y que el código se parezca al primero que hicimos que no funcionaba, donde la función `getPosts()` sólo debía ocuparse de obtener los datos y devolverlos a quien se los pidió. Ese código era:
 ```javascript
     ...
     let idUser = document.getElementById('id-usuario').value;
@@ -412,42 +413,41 @@ Sin embargo hay una forma más limpia de resolver una función asíncrona y que 
     ...
 ```
 
-Esta forma es convirtiendo a `getPosts()` e una **_promesa_**. Cuando se realiza una llamada a una promesa quien la llama puede usar métodos que NO SE EJECUTARÁN hasta que la promesa se haya resuelto (es decir, hasta que el servidor haya contestado):
-- **.then(_function(datos) { ... }_)**: se ejecuta si la promesa se ha resuelto satisfactoriamente. Su parámetro es una que recibe como parámetro los datos que haya devuelto la promesa (que serán los datos pedidos al servidor)
-- **.catch(_function(datos) { ... }_)**: se ejecuta si se ha rechazado la promesa (normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (que será información sobre el error producido).
+Como dijimos esto NO funciona, a menos que convirtamos a `getPosts()` en una **_promesa_**. Cuando se realiza una llamada a una promesa quien la llama puede usar unos métodos (_.then()_ y _.catch()_) que NO SE EJECUTARÁN hasta que la promesa se haya resuelto (es decir, hasta que el servidor haya contestado):
+- **`.then(_function(datos) { ... }_)`**: se ejecuta cuando la promesa se haya resuelto satisfactoriamente. Su parámetro es una función que recibe como parámetro los datos que haya devuelto la promesa (que serán los datos pedidos al servidor)
+- **.catch(_function(datos) { ... }_)**: se ejecuta cuando se haya rechazado la promesa (si ha fallado, normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (que será información sobre el error producido).
 
 De esta manera nuestro código quedaría:
 ```javascript
     ...
-    let idUser = document.getElementById('id-usuario').value;
+    let idUser = document.getElementById('id-usuario').value
     if (isNaN(idUser) || idUser == '') {
-      alert('Debes introducir un número');
+      alert('Debes introducir un número')
     } else {
       getPosts(idUser)
-          // en el .then() estará el código a ejecutar cuando tengamos los datos
-        .then((posts) => {
-          tbody.innerHTML = ''; // borramos el contenido de la tabla
+        .then((posts) => {  // aquí ya tenemos los datos en 'posts'
+          tbody.innerHTML = ''
           posts.forEach((post) => {
-            const newPost = document.createElement('tr');
+            const newPost = document.createElement('tr')
             newPost.innerHTML = `
                 <td>${post.userId}</td>
                 <td>${post.id}</td>
                 <td>${post.title}</td>
-                <td>${post.body}</td>`;
-            tbody.appendChild(newPost);
+                <td>${post.body}</td>`
+            tbody.appendChild(newPost)
           })
-          document.getElementById('num-posts').textContent = posts.length;
+          document.getElementById('num-posts').textContent = posts.length
         })
           // en el .catch() está el tratamiento de errores
         .catch((error) => console.error(error))
     }
 ```
 
-Para convertir a _`getPosts()`_ en una promesa sólo tenemos que "envolverla" en una instrucción
+Para convertir a _`getPosts()`_ en una promesa sólo tenemos que "envolverla" en la instrucción
 ```javascript
   return new Promise((resolve, reject) => {
     // Aquí el contenido de GetPosts()
-  }
+  })
 ```
 
 Esto hace que devuelva un objeto de tipo _Promise_ (`return new Promise()`) cuyo parámetro es una función que recibe 2 parámetros:
@@ -477,9 +477,9 @@ function getPosts(idUser) {
 }
 ```
 
-Fijaos que el único cambio es la primera línea donde convertimos nuestra función en una promesa, y que luego para "devolver" los datos a quien llama a _getPosts_ en lugar de hacer un _return_, que ya hemos visto que no funciona, se hace un _resolve_ si todo ha ido bien o un _reject_ si ha fallado.
+Fijaos que el único cambio es la primera línea donde convertimos nuestra función en una promesa, y que luego para "devolver" los datos en lugar de hacer un _return_, que ya hemos visto que no funciona, se hace un _resolve_ si todo ha ido bien o un _reject_ si ha fallado.
 
-Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos **_.then()_** y * **_.catch()_** que hemos visto anteriormente.
+Desde donde llamamos a la promesa nos suscribimos a ella usando los métodos **_.then()_** y **_.catch()_** que hemos visto anteriormente.
 
 Básicamente lo que nos van a proporcionar las promesas es un código más claro y mantenible ya que el código a ejecutar cuando se obtengan los datos asíncronamente estará donde se piden esos datos y no en una función escuchadora o en una función _callback_. 
 
@@ -494,9 +494,9 @@ El código del ejemplo de los posts usando promesas sería el siguiente:
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
 ### _fetch_
-Como el código a escribir para hacer una petición Ajax es largo y repetitivo, la [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) permite realizar una petición Ajax genérica que directamente devuelve en forma de **promesa**. 
+Como el código a escribir para hacer una petición Ajax es largo y siempre igual, la [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) permite realizar una petición Ajax genérica que directamente devuelve una **promesa**. 
 
-Básicamente lo que hace es encapsular en una función todo el código que se repite siempre en una petición AJAX (crear la petición, hacer el _open_, el _send_, escuchar los eventos, ...). La función _fetch_ se similar a la función _getPosts_ que hemos creado antes pero genérica para que sirva para cualquier petición pasándole la URL. Su código es algo similar a:
+Básicamente lo que hace es encapsular en una función todo el código que se repite siempre en una petición AJAX (crear la petición, hacer el _open_, el _send_, escuchar los eventos, ...). La función _fetch_ se similar a la función _getPosts_ que hemos creado antes pero genérica para que sirva para cualquier petición pasándole la URL. Lo que internamente hace es algo similar a:
 ```javascript
 function fetch(url) {
   return new Promise((resolve, reject) => {
@@ -512,7 +512,7 @@ function fetch(url) {
 ```
 
 Fijaos en 2 cosas que cambian respecto a nuestra función _`getPosts()`_:
-1. _fetch_ devuelve los datos "en crudo" por lo que si la respuesta está en formato JSON habrá con convertirlos. Para ello dispone de un método (**_.json()_**) que hace el `JSON.parse`. Este método devuelve una nueva promesa a la que nos suscribimos con un nuevo _.then_. Ejemplo.:
+1. _fetch_ devuelve los datos "en crudo" por lo que si la respuesta está en formato JSON habrá con convertirlos. Para ello dispone de un método (**`.json()`**) que hace el `JSON.parse`. Este método devuelve una nueva promesa a la que nos suscribimos con un nuevo `.then`. Ejemplo.:
 ```javascript
 fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
   .then(response => response.json())    // los datos son una cadena JSON
@@ -522,7 +522,7 @@ fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
   }) 
   .catch(err => console.error(err));
 ```
-2. _fetch_ llama a _resolve_ siempre que el servidor conteste, sin coprobar si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde
+2. _fetch_ llama a _resolve_ siempre que el servidor conteste, **sin comprobar** si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde
 
 #### Propiedades y métodos de la respuesta
 La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
@@ -536,12 +536,12 @@ El ejemplo que hemos visto con las promesas, usando _fetch_ quedaría:
 
 <script async src="//jsfiddle.net/juansegura/wr5ah769/embed/js,html,result/"></script>
 
-Pero este ejemplo fallaría si hubiéramos puesto mal la url ya que contestaría con un 404 pero se ejecutaría el _then_ intentando pintar unos posts que no tenemos.
+Este ejemplo fallaría si hubiéramos puesto mal la url: contestaría con un 404 pero se ejecutaría el _then_ intentando pintar unos posts que no tenemos.
 
 #### Gestión de errores con _fetch_
 Según [MDN](https://developer.mozilla.org/es/docs/Web/API/Fetch_API) la promesa devuelta por la _API fetch_ sólo es rechazada en el caso de un error de red, es decir, el _.catch_ sólo saltará si no hemos recibido respuesta del servidor; en caso contrario la promesa siempre es resuelta.
 
-Por tanto para saber si se ha resuelto satisfactoriamente o no debemos comprobar la propiedad **_.ok_** de la respuesta. El código correcto del ejemplo anterior gestionando los posibles errores del servidor sería:
+Por tanto para saber si se ha resuelto **satisfactoriamente** o no debemos comprobar la propiedad **_.ok_** de la respuesta. El código correcto del ejemplo anterior gestionando los posibles errores del servidor sería:
 
 ```javascript
 fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
@@ -569,7 +569,7 @@ fetch(url, {
   headers:{
     'Content-Type': 'application/json'
   }
-}).then
+}).then(...)
 ```
 
 Ejemplo de una petición para añadir datos:
@@ -592,7 +592,7 @@ fetch(url, {
   console.log(datos)
 })
 .catch(err => {
-  alert('Error en la petición HTTP: '+err.message);
+  alert('Error en la petición HTTP: ' + err.message);
 })
 ```
 
@@ -603,9 +603,9 @@ Estas nuevas instrucciones introducidas en ES2017 nos permiten escribir el códi
 
 Usando esto sí funcionaría el primer ejemplo que hicimos.
 
-Se puede llamar a cualquier función asíncrona (por ejemplo una promesa como _fetch_) anteponiendo la palabra **await** a la llamada. Esto provocará que la ejecución se "espere" a que se resuelva la promesa devuelta por esa función. Así nuestro código se asemeja a código síncrono ya que no continuan ejecutándose las instrucciones que hay después de un _await_ hasta que esa petición se ha resuelto.
+Se puede llamar a cualquier función asíncrona (por ejemplo una promesa como _fetch_) anteponiendo la palabra **await** a la llamada. Esto provocará que la ejecución se "espere" a que se resuelva la promesa devuelta por esa función. Así nuestro código se asemeja a un código síncrono ya que no continuan ejecutándose las instrucciones que hay después de un _await_ hasta que esa petición se ha resuelto.
 
-Cualquier función que realice un _await_ pasa a ser asíncrona ya que no se ejecuta en ese momento sino que se espera un tiempo. Y para indicarlo debemos anteponer la palabra **async** a su declaración _`function`_. Al hacerlo automáticamente se "envuelve" esa función en una promesa (o sea que esa función pasa a devolver una promesa, a la que podríamos ponerle un `await` o un `.then()`).
+Cualquier función que realice un _await_ pasa a ser asíncrona ya que no se ejecuta al instante toda ella sino que se espera un tiempo. Para indicarlo debemos anteponer la palabra **async** a su declaración _`function`_. Al hacer esto automáticamente se "envuelve" esa función en una promesa (o sea que esa función pasa a devolver una promesa, a la que podríamos ponerle un `await` o un `.then()`).
 
 Siguiendo con el ejemplo anterior:
 ```javascript
@@ -643,7 +643,7 @@ El ejemplo de los posts quedaría:
 <script async src="//jsfiddle.net/juansegura/zghq5dt6/embed/js,html,result/"></script>
 
 #### Gestión de errores en _async/await_
-En este código no estamos tratando los posibles errores que se pueden producir. Con _async / await_ los errores se tratan como en las excepciones, con _try ... catch_:
+En este código no estamos tratando los posibles errores que se pueden producir. Con _async / await_ los errores se tratan con `try ... catch`:
 
 <script async src="//jsfiddle.net/juansegura/sojvq7r0/embed/js,html,result/"></script>
 
@@ -652,6 +652,15 @@ También podemos tratarlos sin usar _try...catch_ porque como una función asín
 ### Hacer varias peticiones simultáneamente. Promise.all
 En ocasiones necesitamos hacer más de una petición al servidor. Por ejemplo para obtener los productos y sus categorías podríamos hacer:
 ```javascript
+function getData() {
+  getTable('/categories')
+    .then((categories) => categories.forEach((category) => renderCategory(category)))
+    .catch((error) => renderErrorMessage(error))
+  getTable('/products')
+    .then((products) => products.forEach((product) => renderProduct(product)))
+    .catch((error) => renderErrorMessage(error))
+}
+
 function getTable(table) {
   return new Promise((resolve, reject) => {
     fetch(SERVER + table)
@@ -664,15 +673,6 @@ function getTable(table) {
       .then((data) => resolve(data))
       .catch((error) => reject(error))
   })
-}
-
-function getData() {
-  getTable('/categories')
-    .then((categories) => categories.forEach((category) => renderCategory(category)))
-    .catch((error) => renderErrorMessage(error))
-  getTable('/products')
-    .then((products) => products.forEach((product) => renderProduct(product)))
-    .catch((error) => renderErrorMessage(error))
 }
 ```
 
@@ -741,6 +741,25 @@ async function getData() {
   products.forEach((product) => renderProduct(product))
 }
 ```
+
+## El fichero _.env_
+En los ejemplos anteriores estamos guardando la URL a la que hacer la petición a la API en una constante a la que estamos llamando _SERVER_. Esto plantea algunos problemas:
+- si tenemos varios ficheros que hacen peticiones a la API deberemos declararla en todos ellos
+- si cambia hay que cambiarla en todos los ficheros y en ese caso tenemos que cambiar nuestro código
+
+Para evitarlo podemos almacenar ete tipo de cosas en el fichero `.env`. Se trata de un fichero donde guardar las configuraciones de la aplicación, como la URL de la API.
+
+Por medio de _Vite_ podemos acceder a todas las variables de _.env_ que comiencen por VITE_ por medio del objeto `import.meta.env` por lo que en nuestro código en vez de darle el valor a _SERVER_ podríamos haber puesto:
+```javascript
+const SERVER = import.meta.env.VITE_URL_API
+```
+
+Y en el fichero **_.env_** ponemos
+```bash
+VITE_URL_API=http://localhost:3000
+```
+
+El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. Si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables, que quien quiera desplegar nuestra aplicación deberá cambiar por sus valores adecuados en producción. Además del _.env_ y el _.env.local_ también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de **VITE_URL_API** podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
 ## Single Page Application
 Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin "esperas" que dejen la página en blanco o no funcional mientras se recarga desde el servidor).

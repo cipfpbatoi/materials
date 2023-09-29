@@ -331,7 +331,7 @@ Se trata de un fichero donde guardar las configuraciones de la aplicación y la 
 Vue por medio de _Vite_ puede acceder a todas las variables de _.env_ que comiencen por VITE_ por medio del objeto `import.meta.env` por lo que en nuestro código en vez de darle el valor a _baseURL_ podríamos haber puesto:
 ```javascript
 const apiClient = axios.create({
-  baseURL: meta.import.env.VITE_RUTA_API,
+  baseURL: import.meta.env.VITE_RUTA_API,
   ...
 })
 ```
