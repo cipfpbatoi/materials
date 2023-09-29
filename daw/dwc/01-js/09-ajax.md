@@ -4,23 +4,27 @@
     - [Métodos HTTP](#métodos-http)
     - [Json Server](#json-server)
     - [REST client](#rest-client)
-  - [Realizar peticiones Ajax](#realizar-peticiones-ajax)
-  - [Eventos de XMLHttpRequest](#eventos-de-xmlhttprequest)
-  - [Ejemplos de envío de datos](#ejemplos-de-envío-de-datos)
-    - [Enviar datos al servidor en formato JSON](#enviar-datos-al-servidor-en-formato-json)
-    - [Enviar datos al servidor en formato URIEncoded](#enviar-datos-al-servidor-en-formato-uriencoded)
-    - [Enviar ficheros al servidor con FormData](#enviar-ficheros-al-servidor-con-formdata)
-  - [Ejemplo de petición Ajax](#ejemplo-de-petición-ajax)
-    - [Funciones _callback_](#funciones-callback)
-    - [Promesas](#promesas)
-    - [_fetch_](#fetch)
+  - [El objeto XMLHttpRequest](#el-objeto-xmlhttprequest)
+    - [Eventos de XMLHttpRequest](#eventos-de-xmlhttprequest)
+    - [Ejemplos de envío de datos](#ejemplos-de-envío-de-datos)
+      - [Enviar datos al servidor en formato JSON](#enviar-datos-al-servidor-en-formato-json)
+      - [Enviar datos al servidor en formato URIEncoded](#enviar-datos-al-servidor-en-formato-uriencoded)
+      - [Enviar ficheros al servidor con FormData](#enviar-ficheros-al-servidor-con-formdata)
+  - [Callbakcs, Promesas y Async/Await](#callbakcs-promesas-y-asyncawait)
+    - [Si Ajax fuera síncrono...](#si-ajax-fuera-síncrono)
+    - [Solución mala](#solución-mala)
+    - [Algo mejor: Funciones _callback_](#algo-mejor-funciones-callback)
+    - [Solución buena: Promesas](#solución-buena-promesas)
+    - [Una mejora: usar _fetch_](#una-mejora-usar-fetch)
       - [Propiedades y métodos de la respuesta](#propiedades-y-métodos-de-la-respuesta)
       - [Gestión de errores con _fetch_](#gestión-de-errores-con-fetch)
-      - [Otros métodos de petición](#otros-métodos-de-petición)
-    - [_async / await_](#async--await)
+      - [Otros métodos de petición con _fetch_](#otros-métodos-de-petición-con-fetch)
+    - [La mejor solución: _async / await_](#la-mejor-solución-async--await)
       - [Gestión de errores en _async/await_](#gestión-de-errores-en-asyncawait)
     - [Hacer varias peticiones simultáneamente. Promise.all](#hacer-varias-peticiones-simultáneamente-promiseall)
-  - [El fichero _.env_](#el-fichero-env)
+  - [Organizar bien el código](#organizar-bien-el-código)
+    - [El fichero _.env_](#el-fichero-env)
+    - [Distintas peticiones, distintos ficheros](#distintas-peticiones-distintos-ficheros)
   - [Single Page Application](#single-page-application)
   - [Resumen de llamadas asíncronas](#resumen-de-llamadas-asíncronas)
   - [CORS](#cors)
@@ -166,7 +170,7 @@ Para probar las peticiones GET podemos poner la URL en la barra de direcciones d
 
 Existen multitud de aplicaciones para realizar peticiones HTTP, como [Advanced REST client](https://install.advancedrestclient.com/install). Cada navegador tiene sus propias extensiones para hacer esto, como [_Advanced Rest Client_](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo?hl=es) para Chrome o [_RestClient_](https://addons.mozilla.org/es/firefox/addon/restclient/) para Firefox.
 
-## Realizar peticiones Ajax
+## El objeto XMLHttpRequest
 Hasta ahora hemos hecho un repaso a lo que es el protocolo HTTP. Ahora que lo tenemos claro y hemos instalado un servidor que nos proporciona una API (json-server) vamos a realizar peticiones HTTP en nuestro código javascript usando Ajax.
 
 Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest** que es el que controlará todo el proceso. Los pasos a seguir son:
@@ -176,7 +180,7 @@ Para hacer una petición debemos crear una instancia del objeto **XMLHttpRequest
 1. Enviamos la petición al servidor con el método **.send()**. A este método se le pasa como parámetro los datos a enviar al servidor en el cuerpo de la petición (si es un POST, PUT o PATCH le pasaremos una cadena de texto con los datos a enviar: `peticion.send('dato1='+encodeURIComponent(dato1)+'&dato2='+encodeURIComponent(dato2))`). Si es una petición GET o DELETE no le pasaremos datos (`peticion.send()`)
 1. Ponemos un escuchador al objeto _peticion_ para saber cuándo está disponible la respuesta del servidor
 
-## Eventos de XMLHttpRequest
+### Eventos de XMLHttpRequest
 Tenemos diferentes eventos que el servidor envía para informarnos del estado de nuestra petición y que nosotros podemos capturar. El evento **readystatechange** se produce cada vez que el servidor cambia el estado de la petición. Cuando hay un cambio en el estado cambia el valor de la propiedad **readyState** de la petición. Sus valores posibles son:
   * 0: petición no iniciada (se ha creado el objeto XMLHttpRequest)
   * 1: establecida conexión con el servidor (se ha hecho el _open_)
@@ -267,7 +271,7 @@ peticion.addEventListener('error', muestraError);
 
 Una petición asíncrona es como pedir una pizza: tras llamar por teléfono lo siguiente no es ir a la puerta a recogerla sino que seguimos haciendo cosas por casa y cuando suena el timbre de casa entonces vamos a la puerta a por ella.
 
-## Ejemplos de envío de datos
+### Ejemplos de envío de datos
 Vamos a ver algunos ejemplos de envío de datos al servidor con POST. Supondremos que tenemos una página con un formulario para dar de alta nuevos productos:
 ```html
 <form id="addProduct">
@@ -277,7 +281,7 @@ Vamos a ver algunos ejemplos de envío de datos al servidor con POST. Supondremo
     <button type="submit">Añadir</button>
 </form>
 ```
-### Enviar datos al servidor en formato JSON
+#### Enviar datos al servidor en formato JSON
 ```javascript
 document.getElementById('addProduct').addEEventListener('submit', (event) => {
   ...
@@ -301,7 +305,7 @@ Para enviar el objeto hay que convertirlo a una cadena JSON con la función **JS
 peticion.setRequestHeader('Content-type', 'application/json');
 ```
 
-### Enviar datos al servidor en formato URIEncoded
+#### Enviar datos al servidor en formato URIEncoded
 ```javascript
 document.getElementById('addProduct').addEEventListener('submit', (event) => {
   ...
@@ -320,7 +324,7 @@ document.getElementById('addProduct').addEEventListener('submit', (event) => {
 
 En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_**.
 
-### Enviar ficheros al servidor con FormData
+#### Enviar ficheros al servidor con FormData
 [FormData](https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/FormData) es una interfaz de XMLHttpRequest que permite construir fácilmente pares de `clave=valor` para enviar los datos de un formulario. Se envían en el mismo formato en que se enviarían directamente desde un formulario ("multipart/form-data") por lo que no hay que poner encabezado de 'Content-type'.
 
 Vamos a añadir al formulario un campo donde el usuario pueda subir la foto del producto:
@@ -372,7 +376,7 @@ document.getElementById('addProduct').addEEventListener('submit', (event) => {
 
 Podéis ver más información de cómo usar formData en [MDN web docs](https://developer.mozilla.org/es/docs/Web/Guide/Usando_Objetos_FormData).
 
-## Ejemplo de petición Ajax
+## Callbakcs, Promesas y Async/Await
 Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
 1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
 1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
@@ -380,26 +384,28 @@ Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que mues
   - Si se produce un error se encarga de informar al usuario de nuestra aplicación
 1. Cuando se reciben deben pintarse en la tabla
 
+### Si Ajax fuera síncrono...
 Si Ajax no fuera una petición asíncrona el código de todo esto será algo como el siguiente (ATENCIÓN, este código **NO FUNCIONA**):
 
 <script async src="https://jsfiddle.net/juansegura/b0znLwkt/embed/js,html,result/"></script>
 
 Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve tiempo después, cuando el servidor contesta, pero entonces ya no hay nadie escuchando.
 
+### Solución mala
 La solución es que todo el código, no sólo de la petición Ajax sino también el de qué hacer con los datos cuando llegan, se encuentre en la función que pide los datos al servidor:
 
 <script async src="https://jsfiddle.net/juansegura/y8xdk1t4/embed/js,html,result/"></script>
 
 Este código sí que funcionaría pero tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos. Y sabemos que una función no debería tener 2 responsabilidades diferentes (obtener los datos del servidor y renderizarlos en la página).
 
-### Funciones _callback_
+### Algo mejor: Funciones _callback_
 Esto se podría mejorar usando una función **_callback_**. La idea es que creamos una función que procese los datos (`renderPosts`) y se la pasamos a `getPosts` para que la llame cuando tenga los datos:
 
 <script async src="//jsfiddle.net/juansegura/cob8m3zx/embed/js,html,result/"></script>
 
 Hemos creado una función que se ocupa de renderizar los datos y se la pasamos a la función que gestiona la petición para que la llame cuando los datos están disponibles. Utilizando la función _callback_ hemos conseguido que _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los pasa a la encargada de pintarlos en la tabla.
 
-### Promesas
+### Solución buena: Promesas
 Sin embargo hay una forma más limpia de resolver una función asíncrona y que el código se parezca al primero que hicimos que no funcionaba, donde la función `getPosts()` sólo debía ocuparse de obtener los datos y devolverlos a quien se los pidió. Ese código era:
 ```javascript
     ...
@@ -493,7 +499,7 @@ El código del ejemplo de los posts usando promesas sería el siguiente:
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
-### _fetch_
+### Una mejora: usar _fetch_
 Como el código a escribir para hacer una petición Ajax es largo y siempre igual, la [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) permite realizar una petición Ajax genérica que directamente devuelve una **promesa**. 
 
 Básicamente lo que hace es encapsular en una función todo el código que se repite siempre en una petición AJAX (crear la petición, hacer el _open_, el _send_, escuchar los eventos, ...). La función _fetch_ se similar a la función _getPosts_ que hemos creado antes pero genérica para que sirva para cualquier petición pasándole la URL. Lo que internamente hace es algo similar a:
@@ -560,7 +566,7 @@ fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
 
 En este caso si la respuesta del servidor no es _ok_ lanzamos un error que es interceptado por nuestro propio _catch_
 
-#### Otros métodos de petición
+#### Otros métodos de petición con _fetch_
 Los ejemplos anteriores hacen peticiones GET al servidor. Para peticiones que no sean GET la función _fetch()_ admite un segundo parámetro con un objeto con la información a enviar en la petición HTTP. Ej.:
 ```javascript
 fetch(url, {
@@ -598,7 +604,7 @@ fetch(url, {
 
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
 
-### _async / await_
+### La mejor solución: _async / await_
 Estas nuevas instrucciones introducidas en ES2017 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que NO están soportadas por navegadores antiguos.
 
 Usando esto sí funcionaría el primer ejemplo que hicimos.
@@ -742,7 +748,8 @@ async function getData() {
 }
 ```
 
-## El fichero _.env_
+## Organizar bien el código
+### El fichero _.env_
 En los ejemplos anteriores estamos guardando la URL a la que hacer la petición a la API en una constante a la que estamos llamando _SERVER_. Esto plantea algunos problemas:
 - si tenemos varios ficheros que hacen peticiones a la API deberemos declararla en todos ellos
 - si cambia hay que cambiarla en todos los ficheros y en ese caso tenemos que cambiar nuestro código
@@ -761,6 +768,108 @@ VITE_URL_API=http://localhost:3000
 
 El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. Si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables, que quien quiera desplegar nuestra aplicación deberá cambiar por sus valores adecuados en producción. Además del _.env_ y el _.env.local_ también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de **VITE_URL_API** podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
+### Distintas peticiones, distintos ficheros
+Las peticiones a la API deberíamos ponerlas en un fichero aparte para tener nuestro código organizado. Y peticiones a diferentes tipos de datos también deberían estar en ficheros diferentes. Por ejemplo si necesitamos obtener datos de posts y de usuarios podríamos crear una carpeta `/repositories` y dentro los ficheros `posts.repository.js` y `users.repository.js`.
+
+Dentro de cada fichero haremos diferentes funciones y métodos para los diferentes tipos de petición, por ejemplo:
+```javascript
+const SERVER = import.meta.env.VITE_URL_API
+
+async getAllPosts() {
+    const response = await fetch(SERVER + '/posts')
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+}
+
+async getPostById(idPost) {
+    const response = await fetch(SERVER + `/posts/${idPost}`)
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+}
+
+async insertPost(newPost) {
+    const response = await fetch(SERVER + '/posts', {
+      method: 'POST',
+      body: JSON.stringify(newPost),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+}
+
+export {
+  getAllPosts,
+  getPostById,
+  insertPost
+}
+```
+
+Y donde necesitemos los datos haremos:
+```javascript
+import { getAllPosts } from "../repositories/posts.repositories"
+
+const posts = await getAllPosts()
+```
+
+Usando clases el ejemplo quedaría:
+```javascript
+const SERVER = import.meta.env.VITE_URL_API
+
+export class PostsRepository {
+  async getAllPosts() {
+    const response = await fetch(SERVER + '/posts')
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+  }
+
+  async getPostById(idPost) {
+    const response = await fetch(SERVER + `/posts/${idPost}`)
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+  }
+
+  async insertPost(newPost) {
+    const response = await fetch(SERVER + '/posts', {
+      method: 'POST',
+      body: JSON.stringify(newPost),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    if (!response.ok) {
+      throw `Error ${response.status} de la BBDD: ${response.statusText}`
+    }
+    const data = await response.json()
+    return data
+  }
+}
+```
+
+Y donde necesitemos los datos haremos:
+```javascript
+import { PostsRepository } from "../repositories/posts.repositories"
+
+const repository = new PostsRepository()
+const posts = await repository.getAllPosts()
+```
+
 ## Single Page Application
 Ajax es la base para construir SPAs que permiten al usuario interactuar con una aplicación web como si se tratara de una aplicación de escritorio (sin "esperas" que dejen la página en blanco o no funcional mientras se recarga desde el servidor).
 
@@ -768,19 +877,20 @@ En una SPA sólo se carga la página de inicio (es la única página que existe)
 
 ## Resumen de llamadas asíncronas
 Una llamada Ajax es un tipo de llamada asíncrona que podemos hacer en Javascript aunque hay muchas más, como un `setTimeout()` o las funciones manejadoras de eventos. Como hemos visto, para la gestión de las llamadas asíncronas tenemos varios métodos y los más comunes son:
-- funciones _callback_
+- funciones _callback_ (no recomendado)
 - _promesas_
 - _async / await_
+- librerías, como [axios](https://axios-http.com/es/docs/intro)
 
 Cuando se produce una llamada asíncrona el orden de ejecución del código no es el que vemos en el programa ya que el código de respuesta de la llamada no se ejecutará hasta completarse esta. Podemos ver [un ejemplo](https://repl.it/DhKt/1) de esto extraído de **todoJS** usando **funciones _callback_**.
 
-Además, si hacemos varias llamadas tampoco sabemos el qué orden se ejecutarán sus respuestas ya que depende de cuándo finalice cada una como podemos ver en [este otro ejemplo](https://repl.it/DhLA/0).
+Además, si hacemos varias llamadas tampoco sabemos el qué orden se ejecutarán sus respuestas ya que depende de cuándo el servidor finalice cada una, como podemos ver en [este otro ejemplo](https://repl.it/DhLA/0).
 
 Si usamos funciones _callback_ y necesitamos que cada función no se ejecute hasta que haya terminado la anterior debemos llamarla en la respuesta a la función anterior lo que provoca un tipo de código difícil de leer llamado [_callback hell_](https://repl.it/DhLN/0).
 
 Para evitar esto surgieron las **_promesas_** que permiten evitar las funciones _callback_ tan difíciles de leer. Podemos ver [el primer ejemplo](https://repl.it/DhMA/1) usando promesas. Y si necesitamos ejecutar secuencialmente las funciones evitaremos la pirámide de llamadas _callback_ como vemos en [este ejemplo](https://repl.it/DhMK/0).
 
-Aún así el código no es muy claro. Para mejorarlo tenemos **_async_ y _await_** como vemos en [este ejemplo](https://repl.it/DhMa/0). Estas funciones forman parte del estándar ES2017 por lo que no están soportadas por navegadores muy antiguos (aunque siempre podemos transpilar con _Babel_).
+Aún así el código no es muy claro. Para mejorarlo surgió **_async_ y _await_** como vemos en [este ejemplo](https://repl.it/DhMa/0). Estas funciones forman parte del estándar ES2017 por lo que no están soportadas por navegadores muy antiguos (aunque siempre podemos transpilar con _Babel_).
 
 Fuente: [todoJs: Controlar la ejecución asíncrona](https://www.todojs.com/controlar-la-ejecucion-asincrona/)
 
