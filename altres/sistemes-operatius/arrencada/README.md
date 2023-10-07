@@ -18,7 +18,7 @@
     - [Arrencada amb UEFI](#arrencada-amb-uefi)
       - [Secure Boot](#secure-boot)
     - [Reparar l'arrencada](#reparar-larrencada)
-      - [I si Linux no arranca?](#i-si-linux-no-arranca)
+      - [I si Linux no arranca quan està amb Windows?](#i-si-linux-no-arranca-quan-està-amb-windows)
 
 ## Introducció
 Ja sabem que:
@@ -261,11 +261,9 @@ En la imatge anterior podem veure la partició EFI d'un equip amb Windows, Debia
 És una opció de UEFI que impedeix que s'execute un carregador si no està signat digitalment per una entitat reconeguda pel sistema. Normalment els equips que comprem inclouen la signatura de Microsoft i per tant poden arrancar els carregadors de Windows però hi ha algunes distribucions GNU/Linux que tenen també el seu carregador signat per Microsoft per a poder arrancar amb _Secure Boot_. També podem afegir altres signatures a la nostra UEFI o desactivar aquesta opció.
 
 ### Reparar l'arrencada
-Si el nostre ordinador amb UEFI no arranca podem accedir a la shell de UEFI des d'on podem intentar arreglar l'arrencada del sistema o podem arrancar des d'un USB amb algun gestor d'arrencada per a UEFI com **rEFInd**, **Boot Repair** o altres.
+Si el nostre ordinador amb UEFI no arranca, la forma més senzilla de arreglar-lo és des de l'entorn gràfic de la nostra BIOS/UEFI. Allí podrem vore les diferents opcions d'arrancada així com eliminar alguna o afegir noves.
 
-La forma més senzilla es des de l'entorn gràfic de la nostra BIOS/UEFI. Allí podrem vore les diferents opcions d'arrancada així com eliminar alguna o afegir noves.
-
-També podem afegir una opció des de la shell de UEFI per a que arranque el carregador que li indiquem. En primer lloc anem a veure els dispositius que tenim:
+Altra forma és afegir una opció des de la shell de UEFI per a que arranque el carregador que li indiquem, encara que al no tindre entorn gràfic és més difícil. En primer lloc anem a veure els dispositius que tenim:
 ```bash
 Shell> map
 ```
@@ -283,7 +281,9 @@ FS0:\> bcfg boot add 0 fs0:\EFI\debian\grubx64.efi "Debian"
 
 Per a finalitzar eixim amb `exit` i ja tenim el carregador arreglat.
 
-#### I si Linux no arranca?
+En tot cas, si el nostre sistema no arranca sempre podrem arrancar-lo des d'un USB amb algun gestor d'arrencada per a UEFI com **rEFInd**, **Boot Repair**, **supergrub disk** o altres. Una vegada arrancat podem intentar reparar des de dins el que estiga malament.
+
+#### I si Linux no arranca quan està amb Windows?
 Cada sistema operatiu que instal·lem crearà dins de la partició EFI una carpeta amb el seu nom (Microsoft, Debian, Ubuntu, Apple, etc) dins de la qual hi ha un fitxer anomenat _NomfitxerArquitectura.efi_ (per exemple **bootmgfw.efi** o **grubx64.efi**) que és el carregador d'eixe sistema operatiu. A més crea una variable en la NVRAM (Non-Volatile RAM) de UEFI que apunta a eixe carregador per a que aparega eixa opció en el menú al arrancar (si només hi ha una opció no apareix el menú).
 
 Si el firmware no troba cap opció d'arrencada carrega directament el fitxer **`EFI/boot/bootx64.efi`** que és un carregador per defecte, dins del directori boot que no pertany a cap sistema operatiu. Algunes versions del sistemes de Microsoft quan instal·len el sistema a més de posar el seu carregador dins de `EFI/Microsoft` sobreescriuen el carregador per defecte amb el seu carregador de manera que per defecte arranque Windows.
