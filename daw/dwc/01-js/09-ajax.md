@@ -826,7 +826,7 @@ Usando clases el ejemplo quedaría:
 ```javascript
 const SERVER = import.meta.env.VITE_URL_API
 
-export class PostsRepository {
+export default class PostsRepository {
   async getAllPosts() {
     const response = await fetch(SERVER + '/posts')
     if (!response.ok) {
@@ -864,7 +864,7 @@ export class PostsRepository {
 
 Y donde necesitemos los datos haremos:
 ```javascript
-import { PostsRepository } from "../repositories/posts.repositories"
+import PostsRepository from "../repositories/posts.repositories"
 
 const repository = new PostsRepository()
 const posts = await repository.getAllPosts()
