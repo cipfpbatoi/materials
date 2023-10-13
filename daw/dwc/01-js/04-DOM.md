@@ -82,6 +82,10 @@ NOTA: las colecciones son similares a arrays (se accede a sus elementos con _\[i
 ```javascript
 let nodos = document.getElementsByTagName('p');   // nodos contendrá todos los nodos de tipo  _<p>_
 ```
+* **.getElementsByName(name)**: devuelve una colección con todos los nodos que contengan un atributo `name` con el valor indicado. Ej.:
+```javascript
+let radiosSexo = document.getElementsByName('sexo');   // radiosSexo contendrá todos los nodos con ese atributo (seguramente radiobuttons con name="sexo")
+```
 * **.querySelector(selector)**: devuelve el primer nodo seleccionad por el _selector_ CSS indicado. Ej.:
 ```javascript
 let nodo = document.querySelector('p.error');   // nodo contendrá el primer párrafo de clase _error_
