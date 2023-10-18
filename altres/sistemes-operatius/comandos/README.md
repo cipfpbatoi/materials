@@ -13,6 +13,7 @@
     - [Operadores de redireccionamiento](#operadores-de-redireccionamiento)
     - [Dispositivos](#dispositivos)
   - [Scripts](#scripts)
+    - [Scripts en GNU/Linux](#scripts-en-gnulinux)
 
 ## Introducción
 Una de las funciones del sistema operativo es hacer de intermediario entre el usuario y el equipo: el sistema operativo le proporciona una interfaz para comunicarse con el ordenador. Las interfaces pueden ser de dos tipos:
@@ -256,3 +257,6 @@ date
 echo El contenido del directorio $1 es
 ls $1
 ```
+
+### Scripts en GNU/Linux
+Ver la [página de scripts de GNU/Linux](./scripts-linux.md).
