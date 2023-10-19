@@ -1,4 +1,20 @@
 # Scripts en GNU/Linux
+- [Scripts en GNU/Linux](#scripts-en-gnulinux)
+  - [Introducció](#introducció)
+  - [Variables](#variables)
+  - [Pas de paràmetres](#pas-de-paràmetres)
+  - [Estructura condicional "if"](#estructura-condicional-if)
+    - [Anidació de sentències "if"](#anidació-de-sentències-if)
+  - [Estructura condicional "case"](#estructura-condicional-case)
+  - [Els bucles](#els-bucles)
+    - [El bucle "for"](#el-bucle-for)
+    - [El bucle "while"](#el-bucle-while)
+    - [El bucle "until"](#el-bucle-until)
+    - ["break" i "continue"](#break-i-continue)
+  - [Llegir dades d'un fitxer](#llegir-dades-dun-fitxer)
+  - [Funcions](#funcions)
+  - [Altres sentències útils](#altres-sentències-útils)
+
 
 ## Introducció
 Un script és un fitxer de text que conté un comando en cada línia. Executar un script equival a escriure en la consola els comandos que conté un darrere l'altre.
@@ -309,6 +325,88 @@ echo "Nombre d'intents: $intents"
 ```
 
 Fixa't que `$((...))` calcula una expressió.
+
+### "break" i "continue"
+Dins d'un bucle les comandes `continue` i `break` fan que es deixe d'executar el codi:
+
+1. **`continue`**:
+   - La comanda `continue` s'utilitza per saltar l'iteració actual del bucle i passar a la següent iteració.
+   - Quan s'executa `continue`, qualsevol codi que segueix a `continue` dins del bucle no s'executarà per aquesta iteració, i el bucle avançarà a l'iteració següent.
+   - És útil quan vols evitar l'execució de determinades comandes dins del bucle en una condició específica, però encara vols continuar amb el bucle.
+
+Exemple:
+
+```bash
+for numero in {1..5}
+do
+  if [ $numero -eq 3 ]
+  then
+    continue  # Salta la iteració actual si el número és 3
+  fi
+  echo "Número: $numero"
+done
+```
+
+Aquest bucle imprimirà els números de l'1 al 5, però saltarà la iteració quan `numero` sigui igual a 3, és a dir, mostrarà els números 1, 2, 4 i 5.
+
+2. **`break`**:
+   - La comanda `break` s'utilitza per sortir immediatament del bucle.
+   - Quan s'executa `break`, es finalitza el bucle actual i s'executa la comanda següent després del bucle.
+   - És útil quan vols sortir del bucle en una situació particular i no continuar amb les iteracions restants.
+
+Exemple:
+
+```bash
+for numero in {1..10}
+do
+  if [ $numero -eq 5 ]
+  then
+    break  # Surts del bucle quan el número és 5
+  fi
+  echo "Número: $numero"
+done
+```
+
+Aquest bucle imprimirà els números de l'1 al 4 i, en arribar al 5, sortirà del bucle sense completar les iteracions restants.
+
+En resum, `continue` s'utilitza per saltar a la següent iteració dins del bucle, mentre que `break` s'utilitza per sortir del bucle.
+
+## Llegir dades d'un fitxer
+Moltes vegades hem de fer un script per a treballar amb dades que es troben en fun fitxer de text. La forma més habitual d'accedir a les dades del fitxer és utilitzant un bucle `while` amb la següent sintaxis:
+```bash
+while IFS="delimitador" read -r camp1 camp2 camp3 ...
+do
+  # Ací el nostre codi
+done < "nom_del_fitxer"
+```
+
+on `IFS` indica el caràcter utilitzat en el fitxer per a delimitar els diferents camps dins de cada línia.
+
+Per exemple, tenim el fitxer `usuaris.txt` amb els noms i contrasenyes d'usuaris que hem de crear:
+```txt
+juan:1234
+marta:5678
+```
+
+El script que crearia aquest usuaris podria ser alguna cosa com:
+```bash
+#!/bin/bash
+
+fitxer_usuaris="usuaris.txt"
+
+while IFS=":" read -r nom_usuari contrasenya
+do
+  # Comprova si l'usuari ja existeix
+  if id "$nom_usuari" &>/dev/null
+  then
+    echo "L'usuari $nom_usuari ja existeix."
+  else
+    # Crea l'usuari amb la contrasenya
+    useradd -m -p $(openssl passwd -1 "$contrasenya") "$nom_usuari"
+    echo "L'usuari $nom_usuari ha estat creat."
+  fi
+done < "$fitxer_usuaris"
+```
 
 ## Funcions
 Quan el nostre codi és molt gran podem "dividir-ho" en funcions per a que siga més clar. Les funcions són blocs de codi que poden ser cridats i reutilitzades en diferents parts d'un script. Cada funció és com un xicotet script al qual podem cridar dins del nostre script.

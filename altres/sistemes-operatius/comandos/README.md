@@ -140,6 +140,7 @@ Pero es posible redireccionar la entrada y la salida para que se utilice otro di
 - **`>`**: redirecciona la salida al fichero o dispositivo indicado. Si es un fichero lo creará (y si ya existe lo truncará, es decir, eliminará su contenido)
 - **`>>`**: redirecciona la salida a un fichero y, si ya existe, lo añade al final
 - **`2>`**: redirecciona la salida de error a un fichero o dispositivo
+- **`&>`**: redirecciona tanto la salida estándar como la salida de error a un fichero o dispositivo
 - **`|`**: envía la salida del comando a su izquierda como entrada del comando a su derecha. Se utiliza habitualmente con los filtros (more, find, sort).
 
 Ejemplos:
