@@ -1,9 +1,4 @@
 # Objetos nativos
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [Objetos nativos](#objetos-nativos)
   - [Introducción](#introducción)
   - [Funciones globales](#funciones-globales)
@@ -11,7 +6,6 @@
   - [Objeto Math](#objeto-math)
   - [Objeto Date](#objeto-date)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introducción
 En este tema vamos a ver las funciones globales de Javascript (muchas de las cuales ya hemos visto como _Number()_ o _String()_) y los objetos nativos que incorpora Javascript y que nos facilitarán el trabajo proporcionándonos métodos y propiedades útiles para no tener que "reinventar la rueda" en nuestras aplicaciones. Dentro de ellos está el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios y que por eso veremos en la siguiente unidad.
@@ -80,7 +74,7 @@ En Javascript casi todo son objetos. Ya hemos visto diferentes objetos:
 - history
 - document
 
-Los 5 primeros se corresponden al modelo de objetos del navegador y _document_ se corresponde al modelo de objetos del documento. Todos nos permiten interactuar con el navegador para realizar distintas acciones.
+Los 5 primeros se corresponden al modelo de objetos del navegador (_BOM, Browser Object Model_) y _document_ se corresponde al modelo de objetos del documento (_DOM, Document Object Model_, ya lo hemos visto). Todos nos permiten interactuar con el navegador para realizar distintas acciones.
 
 Pero además tenemos los tipos de objetos nativos, que no dependen del navegador. Son:
 - Number
@@ -93,7 +87,7 @@ Pero además tenemos los tipos de objetos nativos, que no dependen del navegador
 - Date
 - RegExp
 
-Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`let num = 5`) o su objeto (`let num = new Number(5)`) pero es mucho más eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera un objeto y tenemos acceso a todas sus propiedades y métodos (`num.toFixed(2)`).
+Además de los tipos primitivos de número, cadena, booleano, undefined y null, Javascript tiene todos los objetos indicados. Como vimos se puede crear un número usando su tipo primitivo (`const num = 5`) o su objeto (`const num = new Number(5)`) pero es mucho más eficiente usar los tipos primitivos. Pero aunque lo creemos usando el tipo de dato primitivo se considera un objeto y tenemos acceso a todas sus propiedades y métodos (`num.toFixed(2)`).
 
 Ya hemos visto las principales propiedades y métodos de [_Number_](./01-sintaxis.html#number), [_String_](./01-sintaxis.html#string), [Boolean](./01-sintaxis.html#boolean) y [_Array_](./02-arrays.html) y aquí vamos a ver las de **Math** y **Date** y en el apartado de validar formularios las de **RegExp**.
 
@@ -129,20 +123,21 @@ console.log( Math.sqrt(2) )         // imprime 1.4142135623730951
 ## Objeto Date
 Es la clase que usaremos siempre que vayamos a trabajar con fechas. Al crear una instancia de la clase le pasamos la fecha que queremos crear o lo dejamos en blanco para que nos cree la fecha actual. Si le pasamos la fecha podemos pasarle:
 - milisegundos, desde la fecha EPOCH
-- cadena de fecha
+- cadena de fecha (en formato AAAA-MM-DD o MM-DD-AAAA)
 - valor para año, mes (entre 0 y 11), día, hora, minutos, segundos, milisegundos
 
 Ejemplos:
 
 ```javascript
-let date1=new Date()    // Mon Jul 30 2018 12:44:07 GMT+0200 (CEST) (es cuando he ejecutado la instrucción)
-let date7=new Date(1532908800000)    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (miliseg. desde 1/1/1070)
-let date2=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST) (la fecha pasada a las 0h. GMT)
-let date3=new Date('2018-07-30 05:30')  // Mon Jul 30 2018 05:30:00 GMT+0200 (CEST) (la fecha pasada a las 05:300h. local)
-let date6=new Date('07-30-2018')    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (OJO: formato MM-DD-AAAA)
-let date7=new Date('30-Jul-2018')    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (tb. podemos poner 'Julio')
-let date4=new Date(2018,7,30)    // Thu Ago 30 2018 00:00:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb... y a las 0h. local)
-let date5=new Date(2018,7,30,5,30)    // Thu Ago 30 2018 05:30:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb,...)
+const date1=new Date()    // Mon Jul 30 2018 12:44:07 GMT+0200 (CEST) (es cuando he ejecutado la instrucción)
+const date7=new Date(1532908800000)    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (miliseg. desde 1/1/1070)
+const date2=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST) (la fecha pasada a las 0h. GMT)
+const date3=new Date('2018-07-30 05:30')  // Mon Jul 30 2018 05:30:00 GMT+0200 (CEST) (la fecha pasada a las 05:300h. local)
+const date6=new Date('30-07-2018')    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (OJO: formato MM-DD-AAAA)
+const date6=new Date('07-30-2018')    // Invalid date
+const date7=new Date('30-Jul-2018')    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) (tb. podemos poner 'July')
+const date4=new Date(2018,7,30)    // OJO: Thu Ago 30 2018 00:00:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb... y a las 0h. local)
+const date5=new Date(2018,7,30,5,30)    // OJO: Thu Ago 30 2018 05:30:00 GMT+0200 (CEST) (OJO: 0->Ene,1->Feb,...)
 ```
 
 > EJERCICIO: Crea en la consola dos variables fecNac1 y fecNac2 que contengan tu fecha de nacimiento. La primera la creas pasandole una cadena y la segunda pasándole año, mes y día
@@ -150,40 +145,40 @@ let date5=new Date(2018,7,30,5,30)    // Thu Ago 30 2018 05:30:00 GMT+0200 (CEST
 Cuando ponemos la fecha como texto, como separador de las fechas podemos usar `-`, `/` o `espacio`. Como separador de las horas debemos usar `:`. Cuando ponemos la fecha cono parámetros numéricos (separados por `,`) podemos poner valores fuera de rango que se sumarán al valor anterior. Por ejemplo:
 
 ```javascript
-let date=new Date(2018,7,41)    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10
-let date=new Date(2018,7,0)     // Tue Jul 31 2018 00:00:00 GMT+0200 (CEST) -> 0=0Ago=31Jul (el anterior)
-let date=new Date(2018,7,-1)    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) -> -1=0Ago-1=31Jul-1=30Jul
+const date=new Date(2018,7,41)    // Mon Sep 10 2018 00:00:00 GMT+0200 (CEST) -> 41=31Ago+10
+const date=new Date(2018,7,0)     // Tue Jul 31 2018 00:00:00 GMT+0200 (CEST) -> 0=0Ago=31Jul (el anterior)
+const date=new Date(2018,7,-1)    // Mon Jul 30 2018 00:00:00 GMT+0200 (CEST) -> -1=0Ago-1=31Jul-1=30Jul
 ```
 OJO con el rango de los meses que empieza en 0->Ene, 1->Feb,...,11->Dic
 
 Tenemos métodos **_getter_** y **_setter_** para obtener o cambiar los valores de una fecha: 
 * **fullYear**: permite ver (_get_) y cambiar (_set_) el año de la fecha:
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getFullYear() )  // imprime 2018
 fecha.setFullYear(2019)             // Tue Jul 30 2019 02:00:00 GMT+0200 (CEST)
 ```
 * **month**: devuelve/cambia el número de mes, pero recuerda que 0->Ene,...,11->Dic
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getMonth() )     // imprime 6
 fecha.setMonth(8)                   // Mon Sep 30 2019 02:00:00 GMT+0200 (CEST)
 ```
 * **date**: devuelve/cambia el número de día:
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDate() )      // imprime 30
 fecha.setDate(-2)                   // Thu Jun 28 2018 02:00:00 GMT+0200 (CEST)
 ```
 * **day**: devuelve el número de día de la semana (0->Dom, 1->Lun, ..., 6->Sáb). Este método NO tiene _setter_:
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDay() )       // imprime 1
 ```
 * **hours**, **minutes**, **seconds**, **milliseconds**, : devuelve/cambia el número de la hora, minuto, segundo o milisegundo, respectivamente.
 * **time**: devuelve/cambia el número de milisegundos desde Epoch (1/1/1970 00:00:00 GMT):
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getTime() )      // imprime 1532908800000
 fecha.setTime(1000*60*60*24*25)     // Fri Jan 02 1970 01:00:00 GMT+0100 (CET) (le hemos añadido 25 días a Epoch)
 ```
@@ -208,16 +203,16 @@ Para mostrar la fecha tenemos varios métodos diferentes:
 
 **NOTA**: recuerda que las fechas son objetos y que se copian y se pasan como parámetro por referencia:
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
-let otraFecha=fecha
-otraFecha.setDate(28)               // Thu Jun 28 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const otraFecha=fecha
+otraFecha.setDate(28)               // Thu Jul 28 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDate() )      // imprime 28 porque fecha y otraFecha son el mismo objeto
 ```
 Una forma sencilla de copiar una fecha es crear una nueva pasándole la que queremos copiar:
 ```javascript
-let fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
-let otraFecha=new Date(fecha)
-otraFecha.setDate(28)               // Thu Jun 28 2018 02:00:00 GMT+0200 (CEST)
+const fecha=new Date('2018-07-30')    // Mon Jul 30 2018 02:00:00 GMT+0200 (CEST)
+const otraFecha=new Date(fecha)
+otraFecha.setDate(28)               // Thu Jul 28 2018 02:00:00 GMT+0200 (CEST)
 console.log( fecha.getDate() )      // imprime 30
 ```
 

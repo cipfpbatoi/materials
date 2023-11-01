@@ -18,16 +18,16 @@ Se trata de una verificación útil porque evita enviar datos al servidor que sa
 
 Podéis encontrar una guía muy completa de validación de formularios en el lado cliente el la página de [MDN web docs](https://developer.mozilla.org/es/docs/Learn/HTML/Forms/Validacion_formulario_datos) que ha servido como base para estos apuntes.
 
+Además, al final de este tema, veremos una pequeña introducción a las expresiones regulares en Javascript.
+
 Básicamente tenemos 2 maneras de validar un formulario en el lado cliente:
 - usar la validación incorporada en HTML5 y dejar que sea el navegador quien se encargue de todo
 - realizar nosotros la validación mediante Javascript
 
 La ventaja de la primera opción es que no tenemos que escribir código sino simplemente poner unos atributos a los INPUT que indiquen qué se ha de validar. La principal desventaja es que no tenemos ningún control sobre el proceso, lo que provocará cosas como:
-- el navegador valida campo a campo: cuando encuentra un error en un campo lo muestra y hasta que no se soluciona no valida el siguiente lo que hace que el proceso sea molesto apra el usuario que no ve todo lo que hay mal de una vez
+- el navegador valida campo a campo: cuando encuentra un error en un campo lo muestra y hasta que no se soluciona no valida el siguiente lo que hace que el proceso sea molesto para el usuario que no ve todo lo que hay mal de una vez
 - los mensajes son los predeterminados del navegador y en ocasiones pueden no ser muy claros para el usuario
 - los mensajes se muestran en el idioma en que está configurado el navegador, no en el de nuestra página
-
-Además, al final de este tema, veremos una pequeña introducción a las expresiones regulares en Javascript.
 
 ### Validación del navegador incorporada en HTML5
 Funciona añadiendo atributos a los campos del formulario que queremos validar. Los más usados son:
@@ -45,7 +45,7 @@ input:invalid {
 }
 ```
 
-La validación se realiza al enviar el formulario y al encontrar un error se muestra, se detiene la validación del resto de campos y no se envía el formulario.
+La validación del navegador se realiza al enviar el formulario. Si encuentra un error lo muestra, se detiene la validación del resto de campos y no se envía el formulario.
 
 ### Validación mediante la API de validación de formularios
 Mediante Javscript tenemos acceso a todos los campos del formulario por lo que podemos hacer la validación como queramos, pero es una tarea pesada, repetitiva y que provoca código spaguetti difícil de leer y mantener más adelante.
@@ -58,7 +58,8 @@ Esto nos da la ventaja de:
 - aprovechamos las pseudo-clases _:valid_ o _:invalid_ que el navegador pone automáticamente a los campos por lo que no tenemos que añadirles clases para desacarlos
 
 Las principales propiedades y métodos que nos proporciona esta API son:
-- **checkValidity()**: método que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
+- **checkValidity()**: método booleano que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
+- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido para el navegador) con el mensaje pasado como parámetro. Por ejemplo podemos usarlo para indicar que el nick elegido no es válido porque ya está en uso por otro usuario. Para quitar este error se hace `setCustomValidity('')`
 - **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador. Si es válido esta propiedad es una cadena vacía
 - **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que tiene propiedades booleanas para saber qué requisito del campo es el que falla:
   - **valueMissing**: indica si no se cumple el atributo **_required_** (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
@@ -70,13 +71,12 @@ Las principales propiedades y métodos que nos proporciona esta API son:
   - **customError**: indica al campo se le ha puesto un error personalizado con **_setCustomValidity_**
   - **valid**: indica si es campo es válido
   -   - ...
-- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido) con el mensaje pasado como parámetro. Para quitar este error se hace `setCustomValidity('')`
 
 En la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp) podéis ver algún ejemplo básico de esto. También a continuación tenéis un ejemplo simple del valor de las diferentes propiedades involucradas en la validación de un campo de texto que es obligatorio y cuyo tamaño debe estar entre 5 y 50 caracteres:
 
 <script async src="//jsfiddle.net/juansegura/vbdrxjsz/embed/"></script>
 
-Para validar un formulario nosotros pero usando esta API debemos añadir al \<FORM> el atributo **novalidate** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
+Para validar un formulario nosotros pero usando esta API debemos añadir al _FORM_ el atributo **`novalidate`** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
 #### Ejemplo
 Un ejemplo sencillo de validación de un formulario podría ser:
@@ -154,12 +154,13 @@ Si tenemos que validar algo que no puede hacerse mediante atributos HTML (por ej
 const nombre = document.getElementById('nombre');
 const nombreError = document.querySelector('#nombre + span.error');
 
-if (nombreEnUso(nombre)) {
-  nombre.setCustomValidation('Ese nombre de usuario ya está en uso')
-} else {
-  nombre.setCustomValidation('')  // Se quita el error personalizado
-}
 form.addEventListener('submit', (event) => {
+  if (nombreEnUso(nombre.value)) {
+    nombre.setCustomValidation('Ese nombre de usuario ya está en uso')
+  } else {
+    nombre.setCustomValidation('')  // Se quita el error personalizado
+  }
+
   if(!form.checkValidity()) {
     ...
   }
