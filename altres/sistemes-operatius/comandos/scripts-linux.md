@@ -145,9 +145,9 @@ fi
    - `-f`: Comprova si existeix i és un arxiu.
    - `-d`: Comprova si existeix i -es un directori.
    - `-s`: Comprova si un arxiu existeix i no està buit.
-   - '-r': Comprova si tenim permisos de lectura sobre el fitxer o directori
-   - '-w': Comprova si tenim permisos d'escriptura sobre el fitxer o directori
-   - '-x': Comprova si tenim permisos d'execució sobre el fitxer o directori
+   - `-r`: Comprova si tenim permisos de lectura sobre el fitxer o directori
+   - `-w`: Comprova si tenim permisos d'escriptura sobre el fitxer o directori
+   - `-x`: Comprova si tenim permisos d'execució sobre el fitxer o directori
 
 Exemples:
 
@@ -184,6 +184,19 @@ fi
 ```
 
 Això permet gestionar casos en què hi ha múltiples condicions que s'han de complir o no.
+
+## exit
+El comando `exit` finalitza l'execució d'un script i no s'executarà cap codi despres del mateix. Normalment se li pasa un número que indique el resultat del script (`exit 0` sol significar que el script ha acabat correctament i `exit 1` o cualsevol número major que 0 indica que ha hagut un error).
+
+Això ens permet poder fer comprovacions sense haver de anidar molts `if...else if`, per exemple:
+```bash
+if [ -e $1 ]
+then
+    echo "No existeix el fitxer $1"
+    exit 1
+fi
+# resta del codi...
+```
 
 ## Estructura condicional "case"
 Si volem comparar una variable amb més de 2 valors podem anidar varios `if` o utilitzar una sentència `case` que compara una variable amb diversos patrons i executa el codi basat de la coincidència. Per exemple:
