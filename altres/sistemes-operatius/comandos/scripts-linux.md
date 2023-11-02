@@ -145,6 +145,9 @@ fi
    - `-f`: Comprova si existeix i és un arxiu.
    - `-d`: Comprova si existeix i -es un directori.
    - `-s`: Comprova si un arxiu existeix i no està buit.
+   - '-r': Comprova si tenim permisos de lectura sobre el fitxer o directori
+   - '-w': Comprova si tenim permisos d'escriptura sobre el fitxer o directori
+   - '-x': Comprova si tenim permisos d'execució sobre el fitxer o directori
 
 Exemples:
 
