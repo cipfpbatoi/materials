@@ -250,7 +250,16 @@ On:
 - `variable` és una variable que prendrà el valor de cada element de la `llista` durant cada iteració.
 - `llista` és una sèrie d'elements separats per espais que vols recórrer.
 
-Exemple: volem recórrer una llista de noms i imprimir-los:
+Exemple: volem mostrar cada paràmetre pasat (recirda que la llista de paràmetres la tenim en $*)
+
+```bash
+for param in $*
+do
+  echo "Paràmetre: $param"
+done
+```
+
+Exemple: volem recórrer una llista de noms que tenim guardats en una variable i imprimir-los:
 
 ```bash
 noms=("Ana" "Bob" "Carlos" "David")
