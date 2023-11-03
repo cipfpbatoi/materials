@@ -1,22 +1,33 @@
-# Scripts en GNU/Linux
-- [Scripts en GNU/Linux](#scripts-en-gnulinux)
-  - [Introducció](#introducció)
-  - [Variables](#variables)
-  - [Pas de paràmetres](#pas-de-paràmetres)
-  - [Estructura condicional "if"](#estructura-condicional-if)
-    - [Anidació de sentències "if"](#anidació-de-sentències-if)
-  - [Estructura condicional "case"](#estructura-condicional-case)
-  - [Els bucles](#els-bucles)
-    - [El bucle "for"](#el-bucle-for)
-    - [El bucle "while"](#el-bucle-while)
-    - [El bucle "until"](#el-bucle-until)
-    - ["break" i "continue"](#break-i-continue)
+
+- [Introducció](#introducció)
+- [Variables](#variables)
+- [Pas de paràmetres](#pas-de-paràmetres)
+- [Estructura condicional "if"](#estructura-condicional-if)
+  - [Operadors que podem utilitzar en la condició](#operadors-que-podem-utilitzar-en-la-condició)
+    - [Operadors de comparació de cadenes](#operadors-de-comparació-de-cadenes)
+    - [Operadors de comparació de números](#operadors-de-comparació-de-números)
+    - [Operadors lògics](#operadors-lògics)
+    - [Operadors de comprovació d'arxius](#operadors-de-comprovació-darxius)
+  - [Anidació de sentències "if"](#anidació-de-sentències-if)
+- [exit](#exit)
+- [Estructura condicional "case"](#estructura-condicional-case)
+- [Els bucles](#els-bucles)
+  - [El bucle "for"](#el-bucle-for)
+  - [El bucle "while"](#el-bucle-while)
+  - [El bucle "until"](#el-bucle-until)
+  - [Aturar el bucle: break i continue](#aturar-el-bucle-break-i-continue)
+    - [continue](#continue)
+    - [break](#break)
   - [Llegir dades d'un fitxer](#llegir-dades-dun-fitxer)
-  - [Funcions](#funcions)
-  - [Altres sentències útils](#altres-sentències-útils)
+- [Funcions](#funcions)
+- [Altres sentències útils](#altres-sentències-útils)
+  - [Execució de comandos](#execució-de-comandos)
+  - [Resultat de l'últim comando: $?](#resultat-de-lúltim-comando-)
+  - [Calcular una expresió](#calcular-una-expresió)
+  - [Depurar codi](#depurar-codi)
 
 
-## Introducció
+# Introducció
 Un script és un fitxer de text que conté un comando en cada línia. Executar un script equival a escriure en la consola els comandos que conté un darrere l'altre.
 
 Per a crear un script en GNU/Linux simplement obrim un editor de text i escrivim el seu codi, per exemple:
@@ -40,7 +51,7 @@ chmod a+x script1.sh
 ./script1.sh
 ```
 
-## Variables
+# Variables
 Podem definir variables asignant-les un valor:
 ```bash
 nom="Juan"
@@ -62,7 +73,7 @@ read nom
 echo "Hola $nom"
 ```
 
-## Pas de paràmetres
+# Pas de paràmetres
 Quan executem un scrip podem pasar-li paràmetres des de la línia de comandos. Aquest paràmetres es guardaran en unes variables anomenades `$1` per al primer, `$2` per al segon, etc.
 
 En la variable `$*` tenim tots els paràmetres junts i en `$#` el compte dels paràmetres pasats. 
@@ -81,7 +92,7 @@ El tercer nom és Eva
 Has pasat 4 paràmetres, que són Juan Marta Eva Pep
 ```
 
-## Estructura condicional "if"
+# Estructura condicional "if"
 L'estructura de control `if` s'utilitza per prendre decisions basades en una condició. Si la condició especificada és certa, s'executa un bloc de codi i si no, s'executa un altre bloc de codi o es salta completament. La forma bàsica d'una sentència `if` és la següent:
 ```bash
 if [ condició ]
@@ -92,9 +103,25 @@ else
 fi
 ```
 
-La `condició` en un "if" pot ser qualsevol expressió que retorni un valor cert o fals. Pots utilitzar operadors i comparadors per construir condicions. Alguns dels més comuns que pots utilitzar són:
+La `condició` en un "if" pot ser qualsevol expressió que retorni un valor cert o fals. Pots utilitzar operadors i comparadors per construir condicions. 
 
-1. **Operadors de comparació**:
+## Operadors que podem utilitzar en la condició
+Els operadors són diferents segons el tipus de les dades que estem comprovant. Alguns dels més comuns són:
+
+### Operadors de comparació de cadenes
+   - `=`: Igual a
+   - `!=`: No igual a
+
+Exemple:
+
+```bash
+if [ "$opció" = "sí" ]
+then
+  echo "Has triat sí."
+fi
+```
+
+### Operadors de comparació de números
    - `-eq`: Igual a
    - `-ne`: No igual a
    - `-lt`: Menor que
@@ -109,11 +136,11 @@ if [ $edat -ge 18 ]
 then
   echo "Ets major d'edat."
 else
-  echo "Ets menor d'edat."
+  echo "Ets menor d'edat"
 fi
 ```
 
-2. **Operadors lògics**:
+### Operadors lògics
    - `-a`: "i" lògic (AND)
    - `-o`: "o" lògic (OR)
    - `!`: Negació lògica (NOT)
@@ -121,26 +148,20 @@ fi
 Exemple:
 
 ```bash
-if [ $edat -ge 18 -a $te_carnet = "sí" ]
+if [ ! $edat -ge 18 ]
 then
-  echo "Pots conduir."
+  echo "Ets menor d'edat"
 fi
 ```
-
-3. **Comparació de cadenes**:
-   - `=`: Igual a (per a cadenes)
-   - `!=`: No igual a (per a cadenes)
-
-Exemple:
 
 ```bash
-if [ "$opció" = "sí" ]
+if [ $edat -ge 18 -a $te_carnet = "sí" ]
 then
-  echo "Has triat sí."
+  echo "Pots conduir"
 fi
 ```
 
-4. **Comprovació d'arxius**:
+### Operadors de comprovació d'arxius
    - `-e`: Comprova si un arxiu o directori existeix.
    - `-f`: Comprova si existeix i és un arxiu.
    - `-d`: Comprova si existeix i -es un directori.
@@ -154,18 +175,25 @@ Exemples:
 ```bash
 if [ -d /ruta/a/la/carpeta ]
 then
-  echo "El directori existeix."
+  echo "El directori existeix"
 fi
 ```
 
 ```bash
 if [ -s arxiu.txt ]
 then
-  echo "L'arxiu no està buit."
+  echo "L'arxiu no està buit"
 fi
 ```
 
-### Anidació de sentències "if"
+```bash
+if [ ! -r arxiu.txt ]
+then
+  echo "No tens permisos per a llegir l'arxiu"
+fi
+```
+
+## Anidació de sentències "if"
 
 Pots anidar múltiples sentències "if" per gestionar condicions més complexes. Aquí tens un exemple d'anidació:
 
@@ -185,8 +213,38 @@ fi
 
 Això permet gestionar casos en què hi ha múltiples condicions que s'han de complir o no.
 
-## exit
-El comando `exit` finalitza l'execució d'un script i no s'executarà cap codi despres del mateix. Normalment se li pasa un número que indique el resultat del script (`exit 0` sol significar que el script ha acabat correctament i `exit 1` o cualsevol número major que 0 indica que ha hagut un error).
+En el cas de anidar múltiples "if" en el "else" podem juntarles amb "elif". Per exemple el codi:
+
+```bash
+if [ $edat -gt 18 ]
+then
+  echo "Ets menor d'edat"
+else 
+  if [ "$té_licència" = "sí" ]
+  then
+    echo "Pots conduir."
+  else
+    echo "Ets major d'edat però no tens llicència."
+  fi
+fi
+```
+
+podríem fer-ho més senzill amb "elif":
+
+```bash
+if [ $edat -gt 18 ]
+then
+  echo "Ets menor d'edat"
+elif [ "$té_licència" != "sí" ]
+then
+  echo "Ets major d'edat però no tens llicència"
+else
+  echo "Pots conduir"
+fi
+```
+
+# exit
+El comando `exit` finalitza l'execució d'un script i no s'executarà cap codi despres del mateix. Normalment se li pasa un número que indica el resultat del script (`exit 0` sol significar que el script ha acabat correctament i `exit 1` o qualsevol número major que 0 indica que ha hagut un error).
 
 Això ens permet poder fer comprovacions sense haver de anidar molts `if...else if`, per exemple:
 ```bash
@@ -198,7 +256,7 @@ fi
 # resta del codi...
 ```
 
-## Estructura condicional "case"
+# Estructura condicional "case"
 Si volem comparar una variable amb més de 2 valors podem anidar varios `if` o utilitzar una sentència `case` que compara una variable amb diversos patrons i executa el codi basat de la coincidència. Per exemple:
 
 ```bash
@@ -228,13 +286,13 @@ esac
 
 Al acabar cada bloc has de posar `;;` per a que no continue l'execució del codi del bloc següent. L'ús de `*)` proporciona una opció per qualsevol entrada que no coincidisca amb cap de les anteriors.
 
-## Els bucles
+# Els bucles
 Per a fer que un codi s'execute més d'una vegada (per exemple per a cada paràmetre o per a cada element d'un arxiu) tenim els bucles. El bash tenim 3 tipus de bucles: `for`, `while` i `until`:
 - `for` s'utilitza per recórrer una llista d'elements i executar una seqüència d'instruccions per a cada element
 - `while` s'executa mentre una condició siga certa
 - `until` s'executa mentre una condició siga falsa
 
-### El bucle "for"
+## El bucle "for"
 L'estructura de control `for` es fa servir per recórrer una llista d'elements i executar una sèrie d'instruccions per a cada element de la llista.
 
 La seua sintaxi bàsica és la següent:
@@ -303,7 +361,7 @@ done
 
 Aquest `for` comença amb `i=1`, incrementa `i` en cada iteració i s'atura quan `i` és major que 5.
 
-### El bucle "while"
+## El bucle "while"
 Aquest bucle continua executant el codi que conté mentre que la seua condició siga certa, per exemple:
 ```bash
 #!/bin/bash
@@ -321,7 +379,7 @@ done
 echo "Ho has encertat!!!"
 ```
 
-### El bucle "until"
+## El bucle "until"
 És igual que el "while" el codi s'executa mentre que la condició siga falsa. Per exemple:
 ```bash
 #!/bin/bash
@@ -351,10 +409,10 @@ echo "Nombre d'intents: $intents"
 
 Fixa't que `$((...))` calcula una expressió.
 
-### "break" i "continue"
+## Aturar el bucle: break i continue
 Dins d'un bucle les comandes `continue` i `break` fan que es deixe d'executar el codi:
 
-1. **`continue`**:
+### continue
    - La comanda `continue` s'utilitza per saltar l'iteració actual del bucle i passar a la següent iteració.
    - Quan s'executa `continue`, qualsevol codi que segueix a `continue` dins del bucle no s'executarà per aquesta iteració, i el bucle avançarà a l'iteració següent.
    - És útil quan vols evitar l'execució de determinades comandes dins del bucle en una condició específica, però encara vols continuar amb el bucle.
@@ -374,7 +432,7 @@ done
 
 Aquest bucle imprimirà els números de l'1 al 5, però saltarà la iteració quan `numero` sigui igual a 3, és a dir, mostrarà els números 1, 2, 4 i 5.
 
-2. **`break`**:
+### break
    - La comanda `break` s'utilitza per sortir immediatament del bucle.
    - Quan s'executa `break`, es finalitza el bucle actual i s'executa la comanda següent després del bucle.
    - És útil quan vols sortir del bucle en una situació particular i no continuar amb les iteracions restants.
@@ -433,7 +491,7 @@ do
 done < "$fitxer_usuaris"
 ```
 
-## Funcions
+# Funcions
 Quan el nostre codi és molt gran podem "dividir-ho" en funcions per a que siga més clar. Les funcions són blocs de codi que poden ser cridats i reutilitzades en diferents parts d'un script. Cada funció és com un xicotet script al qual podem cridar dins del nostre script.
 ```bash
 saludar() {
@@ -463,22 +521,46 @@ echo "El doble de 5 és $?"
 
 Fixa't que la variable especial `$?` emmagatzemma el resultat de l'ultim comando executat.
 
-## Altres sentències útils
-Podem executar un comando dins del nostre script tancant-lo entre `$(...)`, per exemple:
+# Altres sentències útils
+## Execució de comandos
+Podem executar una comando posant-lo en una línia del nostre script. Per exemple per a obtindre el UID de l'usuari _batoi_ farem:
 ```bash
-resultat=$(ls -l)
-
-echo "$resultat" # Mostrarà el resultat del comando ls -l
+grep "batoi" /etc/passwd | cut -d ":" -f 1
 ```
 
-El valor retornat per l'ultim comando executat (o la última funció cridada) es guarda en la variable especial `$?`. Si es tracta d'un comando del sistema que retorne 0 significa que s'ha executat correctament i si retorna altre número és que ha hagut un error:
+Però què pasa si vuig guardar el resultat en una variable. El següent codi NO FUNCIONARIA:
 ```bash
-ls /
-echo "Valor retornat $?"  # Mostra 0
-ls /qwert
-echo "Valor retornat $?"  # Mostra 2
+uidbatoi=grep "batoi" /etc/passwd | cut -d ":" -f 1
 ```
 
+Per a executar un comando DINS d'una línia del script (per a guardar el resultat en una variable o per a usar-ho en una condició) hem d'escriure-lo dins de `$(...)`, per exemple:
+```bash
+uidbatoi=$(grep "batoi" /etc/passwd | cut -d ":" -f 1)
+
+echo "$uidbatoi" # Mostrarà el resultat del comando
+```
+
+o també
+```bash
+if [ $(grep "batoi" /etc/passwd) = "" ]
+then
+  echo "No existe el usuario batoi"
+fi
+```
+
+## Resultat de l'últim comando: $?
+El valor retornat per l'ultim comando executat (o la última funció cridada) es guarda en la variable especial `$?`. Si es tracta d'un comando del sistema que retorne 0 significa que s'ha executat correctament i si retorna altre número és que ha hagut un error. Per exemple:
+```bash
+cp alumnes.txt ./prova
+if [ $? -eq 0 ]
+then
+  echo "El fitxer s'ha copiat correctament"
+else
+  echo "S'ha produit l'error $? copiant el fitxer"
+fi
+```
+
+## Calcular una expresió
 Per a calcular una expressió utilitzem `$((...))`:
 ```bash
 comptador=1
@@ -486,6 +568,7 @@ comptador=$((comptador + 1))
 echo "$comptador"   # Mostrarà 2
 ```
 
+## Depurar codi
 Per a depurar un script podem posar al principi el comando:
 ```bash
 set -x
