@@ -28,6 +28,8 @@ let alumno1 = new Alumno('Carlos', 'Pérez Ortiz', 19)
 console.log(alumno1.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 19 años'
 ```
 
+**NOTA**: en las clases no es necesario poner `'use strict'` porque por defecto todas las clases ya lo tienen.
+
 > EJERCICIO: Crea una clase Productos con las propiedades _name_, _category_, _units_ y _price_ y los métodos _total_ que devuelve el importe del producto y _getInfo_ que devolverá: '_Name_ (_category_): _units_ uds x _price_ € = _total_ €'. Crea 3 productos diferentes.
 
 ## Herencia
