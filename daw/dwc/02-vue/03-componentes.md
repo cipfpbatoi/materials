@@ -1,7 +1,8 @@
 # Componentes en Vue
 - [Componentes en Vue](#componentes-en-vue)
   - [Introducción](#introducción)
-  - [Usar un componente](#usar-un-componente)
+  - [Dividir la aplicación en componentes](#dividir-la-aplicación-en-componentes)
+  - [Separar los componentes en ficheros](#separar-los-componentes-en-ficheros)
   - [Parámetros: _props_](#parámetros-props)
   - [Ejemplo de aplicación](#ejemplo-de-aplicación)
 
@@ -29,7 +30,7 @@ Para saber qué debe ser un componente y que no, podemos considerar un component
 - debe poder reutilizarse y combinarse con otros componentes para formar componentes mayores
 - son objetos JS
 
-El componente es un objeto con una parte de **HTML** donde definimos su estructura, una parte **JS** que le da su funcionalidad y una parte **CSS** para establecer su apariencia.
+El componente es un objeto con una parte de **HTML** donde definimos su estructura y una parte **JS** que le da su funcionalidad. CUando trabajemos con _Single File Components (SFC)_ también se incluirá una parte **CSS** para establecer su apariencia.
 
 Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 * encapsulamos el código de la aplicación en elementos más sencillos
@@ -42,16 +43,19 @@ En definitiva nuestra aplicación será como un árbol de componentes con la ins
 
 ![Árbol de componentes](https://vuejs.org/assets/components.7fbb3771.png)
 
-## Usar un componente
-Para usarlo basta con crearlo con **`app.component`**, darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad **_template_** con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
+## Dividir la aplicación en componentes
+Un componeteusarlo se crea con `app.component` al que le pasamos 2 parámetros:
+- el nombredel componente
+- el objeto con sus opciones (`data`, `methods`, …). Además tendrá una opción **`template`** con el código HTML que se insertará donde pongamos el componente.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
-```vue
+
+```javascript
 const app = Vue.createApp({
   ...
 })
 
-app.component('todo-item', {
+app.component('TodoItem', {
   template: `
     <li>
       <input type="checkbox" v-model="elem.done">
@@ -70,27 +74,10 @@ app.component('todo-item', {
 app.mount('#app')
 ```
 
-**NOTA**: En versiones anteriores de Vue la propiedad _template_ sólo podía tener un nodo raíz. En Vue3 esta limitación no existe aunque en _dev-tools_ se depura más fácilmente si solo hay 1. Por ello, si tenemos más de 1 nodo los envolvemos en otra etiqueta (normalmente un <div>):
-
-```javascript
-// MAL en Vue2
-Vue.component('my-comp', {
-  template: `<input id="query">
-             <button id="search">Buscar</button>`,
-})
-
-// BIEN en Vue2
-Vue.component('my-comp', {
-  template: `<div>
-               <input id="query">
-               <button id="search">Buscar</button>
-             </div>`,
-})
-```
-
-El nombre de un componente puede estar en _PascalCase_ (MyComponentName) o en _kebab-case_ (my-component-name). Lo recomendado es que en Javascript lo pongamos en _PascalCase_ y en el HTML en _kebab-case_ (_Vue_ hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
+**NOTA**: no se puede montar la apicación hasta después de haber definido los componentes.
 
 Ahora ya podemos usar el componente en nuestro HTML:
+
 ```html
 <ul>
   <todo-item></todo-item>
@@ -98,22 +85,98 @@ Ahora ya podemos usar el componente en nuestro HTML:
 ```
 
 >**Resultado:**
-><ul>
->  <li>
->    <input type="checkbox" checked>
->    <del>
->      Cosa a hacer
->    </del>
->  </li>
-></ul>
+><li>
+>  <input type="checkbox" v-model="elem.done">
+>  <span>Cosa a hacer</span>
+></li>
 
-Podemos utilizar la etiqueta tal cual (_`<todo-item>`_) o usar una etiqueta estándar y poner la nuestra como valor de su atributo _is_:
+Podemos utilizar la etiqueta tal (\<todo-item>) o usar una etiqueta estándar y poner la nuestra como valor de su atributo _is_:
+
 ```html
 <ul>
   <li is="todo-item"></li>
 </ul>
 ```
-De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un \<ul> deben ser \<li> o los de un \<tr> deben ser \<td>).
+
+De esta forma evitamos errores de validación de HTML ya que algunos elementos sólo pueden tener determinados elementos hijos (por ejemplo los hijos de un <ul> deben ser <li> o los de un <tr> deben ser <td>).
+
+**ATENCIÓN**: El nombre de un componente puede estar en _PascalCase_ (MyComponentName) o en _kebab-case_ (my-component-name). Lo recomendado es que en Javascript lo pongamos en _PascalCase_ y en el HTML en _kebab-case_ (_Vue_ hace la traducción automáticamente). Se recomienda que el nombre de un componente tenga al menos 2 palabras para evitar que pueda llamarse como alguna futura etiqueta HTML.
+
+**NOTA**: En versiones anteriores de Vue la propiedad _template_ sólo podía tener un nodo raíz. En Vue3 esta limitación no existe aunque en _dev-tools_ se depura más fácilmente si solo hay uno. Por ello, si tenemos más de 1 nodo los envolvemos en otra etiqueta (normalmente un <div>):
+
+```javascript
+// MAL en Vue2
+  template: `<input id="query">
+             <button id="search">Buscar</button>`,
+
+// BIEN en Vue2
+  template: `<div>
+               <input id="query">
+               <button id="search">Buscar</button>
+             </div>`,
+```
+
+
+## Separar los componentes en ficheros
+Declarar los componentes con `app.component()` en el mismo fichero JS de la instancia genera varios problemas, especialmente:
+* Los componentes así declarados son globales a la aplicación por lo que sus nombres deben ser únicos
+* Nuestro fichero crece rápidamente y nos encontramos con código _spaguetti_
+
+Por tanto eso puede ser adecuado para proyectos muy pequeños pero no lo es cuando estos empiezan a crecer.
+
+La solución es guardar cada componente en un único fichero javascript (con extensión `.js`), aunque cuando usemos _SFC_ usaremos ficheros `.vue`.
+
+En el fichero exportaremos un objeto con las propiedades del componente (_data_, _methods_, ...), además de la propiedad _template_. También podemos añadir una propiedad _name_ donde indicar el nombre del componente.
+
+Por ejemplo, vamos a crear un componente para el botón de eliminar todas las tareas:
+```javascript
+// Fichero DelAllItems.js
+export default {
+  template: `
+    <button @click="delAll">Vacía lista</button>
+  `,
+  methods: {
+    delAll() {
+      if (confirm('Vas a borrar la lista de tareas')) {
+        this.todos.splice(0)
+      }
+    }
+  },
+}
+```
+
+Para poder usar un componente, en donde queramos usarlo (otro componente o la instancia raíz) debemos hacer 2 cosas:
+- importar el fichero
+- registrar el componente, lo que se hace en una opción llamada `components`
+
+```javascript
+// Fichero main.js
+import DelAllItems from './DellAllItems.js'
+
+Vue.createApp({
+  components: {
+    DelAllItems,
+  },
+  data() {
+    ...
+  }
+})
+```
+
+Ahora ya podemos usar el componente en nuestro HTML:
+```html
+...
+    </form>
+    <del-all-items></del-all-items>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
+```
+
+Fíjate que hay que declarar el fichero _main.js_ como `module` para que nos permita importar ficheros en él.
+
+El navegador sustituirá la etiqueta del componente (\<del-all-items>) por su _template_.
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-11)
 
@@ -126,7 +189,7 @@ Podemos pasar parámetros a un componente añadiendo atributos a su etiqueta:
 ```
 NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una variable.
 
-El parámetro lo recibimos en el componente en _props_:
+El parámetro lo recibimos en el componente en una opción llamada `props`:
 ```javascript
 app.component('todo-item', {
   props: {
@@ -139,11 +202,13 @@ app.component('todo-item', {
 })
 ```
 
+Es equivalente a los parámetros que recibe una función.
+
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-12)
 
-Se pueden declarar las _props_ recibidas como un array de cadenas (`props: ['todo']`), aunque si los declaramos como un objeto podemos hacer ciertas comprobaciones (en este caso que se recibe un _String_).
+Se pueden declarar las _props_ recibidas como un array de string (`props: ['todo']`), aunque es mejor declararlas como un objeto porque nos permitirá hacer ciertas comprobaciones (en el ejemplo anterior que se recibe un _String_).
 
-NOTA: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`). Vue hace la traducción automáticamente.
+**IMPORTANTE**: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`). Vue hace la traducción automáticamente.
 
 >**Resultado:**
 ><ul>
@@ -196,6 +261,10 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 * add-item: incluye el formulario para añadir una nueva tarea (el input y el botón)
 * del-all: el botón para borrar toda la lista
   
+A continuación tienes la solución de cómo dividirla en componentes en un único fichero pero en su lugar lo que haremos es separar cada componente en su propio fichero.
+
+**IMPORTANTE**: separar los componentes en ficheros que se importan donde vayan a usarse sólo funciona si abrimos la aplicación desde un servidor web, no desde local (sí _http://..._, no _file://..._). Si no tenéis ninguno podéis usar la extensión **Live Server** de Visual Studio Code para ejecutar la aplicación.
+
 **Solución**
 
 <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="wvqjJjY" data-user="juanseguravasco" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
@@ -225,4 +294,3 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
     - llama al subcomponente _todo-item_ para cada tarea (v-for) y le pasa la tarea que debe mostrar
     - sus datos será el array de tareas
     - Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
-  
