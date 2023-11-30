@@ -43,9 +43,9 @@ Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde cualquier
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 ```
 
-Esta no es la forma más recomendable de trabajar por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones (donde podremos incluir otras herramientas, trabajar con componentes o construir una SPA de forma sencilla).
+Esta no es la forma más recomendable de trabajar. Lo normal es crear un proyecto con **_npm_** que genere un completo _scaffolding_. Esto nos permitirá trabajar con componentes (_Single File Components_ o _SFC_) lo que nos facilitará enormemente la creación de nuestras aplicaciones.
 
-Nosotros estamos usando _VSCode_ como editor. Para que reconozca correctamente los ficheros _.vue_ debemos instalar el _plugin_ **Volar**.
+Un _SFC_ es un componente reutilizable que se guarda en un fichero con extensión _.vue_. Para que _VSCode_ reconozca correctamente los ficheros _.vue_ debemos instalar la _extensión_ **Volar**.
 
 ## Estructura de una aplicación Vue
 Vamos a crear la aplicación con Vue que mostrará un contador y un botón para actualizarlo:
@@ -72,13 +72,13 @@ Vue.createApp({
     <meta charset="UTF-8" />
     <title>Vue</title>
     <!-- Import Vue.js -->
-    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
 
     <div id="app">
       <button @click="increment">
-        Count is: { { count }}
+        Count is: {\{ count }}
       </button>
     </div>
 
@@ -94,6 +94,8 @@ En este ejemplo podemos ver las 2 principales características de Vue:
 - __Renderizado declarativo__: Vue amplía HTML con una sintaxis que nos permite declarar en HTML una salida basada en un dato Javascript
 - __Reactividad__: Vue hace un seguimiento de las variables Javascript y modifica el DOM cuando alguna cambia
 
+Para probar el funcionamiento de código tenemos el **_Palyground_** de Vue al que accedemos desde su documentación en [https://vuejs.org/guide/quick-start.html#try-vue-online].
+
 ### HTML
 En el HTML debemos vincular los scripts de la librería de Vue y de nuestro código. 
 
@@ -101,11 +103,11 @@ Vue se ejecutará dentro de un elemento de nuestra página (al que se le suele p
 
 Dentro de ese elemento es donde podemos usar expresiones de Vue (fuera del mismo se ignorarán). En este ejemplo se usa
 - el _moustache_ **{\{ ... }}** que muestra en la página la variable o expresión Javascript que contiene
-- la directiva **@click** que ejecuta el código indicado al hacer _click_ sobre el elemento que la contiene
+- la directiva **@click** que pone al elemento un escuchador del evento _click_ que ejecuta la función indicada en el mismo
 
 ### Javascript
-En el fichero JS debemos crear la aplicación con el método _createApp_ al que se le pasa un objeto con una serie de opciones y montarla en el elemento del HTML donde se ejecutará dicha aplicación. En nuestro caso las opciones pasadas son:
-- **data**: aquí es donde se define el _estado_ de la aplicación, es decir, los datos de la misma. Es una **función** que _devuelve un objeto_ donde cada dato será una propiedad. Estos datos son reactivos y accesibles desde el HTML
+En el fichero JS debemos crear la aplicación con el método _createApp_ (al que se le pasa un objeto con una serie de opciones) y montarla en el elemento del HTML donde se ejecutará dicha aplicación. En nuestro caso la única opción que se le pasa es **data** pero hay muchas más:
+- **`data`**: aquí es donde se define el _estado_ de la aplicación, es decir, los datos de la misma. Es una **función** que _devuelve un objeto_ donde cada dato será una propiedad del mismo. Lo que definimos aquí sería el equivalente a las propiedades definidas en una clase que almacenan el estado de la misma. Estos datos son reactivos y accesibles desde el HTML
 
 ```javascript
 Vue.createApp({
@@ -118,7 +120,7 @@ Vue.createApp({
   },
 ```
 
-- **methods**: es un objeto donde cada propiedad es un método de la aplicación que puede ser llamado desde el HTML
+- **`methods`**: es un objeto donde cada propiedad es un método de la aplicación que puede ser llamado desde el HTML. Son el equivalente a los métodos de una clase
 
 Fijaos que para hacer referencia desde Javascript a una variable (o a un método) hay que anteponerle **_this_**.
 
@@ -148,10 +150,10 @@ created() {
 ```
 
 ## Estilos de _API_
-La forma en que hemos programado estos ejemplos no es la más recomendable por lo que más adelante usaremos la herramienta `vue-cli` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones. Con ella dividiremos nuestra aplicación en componentes llamados _Single File Components_ que incluirán en un único fichero tanto la lógica del componente (Javascript) como su presentación (HTML).
+La forma en que hemos programado estos ejemplos no es la más recomendable por lo que más adelante usaremos `npm` para crear un completo _scaffolding_ que nos facilitará enormemente la creación de nuestras aplicaciones. Con ella dividiremos nuestra aplicación en componentes llamados _Single File Components_ que incluirán en un único fichero tanto la lógica del componente (Javascript) como su presentación (HTML) y su apariencia (CSS).
 
 Vue3 proporciona 2 formas diferentes de programar:
-- **_Options API_**: la lógica de un componente se establece en las distintas propiedades de un objeto, a las que se accede mediante _this_ que apunta a la instancia del componente. Es la que veremos ahora.
+- **_Options API_**: la lógica de un componente se establece en las distintas propiedades de un objeto, a las que se accede mediante _this_ que apunta a la instancia del componente. Es la que veremos ahora ya que es la más similar a la OOP que conocemos.
 
 ```vue
 <script>
@@ -212,7 +214,7 @@ onMounted(() => {
 ```
 
 ## _Binding_ de variables
-En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#step-1) tenemos un tutorial guiado donde podemos probar cada una de las funcionalidades de Vue. En la parte superior izquierda nos pregunta por nuestras preferencias: de momento escogeremos **Options** y **HTML**.
+En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#step-1) tenemos un tutorial guiado donde podemos probar cada una de las funcionalidades de Vue. En la parte superior izquierda nos pregunta por nuestras preferencias: de momento escogeremos **Options** y **HTML**, aunque enseguida cambiaremos a  **Options** y **SFC**.
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-2)
 
@@ -253,7 +255,7 @@ Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que s
 ### Enlace bidireccional: v-model
 Tanto **{\{ }}** como `v-bind` son un enlace unidireccional: muestran en el DOM el valor de un dato y reaccionan ante cualquier cambio en dicho valor. 
 
-Tenemos además está la directiva `v-model` que es un enlace bidireccional que enlaza un dato a un campo de formulario y permite cambiar el valor del campo al cambiar el dato pero también cambia el dato si se modifica lo introducido en el input. 
+Pero además está la directiva `v-model` que es un enlace bidireccional que enlaza un dato a un campo de formulario y permite cambiar el valor del campo al cambiar el dato pero también cambia el dato si se modifica lo introducido en el input. 
 ```html
   <input v-model="message">
 ```

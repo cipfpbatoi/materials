@@ -4,10 +4,6 @@
   - [Usar un componente](#usar-un-componente)
   - [Parámetros: _props_](#parámetros-props)
   - [Ejemplo de aplicación](#ejemplo-de-aplicación)
-  - [Separación de componentes en ficheros. _SFC_](#separación-de-componentes-en-ficheros-sfc)
-    - [Crear un SFC](#crear-un-sfc)
-    - [Usar un SFC](#usar-un-sfc)
-    - [Ejemplo](#ejemplo)
 
 
 ## Introducción
@@ -16,8 +12,8 @@ El sistema de componentes es un concepto importante en Vue y en cualquier framew
 ![Ejemplo de página web](./img/borsaTreball.png)
 
 - un menú que es una lista que contiene
-  - (repetido) un elemento del menú, cada uno formado por un logo y un texto
-- un título
+  - (repetido) un elemento de menú, cada uno formado por un logo y un texto
+- una barra de título, con un icono y 2 textos
 - una tabla con la información a mostrar, formada por
   - un elemento para filtrar la información formado por un input y un botón de buscar
   - un botón para añadir nuevos elementos a la tabla
@@ -26,14 +22,14 @@ El sistema de componentes es un concepto importante en Vue y en cualquier framew
   - un pie de tabla con información sobre los datos mostrados
 - un pie de página
 
-Pues estos elementos podrían constituir diferentes componentes: nuestras aplicaciones estarán compuestas de pequeños componentes independientes y reusables en diferentes partes de nuestra aplicación o en otras aplicaciones (podemos usar el elemento de buscar para otras páginas de nuestra web o incluso para otras aplicaciones). También es habitual que un componente contenga otros subcomponentes, estableciéndose relaciones padre-hijo (por ejemplo en componente fila contendrá un subcomponente por cada botón que queramos poner en ella).
+Pues estos elementos podrían constituir diferentes componentes: nuestras aplicaciones estarán compuestas de pequeños componentes independientes y reusables en diferentes partes de nuestra aplicación o en otras aplicaciones (podemos usar el elemento de buscar en otras páginas de nuestra aplicación o incluso en otras aplicaciones). También es habitual que un componente contenga otros subcomponentes, estableciéndose relaciones padre-hijo (por ejemplo el componente tabla tiene como subcomponentes el buscador y cada una de las filas, y el componente fila tendrá un subcomponente por cada botón que queramos poner en ella).
 
 Para saber qué debe ser un componente y que no, podemos considerar un componente como un elemento que tiene entidad propia, tanto a nivel funcional como visual, es decir, que puede ponerse en el lugar que queramos de la aplicación y se verá y funcionará correctamente. Además es algo que es muy posible que pueda aparecer en más de un lugar de la aplicación. En definitiva un componente:
 - es una parte de la UI
 - debe poder reutilizarse y combinarse con otros componentes para formar componentes mayores
 - son objetos JS
 
-El componente es un objeto con una parte de **HTML** donde definimos su estructura, una parte **JS** que le da su funcionalidad y una parte (opcional) **CSS** para establecer su apariencia.
+El componente es un objeto con una parte de **HTML** donde definimos su estructura, una parte **JS** que le da su funcionalidad y una parte **CSS** para establecer su apariencia.
 
 Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 * encapsulamos el código de la aplicación en elementos más sencillos
@@ -43,10 +39,11 @@ Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 El primer paso a la hora de hacer una aplicación debe ser analizar qué componentes tendrá
 
 En definitiva nuestra aplicación será como un árbol de componentes con la instancia principal de Vue como raíz.
+
 ![Árbol de componentes](https://vuejs.org/assets/components.7fbb3771.png)
 
 ## Usar un componente
-Para usarlo basta con crearlo con **`app.component`** (`Vue.component` en Vue2), darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad **_template_** con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
+Para usarlo basta con crearlo con **`app.component`**, darle un nombre y definir el objeto con sus propiedades _data_, _methods_, .... Además tendrá una propiedad **_template_** con el código HTML que se insertará donde pongamos el componente. Lo hacemos en nuestro fichero JS.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
 ```vue
@@ -73,7 +70,7 @@ app.component('todo-item', {
 app.mount('#app')
 ```
 
-**NOTA**: En Vue2 la propiedad _template_ sólo podía tener un nodo principal. En VUe3 esta limitación no existe aunque en _dev-tools_ se depura más fácilmente si solo hay 1. Si queremos más los envolvemos en otra etiqueta (normalmente un <div>):
+**NOTA**: En versiones anteriores de Vue la propiedad _template_ sólo podía tener un nodo raíz. En Vue3 esta limitación no existe aunque en _dev-tools_ se depura más fácilmente si solo hay 1. Por ello, si tenemos más de 1 nodo los envolvemos en otra etiqueta (normalmente un <div>):
 
 ```javascript
 // MAL en Vue2
@@ -131,7 +128,7 @@ NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una 
 
 El parámetro lo recibimos en el componente en _props_:
 ```javascript
-app.component('todo-item', {      // En Vue2: Vue.component('todo-item', {
+app.component('todo-item', {
   props: {
     todo: String
   },
@@ -182,7 +179,7 @@ En nuestro caso queremos un componente _todo-item_ para cada elemento del array 
 >  ...
 ></ul>
 
-**IMPORTANTE**: al usar _v-for_ en un componente debemos indicarle obligatoriamente en la propiedad _key_ la clave de cada elemento. Si no tuviera ninguna podemos usar como clave su índice en el array como vimos al hablar de _v-for_:
+**IMPORTANTE**: al usar `v-for` en un componente debemos indicarle obligatoriamente en la propiedad `key` la clave de cada elemento. Si no tuviera ninguna podemos usar como clave su índice en el array como vimos al hablar de _v-for_:
 
 ```html
 <ul>
@@ -229,85 +226,3 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
     - sus datos será el array de tareas
     - Los métodos los dejamos tal cual aunque ahora no funcionan porque nadie los llama. Ya lo arreglaremos
   
-
-## Separación de componentes en ficheros. _SFC_
-La utilidad de separar nuestra aplicación en componentes es que cada uno de ellos puede guardarse en su propio fichero y así no tenemos un fichero con demasiado código. A estos ficheros que contienen un componente se les llama _Single File Component (SFC)_.
-
-### Crear un SFC
-Creamos el fichero (con extensión _.js_) en el que definimos el componente. Aquí NO creamos el componente sino que simplemente ponemos el objeto que lo forma (el segundo parámetro del `app.component()`) y lo exportamos:
-```javascript
-export default{
-    props: ['todo'],
-    template: 
-      `<li @dblclick="delTodo">
-        <label>
-          <input type="checkbox" v-model="todo.done">
-          <del v-if="todo.done">
-            {{ todo.title }}
-          </del>
-          <span v-else>
-            {{ todo.title }}
-          </span>
-        </label>
-      </li>`,
-    methods: {
-      delTodo() {
-        alert('Quiero borrar "' + this.todo.title + '"');
-      }
-    }
-  }
-```
-
-### Usar un SFC
-Donde queramos usar este componente (puede ser en otro componente o en la instancia raíz de _Vue_) debemos:
-- importar el SFC
-- registrar el componente: lo anotamos dentro de una propiedad llamada _components_
-
-Siguiendo con el ejemplo de antes, en el componente que muestra la lista (_todo-list_) haremos:
-
-```javascript
-import TodoItem from './TodoItem.js'
-
-export default {
-    components: {
-      TodoItem,    // recordad que equivale a TodoItem: TodoItem,
-    },
-    data() {
-        ...
-    }
-}
-```
-
-Y en la instancia principal importamos y registramos todos los componentes que usa:
-
-```javascript
-import TodoList from './TodoList.js'
-import TodoAdd from './TodoAdd.js'
-import TodoDellAll from './TodoDellAll.js'
-
-var myApp=Vue.createApp({
-    components:  {
-        TodoList,
-        TodoAdd,
-        TodoDellAll,
-    }
-})
-```
-
-Para que el navegador entienda la sentencia `import` debemos indicar que el script que lo contiene es de tipo **module**:
-```html
-  <script type="module" src="index.js"></script>
-```
-
-**NOTA**: esto sólo funciona si abrimos la aplicación desde un servidor web, no desde local (sí _http://..._, no _file://..._). Si no tenéis ninguno podéis instalar la extensión **Live Server** de Visual Studio Code para ejecutar este programa.
-
-### Ejemplo
-Podéis ver aquí cómo quedará nuestra aplicación de ejemplo con los componentes separados en ficheros:
-
-<iframe src="https://codesandbox.io/embed/gracious-kepler-mq9ypp?fontsize=14&hidenavigation=1&theme=dark"
-     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-     title="gracious-kepler-mq9ypp"
-     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-   ></iframe>
-   

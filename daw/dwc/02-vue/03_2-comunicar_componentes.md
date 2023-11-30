@@ -64,10 +64,10 @@ Si queremos pasar varios parámetros a un componente hijo podemos pasarle un obj
 
 y en el componente se reciben sus parámetros separadamente:
 ```javascript
-app.component('todo-item', {
+// todo-item.vue
+  ...
   props: ['todo', 'done'],
   ...
-})
 ```
 
 También es posible que el nombre de un parámetro que queramos pasar sea una variable:
@@ -78,9 +78,10 @@ También es posible que el nombre de un parámetro que queramos pasar sea una va
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-12)
 
 ### Nunca cambiar el valor de una prop
-Al pasar un parámetro mediante una _prop_ su valor se mantendrá actualizado en el hijo si su valor cambiara en el padre, pero no al revés por lo que no debemos cambiar su valor en el componente hijo (de hecho VUe3 no nos lo permite).
+Al pasar un parámetro mediante una _prop_ su valor se mantendrá actualizado en el hijo si su valor cambiara en el padre, pero no al revés por lo que no debemos cambiar su valor en el componente hijo (de hecho _Vue3_ no nos lo permite).
 
 Si tenemos que cambiar su valor porque lo que nos pasan es sólo un valor inicial podemos crear una variable local a la que le asignamos como valor inicial el parámetro pasado:
+
 ```javascript
 props: ['initialValue'],
 data(): {
@@ -93,6 +94,7 @@ data(): {
 Y en el componente usaremos la nueva variable _myValue_.
 
 Si no necesitamos cambiarla sino sólo darle determinado formato a la variable pasada lo haremos creando una nueva variable (en este caso mejor una _computed_), que es con la que trabajaremos:
+
 ```javascript
 props: ['cadenaSinFormato'],
 computed(): {
@@ -112,6 +114,7 @@ Al recibir los parámetros podemos usar _sintaxis de objeto_ en lugar de _sintax
 * **validator**: una función que recibe como parámetro el valor del parámetro y devolverá true o false en función de si el valor es o no válido
 
 Ejemplos:
+
 ```javascript
 props: {
   nombre: String,
@@ -145,20 +148,23 @@ Además de los parámetros, que se reciben en _props_, el componente padre puede
 <date-picker id="now" data-status="activated" class="fecha"></date-picker>
 ```
 
-```javascript
-// Componente hijo
-app.component('date-picker', {
-  template: `
-    <div class="date-picker">
-      <input type="datetime" />
-    </div>
-  `,
+```vue
+// Componente hijo date-picker.vue
+<template>
+  <div class="date-picker">
+    <input type="datetime" />
+  </div>
+</template>
+
+<script>
+  ...
   methods: {
     showAttributes() {
       console.log('Id: ' + this.$attrs.id + ', Data: ' + this.$attrs['data-status'])
     }
   }
-})
+  ...
+</script>
 ```
 
 El subcomponente se renderizará como:
@@ -177,15 +183,18 @@ A veces no queremos que esos atributos se apliquen al elemento raíz del subcomp
 ```
 
 ```javascript
-// Componente hijo
-app.component('date-picker', {
-  inheritAttrs: false,
-  template: `
+// Componente hijo date-picker.vue
+<template>
     <div class="date-picker">
       <input type="datetime" v-bind="$attrs" />
     </div>
-  `,
-})
+</template>
+
+<script>
+  ...
+  inheritAttrs: false,
+  ...
+</script>
 ```
 
 En este caso se renderizará como:
@@ -303,7 +312,8 @@ Componente **_todo-item.vue_**
 ### Definir y validar eventos
 Como hemos dicho, los eventos que emite un componente pueden (y se recomienda) definirse en la opción _emits_:
 ```javascript
-app.component('todo-item', {
+// component todo-item.vue
+  ...
   emits: ['toogle-done', 'dblclick'],
   props: ['todo'],
   ...
@@ -397,8 +407,8 @@ Para evitarlo podemos usar un patrón de almacén (_store pattern_) que veremos 
 ### $root y $parent
 Todos los componentes tienen acceso a:
 - sus variables locales, declaradas en `data()`
-- los parámetros que le han pasado como `props` (que no deberían cam,biarse)
-- y además, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `Vue.createApp()`) a los que accede desde el objeto **`$root`**
+- los parámetros que le han pasado como `props` (que no deberían cambiarse)
+- y además, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `Vue.createApp()`, es decir, en el `main.js`) a los que accede desde el objeto **`$root`**
  
 Por ejemplo:
 
@@ -509,13 +519,12 @@ Otra forma en que un componente hijo puede mostrar información del padre es usa
 Ejemplo:
 Tenemos un componente llamado _my-component_ con un slot:
 ```javascript
-app.component('my-component', {
-  template:
-    `<div>
-      <h3>Componente con un slot</h3>
-      <slot><p>Esto se verá si no se pasa nada al slot</p></slot>
-    </div>`
-})
+<template>
+  <div>
+    <h3>Componente con un slot</h3>
+    <slot><p>Esto se verá si no se pasa nada al slot</p></slot>
+  </div>
+</template>
 ```
 
 Si llamamos al componente con:

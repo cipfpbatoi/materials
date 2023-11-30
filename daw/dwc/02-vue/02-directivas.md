@@ -156,7 +156,7 @@ Debe aparecer la lista de cosas a hacer con:
 * el título de la cosa a hacer, que aparecerá tachado si su estado es que ya está hecha
 
 Además queremos que:
-* al hacer doble click en una cosa a hacer debe borrarse de la lista
+* al hacer doble click en una tarea a hacer debe borrarse de la lista
 * bajo la lista aparecerá un input con un botón para añadir nuevas cosas a la lista. Sólo se añade si hemos introducido texto y su estado al añadirla será de NO hecha
 * debajo tendremos un botón que borrará toda la lista de cosas a hacer tras pedir confirmación al usuario
 
