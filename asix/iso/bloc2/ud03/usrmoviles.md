@@ -32,9 +32,13 @@ A estos usuarios se les denomina **usuarios móviles** y las herramientas que te
 - redireccionamiento de carpetas
 
 
-Podemos ver los perfiles creados en un sistema desde `Configuración -> Sistema -> Acerca de -> Configuración avanzada del sistema -> pestaña Opciones avanzadas -> Perfiles de usuario -> botón Configuración`:
+Para ver los perfiles creados en un sistema debemos abrir las '_Propiedades del sistema_', por ejemplo desde `Configuración -> Sistema -> Acerca de -> Configuración avanzada del sistema`:
 
-![Perfiles de usuario]()
+![Configuración avanzada del sistema](./media/PerfilesUsuario.png)
+
+Allí veremos los perfiles de los usuarios de esta màquina en la `pestaña Opciones avanzadas -> Perfiles de usuario -> botón Configuración`:
+
+![Perfiles de usuario](./media/perfiles.png)
 
 En ocasiones tenemos usuarios que no siempre utilizan el mismo equipo sino que pueden iniciar sesión en diferentes equipos del dominio. Es necesario que, sea cual sea el ordenador en el que inicien sesión, tengan su entorno de trabajo personalizado y puedan acceder a sus documentos.
 
@@ -79,7 +83,7 @@ Los perfiles de red deben estar almacenados en una carpeta de red accesible desd
 
 El formato en que se guarda un perfil es diferente entre distintas sesiones de Windows. Un perfil de Windows XP no puede usarlo un equipo con Windows 10 y viceversa. Para saber de qué versión de Windows es un determinado perfil a la carpeta que lo contiene se le añade automáticamente una extensión:
 - **.V6**: se trata de un perfil de Windows 10 o posterior o bien de Windows Server 2016 o posterior (son compatibles)
-- **.V2**: se trata de un perfil de Windows 7 / 8 / Server 2008 o posteriores
+- **.V2**: se trata de un perfil de Windows 7 / 8 o de Windows Server 2008 o 2012
 - **sin extensión**: se trata de un perfil de Windows XP o Windows Server 2003
 
 Por tanto un usuario llamado 'fperez' con perfil móvil y que haya iniciado sesión en un cliente con Windows XP, otro con Windows 7 y otro con Windows 10 tendrá en la carpeta de perfiles 3 carpetas suyas: `fperez` (con su perfil de XP). `fperez.V2` (con su perfil Windows 7) y `fperez.V6` (con su perfil Windows 10). Según el sistema operativo de la máquina en la que inicie sesión Windows se cargará un perfil u otro al loguearse el usuario.
