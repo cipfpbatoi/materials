@@ -416,7 +416,7 @@ Los estados de la directiva en los que podemos actuar son:
 - ...
 
 ## Imágenes
-Si se trata de imágenes estáticas lo más sencillo es ponerlas dentro de la carpeta `public` y hacer referencia a ellas usando **ruta absoluta**. Todo lo que está en _public_ se referencia como si estuviera en el raíz de nuestra aplicación:
+Si se trata de imágenes estáticas lo más sencillo es ponerlas dentro de la carpeta `public` y hacer referencia a ellas usando **ruta absoluta**. Todo lo que está en _public_ se referencia como si estuviera en la raíz de nuestra aplicación:
 ```html
   <img src="/img/elPatitoFeo.jpeg" height="100px" alt="El Patito Feo">
 ```
@@ -435,10 +435,52 @@ También podemos poner las imágenes en la carpeta `assets`, pero antes de usarl
 </template>
 ```
 
-Si usamos _webpack_ en lugar de _Vite_, en lugar de importarlas usaremos en su atributo `src` la función `require` con la URL de la imagen:
+NOTA: Si usamos _webpack_ en lugar de _Vite_, en lugar de importarlas usaremos en su atributo `src` la función `require` con la URL de la imagen:
 ```html
   <img :src="require('../assets/img/elPatitoFeo.jpeg')" height="100px" alt="El Patito Feo">
 ```
+
+Con _Vite_ también podemos importarlas usando `import.meta.url` (más información en la [documentación de Vite](https://vitejs.dev/guide/assets.html#new-url-url-import-meta-url)):
+```html
+<script>
+export default {
+  data() {
+    return {
+      imgUrl = new URL('./assets/elPatitoFeo.png', import.meta.url).href
+    }
+  },
+  ...
+}
+</script>
+
+<template>
+  ...
+  <img :src="imgUrl" height="100px" alt="El Patito Feo">
+  ...
+</template>
+```
+
+Esto nos permite también importar las imágenes dinámicamente:
+```html
+<script>
+export default {
+  methods: {
+    function getImageUrl(name) {
+      return new URL(`./dir/${name}`, import.meta.url).href
+    }
+  }
+  ...
+}
+</script>
+
+<template>
+  ...
+  <img :src="getImageUrl(imgName)" height="100px">
+  ...
+</template>
+```
+
+Esto permitiría mostrar también imágenes obtenidas de una API.
 
 ## Transiciones
 Vue permite controlar transiciones en nuestra aplicación poniendo el código CSS correspondiente y añadiéndole al elemento el atributo _transition_. Podemos encontrar más información en la [documentación oficial de Vue](https://vuejs.org/v2/guide/transitions.html).

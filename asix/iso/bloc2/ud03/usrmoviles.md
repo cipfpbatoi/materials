@@ -86,7 +86,7 @@ El formato en que se guarda un perfil es diferente entre distintas sesiones de W
 - **.V2**: se trata de un perfil de Windows 7 / 8 o de Windows Server 2008 o 2012
 - **sin extensión**: se trata de un perfil de Windows XP o Windows Server 2003
 
-Por tanto un usuario llamado 'fperez' con perfil móvil y que haya iniciado sesión en un cliente con Windows XP, otro con Windows 7 y otro con Windows 10 tendrá en la carpeta de perfiles 3 carpetas suyas: `fperez` (con su perfil de XP). `fperez.V2` (con su perfil Windows 7) y `fperez.V6` (con su perfil Windows 10). Según el sistema operativo de la máquina en la que inicie sesión Windows se cargará un perfil u otro al loguearse el usuario.
+Por tanto un usuario llamado 'fperez' con perfil móvil y que haya iniciado sesión en un cliente con Windows XP, otro con Windows 7 y otro con Windows 10 tendrá en la carpeta de perfiles 3 carpetas suyas: `fperez` (con su perfil de XP). `fperez.V2` (con su perfil Windows 7) y `fperez.V6` (con su perfil Windows 10). Según el sistema operativo de la máquina en la que inicie sesión se cargará un perfil u otro al loguearse el usuario.
 
 La captura siguiente es de un sistema donde un usuario móvil llamado 'opla' ha iniciado sesión en algún cliente Win7 y algún Win10, otro usuario 'jaracil' que sólo usa Win7 y otro llamado 'msanchez' que sólo ha usado clientes Win10:
 
@@ -107,11 +107,13 @@ Las partes que forman esa ruta son:
 
 Por ejemplo, si en un equipo llamado `srvWin` hemos compartido una carpeta llamada `GesDomini$` dentro de la cual existe una subcarpeta llamada `PerfiMobil` y configuramos el usuario _jsegura_ para que tenga un perfil móvil dentro de esa carpeta, la primera vez que inicie sesión se creará automáticamente la carpeta `\\srvWin\GesDomini$\PerfMobil\jsegura.V6` y en ella se creará el perfil del usuario.
 
-Para que se pueda crear esa carpeta el usuario _jsegura_ debe tener permisos para crear carpetas en `PerfiMobil` (al menos permiso de **_Modificar_**). Esto es porque la carpeta con el perfil del usuario la crea Windows la primera vez que el usuario inicia sesión pero lo hace en su nombre y con sus credenciales (es como si la creara el usuario).
+Para que se pueda crear esa carpeta el usuario _jsegura_ debe tener permisos para crear carpetas en `PerfiMobil` (por ejemplo permiso de **_Modificar_**). Esto es porque la carpeta con el perfil del usuario la crea Windows la primera vez que el usuario inicia sesión pero lo hace en su nombre y con sus credenciales (es como si la creara el usuario).
 
-Cuando Windows crea esa carpeta le dará al usuario el permiso de **_Control total_** y **quitará los permisos al resto de usuarios**, incluido el _Administrador_ por lo que nadie más podrá acceder en principio al perfil mas que el propio usuario.
+Cuando Windows crea esa carpeta le dará al usuario el permiso de **_Control total_** y **quitará los permisos al resto de usuarios**, incluido el _Administrador_ por lo que nadie más podrá acceder al perfil mas que el propio usuario.
 
-**NOTA**: para crear y compartir carpetas podemos usar **`Servicios de archivo y almacenamiento`** dentro del `Administrador del servidor`.
+**NOTA**: si el _Administrador_ lo necesita puede acceder a cualquier carpeta incluso si no tiene permisos. Para ello desde _Propiedades_ de la carpeta deberá cambiar el propietario de la misma y poner como nuevo propietario él mismo o mejor, al grupo _Administradores_ (así el antiguo propietario sigue siendo el usuario propietario tras el cambio).
+
+**ATENCIÓN**: como aún no sabemos compartir carpetas (lo veremos en la próxima unidad) podemos usar **`Servicios de archivo y almacenamiento`** dentro del `Administrador del servidor` para crearlas y compartirlas de manera sencilla.
 
 Una vez compartida la carpeta con los permisos necesarios sólo es necesario especificar en la cuenta de usuario la ubicación física de su perfil desde las `propiedades de la cuenta -> pestaña Perfil`:
 
@@ -119,7 +121,7 @@ Una vez compartida la carpeta con los permisos necesarios sólo es necesario esp
 
 Podemos indicar el nombre de la carpeta (`\\srvWin\GesDomini$\PerfMobil\jsegura`) o mejor, utilizar la variable de Windows `%USERNAME%` que se sustituye por el nombre de usuario de ese usuario concreto (_jsegura_).
 
-**IMPORTANTE**: en la ruta del perfil **NUNCA se pone la extensión** porque aquí sólo se indica que ese usuario tendrá un perfil móvil pero no sabemos si iniciará sesión desde un equipo con Windows 10, 12, 7, ... En función del sistema operativo del equipo desde el que inicia sesión Windows determinará automáticamente el nombre de la carpeta con el perfil a cargar (`jsegura.V6`, `jsegura.V2`, ...).
+**IMPORTANTE**: en la ruta del perfil **NUNCA se pone la extensión** porque aquí sólo se indica que ese usuario tendrá un perfil móvil pero no sabemos si iniciará sesión desde un equipo con Windows 10, 7 o 15. En función del sistema operativo del equipo desde el que inicie sesión Windows determinará automáticamente la extensión de la carpeta con el perfil a cargar (`jsegura.V6`, `jsegura.V2`, ...).
 
 ## Perfil obligatorio
 Si un perfil es obligatorio el usuario podrá realizar los cambios que quiera en él, pero al cerrar sesión esos cambios no se guardan, por lo que cuando vuelva a iniciar sesión tendrá su perfil como estaba antes.
@@ -190,7 +192,7 @@ Recuerda que podemos establecer una propiedad a muchos usuarios al mismo tiempo 
 
 
 ## Script de inicio de sesión
-Podemos hacer un script (un fichero de proceso por lotes `.BAT` o de Powershell `.PS1`) que se ejecutará automáticamente cada vez que el usuario inicie sesión. Este script se tiene que guardar obligatoriamente en la carpeta compartida **NETLOGON** (que se encuentra en `C:\Windows\SYSVOL\sysvol\nombre_del_dominio\scripts`). Al indicar en la ficha de perfil la ruta a la script NO tenemos que poner la extensión .BAT.
+Podemos hacer un script (un fichero de proceso por lotes, con extensión `.BAT`, o de Powershell con extensión `.PS1`) que se ejecutará automáticamente cada vez que el usuario inicie sesión. Este script se tiene que guardar obligatoriamente en la carpeta compartida **NETLOGON** (que se encuentra en `C:\Windows\SYSVOL\sysvol\nombre_del_dominio\scripts`). Al indicar en la ficha de perfil la ruta a la script NO tenemos que poner la extensión .BAT.
 
 Sólo se utiliza en perfiles de red.
 

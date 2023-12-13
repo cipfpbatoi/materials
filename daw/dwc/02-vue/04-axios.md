@@ -45,7 +45,7 @@ Ya podemos hacer peticiones Ajax en el componente. Para ello axios incluye los m
 * **.put(url, objeto)**: realiza una petición PUT a la url pasada como parámetro que posiblemente realizará un UPDATE sobre el registro indicado en la url que será actualizado con los datos del objeto pasado como segundo parámetro
 * **.delete(url)**: realiza una petición DELETE a la url pasada como parámetro que supondrá una consulta DELETE a la base de datos para borrar el registro indicado en la url
 
-Estos métodos devuelven una promesa por lo que al hacer la petición indicaremos con el método **`.then`** la función que se ejecutará cuando responda el servidor si la petición se resuelve correctamente y con el método **`.catch`** la función que se ejecutará cuando responda el servidor si ocurre algún error. También podemos hacer las llamadas con `await`.
+Estos métodos devuelven una promesa por lo que al hacer la petición indicaremos con el método **`.then`** la función que se ejecutará cuando responda el servidor si la petición se resuelve correctamente y con el método **`.catch`** la función que se ejecutará cuando responda el servidor si ocurre algún error. También podemos hacer las llamadas con **`await`**.
 
 La respuesta del servidor tiene, entre otras, las propiedades:
 * **`data`**: aquí tendremos los datos devueltos por el servidor
@@ -55,11 +55,21 @@ La respuesta del servidor tiene, entre otras, las propiedades:
 * `headers`: las cabeceras HTTP de la respuesta
 * ...
 
-La sintaxis de una petición GET a axios sería algo como:
+La sintaxis de una petición GET a axios usando promesas sería algo como:
 ```javascript
 axios.get(url)
-  .then(response => ...realiza lo que sea con response.data ...)
-  .catch(response => ... trata el error ...)
+  .then(response => console.log(response.data))
+  .catch(response => console.error(response.message))
+```
+
+Y usando _async/await_ sería algo como:
+```javascript
+try {
+  const response = await axios.get(url)
+  console.log(response.data)
+} catch (response) {
+  console.error(response.message) 
+}
 ```
 
 ## Aplicación de ejemplo
@@ -81,7 +91,9 @@ Modificamos el fichero **Todo-List.vue** para añadir en su sección _script_:
 ```javascript
 import axios from 'axios'
 
-const url='http://localhost:3000'
+const SERVER = 'http://localhost:3000'
+// o mejor, si usamos el fichero .env como vimos en Javascript
+// const SERVER = import.meta.env.VITE_URL_API
 ```
 
 * Dentro del objeto añadimos el _hook_ **mounted** para hacer la petición Ajax al montar el componente (recordad que esa función se ejecuta automáticamente cuando se acaba de _renderizar_ el componente):
@@ -89,16 +101,11 @@ const url='http://localhost:3000'
 ```javascript
 ...
   mounted() {
-    axios.get(url+'/todos')
-      .then(response => this.todos=response.data)
+    axios.get(SERVER + '/todos')
+      .then(response => this.todos = response.data)
       .catch(response => {
-        if (!response.status) {// Si el servidor no responde 'response' no es un objeto sino texto
-          alert('Error: el servidor no responde');
-          console.log(response);
-        } else {
-          alert('Error '+response.status+': '+response.message);          
-        }
-        this.todos=[];
+        alert('Error: ' + response.message)          
+        this.todos=[]
       })
   },
 ...
@@ -108,10 +115,10 @@ const url='http://localhost:3000'
 Modificamos el método _delTodo_ del fichero **Todo-List.vue**:
 ```javascript
     delTodo(index){
-      var id=this.todos[index].id;
-      axios.delete(url+'/todos/'+id)
-        .then(response => this.todos.splice(index,1) )
-        .catch(response => alert('Error: no se ha borrado el registro. '+response.message))
+      const id = this.todos[index].id
+      axios.delete(SERVER + '/todos/' + id)
+        .then(response => this.todos.splice(index, 1) )
+        .catch(response => alert('Error: no se ha borrado el registro. ' + response.message))
     },
 ```
 
@@ -119,37 +126,37 @@ Modificamos el método _delTodo_ del fichero **Todo-List.vue**:
 Modificamos el método _addTodo_ del fichero **Todo-List.vue**:
 ```javascript
     addTodo(title) {
-      axios.post(url+'/todos', {title: title, done: false})
+      axios.post(SERVER + '/todos', {title: title, done: false})
         .then(response => this.todos.push(response.data)
         )
-        .catch(response => alert('Error: no se ha añadido el registro. '+response.message))
+        .catch(response => alert('Error: no se ha añadido el registro. ' + response.message))
     },
 ```
 
-Al servidor hay que pasarle como parámetro el objeto a añadir. E el caso del json-server devolverá en el **response.data** el nuevo objeto añadido al completo. Otros servidores devuelven sólo la _id_ del nuevo registro o pueden no devolver nada. 
+Al servidor hay que pasarle como parámetro el objeto a añadir. En el caso de _json-server_ devolverá en el **response.data** el nuevo objeto añadido al completo. Otras APIs devuelven sólo la _id_ del nuevo registro o pueden no devolver nada. 
 
 ### Actualizar el campo _done_
 Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamos su id, su título y su estado así que modificamos el _template_ del fichero **Todo-List.vue** para pasar el elemento entero a la función:
 ```html
       <todo-item 
-        v-for="(item,index) in todos" 
-        :key="item.id"
-        :todo="item"
-        @delItem="delTodo(index)"
-        @doneChanged="toogleDone(item)">
-       </todo-item>
+        v-for = "(item,index) in todos" 
+        :key = "item.id"
+        :todo = "item"
+        @delItem = "delTodo(index)"
+        @doneChanged = "toogleDone(item)">
+      </todo-item>
 ```
 
 A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue**:
 ```javascript
     toogleDone(todo) {
-      axios.put(url+'/todos/'+todo.id, {
+      axios.put(SERVER + '/todos/' + todo.id, {
           id: todo.id, 
           title: todo.title, 
           done: !todo.done
         })
-        .then(response => todo.done=response.data.done)
-        .catch(response => alert('Error: no se ha modificado el registro. '+response.message))
+        .then(response => todo.done = response.data.done)
+        .catch(response => alert('Error: no se ha modificado el registro. ' + response.message))
     },
 ```
 
@@ -159,7 +166,7 @@ Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del
 Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servidor no tiene una llamada para borrar todos los datos podemos recorrer el array _todos_ y borrar cada tarea usando el método **delTodo** que ya tenemos hecho:
 ```javascript
     delTodos() {
-      this.todos.forEach((todo, index) => this.delTodo(index));
+      this.todos.forEach((todo, index) => this.delTodo(index))
     }
 ```
 
@@ -168,17 +175,21 @@ Si lo probáis con muchos registros es posible que no se borren todos correctame
 ## Organizar las peticiones
 Que cada componente haga llamadas a _axios_ tiene el inconveniente de que cada uno crea su propia instancia, además de que tenemos las peticiones a la API desperdigadas por el código. Para mejorar la legibilidad del código vamos a crear un fichero que será donde estén las peticiones a _axios_ de forma que nuestros componentes queden más limpios. Otra ventaja de centralizar las peticiones es que cosas como la URL a la que hacer la petición la definimos en un único sitio.
 
-Podríamos llamar al fichero _services/TodoService.js_ y allí creamos las funciones que laman a la API:
+Podríamos llamar al fichero _repositories/todosRepository.js_ y allí creamos las funciones que laman a la API:
 ```javascript
-import axios from 'axios';
+import axios from 'axios'
 
 const apiClient = axios.create({
-  // estamos creando un 'axios' personailizado con las opciones que necesitemos para no tener que indicarlas cada vez
+  // Esta parte es opcional. Estamos creando un 'axios' personailizado con las opciones
+  // que necesitemos para no tener que indicarlas cada vez. En concreto:
+  // - baseURL: lo que antecederá a la ruta de cada petición
+  // - headers.Accept: el tipo de datos que esperamos obtener
+  // - headers.Authorization: el token que enviaremos junto a cada petición
   baseURL: 'http://localhost:3000',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
-    Authorization = 'Bearer ' + localStorage.token;
+    Authorization = 'Bearer ' + localStorage.token
   }
 })
 
@@ -188,7 +199,7 @@ export default {
   },
 
   delTodo(id){
-    return apiClient.delete('/todos/'+id)
+    return apiClient.delete('/todos/' + id)
   },
 
   addTodo(newTodo) {
@@ -196,7 +207,7 @@ export default {
   },
 
   toogleDone(todo) {
-    return apiClient.put('/todos/'+todo.id, {
+    return apiClient.put('/todos/' + todo.id, {
       id: todo.id, 
       title: todo.title, 
       done: !todo.done
@@ -209,27 +220,28 @@ En primer lugar importamos _axios_ y a continuación creamos una única instanci
 
 En cada componente que tenga que hacer una llamada a la API se importa este fichero y se llama a sus funciones:
 ```javascript
-import TodoService from '../services/TodoService';
+import todosRepository from '../repositories/todosRepository'
 
 export default {
   ...
   methods: {
     getData() {
-      TodoService.getTodos()
+      todosRepository.getTodos()
       .then(response => this.todos = response.data)
-      .catch(error => console.error('Error: '+(error.statusText || error.message || error))
+      .catch(error => console.error('Error: ' + error.message))
     },
     ...
   },
   created() {
-    this.getData();
+    this.getData()
   },
+}
 ```
 
 ### Api con varias tablas
-Si nuestra APIService tiene que acceder a varias tablas el código va haciéndose más largo. Podemos escribir lo mismo de antes pero de forma más concisa:
+Si trabajamos con varias tablas podemos hacer un fichero de repositorio para cada una de ellas o bien podemos escribir lo mismo de antes pero de forma más concisa:
 ```javascript
-import axios from 'axios';
+import axios from 'axios'
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:3000',
@@ -251,7 +263,7 @@ const todos = {
       title: item.title, 
       done: !item.done
     }),
-};
+}
 
 const categories = {
     getAll: () => apiClient.get(`/categories`),
@@ -259,19 +271,19 @@ const categories = {
     create: (item) => apiClient.post(`/categories`, item),
     modify: (item) => apiClient.put(`/categories/${item.id}`, item),
     delete: (id) => apiClient.delete(`/categories/${id}`),
-};
+}
 
 
 export default {
     todos,
     categories,
-};
+}
 ```
 
 ### Api como clase
 También podemos usar programación orientada a objetos para hacer nuestra ApiService y construir una clase que se ocupe de las peticiones a la API:
 ```javascript
-import axios from 'axios';
+import axios from 'axios'
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:3000',
@@ -282,7 +294,7 @@ const apiClient = axios.create({
   }
 })
 
-export class APIService{
+export default class APIService{
   constructor(){
   }
   getTodos() {
@@ -306,9 +318,9 @@ export class APIService{
 
 Y en los componentes donde queramos usarlo importamos la clase y creamos una instancia de la misma:
 ```javascript
-import { APIService } from '../APIService';
+import APIService from '../APIService'
 
-const apiService = new APIService();
+const apiService = new APIService()
 
 export default {
   ...
@@ -316,13 +328,14 @@ export default {
     getData() {
       apiService.getTodos()
       .then(response => this.todos = response.data)
-      .catch(error => console.error(error))
+      .catch(response => console.error(response.message))
     },
     ...
   },
   mounted() {
-    this.getData();
+    this.getData()
   },
+}
 ```
 
 ### El fichero _.env_
@@ -354,46 +367,46 @@ El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner
 ## Axios interceptors
 Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Es otra forma de enviar un token que nos autentifique ante una API sin tener que ponerlo en el código de cada petición, pero también nos permite hacer cualquier cosa que necesitemos.
 
-Para interceptar las peticiones usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para las respuestas `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
+Para interceptar las peticiones que hacemos usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para interceptar las respuestas del servidor `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
 
-Veamos un ejemplo en que queremos enviar en las cabeceras de cada petición el token que tenemos almacenado en el LocalStorage y queremos mostrar un alert siempre que el servidor devuelva en su respuesta un error que no sea de tipo 400. Además mostraremos por consola las peticiones y las respuestas si activamos el modo DEBUG:
+Veamos un ejemplo en que queremos enviar en las cabeceras de cada petición el token que tenemos almacenado en el _LocalStorage_ y queremos mostrar un alert siempre que el servidor devuelva en su respuesta un error que no sea de tipo 400. Además mostraremos por consola las peticiones y las respuestas si activamos el modo DEBUG:
 
 ```javascript
-import axios from 'axios';
-const baseURL = 'http://localhost:3000';
-const DEBUG = true;
+import axios from 'axios'
+const baseURL = 'http://localhost:3000'
+const DEBUG = true
 
 axios.interceptors.request.use((config) => {
     if (DEBUG) {
-        console.info('Request: ', config);
+        console.info('Request: ', config)
     }
 
-    const token = localStorage.token;
+    const token = localStorage.token
     if (token) {
-        config.headers['Authorization'] = 'Bearer ' + localStorage.token;
+        config.headers['Authorization'] = 'Bearer ' + localStorage.token
     }
-    return config;
+    return config
 }, (error) => {
     if (DEBUG) {
-        console.error('Request error: ', error);
+        console.error('Request error: ', error)
     }
-    return Promise.reject(error);
-});
+    return Promise.reject(error)
+})
 
 axios.interceptors.response.use((response) => {
     if (DEBUG) {
-        console.info('Response: ', response);
+        console.info('Response: ', response)
     }
-    return response;
+    return response
 }, (error) => {
     if (error.response && error.response.status !== 400) {
-        alert('Response error ' + error.response.status + '(' + error.response.statusText + ')'
+        alert('Response error ' + error.response.status + '(' + error.response.statusText + ')')
     }
     if (DEBUG) {
-        console.info('Response error: ', error);
+        console.info('Response error: ', error)
     }
-    return Promise.reject(error);
-});
+    return Promise.reject(error)
+})
 
 const categories = {
     getAll: () => axios.get(`${baseURL}/categories`),
@@ -401,9 +414,9 @@ const categories = {
     create: (item) => axios.post(`${baseURL}/categories`, item),
     modify: (item) => axios.put(`${baseURL}/categories/${item.id}`, item),
     delete: (id) => axios.delete(`${baseURL}/categories/${id}`),
-};
+}
 
 export default {
     categories,
-};
+}
 ```
