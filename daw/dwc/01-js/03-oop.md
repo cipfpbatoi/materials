@@ -2,11 +2,13 @@
 - [Programación orientada a Objetos en Javascript](#programación-orientada-a-objetos-en-javascript)
   - [Introducción](#introducción)
   - [Herencia](#herencia)
-  - [Métodos estáticos](#métodos-estáticos)
+  - [Métodos y propiedades estáticas](#métodos-y-propiedades-estáticas)
+  - [Propiedades y métodos privados y protegidos](#propiedades-y-métodos-privados-y-protegidos)
   - [Método _toString()_](#método-tostring)
   - [Método _valueOf()_](#método-valueof)
   - [Organizar el código](#organizar-el-código)
   - [Ojo con _this_](#ojo-con-this)
+  - [Mixins](#mixins)
   - [Programación orientada a objetos en JS5](#programación-orientada-a-objetos-en-js5)
   - [Bibliografía](#bibliografía)
 
@@ -56,8 +58,8 @@ console.log(cpo.getInfo())     // imprime 'El alumno Carlos Pérez Ortíz tiene 
 
 > EJERCICIO: crea una clase Televisores que hereda de Productos y que tiene una nueva propiedad llamada tamaño. El método getInfo mostrará el tamaño junto al nombre
 
-## Métodos estáticos
-Desde ES2015 podemos declarar métodos estáticos, pero no propiedades estáticas. Estos métodos se llaman directamente utilizando el nombre de la clase y no tienen acceso al objeto _this_ (ya que no hay objeto instanciado).
+## Métodos y propiedades estáticas
+Desde ES2015 podemos declarar métodos estáticos. Estos métodos se llaman directamente utilizando el nombre de la clase y no tienen acceso al objeto _this_ (ya que no hay objeto instanciado).
 ```javascript
 class User {
     ...
@@ -73,6 +75,41 @@ console.log(user.getRoles()) // Uncaught TypeError: user.getRoles is not a funct
 
 Suelen usarse para crear funciones de la aplicación.
 
+Recientemente se han introducido también propiedades estáticas, que funcionan directamente desde la clase no desde un objeto, igual que los métodos estáticos. Al ser una adición reciente pueden no funcionar en algunos navegadores.
+
+## Propiedades y métodos privados y protegidos
+A la hora de encapsular el código de las clases es importante el uso de este tipo de elementos pero Javascript no los incluye.
+
+Sin embargo existe una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo). Ejemplo:
+```javascript
+class Alumno {
+    _nombre = ''
+    _apellidos = ''
+    _edad = 0
+
+    constructor(nombre, apellidos) {
+        this._nombre = nombre
+        this._apellidos = apellidos
+    }
+    
+    setEdad(edad) {
+        this._edad = edad
+    }
+    
+    getEdad() {
+        return this._edad
+    }
+    
+    getInfo() {
+        return 'El alumno ' + this._nombre + ' ' + this._apellidos + ' tiene ' + this.getEdad() + ' años'
+    }
+}
+```
+
+Estas propiedades y métodos protegidos se heredan como cualquier otro.
+
+Está a punto de incluirse en el estándar ECMAScript la declaración de métodos y propiedades **privadas** de una clase. Serán aquellos que comiencen por `#` y sólo serán accesibles dentro de la clase (no se heredarán).
+ 
 ## Método _toString()_
 Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se llama al método **_.toString()_** del mismo, que por defecto devuelve la cadena `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
 ```javascript
@@ -156,7 +193,7 @@ Si este método no existiera será _.toString()_ el que se usaría.
 ## Organizar el código
 Lo más conveniente es guardar cada clase en su propio fichero, que llamaremos como la clase con la extensión `.class.js`. Por ejemplo el fichero de la clase _Users_ seria `users.class.js`.
 
-En dicho fichero exportamos la clase (con `export` o `export default` porque sólo hay 1) y donde queramos usarla la importamos (`import { Users } from 'users.class'` o `import Users from 'users.class'`, según cómo la hayamos exportado).
+En dicho fichero exportamos la clase (con `export` o mejor `export default` porque sólo hay una) y donde queramos usarla la importamos (`import { Users } from 'users.class'` o `import Users from 'users.class'`, según cómo la hayamos exportado).
 
 ## Ojo con _this_
 Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
@@ -175,7 +212,7 @@ class Alumno {
 Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia al objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
 
 Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
-3. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
+1. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
 ```javascript
     getInfo() {
         return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
@@ -183,7 +220,7 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
     }
 ```
 
-1. Pasándole _this_ como parámetro a la función
+2. Pasándole _this_ como parámetro a la función
 ```javascript
     getInfo() {
         return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
@@ -193,7 +230,7 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
     }
 ```
 
-2. Guardando el valor en otra variable (como _that_)
+3. Guardando el valor en otra variable (como _that_)
 ```javascript
     getInfo() {
         let that = this;
@@ -204,7 +241,46 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
     }
 ```
 
-4. Haciendo un _bind_ de _this_ (lo varemos al hablar de eventos)
+4. Haciendo un _bind_ de _this_ (lo veremos de nuevo al hablar de eventos)
+```javascript
+class Alumno {
+    ...
+    getInfo() {
+        return 'El alumno ' + nomAlum.bind(this) + ' tiene ' + this.edad + ' años'
+        function nomAlum() {
+            return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
+        }
+    }
+}
+```
+
+Al llamar a la función `nomAlumn` le _enlazamos_ (`.bind`) el valor que queremos que tenga _this_ dentro de ella, en nuestro caso el _this_ de donde hacemos la llamada.
+
+## Mixins
+Wikipedia define un mixin como una clase que contiene métodos que pueden ser utilizados por otras clases sin necesidad de heredar de ella.
+
+En Javascript se trata de un objeto que contiene métodos que podemos aplicar a una clase para datarla de ciertos comportamientos. Por ejemplo:
+```javascript
+// mixin
+let saludaMixin = {
+  saluda() {
+    alert(`Hola, soy ${this.nombre}`)
+  }
+}
+
+class Alumno {
+  constructor(nombre, apellidos, edad) {
+    ...
+  }
+  ...
+}
+
+// asignamos el mixin a la clase
+Object.assign(Alumno.prototype, saludaMixin);
+
+// Ahora el Alumno puede decir hola
+new User('Carlos', 'Pérez', 25).saluda(); // Hola, soy Carlos
+```
 
 ## Programación orientada a objetos en JS5
 > **NOTA**: este apartado está sólo para que comprendamos este código si lo vemos en algún programa pero nosotros programaremos como hemos visto antes.

@@ -13,6 +13,7 @@
     - [_Bindeo_ del objeto _this_](#bindeo-del-objeto-this)
   - [Propagación de eventos (bubbling)](#propagación-de-eventos-bubbling)
   - [innerHTML y escuchadores de eventos](#innerhtml-y-escuchadores-de-eventos)
+  - [Delegación de eventos](#delegación-de-eventos)
   - [Eventos personalizados](#eventos-personalizados)
 
 ## Introducción
@@ -138,7 +139,7 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
   * **.target**: el elemento donde se produjo el evento (puede ser _this_  o un descendiente de _this_, como en el ejemplo siguiente) 
   * **.currentTarget**: el elemento que contiene el escuchador del evento lanzado (normalmente el mismo que _this_). Por ejemplo si tenemos un _<p>_ al que le ponemos un escuchador de 'click' que dentro tiene un elemento _<span>_, si hacemos _click_ sobre el _<span>_ **event.target** será el _<span>_ que es donde hemos hecho click (está dentro de _<p>_) pero tanto _<this>_ como _event.currentTarget_ será _<p>_ (que es quien tiene el escuchador que se está ejecutando).
   * **.relatedTarget**: en un evento 'mouseover' **event.target** es el elemento donde ha entrado el puntero del ratón y **event.relatedTarget** el elemento del que ha salido. En un evento 'mouseout' sería al revés.
-  * **cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
+  * **.cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
   * **.preventDefault()**: si un evento tiene un escuchador asociado se ejecuta el código de dicho escuchador y después el navegador realiza la acción que correspondería por defecto al evento si no tuviera escuchador (por ejemplo un escuchador del evento _click_ sobre un hiperenlace hará que se ejecute su código y después saltará a la página indicada en el _href_ del hiperenlace). Este método cancela la acción por defecto del navegador para el evento. Por ejemplo si el evento era el _submit_ de un formulario éste no se enviará o si era un _click_ sobre un hiperenlace no se irá a la página indicada en él.
   * **.stopPropagation**: un evento se produce sobre un elemento y todos su padres. Por ejemplo si hacemos click en un \<span> que está en un \<p> que está en un \<div> que está en el BODY el evento se va propagando por todos estos elementos y saltarían los escuchadores asociados a todos ellos (si los hubiera). Si alguno llama a este método el evento no se propagará a los demás elementos padre.
   * dependiento del tipo de evento tendrá más propiedades:
@@ -197,9 +198,11 @@ function aceptado(param1, param2, event) {
 ## Propagación de eventos (bubbling)
 Normalmente en una página web los elementos HTML se solapan unos con otros, por ejemplo, un \<span> está en un \<p> que está en un \<div> que está en el \<body>. Si ponemos un escuchador del evento _click_ a todos ellos se ejecutarán todos ellos, pero ¿en qué orden?.
 
-Pues el W3C establecíó un modelo en el que primero se disparan los eventos de fuera hacia dentro (primero el \<body>) y al llegar al más interno (el \<spab>) se vuelven a disparar de nuevo pero de dentro hacia afuera. La primera fase se conoce como **fase de captura** y la segunda como **fase de burbujeo**. Cuando ponemos un escuchador con `addEventListener` el tercer parámetro indica en qué fase debe dispararse:
+Pues el W3C establecíó un modelo en el que primero se disparan los eventos de fuera hacia dentro (primero el \<body>) y al llegar al más interno (el \<span>) se vuelven a disparar de nuevo pero de dentro hacia afuera. La primera fase se conoce como **fase de captura** y la segunda como **fase de burbujeo**. Cuando ponemos un escuchador con `addEventListener` el tercer parámetro indica en qué fase debe dispararse:
 - **true**: en fase de captura
 - **false** (valor por defecto): en fase de burbujeo
+
+Por tanto, por defecto se disparará el escuchador más interno (el del \<span>) y continuará el resto hasta el más externo (\<body>) como si fuera una burbuja que sale afuera desde el interior.
 
 Podéis ver un ejemplo en:
 
@@ -238,13 +241,22 @@ function renderNewRow(data) {
 
 De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a renderizar todas las filas de la tabla (todo lo que hay dentro de miTabla).
 
+## Delegación de eventos
+Es un patrón de diseño que nos permite no tener que poner un escuchador a cada elemento sino uno global que haga el trabajo de todos.
+
+Por ejemplo si queremos escuchar cuándo hacemos _click_ en cada celda de la tabla en lugar de poner un escuchador en cada una (que podría tener cientos) pongo sólo 1  en la tabla y mediante la propiedad `event.target` puede saber sobre qué celda en concreto se ha hecho _click_. Esto además seguirá funcionando si dinámicamente añado nuevas celdas a la tabla ya que no son ellas las que tienen el escuchador sino la propia tabla.
+
+**NOTA**: ten en cuenta que a veces el evento se produce en alguna etiqueta interna y `event.target` no es el elemento que buscamos. Por ejemplo si hay una imagen en la celda el `event.target` podría ser la \<img> y no la \<td>. Para asegurarnos de llegar al elemento deseado podemos usar el selector `closest()` que vimos en el DOM.
+
+Podéis ver más ejemplos de delegación de eventos en [El Tutorial de JavaScript Moderno](https://es.javascript.info/event-delegation).
+
 ## Eventos personalizados
 También podemos mediante código lanzar manualmente cualquier evento sobre un elemento con el método `dispatchEvent()` e incluso crear eventos personalizados, por ejemplo:
 ```javascript
 const event = new Event('build');
 
 // Listen for the event.
-elem.addEventListener('build', (e) => { /* ... */ }, false);
+elem.addEventListener('build', (e) => { /* ... */ });
 
 // Dispatch the event.
 elem.dispatchEvent(event);

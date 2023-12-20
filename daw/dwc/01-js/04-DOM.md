@@ -129,6 +129,7 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 * `elemento.previousElementSibling`, `elemento.previousSibling`: igual pero con el hermano anterior
 * `elemento.hasChildNodes`: indica si _elemento_ tiene o no nodos hijos
 * `elemento.childElementCount`: devuelve el nº de nodos hijo de  _elemento_
+* `elemento.closest(selector)`: devuelve el ancestro más cercano que coincide con el selector. Por ejemplo si el elemento es un \<td> de una tabla entonces `elemento.closest('table')` devolverá la tabla a la que pertenece
 
 **IMPORTANTE**: a menos que me interesen comentarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
 
