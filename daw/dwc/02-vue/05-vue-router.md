@@ -2,7 +2,6 @@
 - [Vue-router](#vue-router)
   - [Introducción](#introducción)
   - [Instalación](#instalación)
-    - [Añadir vue-router a un proyecto Vue2 ya creado](#añadir-vue-router-a-un-proyecto-vue2-ya-creado)
     - [Añadir vue-router a un proyecto Vue3 ya creado](#añadir-vue-router-a-un-proyecto-vue3-ya-creado)
   - [Crear las rutas](#crear-las-rutas)
     - [Rutas dinámicas](#rutas-dinámicas)
@@ -25,59 +24,6 @@ Lo que hacemos para configurar _vue-router_ es definir rutas que _mapean_ compon
 
 ## Instalación
 La forma más sencilla es escoger la opción de _Vue-router_ al crear nuestro proyecto _Vue_. En este caso no es necesario hacer nada porque se instala y configura todo automáticamente. 
-
-### Añadir vue-router a un proyecto Vue2 ya creado
-Si queremos añadirlo a un proyecto ya creado previamente tendremos que configurarlo manualmente como haciendo:
-- se instala el paquete **vue-router** como dependencia de producción:
-```bash
-npm install -S vue-router
-```
-
-- se crea el fichero de rutas, por ejemplo en **/src/router/index.js**. Aquí se define para cada ruta de nuestra aplicación el componente que debe cargarse. Su contenido es
-
-```javascript
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
-
-Vue.use(VueRouter)
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: About
-  },
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
-
-export default router
-```
-
-- se importa dicho fichero en el **main.js** para que el almacén esté disponible para todos los componentes en la variable `this.$router`:
-
-```javascript
-...
-import router from './router'
-
-new Vue({
-  router,	
-  render: h => h(App)
-}).$mount('#app')
-```
-
-- en el _scaffolding_ del proyecto es recomendable crear una nueva carpeta _views_ donde guardar las distintas vistas de nuestra aplicación, que son componentes que renderizan una "_página_" de la aplicación. En un proyecto nuevo se nos creará automáticamente.
 
 ### Añadir vue-router a un proyecto Vue3 ya creado
 Si queremos añadirlo a un proyecto ya creado previamente tendremos que instalarlo y configurarlo manualmente nosotros. 
@@ -110,7 +56,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 
@@ -164,7 +110,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 

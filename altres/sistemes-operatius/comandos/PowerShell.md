@@ -317,6 +317,15 @@ Ejemplos:
 
 NOTA: para especificar el nombre de usuario se pone el parámetro `-Name` o no se pone nada. Para especificar el nombre completo con `New-LocalUser` el parámetro es `-FullName` y en `New-ADUser` es `-DisplayName` y además permite indicar nombre y apellidos con `-GivenName` y `-SurName` respectivamente.
 
+Un parámetro muy útil de `New-ADUser` es **`-Instance`** que permite copiar de otro usuario una serie de opciones configuradas en el mismo. Por ejemplo podemos crear una plantilla para cada tipo de usuario donde indiquemos cosas como oficina, departamento, horas de inicio de sesión, etc. Después, para crear un nuevo usuario basado en dicha plantilla haremos:
+```powershell
+$plantilla1rAsix = Get-ADUser -Identity plantilla1rAsix -Properties Office,Department,LogonHours
+
+New-ADUser "jsegura" -Path OU=1rCurs,OU=ASIX,DC=BATOI,DC=LAN -DisplayName "Juan Segura" -GivenName "Juan" -Surname "Segura" -AccountPassword (ConvertTo-SecureString 12345678 -AsPlainText -force) -OfficePhone "666 12 34 56" -ChangePasswordAtLogon $true -Enabled $true -Instance $plantilla1rAsix
+```
+
+El nuevo usuario _jsegura_ obtendrá los campos _Office, Department_ y _LogonHours_ del usuario _plantilla1rAsix_.
+
 ## Comandos para gestionar grupos
 - **`Get-LocalGroup`** /  **`Get-ADGroup`**: muestra los grupos locales / de Active Directory
 - **`New-LocalGroup`** / **`New-ADGroup`**: Crea un nuevo grupo
