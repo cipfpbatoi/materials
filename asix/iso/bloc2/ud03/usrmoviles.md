@@ -95,7 +95,7 @@ La captura siguiente es de un sistema donde un usuario móvil llamado 'opla' ha 
 ## Creación de perfiles móviles de usuario
 Lo primero que necesitamos es tener una carpeta compartida donde se crearán las carpetas con el perfil de cada usuario móvil. Como además de esta carpeta necesitaremos otras (para carpetas particulares o perfiles obligatorios que veremos más adelante) es habitual en lugar de compartir la carpeta de los perfiles, compartir una carpeta con subcarpetas para los perfiles móviles, obligatorios, carpetas particulares, etc. En ese caso la ruta de la carpeta del perfi será:
 
-```bash
+```[bash]
 \\nombre-del-servidor\carpeta-compartida\carpeta-de los-perfiles-mobiles\%USERNAME%
 ```
 
@@ -162,7 +162,9 @@ Aquí podéis ver un pequeño [vídeo de cómo cambiar el propietario](media/cam
 ### Utilizar un mismo perfil obligatorio para muchos usuarios
 Este es el caso más habitual ya que normalmente es más de un usuario quien tiene que tener perfil obligatorio y el perfil tiene que ser igual para todos. Como además ninguno de esos usuarios puede hacer cambios en el perfil (porque es obligatorio) no tiene sentido que cada usuario tenga su propio perfil sino que es mejor usar un mismo perfil para todos ellos.
 
-La forma más sencilla de hacerlo es copiando el perfil desde un equipo cliente. En primer lugar debemos tener una carpeta compartida dentro de la cual crearemos la carpeta del perfil obligatorio (seguiendo el ejemplo de los perfiles móviles podría ser la carpeta `\\srvWin\GesDomini$`). También debemos tener creado un grupo con todos los usuarios que han de utilizar este perfil obligatorio. A continuación iniciamos sesión en un equipo cliente con el usuario _Administrador_ del dominio y hacemos:
+La forma más sencilla de hacerlo es copiando el perfil desde un equipo cliente. En primer lugar debemos tener una carpeta compartida dentro de la cual crearemos la carpeta del perfil obligatorio (seguiendo el ejemplo de los perfiles móviles podría ser la carpeta `\\srvWin\GesDomini$`). También debemos tener creado un grupo con todos los usuarios que han de utilizar este perfil obligatorio. 
+
+A continuación iniciamos sesión en un equipo cliente con el usuario _Administrador_ del dominio y hacemos:
 
 1.- Vamos dónde se ven los perfiles creados en el equipo, en `Configuración -> Sistema -> Acerca de -> Configuración avanzada del sistema -> Opciones avanzadas -> Perfiles de usuario`
 
@@ -170,17 +172,19 @@ La forma más sencilla de hacerlo es copiando el perfil desde un equipo cliente.
 
 2.- Pulsamos el botón `Configuración` y accedemos a los perfiles. Seleccionamos el _Perfil predeterminado_ y pulsamos el botón `Copiar a`.
 
-3.- En `Copiar perfil en` ponemos la ruta de la carpeta del servidor donde se guardará el perfil con la extensión correspondiente (**V6** para Windows 10 y superiores). Esta carpeta se creará (no hace falta que ya esté creada). Por ejemplo:
+![Copiar perfil](media/t4-copiarPerfil.png)
 
-```bash
+3.- En `Copiar perfil en` ponemos la ruta de la carpeta del servidor donde se guardará el perfil **con la extensión correspondiente** (**V6** para Windows 10 y superiores). Esta carpeta se creará (no hace falta que ya esté creada). Por ejemplo:
+
+```[bash]
 \\srvWin\GesDominio$\PerfOblig.V6
 ```
 
-4.- En `Con permisos para usar` debemos añadir el grupo al que pertenecen los usuarios que tendrán perfil obligatorio para que puedan acceder al perfil. Sólo se puede poner un grupo (si queremos que el perfil sea para más de un grupo crearemos un nuevo grupo que los englobe). Para añadir el grupo en la ventana de **Seleccionar usuario o grupo** pondremos su nombre pero antes debemos pulsar el botón de **Avanzados** y en la ventana que se abra vamos a **Tipo de objetos** y marcamos la casilla de **_Grupos_** que por defecto está desmarcada. Ahora ya encontrará el grupo que queremos y lo seleccionaremos para permitir a sus miembros acceder a la carpeta en la que se copiará el perfil.
+4.- En `Con permisos para usar` debemos poner el grupo al que pertenecen los usuarios que tendrán perfil obligatorio para que puedan acceder al perfil. Sólo se puede poner un grupo (si queremos que el perfil sea para más de un grupo crearemos un nuevo grupo que los englobe). Para añadir el grupo pondremos su nombre en la ventana de **Seleccionar usuario o grupo**, pero antes debemos pulsar el botón de **Avanzados** y en la ventana que se abra vamos a **Tipo de objetos** y marcamos la casilla de **_Grupos_** que por defecto está desmarcada. Ahora ya encontrará el grupo que queremos y lo seleccionaremos para permitir a sus miembros acceder a la carpeta en la que se copiará el perfil.
 
-![Copiar perfil](media/t4-copiarPerfil.png)
+Con esto ya tenemos el perfil creado en la carpeta del servidor indicada y con los permisos establecidos para el grupo indicado, por lo que ya podemos cerrar la sesión en el cliente. 
 
-Con esto ya tenemos el perfil creado en la carpeta del servidor indicada y con los permisos establecidos para el grupo indicado. Sólo falta hacerlo obligatorio y para esto cerramos sesión en el cliente y vamos a la carpeta que acaba de crearse en el servidor (y a la que sí podemos entrar sin tener que cambiar el propietario) para cambiar el nombre del fichero _NTUSER.DAT_ por **NTUSER.MAN**.
+Falta hacer obligatorio el perfil para lo que vamos a la carpeta que acaba de crearse en el servidor (y a la que sí podemos entrar sin tener que cambiar el propietario) para cambiar el nombre del fichero _NTUSER.DAT_ por **NTUSER.MAN**.
 
 Ahora modificamos las cuentas de los usuarios que tendrán perfil obligatorio para poner en la pestaña Perfil la ruta en la que hemos copiado este perfil. Tened en cuenta que ahora la ruta **no terminará en `%USERNAME%`** porque no queremos una carpeta de perfil diferente para cada usuario sino que todos tendrán el mismo perfil. Recordad que **NUNCA** debemos poner en la ruta la extensión V6:
 
@@ -215,7 +219,8 @@ Una vez creada configuramos la cuenta de los usuarios igual que con los perfiles
 ![Carpeta particular](media/t4-12carpPart.png)
 
 Elegimos la letra de unidad a la que se conectará la carpeta personal del usuario. En el ejemplo en el equipo cliente aparecerá un nuevo disco `Z:` y cuando el usuario entre en él estará accediendo a su carpeta particular. La ruta que pondremos, siguiendo el ejemplo del perfil móvil será
-```bash
+
+```[bash]
 \\srvWin\GesDominio$\CarpPers\%USERNAME%
 ```
 
