@@ -10,7 +10,7 @@
     - [select](#select)
     - [Ejemplo](#ejemplo)
 - [Validar formularios](#validar-formularios)
-  - [Validar con VeeValidate v4 y posteriores (para Vue3)](#validar-con-veevalidate-v4-y-posteriores-para-vue3)
+  - [Validar con VeeValidate](#validar-con-veevalidate)
     - [Validar otros inputs](#validar-otros-inputs)
     - [Usar un _schema_](#usar-un-schema)
     - [Validar con vee-validate y yup](#validar-con-vee-validate-y-yup)
@@ -120,7 +120,7 @@ Todo esto es incómodo y poco productivo. Para mejorarlo podemos usar una de las
 * [VueFormGenerator](https://github.com/vue-generators/vue-form-generator)
 * ...
 
-## Validar con VeeValidate v4 y posteriores (para Vue3)
+## Validar con VeeValidate
 Tenéis toda la información así como un tutorial de cómo usar este librería en la [documentación de VeeValidate](https://vee-validate.logaretm.com/v4/)).
 
 La forma de instalarla es
@@ -128,15 +128,15 @@ La forma de instalarla es
 npm install vee-validate -S
 ```
 
-Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field>` y la etiqueta `<form>` por el componente `<Form>` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_. 
+Y para usarla simplemente cambiaremos la etiqueta `<input>` por el componente `<Field>` y la etiqueta `<form>` por el componente `<Form>` pero quitándole el modificador `.prevent` del escuchador `@submit` y haciendo que la función manejadora reciba un parámetro llamado _values_ que es un objeto con los valores de los _inputs_ del formulario.
 
-Los _inputs_ ya no necesitan `v-model` porque sus valores se guardarán en el objeto _values_ pero sí necesitan atributo `name` que es el nombre del campo en que se guardará el valor de ese _input_ deontro del objeto que recibe como parámetro la función manejadora del `@submit`.
+Cada componente _Field_ necesitará un atributo `name` que es el nombre del campo con el valor de ese _input_ dentro del objeto _values_. Si el formulario es sólo para recoger datos, no para modificar datos existentes no necesitamos la directiva `v-model` porque sus valores se guardarán en el objeto _values_ que recibe la función manejadora del `@submit`. Sin embargo si debe mostrar datos que pueden cambiar tras la carga del componente mantendremos el atributo `v-model` (como en la práctica que estamos haciendo, que si nos pasan una _id_ cargamos el libro con dicha id y lo mostramos en el formlario para editarlo). 
 
 Para validar un campo se le añade al componente un atributo `:rules` con la función a ejecutar, que devolverá el mensaje a mostrar en caso de error o _true_ si es correcto. El mensaje se mostrará en un componente llamado `ErrorMessage` (que deberemos importar y registrar) cuyo atributo `name` debe ser igual al del campo a validar. Si alguna de las funciones de validación no devuelve _true_ no se ejecuta la función manejadora del _submit_.
 
 Habrá que importar los componentes de`'vee-validate'` que se usen (_Form_, _Field_, _ErrorMessage_) y registrarlos.
 
-Al no usar `v-model` para darle un valor por defecto a los inputs (por ejemplo, si estamos editando un objeto que ya tiene valores) le pasaremos el objeto con los valores al componente `<Form>` en un atributo llamado `initial-values`. 
+Si no usamos `v-model` podemos darle un valor por defecto a los inputs (por ejemplo, si estamos editando un objeto que ya tiene valores) pasándole el objeto con los valores al componente `<Form>` en un atributo llamado `initial-values`. Pero si cambien esos valores tras cargar el componente no se reflejarán los cambios (para ello debemos usar `v-model`).
 
 Por ejemplo si estamos editando el objeto
 ```javascript
@@ -159,7 +159,7 @@ el formulario sería:
   </Form>
 ```
 
-Si el objeto _product_ está vacío el formulario aparecerá en blanco pero si contiene datos se mostrarán en el formulario.
+Si el objeto _product_ está vacío el formulario aparecerá en blanco pero si contiene datos se mostrarán en el formulario. Sin embargo si modificamos los datos de _product_ esos cambios no se reflejan en el formlario a menos que usemos `v-model`.
 
 A continuación tenéis un ejemplo completo de un formulario para validar un email y una contraseña (Fuente [https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue](https://codesandbox.io/s/vee-validate-basic-example-nc7eh?from-embed=&file=/src/App.vue)):
 ```vue
@@ -239,6 +239,8 @@ Para validar un `<select>` simplemente lo cambiamos por un `<Field as="select">`
 <ErrorMessage name="autor" />
 ```
 
+Para un _textarea_ pondremos un `<Field as="textarea">`.
+
 En el caso de un _checkbox_ o un _radiobutton_ simplemente añadimos al `Field` un atributo `type` indicando su tipo:
 ```html
 <Field name="drink" type="radio" value="Water" /> Water
@@ -247,8 +249,6 @@ En el caso de un _checkbox_ o un _radiobutton_ simplemente añadimos al `Field` 
 ```
 
 Si se trata de varios _checkbox_ con el mismo atributo _name_ en _values_ se recibirá un array con los _values_ de los elementos marcados.
-
-Para un _textarea_ pondremos un `<Field as="textarea">`.
 
 ### Usar un _schema_
 El problema de validar los datos así es que tenemos varias funciones independientes que validan los distintos _inputs_ lo que dispersa el código de la vaidación.
@@ -529,5 +529,3 @@ export default {
 }
 </script>
 ```
-
-
