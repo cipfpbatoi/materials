@@ -10,6 +10,7 @@
     - [Reglas de aplicación de permisos](#reglas-de-aplicación-de-permisos)
   - [Permisos SMB](#permisos-smb)
   - [Consideraciones sobre los permisos](#consideraciones-sobre-los-permisos)
+  - [Política recomendada de asignación de permisos](#política-recomendada-de-asignación-de-permisos)
 
 ## Introducción
 Para establecer las acciones que un usuario (o grupo) puede o no llevar a cabo en el sistema se definen permisos y derechos:
@@ -144,7 +145,22 @@ Hay que recordar que los permisos SMB sólo se aplican cuando el usuario accede 
 
 ## Consideraciones sobre los permisos
 - Siempre daremos permisos a grupos y no a usuarios individuales puesto que así será mucho más fácil su administración. 
-- Intentaremos no dar nunca permisos al grupo _Todos_, mejor darlos al grupo _Usuarios_ o _Usuarios del dominio_.
+- Intentaremos no dar nunca permisos al grupo _Todos_, mejor darlos al grupo _Usuarios_ o _Usuarios del dominio_, y mejor aún a grupos creados por nosotros
 - Intentaremos no utilizar la opción de _denegar_, especialmente sobre grupos genéricos como _Usuarios_ o _Todos_, puesto que esta opción tiene prioridad sobre _Permitir_. Por ejemplo si permitimos el permiso de _Control total_ al usuario _Administrador_ pero lo denegamos para el grupo _Todos_, como el _Administrador_ también pertenece a este grupo estamos dándole y quitándole el permiso y denegar tiene prioridad con lo cual no tendría ningún permiso sobre el recurso.
 - En caso de no marcar ningún permiso en un grupo este no tendría ningún permiso. En este caso es mejor quitar ese grupo
 
+## Política recomendada de asignación de permisos
+En el tema anterior ya explicamos que la manera de organizar los usuarios y grupos que recomienda Windows en un entorno con varios dominios es la llamada **A G DL P** (Accounts -cuentas de usuario-, Global, Domain Local, Permissions):
+- Añadimos los usuarios a grupos globales, según las labores que ejerzan en la organización.
+- Incluimos los grupos globales en grupos de dominio local según el nivel de acceso que tengan que tener.
+- Asignamos permisos y derechos únicamente a estos grupos de dominio local.
+
+![A G DL P](../ud03/media/agdlp.jpg)
+
+Por ejemplo, tenemos una carpeta a la que deben acceder sólo los administrativos para ver el contenido y los jefes y comerciales para modificarlo. Lo que debemos hacer es:
+1. Creamos los grupos globales para los tipos de usuarios que tenemos: _ggAdministrativos, ggJefes_ y _ggComerciales_
+2. Añadimos los usuarios a esos _gg_
+3. Creadmos los grupos de dominio local con los diferentes roles que tendrán lo usuarios en esa carpeta: _gdlAcceder_ y _gldModificar_
+4. Añadimos al _gdlAcceder_ el grupo _ggAdministrativos y al _gldModificar_ los grupos ggJefes_ y _ggComerciales_
+
+Si no lo tenemos claro conviene recordar [lo que vimos en el tema anterior](../ud03/objetos.html#organización-de-los-grupos) a este respecto.

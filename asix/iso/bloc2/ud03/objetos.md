@@ -9,6 +9,7 @@
     - [Modificar una cuenta de usuario](#modificar-una-cuenta-de-usuario)
     - [Otras operaciones comunes](#otras-operaciones-comunes)
   - [Grupos](#grupos)
+    - [Organización de los grupos](#organización-de-los-grupos)
     - [Creación de cuentas de grupo](#creación-de-cuentas-de-grupo)
     - [Modificar un grupo](#modificar-un-grupo)
     - [Añadir miembros a un grupo](#añadir-miembros-a-un-grupo)
@@ -172,17 +173,18 @@ Por lo tanto, la administración de la protección en cada ordenador del dominio
 
 En relación con esto, es importante saber que cuando un ordenador pasa a ser miembro de un dominio, el grupo global _Administradores del dominio_ se incluye automáticamente en el grupo local _Administradores_ de este ordenador. De igual forma, el grupo global _Usuarios del dominio_ se incluye dentro del grupo local _Usuarios_. De esta forma, los administradores y usuarios del dominio tienen en cada equipo miembro los mismos derechos y permisos que los que tengan ya definidos los administradores y usuarios locales.
 
+### Organización de los grupos
 La manera de organizar los usuarios y grupos que recomienda Windows en un entorno con varios dominios es la llamada **A G DL P** (Accounts -cuentas de usuario-, Global, Domain Local, Permissions):
-- **Asignar usuarios a grupos globales**, según las labores que ejerzan en la organización.
-- **Incluir usuarios y/o grupos globales en grupos locales** según el nivel de acceso que tengan que tener.
-- **Asignar permisos y derechos únicamente a estos grupos locales**.
+- **Añadir los usuarios a grupos globales**, según las labores que ejerzan en la organización.
+- **Incluir los grupos globales en grupos de dominio local** según el nivel de acceso que tengan que tener.
+- **Asignar permisos y derechos únicamente a estos grupos de dominio local**.
 
 ![A G DL P](media/agdlp.jpg)
 
 Los pasos a seguir son:
 - En primer lugar tenemos que identificar los tipos de usuarios que tendremos (por ejemplo, todos los empleados del departamento de informática)
 - A continuación se crea un grupo global para agrupar esos usuarios similares (ej. _ggInformáticos_)
-- Determinar si para lo que queremos hacer (por ejemplo permitir a los informáticos imprimir en una impresora de red) podemos utilizar uno de los grupos integrados (como _Usuarios del dominio_ o _Administradores_) o tenemos que crear un nuevo grupo local de dominio. En este caso crearemos un nuevo grupo local de dominio llamado _gdlUsuarios de impresora_
+- Determinar si para lo que queremos hacer (por ejemplo permitir a los informáticos imprimir en una impresora de red) podemos utilizar uno de los grupos integrados (como _Usuarios del dominio_ o _Administradores_) o tenemos que crear un nuevo grupo de dominio local. En este caso crearemos un nuevo grupo de dominio local llamado _gdlUsuarios de impresora_
 - A continuación tenemos que identificar todos los grupos de usuarios con las esas necesidades (imprimir en la impresora de red) y añadirlos al grupo local creado anteriormente (añadiremos el grupo _ggInformáticos_ al _gdlUsuarios de impresora_)
 - En el recurso Impresora concederemos los permisos necesarios para que puedan imprimir los miembros del grupo _gdlUsuarios de impresora_
 
