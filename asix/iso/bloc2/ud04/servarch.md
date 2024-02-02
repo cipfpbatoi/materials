@@ -56,15 +56,17 @@ Para ello vamos a la OU donde queramos publicarla y escogemos `Nuevo -> Carpeta 
 NOTA: este proceso no crea la carpeta compartida. La debemos haber creado y compartido previamente
 
 ## Grupos de almacenamiento
-Los grupos de almacenamiento (_storage pools_) permiten gestionar los discos de manera más eficiente. Su funcionamiento es similar a los discos LVM de Linux y los pasos a realizar son:
+Los grupos de almacenamiento (_storage pools_) permiten virtualizar el almacenamiento de manera similar a los discos LVM de Linux. Los discos físicos se agrupan para crear _pools_ de almacenamiento que se usan para crear espacios de almacenamiento virtual.
+
+Los pasos a realizar son:
 
 ![Storage Spaces Workflow](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/media/deploy-standalone-storage-spaces/storage-spaces-workflow.png)
 
-- Creamos un **grupo de almacenamiento** al que le asignamos los discos físicos que queramos, sin particionar. Posteriormente podremos añadir más discos. A la hora de añadir cada disco tenemos 3 opciones:
+- Creamos un **grupo de almacenamiento** (_Storage Pool_) al que le asignamos los discos físicos que queramos, sin particionar. Posteriormente podremos añadir más discos. A la hora de añadir cada disco tenemos 3 opciones:
   - Automático: el espacio del disco forma parte del grupo y se pueden guardar cosas en él
   - Reserva activa (_Hot spare_): el espacio del disco no se suma a los demás sino que queda a la espera y entrará a formar parte del volumen si otro disco falla. Esta opción sólo tiene sentido se hemos elegido RAID1 o RAID5
   - Manual: su espacio no se suma hasta que manualmente lo asignemos
-- En ese grupo creamos un **espacio de almacenamiento** o _disco virtual_ con el que trabajaremos, que se comportará como un disco real que podremos ver desde el _Administrador de discos_. Al crearlo especificaremos:
+- En ese grupo creamos los **espacios de almacenamiento** o discos virtuales (_Storage Spaces_) con los que trabajaremos. Cada uno se comportará como un disco real que podremos ver desde el _Administrador de discos_. Al crearlo especificaremos:
   - Distribución de almacenamiento: nos permite elegir entre un disco _Simple_ (que realizará RAID0 entre todos los discos físicos del grupo), _Mirror_ (RAID1) o _Parity_ (RAID5)
   - Aprovisionamiento: elegimos si será _Delgado_ o _Fijo_. La primera opción es como los discos dinámicos de Virtualbox donde no se asigna al disco todo su espacio sino que se le va asignando según lo va necesitando
   - Reconocimiento de contenedor: podemos marcarlo si los discos están en diferentes chasis JBOD (_Just a Brunch Of Disks_) y en ese caso se encarga de que tengamos tolerancia a fallos a nivel de chasis

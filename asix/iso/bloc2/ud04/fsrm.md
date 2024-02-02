@@ -9,7 +9,7 @@
     - [Ejemplo creación de filtro de archivos](#ejemplo-creación-de-filtro-de-archivos)
 
 ## Introducción
-Se trata de un rol que nos permite configurar más cosas en los recursos, como cuotas de disco. Este rol se encuentra dentro de `Servicios de archivo y almacenamiento -> Servicios de iSCSI y archivo`.
+Se trata de un rol que nos permite configurar más cosas en los recursos, como cuotas de disco o filtrado de archivos. Este rol se encuentra dentro de `Servicios de archivo y almacenamiento -> Servicios de iSCSI y archivo`.
 
 Tras instalarlo podemos abrirlo desde las _Herramientas_ del _Administrador del servidor_:
 
@@ -22,9 +22,10 @@ Tras instalarlo podemos abrirlo desde las _Herramientas_ del _Administrador del 
 
 Lo que podemos gestionar desde aquí es:
 - Cuotas de disco
+- Cuotas a nivel de carpeta compartida
 - Filtrado de archivos
 - Informes de almacenamiento: podemos ver los informes generados automáticamente al configurar cuotas o filtrados
-- Clasificaciones
+- Clasificaciones de archivos (según su tipo, antigüedad, ...)
 - Tareas de administración de archivos
 
 ## Cuotas de carpeta

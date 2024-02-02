@@ -13,8 +13,8 @@
 ## Introducción
 Antes de ver cómo compartir una impresora vamos a aclara 3 conceptos que se usan en los sistemas de impresión en red:
 - **Impresora**: dispositivo donde se imprimen los trabajos. Puede atender a una o más colas de impresión. Se trata de la impresora física que tenemos
-- **Cola de impresión**: archivo donde se almacenan los trabajos a imprimir a la espera de ser enviados a la impresora. Una cola puede enviar sus trabajos a una o más impresoras. Esta es la impresora lógica que vemos en Windows
-- **Servidor de impresión**: ordenador al que está conectada la impresora (localmente o por red) que le envía los trabajos de su cola de impresión. Un servidor puede gestionar una o más impresoras (y por tanto tendrá una o más colas de impresión)
+- **Cola de impresión**: espacio donde se almacenan los trabajos a imprimir a la espera de ser enviados a la impresora. Una cola puede enviar sus trabajos a una o a varias impresoras. Esta es la impresora lógica que tenemos en Windows cuando instalamos una impresora
+- **Servidor de impresión**: ordenador al que está conectada la impresora (localmente o por red) y que le envía los trabajos de su cola de impresión. Un servidor puede gestionar una o varias colas de impresión
 
 Es posible utilizar una impresora conectada directamente a la red sin usar un servidor de impresión: cada cliente añade esa impresora (se crea su cola de impresión en su carpeta de _Impresoras_). Esto tiene ciertos inconvenientes:
 - cada equipo tiene su propia cola de impresión y sólo ve los trabajos pendientes de imprimir desde ese equipo
@@ -28,12 +28,12 @@ Utilizar un servidor tiene las siguientes ventajas:
 - todos los equipos conocen el estado de la impresora y si hay errores
 - parte del procesamiento de los trabajos se hace en el servidor de impresión
 
-Si la impresión en nuestra empresa empieza a requerir muchos recursos siempre es mejor instalar uno (o más) servidores de impresión dedicados y liberar de esta tarea al DC. No hace falta que sean máquinas muy potentes puesto que sólo necesitarán suficiente RAM para procesar los trabajos y espacio vacío en disco para almacenar las colas de impresión.
+Si la impresión en nuestra empresa empieza a requerir muchos recursos siempre es mejor instalar uno (o más) servidores de impresión dedicados y liberar de esta tarea al DC. No hace falta que sean máquinas potentes puesto que sólo necesitarán suficiente RAM para procesar los trabajos y espacio vacío en disco para almacenar las colas de impresión.
 
 Es recomendable dedicar un volumen del disco a la cola de impresión o, en todo caso, que no esté en el mismo volumen del sistema: la gestión de la cola implica crear muchos ficheros en disco que son eliminados muy rápidamente lo que favorece la fragmentación del volumen donde se encuentra.
 
 ## Administración de impresión
-Podemos gestionar las impresoras desde el Panel de control, pero además tenemos la herramienta de _Administrador de impresión_ desde la cual podemos administrar centralizadamente todos los servidores de impresión y todas las impresoras instaladas. También facilitan la administración de las diferentes colas de impresión y nos notifican si una cola deja de procesar trabajo.
+Podemos gestionar las impresoras desde el Panel de control, pero además tenemos la herramienta de _Administrador de impresión_ desde la cual podemos administrar centralizadamente todos los servidores de impresión y todas las impresoras instaladas. También facilitan la administración de las diferentes colas de impresión y nos notifican si una cola deja de procesar trabajo. Para tenerlo disponible hemos de instalar el rol de _Servidor de impresión_.
 
 ![Administración de impresión](media/t5-39imprServ.png)
 
@@ -52,16 +52,16 @@ También es posible (y recomendable) hacerlo desde la herramienta **_Administrac
 
 **NOTA**: esta herramienta nos muestra el servidor local por lo que si queremos administrar otro servidor debemos instalar en él el rol de **`Servidor de impresión`** y después añadirlo desde el `menú Acción -> Agregar o quitar servidores` en la herramienta de _Administración de impresión_ del equipo en que lo queremos administrar. Podemos ver un vídeo de [cómo añadir una impresora](https://youtu.be/YGPE3Owa-WE).
 
-Lo normal es que se hubiera detectado la impresora en la primera pantalla pero como estamos instalando una impresora que no existe no es detectada (ni tampoco más adelante cuando le indicamos su IP).
+Al instalar una impresora lo normal es que se detecte en la primera pantalla, pero como nosotros estamos instalando una impresora que no existe no es detectada (ni tampoco más adelante cuando le indicamos su IP).
 
-En este ejemplo la impresora estaba conectada al switch y tiene su propia IP (es lo normal) aunque podría también haber estado conectada directamente al servidor.
+En este ejemplo la impresora estará conectada al switch y tendrá su propia IP (es lo normal) aunque podría también haber estado conectada directamente al servidor.
 
 ## Configurar una impresora
-Desde su menú contextual seleccionamos _Propiedades_ y podemos configurar la impresora. Las diferentes pestañas que encontramos son:
+Desde su menú contextual seleccionamos _Props de la impresora_ y podemos configurar la impresora. Las diferentes pestañas que encontramos son:
 - **General**: nombre de la impresora y preferencias (papel vertical u horizontal, color o blanco y negro, pagines por hoja, etc)
 - **Compartir**: si queremos compartir la impresora  indicaremos en qué equipo (el cliente o el servidor) se procesan los trabajos y si queremos publicar la impresora en el _Active Directory_ (esto permitirá que aparezca en la herramienta de _Buscar_). El botón de _Controladores adicionales_ nos permiten instalar los controladores que necesitarán los diferentes clientes
 - **Puertos**: podemos ver y configurar los puertos de las diferentes impresoras. Normalmente se tratará de puertos TCP/IP
-- **Opciones avanzadas**: cuando está disponible la impresora, tipo de controlador y gestión de la cola de impresión. Es importante no marcar la opción de _Imprimir directamente_ porque la aplicación que envía un documento a la impresora se quedará esperando a que termine la impresión para continuar.
+- **Opciones avanzadas**: cuando está disponible la impresora, tipo de controlador y gestión de la cola de impresión. Es importante no marcar la opción de _Imprimir directamente_ para evitar que la aplicación que envía un documento a la impresora se quede esperando a que termine el proceso del trabajo para continuar.
 - **Administración del color**: configuración del color
 - **Configuración del dispositivo**: opciones adicionales de configuración
 - **Seguridad**: lo veremos en el siguiente punto
@@ -80,7 +80,7 @@ Lo normal es instalar una cola de impresión por cada impresora de que disponemo
 ### Creación de un Grupo o Reserva de impresoras
 Se trata de una impresora lógica (una cola) conectada a varias impresoras físicas iguales o similares (tienen que utilizar el mismo driver).
 
-Su objetivo es que todos los usuarios envíen sus trabajos a la única impresora que les aparece (una sola cola) y estos trabajos se enviarán a imprimir a la primera impresora física disponible de esta cola.
+Su objetivo es que todos los usuarios envíen sus trabajos a la única impresora que les aparece (una sola cola) y estos trabajos se imprimirán por la primera impresora física disponible de esta cola.
 
 Lo que tenemos que hacer es instalar una impresora cómo hemos visto antes y una vez instalada, desde sus _Propiedades_ abrimos la pestaña **_Puertos_** y añadimos todos los puertos a los que tengamos conectada una impresora de este grupo. Para marcar más de un puerto tenemos que marcar la casilla de _Habilitar la cola de la impresora_ (o utilizar el botón derecho del ratón).
 
@@ -89,12 +89,12 @@ Lo que tenemos que hacer es instalar una impresora cómo hemos visto antes y una
 ### Prioridad de impresión
 Este caso lo usaremos cuando disponemos de una impresora pero queremos que un grupo de usuarios tenga preferencia sobre otros a la hora de imprimir.
 
-Se puede modificar la prioridad de un trabajo de la cola para que se imprima antes de que otras. Para lo cual abrimos la impresora a la que hemos enviado el trabajo y se muestra la cola de trabajos pendientes. Desde el menú contextual del trabajo a modificar seleccionamos Propiedades y en la pestaña General podemos aumentar o reducir la prioridad del trabajo. También podemos programar en qué intervalo horario tiene que imprimirse el trabajo.
+Se puede modificar la prioridad de un trabajo de la cola para que se imprima antes que otros. Para ello abrimos la impresora a la que hemos enviado el trabajo y se muestra la cola de trabajos pendientes. Desde el menú contextual del trabajo a modificar seleccionamos _Propiedades_ y en la pestaña _General_ podemos aumentar o reducir la prioridad del trabajo. También podemos programar en qué intervalo horario tiene que imprimirse el trabajo.
 
 Pero es incómodo tener que hacer esto cada vez. Una opción mejor es crear varias impresoras lógicas (tantas como prioridades se quieran definir) de una única impresora física. Los pasos a seguir son:
 1. instalamos la primera impresora con su puerto correspondiente
 2. instalamos una nueva impresora en el mismo puerto de la impresora ya instalada
-3. una vez instalada abrimos sus _Propiedades_ y en la pestaña de _Opciones avanzadas_ establecemos una **_Prioridad_** diferente para la nueva impresora. Será la prioridad que tengan por defecto los trabajos que se envían a esta impresora
+3. una vez instalada abrimos sus _Propiedades_ y en la pestaña de _Opciones avanzadas_ establecemos una **_Prioridad_** diferente para la nueva impresora (un nº mayor indica más prioridad). Será la prioridad que tengan por defecto los trabajos que se envían a esta impresora
 4. establecemos los permisos de qué grupos pueden imprimir en cada impresora como necesitemos (podemos optar porque unos usuarios utilicen sólo la de baja prioridad y otros la otra o bien que todos los usuarios tengan acceso a las dos impresoras y sean ellos los que envíen los trabajos a una u otra impresora en función de la urgencia de los trabajos).
 
 ### Trabajos muy largos
