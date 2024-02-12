@@ -33,12 +33,12 @@ Algunas de las opciones que podríamos configurar aquí son:
 - etc
 
 ## Cómo configurar la seguridad del dominio
-Por defecto ya está configurada la seguridad en la directiva Default Domain Policy. Incluye entre otras cosas todo lo relativo a las contraseñas: definimos cómo han de ser las contraseñas de los usuarios, cada cuanto tiempo las deben cambiar o bloqueamos una cuenta tras varios intentos erróneos de inicio de sesión.
+Por defecto ya está configurada la seguridad en la directiva **`Default Domain Policy`**. Incluye entre otras cosas todo lo relativo a las contraseñas: definimos cómo han de ser las contraseñas de los usuarios, cada cuanto tiempo las deben cambiar o bloqueamos una cuenta tras varios intentos erróneos de inicio de sesión.
 
-La mayoría de estas opciones se encuentran en Configuración de equipo->Directivas-> Configuración de Windows->Configuración de seguridad.
+La mayoría de estas opciones se encuentran en `Configuración de equipo->Directivas-> Configuración de Windows->Configuración de seguridad`.
 
 Para modificar cualquier opción relacionada con las contraseñas y la seguridad del dominio tenemos 2 opciones:
-- Modificar esta directiva (es la forma más sencilla)
+- Modificar esta directiva (es la forma más sencilla y como lo haremos)
 - Crear una nueva directiva y asegurarnos de que se aplica después que la _Default Domain Policy_ (aplicándola a nivel de OU o, si al aplicamos al dominio, haciendo que su orden sea posterior a la Default Domain Policy). Así los valores que establece la Default Domain Policy serán sobreescritos por los de nuestra propia directiva
 
 ## Cómo ejecutar scripts automáticamente
@@ -47,27 +47,27 @@ Podemos crear una directiva que ejecute automáticamente un script al arrancar u
 **NOTA**: también se puede ejecutar un script de inicio de sesión para un usuario indicándolo en las propiedades de su cuenta, desde la pestaña **Perfil**. En este caso el script tiene que guardarse obligatoriamente dentro de la carpeta compartida **NETLOGON**.
 
 ## Cómo asignar una letra de unidad a una carpeta compartida
-Podríamos hacerlo creando un script y una directiva que lo ejecutara al iniciar sesión el usuario, como hemos visto antes. El contenido del script sería algo como:
+La forma más sencilla es desde `Configuración de usuario->Preferencias->Configuración de Windows->Asignación de unidades`. Allí elegimos `Nuevo->Asignar unidad` y especificamos la ruta de la carpeta y la letra de unidad a usar:
+
+![GPO - asignar unidad](media/GPOasignarUnidad.png)
+
+En lugar de hacerlo así podríamos hacerlo creando un script y una directiva que lo ejecutara al iniciar sesión el usuario, como hemos visto antes. El contenido del script sería algo como:
 ```cmd
 net use H: \\Servidor\carpeta_compartida
 ```
 
 Este comando monta en la unidad **H:** el recurso que se encuentra en **\\Servidor\carpeta_compartida**
 
-Pero hay una forma aún más sencilla y es desde `Configuración de usuario->Preferencias->Configuración de Windows->Asignación de unidades`. Allí elegimos `Nuevo->Asignar unidad` y especificamos la ruta de la carpeta y la letra de unidad a usar:
-
-![GPO - asignar unidad](media/GPOasignarUnidad.png)
-
 ## Cómo implementar software en los equipos clientes
 Con directivas de grupo se puede distribuir el software entre los clientes de forma que un usuario tenga siempre a su alcance los programas que necesita para su trabajo.
 
-Para la instalación de programas se utiliza _Windows Installer_ que es un componente que automatiza el proceso de instalación y actualización de software. El programa a instalar se tiene que incluir en un paquete que es un archivo con extensión **.msi**. Todos los paquetes a distribuir tienen que estar en un punto de distribución de software accesible desde la red para los usuarios.
+Para la instalación de programas se utiliza _**Windows Installer**_ que es un componente que automatiza el proceso de instalación y actualización de software. El programa a instalar se tiene que incluir en un paquete que es un archivo con extensión **.msi**. Todos los paquetes a distribuir tienen que estar en un punto de distribución de software accesible desde la red para los usuarios.
 
 Hay dos maneras de distribuir software: **asignándolo** o **publicándolo**. Cuando asignamos un programa a un equipo o usuario el programa se instala automáticamente cuando se inicia el equipo o cuando inicia sesión el usuario (según si configuramos la GPO por equipo o por usuario).
 
 Podemos asignar un programa de dos formas:
-- en la configuración del equipo: el programa se instala automáticamente al iniciar el equipo (recomendada)
-- en la configuración del usuario: cuando el usuario inicia sesión en el Escritorio aparece un icono para instalar el programa. El programa se instala cuando el usuario hace doble clic en el icono o cuando abre un fichero asociado al programa (por ejemplo si el programa es Word se instalaría al abrir un documento con extensión .docx). Si el usuario no activa el programa no se instalará
+- en la configuración del equipo: el programa se instala automáticamente al iniciar el equipo (recomendada). Sólo permite programas asignados
+- en la configuración del usuario: cuando el usuario inicia sesión en el `Panel de control->Programas->Instalar un programa desde la red` aparece el programa y el usuario puede instalarlo. También se instala cuando el usuario abre un fichero asociado al programa (por ejemplo si el programa es Word se instalaría al abrir un documento con extensión `.docx`). Si el usuario no activa el programa no se instalará
 
 Cuando publicamos un programa el usuario lo tiene a su disposición para instalarlo sí lo desea. Sólo se puede publicar un programa en la configuración del usuario, no en la del equipo. Un programa publicado se instala en el equipo cliente de dos formas:
 - El usuario instala el programa desde el `Panel de control->Programas->Instalar un programa desde la red`
