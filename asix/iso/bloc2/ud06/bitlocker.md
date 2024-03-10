@@ -12,10 +12,10 @@ Una vez reiniciado lo activaremos desde el _Panel de control -> Sistema y seguri
 ![Bitlocker](media/bitlocker-1-panelControl.png)
 
 BitLocker utiliza el chip **_TPM_** para almacenar la clave de cifrado. Si no lo tenemos (como pasa con las máquinas virtuales de Virtualbox) podemos usar BitLocker pero debemos configurar otra forma de desencriptar los datos:
-- o bien esceribimos una contraseña al arrancar el equipo, antes de cargarse el sistema operativo
+- o bien escribimos una contraseña al arrancar el equipo, antes de cargarse el sistema operativo
 - o arrancamos con un USB extraíble en el que hayamos guardado la clave
 
-Para permitir esto debemos habilitar en la directiva local (gpedit.msc) o en una GPO, en '_Configuración del equipo -> Plantillas administrativas -> Componentes de Windows -> Cifrado de unidad de BitLocker -> Unidades del sistema operativo_' la directiva '_Requerir autenticación adicional al iniciar_' y marcar la casilla 'Permitir Biltlocker sin un TPM compatible':
+Para permitir esto debemos habilitar en la directiva local (gpedit.msc) o en una GPO, en _`Configuración del equipo -> Plantillas administrativas -> Componentes de Windows -> Cifrado de unidad de BitLocker -> Unidades del sistema operativo`_ la directiva _`Requerir autenticación adicional al iniciar`_ y marcar la casilla `Permitir Biltlocker sin un TPM compatible`:
 
 ![Directiva Bitlocker sin TMP](media/bitlocker-3-directiva.png)
 
@@ -27,7 +27,7 @@ A continuación nos pregunta dónde guardar una copia de seguridad de la clave d
 
 Luego pregunta si cifrar todo el disco o sólo lo usado y qué tipo de cifrado usar (el nuevo es más seguro). Por último pregunta si realizar una comprobación de que Bitlocker puede acceder a los datos cifrados (por defecto sí) y tras reiniciar de nuevo la máquina comienza el cifrado, que tardará bastantes minutos o incluso horas en función de la cantidad de datos en la unidad.
 
-Una vez finalizado desde el '_Administrador de discos_' podemos comprobar que la unidad ha sido cifrada:
+Una vez finalizado desde el _`Administrador de discos`_ podemos comprobar que la unidad ha sido cifrada:
 
 ![Discos cifrados](media/bitlocker-4-result.png)
 

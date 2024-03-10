@@ -1,11 +1,15 @@
 # Bl2. UD 6 - Configuración avanzada del dominio
 
 ## Contenidos
-Los contenidos de esta unidad son los siguientes:
+En esta unidad veremos otras muchas cosas que podemos hacer en nuestro dominio. Los contenidos de esta unidad son los siguientes:
 1. [Instalar otro DC en el dominio](bdc.md)
 2. [Añadir clientes GNU/Linux al dominio](linux.md)
 3. [Servicio DHCP](dhcp.md)
 4. [Realizar copias de seguridad](backups.md)
+5. [iSCSI](iscsi.md)
+6. [Cifrado de discos: Bitlocker](bitlocker.md)
+7. [Windows Deplyment System](wds.md)
+8. [Windows Server Update Services](wsus.md)
 
 ## Conceptos clave
 Los conceptos más importantes de esta unidad son:

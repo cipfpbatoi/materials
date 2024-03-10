@@ -11,7 +11,7 @@ En cada dominio debe haber al menos un DC que lo gestione, pero en ocasiones que
 
 Podemos obtener más información sobre promover un DC en la [web de Microsoft](https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions).
 
-También hay un artículo referido específicamente a [añadir otro DC a un dominio](https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/deploy/install-a-replica-windows-server-2012-domain-controller-in-a-existing-domain--level-200-) donde profundiza en las distintas opciones e indica los comandos para hacerlo desde Powershell.
+También hay un artículo referido específicamente a [añadir otro DC a un dominio](https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/deploy/install-a-replica-windows-server-2012-domain-controller-in-an-existing-domain--level-200-) donde profundiza en las distintas opciones e indica los comandos para hacerlo desde Powershell.
 
 ## Instalación y configuración
 Para convertir un Windows Server en otro _Domain Controller_ de un dominio existente instalamos los _Servicios de dominio de Active Directory_ y al promoverlo a DC en la primera pantalla elegiremos "Agregar un DC a un dominio existente":
