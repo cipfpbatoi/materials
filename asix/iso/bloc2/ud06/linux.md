@@ -83,7 +83,7 @@ Todavía nos quedan unas cosas por configurar para mejorar la usabilidad del sis
 - `cache_credentials = True`: esto hace que se guarden las credenciales de un usuario cuando inicia sesión y la próxima vez es el mismo equipo el que le da acceso sin tener que contactar con un DC (Windows también lo hace)
 - `use_fully_qualified_names = True`: para iniciar sesión se debe poner el FQDN del usuario (usuario@dominio) en lugar de sólo el usuario. Podemos ponerlo en _False_ si sólo trabajamos con un único dominio y no tiene relaciones de confianza con otros.
 
-Además, la primera vez que un usuario del dominio inicia la sesión en el equipo no se crea por defecto a su hombre. Para que se cree ejecutamos el comando:
+Además, la primera vez que un usuario del dominio inicia la sesión en el equipo no se crea por defecto a su _home_. Para que se cree ejecutamos el comando:
 ```bash
 sudo pam-auth-update --enable mkhomedir
 ```

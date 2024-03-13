@@ -5,7 +5,7 @@ Los contenidos de esta unidad son los siguientes:
 1. [Permisos y derechos](permisos.md)
 2. [Servicios de archivo y almacenamiento](servarch.md)
 3. [Administrador de recursos del servidor de archivos (FSRM)](fsrm.md)
-4. [iSCSI y otros servicios de archivo](iscsi.md)
+4. [iSCSI, DFS y otros servicios de archivo](fss.md)
 5. [Compartir impresoras](impr.md)
 
 ## Objetivos de la unidad

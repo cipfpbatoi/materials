@@ -7,9 +7,10 @@ En esta unidad veremos otras muchas cosas que podemos hacer en nuestro dominio. 
 3. [Servicio DHCP](dhcp.md)
 4. [Realizar copias de seguridad](backups.md)
 5. [iSCSI](iscsi.md)
-6. [Cifrado de discos: Bitlocker](bitlocker.md)
-7. [Windows Deplyment System](wds.md)
-8. [Windows Server Update Services](wsus.md)
+6. [Sistema de Ficheros Distribuido (DFS)](dfs.md)
+7. [Cifrado de discos: Bitlocker](bitlocker.md)
+8. [Windows Deplyment System](wds.md)
+9. [Windows Server Update Services](wsus.md)
 
 ## Conceptos clave
 Los conceptos más importantes de esta unidad son:
