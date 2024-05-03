@@ -14,6 +14,7 @@
   - [Pinia](#pinia)
   - [Slots](#slots)
     - [Slots con nombre](#slots-con-nombre)
+    - [Acceder a datos del hijo desde el padre con _slot_](#acceder-a-datos-del-hijo-desde-el-padre-con-slot)
 - [Aplicación de ejemplo](#aplicación-de-ejemplo)
   - [Solución con _Store pattern_](#solución-con-store-pattern)
 
@@ -558,25 +559,29 @@ Vamos a ver un ejemplo de un componente llamado _base-layout_ con 3 _slots_, uno
 A la hora de llamar al componente hacemos:
 ```html
 <base-layout>
-  <template slot="header">
+  <template v-slot:header>
     <h1>Here might be a page title</h1>
   </template>
 
-  <p>A paragraph for the main content.</p>
-  <p>And another one.</p>
+  <template v-slot:default>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
 
-  <template slot="footer">
+  <template v-slot:footer>
     <p>Here's some contact info</p>
   </template>
 </base-layout>
 ```
 
-Lo que está dentro de un _template_ con atributo _slot_ irá al_slot_ del componente con ese nombre. El resto del innerHTML irá al _slot_ por defecto (el que no tiene nombre).
+La directiva `v-slot` tiene una abreviatura que es `#` de forma que podríamos haber puesto `<template #header>`.
 
-El atributo _slot_ podemos ponérselo a cualquier etiqueta (no tiene que ser \<template>):
+Podría no ponerse el _template #default_ y funcionaría igual: lo que está dentro de un _template_ con _v-slot_ irá al _slot_ del componente con ese nombre. El resto del innerHTML irá al _slot_ por defecto (el que no tiene nombre).
+
+La directiva _v-slot_ podemos ponérsela a cualquier etiqueta (no tiene que ser \<template>):
 ```html
 <base-layout>
-  <h1 slot="header">Here might be a page title</h1>
+  <h1 v-slot="header">Here might be a page title</h1>
 
   <p>A paragraph for the main content.</p>
   <p>And another one.</p>
@@ -584,6 +589,27 @@ El atributo _slot_ podemos ponérselo a cualquier etiqueta (no tiene que ser \<t
   <p slot="footer">Here's some contact info</p>
 </base-layout>
 ```
+
+### Acceder a datos del hijo desde el padre con _slot_
+El componente hijo puede hacer accesibles sus variables al padre declarándolas en su etiqueta `<slot>`:
+
+```html
+<!-- ChildComponent -->
+<div>
+  <slot :text="greetingMessage" :count="1"></slot>
+</div>
+```
+
+```html
+<!-- ParentComponent -->
+<ChildComponent v-slot={ text, count }>
+  {{ text }}: {{ count }}
+</ChildComponent>
+```
+
+Esto es particularmente útil en componentes hijos que muestran un array de datos (con un `v-for`) si queremos acceder con el padre a cada dato.
+
+Podéis profundizar en el uso de _slots_ en la [documentación oficial de Vue](https://vuejs.org/guide/components/slots.html).
 
 # Aplicación de ejemplo
 Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_.
