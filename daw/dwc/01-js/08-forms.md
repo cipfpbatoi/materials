@@ -149,16 +149,16 @@ function customErrorValidationMessage(input) {
 
 Y ahora en vez de `nombreError.textContent = nombre.validationMessage` haremos `nombreError.textContent = customErrorValidationMessage(nombre)`.
 
-Si tenemos que validar algo que no puede hacerse mediante atributos HTML (por ejemplo si el nombre de usuario ya está en uso) deberemos hacer la validación "a mano" y en caso de no ser válido ponerle un error con `.setCustomValidation()`, pero debemos recordar quitar el error si todo es correcto o el formulario siempre será inválido. Modificando el ejemplo:
+Si tenemos que validar algo que no puede hacerse mediante atributos HTML (por ejemplo si el nombre de usuario ya está en uso) deberemos hacer la validación "a mano" y en caso de no ser válido ponerle un error con `.setCustomValidity()`, pero debemos recordar quitar el error si todo es correcto o el formulario siempre será inválido. Modificando el ejemplo:
 ```javascript
 const nombre = document.getElementById('nombre');
 const nombreError = document.querySelector('#nombre + span.error');
 
 form.addEventListener('submit', (event) => {
   if (nombreEnUso(nombre.value)) {
-    nombre.setCustomValidation('Ese nombre de usuario ya está en uso')
+    nombre.setCustomValidity('Ese nombre de usuario ya está en uso')
   } else {
-    nombre.setCustomValidation('')  // Se quita el error personalizado
+    nombre.setCustomValidity('')  // Se quita el error personalizado
   }
 
   if(!form.checkValidity()) {

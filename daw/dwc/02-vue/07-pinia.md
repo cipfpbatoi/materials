@@ -206,9 +206,7 @@ export default {
 Los getters pueden recibir parámetros, por ejemplo, para hacer búsquedas:
 ```javascript
 getters: {
-  getTodoById: (state) => (id) => {
-    return state.todos.find((todo) => todo.id === id)
-  }
+  getTodoById: (state) => (id) => state.todos.find((todo) => todo.id === id)
 }
 ```
 

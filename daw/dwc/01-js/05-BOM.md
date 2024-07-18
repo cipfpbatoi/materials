@@ -12,6 +12,7 @@
       - [Diálogos](#diálogos)
     - [Objeto location](#objeto-location)
     - [Objeto history](#objeto-history)
+    - [Objeto navigator](#objeto-navigator)
     - [Otros objetos](#otros-objetos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -142,13 +143,34 @@ Permite acceder al historial de páginas visitadas y navegar por él:
 
 > EJERCICIO: desde la consola vuelve a la página anterior
 
+### Objeto navigator
+Nos da información sobre el navegador y el sistema en que se ejecuta:
+  * `.userAgent`: muestra información sobre el navegador que usamos
+  * `.plataform`: muestra información sobre la plataforma sobre la que se ejecuta
+  * `.language`: muestra el idioma del navegador
+  * `.languages`: muestra los idiomas instalados en el navegador
+  * `.appVersion`: versión del navegador
+  * `.appName`: nombre del navegador
+  * `.appCodeName`: nombre en código del navegador
+  * `.product`: producto del navegador
+  * `.platform`: sistema en el que se ejecuta el navegador
+  * ...
+
+También incluye objetos con sus propias API para poder interactuar con el sistema:
+  * `.geolocation`: permite obtener la ubicación del usuario
+  * `.storage`: permite acceder a los datos almacenados en el navegador (los veremos en detalle más adelante)
+  * `.clipboard`: permite copiar texto al portapapeles del usuario con `.writeText()` (sólo funciona en páginas seguras)
+  * `.mediaDevices`: permite acceder a los dispositivos multimedia del usuario
+  * `.serviceWorker`: permite trabajar con _service workers_
+  * ...
+
+> EJERCICIO: desde la consola muestra la información del navegador, su lenguaje y del sistema en que se ejecuta
+
 ### Otros objetos
 Los otros objetos que incluye BOM son:
 * [document](http://www.w3schools.com/jsref/dom_obj_document.asp): el objeto _document_ que hemos visto en el DOM
 * [navigator](http://www.w3schools.com/jsref/obj_navigator.asp): nos informa sobre el navegador y el sistema en que se ejecuta
-    * `.userAgent`: muestra información sobre el navegador que usamos
-    * `.plataform`: muestra información sobre la plataforma sobre la que se ejecuta
-    * ...
+
 * [screen](http://www.w3schools.com/jsref/obj_screen.asp): nos da información sobre la pantalla
     * `.width`/`.height`: ancho/alto total de la pantalla (resolución)
     * `.availWidth`/`.availHeight`: igual pero excluyendo la barra del S.O.
