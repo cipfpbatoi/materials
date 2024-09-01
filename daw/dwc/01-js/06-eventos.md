@@ -11,7 +11,7 @@
     - [Eventos de formulario](#eventos-de-formulario)
   - [Los objetos _this_ y _event_](#los-objetos-this-y-event)
     - [_Bindeo_ del objeto _this_](#bindeo-del-objeto-this)
-  - [Propagación de eventos (bubbling)](#propagación-de-eventos-bubbling)
+  - [Propagación de eventos](#propagación-de-eventos)
   - [innerHTML y escuchadores de eventos](#innerhtml-y-escuchadores-de-eventos)
   - [Delegación de eventos](#delegación-de-eventos)
   - [Eventos personalizados](#eventos-personalizados)
@@ -91,7 +91,8 @@ Según qué o dónde se produce un evento estos se clasifican en:
 
 ### Eventos de página
 Se producen en el documento HTML, normalmente en el BODY:
-* **load**: se produce cuando termina de cargarse la página (cuando ya está construido el árbol DOM). Es útil para hacer acciones que requieran que el DOM esté cargado como modificar la página o poner escuchadores de eventos
+* **load**: se produce cuando termina de cargarse la página. Es útil para hacer acciones que requieran que la página esté cargada
+* **DOMContentLoaded**: se produce cuando se ha cargado el árbol DOM pero no se han cargado imágenes, hojas de estilo, ni subframes. Es el ideal para realizar acciones del DOM sin tener que esperar a que se carguen las imágenes y el CSS
 * **unload**: al destruirse el documento (ej. cerrar)
 * **beforeUnload**: antes de destruirse (podríamos mostrar un mensaje de confirmación)
 * **resize**: si cambia el tamaño del documento (porque se redimensiona la ventana)
@@ -195,10 +196,10 @@ function aceptado(param1, param2, event) {
 }
 ```
 
-## Propagación de eventos (bubbling)
+## Propagación de eventos
 Normalmente en una página web los elementos HTML se solapan unos con otros, por ejemplo, un \<span> está en un \<p> que está en un \<div> que está en el \<body>. Si ponemos un escuchador del evento _click_ a todos ellos se ejecutarán todos ellos, pero ¿en qué orden?.
 
-Pues el W3C establecíó un modelo en el que primero se disparan los eventos de fuera hacia dentro (primero el \<body>) y al llegar al más interno (el \<span>) se vuelven a disparar de nuevo pero de dentro hacia afuera. La primera fase se conoce como **fase de captura** y la segunda como **fase de burbujeo**. Cuando ponemos un escuchador con `addEventListener` el tercer parámetro indica en qué fase debe dispararse:
+Pues el W3C establecíó un modelo en el que primero se disparan los eventos de fuera hacia dentro (primero el \<body>) y al llegar al más interno (el \<span>) se vuelven a disparar de nuevo pero de dentro hacia afuera. La primera fase se conoce como **fase de captura** y la segunda como **fase de burbujeo (_bubbling_)**. Cuando ponemos un escuchador con `addEventListener` el tercer parámetro indica en qué fase debe dispararse:
 - **true**: en fase de captura
 - **false** (valor por defecto): en fase de burbujeo
 

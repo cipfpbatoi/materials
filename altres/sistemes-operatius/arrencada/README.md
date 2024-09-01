@@ -55,7 +55,7 @@ Encara que la inmensa majoria d'equips ja no tenen BIOS sino la nova **UEFI** aq
 L'arrencada amb BIOS només pot fer-se des d'un dispositiu formatjat amb **taula de particions _MBR_** (també anomenada _**Ms-DOS**_).
 
 ### MBR
-El _Master Boot Record_ (**MBR**) és el primer sector d'un dispositiu d'emmagatzematge de dades, com un disc dur o un pen-drive. Conté:
+El _Master Boot Record_ (**MBR**) és el primer sector d'un dispositiu d'emmagatzematge de dades, com un disc dur o un pen-drive. Els dispositius d'emmagatzemament es divideixen en blocs  de 512 bytes anomenats **_sectors_** i el primer d'ells (el sector 0) és el MBR. Aquest sector conté:
 - _MBC (Master Boot Code)_: programa per a començar el procés de càrrega del _bootloader_ (446 bytes)
 - _Taula de particions_: amb espai per a 4 particions (les màximes que permet el particionat _Ms-DOS_) amb informació de cada partició, com si és la partició activa, el seu sistema d'arxius, on comença i on acaba, la seua mida, etc. (16 bytes per partició)
 
@@ -64,12 +64,12 @@ El _Master Boot Record_ (**MBR**) és el primer sector d'un dispositiu d'emmagat
 ### Procés d'arrencada
 A l'arrencar un ordinador amb BIOS la CPU executa el programa carregat en ella, anomenat **POST** (_PowerOn Self Test_) que:
 * Comprova i inicialitza el hardware de l'equip
-* Llig la seqüència d'arrencada (guardada en la BIOS) per a saber quin és el primer dispositiu d'arrencada (Disc dur, CD, USB, xarxa, ...), és a dir, on buscar el sistema operatiu
-* Carrega en la RAM el primer sector d'eixe dispositiu (anomenat _Master Boot Record_, **MBR**)
-* El programa MBC que hi ha en el MBR llig la taula de particions, identifica la partició activa i carrega en la RAM el **sector d'arrencada de la partició activa** (el primer sector d'eixa partició)
-* Aquest sector conté un programa que busca i carrega en la RAM el **_bootloader_** (carregador del sistema operatiu)
-* Aquest carregador ja no està limitat a 512 bytes i és qui carrega en la RAM el sistema operatiu i prepara tot el que necessita
-* Ara ja s'executa el S.O.
+* Llig la seqüència d'arrencada (guardada en la BIOS) per a saber des de quin dispositiu ha d'arreacar (Disc dur, CD, USB, xarxa, ...), és a dir, on buscar el sistema operatiu
+* Carrega en la RAM el primer sector d'eixe dispositiu (el seu **MBR**)
+* El programa _MBC_ que hi ha en el _MBR_ llig la taula de particions, identifica la partició activa i carrega en la RAM el **sector d'arrencada de la partició activa** (el primer sector d'eixa partició, per tant també de 512 bytes)
+* Aquest sector conté un programa que busca en la seua partició el **_bootloader_** (carregador del sistema operatiu) i carrega en la RAM 
+* Aquest _bootloader_ ja no està limitat a 512 bytes i és qui carrega en la RAM el sistema operatiu i prepara tot el que necessita
+* A continuació s'executa el S.O.
 
 El procés te tants passos perquè tant el programa de la BIOS com el del MBR i el del sector d'arrencada de la partició activa són molt xicotets (recorda que la mida de un sector són 512 bytes) i per tant no poden carregar el S.O. directament.
 
@@ -79,7 +79,7 @@ Alguns sistemes canvien el programa del MBR per a que carregue directament el _b
 La manera en que arranca l'ordinador és pràcticament igual des de Windows 7. El procés d'arrencada és el següent:
 * Com hem vist el primer lugar s'executa el **POST** i tras comprovar el hardware carrega el **MBR** en la RAM
 * El programa del MBR llig la taula de particions i carrega el **sector d'arrencada de la partició activa** (que serà la partició que conté els fitxers d'arrencada de Windows)
-* El programa que hi ha al sector d'arrencada de la partició activa carrega en la RAM el fitxer **BootMGR** (que està en la seua partició i és el _bootloader_ de Windows)
+* El programa que hi ha al sector d'arrencada de la partició activa carrega en la RAM el fitxer **BootMGR** (que és el _bootloader_ de Windows)
 * _Bootmgr_ llig el fitxer **BCD.log** (que està dins de la carpeta `\Boot` en la mateixa partició que BootMGR) i, si hi ha més d'una opció, mostra a l'usuari el menú d'arrencada amb les opcions guardades en BCD
 * A continuació carrega el programa **Winload.exe** (que està en `\Windows\system32`) pasant-li les opcions triades
 * Winload carrega **ntoskrnl.exe** (està en `\Windows\system32`) que és el _kernel_ de Windows. Aquest programa s'encarrega de la resta del procès de càrrega. Si voleu saber en detall què fa, és el següent:
@@ -98,7 +98,7 @@ La manera en que arranca l'ordinador és pràcticament igual des de Windows 7. E
 powercfg -h como
 ```
 
-| També podem fer-ho des de l'entorn gràfic amb Panel de control -> Sistema y seguridad -> Opciones de energía -> Cambiar lo que hacen los botones de encendido.
+| També podem fer-ho des de l'entorn gràfic amb `Panel de control -> Sistema y seguridad -> Opciones de energía -> Cambiar lo que hacen los botones de encendido`.
 
 #### Reparar l'arrencada del sistema
 Si es danya el MBR o algun fitxer d'arranque l'equip no podrà arrancar correctament. El que hem de fer és introduir el CD d'instal·lació de Windows i arrancar l'equip. Una vegada iniciem amb el CD, cal triar l'opció de "**Reparar l'equip**" en compte de continuar amb l'opció d'instal·lació del sistema.
@@ -247,7 +247,7 @@ NOTA: Per a saber quin tipus d'instal·lació de Windows tenim executem (menu co
 ![uefi](./img/uefi.png)
 
 ### Arrencada amb UEFI
-El procés d'arrencada és més simple que amb BIOS: al arrancar l'equip s'executa el programa que hi ha en la UEFI que comprova i inicialitza el hardware i carrega directament en la RAM el carregador del sistema operatiu que volem iniciar.
+El procés d'arrencada és més simple que amb BIOS: al arrancar l'equip s'executa el programa que hi ha en la UEFI que comprova i inicialitza el hardware i a continuació carrega en la RAM el _bootloader_ del sistema operatiu que volem iniciar.
 
 L'arrencada amb UEFI és més senzilla i ràpida perquè aquest firmware pot carregar directament en la RAM el carregador del sistema operatiu, sense necessitat del MBR ni el sector d'arrencada de la partició activa.
 
@@ -257,8 +257,18 @@ Un ordinador amb arrencada UEFI necessita una partició en el disc dur anomenada
 
 En la imatge anterior podem veure la partició EFI d'un equip amb Windows, Debian i Ubuntu instal·lats. En el panel de la dreta podem veure el contingut de la carpeta d'arrencada de Windows amb el carregador (BootMgr) i el menú d'opcions d'inici (BCD).
 
+Per a poder triar quin _bootloader_ carregar EFI té un menú intern on es guarden les opcions d'arrencada. Al instal·lar un nou sistema operatiu aquest ha d'afegir una entrada per a ell en aquest menú. Al arrancar hi ha una opció (normalment F12 o F9) per a mostrar totes les entrades del menú i triar quina iniciar. Des de GNU/Linux les poderm vore amb el comando `efibootmgr` (amb el paràmetre `-v` vorem quin és el _bootloader_ de cada opció).
+
+Podem afegir noves opcions al menú. Per exemple per a afegir una nova opció que mostre 'Sistema Debian' i execute el carregador de Debian executem el comando:
+
+```bash
+# efibootmgr -c -L "Sistema Debian" -l '\EFI\debian\grubx64.efi'
+```
+
 #### Secure Boot
-És una opció de UEFI que impedeix que s'execute un carregador si no està signat digitalment per una entitat reconeguda pel sistema. Normalment els equips que comprem inclouen la signatura de Microsoft i per tant poden arrancar els carregadors de Windows però hi ha algunes distribucions GNU/Linux que tenen també el seu carregador signat per Microsoft per a poder arrancar amb _Secure Boot_. També podem afegir altres signatures a la nostra UEFI o desactivar aquesta opció.
+És una opció de UEFI que impedeix que s'execute un _bootloader_ si no està signat digitalment per una entitat reconeguda pel sistema. Normalment els equips que comprem inclouen la signatura de Microsoft i per tant poden arrancar els carregadors de Windows però hi ha algunes distribucions GNU/Linux que tenen també el seu carregador signat per Microsoft per a poder arrancar amb _Secure Boot_. 
+
+També podem desactivar aquesta opció o afegir altres signatures a la nostra UEFI. Per a afegir signatures UEFI compta amb una base de dades (**MOK** _Machine Owner Key_) on es guarden les claus de les entitats que poden signar els _bootloaders_.
 
 ### Reparar l'arrencada
 Si el nostre ordinador amb UEFI no arranca, la forma més senzilla de arreglar-lo és des de l'entorn gràfic de la nostra BIOS/UEFI. Allí podrem vore les diferents opcions d'arrancada així com eliminar alguna o afegir noves.

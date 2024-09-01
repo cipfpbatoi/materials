@@ -1,6 +1,14 @@
 
 ## Usar TDD en Javascript
-Lo más sencillo es usar alguna librería como **Jest** o **Mocha**. Se trata de librerías que se ejecutan sobre _Node.js_ y permiten crear tests tanto síncronos como asíncronos. Para usarlo necesitaremos tener **npm** instalado. Luego creamos una carpeta para nuestro proyecto y dentro ejecutamos:
+Lo más sencillo es usar alguna librería como **Jest**, **Mocha** o **Vitests** (una adaptación de _Jest_ para _Vite_). Se trata de librerías que se ejecutan sobre _Node.js_ y permiten crear tests tanto síncronos como asíncronos. Para usarlo necesitaremos tener **npm** instalado. 
+
+## Uso de Vitest
+Podéis obtener información sobre cómo hacer test con _Vitest_ en muchas páginas de Internet como:
+- [Curso DWEC de Jose Castillo](https://xxjcaxx.github.io/libro_dwec/tests.html)
+- [Vitest](https://vitejs.dev/guide/features.html#testing)
+
+## Uso de Mocha
+Para instalarlo ejecutamos:
 
 ```bash
 npm install -g mocha    # lo instalamos globalmente para que esté disponible para todos los proyectos

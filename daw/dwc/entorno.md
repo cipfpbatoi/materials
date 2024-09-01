@@ -11,6 +11,7 @@
     - [Tests](#tests)
   - [Instalar npm](#instalar-npm)
     - [Instalar librerías con _npm_](#instalar-librerías-con-npm)
+    - [El archivo package.json](#el-archivo-packagejson)
 
 
 ## Herramientas que usaremos
@@ -30,14 +31,14 @@ _Visual Studio Code_ puede descargarse desde [https://code.visualstudio.com/](ht
 ####  Extensiones para el editor
 Para programar Javascript no necesitamos ninguna extensión adicional aunque es recomendable usar algún linter como _EsLint_ o _SonarLint_ para acostumbrarnos a escribir buen código. 
 
-También podemos instalar otras como _Prettier_ para formatear correctamente los ficheros o _Live Server_ para probar la web en un servidor local. 
+También es recomendable instalar _Prettier_ para formatear correctamente los ficheros y _Live Server_ para probar la web en un servidor local. 
 
 Cuando veamos **Vue** habrá que instalar la extensión que nos permita trabajar de forma cómoda. En VSC se llama _Volar_.
 
 ### npm / yarn
 Tanto para Vue como para ejecutar los tests de nuestros programas necesitaremos _npm_, el gestor de paquetes de **_NodeJS_**. 
 
-En los apuntes tenéis cómo instalarlo
+En los apuntes tenéis [cómo instalarlo](#instalar-npm).
 
 ### git
 Utilizaremos _git_ para el control de versiones por lo que deberemos instalarlo. Para instalarlo simplemente habrá que instalar el paquete git (`apt-get install git`).
@@ -61,7 +62,7 @@ En los casos que deseemos testear una aplicación en la que usemos _Vite_ la lib
 
 
 ## Instalar npm
-**npm** es el gestor de paquetes del framework Javascript **Node.js** y suele utilizarse en programación frontend como gestor de dependencias de la aplicación. Esto significa que será la herramienta que se encargará de descargar y poner a disposición de nuestra aplicación todas las librerías Javascript que vayamos a utilizar.
+**npm** es el gestor de paquetes del framework Javascript **Node.js** y es fundamental en programación frontend especialmente como gestor de dependencias y módulos de la aplicación. Esto significa que será la herramienta que se encargará de descargar y poner a disposición de nuestra aplicación todas las librerías Javascript que vayamos a utilizar.
 
 Para instalar _npm_ tenemos que instalar _NodeJS_. Podemos instalarlo desde los repositorios como cualquier otro programa (`apt install nodejs`), pero **no se recomienda** hacerlo así porque nos instalará una versión poco actualizada. 
 
@@ -76,8 +77,12 @@ npm -v
 También podemos descargarlo directamente desde [NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i nombre_del_paquete`).
 
 ### Instalar librerías con _npm_
-Una vez instalado los comandos básicos de npm son `install` para instalar una librería y `remove` para eliminarla. Además en algunos casos usaremos 2 opciones:
-- `-g`: instala la librería de forma global para que esté disponible en todos nuestros proeyctos sin tener que instalarla en cada uno
+Una vez instalado podemos crear un nuevo proyecto con el comando `npm init`. Esto crea una carpeta para el nuevo proyecto y dentro de ella el fichero `package.json`.
+
+los comandos básicos de npm son `install` para instalar una librería y `remove` o `uninstall` para eliminarla. Para actualizar un paquete usamos el comando `update`. 
+
+Al instalar paquetes en algunos casos usaremos 2 opciones:
+- `-g`: instala la librería de forma global para que esté disponible en todos nuestros proyectos no sólo en el proyecto actual
 - `-D`: indica que la librería a instalar es una dependencia de desarrollo y, por tanto, no se incluirá en el código generado para producción.
 
 Vamos a instalar ahora globalmente 2 librerías que usaremos en la mayoría de nuestros proyectos, el _bundler_ **_Vite_** y la librería de tests **_Jest_**:
@@ -85,4 +90,29 @@ Vamos a instalar ahora globalmente 2 librerías que usaremos en la mayoría de n
 ```bash
 npm install -g vite
 npm install -g jest
+```
+
+### El archivo package.json
+Es el corazón de cualquier proyecto _npm_. Declara las dependencias instaladas y sus versiones, así como scripts que se pueden ejecutar desde la terminal con el comando `npm run <nombre del script>`.
+
+Ejemplo de package.json:
+```json
+{
+ "name": "nuevoproyecto",
+ "version": "1.0.0",
+ "description": "Nuevo proyecto npm",
+ "main": "index.js",
+ "scripts": {
+   "test": "vitest"
+ },
+"dependencies": {
+   "axios": "^1.6.2",
+ },
+"devDependencies": {
+   "vite": "^4.4.5",
+   "vitest": "^0.34.5"
+ },
+ "author": "",
+ "license": "ISC"
+}
 ```

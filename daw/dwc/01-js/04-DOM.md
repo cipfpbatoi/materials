@@ -1,21 +1,15 @@
 # Document Object Model (DOM)
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [Document Object Model (DOM)](#document-object-model-dom)
   - [Introducción](#introducción)
   - [Acceso a los nodos](#acceso-a-los-nodos)
   - [Acceso a nodos a partir de otros](#acceso-a-nodos-a-partir-de-otros)
     - [Propiedades de un nodo](#propiedades-de-un-nodo)
   - [Manipular el árbol DOM](#manipular-el-árbol-dom)
-    - [Modificar el DOM con ChildNode](#modificar-el-dom-con-childnode)
+    - [Añadir nuevos nodos con _innerHTML_](#añadir-nuevos-nodos-con-innerhtml)
   - [Atributos de los nodos](#atributos-de-los-nodos)
     - [Estilos de los nodos](#estilos-de-los-nodos)
     - [Atributos de clase](#atributos-de-clase)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+    - [Atributos de datos](#atributos-de-datos)
 
 ## Introducción
 La mayoría de las veces que programamos con Javascript es para que se ejecute en una página web mostrada por el navegador. En este contexto tenemos acceso a ciertos objetos que nos permiten interactuar con la página (DOM) y con el navegador (Browser Object Model, BOM).
@@ -177,11 +171,40 @@ Vamos a ver qué métodos nos permiten cambiar el árbol DOM, y por tanto modifi
 ```javascript
 let nuevoLi = document.createElement('li');
 ```
-* `document.createTextNode('texto')`: crea un nuevo nodo de texto con el texto indicado, que luego tendremos que añadir a un nodo HTML. Ej.:
+* `elemento.append(elementos o texto)`: añade al DOM los parámetros pasados como últimos hijos de _elemento_. Se le puede pasar tanto un nodo DOM como una cadena de texto (para la que se creará su nodo de texto correspondiente) y que se le pueden pasar varios parámetros para crear varios nodos. Ej.:
+```javascript
+nuevoLi.append('Nuevo elemento de lista');     // añade el texto pasado al elemento LI creado
+let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
+miPrimeraLista.append(nuevoLi);    // añade LI como último hijo de UL, es decir al final de la lista
+```
+* `elemento.prepend(elementos o texto)`: como el anterior pero en lugar de añadirlos como últimos hijos los añade antes del primer hijo.   
+```javascript
+const primerLi = document.createElement('li');
+primerLi.append('Primer elemento de lista'); 
+let miPrimeraLista = document.getElementsByTagName('ul')[0]; 
+miPrimeraLista.prepend(nuevoLi);
+```
+* `elemento.after(elementos o texto)`: como _append_ pero en lugar de añadirlos como últimos hijos los añade como los siguientes hermanos de _elemento_.   
+```javascript
+const otroLi = document.createElement('li');
+otroLi.append('Segundo elemento de lista'); 
+primerLi.after(otroLi);
+```
+* `elemento.before(elementos o texto)`: como el anterior pero los añade como los anteriores hermanos de _elemento_.   
+* `elemento.remove()`: borra el nodo _elemento_ del documento.   
+* `elemento.replaceWith(nuevoNodo)`: reemplaza el nodo _elemento_ con el _nuevoNodo_ pasado
+```javascript
+let primerElementoDeLista = document.getElementsByTagName('ul')[0].firstChild;  // selecciona el 1º LI de miPrimeraLista
+primerElementoDeLista.replaceChild(nuevoLi);    // reemplaza el 1º elemento de la lista con nuevoLi
+```
+* `elementoAClonar.cloneNode(boolean)`: devuelve un clon de _elementoAClonar_ o de _elementoAClonar_ con todos sus descendientes según le pasemos como parámetro _false_ o _true_. Luego podremos insertarlo donde queramos.
+
+Otros métodos menos usados son:
+* `document.createTextNode('texto')`: crea un nuevo nodo de texto con el texto indicado, que luego tendremos que añadir a un nodo HTML. Normalmente no se usa porque _append_ y el resto de métodos anteriores ya lo crean automáticamente. Ej.:
 ```javascript
 let textoLi = document.createTextNode('Nuevo elemento de lista');
 ```
-* `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_. Ahora ya se ha añadido a la página. Ej.:
+* `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_ y lo devuelve. Se diferencia con _append_ en que sólo permite un parámetro y éste debe ser un nodo, no puede ser texto. Por eso no suele usarse. Ejemplo:
 ```javascript
 nuevoLi.appendChild(textoLi);     // añade el texto creado al elemento LI creado
 let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
@@ -207,38 +230,37 @@ let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1
 let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.replaceChild(nuevoLi, primerElementoDeLista);    // reemplaza el 1º elemento de la lista con nuevoLi
 ```
-* `elementoAClonar.cloneNode(boolean)`: devuelve un clon de _elementoAClonar_ o de _elementoAClonar_ con todos sus descendientes según le pasemos como parámetro _false_ o _true_. Luego podremos insertarlo donde queramos.
 
-**OJO**: Si añado con el método `appendChild` un nodo que estaba en otro sitio **se elimina de donde estaba** para añadirse a su nueva posición. Si quiero que esté en los 2 sitios deberé clonar el nodo y luego añadir el clon y no el nodo original.
+**OJO**: Si añado con el método `append` o `appendChild` un nodo que estaba en otro sitio **se elimina de donde estaba** para añadirse a su nueva posición. Si quiero que esté en los 2 sitios deberé clonar el nodo y luego añadir el clon y no el nodo original.
 
-**Ejemplo de creación de nuevos nodos**: tenemos un código HTML con un DIV que contiene 3 párrafos y vamos a añadir un nuevo párrafo al final del div con el texto 'Párrafo añadido al final' y otro que sea el 2º del div con el texto 'Este es el <strong>nuevo</strong> segundo párrafo':
+### Añadir nuevos nodos con _innerHTML_
+Supongamos que tenemos un DIV cuya _id_ es _myDiv_ al que queremos añadir al final dos párrafos, el último de ellos con un texto en negrita. El código podría ser:
 
-<script async src="//jsfiddle.net/juansegura/qfcdseua/embed/js,html,result/"></script>
+```javascript
+let miDiv = document.getElementById('myDiv');
+let nuevoParrafo = document.createElement('p');
+nuevoParrafo.textContent = 'Párrafo añadido al final';
+let ultimoParrafo = document.createElement('p');
+const textoNegrita = document.createElement('strong');
+textoNegrita.textContent = 'con texto en negrita';
+ultimoParrafo.append('Último párrafo ', textoNegrita);
+miDiv.append(nuevoParrafo, ultimoParrafo);
+```
 
 Si utilizamos la propiedad **innerHTML** el código a usar es mucho más simple:
 
-<script async src="//jsfiddle.net/juansegura/x9s7v8kn/embed/js,html,result/"></script>
-
-**OJO**: La forma de añadir el último párrafo (línea #3: `miDiv.innerHTML+='<p>Párrafo añadido al final</p>';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a pintar TODO el contenido de miDIV. La forma correcta de hacerlo sería:
 ```javascript
-let ultimoParrafo = document.createElement('p');
-ultimoParrafo.innerHTML = 'Párrafo añadido al final';
-miDiv.appendChild(ultimoParrafo);
+let miDiv = document.getElementById('myDiv');
+miDiv.innerHTML += '<p>Párrafo añadido al final</p><p>Último párrafo <strong>con texto en negrita</strong></p>';
 ```
-Así sólo debe repintar el párrafo añadido, conservando todo lo demás que tenga _miDiv_.
+
+**OJO**: La forma de añadir el último párrafo (línea #3: `miDiv.innerHTML+='<p>Párrafo añadido al final</p>';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a pintar TODO el contenido de miDIV.
 
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 
 > EJERCICIO: Añade a la página:
-> - Un nuevo párrafo al final del DIV _'lipsum'_ con el texto "Nuevo párrafo **añadido** por javascript" (fíjate que una palabra estça en negrita)
+> - Un nuevo párrafo al final del DIV _'lipsum'_ con el texto "Nuevo párrafo **añadido** por javascript" (fíjate que una palabra está en negrita)
 > - Un nuevo elemento al formulario tras el _'Dato 1'_ con la etiqueta _'Dato 1 bis'_ y el INPUT con id _'input1bis'_ que al cargar la página tendrá escrito "Hola" 
-
-### Modificar el DOM con [ChildNode](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode)
-Childnode es una interfaz que permite manipular del DOM de forma más sencilla pero no está soportada en los navegadores Safari de IOS. Incluye los métodos:
-* `elemento.before(nuevoNodo)`: añade el _nuevoNodo_ pasado antes del nodo _elemento_
-* `elemento.after(nuevoNodo)`: añade el _nuevoNodo_ pasado después del nodo _elemento_
-* `elemento.replaceWith(nuevoNodo)`: reemplaza el nodo _elemento_ con el _nuevoNodo_ pasado
-* `elemento.remove()`: elimina el nodo _elemento_
 
 ## Atributos de los nodos
 Podemos ver y modificar los valores de los atributos de cada elemento HTML y también añadir o eliminar atributos:
@@ -250,10 +272,9 @@ Podemos ver y modificar los valores de los atributos de cada elemento HTML y tam
 
 A algunos atributos comunes como `id`, `title` o `className` (para el atributo **class**) se puede acceder y cambiar como si fueran una propiedad del elemento (`elemento.atributo`). Ejemplos:
 ```javascript
-let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-miPrimeraLista.id = 'primera-lista';
+elemento.id = 'primera-lista';
 // es equivalente ha hacer:
-miPrimeraLista.setAttribute('id', 'primera-lista');
+elemento.setAttribute('id', 'primera-lista');
 ```
 
 ### Estilos de los nodos
@@ -302,3 +323,24 @@ if (clases.indexOf('rojo') == -1) {
   elemento.className += ' ' + 'rojo';
 }
 ```
+
+### Atributos de datos
+HTML5 permite agregar atributos personalizados no visuales a las etiquetas utilizando `data-*`. Estos atributos pueden ser accesibles a través de JavaScript usando `dataset`.
+
+```html
+<article
+    id="electriccars"
+    data-columns="3"
+    data-index-number="12314"
+    data-parent="cars">
+    ...
+</article>
+``` 
+
+```javascript
+let article = document.getElementById('electriccars');
+console.log(article.dataset.columns); // 3
+console.log(article.dataset.indexNumber); // 12314
+```
+
+Fuente: [Curso DWEC de José Castillo](https://xxjcaxx.github.io/libro_dwec/dom.html#atributos-de-datos)

@@ -7,7 +7,7 @@
   - [Método _toString()_](#método-tostring)
   - [Método _valueOf()_](#método-valueof)
   - [Organizar el código](#organizar-el-código)
-  - [Ojo con _this_](#ojo-con-this)
+  - [El contexto de _this_](#el-contexto-de-this)
   - [Mixins](#mixins)
   - [Programación orientada a objetos en JS5](#programación-orientada-a-objetos-en-js5)
   - [Bibliografía](#bibliografía)
@@ -78,38 +78,37 @@ Suelen usarse para crear funciones de la aplicación.
 Recientemente se han introducido también propiedades estáticas, que funcionan directamente desde la clase no desde un objeto, igual que los métodos estáticos. Al ser una adición reciente pueden no funcionar en algunos navegadores.
 
 ## Propiedades y métodos privados y protegidos
-A la hora de encapsular el código de las clases es importante el uso de este tipo de elementos pero Javascript no los incluye.
-
-Sin embargo existe una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo). Ejemplo:
+A la hora de encapsular el código de las clases es importante el uso de este tipo de elementos pero Javascript sólo los incluye desde ES2019 donde introdujo la sintaxis **`#`** para declaralos:
 ```javascript
-class Alumno {
-    _nombre = ''
-    _apellidos = ''
-    _edad = 0
+class Position {
+    #x = 0;
+    #y = 0;
 
-    constructor(nombre, apellidos) {
-        this._nombre = nombre
-        this._apellidos = apellidos
+    constructor(x, y) {
+        this.#x = x
+        this.#y = y
     }
-    
-    setEdad(edad) {
-        this._edad = edad
+    getPosition() {
+        return { x: this.#x, y: this.#y };
     }
-    
-    getEdad() {
-        return this._edad
+    increaseX() {
+        this.#x++;
     }
-    
-    getInfo() {
-        return 'El alumno ' + this._nombre + ' ' + this._apellidos + ' tiene ' + this.getEdad() + ' años'
+    increaseY() {
+        this.#y++;
     }
 }
+
+const myPosition = new Position(20, 10);
+console.log(Position.getPosition()); // { x: 20, y: 10 }
+console.log(Position.x); // undefined
+console.log(Position.y); // undefined
 ```
+
+Anteriormente existía una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo).
 
 Estas propiedades y métodos protegidos se heredan como cualquier otro.
 
-Está a punto de incluirse en el estándar ECMAScript la declaración de métodos y propiedades **privadas** de una clase. Serán aquellos que comiencen por `#` y sólo serán accesibles dentro de la clase (no se heredarán).
- 
 ## Método _toString()_
 Al convertir un objeto a string (por ejemplo al concatenarlo con un String) se llama al método **_.toString()_** del mismo, que por defecto devuelve la cadena `[object Object]`. Podemos sobrecargar este método para que devuelva lo que queramos:
 ```javascript
@@ -120,48 +119,19 @@ class Alumno {
     }
 }
 
-let cpo = new Alumno('Carlos', 'Pérez Ortiz', 19);
-console.log('Alumno:' + cpo)     // imprime 'Alumno: Pérez Ortíz, Carlos'
+let carPerOrt = new Alumno('Carlos', 'Pérez Ortiz', 19);
+console.log('Alumno:' + carPerOrt)     // imprime 'Alumno: Pérez Ortíz, Carlos'
                                 // en vez de 'Alumno: [object Object]'
 ```
 
 Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02.2-arrays.md):
 ```javascript
-misAlumnos.sort(function(alum1, alum2) {
-    if (alum1.apellidos > alum2.apellidos)
-      return -1
-    if (alum1.apellidos < alum2.apellidos)
-      return 1
-    return alum1.nombre < alum2.nombre
-});   
+misAlumnos.sort((alum1, alum2) => (alum1.apellidos+alum1.nombre).localeCompare(alum2.apellidos+alum2.nombre));   
 ```
 
 Pero con el método _toString_ que hemos definido antes podemos hacer directamente:
 ```javascript
 misAlumnos.sort() 
-```
-
-**NOTA**: si las cadenas a comparar pueden tener acentos u otros caracteres propios del idioma ese código no funcionará bien. La forma correcta de comparar cadenas es usando el
-método `.localeCompare()`. El código anterior debería ser:
-```javascript
-misAlumnos.sort(function(alum1, alum2) {
-    return alum1.apellidos.localeCompare(alum2.apellidos)
-});   
-```
-
-que con _arrow function_ quedaría:
-```javascript
-misAlumnos.sort((alum1, alum2) => alum1.apellidos.localeCompare(alum2.apellidos))
-```
-
-o si queremos comparar por 2 campos ('apellidos' y 'nombre')
-```javascript
-misAlumnos.sort((alum1, alum2) => (alum1.apellidos+alum1.nombre).localeCompare(alum2.apellidos+alum2.nombre) )
-```
-
-**NOTA**: si queremos ordenar un array de objetos por un campo numérico lo mas sencillo es restar dicho campo:
-```javascript
-misAlumnos.sort((alum1, alum2) => alum1.edad - alum2.edad)
 ```
 
 > EJERCICIO: modifica las clases Productos y Televisores para que el método que muestra los datos del producto se llame de la manera más adecuada
@@ -195,49 +165,53 @@ Lo más conveniente es guardar cada clase en su propio fichero, que llamaremos c
 
 En dicho fichero exportamos la clase (con `export` o mejor `export default` porque sólo hay una) y donde queramos usarla la importamos (`import { Users } from 'users.class'` o `import Users from 'users.class'`, según cómo la hayamos exportado).
 
-## Ojo con _this_
-Dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
+## El contexto de _this_
+El valor de la variable _this_ depende del contexto e que se ejecuta el código. Al crear una instancia de una calse con `new` _this_ hace referencia a la instancia creada. Pero dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
 ```javascript
 class Alumno {
     ...
     getInfo() {
-        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
         function nomAlum() {
-            return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
+            return this.nombre + ' ' + this.apellidos      // Aquí this no es la instancia del objeto Alumno
         }
+
+        return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
     }
 }
 ```
 
-Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia al objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
+Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia a a instancia del objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
 
 Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
 1. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor
 ```javascript
     getInfo() {
+        const nomAlum = () => this.nombre + ' ' + this.apellidos
+
         return 'El alumno ' + nomAlum() + ' tiene ' + this.edad + ' años'
-        let nomAlum = () => this.nombre + ' ' + this.apellidos
     }
 ```
 
 2. Pasándole _this_ como parámetro a la función
 ```javascript
     getInfo() {
-        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
         function nomAlum(alumno) {
             return alumno.nombre + ' ' + alumno.apellidos
         }
+
+        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
     }
 ```
 
 3. Guardando el valor en otra variable (como _that_)
 ```javascript
     getInfo() {
-        let that = this;
-        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años'
         function nomAlum() {
             return that.nombre + ' ' + that.apellidos      // Aquí this no es el objeto Alumno
         }
+
+        let that = this;
+        return 'El alumno ' + nomAlum() +' tiene ' + this.edad + ' años'
     }
 ```
 
@@ -246,10 +220,11 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
 class Alumno {
     ...
     getInfo() {
-        return 'El alumno ' + nomAlum.bind(this) + ' tiene ' + this.edad + ' años'
         function nomAlum() {
             return this.nombre + ' ' + this.apellidos      // Aquí this no es el objeto Alumno
         }
+
+        return 'El alumno ' + nomAlum.bind(this) + ' tiene ' + this.edad + ' años'
     }
 }
 ```
@@ -279,7 +254,8 @@ class Alumno {
 Object.assign(Alumno.prototype, saludaMixin);
 
 // Ahora el Alumno puede decir hola
-new User('Carlos', 'Pérez', 25).saluda(); // Hola, soy Carlos
+const alumno = new User('Carlos', 'Pérez', 25)
+alumno.saluda(); // Hola, soy Carlos
 ```
 
 ## Programación orientada a objetos en JS5

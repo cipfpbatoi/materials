@@ -4,7 +4,7 @@
   - [Funciones](#funciones)
     - [Parámetros](#parámetros)
     - [Funciones anónimas](#funciones-anónimas)
-    - [Arrow functions (funciones _lambda_)](#arrow-functions-funciones-lambda)
+    - [Arrow functions (funciones flecha)](#arrow-functions-funciones-flecha)
   - [Estructuras y bucles](#estructuras-y-bucles)
     - [Estructura condicional: if](#estructura-condicional-if)
     - [Estructura condicional: switch](#estructura-condicional-switch)
@@ -23,18 +23,23 @@
   - [Buenas prácticas](#buenas-prácticas)
     - ['use strict'](#use-strict)
     - [Variables](#variables-1)
-    - [Errores](#errores)
     - [Otras](#otras)
   - [Clean Code](#clean-code)
 
 ## Variables
-Javascript es un lenguaje débilmente tipado. Esto significa que no se indica de qué tipo es una variable al declararla e incluso puede cambiar su tipo a lo largo de la ejecución del programa. Ejemplo:
+Javascript es un lenguaje dinámicamente tipado. Esto significa que no se indica de qué tipo es una variable al declararla e incluso puede cambiar su tipo a lo largo de la ejecución del programa. Ejemplo:
 ```javascript
 let miVariable;         // declaro miVariable y como no se asigno un valor valdrá undefined
 miVariable='Hola';      // ahora su valor es 'Hola', por tanto contiene una cadena de texto
 miVariable=34;          // pero ahora contiene un número
 miVariable=[3, 45, 2];  // y ahora un array
 miVariable=undefined;   // para volver a valer el valor especial undefined
+```
+
+Además es débilmente tipado, lo que significa que permite operaciones entre tipos de datos diferentes. Ejemplo:
+```javascript
+miVariable='23';
+console.log(miVariable * 2);  // mostrará 46 ya que convierte la cadena '23' a número
 ```
 
 > EJERCICIO: Ejecuta en la consola del navegador las instrucciones anteriores y comprueba el valor de miVariable tras cada instrucción (para ver el valor de una variable simplemente ponemos en la consola su nombre: `miVariable`
@@ -44,7 +49,7 @@ Ni siquiera estamos obligados a declarar una variable antes de usarla, aunque es
 'use strict'
 ```
 
-Las variables de declaran con **let** (lo recomendado desde ES2015), aunque también pueden declararse con **var**. La diferencia es que con _let_ la variable sólo existe en el bloque en que se declara mientras que con _var_ la variable existe en toda la función en que se declara:
+Las variables de declaran con **let** (lo recomendado desde ES2015), aunque también pueden declararse con **var** (nosotros NUNCA lo haremos). La diferencia es que con _let_ el ámbito de la variable es sólo el bloque en que se declara mientras que con _var_ su ámbito es global (o global a la función en que se declara):
 ```javascript
 if (edad < 18) {
   let textoLet = 'Eres mayor de edad';
@@ -61,7 +66,15 @@ Cualquier variable que no se declara dentro de una función (o si se usa sin dec
 
 Se recomienda que Los nombres de las variables sigan la sintaxis _camelCase_ (ej.: _miPrimeraVariable_).
 
-Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error.
+Desde ES2015 también podemos declarar constantes con **const**. Se les debe dar un valor al declararlas y si intentamos modificarlo posteriorment se produce un error. Sin embargo si la variable es un objeto o array sí podemos modificar su contenido, aunque no vlarla a asignar. Se recomienda usarla siempre que sea posible. Ejemplo:
+```javascript
+const PI=3.1416;
+PI=3.14;    // dará un error
+
+const miArray=[3, 4, 5];
+miArray[0]=6;   // esto sí se puede hacer
+miArray=[6, 4, 5];  // esto dará un error
+```
 
 NOTA: en la página de [Babel](https://babeljs.io/) podemos teclear código en ES2015 y ver cómo quedaría una vez transpilado a ES5.
 
@@ -104,7 +117,7 @@ console.log(potencia(4));         // mostrará 16 (4^2)
 console.log(potencia(4,5));       // mostrará 1024 (4^5)
 ```
 
-> NOTA: En ES5 para dar un valor por defecto a una variable se hacía
+> NOTA: Hasta ES6 para dar un valor por defecto a una variable se hacía
 > ```javascript
 > function potencia(base, exponente) {
 >     exponente = exponente || 2;       // si exponente vale undefined se la asigna el valor 2
@@ -136,7 +149,7 @@ function aplica_fn(dato, funcion_a_aplicar) {
 aplica_fn(3, cuadrado);     // devolverá 9 (3^2)
 ```
 
-A este tipo de funciones se llama _funciones de primera clase_ y son típicas de lenguajes funcionales.
+Al usar paréntesis `()` se llama a la función. Sin paréntesis sólo se hace referencia al objeto que representa la función. La capacidad de Javascript de tratar las funciones como objetos le permite el uso de funciones de _Callback_ y la programación funcional, que veremos más adelante.
 
 ### Funciones anónimas
 Como acabamos de ver podemos definir una función sin darle un nombre. Dicha función puede asignarse a una variable, autoejecutarse o asignasrse a un manejador de eventos. Ejemplo:
@@ -150,7 +163,7 @@ holaMundo();        // se ejecuta la función
 
 Como vemos asignamos una función a una variable de forma que podamos "ejecutar" dicha variable.
 
-### Arrow functions (funciones _lambda_)
+### Arrow functions (funciones flecha)
 ES2015 permite declarar una función anónima de forma más corta. Ejemplo sin _arrow function_:
 ```javascript
 let potencia = function(base, exponente) {
@@ -191,6 +204,8 @@ let cuadrado = base => base * base;
 
 > EJERCICIO: Haz una _arrow function_ que devuelva el cubo del número pasado como parámetro y pruébala desde la consola. Escríbela primero en la forma habitual y luego la "traduces" a _arrow function_.
 
+Las _arrow function_ son muy útiles cuando se usan como parámetros de otras funciones (como veremos en _programación funcional_) pero no tienen su propio contexto _this_ por lo que no las podremos usar como métodos de una clase u objeto).
+
 ## Estructuras y bucles
 ### Estructura condicional: if
 El **if** es como en la mayoría de lenguajes. Puede tener asociado un **else** y pueden anidarse varios con **else if**.
@@ -218,7 +233,7 @@ if (edad < 18) {
 
 Se puede usar el operador **? :** que es como un _if_ que devuelve un valor:
 ```javascript
-let esMayorDeEdad = (edad>18)?true:false;
+let esMayorDeEdad = (edad > 18) ? true : false;
 ```
 
 ### Estructura condicional: switch
@@ -230,7 +245,7 @@ switch(color) {
         colorFondo='azul';
         break;
     case 'azul':
-        colorFondo='amarillo';
+        color_lambda_Fondo='amarillo';
         break;
     default:            // Para cualquier otro valor
         colorFondo='negro';
@@ -469,7 +484,7 @@ También tenemos 2 operadores de _diferente_: **!=** y **!==** que se comportan 
 Los operadores relacionales son >, >=, <, <=. Cuando se compara un número y una cadena ésta se convierte a número y no al revés (`23 > '5'` devuelve _true_, aunque `'23' > '5'` devuelve _false_)  
 
 ## Manejo de errores
-Si sucede un error en nuestro código el programa dejará de ejecutarse por lo que el usuario tendrá la sensación de que no hace nada (el error sólo se muestra en la consola y el usuario no suele abrirla nunca). Para evitarlo debemos intentar capturar los posibles errores de nuestro código antes de que se produzcan.
+Si sucede un error en nuestro código el programa dejará de ejecutarse por lo que el usuario tendrá la sensación de que no hace nada (el error sólo se muestra en la consola y el usuario no suele abrirla nunca). Para evitarlo es crucial capturar los posibles errores de nuestro código antes de que se produzcan.
 
 En javascript (como en muchos otros lenguajes) el manejo de errores se realiza con sentencias
 ```javascript
@@ -481,7 +496,7 @@ catch(error) {
 }
 ```
 
-Dentro del bloque _try_ ponemos el código que queremos proteger y cualquier error producido en él será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no. El parámetro que recibe _catch_ es un objeto con las propiedades _name_, que indica el tipo de error (_SyntaxError_, _RangeError_, ... o el genérico _Error_), y _message_, que indica el texto del error producido.
+Dentro del bloque _try_ ponemos el código que queremos proteger y cualquier error producido en él será pasado al bloque _catch_ donde es tratado. Opcionalmente podemos tener al final un bloque _finally_ que se ejecuta tanto si se produce un error como si no. El parámetro que recibe _catch_ es un objeto de tipo `Error` con propiedades como _name_, que indica el tipo de error (_SyntaxError_, _RangeError_, ... o el genérico _Error_), o _message_, que indica el texto del error producido.
 
 En ocasiones podemos querer que nuestro código genere un error. Esto evita que tengamos que comprobar si el valor devuelto por una función es el adecuado o es un código de error. Por ejemplo tenemos una función para retirar dinero de una cuenta que recibe el saldo de la misma y la cantdad de dinero a retirar y devuelve el nuevo saldo, pero si no hay suficiente saldo no debería restar nada sino mostrar un mensaje al usuario. Sin gestión de errores haríamos:
 ```javascript
@@ -509,7 +524,7 @@ Se trata de un código poco claro que podemos mejorar lanzando un error en la fu
   }
 ```
 
-Por defecto al lanzar un error este será de clase _Error_ pero (el código anterior es equivalente a `throw new Error('Valor no válido')`) aunque podemos lanzarlo de cualquier otra clase (`throw new RangeError('Saldo insuficiente')`) o personalizarlo.
+Por defecto al lanzar un error este será de clase _Error_ (el código anterior es equivalente a `throw new Error('Saldo insuficiente')`) aunque podemos lanzarlo de cualquier otra clase (`throw new RangeError('Saldo insuficiente')`) o personalizarlo.
 
 Siempre que vayamos a ejecutar código que pueda generar un error debemos ponerlo dentro de un bloque _try_ por lo que la llamada a la función que contiene el código anterior debería estar dentro de un _try_. El código del ejemplo anterior quedaría:
 ```javascript
@@ -555,53 +570,6 @@ Algunas de las prácticas que deberíamos seguir respecto a las variables son:
 * Usar para nombrarlas la notación _camelCase_
 
 También es conveniente, por motivos de eficiencia no usar objetos Number, String o Boolean sino los tipos primitivos (no usar `let numero = new Number(5)` sino `let numero = 5`) y lo mismo al crear arrays, objetos o expresiones regulares (no usar `let miArray = new Array()` sino `let miArray = []`).
-
-### Errores
-No se debería estar comprobando lo devuelto por una función para ver si se ha ejecutado correctamente o ha devuelto algún código de error. Si algo es erróneo no debemos devolver un código sino lanzar un error y quien ha llamado a esa función debería hacerlo dentro de un `try...catch` para capturar dicho error. Por ejemplo:
-- Mal
-
-```javascript
-function muestraDatos(datos) {
-   ...
-   const nombreMes = getNombreMes(datos.mes);
-   if (nombreMes === false) {
-       alert('El mes ' + datos.mes + ' es erróneo');
-   }
-   ...
-}
-
-function getNombreMes(mes) {
-  const meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
-
-  if (isNaN(mes) || mes < 1 || mes > 12) {
-    return false
-  }
-  return meses[mes - 1]
-}
-```
-
-- Bien
-
-```javascript
-function muestraDatos(datos) {
-   ...
-   try {
-      var nombreMes = getNombreMes(datos.mes);
-   } catch(err) {
-      alert(err)
-   }
-   ...
-}
-
-function getNombreMes(mes) {
-  const meses = new Array("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
-
-  if (isNaN(mes) || mes < 1 || mes > 12) {
-       throw 'El mes ' + mes + ' es erróneo'
-  }
-  return meses[mes - 1]
-}
-```
 
 ### Otras
 Algunas reglas más que deberíamos seguir son:

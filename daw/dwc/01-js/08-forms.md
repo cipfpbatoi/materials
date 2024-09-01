@@ -45,6 +45,8 @@ input:invalid {
 }
 ```
 
+Además de las anteriores tenemos las pseudoclases **:required**, **:optional**, que nos permiten poner reglas de estilo a los campos obligatorios o no, y **:focus** para el campo con el foco.
+
 La validación del navegador se realiza al enviar el formulario. Si encuentra un error lo muestra, se detiene la validación del resto de campos y no se envía el formulario.
 
 ### Validación mediante la API de validación de formularios
@@ -59,8 +61,8 @@ Esto nos da la ventaja de:
 
 Las principales propiedades y métodos que nos proporciona esta API son:
 - **checkValidity()**: método booleano que nos dice si el campo al que se aplica es o no válido. También se puede aplicar al formulario para saber si es válido o no
-- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido para el navegador) con el mensaje pasado como parámetro. Por ejemplo podemos usarlo para indicar que el nick elegido no es válido porque ya está en uso por otro usuario. Para quitar este error se hace `setCustomValidity('')`
 - **validationMessage**: en caso de que un campo no sea válido esta propiedad contiene el texto del error de validación proporcionado por el navegador. Si es válido esta propiedad es una cadena vacía
+- **setCustomValidity(mensaje)**: añade un error personalizado al campo (que ahora ya NO será válido para el navegador) con el mensaje pasado como parámetro. Por ejemplo podemos usarlo para indicar que el nick elegido no es válido porque ya está en uso por otro usuario. Para quitar este error se hace `setCustomValidity('')`
 - **[validity](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)**: es un objeto que tiene propiedades booleanas para saber qué requisito del campo es el que falla:
   - **valueMissing**: indica si no se cumple el atributo **_required_** (es decir, valdrá _true_ si el campo tiene el atributo _required_ pero no se ha introducido nada en él)
   - **typeMismatch**: indica si el contenido del campo no cumple con su atributo **_type_** (ej. type="email")
@@ -76,7 +78,7 @@ En la página de [W3Schools](https://www.w3schools.com/js/js_validation_api.asp)
 
 <script async src="//jsfiddle.net/juansegura/vbdrxjsz/embed/"></script>
 
-Para validar un formulario nosotros pero usando esta API debemos añadir al _FORM_ el atributo **`novalidate`** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
+Para validar un formulario nosotros pero usando esta API debemos añadir a la etiqueta _\<form>_ el atributo **`novalidate`** que hace que no se encargue el navegador de mostrar los mensajes de error ni de decidir si se envía o no el formulario (aunque sí valida los campos) sino que lo haremos nosotros.
 
 #### Ejemplo
 Un ejemplo sencillo de validación de un formulario podría ser:
@@ -166,6 +168,12 @@ form.addEventListener('submit', (event) => {
   }
 })
 ```
+
+### Ficheros en formularios
+Hay infinidad de páginas donde poder consultar cómo validar ficheros e imágenes en un formulario. Os recomiendo:
+- [Curso DWEC de José Castillo](https://xxjcaxx.github.io/libro_dwec/dom.html#ficheros-en-formularios)
+- [w3schools](https://www.w3schools.com/js/js_validation_file.asp)
+- [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation#validating_files).
 
 ### yup
 Existen múltiples librerías que facilitan enormenmente el tedioso trabajo de validar un formulario. Un ejemplo es [yup](https://www.npmjs.com/package/yup).

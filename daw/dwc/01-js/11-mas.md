@@ -101,45 +101,19 @@ Saber más:
 * [Carlos Azaustre: Crear chat con WebSockets](https://www.youtube.com/watch?v=ppiAvvkvAz0)
 
 ## WebWorkers
-Permite ejecutar scripts en hilos separados que se ejecutan en segundo plano y se comunican con la tarea que los crea mediante el envío de mensajes.
+En principio Javascript se ejecuta en un único hilo de ejecución pero esta tecnología permite ejecutar scripts en segundo plano en hilos separados que se ejecutan en segundo plano y se comunican con la tarea que los crea mediante el envío de mensajes.
 
 Cuando se está ejecutando un script la página no responde hasta que finaliza su ejecución. Si el script lo ejecuta un web worker la página será funcional (podemos interactuar con ella) ya que le ejecución del script se realiza en segundo plano en otro hilo.
 
-Por ejemplo, crearemos un fichero **worker_count.js** con el código:
-```javascript
-var i = 0;
+Hay 3 tipos de _WebWorkers_:
+- Dedicated Workers: Estos son los más comunes y se ejecutan en un hilo dedicado al contexto del script que los creó. No comparten recursos con otros scripts y son útiles para tareas intensivas que requieren mucho procesamiento.
+- Shared Workers: Pueden ser compartidos por varios scripts ejecutándose en diferentes ventanas, pestañas o iframes dentro del mismo dominio. Son ideales para aplicaciones que necesitan coordinar tareas entre múltiples instancias de la misma aplicación web.
+- Service Workers: Actúan como servidores proxy que se ejecutan en segundo plano y gestionan eventos de red como las peticiones HTTP. Son esenciales para crear aplicaciones web progresivas (PWAs) que funcionen sin conexión y mejoren la velocidad de carga.
 
-function timedCount() {
-  i = i + 1;
-  postMessage(i);
-  setTimeout("timedCount()",500);
-}
-
-timedCount();
-```
-
-La función _postMessage_ envía un mensaje a la tarea que lo creó.
-
-Para llamarlo en nuestra página y que se ejecute como un WebWorker haremos:
-```javascript
-var worker;
-
-function startWorker() {
-    worker = new Worker("worker_count.js");
-    }
-    worker.onmessage = function(event) {
-      console.log = ('Recibido del worker: '+event.data);
-    };
-}
-
-function stopWorker() { 
-  worker.terminate();
-}
-```
-
-Al llamar a _startWorker_ se crea el worker y cada vez que éste envíe algo se ostrará en la consola (lo que envía se recibe en _event-data_). Para finalizar un worker llamamos a su método _terminate()_.
+Podéis ver un ejemplo de cómo crear un WebWorker para generar números primos en el  [Curso DWEC de Jose Castillo](https://xxjcaxx.github.io/libro_dwec/webworkers.html#ejemplo-de-uso-dedicated-worker)
 
 Saber más:
+* [Curso DWEC de Jose Castillo](https://xxjcaxx.github.io/libro_dwec/webworkers.html)
 * [MDN - Usando WebWorkers](https://developer.mozilla.org/es/docs/Web/Guide/Performance/Usando_web_workers)
 * [w3schools - HTML5 Web Workers](https://www.w3schools.com/html/html5_webworkers.asp)
 
