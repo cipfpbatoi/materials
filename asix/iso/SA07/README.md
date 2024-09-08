@@ -14,13 +14,13 @@
     - [Otras herramientas](#otras-herramientas)
   - [Configuración del cliente LDAP](#configuración-del-cliente-ldap)
     - [Instalación cliente Debian ](#instalación-cliente-debian-)
-      - [Instalación en otros clientes](#instalación-en-otros-clientes)
-      - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
+    - [Instalación en otros clientes](#instalación-en-otros-clientes)
+    - [Configuración del cliente ldap](#configuración-del-cliente-ldap-1)
     - [Configuración de NSS y PAM](#configuración-de-nss-y-pam)
       - [Configuración del servicio NSS](#configuración-del-servicio-nss)
       - [Configuración de PAM](#configuración-de-pam)
       - [Ajustes de la configuración](#ajustes-de-la-configuración)
-      - [Perfiles móviles](#perfiles-móviles)
+    - [Perfiles móviles](#perfiles-móviles)
     - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
       - [Configurar SSSD](#configurar-sssd)
   - [Bibliografía](#bibliografía)
@@ -326,7 +326,7 @@ y seleccionamos la opción _Create home directory_. Para que cree el directorio 
 
 <figure><img src="./media/5-ldapd.png" alt=""><figcaption></figcaption></figure>
 
-#### Instalación en otros clientes
+### Instalación en otros clientes
 
 Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
 
@@ -336,7 +336,7 @@ Los paquetes necesarios para configurar un equipo como cliente **LDAP** son:
 
 La instalación de este paquetes también nos seleccionará otros adicionales cómo: **auth-client-config,** **ldap-auth-client** y **ldap-auth-config**.
 
-#### Configuración del cliente ldap
+### Configuración del cliente ldap
 
 La instalación de los paquetes finaliza con la configuración del módulo de autentificació de ldap (**ldap-auth-config**). La configuración que hacemos se almacena en el fichero **/etc/ldap.conf**. Este se utiliza tanto por el servicio de autenticación PAM como por el servicio de nombres NSS. Si posteriormente tenemos que cambiar esta configuración podemos editar el fichero o, más fácilmente reconfigurarlo con el comando **dpkg-reconfigure ldap-auth-config**.
 
@@ -449,7 +449,7 @@ Para que estos cambios tengan efecto debemos volver a ejecutar el comando
     pam-auth-update
 ```
 
-#### Perfiles móviles
+### Perfiles móviles
 
 Lo que hemos hecho crea los home de los usuarios del dominio en el equipo en que inician la sesión. Una mejora sería que el directorio home de cada usuario no sea un directorio local del equipo cliente sino un directorio compartido en el servidor para que cuando un usuario inicia sesión en cualquier equipo de la red tenga acceso automáticamente a su directorio home creado en el servidor.
 
