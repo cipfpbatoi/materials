@@ -1,5 +1,5 @@
-# Test en Javascript
-- [Test en Javascript](#test-en-javascript)
+# Introducción a los test en Javascript
+- [Introducción a los test en Javascript](#introducción-a-los-test-en-javascript)
   - [Introducción](#introducción)
   - [Crear un fichero de test](#crear-un-fichero-de-test)
   - [Marcadores comunes](#marcadores-comunes)
@@ -13,20 +13,14 @@
 
 
 ## Introducción
-Existen muchas herramientas para crear tests unitarios en JS. Nosotros usaremos [Jest](https://jestjs.io/es-ES/) o [_Vitest_](https://vitest.dev/) que es una adaptación para _Vite_ de _Jest_. 
+Existen muchas herramientas para crear tests unitarios en JS. Nosotros usaremos [_Vitest_](https://vitest.dev/) que es una adaptación para _Vite_ de la librería [Jest](https://jestjs.io/es-ES/). 
 
-Podemos instalarlo con npm:
+Podemos instalarlo con npm en el proyecto donde lo vayamos a usar:
 ```bash
 npm install -D vitest
 ```
 
-o
-
-```bash
-npm install -D jest
-```
-
-o podemos instalarlo globalmente para usarlo en varios proyectos (`npm i -g vitest`). Si lo hacemos así deberemos crear un fichero _package.json_ en nuestro directorio de trabajo con el código:
+o podemos instalarlo globalmente para usarlo en cualquier proyecto (`npm i -g vitest`). Si lo hacemos así deberemos crear un fichero _package.json_ en nuestro directorio de trabajo con el código:
 ```javascript
 {
   "scripts": {
@@ -41,16 +35,23 @@ Hemos implementado una función de suma en el fichero _sum.js_:
 function sum(a, b) {
   return a + b;
 }
-module.exports = sum;
+export sum;
 ```
 
-y queremos crear tests para probarla. Crearemo el fichero _sum.test.js_ con el siguiente contenido:
-```javascript
-const sum = require('./sum');
+NOTA: si no estamos usando _Vite__ podemos exportar la función con `module.exports = sum;`
 
-test('sumar 1 + 2 es igual a 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});
+Para probarla crearemos el fichero _sum.test.js_ con el siguiente contenido:
+```javascript
+import { sum } from './sum.js';
+
+describe('sum', () => {
+  test('sumar 1 + 2 es igual a 3', () => {
+    expect(sum(1, 2)).toBe(3);
+  });
+  test('sumar 1 + -2 es igual a -1', () => {
+    expect(sum(1, -2)).toBe(-1);
+  });
+})
 ```
 
 NOTA: En lugar de `test` podemos usar `it` que es equivalente.
@@ -60,15 +61,22 @@ Para pasar el test ejecutaremos en la terminal:
 npm run test
 ```
 
+La estructura de un fichero de test es:
+1. Importar las funciones a testear
+2. Agrupar los tests relacionados con `describe`
+3. Incluir uno o más tests con `test`. Cada test debe ser independiente de los demás y no depender de su orden de ejecución.
+
+Podemos ver más opciones en la [documentación oficial](https://vitest.dev/).
+
 ## Marcadores comunes
-La sintaxis básica es como heos visto en el ejemplo:
+Cada test utiliza la función `expect` que recibe un valor y utiliza un _matcher_ para compararlo con lo esperado. La sintaxis básica es como hemos visto en el ejemplo:
 ```javascript
 expects(data).toBe(value);
 ```
 
 NOTA: En lugar de `expects` podemos usar `assert` que es equivalente.
 
-Los marcadores que podemos usar son:
+Algunos marcadores que podemos usar son:
 - .toBe(value): el resultado debe ser igual al valor indicado
 - .toEqual(value): igual pero para comparar objetos
 - .toBeNull: igual a null
@@ -94,8 +102,6 @@ También podemos comprobar si un array contiene un elemento
 
 o si una variable es instancia de un tipo concreto
 - .toBeInstanceOf(tipo)
-
-Podemos consultar todas las opciones en la [documentación oficial](https://jestjs.io/docs/en/expect).
 
 ## Promesas
 Podemos testear una función que devuelva una promesa u otras funciones asíncronas. Si tenemos la función _fetchData_ que devuelve una promesa que al resolverse devuelve el texto _'peanut butter'_ la testearemos con el código:

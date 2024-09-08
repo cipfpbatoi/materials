@@ -2,6 +2,7 @@
 En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divide en:
 * [Introducción a Javascript](#introducci%C3%B3n-a-javascript)
 * [1-Sintaxis](./01-sintaxis.md): Variables. Funciones. Estructuras y bucles. Tipos de datos. Buenas prácticas
+  * [Introducción a los test en Javascript](./tests.md)
 * [2.1-Objetos](./02.1-objetos.md): Introducción a los objetos en Javascript
 * [2.2-Arrays](./02.2-arrays.md): Métodos. _Functional Programming_. Referencia vs copia. Rest y Spread. Desestructuración de arrays. Map. Set
   * [Vite](./03.1-vite.md): Cómo usar vite
