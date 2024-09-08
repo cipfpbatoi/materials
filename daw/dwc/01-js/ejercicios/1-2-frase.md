@@ -8,11 +8,11 @@ El objetivo de este ejercicio es practicar con los distintos métodos de los obj
 - la frase escrita con las palabras al revés
 - si es o no un palíndromo (si se lee igual al revés) pero omitiendo espacios en blanco y sin diferenciar mayúsculas y minúsculas.
 
-Para pasar los tests a nuestro programa para comprobar si funciona crearemos (e incluiremos en el fichero HTML) 2 ficheros JS distintos:
-- _functions.js_: este fichero sólo incluye las funciones indicadas más abajo
-- _index.js_: es el programa principal que contiene el código que pide la frase al usuario y, si ha introducido algo, la muestra y llama a las distintas funciones y muotrando por consola la información devuelta por las mismas.
-
-En el _index.html_ deberás incluir cada fichero en su etiqueta _script_ (en primer lugar el de las funciones ya que lo llama el _index.js_).
+Para organizar mejor nuestro programa y poder pasar los test crearemos 2 carpetas:
+- src: allí crearemos los 2 ficheros javascript que contendrán nuestro código y que deberemos incluir en el fichero HTML (usando 2 etiquetas SCRIPT, en primer lugar el de las funciones ya que lo llama el _index.js_):
+  - _functions.js_: este fichero sólo incluye las funciones indicadas más abajo
+  - _index.js_: es el programa principal que contiene el código que pide la frase al usuario y, si ha introducido algo, la muestra y llama a las distintas funciones y muotrando por consola la información devuelta por las mismas
+- test: dentro copiaremos el fichero de tests (_functions.test.js_) de Aules para pasar los tests de nuestro código
 
 Las funciones que contendrá el fichero _functions.js_ (deben llamarse **EXACTAMENTE** como os digo) son:
 -	letters: devuelve el número de caracteres (incluyendo espacios) de la cadena pasada como parámetro (sólo un número)
