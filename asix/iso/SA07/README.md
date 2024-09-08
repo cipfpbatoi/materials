@@ -1,7 +1,6 @@
 # 🖥️ Centralización de la información con OpenLDAP
 
 - [🖥️ Centralización de la información con OpenLDAP](#️-centralización-de-la-información-con-openldap)
-  - [](#)
   - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
   - [Introducción a LDAP](#introducción-a-ldap)
@@ -25,9 +24,6 @@
     - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
       - [Configurar SSSD](#configurar-sssd)
   - [Bibliografía](#bibliografía)
-
-
-##
 
 <figure><img src="./media/LDAPworm.gif" alt=""><figcaption></figcaption></figure>
 
