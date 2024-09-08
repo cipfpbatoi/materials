@@ -56,10 +56,7 @@ Además proporcionan otras ventajas:
 Además _Vite_ incorpora un servidor de desarrollo para hacer más cómoda la creación y prueba de nuestros proyectos.
 
 ### Tests
-Para testear nuestros programas utilizaremos [_Jest_](https://jestjs.io/es-ES/). Lo instalaremos con npm de manera global para poderlo usar en distintos proyectos. Podéis ver un breve resumen de cómo usar test en los [apuntes](./tests.md).
-
-En los casos que deseemos testear una aplicación en la que usemos _Vite_ la librería que usaremos es _Vitest_ que está basada en _Jest_.
-
+Para testear nuestros programas utilizaremos [_Vitest_](https://vitest.dev/) que es una adaptación para _Vite_ de la librería para test [_Jest_](https://jestjs.io/es-ES/). Lo instalaremos con npm de manera global para poderlo usar en distintos proyectos. Podéis ver un breve resumen de cómo usar test en los [apuntes](./tests.md).
 
 ## Instalar npm
 **npm** es el gestor de paquetes del framework Javascript **Node.js** y es fundamental en programación frontend especialmente como gestor de dependencias y módulos de la aplicación. Esto significa que será la herramienta que se encargará de descargar y poner a disposición de nuestra aplicación todas las librerías Javascript que vayamos a utilizar.
@@ -85,11 +82,10 @@ Al instalar paquetes en algunos casos usaremos 2 opciones:
 - `-g`: instala la librería de forma global para que esté disponible en todos nuestros proyectos no sólo en el proyecto actual
 - `-D`: indica que la librería a instalar es una dependencia de desarrollo y, por tanto, no se incluirá en el código generado para producción.
 
-Vamos a instalar ahora globalmente 2 librerías que usaremos en la mayoría de nuestros proyectos, el _bundler_ **_Vite_** y la librería de tests **_Jest_**:
+Vamos a instalar ahora globalmente la librería que usaremos en la mayoría de nuestros proyectos, el _bundler_ **_Vite_**:
 
 ```bash
 npm install -g vite
-npm install -g jest
 ```
 
 ### El archivo package.json
