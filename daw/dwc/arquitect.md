@@ -42,19 +42,19 @@ El protocolo HTTP es un protocolo sin estado, lo que significa que cada petició
 
 ### URL
 Una URL (_Uniform Resource Locator_) es una cadena de caracteres que se utiliza para identificar un recurso en la web. Ejemplos de URL podrían ser `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` o `https://www.google.com/search?q=dwec&client=firefox-b-lm`. Una URL tiene la siguiente estructura:
-- **Protocolo**: http, https, ftp, etc (en el primer ejemplo sería `http://` y en el segundo `https://`)
+- **Protocolo**: http, https, ftp, etc. Se separa del nombre de dominio por `://`. En el primer ejemplo sería `http://` y en el segundo `https://`
 - **Nombre de dominio**: dirección IP o nombre de dominio del servidor que aloja el recurso (`cipfpbatoi.github.io` o `www.google.com` en los ejemplos anteriores)
-- **Puerto**: número de puerto en el que escucha el servidor (por defecto 80 para HTTP y 443 para HTTPS). En los ejemplos no se incluye puerto por lo que se usa el puerto por defecto `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` es equivalente a `http://cipfpbatoi.github.io:80/materials/daw/dwc/entorno.html#tests` y el de google a `https://www.google.com:443/search?q=dwec&client=firefox-b-lm`
+- **Puerto**: número de puerto en el que escucha el servidor, antecedido por `:` (por defecto 80 para HTTP y 443 para HTTPS). En los ejemplos no se incluye puerto por lo que se usa el puerto por defecto `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` es equivalente a `http://cipfpbatoi.github.io:80/materials/daw/dwc/entorno.html#tests` y el de google a `https://www.google.com:443/search?q=dwec&client=firefox-b-lm`
 - **Ruta**: ruta del recurso en el servidor (`/materials/daw/dwc/entorno.html` en el primer ejemplo y `/search` en el segundo)
-- **Fragmento**: identificador de una parte específica del recurso (`#tests` en el primer ejemplo, en el segundo no hay fragmento)
-- **Query string**: parámetros adicionales que se envían al servidor (`?q=dwec&client=firefox-b-lm` en el segundo ejemplo, en el primer ejemplo no hay query string)
+- **Fragmento**: identificador de una parte específica del recurso, comienza por `#` (`#tests` en el primer ejemplo, en el segundo no hay fragmento)
+- **Query string**: parámetros adicionales que se envían al servidor. Son pares clave=valor y comienza por `?`. Si hay varios pares se separan por `&` (`?q=dwec&client=firefox-b-lm` en el segundo ejemplo, en el primer ejemplo no hay query string)
 
 ## Arquitectura cliente-servidor en la web
 Es la arquitectura de red en la que un cliente (navegador web) solicita recursos a un servidor web y este responde con la información solicitada. El cliente y el servidor se comunican a través del protocolo HTTP. El cliente envía una petición al servidor y este responde con la información solicitada. La arquitectura cliente-servidor se basa en el modelo de comunicación petición-respuesta.
 
 En el lado servidor (_server side_) se ejecutan las aplicaciones que generan las páginas web dinámicas. En el lado cliente (_client side_) se ejecutan aplicaciones que se ejecutan en el navegador web y que interactúan con el usuario. 
 
-Muchas aplicaciones web modernas son aplicaciones de una sola página (_Single Page Applications_ o SPAs) que se ejecutan en el lado cliente y que se comunican con el servidor a través de una API (_Application Programming Interface_).
+Muchas aplicaciones web modernas son aplicaciones de una sola página (_Single Page Applications_ o SPAs) que se ejecutan en el lado cliente y que se comunican con el servidor a través de una API (_Application Programming Interface_). En estas aplicacopnes el usuario está siempre en la misma página lo que minimiza la información intercambiada en el servidor y reduce el impass del cambio de página. Para obtener los datos del servidor se utiliza la tecnología AJAX (_Asynchronous JavaScript and XML_) que permite a javascript enviar y recibir datos del servidor asíncronamente sin tener que recargar la página.
 
 ### Server-side
 La lógica de la aplicación se ejecuta en el servidor. El servidor genera las páginas web dinámicas y las envía al cliente. El cliente recibe la página y no tiene que hacer nada más que mostrarla. 
@@ -88,7 +88,8 @@ JavaScript tiene algunas limitaciones que es importante tener en cuenta al desar
 - No puede leer ni escribir archivos en el disco duro del cliente
 - No puede lanzar aplicaciones ni modificar las preferencias del navegador
 - No puede enviar emails, transmitir en streaming, etc
-- No puede acceder a la información de otros dominios
+- No puede acceder a la información de otros dominios (política del mismo origen)
+- No puede manipular ventanas que no haya abierto
 - Se ejecuta en el navegador del cliente, por lo que puede ser modificado por el usuario. Esto puede ser un problema de seguridad si no se toman las medidas adecuadas.
 - Es un lenguaje interpretado, por lo que puede ser más lento que otros lenguajes de programación. Sin embargo, los navegadores modernos han mejorado mucho el rendimiento de JavaScript.
 - JavaScript no es compatible con todos los navegadores. Es importante tener en cuenta la compatibilidad con los navegadores al desarrollar aplicaciones web.
@@ -112,3 +113,10 @@ Según sea el proyecto a desarrollar utilizaremos sólo JavaScript o nos ayudare
 Si tenemos tantas opciones, ¿cuál es la mejor? Dependerá de las necesidades de la aplicación. Si se trata de un sitio web o una aplicación pequeña o que se va a usar esporádicamente es mejor usar páginas web dinámicas y generadas en el lado servidor lo que mejorará el SEO y al ser pequeñas no sobrecargará de trabajo al servidor. Si se trata de una aplicación grande o que se va a usar mucho es mejor usar una SPA que mejorará la experiencia del usuario. Si se trata de una aplicación que se va a usar en dispositivos móviles es mejor usar una aplicación web progresiva o una aplicación web híbrida. En todos los casos la aplicación tendrá que ser _responsive_ para que se adapte a cualquier dispositivo (escritorio, móvil, tablet, ...).
 
 En general, las aplicaciones web progresivas y las aplicaciones web híbridas son las más recomendadas, ya que ofrecen una experiencia de usuario similar a la de las aplicaciones nativas y son más fáciles de desarrollar y mantener que las aplicaciones nativas.
+
+Respecto al despliegue de las aplicaciones, antes se subía al servidor de producción el fichero index.html y el resto de ficheros (html, js, css, ...) que formaban la aplicación. Ahora lo normal es utilizar herramientas llamadas "bundlers" que:
+- unifican en uno todos los ficheros js y css
+- minimizan el código js resultante lo que reduce el tamaño del fichero y mejora la velocidad de carga
+- transpilan el código js a una versión que todos los navegadores entiendan
+- eliminan código duplicado o innecesario de las librerías que se usan
+Una vez hecho esto se sube el resultado al servidor de producción.

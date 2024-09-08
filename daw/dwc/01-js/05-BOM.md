@@ -1,9 +1,4 @@
 # Browser Object Model (BOM)
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [Browser Object Model (BOM)](#browser-object-model-bom)
   - [Introducción](#introducción)
   - [Timers](#timers)
@@ -15,10 +10,8 @@
     - [Objeto navigator](#objeto-navigator)
     - [Otros objetos](#otros-objetos)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## Introducción
-Si en el tema anterior vimos cómo interactuar con la página (DOM) en este veremos cómo acceder a objetos que nos permitan interactuar con el navegador ( y Browser Object Model, BOM).
+Si en el tema anterior vimos cómo interactuar con el documento mostrado en la página (_DOM_) en este veremos cómo acceder a objetos que nos permitan interactuar con el navegador (_Browser Object Model, BOM_).
 
 Usando los objetos BOM podemos:
 * Abrir, cambiar y cerrar ventanas
@@ -29,10 +22,10 @@ Usando los objetos BOM podemos:
 
 ## Timers
 Permiten ejecutar código en el futuro (cuando transcurran los milisegundos indicados). Hay 2 tipos:
-* `setTimeout(función, milisegundos)`: ejecuta la función indicada una sóla vez, cuando transcurran los milisegundos
-* `setInterval(función, milisegundos)`: ejecuta la función indicada cada vez que transcurran los milisegundos, hasta que sea cancelado el _timer_. A ambas se le pueden pasar más parámetros tras los milisegundos y serán los parámetros que recibirá la función a ejecutar.
+* `setTimeout(función, milisegundos)`: ejecuta la función pasada como parámetro una sóla vez, cuando transcurran los milisegundos indicados
+* `setInterval(función, milisegundos)`: ejecuta la función cada vez que transcurran los milisegundos indicados, hasta que sea cancelado el _timer_. A ambas se le pueden pasar más parámetros tras los milisegundos y serán los parámetros que recibirá la función a ejecutar.
 
-Ambas funciones devuelven un identificador que nos permitirá cancelar la ejecución del código, con:
+Ambas funciones devuelven un identificador que nos permitirá cancelar la ejecución del código usando:
 * `clearTiemout(identificador)`
 * `clearInterval(identificador)`
 
@@ -123,8 +116,8 @@ Hay 3 métodos del objeto _window_ que ya conocemos y que nos permiten abrir ven
 ### Objeto [location](http://www.w3schools.com/jsref/obj_location.asp)
 Contiene información sobre la URL actual del navegador y podemos modificarla. Sus principales propiedades y métodos son:
 * `.href`: devuelve la URL actual completa
-* `.protocol`, `.host`, `.port`: devuelve el protocolo, host y puerto respectivamente de la URL actual
-* `.pathname`: devuelve la ruta al recurso actual
+* `.protocol`, `.hostname`, `.port`: devuelve el protocolo, host y puerto respectivamente de la URL actual
+* `.pathname`, `hash`, `search`: devuelve la ruta al recurso actual, el gragmento (`#...`) y la cadena de búsqueda (`?...`) respectivamente
 * `.reload()`: recarga la página actual
 * `.assign(url)`: carga la página pasada como parámetro
 * `.replace(url)`: ídem pero sin guardar la actual en el historial
@@ -146,7 +139,6 @@ Permite acceder al historial de páginas visitadas y navegar por él:
 ### Objeto navigator
 Nos da información sobre el navegador y el sistema en que se ejecuta:
   * `.userAgent`: muestra información sobre el navegador que usamos
-  * `.plataform`: muestra información sobre la plataforma sobre la que se ejecuta
   * `.language`: muestra el idioma del navegador
   * `.languages`: muestra los idiomas instalados en el navegador
   * `.appVersion`: versión del navegador
@@ -157,9 +149,9 @@ Nos da información sobre el navegador y el sistema en que se ejecuta:
   * ...
 
 También incluye objetos con sus propias API para poder interactuar con el sistema:
-  * `.geolocation`: permite obtener la ubicación del usuario
+  * `.geolocation`: devuelve un objeto con la localización del dispositivo (sólo funciona en https)
   * `.storage`: permite acceder a los datos almacenados en el navegador (los veremos en detalle más adelante)
-  * `.clipboard`: permite copiar texto al portapapeles del usuario con `.writeText()` (sólo funciona en páginas seguras)
+  * `.clipboard`: permite copiar texto al portapapeles del usuario con `.writeText()` (sólo funciona en https)
   * `.mediaDevices`: permite acceder a los dispositivos multimedia del usuario
   * `.serviceWorker`: permite trabajar con _service workers_
   * ...
@@ -167,10 +159,7 @@ También incluye objetos con sus propias API para poder interactuar con el siste
 > EJERCICIO: desde la consola muestra la información del navegador, su lenguaje y del sistema en que se ejecuta
 
 ### Otros objetos
-Los otros objetos que incluye BOM son:
-* [document](http://www.w3schools.com/jsref/dom_obj_document.asp): el objeto _document_ que hemos visto en el DOM
-* [navigator](http://www.w3schools.com/jsref/obj_navigator.asp): nos informa sobre el navegador y el sistema en que se ejecuta
-
+Otros objetos que incluye BOM son:
 * [screen](http://www.w3schools.com/jsref/obj_screen.asp): nos da información sobre la pantalla
     * `.width`/`.height`: ancho/alto total de la pantalla (resolución)
     * `.availWidth`/`.availHeight`: igual pero excluyendo la barra del S.O.
