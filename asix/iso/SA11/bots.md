@@ -84,8 +84,8 @@ El script solo requerirá permisos de lectura y una vez creado si lo ejecutas.&#
 
 Más info sobre esto:&#x20;
 
-[https://mhelp.pro/mikrotik-scripts-sending-power-on-notification-to-telegram] (https://mhelp.pro/mikrotik-scripts-sending-power-on-notification-to-telegram)
+[https://mhelp.pro/mikrotik-scripts-sending-power-on-notification-to-telegram](https://mhelp.pro/mikrotik-scripts-sending-power-on-notification-to-telegram)
 
 Bibliografía: [https://twitter.com/weareDMNTRs/status/1519320814272843778](https://twitter.com/weareDMNTRs/status/1519320814272843778)
 
-[..](README.md)
+[Atras](README.md)

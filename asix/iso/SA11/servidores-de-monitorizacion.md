@@ -50,4 +50,4 @@ Existen varias herramientas populares y de código abierto disponibles para impl
 
 * [https://geekflare.com/es/best-open-source-monitoring-software/](https://geekflare.com/es/best-open-source-monitoring-software/)
 
-[..](README.md)
+[Atras](README.md)
