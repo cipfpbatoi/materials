@@ -1,7 +1,5 @@
 # 🔬 Servidores de monitorización
 
-
-
 ## ¿Qué es un servidor de monitorización?
 
 Un servidor de monitorización es una herramienta que se utiliza para supervisar y recopilar información sobre los sistemas informáticos.
