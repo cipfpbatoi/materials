@@ -1,6 +1,8 @@
-# 🖥️ Centralización de la información con OpenLDAP
+# Centralización de la información con OpenLDAP
 
-- [🖥️ Centralización de la información con OpenLDAP](#️-centralización-de-la-información-con-openldap)
+<figure><img src="./media/LDAPworm.gif" alt="OpenLDAP"><figcaption>OpenLDAP</figcaption></figure>
+
+- [Centralización de la información con OpenLDAP](#centralización-de-la-información-con-openldap)
   - [Objetivos](#objetivos)
   - [Conceptos clave](#conceptos-clave)
   - [Introducción a LDAP](#introducción-a-ldap)
@@ -24,8 +26,6 @@
     - [Configuración del cliente LDAP con SSSD](#configuración-del-cliente-ldap-con-sssd)
       - [Configurar SSSD](#configurar-sssd)
   - [Bibliografía](#bibliografía)
-
-<figure><img src="./media/LDAPworm.gif" alt=""><figcaption></figcaption></figure>
 
 ## Objetivos
 
@@ -77,7 +77,7 @@ Un directorio es como un árbol cuya raíz es un dominio (un objeto de tipo DC) 
 
 Un ejemplo de directorio sería:
 
-<figure><img src="./media/ldap.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/ldap.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 **LDAP** suele usar nombres DNS para estructurar los niveles más altos de la jerarquía (DC). Por debajo aparecen entradas que representan unidades organizativas, personas, impresoras, grupos, etc.
 
@@ -175,7 +175,7 @@ Ejemplo: tenemos que crear una **OU** denominada _Usuarios_ en nuestro directori
 
 Lo primero que tenemos que hacer es crear un fichero que denominaremos _ou\_usuarios.ldif_ con la información de la nuestra OU:
 
-<figure><img src="./media/01-ou.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/01-ou.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 A continuación ejecutamos la orden **ldapadd** para crearla:
 
@@ -301,19 +301,19 @@ En este apartado describimos el procedimiento para realizar la instalación/conf
 
 Instalación del paquete:
 
-<figure><img src="./media/1-ldapd.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/1-ldapd.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 Configuración de la dirección del servidor ldap:
 
-<figure><img src="./media/2-ldapd.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/2-ldapd.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 Configuración de **nslc** con el DN de nuestro dominio:
 
-<figure><img src="./media/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/image (4).png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 Configurando la fuente de datos LDAP para los diferentes servicios:
 
-<figure><img src="./media/4-ldapd.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/4-ldapd.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 Ahora podemos ejecutar el comando:
 
@@ -324,7 +324,7 @@ pam-auth-update
 
 y seleccionamos la opción _Create home directory_. Para que cree el directorio del usuario al validarse.
 
-<figure><img src="./media/5-ldapd.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/5-ldapd.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 ### Instalación en otros clientes
 
@@ -356,7 +356,7 @@ La configuración de este paquete nos pide la siguiente información:
 
 El siguiente paso es configurar el servicio NSS editando el fichero _**/etc/nsswitch.conf**_:
 
-<figure><img src="./media/02-nsswitch.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/02-nsswitch.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 En este fichero se configura dónde se debe buscar la información de los diferentes tipos de objetos, entre ellos:
 
@@ -386,7 +386,7 @@ El siguiente paso sería configurar **PAM** para que utilice el servicio proporc
 
 Podemos configurar **PAM** sin editar manualmente los archivos de configuración con el comando **pam-auth-update**:
 
-<figure><img src="./media/03-pam.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/03-pam.png" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 Tenemos que asegurarnos que tenemos marcada la opción de **LDAP Authentication** (también la de _Unix_ que es la autenticación por defecto). Lo normal es que esto se haya configurado automáticamente al instalar los paquetes.
 
@@ -414,7 +414,7 @@ Para eso vamos a modificar el archivo de configuración de _PAM_ **/usr/share/pa
     required        pam\_mkhomedir.so skel=/etc/skel umask=0022
 ```
 
-<figure><img src="./media/06-config.jpg" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/06-config.jpg" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 En ella especificamos:
 
@@ -428,7 +428,7 @@ Otro aspecto que es aconsejable ajustar es que la configuración por defecto no 
 
 Para permitirlo tenemos que quitar el parámetro _use\_authtok_ en la línea donde aparece en la sección _Password_ en el mismo archivo, **/usr/share/pam-configs/ldap**:
 
-<figure><img src="./media/05-config.jpg" alt=""><figcaption></figcaption></figure>
+<figure><img src="./media/05-config.jpg" alt=""><figcaption>OpenLDAP</figcaption></figure>
 
 La línea:
 
