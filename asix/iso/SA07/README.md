@@ -142,7 +142,7 @@ Al instalar (o reinstalar) el servicio LDAP se nos pide la contraseña del admin
 
 Esto crea automáticamente el objeto raíz del directorio con el nombre de nuestro dominio y el objeto administrador del dominio (usuario **admin**) con la contraseña proporcionada. Podemos volver a ejecutarlo cuando queramos y se creará un nuevo directorio.
 
-{% file src="./media/installLDAP.ogv" %}
+src="./media/installLDAP.ogv"
 
 ### Configuración desde la terminal
 
@@ -268,15 +268,11 @@ A continuación configuraremos el acceso a nuestro servidor (su IP o nombre), el
 
 Una vez configurado ya podríamos crear nuestros objetos:
 
-{% file src="./media/lam.ogv" %}
-Vídeo demostración
-{% endfile %}
+ src="./media/lam.ogv"
 
 Tras crear los objetos hacemos un **slapcat** para comprobar que se han creado correctamente:
 
-{% file src="./media/slapcat.ogv" %}
-Vídeo demostración
-{% endfile %}
+src="./media/slapcat.ogv"
 
 ### Otras herramientas
 
