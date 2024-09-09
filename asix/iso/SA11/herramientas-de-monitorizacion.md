@@ -1,6 +1,6 @@
 # 🔦 Herramientas de monitorización
 
-#### Monitorización del sistema:
+## Monitorización del sistema:
 
 **top**: Muestra una lista de los procesos en ejecución y su uso de recursos en tiempo real. Puedes presionar "q" para salir.
 
@@ -38,7 +38,7 @@ iostat
 sar
 ```
 
-#### Monitorización de red:
+## Monitorización de red:
 
 **iftop**: Muestra el tráfico de red en tiempo real.
 
@@ -97,3 +97,5 @@ lsblk
 ```bash
 lshw
 ```
+
+[..](README.md)
