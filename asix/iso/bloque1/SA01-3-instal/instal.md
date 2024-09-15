@@ -19,10 +19,7 @@
   - [Instalación del cargador de arranque Grub](#instalación-del-cargador-de-arranque-grub)
   - [Otras configuraciones básicas al instalar un sistema](#otras-configuraciones-básicas-al-instalar-un-sistema)
     - [Nombre del equipo](#nombre-del-equipo)
-    - [Tipos de usuarios](#tipos-de-usuarios)
-      - [Usuarios administradores](#usuarios-administradores)
-      - [Usuarios estándar](#usuarios-estándar)
-      - [Usuario invitado o _guest_](#usuario-invitado-o-guest)
+    - [Usuarios](#usuarios)
   - [Repositorios de GNU/Linux](#repositorios-de-gnulinux)
     - [El fichero sources.list](#el-fichero-sourceslist)
   - [Tipos de red en Windows](#tipos-de-red-en-windows)
@@ -238,51 +235,13 @@ Para darle un nuevo nombre se lo pasamos a dicho comando:
 hostnamectl set-hostname mipc
 ```
 
-### Tipos de usuarios
+### Usuarios
 Es habitual que un ordenador lo utilice más de una persona, pero que pasará sí:
 - cada persona quiere un fondo de pantalla diferente
 - cada uno quiere tener sus vínculos de favoritos
 - cada persona quiere que sus ficheros sean privados
 
 Para solucionar todo esto se crearon los _usuarios_. Creamos un usuario para cada persona que usa el ordenador y los cambios que cada uno haga se guardan con la información de ese usuario de forma que sólo se aplican cuando ese usuario inicia sesión. Además se establecen permisos para indicar qué usuarios tienen acceso en cada fichero y que pueden hacer con él.
-
-Existen 3 tipo de usuarios: administrador, estándar e invitado.
-
-#### Usuarios administradores
-Tienen control total sobre todo el equipo, su configuración y sus datos. En cada sistema tiene que haber al menos uno que es quien lo configura. Es altamente recomendable que este usuario tenga una contraseña para evitar que cualquiera pueda cambiar la configuración del equipo o acceder y, si quiere, eliminar cualquier fichero del mismo.
-
-En Windows siempre existe un usuario de este tipo cuyo nombre es **_Administrador_**, pero que por defecto está deshabilitado. Además el usuario con el cual instalamos el sistema operativo es un usuario de tipo _administrador_. Los usuarios que creamos posteriormente serán de tipo _estándar_ o _administrador_ según elijamos al crearlos. Para que un usuario sea administrador sólo tenemos que hacer que pertenezca al grupo _**Administradores**_.
-
-En GNU/Linux siempre hay un usuario administrador llamado **_root_**. El usuario con el cual instalamos Ubuntu y otras distribuciones también es un usuario _administrador_. Desde la terminal un usuario administrador puede ejecutar cualquier orden como si fuera _root_ anteponiéndole el comando **`sudo`**. Por ejemplo puede cambiar el nombre del equipo y llamarlo pc01 escribiendo:
-
-```bash
-sudo hostname pc01
-```
-
-Como en Ubuntu _root_ no tiene contraseña este usuario está deshabilitado. Para poder usar esa cuenta debemos primero ponerle una contraseña con
-
-```bash
-sudo passwd root
-```
-o bien convertirnos en _root_ desde el usuario actual con
-
-```bash
-sudo su
-```
-
-Para que un usuario sea administrador (pueda hacer _sudo_) sólo es necesario que pertenezca al grupo _**sudo**_.
-
-En Debian el usuario con el cual instalamos el sistema es un usuario normal, por eso durante la instalación se nos pide también la contraseña del usuario _root_. Si queremos que cualquier otro usuario sea administrador (pueda hacer `sudo`) sólo tenemos que añadirlo al grupo _**sudo**_.
-
-#### Usuarios estándar
-Son los usuarios normales del equipo. Pueden configurar su usuario y acceder a sus datos o a datos a los que alguien les dé permisos pero no pueden cambiar la configuración del equipo ni instalar nuevo software. Tienen una carpeta personal con su nombre donde guardan sus ficheros y dentro de la cual pueden hacer cualquier cosa.
-
-Por seguridad lo más recomendable es trabajar siempre con un usuario _estándar_ y utilizar un usuario _administrador_ sólo cuando tengamos que realizar algún trabajo que así lo requiera.
-
-#### Usuario invitado o _guest_
-Es un usuario especial que tienen muchos sistemas para que cualquier persona sin cuenta de usuario en el equipo pueda iniciar sesión en el mismo. Tiene los mismos privilegios que un usuario estándar pero no tiene contraseña.
-
-Por seguridad normalmente este usuario está deshabilitado.
 
 ## Repositorios de GNU/Linux
 En los sistemas operativos privativos el software normalmente es de pago y es el usuario el encargado de obtenerlo en una tienda, por Internet, etc.
