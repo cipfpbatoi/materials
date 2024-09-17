@@ -342,12 +342,24 @@ Tiene sus orígenes en la empresa **Netscape Communications** para su navegador.
 
 ### Creative Commons
 
-Licencia que se aplica a la documentación. Permite elegir al autor qué tipo de derecho quiere ceder.
+Las licencias Creative Commons contemplan una serie de limitaciones que son como variables que se combinan entre sí para determinar la restricción de la licencia. 
 
-- *Reconocimiento*: el uso de la obra debe de reconocer la autoría original.
-- *No comercial*: la utilización de la obra queda limitada a uno uso no comercial.
-- *Sin Obras derivadas*: no se permite modificar la obra para crear otra.
-- *Compartir igual*: Se permite crear obras derivadas siempre que se mantengan la licencia.
+* **Atribución (BY)**: al copiar, distribuir, exhibir o modificar la obra tendremos que citar de manera explícita al autor. En inglés la encontrarás como Atrribution y como regla nemotécnica, en inglés se suele usar by Nombre Autor.
+* **Compartir Igual (SA)**: permite usar la obra para crear otra, pero se tendrá que publicar con la misma licencia que la original. En inglés se conoce como Share Alike de ahí las siglas SA.
+* **No Comercial (NC)**: puedes usar la obra para copiarla, distribuirla, exhibirla o modificarla, pero no podrá ser utilizada con fines comerciales (ganar dinero con ella). En inglés es Non-Commercial.
+* **No Derivadas (ND)**: puedes copiar, distribuir, exhibir y reproducir la obra siempre y cuando no la modifiques. Por ejemplo, no podrías coger una fotografía y añadirle texto. En inglés la encontrarás como No Derivative Works
+
+Combinando estas cuatro variables obtendremos seis licencias diferentes más una, la CC0 que es la ausencia de dichas condiciones.
+
+* Licencia de dominio público (CC0): es la famosa licencia CC0 o Creative Commons Zero. Con ella podrás usar la obra sin restricciones Ni siquiera tendrás que citar al autor. Es el tipo de licencia más habitual en los bancos de imágenes gratuitos.
+* Solo atribución (CC BY): podrás usar y modificar la obra como quieras, sea o no comercial, pero tendrás que citar al autor.
+* Atribución + Compartir Igual (BY-SA): podrás usar dicha obra en proyectos personales o comerciales, también podrás editarla, pero tendrás que citar al autor y tendrás que publicar la obra bajo la misma licencia BY-SA. Por lo que cualquier persona podrá usar tu obra para sus propios proyectos.
+* Atribución + No Derivadas (BY-ND): puedes usar la obra si modificar, siempre y cuando cites al autor. Por ejemplo, podrías utilizar una fotografía con esta licencia para ilustrar un artículo, pero no puedes modificarla ni añadir texto. Combinando estas cuatro variables obtendremos seis licencias diferentes más una, la CC0 que es la ausencia de dichas condiciones.
+* Atribución + No Comercial (BY-NC): puedes usar y modificar la obra siempre y cuando no sea en proyectos comerciales (no ganes dinero) y cites al autor. 
+* Atribución + No Comercial + Compartir Igual (BY-NC-SA): puedes usar la obra siempre que sea un proyecto no comercial,
+cites al autor y publiques la nueva obra bajo la misma licencia BY-NC-SA.
+Atribución + No Comercial + No Derivadas (BY-NC-ND): puedes usar la obra siempre que no la modifiques, que la utilices en un
+proyecto no comercial; y que cite al autor.
 
 <img src="./media/ud1-08.png" title="CC" width="60%">
 

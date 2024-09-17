@@ -34,7 +34,7 @@ Los contenidos del módulo se agrupan en los siguientes bloques:
 - [**Bloque 1: Introducción a los sistemas operativos**](./bloque1/): en este bloque veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay e instalaremos sistemas operativos en máquinas virtuales.
 - [**Bloque 2: Dominios en Windows**](./bloque2/): en este bloque veremos cómo se gestionan los dominios en Windows Server.
 - [**Bloque 3: Dominios en GNU/Linux**](./bloque3/): en este bloque veremos cómo gestionar diferentes servidores GNU/Linux.
-- [**Bloque 4: 	Actualización, monitorización y auditoría en sistemas operativos**](./bloque4/): en este bloque veremos cómo se actualizan los sistemas operativos, cómo se monitorizan y cómo se auditan.
+- [**Bloque 4: Actualización, monitorización y auditoría en sistemas operativos**](./bloque4/): en este bloque veremos cómo se actualizan los sistemas operativos, cómo se monitorizan y cómo se auditan.
 - **Bloque 5: Proyecto integrador**: implementaremos en el taler de ASIX el sistema informàtico completo de una empresa ficticia.
   
 - [SA01](./SA01/)
