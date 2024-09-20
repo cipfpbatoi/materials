@@ -17,7 +17,7 @@ Cada programa tiene una licencia que indica qué podemos y qué no podemos hacer
 ## Contenidos del bloque
 El bloque está compuesto por 3 Situaciones de Aprendizaje (_S.A._):
 - **S.A. 1 Instalación de sistemas operativos**: en esta S.A. veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay e instalaremos sistemas operativos en máquinas virtuales. Tiene varios apartados:
-  - [SA01-1 Introducción a los sistemas operativos](../SA01-1): esta es la unidad más teórica de todo el curso y en ella veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay.
+  - [SA01-1 Introducción a los sistemas operativos](SA01-1): esta es la unidad más teórica de todo el curso y en ella veremos los conceptos básicos de qué es un sistema operativo y los diferentes tipos que hay.
   - [SA01-2 Virtualización](../../../altres/virtualitzacio/): aquí veremos todo lo relacionado con la virtualización para poder trabajar con máquinas virtuales.
   - [SA01-3 Arranque e instalación del sistema](SA01-3-instal): en esta unidad instalaremos diferentes sistemas operativos y veremos las cosas básicas a configurar durante el proceso de instalación.
   - [SA01-4 Comandos](SA01-4-comandos): en esta unidad conoceremos los principales comandos para Windows y GNU/Linux que necesitaremos durante la configuración y uso de los sistemas.

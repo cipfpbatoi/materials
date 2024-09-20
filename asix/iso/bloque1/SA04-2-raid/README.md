@@ -170,4 +170,4 @@ En la [web de Microsoft](https://docs.microsoft.com/es-es/windows-server/storage
 
 También podemos ver la información sobre el comando `New-VirtualDisk` en la [web de Microsoft](https://docs.microsoft.com/en-us/powershell/module/storage/new-virtualdisk?view=windowsserver2022-ps&viewFallbackFrom=win10-ps).
 
-## [RAID en GNU/Linux](../altres/sistemes-operatius/software-raid/)
+## [RAID en GNU/Linux](../../altres/sistemes-operatius/software-raid/)
