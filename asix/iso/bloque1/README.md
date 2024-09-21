@@ -25,7 +25,7 @@ El bloque está compuesto por 3 Situaciones de Aprendizaje (_S.A._):
   - [SA02-1: Configuración de la red](SA02-1-red): veremos cómo configurar la red del sistema, tanto en Windows como en GNU/Linux. 
   - [SA02-2: Usuarios y grupos](SA02-2-users): veremos cómo gestionar los usuarios y grupos de un sistema operativo.
 - **S.A. 3: Gestión de sistemas de archivos. RAID, LVM y cuotas**: en esta S.A. veremos cosas relacionadas con el almacenamiento de datos en el sistema. Tiene varios apartados:
-  - [SA04-1: Sistemas de archivos](../SA03-1): en esta unidad veremos cómo se gestionan los sistemas de archivos en Windows y GNU/Linux.
+  - [SA04-1: Sistemas de archivos](SA03-1): en esta unidad veremos cómo se gestionan los sistemas de archivos en Windows y GNU/Linux.
   - [SA04-2: RAID](SA03-2-raid): en esta unidad veremos qué es el sistema RAID y cómo se configura.
   - [SA04-3: LVM](../../../altres/sistemes-operatius/lvm/): aquí veremos qué es el sistema LVM y cómo se configura.
   - [SA04-4: Cuotas de disco](SA04-4-cuotas): en esta unidad veremos cómo se pueden configurar cuotas de disco en Windows y GNU/Linux.
