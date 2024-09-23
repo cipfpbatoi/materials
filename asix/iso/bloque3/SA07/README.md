@@ -48,7 +48,7 @@ Hay muchas implementaciones del protocolo LDAP, tanto libres como privativas. Al
 
 ## Situaciones Aprendizaje
 
-* **SA5**: OpenLDAP 1 Linux 
+* **SA5**: [OpenLDAP 1 Linux](https://1-asix.gitbook.io/iso/v/openldap) 
 * **SA7**: OpenLDAP 2 Linux 
 
 
