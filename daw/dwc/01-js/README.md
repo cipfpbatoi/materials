@@ -8,14 +8,15 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
   * [Vite](./03.1-vite.md): Cómo usar vite
   * [Webpack](./03.1-webpack.md): Cómo usar webpack
 * [3-Programación Orientada a Objetos](./03-oop.md): Introducción. Clases. POO en JS5
+* [4-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, 
 * [5-Ajax. Promesas. SPA](./09-ajax.md)
-* [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
-  * [4.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
+* [6-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
+  * [6.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
 location, history, otros objetos)
-* [6-Eventos](./06-eventos.md): Escuchadores. Tipos de eventos. Los objetos _this_ y _event_. Propagación de eventos (_bubbling_)
-* [7-Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
-* [8-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
-* [9-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, 
+* [7-Eventos](./06-eventos.md): Escuchadores. Tipos de eventos. Los objetos _this_ y _event_. Propagación de eventos (_bubbling_)
+* [8-Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
+* [9-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
+* 
 * [10-APIs HTML5](./10-apis.md): Drag and drop. API Storage. Geolocalización. API de Google Maps
 * [11-Más cosas a aprender...](./11-mas.md): WebComponents. WebSockets. WebWorkers. Typescript.
 * [12-Tests](./12-tests.md): Testear JS con Jest
