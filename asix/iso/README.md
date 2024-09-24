@@ -37,12 +37,7 @@ Los contenidos del módulo se agrupan en los siguientes bloques:
 - [**Bloque 4: Actualización, monitorización y auditoría en sistemas operativos**](./bloque4/): en este bloque veremos cómo se actualizan los sistemas operativos, cómo se monitorizan y cómo se auditan.
 - **Bloque 5: Proyecto integrador**: implementaremos en el taler de ASIX el sistema informàtico completo de una empresa ficticia.
   
-- [SA01](./SA01/)
-- [SA02](./SA02/)
-- [SA03](./SA03/)
-- [SA04](./SA04/)
-- [SA05](./SA05/)
-  
+
 ## Licencia
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>

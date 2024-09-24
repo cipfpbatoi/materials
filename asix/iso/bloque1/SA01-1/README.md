@@ -188,6 +188,7 @@ Los sistemas operativos se pueden clasificar según varios parámetros:
 
 ## Licencias 
 
+![Licencias](./media/licencias.png)
 
 La licencia de software es, según el Derecho español, el contrato por el cual el titular de un programa autoriza al usuario a utilizarlo, cediéndole los derechos necesarios para este uso. 
 

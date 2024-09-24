@@ -1,69 +1,93 @@
-Software Raid
-=============
+# 💽 Gestión de RAID por software
 
-Install package mdadm
+Instalamos el gestor de RAIDs por software **mdadm**
 
-    # aptitude install mdadm
+```bash
+apt install mdadm
+```
 
-Create a new array
+Creamos el nuevo **RAID**
 
-    # mdadm --create /dev/md0 --level=raid1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+```bash
+mdadm --create /dev/md0 --level=raid1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+```
 
-Add the new RAID in the main configuration file for mdadm
+Añadimos el **RAID** creado al fichero de configuración
 
-    # mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+```bash
+mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+```
 
-Now we go to check the status the new array
+Comprobamos el estado del RAID
 
-    # mdadm --detail /dev/md0
+```bash
+mdadm --detail /dev/md0
+```
 
-Next step we go to format new array:
-    
-    # mkfs.ext4 -v -L "NEWARRAYRAID1" /dev/md0
+A continuación formateamos el nuevo **RAID**:
 
-And we get the UUID with blkid command:
-    
-    # blkid | grep /dev/md0
+```bash
+mkfs.ext4 -v -L "NEWARRAYRAID1" /dev/md0
+```
 
-We add the next line to file **/etc/fstab**. And we don't forget create the folder where you'll mount the array:
+Obtenemos el UUID
 
-    UUID=feeaa6fb-9c7b-4213-8a83-2f9c1ed77a68 /media/RAID1 ext4 defaults 0 1
+```bash
+blkid | grep /dev/md0
+```
 
-Finally generate an initramfs image:
-    
-    update-initramfs -u
+Configuramos el fichero **/etc/fstab:**
 
-Remove disk on RAID
--------------------
+```bash
+UUID=feeaa6fb-9c7b-4213-8a83-2f9c1ed77a68 /media/RAID1 ext4 defaults 0 1
+```
 
-We can’t remove a disk directly from the array, unless it is failed, so we first have to fail it:
+Finalmente actualizamos la imagen de initramfs:
 
-    # mdadm --fail /dev/md0 /dev/sdc1
+```bash
+update-initramfs -u
+```
 
-And now we can remove it:
-    
-    # mdadm --remove /dev/md0 /dev/sdc1
+## Eliminar un disco y añadir uno nuevo al RAID
 
-Verifying the status of the RAID arrays:
-    
-    # cat /proc/mdstat
+No podemos eliminar un disco directamente del raid, a menos que esté en estado fallido, por lo tanto vamos a marcarlo como tal:
 
-or
+```bash
+mdadm --fail /dev/md0 /dev/sdc1
+```
 
-    # mdadm --detail /dev/md0
+Ahora ya podemos eliminarlo:
 
-Add new disc to array:
-    
-    # mdadm --add /dev/md0 /dev/sdc1
+```bash
+mdadm --remove /dev/md0 /dev/sdc1
+```
 
-Verifying the status of the RAID arrays:
-    
-    # cat /proc/mdstat
+Verificamos el estado del RAID:
 
-or
+```bash
+cat /proc/mdstat
+```
 
-    # mdadm --detail /dev/md0
+o
 
-**NOTE**: if the array is inactive (what happens, for instance, if a disk has dissapeared) before remove and add the new disk the array must be actived with:
+```bash
+mdadm --detail /dev/md0
+```
 
-    # mdadm --run /dev/md0
+Añadimos el nuevo disco al RAID:
+
+```bash
+mdadm --add /dev/md0 /dev/sdc1
+```
+
+Verificamos el estado del RAID:
+
+```bash
+cat /proc/mdstat
+```
+
+o
+
+```bash
+mdadm --detail /dev/md0
+```
