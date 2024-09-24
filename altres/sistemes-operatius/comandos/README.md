@@ -3,6 +3,8 @@
   - [Introducción](#introducción)
   - [Conceptos básicos](#conceptos-básicos)
     - [La consola](#la-consola)
+      - [GNU/Linux](#gnulinux)
+      - [Windows](#windows)
     - [El prompt](#el-prompt)
   - [Comodines](#comodines)
   - [Rutas](#rutas)
@@ -34,7 +36,26 @@ El funcionamiento  de la consola es el siguiente:
 - el **shell** o _intérprete de comandos_ del sistema operativo lee el comando tecleado, comprueba si la sintaxis es correcta y lo ejecuta (normalmente se muestra el resultado por pantalla)
 - cuando finaliza le pide al usuario un nuevo comando mostrándole de nuevo el _prompt_
 
-Para abrir una terminal en GNU/Linux se puede hacer desde el menú o usando el atajo `Ctrl+Alt+T`. Además en cualquier distribución Linux, junto a la terminal gráfica que usamos por defecto se crean 6 terminales de texto a las que podemos acceder con `Ctrl+Alt+F1`, ..., `Ctrl+Alt+F6`. La terminal gráfica suele ser la 7 (`Ctrl+Alt+F7`).
+#### GNU/Linux
+En GNU/Linux tenemos la posibilidad de ejecutar dos tipos de terminales:
+
+![terminal](media/terminalvsemulador.png)
+
+- **Terminal virtual** (/dev/ttY*): És la combinació conceptual de teclat+pantalla que creen una interfície d'usuari, normalment tenim 6 consoles virtuals. Per canviar entre consoles virtuals executem (Ctrl+Alt+F1 o F2 o F3...)
+- **Pseudo Terminal** (/dev/pts): Aplicació que emula un video-terminal dins d'una altre arquitectura de pantalla (p. ex. X-Windows). Normalment és sinònim de línia de comandes tot i que el terme terminal inclou tots els tipus de terminals remots
+  - Emuladors de terminal: xterm, Konsole, Gnome Terminal, Eterm, rxvt, mrxvt, term, aterm, Terminal (Xfce)..
+incloent les interfícies gràfiques
+
+**Shells**
+
+Intèrprets d'ordres:
+- **bash**: bourne Again Shell. El més popular i l'utilitzat en aquest curs.
+- **sh** (Bourne Shell): un dels primers intèrprets de comandes. Shell per defecte a Unix. Creada al 1977 per Stephen Bourne dels laboratoris AT&T de Bell. sh és encara l'interpret de comandes per defecte de root en sistemes Unix.
+-  **csh**: La shell original de C no es gaire utilitzada a Linux. tcsh és un bon substitut de csh a Linux, força popular però gairebé cap distribució Linux la porta per defecte
+-  **ksh** (Korn shell): va ser dissenyat per tal de tenir les millors característiques de sh i zsh.
+-  **dash** (Debian Almquist Shell) un versió millorada d'ash. Més petit i eficient que bash. A Ubuntu, des de la versió 6.10, és l'interpret de comandes per defecte del sistema, tot i que l'intèrpret per defecte dels usuaris continua sent bash.
+
+#### Windows
 
 En Windows tenemos 2 tipos de terminal diferente:
 - **CMD** o **Símbolo del sistema**: es una implementación para Windows de la consola del sistema operativo Ms-DOS. Se abre desde el _menú Inicio_ o también ejecutando el programa `cmd.exe`.
