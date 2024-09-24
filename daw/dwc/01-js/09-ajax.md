@@ -15,13 +15,12 @@
     - [Solución mala](#solución-mala)
     - [Algo mejor: Funciones _callback_](#algo-mejor-funciones-callback)
     - [Solución buena: Promesas](#solución-buena-promesas)
-    - [Una mejora: usar _fetch_](#una-mejora-usar-fetch)
-      - [Propiedades y métodos de la respuesta](#propiedades-y-métodos-de-la-respuesta)
-      - [Gestión de errores con _fetch_](#gestión-de-errores-con-fetch)
-      - [Otros métodos de petición con _fetch_](#otros-métodos-de-petición-con-fetch)
-    - [La mejor solución: _async / await_](#la-mejor-solución-async--await)
-      - [Gestión de errores en _async/await_](#gestión-de-errores-en-asyncawait)
-    - [Hacer varias peticiones simultáneamente. Promise.all](#hacer-varias-peticiones-simultáneamente-promiseall)
+    - [La mejor solución: usar _Async/Await_](#la-mejor-solución-usar-asyncawait)
+  - [_fetch_](#fetch)
+    - [Propiedades y métodos de la respuesta de _fetch_](#propiedades-y-métodos-de-la-respuesta-de-fetch)
+    - [Gestión de errores con _fetch_](#gestión-de-errores-con-fetch)
+    - [Otros métodos de petición con _fetch_](#otros-métodos-de-petición-con-fetch)
+  - [Hacer varias peticiones simultáneamente. Promise.all](#hacer-varias-peticiones-simultáneamente-promiseall)
   - [Organizar bien el código](#organizar-bien-el-código)
     - [El fichero _.env_](#el-fichero-env)
     - [Distintas peticiones, distintos ficheros](#distintas-peticiones-distintos-ficheros)
@@ -103,7 +102,7 @@ Para convertir objetos en cadenas de texto _JSON_ y viceversa Javascript proporc
 - **JSON.stringify(_objeto_)**: recibe un objeto JS y devuelve la cadena de texto correspondiente. Ej.: `const cadenaAlumnos = JSON.stringify(alumnos)`
 - **JSON.parse(_cadena_)**: realiza el proceso inverso, convirtiendo una cadena de texto en un objeto. Ej.: `const alumnos = JSON.parse(cadenaAlumnos)`
 
-> EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podríamos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Por tanto instalaremos dicha extensión (por ejemplo [_Advanced Rest Client_](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo?hl=es) para Chrome o [_RestClient_](https://addons.mozilla.org/es/firefox/addon/restclient/) para Firefox y haremos todas las peticiones desde allí (incluyendo los GET) lo que nos permitirá ver los códigos de estado devueltos, las cabeceras, etc. 
+> EJERCICIO: Vamos a realizar diferentes peticions HTTP a la API [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com), en concreto trabajaremos contra la tabla **todos** con tareas para hacer. Las peticiones GET podríamos hacerlas directamente desde el navegador pero para el resto debemos instalar alguna de las extensiones de cliente REST en nuestro navegador. Por tanto instalaremos dicha extensión (por ejemplo [_Advanced Rest Client_](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo?hl=es) para Chrome o [_Rested_](https://addons.mozilla.org/es/firefox/addon/rested/) para Firefox y haremos todas las peticiones desde allí (incluyendo los GET) lo que nos permitirá ver los códigos de estado devueltos, las cabeceras, etc. 
 > 
 > Lo que queremos hacer en este ejercicio es:
 > - obtener todas las tareas (devuelve un array con todas las tareas y el código devuelto será 200 - Ok)
@@ -187,7 +186,9 @@ Tenemos diferentes eventos que el servidor envía para informarnos del estado de
   * 2: petición recibida por el servidor (se ha hecho el _send_)
   * 3: se está procesando la petición
   * 4: petición finalizada y respuesta lista (este es el evento que nos interesa porque ahora tenemos la respuesta disponible)
-A nosotros sólo nos interesa cuando su valor sea 4 que significa que ya están los datos. En ese momento la propiedad **status** contiene el estado de la petición HTTP (200: _Ok_, 404: _Not found_, 500: _Server error_, ...) que ha devuelto el servidor. Cuando _readyState_ vale 4 y _status_ vale 200 tenemos los datos en la propiedad **responseText** (o **responseXML** si el servidor los envía en formato XML). Ejemplo:
+A nosotros sólo nos interesa cuando su valor sea 4 que significa que ya están los datos. En ese momento la propiedad **status** contiene el estado de la petición HTTP (200: _Ok_, 404: _Not found_, 500: _Server error_, ...) que ha devuelto el servidor. Cuando _readyState_ vale 4 y _status_ vale 200 tenemos los datos en la propiedad **responseText** (o **responseXML** si el servidor los envía en formato XML). 
+
+El siguiente ejemplo nos enseña cómo se producen los distintos eventos en una petición asíncrona:
 
 ```javascript
 const peticion = new XMLHttpRequest();
@@ -228,7 +229,7 @@ Como normalmente no nos interesa cada cambio en el estado de la petición sino q
 * **abort**: si se cancela la petición (se hace llamando al método **.abort()** de la petición)
 * **loadend**: se produce siempre que termina la petición, independientemente de si se recibe respuesta o sucede algún error (incluyendo un _timeout_ o un _abort_)
 
-Ejemplo de código que sí usaremos:
+Este es un ejemplo de código que sí podríamos usar para este tipo de peticiones:
 ```javascript
 const peticion=new XMLHttpRequest();
 peticion.open('GET', 'https://jsonplaceholder.typicode.com/users');
@@ -272,6 +273,8 @@ peticion.addEventListener('error', muestraError);
 Una petición asíncrona es como pedir una pizza: tras llamar por teléfono lo siguiente no es ir a la puerta a recogerla sino que seguimos haciendo cosas por casa y cuando suena el timbre de casa entonces vamos a la puerta a por ella.
 
 ### Ejemplos de envío de datos
+Podemos enviar datos al servidor en el cuerpo de la petición _http_. Siempre deberemos indicar en una cabecera de la petición en qué formato enviamos los datos y en función de dicho formato se hace la petición de diferente manera. 
+
 Vamos a ver algunos ejemplos de envío de datos al servidor con POST. Supondremos que tenemos una página con un formulario para dar de alta nuevos productos:
 ```html
 <form id="addProduct">
@@ -300,7 +303,7 @@ document.getElementById('addProduct').addEEventListener('submit', (event) => {
 })
 ```
 
-Para enviar el objeto hay que convertirlo a una cadena JSON con la función **JSON.stringify()** (es la opuesta a **JSON.parse()**). Y siempre que enviamos datos al servidor debemos decirle el formato que tienen en la cabecera de _Content-type_:
+Para enviar el objeto hay que convertirlo a una cadena JSON con la función **JSON.stringify()**. Siempre que enviamos datos al servidor debemos decirle el formato que tienen en la cabecera de _Content-type_:
 ```javascript
 peticion.setRequestHeader('Content-type', 'application/json');
 ```
@@ -322,10 +325,12 @@ document.getElementById('addProduct').addEEventListener('submit', (event) => {
 })
 ```
 
-En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_**.
+En este caso los datos se envían como hace el navegador por defecto en un formulario. Recordad siempre codificar lo que introduce el usuario para evitar problemas con caracteres no estándar y **ataques _SQL Injection_** u otros.
 
 #### Enviar ficheros al servidor con FormData
 [FormData](https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/FormData) es una interfaz de XMLHttpRequest que permite construir fácilmente pares de `clave=valor` para enviar los datos de un formulario. Se envían en el mismo formato en que se enviarían directamente desde un formulario ("multipart/form-data") por lo que no hay que poner encabezado de 'Content-type'.
+
+De esta manera podemos enviar ficheros al servidor, no sólo valores de texto.
 
 Vamos a añadir al formulario un campo donde el usuario pueda subir la foto del producto:
 ```html
@@ -377,19 +382,19 @@ document.getElementById('addProduct').addEEventListener('submit', (event) => {
 Podéis ver más información de cómo usar formData en [MDN web docs](https://developer.mozilla.org/es/docs/Web/Guide/Usando_Objetos_FormData).
 
 ## Callbakcs, Promesas y Async/Await
-Vamos a ver un ejemplo de una llamada a Ajax. Vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
+Para ver un ejemplo real de cómo e haría una llamada a Ajax vamos a hacer una página que muestre en una tabla los posts del usuario indicado en un input. En resumen lo que hacemos es:
 1. El usuario de nuestra aplicación introduce el código del usuario del que queremos ver sus posts
 1. Tenemos un escuchador para que al introducir un código de un usuario llamamos a una función _getPosts()_ que:
   - Se encarga de hacer la petición Ajax al servidor
   - Si se produce un error se encarga de informar al usuario de nuestra aplicación
-1. Cuando se reciben deben pintarse en la tabla
+1. Cuando se reciben los datos del servidor deben pintarse en la tabla
 
 ### Si Ajax fuera síncrono...
 Si Ajax no fuera una petición asíncrona el código de todo esto será algo como el siguiente (ATENCIÓN, este código **NO FUNCIONA**):
 
 <script async src="https://jsfiddle.net/juansegura/b0znLwkt/embed/js,html,result/"></script>
 
-Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve tiempo después, cuando el servidor contesta, pero entonces ya no hay nadie escuchando.
+Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve los datos tiempo después, cuando el servidor contesta, pero entonces ya no hay nadie escuchando.
 
 ### Solución mala
 La solución es que todo el código, no sólo de la petición Ajax sino también el de qué hacer con los datos cuando llegan, se encuentre en la función que pide los datos al servidor:
@@ -499,7 +504,41 @@ El código del ejemplo de los posts usando promesas sería el siguiente:
 
 Podéis consultar aprender más en [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Usar_promesas).
 
-### Una mejora: usar _fetch_
+### La mejor solución: usar _Async/Await_
+Las promesas son una mejora respecto a los _callbacks_ pero aún así el código puede ser difícil de leer y mantener. Para solucionar esto se introdujeron en ES2017 las palabras reservadas **_async_** y **_await_** que permiten escribir código asíncrono de una manera más clara y sencilla. 
+
+La palabra reservada **_async_** se pone delante de una función e indica que esa función va a devolver una promesa. La palabra reservada **_await_** se pone delante de una llamada a una promesa y le indica a Javascript que espere a que esa promesa se resuelva antes de continuar con la ejecución del código.
+
+Usando esto sí funcionaría el primer ejemplo que hicimos:
+```javascript
+    let idUser = document.getElementById('id-usuario').value;
+    if (isNaN(idUser) || idUser == '') {
+      alert('Debes introducir un número');
+    } else {
+      const posts = await getPosts(idUser);
+      // y aquí SÍ recibimos los datos porque ponemos AWAIT, en este caso para pintar los posts
+    }
+```
+
+Y la función _getPosts()_ quedaría igual que la que hicimos con promesas.
+
+Aquí el tratamiento de errores se hace con un _try/catch_:
+```javascript
+    try {
+      const posts = await getPosts(idUser);
+    } catch (error) {
+      console.error(error);
+    }
+```
+
+Usando _async/await_ nuestro código se asemeja a un código síncrono ya que no continuan ejecutándose las instrucciones que hay después de un _await_ hasta que esa petición se ha resuelto. Podemos anteponer un _await_ a cualquier llamada a una función asíncrona, como una promesa, un _setTimeout_, ...
+
+Cualquier función que realice un _await_ pasa a ser asíncrona ya que no se ejecuta al instante toda ella sino que se espera un tiempo. Para indicarlo debemos anteponer la palabra **async** a su declaración _`function`_. Al hacer esto automáticamente se "envuelve" esa función en una promesa (o sea que esa función pasa a devolver una promesa, a la que podríamos ponerle un `await` o un `.then()`).
+
+Podéis ver algunos ejemplos del uso de _async / await_ en la [página de MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/funcion_asincrona).
+
+
+## _fetch_
 Como el código a escribir para hacer una petición Ajax es largo y siempre igual, la [API Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch) permite realizar una petición Ajax genérica que directamente devuelve una **promesa**. 
 
 Básicamente lo que hace es encapsular en una función todo el código que se repite siempre en una petición AJAX (crear la petición, hacer el _open_, el _send_, escuchar los eventos, ...). La función _fetch_ se similar a la función _getPosts_ que hemos creado antes pero genérica para que sirva para cualquier petición pasándole la URL. Lo que internamente hace es algo similar a:
@@ -528,9 +567,20 @@ fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
   }) 
   .catch(err => console.error(err));
 ```
-2. _fetch_ llama a _resolve_ siempre que el servidor conteste, **sin comprobar** si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde
+Ese mismo ejemplo usando _async/await_ sería:
+```javascript
+try {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
+  const myData = await response.json();
+  console.log(myData);
+} catch (err) {
+  console.error(err);
+}
+```
 
-#### Propiedades y métodos de la respuesta
+1. _fetch_ llama a _resolve_ siempre que el servidor conteste, **sin comprobar** si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde
+
+### Propiedades y métodos de la respuesta de _fetch_
 La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
 - **status**: el código de estado devuelto por el servidor (200, 404, ...)
 - **statusText**: el texto correspondiente a ese código (Ok, Not found, ...)
@@ -544,29 +594,31 @@ El ejemplo que hemos visto con las promesas, usando _fetch_ quedaría:
 
 Este ejemplo fallaría si hubiéramos puesto mal la url: contestaría con un 404 pero se ejecutaría el _then_ intentando pintar unos posts que no tenemos.
 
-#### Gestión de errores con _fetch_
+El ejemplo con _async/await_ y _fetch_ sería:
+
+<script async src="//jsfiddle.net/juansegura/zghq5dt6/embed/js,html,result/"></script>
+
+### Gestión de errores con _fetch_
 Según [MDN](https://developer.mozilla.org/es/docs/Web/API/Fetch_API) la promesa devuelta por la _API fetch_ sólo es rechazada en el caso de un error de red, es decir, el _.catch_ sólo saltará si no hemos recibido respuesta del servidor; en caso contrario la promesa siempre es resuelta.
 
 Por tanto para saber si se ha resuelto **satisfactoriamente** o no debemos comprobar la propiedad **_.ok_** de la respuesta. El código correcto del ejemplo anterior gestionando los posibles errores del servidor sería:
 
 ```javascript
-fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
-  .then(response => {
-    if (!response.ok) {     // lanzamos un error que interceptará el .catch()
-      throw `Error ${response.status} de la BBDD: ${response.statusText}`
-    } 
-    return response.json()  // devolvermos la promesa que hará el JSON.parse          
-  })
-  .then(myData => {      // ya tenemos los datos en _myData_ 
-     // Aquí procesamos los datos (en nuestro ejemplo los pintaríamos en la tabla)
-     console.log(myData)
-  }) 
-  .catch(err => console.error(err));
+try {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
+  if (!response.ok) {
+    throw `Error ${response.status} de la BBDD: ${response.statusText}`
+  }
+  const myData = await response.json();
+  console.log(myData);
+} catch (err) {
+  console.error(err);
+}
 ```
 
 En este caso si la respuesta del servidor no es _ok_ lanzamos un error que es interceptado por nuestro propio _catch_
 
-#### Otros métodos de petición con _fetch_
+### Otros métodos de petición con _fetch_
 Los ejemplos anteriores hacen peticiones GET al servidor. Para peticiones que no sean GET la función _fetch()_ admite un segundo parámetro con un objeto con la información a enviar en la petición HTTP. Ej.:
 ```javascript
 fetch(url, {
@@ -604,58 +656,7 @@ fetch(url, {
 
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
 
-### La mejor solución: _async / await_
-Estas nuevas instrucciones introducidas en ES2017 nos permiten escribir el código de peticiones asíncronas como si fueran síncronas lo que facilita su comprensión. Tened en cuenta que NO están soportadas por navegadores antiguos.
-
-Usando esto sí funcionaría el primer ejemplo que hicimos.
-
-Se puede llamar a cualquier función asíncrona (por ejemplo una promesa como _fetch_) anteponiendo la palabra **await** a la llamada. Esto provocará que la ejecución se "espere" a que se resuelva la promesa devuelta por esa función. Así nuestro código se asemeja a un código síncrono ya que no continuan ejecutándose las instrucciones que hay después de un _await_ hasta que esa petición se ha resuelto.
-
-Cualquier función que realice un _await_ pasa a ser asíncrona ya que no se ejecuta al instante toda ella sino que se espera un tiempo. Para indicarlo debemos anteponer la palabra **async** a su declaración _`function`_. Al hacer esto automáticamente se "envuelve" esa función en una promesa (o sea que esa función pasa a devolver una promesa, a la que podríamos ponerle un `await` o un `.then()`).
-
-Siguiendo con el ejemplo anterior:
-```javascript
-async function pideDatos() {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
-  if (!response.ok) {
-    throw `Error ${response.status} de la BBDD: ${response.statusText}`
-  }
-  const myData = await response.json(); // recordad que .json() tb es una promesa
-  return myData;
-}
-...
-// Y llamaremos a esa función con
-const myData = await pideDatos();
-```
-
-Fijaos en la diferencia: si hago
-```javascript
-  const response = fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
-```
-
-estaré obteniendo en _response_ una promesa y para obtener el valor debería hacer `response.then()`, pero si hago
-```javascript
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
-```
-
-lo que obtengo en _response_ es ya el valor devuelto por la promesa cuando se resuelve.
-
-Con esto conseguimos que llamadas asíncronas se comporten como instrucciones síncronas lo que aporta claridad al código.
-
-Podéis ver algunos ejemplos del uso de _async / await_ en la [página de MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/funcion_asincrona).
-
-El ejemplo de los posts quedaría:
-
-<script async src="//jsfiddle.net/juansegura/zghq5dt6/embed/js,html,result/"></script>
-
-#### Gestión de errores en _async/await_
-En este código no estamos tratando los posibles errores que se pueden producir. Con _async / await_ los errores se tratan con `try ... catch`:
-
-<script async src="//jsfiddle.net/juansegura/sojvq7r0/embed/js,html,result/"></script>
-
-También podemos tratarlos sin usar _try...catch_ porque como una función asíncrona devuelve una promesa podemos suscribirnos directamente a su _.catch_
-
-### Hacer varias peticiones simultáneamente. Promise.all
+## Hacer varias peticiones simultáneamente. Promise.all
 En ocasiones necesitamos hacer más de una petición al servidor. Por ejemplo para obtener los productos y sus categorías podríamos hacer:
 ```javascript
 function getData() {
