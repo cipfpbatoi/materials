@@ -14,6 +14,7 @@ Comandos en **GNU/Linux**
     - [ls](#ls)
     - [cd](#cd)
     - [mkdir](#mkdir)
+      - [Opciones Comunes](#opciones-comunes)
     - [rmdir](#rmdir)
     - [pwd](#pwd)
   - [Para trabajar con ficheros](#para-trabajar-con-ficheros)
@@ -22,6 +23,9 @@ Comandos en **GNU/Linux**
     - [rm](#rm)
     - [touch](#touch)
     - [find](#find)
+      - [Opciones y Expresiones Comunes](#opciones-y-expresiones-comunes)
+      - [Ejemplos Prácticos](#ejemplos-prácticos)
+      - [Notas](#notas)
     - [file](#file)
     - [stat](#stat)
     - [gzip](#gzip)
@@ -222,13 +226,17 @@ Ejemplos:
 
 ### mkdir
 
-Crea un nuevo directorio que le pasamos como parámetro. Ejemplos:
+```bash 
+mkdir [opciones] nombre_del_directorio
+```
 
-- **`mkdir clientes`** - Crea un directorio llamado clientes dentro del directorio actual
+- nombre_del_directorio: Es el nombre del nuevo directorio que se va a crear. Se puede especificar una ruta completa o relativa.
 
-- **`mkdir ../clientes`** - Crea un directorio llamado clientes en el directorio paro del actual
+#### Opciones Comunes
+- **-p** (o **--parents**): Crea todo el árbol de directorios necesario si no existen. Por ejemplo, **mkdir -p /ruta/a/nuevos/directorios** creará **/ruta**, **/ruta/a**, **/ruta/a/nuevos**, y finalmente **/ruta/a/nuevos/directorios** si no existen previamente. Evita errores si los directorios intermedios no existen.
+- **-v** (o **--verbose**): Muestra un mensaje detallado por cada directorio que se crea. Es útil para ver un registro de lo que se está haciendo. Ejemplo: **mkdir -v nuevo_directorio**
+- **-m** (o **--mode**): Establece los permisos del nuevo directorio utilizando un valor numérico de permisos (modo octal). Si no se especifica, utiliza los permisos predeterminados del sistema. Ejemplo: **mkdir -m 755 nuevo_directorio** crea el directorio con permisos **rwxr-xr-x**.
 
-- **`mkdir /home/juan/clientes`** - Crea el directorio clientes en /home/juan
 
 ### rmdir
 
@@ -279,7 +287,7 @@ Elimina el fichero o ficheros pasados como parámetro. Ejemplos:
 
 Con la opción -R elimina directorios con todo su contenido:
 
-- **`rm -R /home/juan/pruebas`** - Borra el directorio indicado (pruebas) con todos los ficheros y directorios que contenga
+- **`rm -r /home/juan/pruebas`** - Borra el directorio indicado (pruebas) con todos los ficheros y directorios que contenga
 
 ### touch
 
@@ -290,21 +298,99 @@ Crea un nuevo fichero vacío si no existe con el nombre que le pasamos como par�
 
 ### find
 
-Busca ficheros en la ruta pasada como primer parámetro que cumplan las condiciones pasadas como segundo parámetro. Principales opciones:
+Busca ficheros en la ruta pasada como primer parámetro que cumplan las condiciones pasadas como segundo parámetro. 
 
-- **-name** busca los ficheros con ese nombre
-- **-perm** busca los ficheros con esos permisos
-- **-user** busca los ficheros que pertenecen a ese usuario
-- **-group** busca los ficheros que pertenecen a ese grupo
-- **-size** busca los ficheros de más (o menos) de esa medida
+```bash
+find [ruta] [opciones] [expresión]
+```
+- ruta: Especifica el directorio donde comenzará la búsqueda. Si se omite, se asume el directorio actual (.).
+- opciones: Modifican el comportamiento del comando (por ejemplo, controlar la profundidad de la búsqueda, seguir enlaces simbólicos, etc.).
+- expresión: Es el conjunto de criterios que deben cumplir los archivos o directorios que se están buscando (nombre, tamaño, tiempo de modificación etc.).
 
-Ejemplos:
+#### Opciones y Expresiones Comunes
 
-- **`find . -name "*.odt"`** - Busca en el directorio actual (y sus subdirectorios) todos los ficheros con extensión odt
-- **`find / -perm 770`** - Busca desde el directorio raíz todos los ficheros con permisos 770
-- **`find / -user batoi`** - Busca desde el directorio raíz todos los ficheros del usuario batoi
-- **`find /var -size +1000000c`** - Busca en /var y subdirectorios todos los ficheros de medida superior a 1.000.000 bytes
+- Buscar por nombre:
 
+```bash
+find /ruta -name "archivo.txt": Busca un archivo llamado archivo.txt en /ruta (sensible a mayúsculas/minúsculas).
+find /ruta -iname "archivo.txt": Igual que -name, pero ignora mayúsculas/minúsculas.
+```
+
+- Buscar por tipo:
+```bash
+find /ruta -type d: Busca solo directorios.
+find /ruta -type f: Busca solo archivos regulares.
+```
+
+- Buscar por tamaño:
+```bash
+find /ruta -size +100M: Archivos mayores a 100 MB.
+find /ruta -size -50k: Archivos menores a 50 KB.
+```
+
+- Buscar por tiempo:
+```bash
+find /ruta -mtime -7: Archivos modificados en los últimos 7 días.
+find /ruta -atime +30: Archivos no accedidos en los últimos 30 días.
+```
+
+- Buscar por permisos:
+```bash
+find /ruta -perm 755: Archivos o directorios con permisos 755.
+```
+
+- Acciones:
+
+```bash
+find /ruta -name "*.log" -delete 
+```
+Elimina todos los archivos con extensión .log.
+
+```bash
+find /ruta -name "*.txt" -exec cat {} \;
+```
+Ejecuta un comando (cat en este caso) sobre los archivos encontrados. {} se reemplaza por el nombre del archivo encontrado.
+```bash
+find /ruta -print: Muestra el resultado de la búsqueda (esto es el comportamiento por defecto si no se especifica ninguna acción).
+```
+
+- Combinaciones lógicas:
+
+```bash
+find /ruta \( -name "*.log" -o -name "*.txt" \): Busca archivos con extensión .log o .txt.
+find /ruta -name "*.log" -a -size +1M: Busca archivos .log que sean mayores a 1 MB.
+```
+
+#### Ejemplos Prácticos
+
+- Buscar y eliminar archivos temporales:
+
+```bash
+find /ruta -type f -name "*.tmp" -delete
+```
+
+- Buscar archivos modificados en la última hora:
+
+```bash
+find /ruta -type f -mmin -60
+```
+
+- Buscar y copiar archivos a otro directorio:
+
+```bash
+find /ruta -type f -name "*.jpg" -exec cp {} /otra_ruta \;
+```
+
+- Buscar y cambiar permisos a los archivos encontrados:
+```bash
+find /ruta -type f -perm 644 -exec chmod 600 {} \;
+```
+
+#### Notas
+**-exec** puede ser muy útil para realizar operaciones sobre los resultados de find, pero se debe usar con precaución, especialmente con comandos como **rm** o **mv**.
+
+Es recomendable utilizar comillas para evitar problemas con caracteres especiales o espacios en los nombres de archivo. Con estas opciones y combinaciones, el comando ***find*** te permite realizar búsquedas y operaciones avanzadas en tus sistemas de archivos de manera muy eficiente.
+ 
 ### file
 
 Indica el tipo del fichero pasado como parámetro.
