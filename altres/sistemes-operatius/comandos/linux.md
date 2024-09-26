@@ -7,6 +7,7 @@ Comandos en **GNU/Linux**
     - [Comandos de administración](#comandos-de-administración)
     - [Autocompletado](#autocompletado)
     - [Las terminales en Gnu/Linux](#las-terminales-en-gnulinux)
+      - [Shells](#shells)
   - [Ayuda](#ayuda)
   - [Sintaxis](#sintaxis)
   - [Para trabajar con directorios](#para-trabajar-con-directorios)
@@ -135,6 +136,23 @@ La función de autocompletar también funciona para los nombres de ficheros y d
 También utilizaremos a a menudo la utilidad de Linux de guardar los comandos que ya hemos escrito de forma que podemos volver a escribirlos sólo pulsando las flechas de cursor arriba y bajo. Podemos ver la lista de comandos almacenada con el comando **`history`**.
 
 ### Las terminales en Gnu/Linux
+
+En GNU/Linux tenemos la posibilidad de ejecutar dos tipos de terminales:
+
+- Terminal virtual (/dev/ttY*): És la combinació conceptual de teclat+pantalla que creen una interfície d’usuari, normalment tenim 6 consoles virtuals. Per canviar entre consoles virtuals executem (Ctrl+Alt+F1 o F2 o F3…)
+- Pseudo Terminal (/dev/pts): Aplicació que emula un video-terminal dins d’una altre arquitectura de pantalla (p. ex. X-Windows). Normalment és sinònim de línia de comandes tot i que el terme terminal inclou tots els tipus de terminals remots
+  - Emuladors de terminal: xterm, Konsole, Gnome Terminal, Eterm, rxvt, mrxvt, term, aterm, Terminal (Xfce).. incloent les interfícies gràfiques
+
+#### Shells
+
+Intèrprets d’ordres:
+
+    bash: bourne Again Shell. El més popular i l’utilitzat en aquest curs.
+    sh (Bourne Shell): un dels primers intèrprets de comandes. Shell per defecte a Unix. Creada al 1977 per Stephen Bourne dels laboratoris AT&T de Bell. sh és encara l’interpret de comandes per defecte de root en sistemes Unix.
+    csh: La shell original de C no es gaire utilitzada a Linux. tcsh és un bon substitut de csh a Linux, força popular però gairebé cap distribució Linux la porta per defecte
+    ksh (Korn shell): va ser dissenyat per tal de tenir les millors característiques de sh i zsh.
+    dash (Debian Almquist Shell) un versió millorada d’ash. Més petit i eficient que bash. A Ubuntu, des de la versió 6.10, és l’interpret de comandes per defecte del sistema, tot i que l’intèrpret per defecte dels usuaris continua sent bash.
+
 Linux por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde _n_ es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son las terminales de la 1 a la 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (normalmente, aunque puede ser la 8 u otra según la distribución).
 
 Cada terminal tiene un nombre que es **ttyN**, donde N es el número de terminal (es decir tty1, tty2, ..., tty7).
