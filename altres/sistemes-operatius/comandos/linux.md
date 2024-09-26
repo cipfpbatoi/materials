@@ -21,6 +21,8 @@ Comandos en **GNU/Linux**
     - [cp](#cp)
     - [mv](#mv)
     - [rm](#rm)
+      - [Opciones Principales](#opciones-principales)
+      - [Ejemplos:](#ejemplos)
     - [touch](#touch)
     - [find](#find)
       - [Opciones y Expresiones Comunes](#opciones-y-expresiones-comunes)
@@ -143,25 +145,19 @@ También utilizaremos a a menudo la utilidad de Linux de guardar los comandos qu
 
 En GNU/Linux tenemos la posibilidad de ejecutar dos tipos de terminales:
 
-- Terminal virtual (/dev/ttY*): És la combinació conceptual de teclat+pantalla que creen una interfície d’usuari, normalment tenim 6 consoles virtuals. Per canviar entre consoles virtuals executem (Ctrl+Alt+F1 o F2 o F3…)
-- Pseudo Terminal (/dev/pts): Aplicació que emula un video-terminal dins d’una altre arquitectura de pantalla (p. ex. X-Windows). Normalment és sinònim de línia de comandes tot i que el terme terminal inclou tots els tipus de terminals remots
-  - Emuladors de terminal: xterm, Konsole, Gnome Terminal, Eterm, rxvt, mrxvt, term, aterm, Terminal (Xfce).. incloent les interfícies gràfiques
+![terminal](media/terminalvsemulador.png)
 
-#### Shells
+- **Terminal virtual (/dev/tty)**: És la combinació conceptual de teclat+pantalla que creen una interfície d’usuari, normalment tenim 6 consoles virtuals. Per canviar entre consoles virtuals executem (Ctrl+Alt+F1 o F2 o F3…)
+- **Pseudo Terminal (/dev/pts)**: Aplicació que emula un video-terminal dins d’una altre arquitectura de pantalla (p. ex. X-Windows). Normalment és sinònim de línia de comandes tot i que el terme terminal inclou tots els tipus de terminals remots
+  - **Emuladors de terminal**: xterm, Konsole, Gnome Terminal, Eterm, rxvt, mrxvt, term, aterm, Terminal (Xfce).. incloent les interfícies gràfiques
 
-Intèrprets d’ordres:
 
-    bash: bourne Again Shell. El més popular i l’utilitzat en aquest curs.
-    sh (Bourne Shell): un dels primers intèrprets de comandes. Shell per defecte a Unix. Creada al 1977 per Stephen Bourne dels laboratoris AT&T de Bell. sh és encara l’interpret de comandes per defecte de root en sistemes Unix.
-    csh: La shell original de C no es gaire utilitzada a Linux. tcsh és un bon substitut de csh a Linux, força popular però gairebé cap distribució Linux la porta per defecte
-    ksh (Korn shell): va ser dissenyat per tal de tenir les millors característiques de sh i zsh.
-    dash (Debian Almquist Shell) un versió millorada d’ash. Més petit i eficient que bash. A Ubuntu, des de la versió 6.10, és l’interpret de comandes per defecte del sistema, tot i que l’intèrpret per defecte dels usuaris continua sent bash.
 
-Linux por defecto arranca 7 terminales para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde _n_ es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son las terminales de la 1 a la 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (normalmente, aunque puede ser la 8 u otra según la distribución).
+Linux por defecto arranca 7 **terminales virtuales** para trabajar, 6 de texto y una terminal gráfica. Podemos cambiar de unos a otros con **Ctrl+Alt+Fn** donde _n_ es el número de terminal al que queremos ir. La terminal gráfica es la 7 y las de texto son las terminales de la 1 a la 6. Por lo tanto para trabajar con la primera terminal de texto pulsamos **Ctrl+Alt+F1** y para volver a la terminal gráfica **Ctrl+Alt+F7** (normalmente, aunque puede ser la 8 u otra según la distribución).
 
 Cada terminal tiene un nombre que es **ttyN**, donde N es el número de terminal (es decir tty1, tty2, ..., tty7).
 
-Además dentro de la terminal gráfica podemos abrir tantas pseudoterminales cómo queramos, cada una en su ventana. El nombre de
+Además dentro de la terminal gráfica podemos abrir tantas **pseudoterminales** cómo queramos, cada una en su ventana. El nombre de
 estas terminales es **pts/N**.
 
 **Ejemplo** - Abre desde el entorno gráfico un par de terminales y además accede con el usuario **root** desde la primera terminal de texto. Ahora desde cualquier terminal de las que tienes abiertas teclea la orden **who** que muestra los usuarios logueados en este momento. Aparecerá algo pareciendo a:
@@ -169,6 +165,16 @@ estas terminales es **pts/N**.
 ![who](./media/who.png)
 
 En GNU/Linux podemos elegir el **shell** o interprete de comandos que queremos utilizar, es decir, el programa encargado de interpretar y ejecutar el comando que tecleamos en la terminal. El más utilizado es el **bash** (se encuentra en `/bin/bash`) pero podemos utilizar otros como el **sh**, **ksh**, etc.. En el fichero de usuarios del sistema (**`/etc/passwd`**) entre otras informaciones de cada usuario se almacena cuál es su shell.
+
+#### Shells
+
+Intèrprets d’ordres:
+- bash: bourne Again Shell. El més popular i l’utilitzat en aquest curs.
+- sh (Bourne Shell): un dels primers intèrprets de comandes. Shell per defecte a Unix. Creada al 1977 per Stephen Bourne dels laboratoris AT&T de Bell. sh és encara l’interpret de comandes per defecte de root en sistemes Unix.
+- csh: La shell original de C no es gaire utilitzada a Linux. tcsh és un bon substitut de csh a Linux, força popular però gairebé cap distribució Linux la porta per defecte
+- ksh (Korn shell): va ser dissenyat per tal de tenir les millors característiques de sh i zsh.
+- dash (Debian Almquist Shell) un versió millorada d’ash. Més petit i eficient que bash. A Ubuntu, des de la versió 6.10, és l’interpret de comandes per defecte del sistema, tot i que l’intèrpret per defecte dels usuaris continua sent bash.
+- zsh, etc 
 
 ## Ayuda
 En Linux podemos obtener ayuda de un comando de diferentes maneras. La más completa y utilizada es utilizando el comando **man** seguido del nombre del comando que queremos. Por ejemplo:
@@ -280,13 +286,25 @@ Este comando también se utiliza para cambiar el nombre de un fichero o director
 
 ### rm
 
-Elimina el fichero o ficheros pasados como parámetro. Ejemplos:
+```bash 
+rm [opciones] nombre_del_archivo
+```
+
+- **nombre_del_archivo**: Es el archivo o directorio que se desea eliminar. Se puede especificar una ruta completa o relativa.
+
+#### Opciones Principales
+- **-r** o **-R** o **--recursive**: Elimina directorios de forma recursiva, es decir, borra el directorio especificado y todos sus contenidos (archivos y subdirectorios). Ejemplo: rm -r carpeta elimina carpeta y todo lo que contiene.
+- **-f** o **--force**: Fuerza la eliminación de archivos y directorios, ignorando advertencias y omitiendo errores. No pide confirmación, incluso para archivos protegidos contra escritura. Ejemplo: rm -f archivo_protegido elimina el archivo sin pedir confirmación.
+- **-i**: Solicita confirmación antes de eliminar cada archivo. Esto puede ayudar a evitar eliminaciones accidentales. Ejemplo: rm -i archivo.txt pregunta si deseas eliminar archivo.txt antes de hacerlo.
+- **-I**: Similar a -i, pero solo pide confirmación una vez antes de eliminar más de tres archivos o al eliminar recursivamente. Ejemplo: rm -I archivo1 archivo2 archivo3 archivo4 pedirá confirmación una vez antes de proceder.
+- **-v** o **--verbose**: Muestra mensajes detallados sobre lo que está siendo eliminado. Ejemplo: rm -v archivo.txt mostrará un mensaje indicando que se eliminó archivo.txt.
+- **--preserve-root**: Protege el directorio raíz (/) de ser eliminado recursivamente. Esta es la opción predeterminada y evita que rm -rf / pueda eliminar el sistema completo. Ejemplo: rm -rf / sin la opción --no-preserve-root resultará en un error por protección.
+- **--no-preserve-root**: Desactiva la protección de la raíz, permitiendo eliminar recursivamente el directorio raíz (/). Usar con extrema precaución Ejemplo: rm -rf --no-preserve-root / puede eliminar todo el sistema.
+
+#### Ejemplos: 
 
 - **`rm leeme.txt`** - Borra el fichero leeme.txt del directorio actual
 - **`rm /home/juan/*.odt`** - Borra todos los ficheros con extensión odt del directorio indicado
-
-Con la opción -R elimina directorios con todo su contenido:
-
 - **`rm -r /home/juan/pruebas`** - Borra el directorio indicado (pruebas) con todos los ficheros y directorios que contenga
 
 ### touch
@@ -344,16 +362,15 @@ find /ruta -perm 755: Archivos o directorios con permisos 755.
 ```bash
 find /ruta -name "*.log" -delete 
 ```
-Elimina todos los archivos con extensión .log.
+- Elimina todos los archivos con extensión .log.
 
 ```bash
 find /ruta -name "*.txt" -exec cat {} \;
 ```
-Ejecuta un comando (cat en este caso) sobre los archivos encontrados. {} se reemplaza por el nombre del archivo encontrado.
+- Ejecuta un comando (cat en este caso) sobre los archivos encontrados. {} se reemplaza por el nombre del archivo encontrado.
 ```bash
 find /ruta -print: Muestra el resultado de la búsqueda (esto es el comportamiento por defecto si no se especifica ninguna acción).
 ```
-
 - Combinaciones lógicas:
 
 ```bash

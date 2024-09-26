@@ -46,15 +46,6 @@ En GNU/Linux tenemos la posibilidad de ejecutar dos tipos de terminales:
   - Emuladors de terminal: xterm, Konsole, Gnome Terminal, Eterm, rxvt, mrxvt, term, aterm, Terminal (Xfce)..
 incloent les interfícies gràfiques
 
-**Shells**
-
-Intèrprets d'ordres:
-- **bash**: bourne Again Shell. El més popular i l'utilitzat en aquest curs.
-- **sh** (Bourne Shell): un dels primers intèrprets de comandes. Shell per defecte a Unix. Creada al 1977 per Stephen Bourne dels laboratoris AT&T de Bell. sh és encara l'interpret de comandes per defecte de root en sistemes Unix.
--  **csh**: La shell original de C no es gaire utilitzada a Linux. tcsh és un bon substitut de csh a Linux, força popular però gairebé cap distribució Linux la porta per defecte
--  **ksh** (Korn shell): va ser dissenyat per tal de tenir les millors característiques de sh i zsh.
--  **dash** (Debian Almquist Shell) un versió millorada d'ash. Més petit i eficient que bash. A Ubuntu, des de la versió 6.10, és l'interpret de comandes per defecte del sistema, tot i que l'intèrpret per defecte dels usuaris continua sent bash.
-
 #### Windows
 
 En Windows tenemos 2 tipos de terminal diferente:
