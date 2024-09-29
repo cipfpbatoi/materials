@@ -11,7 +11,7 @@
     - [Otros objetos](#otros-objetos)
 
 ## Introducción
-Si en el tema anterior vimos cómo interactuar con el documento mostrado en la página (_DOM_) en este veremos cómo acceder a objetos que nos permitan interactuar con el navegador (_Browser Object Model, BOM_).
+En este tema veremos cómo acceder a objetos que nos permitan interactuar con el navegador (_Browser Object Model, BOM_).
 
 Usando los objetos BOM podemos:
 * Abrir, cambiar y cerrar ventanas
