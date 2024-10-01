@@ -46,6 +46,8 @@ Comandos en **GNU/Linux**
     - [uniq](#uniq)
     - [diff](#diff)
     - [wc](#wc)
+      - [Opciones principales:](#opciones-principales-1)
+      - [Ejemplos](#ejemplos-1)
   - [Para gestionar permisos](#para-gestionar-permisos)
     - [chmod](#chmod)
     - [chown](#chown)
@@ -553,7 +555,14 @@ Ejemplo:
 
 ### wc
 
-Muestra el número de líneas, palabras y letras del fichero pasado como parámetro.
+El comando wc en Linux se utiliza para contar líneas, palabras y caracteres en archivos o en la entrada estándar (stdin). Su nombre proviene de "word count" (conteo de palabras), pero tiene varias opciones para obtener más información sobre los archivos.
+
+#### Opciones principales:
+- **wc -l**: Cuenta solo el número de líneas.
+- **wc -w**: Cuenta solo el número de palabras.
+- **wc -c**: Cuenta el número de bytes (o caracteres en algunas distribuciones).
+
+#### Ejemplos
 
 - **`wc -l /etc/passwd`**
 - **`cat /etc/passwd | wc -l`**
