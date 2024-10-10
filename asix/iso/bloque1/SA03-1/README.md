@@ -26,6 +26,7 @@
     - [Gestión desde el entorno gráfico](#gestión-desde-el-entorno-gráfico)
     - [Gestión desde la terminal](#gestión-desde-la-terminal)
     - [Montaje sistema de ficheros](#montaje-sistema-de-ficheros)
+      - [fstab](#fstab)
   - [Estructura](#estructura)
     - [MS Windows](#ms-windows)
     - [GNU/Linux](#gnulinux)
@@ -437,11 +438,37 @@ Para que el sistema operativo pueda utilizar un dispositivo y acceder a su siste
 - A cada partición le asignará una ruta formada por una letra y dos puntos. Por ejemplo, **C:** 
 - Se puede modificar la letra asignada desde el _Administrador de discos_.
 
-**LINUX**
+**GNU/LINUX**
 
 - En este sistema sólo existe un directorio raíz por lo que cualquier dispositivo de almacenamiento que queramos utilizar ha de montarse en algún directorio.
 - Se montan automáticamente las particiones indicadas en el fichero de configuración **/etc/fstab**.
 - Los discos USB suelen montarse automáticamente (normalmente bajo la carpeta **/media**).
+  
+#### fstab
+
+El archivo fstab (File Systems Table) en Linux es un archivo de configuración que define cómo se montan los sistemas de archivos en el sistema al inicio (boot). Se encuentra generalmente en /etc/fstab. Cada línea en este archivo representa un sistema de archivos que se debe montar, ya sea en el arranque o manualmente, con la información necesaria para su montaje.
+
+Formato de una línea típica en /etc/fstab. Cada línea tiene seis campos que deben seguir el siguiente formato:
+
+```bash
+<dispositivo>  <punto_de_montaje>  <sistema_de_archivos>  <opciones>  <dump>  <pass>
+```
+
+Explicación de los campos:
+
+- Dispositivo: Puede ser el identificador de la partición o dispositivo que se va a montar. Generalmente se usa el nombre del dispositivo en /dev, como /dev/sda1, pero también se puede usar un UUID o una etiqueta (LABEL). Ejemplo: /dev/sda1, UUID=1234-5678, LABEL=mis_datos
+- Punto de montaje: Es el directorio donde se montará el sistema de archivos, como /, /home, /mnt/disk, etc.
+- Sistema de archivos: Define el tipo de sistema de archivos, como ext4, xfs, vfat, ntfs, swap, entre otros. Ejemplo: ext4, xfs, vfat
+- Opciones: Son las opciones de montaje. Se pueden especificar diferentes parámetros para ajustar el comportamiento del sistema de archivos, como defaults, noatime, rw (lectura y escritura), ro (solo lectura), entre otras. Ejemplo: defaults (montaje con configuración predeterminada) noatime (no actualiza los tiempos de acceso), rw (montar como lectura y escritura)
+- Dump: Es un número (0 o 1) que indica si el sistema debe realizar copias de seguridad de este sistema de archivos usando dump. Un valor de 0 desactiva las copias de seguridad, mientras que 1 las habilita.
+- Pass: Este campo define el orden en el que fsck (el chequeo del sistema de archivos) revisa los sistemas de archivos al inicio. Un valor de 1 indica que debe ser revisado primero (generalmente la raíz /), 2 para otros sistemas de archivos, y 0 para deshabilitar la revisión.
+
+```bash
+UUID=1234-5678ASAS-ASASAS-SASSAAS   /               ext4    defaults        1 1
+UUID=2345-6789-asasas-AWQWQE-asdaasd   /home           ext4    defaults        1 2
+UUID=3456-7890   swap            swap    sw              0 0
+/dev/cdrom       /media/cdrom0   udf,iso9660 user,noauto 0 0
+```
 
 ## Estructura
 
@@ -610,7 +637,7 @@ Por defecto no se usan **ACLs** (aunque podemos usarlas). Se definien permisos p
 - **Grupo** principal al que pertenece el usuario propietario
 - **Otros** usuarios del sistema
 
-A este tipo de permisos se les suela llamar **UGO** (acrónimo de _User Group Others_).
+A este tipo de permisos se les suela llamar **UGO** (acrónimo de _User Group Others_) o explícitos.
 
 Al ejecutar el comando **ls -l** veremos los permisos de cada archivo del directorio:
 
