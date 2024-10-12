@@ -3,14 +3,14 @@
   - [Introducción](#introducción)
     - [Principales niveles de RAID](#principales-niveles-de-raid)
   - [RAID hardware (por BIOS) vs RAID software (por SO)](#raid-hardware-por-bios-vs-raid-software-por-so)
-  - [RAID en Windows](#raid-en-windows)
+  - [RAID por software en Windows](#raid-por-software-en-windows)
     - [Administración de discos](#administración-de-discos)
     - [Creación de un volumen simple](#creación-de-un-volumen-simple)
       - [Creación de un volumen simple con Powershell](#creación-de-un-volumen-simple-con-powershell)
     - [Convertir un disco básico en dinámico](#convertir-un-disco-básico-en-dinámico)
-    - [Creación de un volumen distribuido](#creación-de-un-volumen-distribuido)
+    - [Creación de un volumen distribuido (RAID-0)](#creación-de-un-volumen-distribuido-raid-0)
     - [Creación de volúmenes reflejados (RAID-1)](#creación-de-volúmenes-reflejados-raid-1)
-    - [RAID 5](#raid-5)
+    - [Creación de volúmenes RAID 5](#creación-de-volúmenes-raid-5)
     - [Powershell](#powershell)
   - [RAID en GNU/Linux](#raid-en-gnulinux)
 
@@ -70,7 +70,7 @@ La ventaja del RAID por software es que es gratis y fácil de configurar, ademá
 
 Así que si el presupuesto lo permite siempre es aconsejable montar un RAID por hardware.
 
-## RAID en Windows
+## RAID por software en Windows
 En Windows tenemos dos tipos de discos:
 - **Básicos**: son los discos que hemos utilizado hasta ahora. Ya vimos en en un PC podíamos usar principalmente 2 tipos de tablas de particiones para los discos:
   - **la tabla de particiones Ms-DOS (la del MBR)** donde un disco puede tener hasta 4 particiones primarias una de las cuales puede ser extendida dentro de la cual se pueden crear tantas particiones lógicas como sea necesario
@@ -136,7 +136,7 @@ Convertir un disco en dinámico nos da nuevas posibilidades (como utilizar RAID)
 
 Para convertir un disco dinámico en básico tenemos que eliminar previamente todos los volúmenes del disco (es decir, perderemos todos los datos) y a continuación desde su menú contextual seleccionamos Convertir en disco básico.
 
-### Creación de un volumen distribuido
+### Creación de un volumen distribuido (RAID-0)
 En un disco básico podemos crear un volumen básico como hemos visto antes o un volumen distribuido que incluye partes de más de un disco. Se hace desde su menú contextual seleccionando Nuevo volumen distribuido:
 
 ![Nuevo volumen dinámico](media/t5-04voldistrib.png)
@@ -156,7 +156,7 @@ También se pueden crear sobre disco básicos pero esta operación los convertir
 
 En cualquier momento se puede deshacer un volumen reflejado desde el menú contextual seleccionando Eliminar reflejo. Al hacerlo el volumen seleccionado deja de ser parte del RAID 1 y se puede utilizar.
 
-### RAID 5
+### Creación de volúmenes RAID 5
 Podemos implementar RAID 5 sobre discos dinámicos si tenemos al menos 3 discos. RAID 5 incluye tolerancia a fallos (si falla 1 disco se puede regenerar la información que contenía a partir de los otros) y sus desventajas son que aprovecha sólo el 66% del espacio de almacenamiento (con 3 discos, pero mejora el 50% de RAID 1) y que la escritura es más lenta porque se tiene que escribir información de paridad. Para solucionar esto normalmente se implementa por hardware con controladoras RAID.
 
 Para crear una unidad RAID 5 desde el menú contextual de un disco del volumen a crear seleccionamos Nuevo volumen RAID 5. A continuación indicamos la cantidad de espacio a utilizar en cada disco y después añadimos el resto de discos. Por último asignamos una letra y especificamos el sistema de archivos igual que hemos visto antes.

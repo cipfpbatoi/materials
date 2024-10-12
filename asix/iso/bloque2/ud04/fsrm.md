@@ -29,7 +29,7 @@ Lo que podemos gestionar desde aquí es:
 - Tareas de administración de archivos
 
 ## Cuotas de carpeta
-Permiten limitar la cantidad de espacio que un usuario puede utilizar en una carpeta compartida. Si se establecen el espacio disponible que a aparecerá al usuario no será el espacio real disponible en la carpeta sino el que él puede usar según establece su cuota.
+Permiten limitar la cantidad de espacio que un usuario puede utilizar en una carpeta compartida. Si se habilitan el espacio disponible que le aparecerá al usuario no será el espacio real disponible en la carpeta sino el que él puede usar según establece su cuota.
 
 ![Cuotas de disco](media/Cuotas.png)
 
@@ -61,23 +61,9 @@ Lo que tenemos que completar es:
 - Resumen de las propiedades: aparece un resumen de las propiedades de la cuota a aplicar en la carpeta
 
 ### Cuotas de volumen
-Además de establecer cuotas para una carpeta, que es lo más útil, podemos también limitar el espacio que los usuarios pueden utilizar de un volumen completo estableciendo cuotas del volumen. En este caso no es necesario instalar el _Administrador de recursos del servidor de archivos (FSRM)_. **NOTA**: no es conveniente establecer cuotas en la partición del sistema porque el sistema podría sobrepasar la cuota asignada durante el arranque.
+Como vimos en el bloque 1 podemos también limitar el espacio que los usuarios pueden utilizar de un volumen completo estableciendo cuotas del volumen. En este caso no es necesario instalar el _Administrador de recursos del servidor de archivos (FSRM)_.
 
-Para establecer cuotas en un volumen desde su menú contextual seleccionamos `Propiedades` y vamos a la pestaña de `Cuota`:
-
-![Cuotas volumen](media/cuotaVol.png)
-
-Tenemos que activar la opción `Habilitar la administración de cuotas`. Las opciones que tenemos son:
-- Denegar espacio en disco a usuarios que excedan el límite: si un usuario sobrepasa el límite asignado no puede escribir datos en el disco
-- No limitar el uso de disco: por defecto no establecemos límites. Después los podemos especificar para usuarios concretos
-- Limitar espacio en disco: ponemos límites por defecto para todos los usuarios. Indicaremos la cantidad de espacio a asignar por usuario y el nivel en el cual se le mostrará una advertencia
-- Registrar un evento cuando un usuario supero su límite o su nivel de advertencia: se registra un evento en los casos indicados porque el administrador pueda tomar las medidas apropiadas
-
-De este modo hemos establecido unas cuotas generales para todos los usuarios. Pero a a menudo querremos establecer cuotas sólo para determinados usuarios. Esto lo hacemos desde el botón de `Valores de cuota`. En la nueva ventana seleccionamos desde el `menú Cuota -> Nueva entrada de cuota...`, escogemos el usuario o usuarios a los cuales se aplicará la cuota que estamos creando y establecemos la cuota específica para ellos:
-
-![Cuotas volumen- nueva cuota usr](media/cuotaVol-newUser.png)
-
-De este modo establecemos cuotas para una partición entera.
+[Apuntes del cuotas de disco en Windows](../bloque1/SA03-3-cuotas/README.md)
 
 ## Filtrado de archivos
 Permite impedir que se almacenen en la carpeta compartida determinados tipos de archivo (vídeo, imágenes, ejecutables, ...).

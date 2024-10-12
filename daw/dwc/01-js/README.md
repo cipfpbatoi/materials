@@ -4,6 +4,7 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [1-Sintaxis](./01-sintaxis.md): Variables. Funciones. Estructuras y bucles. Tipos de datos. Buenas prácticas
   * [Introducción a los test en Javascript](../tests.md)
 * [2.1-Objetos](./02.1-objetos.md): Introducción a los objetos en Javascript
+  * [Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [2.2-Arrays](./02.2-arrays.md): Métodos. _Functional Programming_. Referencia vs copia. Rest y Spread. Desestructuración de arrays. Map. Set
   * [Vite](./03.1-vite.md): Cómo usar vite
   * [Webpack](./03.1-webpack.md): Cómo usar webpack
@@ -14,9 +15,8 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
   * [6.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
 location, history, otros objetos)
 * [7-Eventos](./06-eventos.md): Escuchadores. Tipos de eventos. Los objetos _this_ y _event_. Propagación de eventos (_bubbling_)
-* [8-Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
-* [9-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
-* 
+* [8-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
+* [9-Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [10-APIs HTML5](./10-apis.md): Drag and drop. API Storage. Geolocalización. API de Google Maps
 * [11-Más cosas a aprender...](./11-mas.md): WebComponents. WebSockets. WebWorkers. Typescript.
 * [12-Tests](./12-tests.md): Testear JS con Jest

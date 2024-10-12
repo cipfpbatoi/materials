@@ -1,51 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ejemplo de DOM</title>
-</head>
-<body>
-  <h1 class="important">Ejemplo de DOM</h1>
-  <p>Vamos a ver una página de ejemplo para poder "jugar" con el DOM</p>
-  <h2>Algunos párrafos</h2>
-  <div id="lipsum">
-    <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin feugiat ex in eleifend finibus. Morbi vulputate iaculis tortor, nec luctus neque consectetur sit amet. Aliquam erat volutpat. Suspendisse auctor ante id est hendrerit aliquam. Sed libero libero, bibendum eget rhoncus ut, consequat eget arcu. Maecenas ac fermentum elit. Integer tempor rutrum erat at dapibus. Duis ornare ornare efficitur. Pellentesque eu nibh id arcu volutpat mollis vitae eget dolor. Donec velit nibh, vestibulum et ante sed, interdum condimentum arcu. Vivamus in purus vitae nunc iaculis venenatis et a neque. Etiam vulputate felis non est aliquam, id ultrices ipsum consequat.
-    </p>
-    <p>
-    Vestibulum facilisis est in fringilla volutpat. Sed sollicitudin odio ac tristique placerat. Sed eleifend feugiat consequat. Vivamus consequat tristique sem non suscipit. Praesent pulvinar pretium blandit. Sed at diam condimentum, faucibus tellus ut, eleifend leo. Nullam sed rhoncus lectus. Maecenas eget ex eleifend, pulvinar lectus ut, bibendum quam. Donec vestibulum interdum mattis.
-    </p>
-    <p>
-    Duis vulputate condimentum massa sit amet pulvinar. Sed sollicitudin mauris in laoreet condimentum. Pellentesque congue mauris libero, in scelerisque leo sodales sed. Phasellus tristique sodales consectetur. Morbi porttitor mattis nibh. Nulla quis eros vitae dolor porttitor placerat ac eu nisl. Proin mattis ultrices tellus, eget pharetra nibh pulvinar quis. In vitae ligula mi. Sed commodo commodo purus, nec dictum neque semper in. Donec molestie libero leo, et hendrerit mauris efficitur eget. Nulla molestie bibendum blandit. Curabitur sed porttitor mi. Sed aliquam felis et lacus pretium consectetur.
-    </p></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejemplo de DOM</title>
+  </head>
+  <body>
+    <h1 class="important">Ejemplo de DOM (<em>.important</em>)</h1>
+    <p>Vamos a ver una página de ejemplo para poder "jugar" con el DOM</p>
+    <h2>Algunos párrafos</h2>
+    <div id="lipsum">
+      <p class="important">
+        Todos los párrafos de este H2 están incluidos en el <em>DIV#lipsum</em>.
+        Este párrafo es <em>.important</em>
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin feugiat
+        ex in eleifend finibus. Morbi vulputate iaculis tortor, nec luctus neque
+        consectetur sit amet. Aliquam erat volutpat. Suspendisse auctor ante id
+        est hendrerit aliquam. Sed libero libero, bibendum eget rhoncus ut,
+        consequat eget arcu. Maecenas ac fermentum elit. Integer tempor rutrum
+        erat at dapibus. Duis ornare ornare efficitur. Pellentesque eu nibh id
+        arcu volutpat mollis vitae eget dolor. Donec velit nibh, vestibulum et
+        ante sed, interdum condimentum arcu. Vivamus in purus vitae nunc iaculis
+        venenatis et a neque. Etiam vulputate felis non est aliquam, id ultrices
+        ipsum consequat.
+      </p>
+      <p>
+        Vestibulum facilisis est in fringilla volutpat. Sed sollicitudin odio ac
+        tristique placerat. Sed eleifend feugiat consequat. Vivamus consequat
+        tristique sem non suscipit. Praesent pulvinar pretium blandit. Sed at
+        diam condimentum, faucibus tellus ut, eleifend leo. Nullam sed rhoncus
+        lectus. Maecenas eget ex eleifend, pulvinar lectus ut, bibendum quam.
+        Donec vestibulum interdum mattis.
+      </p>
+      <p>
+        Duis vulputate condimentum massa sit amet pulvinar. Sed sollicitudin
+        mauris in laoreet condimentum. Pellentesque congue mauris libero, in
+        scelerisque leo sodales sed. Phasellus tristique sodales consectetur.
+        Morbi porttitor mattis nibh. Nulla quis eros vitae dolor porttitor
+        placerat ac eu nisl. Proin mattis ultrices tellus, eget pharetra nibh
+        pulvinar quis. In vitae ligula mi. Sed commodo commodo purus, nec dictum
+        neque semper in. Donec molestie libero leo, et hendrerit mauris
+        efficitur eget. Nulla molestie bibendum blandit. Curabitur sed porttitor
+        mi. Sed aliquam felis et lacus pretium consectetur.
+      </p>
+    </div>
     <h2>Una lista</h2>
     <ul>
-      <li class="important">Donec sit amet eros id orci suscipit ultricies.</li>
+      <li class="important">
+        Donec sit amet eros id orci suscipit ultricies (<em>.important</em>).
+      </li>
       <li>Vivamus et nibh accumsan, ultricies nisi vel, viverra nisl.</li>
-      <li class="important">Aenean imperdiet mi non augue tristique, sit amet sagittis nulla ultricies.</li>
-      <li class="important">Nullam vitae risus rutrum quam dapibus viverra.</li>
-      </ul>
-  <h2>Un formulario</h2>
-  <form action="#">
-    <label for="input1">Dato 1
-      <input id="input1" type="text" size="20"><br>
-    </label>
-    <label for="input2">Dato 2
-      <input id="input2" type="text" size="20"><br>
-    </label>
-    <label for="input3">Dato 3
-      <input id="input3" type="text" size="20"><br>
-    </label>
-    <label>Escoge el sexo:<br>
-      <input type="radio" name="sexo" value="H">Hombre<br>
-      <input type="radio" name="sexo" value="M">Mujer
-    </label>
+      <li class="important">
+        Aenean imperdiet mi non augue tristique, sit amet sagittis nulla
+        ultricies (<em>.important</em>).
+      </li>
+      <li class="important">
+        Nullam vitae risus rutrum quam dapibus viverra (<em>.important</em>).
+      </li>
+    </ul>
+    <h2>Un formulario</h2>
+    <p>
+      Este formulario tiene como id <em>myForm</em>. Los tres campos de texto
+      tienes como id y name su etiqueta (<em>input1</em>, ...). Los radiobuttons
+      tienen como name <em>sexo</em> y los buttons como id su etiqueta (<em
+        >button1</em
+      >
+      y <em>button2</em>)
+    </p>
+    <form action="#" id="myForm">
+      <label for="input1"
+        >input1 <input id="input1" name="input1" type="text" size="20" /><br />
+      </label>
+      <label for="input2"
+        >input2 <input id="input2" type="text" size="20" /><br />
+      </label>
+      <label for="input3"
+        >input3 <input id="input3" type="text" size="20" /><br />
+      </label>
+      <label
+        >Escoge el sexo (name="sexo"):<br />
+        <input type="radio" name="sexo" value="H" />Hombre<br />
+        <input type="radio" name="sexo" value="M" />Mujer
+      </label>
 
-<p>
-  <input type="button" id="button1" value="Button 1">
-  <input type="button" id="button2" value="Button 2">
-</p>
-  </form>
-</body>
+      <p>
+        <input type="button" id="button1" value="button1" />
+        <input type="button" id="button2" value="button2" />
+      </p>
+    </form>
+  </body>
 </html>

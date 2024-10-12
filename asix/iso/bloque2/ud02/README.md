@@ -4,7 +4,6 @@
 Los contenidos de esta unidad son los siguientes:
 1. [Instalación de Windows Server](instal.md)
 2. [Instalar roles y características](roles.md)
-3. [Administrar discos](discos.md)
 
 ## Objetivos de la unidad
 Los objetivos a alcanzar en esta unidad de trabajo son los siguientes:
