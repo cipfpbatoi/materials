@@ -47,7 +47,12 @@ document.getElementById('boton1').onclick = funnction () {
 ...
 ```
 
-NOTA: hay que tener cuidado porque si se ejecuta el código antes de que se haya creado el botón estaremos asociando la función al evento _click_ de un elemento que aún no existe así que no hará nada. Para evitarlo siempre es conveniente poner el código que atiende a los eventos dentro de una función que se ejecute al producirse el evento _load_ de la ventana. Este evento se produce cuando se han cargado todos los elementos HTML de la página y se ha creado el árbol DOM. Lo mismo habría que hacer con cualquier código que modifique el árbol DOM. El código correcto sería:
+**IMPORTANTE**: si asociamos un evento a un elemento que aún no existe (porque aún no lo ha renderizado el navegador) no se produce ningún error pero cuando se renderice ese elemento no tendrá asociado nada. Para evitarlo siempre es conveniente poner el código que atiende a los eventos dentro de una función que se ejecute cuando ya se ha renderizado toda la página, es decir tras producirse:
+- el evento _load_ de la ventana: se produce cuando se han cargado todos los elementos HTML de la página (incluyendo imágenes, ficheros, etc) y se ha creado el árbol DOM
+- el evento _DOMContentLoaded_ del documento: se produce cuando se ha creado el árbol DOM pero no se han cargado imágenes, hojas de estilo, ni subframes. Es el ideal para realizar acciones del DOM sin tener que esperar a que se carguen las imágenes y el CSS
+
+Lo mismo habría que hacer con cualquier código que modifique el árbol DOM. El código correcto sería:
+
 ```javascript
 window.onload = function() {
   document.getElementById('boton1').onclick = function() {
@@ -57,31 +62,31 @@ window.onload = function() {
 ```
 
 ### Event listeners
-La forma recomendada de hacerlo es usando el modelo avanzado de registro de eventos del W3C. Se usa el método `addEventListener` que recibe como primer parámetro el nombre del evento a escuchar (sin 'on') y como segundo parámetro la función a ejecutar (OJO, sin paréntesis) cuando se produzca:
+La forma recomendada de hacerlo es usando el modelo avanzado de registro de eventos del _W3C_. Se usa el método `addEventListener` que recibe como primer parámetro el nombre del evento a escuchar (sin '_on_') y como segundo parámetro la función a ejecutar cuando se produzca (OJO, **sin paréntesis**):
 ```javascript
 document.getElementById('boton1').addEventListener('click', pulsado);
 ...
 function pulsado() {
   alert('Se ha pulsado');
-})
+}
 ```
 
 Habitualmente se usan funciones anónimas ya que no necesitan ser llamadas desde fuera del escuchador:
 ```javascript
-document.getElementById('boton1').addEventListener('click', function() {
+document.getElementById('boton1').addEventListener('click', () => {
   alert('Se ha pulsado');
 });
 ```
 
-Si queremos pasarle algún parámetro a la función escuchadora (cosa bastante poco usual) debemos usar funciones anónimas como escuchadores de eventos:
+Si queremos pasarle algún parámetro a la función manejadora (cosa bastante poco usual) debemos usar funciones anónimas como escuchadores de eventos:
 
 <script async src="//jsfiddle.net/juansegura/L5pkg93w/1/embed/js,html,result/"></script>
 
-NOTA: igual que antes debemos estar seguros de que se ha creado el árbol DOM antes de poner un escuchador por lo que se recomienda ponerlos siempre dentro de la función asociada al evento `window.onload` (o mejor `window.addEventListener('load', ...)` como en el ejemplo anterior).
+NOTA: igual que antes debemos estar seguros de que se ha creado el árbol DOM antes de poner un escuchador por lo que se recomienda ponerlos siempre dentro una función asociada a `window.addEventListener("load", ...)` como en el ejemplo anterior o mejor a `document.addEventListener("DOMContentLoaded", ...)`.
 
-Una ventaja de este método es que podemos poner varios escuchadores para el mismo evento y se ejecutarán todos ellos. Para eliminar un escuchador se usa el método `removeEventListener`.
+Una ventaja de esta forma de poner escuchadores es que podemos poner varios escuchadores para el mismo evento y se ejecutarán todos ellos. Para eliminar un escuchador se usa el método `removeEventListener`.
 ```javascript
-document.getElementById('acepto').removeEventListener('click', aceptado);
+document.getElementById('boton1').removeEventListener('click', pulsado);
 ```
 
 NOTA: no se puede quitar un escuchador si hemos usado una función anónima, para quitarlo debemos usar como escuchador una función con nombre.
@@ -134,8 +139,8 @@ Se producen en los formularios:
 
 ## Los objetos _this_ y _event_
 Al producirse un evento se generan automáticamente en su función manejadora 2 objetos:
-* **this**: siempre hace referencia al elemento que contiene el código en donde se encuentra la variable _this_. En el caso de una función escuchadora será el elemento que tiene el escuchador que ha recibido el evento
-* **event**: es un objeto y la función escuchadora lo recibe como parámetro. Tiene propiedades y métodos que nos dan información sobre el evento, como:
+* **this**: siempre hace referencia al elemento que contiene el código en donde se encuentra la variable _this_. En el caso de una función manejadora será el elemento que tiene el escuchador que ha recibido el evento
+* **event**: es un objeto y la función manejadora lo recibe como parámetro. Tiene propiedades y métodos que nos dan información sobre el evento, como:
   * **.type**: qué evento se ha producido (click, submit, keyDown, ...)
   * **.target**: el elemento donde se produjo el evento (puede ser _this_  o un descendiente de _this_, como en el ejemplo siguiente) 
   * **.currentTarget**: el elemento que contiene el escuchador del evento lanzado (normalmente el mismo que _this_). Por ejemplo si tenemos un _<p>_ al que le ponemos un escuchador de 'click' que dentro tiene un elemento _<span>_, si hacemos _click_ sobre el _<span>_ **event.target** será el _<span>_ que es donde hemos hecho click (está dentro de _<p>_) pero tanto _<this>_ como _event.currentTarget_ será _<p>_ (que es quien tiene el escuchador que se está ejecutando).
@@ -169,20 +174,29 @@ Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejempl
 > EJERCICIO: Pon desde la consola un escuchador al BODY de la página de ejemplo para que al pulsar cualquier tecla nos muestre en un alert el _key_ y el _keyCode_ de la tecla pulsada. Pruébalo con diferentes teclas
 
 ### _Bindeo_ del objeto _this_
-En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función escuchadora. Por ejemplo la función escuchadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función perdemos esa referencia.
+En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función manejadora. Por ejemplo, si la función manejadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función manejadora del evento perdemos esa referencia.
 
-El método _.bind()_ nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función. Por defecto a una función escuchadora de eventos se le _bindea_ le valor de **event.currentTarget**. Si queremos que tenga otro valor se lo indicamos con **.bind()**: 
+El método _.bind()_ nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función. Por defecto a una función manejadora de eventos se le _bindea_ el valor de **event.currentTarget**. Si queremos que tenga otro valor se lo indicamos con **.bind()**: 
 ```javascript
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(variable));
 ```
 
-En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_. En el ejemplo que habíamos comentado de un escuchador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
+En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_. En el ejemplo que habíamos comentado de un manejador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
 ```javascript
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(this));
 ```
 por lo que el valor de _this_ dentro de la función _aceptado_ será el mismo que tenía fuera, es decir, el objeto.
 
-Podemos _bindear_, es decir, pasarle a la función escuchadora más variables declarándolas como parámetros de _bind_. El primer parámetro será el valor de _this_ y los demás serán parámetros que recibirá la función antes de recibir el parámetro _event_ que será el último. Por ejemplo:
+Esto es lo que hacíamos en la práctica de DOM cuando le pasábamos a las funciones manejadoras del _submit_ y el _click_ del formulario en la _vista_ métodos del _controlador_ con el objeto _this_ bindeado:
+
+```javascript
+this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
+this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
+```
+
+Sin ese bindeo esos métodos perderían la referencia al objeto _controlador_ y no podrían acceder a sus propiedades y métodos.
+
+Podemos _bindear_, es decir, pasarle a la función manejadora más variables declarándolas como parámetros de _bind_. El primer parámetro será el valor de _this_ y los demás serán parámetros que recibirá la función antes de recibir el parámetro _event_ que será el último. Por ejemplo:
 
 ```javascript
 document.getElementById('acepto').removeEventListener('click', aceptado.bind(var1, var2, var3));
@@ -216,7 +230,7 @@ En cualquier momento podemos evitar que se siga propagando el evento ejecutando 
 Podéis ver las distintas fases de un evento en la página [domevents.dev](https://domevents.dev/).
 
 ## innerHTML y escuchadores de eventos
-Si cambiamos la propiedad _innerHTML_ de un elemento del árbol DOM todos sus escuchadores de eventos desaparecen ya que es como si se volviera a crear ese elemento (y los escuchadores deben ponerse después de crearse). 
+Si cambiamos el contenido de la propiedad _innerHTML_ de un elemento todos los escuchadores de eventos de sus elementos hijos desaparecen ya que es como eliminar su contenido y volverlos a renderizar. 
 
 Por ejemplo, tenemos una tabla de datos y queremos que al hacer doble click en cada fila se muestre su id. La función que añade una nueva fila podría ser:
 ```javascript
@@ -227,7 +241,7 @@ function renderNewRow(data) {
   document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: '+ event.target.id));
 ```
 
-Sin embargo esto sólo funcionaría para la última fila añadida ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos asignando a _miTabla_ un código HTML que ya no contiene escuchadores, excepto el de _nuevaFila_ que lo ponemos después de hacer la asignación.
+Sin embargo sólo la última fila añadida tendría escuchador ya que la línea `miTabla.innerHTML += nuevaFila` equivale a `miTabla.innerHTML = miTabla.innerHTML + nuevaFila`. Por tanto estamos asignando a _miTabla_ un código HTML que ya no contiene escuchadores, excepto el de _nuevaFila_ que lo ponemos después de hacer la asignación.
 
 La forma correcta de hacerlo sería:
 ```javascript
@@ -240,7 +254,7 @@ function renderNewRow(data) {
   miTabla.appendChild(nuevaFila);
 ```
 
-De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila. Si lo hacemos como estaba al principio se deben volver a crear y a renderizar todas las filas de la tabla (todo lo que hay dentro de miTabla).
+De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila y no  todas las filas de la tabla (todo lo que hay dentro de miTabla) como pasaba con el primer código.
 
 ## Delegación de eventos
 Es un patrón de diseño que nos permite no tener que poner un escuchador a cada elemento sino uno global que haga el trabajo de todos.
@@ -260,7 +274,7 @@ const event = new Event('build');
 elem.addEventListener('build', (e) => { /* ... */ });
 
 // Dispatch the event.
-elem.dispatchEvent(event);
+elem.dispatchEvent('build');
 ```
 
 Incluso podemos añadir datos al objeto _event_ si creamos el evento con `new CustomEvent()`. Podéis obtener más información en la [página de MDN](https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events).
