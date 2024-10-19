@@ -43,6 +43,8 @@ Hay infinidad de páginas donde podemos aprender más sobre WebComponents y cóm
 * [Carlos Azaustre - Cómo crear un WebComponent de forma nativa](https://www.youtube.com/watch?v=8bcfgXePHnk&feature=em-subs_digest)
 * ...
 
+Podemos ver un ejemplo de cómo crear un componente de forma nativa en [este enlace](https://www.examplelab.com.ar/posts/2023-11-17-componentes-web/).
+
 En resumen debemos crear un fichero donde definimos la clase de nuestro componente que debe heredar de `HTMLElement`. Es conveniente que su nombre (y por tanto el de la etiqueta que usaremos para mostrarlo) tenga al menos 2 palabras para evitar que pueda entrar en conflicto con posibles futuras etiquetas de HTML (por ejemplo podría ser \<social-login> o \<my-weather>). En esta clase definiremos el HTML y el estilo que tendrá nuestro componente, así como su comportamiento.
 
 Actualmente no todos los navegadores ofrecen soporte para WebComponents. Esto junto al hecho de que frameworks como Vue, Angular o React ofrecen soluciones con sus propios componentes han hecho que el uso de los WebComponents no acabe de despegar. A pesar de ello hay lugares como [WebComponents.org](https://www.webcomponents.org/) donde podemos encontrar un catálogo de componentes hechos y que podemos usar en nuestras páginas.
