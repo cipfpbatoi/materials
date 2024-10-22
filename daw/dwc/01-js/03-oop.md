@@ -166,7 +166,7 @@ Lo más conveniente es guardar cada clase en su propio fichero, que llamaremos c
 En dicho fichero exportamos la clase (con `export` o mejor `export default` porque sólo hay una) y donde queramos usarla la importamos (`import { Users } from 'users.class'` o `import Users from 'users.class'`, según cómo la hayamos exportado).
 
 ## El contexto de _this_
-El valor de la variable _this_ depende del contexto e que se ejecuta el código. Al crear una instancia de una calse con `new` _this_ hace referencia a la instancia creada. Pero dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
+El valor de la variable _this_ depende del contexto e que se ejecuta el código. Al crear una instancia de una clase con `new` _this_ hace referencia a la instancia creada. Pero dentro de una función se crea un nuevo contexto y la variable _this_ pasa a hacer referencia a dicho contexto. Si en el ejemplo anterior hiciéramos algo como esto:
 ```javascript
 class Alumno {
     ...
