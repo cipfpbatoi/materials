@@ -180,7 +180,7 @@ class Alumno {
 }
 ```
 
-Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia a a instancia del objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
+Este código fallaría porque dentro de la función _nomAlum_ la variable _this_ ya no hace referencia a la instancia del objeto _Alumno_ sino al contexto de la función. Este ejemplo no tiene mucho sentido pero a veces nos pasará en manejadores de eventos. 
 
 Si debemos llamar a una función dentro de un método (o de un manejador de eventos) tenemos varias formas de pasarle el valor de _this_:
 1. Usando una _arrow function_ que no crea un nuevo contexto por lo que _this_ conserva su valor

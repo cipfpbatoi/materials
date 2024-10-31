@@ -183,41 +183,27 @@ Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejempl
 > EJERCICIO: Pon desde la consola un escuchador al BODY de la página de ejemplo para que al pulsar cualquier tecla nos muestre en un alert el _key_ y el _keyCode_ de la tecla pulsada. Pruébalo con diferentes teclas
 
 ### _Bindeo_ del objeto _this_
-En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función manejadora. Por ejemplo, si la función manejadora es un método de una clase en _this_ tenemos el objeto de la clase sobre el que estamos actuando pero al entrar en la función manejadora del evento se sobreescribe esta variable.
-
-Podríamos guardarla en otra variable antes de entrar en la función manejadora como vimos en el [tema de POO](./05-POO.md), por ejemplo:
+En ocasiones no queremos que _this_ sea el elemento sobre quien se produce el evento sino que queremos conservar el valor que tenía antes de entrar a la función manejadora. Por ejemplo, si la función manejadora es un método de una clase en _this_ tenemos la instancia de la clase sobre la que estamos actuando pero al entrar en la función manejadora del evento se sobreescribe esta variable.
 ```javascript
-let that = this;
-document.getElementById('acepto').addEventListener('click', function() {
-  // Aquí dentro this será el elemento sobre el que se ha hecho click
-  // y that será el objeto que tenía antes de entrar en la función manejadora
-});
+class ... {
+  ...
+  escucha() {
+    document.getElementById('boton1').addEventListener('click', this.pulsado);
+  }
+
+  pulsado(event) {
+    // Aquí this debería ser la instancia de la clase, pero si es llamado por la función que escucha el click el evento this será el elemento sobre el que se ha hecho click
+  }
+}
 ```
 
-Pero también podemos usar el método _.bind()_, que nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función: 
+La forma de solucionarlo es usar el método _.bind()_, que nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función: 
 
 ```javascript
-document.getElementById('acepto').removeEventListener('click', aceptado.bind(variable));
+document.getElementById('boton1').removeEventListener('click', this.pulsado.bind(this));
 ```
 
-En este ejemplo el valor de _this_ dentro de la función _aceptado_ será _variable_en lugar de _event.currentTarget_. 
-
-En el ejemplo que habíamos comentado de un manejador dentro de una clase, para mantener el valor de _this_ y que haga referencia al objeto sobre el que estamos actuando haríamos:
-
-```javascript
-document.getElementById('acepto').removeEventListener('click', aceptado.bind(this));
-```
-
-por lo que el valor de _this_ dentro de la función _aceptado_ será el mismo que tenía fuera, es decir, la instancia del objeto.
-
-Esto es lo que hacíamos en la práctica de DOM cuando le pasábamos a las funciones manejadoras del _submit_ y el _click_ del formulario en la _vista_ métodos del _controlador_ con el objeto _this_ bindeado:
-
-```javascript
-this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
-this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
-```
-
-Sin ese bindeo esos métodos perderían la referencia a la instancia del _controlador_ y no podrían acceder a sus propiedades y métodos.
+En este ejemplo el valor de _this_ dentro de la función _pulsado_ será _this_, es decir, la instancia de la clase, en lugar de _event.currentTarget_ (en vez de _this_ le podríamos pasar cualquier otro valor). 
 
 Podemos _bindear_, es decir, pasarle a la función manejadora más variables declarándolas como parámetros de _bind_. El primer parámetro será el valor de _this_ y los demás serán parámetros que recibirá la función antes de recibir el parámetro _event_ que será el último. Por ejemplo:
 
@@ -231,6 +217,37 @@ function aceptado(param1, param2, event) {
   // param2 = var3
   // event es el objeto con la información del evento producido
 }
+```
+
+Esto es lo que hacíamos en la práctica de DOM cuando le pasábamos a las funciones manejadoras del _submit_ y el _click_ del formulario en la _vista_ métodos del _controlador_ con el objeto _this_ bindeado:
+
+```javascript
+this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
+this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
+```
+
+Sin ese bindeo esos métodos perderían la referencia a la instancia del _controlador_ y no podrían acceder a sus propiedades y métodos.
+
+Otra forma de solucionarlo sin usar _bind()_ es usar funciones flecha, que no tienen su propio _this_ sino que heredan el de la función que las contiene:
+
+```javascript
+class ... {
+  ...
+  escucha() {
+    document.getElementById('boton1').addEventListener('click', (event) => this.pulsado(event));
+  }
+
+  pulsado(event) {
+    // Aquí this será la instancia de la clase
+  }
+}
+```
+
+Por tanto en la práctica de DOM podemos sustituir los _bind_ por funciones fecha:
+
+```javascript
+this.view.setBookSubmitHandler((payload) => this.handleSubmitBook(payload));
+this.view.setBookRemoveHandler((bookId) => this.handleRemoveBook(bookId));
 ```
 
 ## Propagación de eventos
