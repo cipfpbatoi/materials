@@ -42,7 +42,7 @@ El comando para instalar un rol es `Install-WindowsFeature`. A diferencia del en
 Install-WindowsFeature -Name <feature_name> -computerName <computer_name> -IncludeManagementTools -Restart
 ```
 
-instala el rol identificado por _<feature_name>_ en el equipo _<computer_name>_ (si no se pone este parámetro se instala en la máquina en que se ejecuta el comando) incluyendo sus herramientas de administración y, si es necesario, reinicia el equipo tras finalizar la instalación.
+instala el rol identificado por _\<feature_name>_ en el equipo _\<computer_name>_ (si no se pone este parámetro se instala en la máquina en que se ejecuta el comando) incluyendo sus herramientas de administración y, si es necesario, reinicia el equipo tras finalizar la instalación.
 
 Podemos obtener la lista de roles que podemos instalar en este equipo con el comando `Get-WindowsFeature`. Si queremos la lista para otro equipo pondremos `Get-WindowsFeature -computerName <computer_name>`.
 
@@ -101,7 +101,7 @@ Powershell pedirá el nombre del nevo dominio y la contraseña del administrador
 ```powershell
 $dominioFQDN = "ACME.LAN"
 $dominioNETBIOS = "ACME"
-$adminPass = "Batoi@1234."
+$adminPass = "Batoi@1234"
 Install-WindowsFeature AD-Domain-Services,DNS
 Import-module addsdeployment
 Install-ADDSForest `
@@ -162,7 +162,7 @@ Tenemos infinidad de servicios que podemos instalar en nuestro servidor. Algunos
   - [Windows Server Backup: How to Install and Use It](https://www.minitool.com/backup-tips/windows-server-backup.html)
 
 ## RSAT
-Las herramientas de administración remota del servidor (RSAT, Remote Server Administration Tools) es un software gratuito que Microsoft pone a disposición de los usuarios para poder administrar un servidor desde cualquier cliente Windows. Esto nos permite, por ejemplo, instalar el servidor sin entorno gráfico (que es lo que recomienda Microsoft) y administrarlo desde un equipo cliente que sí lo tiene.
+Las herramientas de administración remota del servidor (RSAT, _Remote Server Administration Tools_) es un software gratuito que Microsoft pone a disposición de los usuarios para poder administrar un servidor desde cualquier cliente Windows. Esto nos permite, por ejemplo, instalar el servidor sin entorno gráfico (que es lo que recomienda Microsoft) y administrarlo desde un equipo cliente que sí lo tiene.
 
 En versiones de Windows 10 posteriores a la 1809 podemos activarlas desde `Configuración -> Aplicaciones y características -> Características opcionales -> Agregar una característica`:
 
@@ -188,6 +188,8 @@ Ahora abrimos el **_Administrador del servidor_** y añadimos nuestro servidor (
 ![Agregar servidor](media/rsatServidor.png)
 
 En el menú _'Herramientas'_ ya tenemos las herramientas para gestionar nuestro dominio.
+
+En Windows 11 lo haremos desde `Configuración -> Aplicaciones -> Funciones opcionales -> Añadir funciones opcionales`.
 
 En versiones de Windows 10 anteriores a la 1809 se instala una actualización que hay que descargar de la página de Microsoft. 
 

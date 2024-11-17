@@ -9,12 +9,12 @@
 ## Introducción
 El nombre que da Microsoft al servicio de directorio es **Active Directory** y, al igual que los usados en GNU/Linux, sigue el estándar LDAP (_Lightweight Directory Access Protocolo_, protocolo ligero de acceso al directorio).
 
-Para tener un directorio en una red Windows necesitaremos un servidor con un sistema operativo Windows 2022 Server (o alguna de las versiones anteriores) en el que instalaremos el rol de "**Servicios de dominio de Active Directory**" que lo promoverá dicho servidor a **Controlador de Dominio** (DC, _Domain Controller_). En todo dominio _Active Directory_ habrá al menos un controlador de dominio pero pueden haber más controladores de dominio. Antiguamente el primer DC se llamaba controlador de dominio principal (PDC, _Primary Domain Controller_) y era el único que podía hacer cambios en el dominio. Los otros tenían copias del directorio, y se llamaban BDC (_Backup Domain Controllers_).
+Para tener un directorio en una red Windows necesitaremos un servidor con un sistema operativo Windows Server en el que instalaremos el rol de "**Servicios de dominio de Active Directory**" que lo convertirá a dicho servidor en un **Controlador de Dominio** (DC, _Domain Controller_). En cada dominio _Active Directory_ habrá al menos un controlador de dominio, pero pueden haber más. Antiguamente el primer DC se llamaba controlador de dominio principal (PDC, _Primary Domain Controller_) y era el único que podía hacer cambios en el dominio. Los otros tenían copias del directorio, y se llamaban BDC (_Backup Domain Controllers_). En la actualidad todos los DC son iguales y pueden hacer cambios en el dominio.
 
-Si en una red montamos un dominio _Active Directory_ se necesitará un servidor DNS que resuelva dicho dominio para los equipos de la red. Si no hay ninguno se instalará el servicio DNS automáticamente en el DC al instalar _Active Directory_ y se configurará para poder responder al nombre del servidor y del dominio.
+Si en una red montamos un dominio _Active Directory_ se necesitará un servidor DNS que resuelva dicho dominio para los equipos de la red. Si no hay ninguno al instalar _Active Directory_  en el servidor se instalará el servicio DNS y se configurará automáticamente para poder responder al nombre del servidor y del dominio.
 
 ## Notación de los objetos del Active Directory
-Como en cualquier LDAP todos los objetos de AD (usuarios, equipos, grupos, ...) tienen un identificador único que es su DV (_Distinguished Name_). Podemos verlos con los _cmdlets_ `Get-ADUser`, `Get-ADComputer`, `Get-ADGroup`, etc:
+Como hemos visto todos los objetos de AD (usuarios, equipos, grupos, ...) tienen un identificador único que es su DN (_Distinguished Name_). Podemos verlos con los _cmdlets_ `Get-ADUser`, `Get-ADComputer`, `Get-ADGroup`, etc:
 
 ![Get-ADUser](media/Get-ADUser.png)
 
@@ -23,8 +23,8 @@ Como en cualquier LDAP todos los objetos de AD (usuarios, equipos, grupos, ...) 
 ![Get-ADGroup](media/Get_ADGroup.png)
 
 Como vemos, además del DN cada objeto tiene un **SID** (_Security IDentifier_) que también és único. Este SID esta formado por 3 partes:
-- **S-1-5-21**: es un identificador asignado por ISO a Microsoft y especifica que es un identificador de seguridad para uso en dominios NT
-- el identificador del dominio, único para cada dominio. En los ejemplos anteriores es 4137398825-3206681689-2510039134. Podemos obtenerlo con  `Get-ADDomain`
+- **S-1-5-21**: es un identificador asignado por ISO (_International Standard Organization_) a Microsoft y especifica que es un identificador de seguridad para uso en dominios NT
+- el **identificador del dominio**, único para cada dominio. En los ejemplos anteriores es 4137398825-3206681689-2510039134. Podemos obtenerlo con  `Get-ADDomain`
 - el **RID** (_Relative IDentifier_) que es el identificador relativo del objeto y que es único, a partir de 1000
 
 Este es el identificador que usa internamente Microsoft para identificar los objetos y por eso, en ocasiones, al mirar los permisos de una carpeta vemos un SID en lugar de un nombre de usuario o grupo (siempre lo _traduce_ pero a veces tarda un instante, o no puede).
@@ -48,11 +48,11 @@ Por tanto para tener tolerancia a fallos respecto al DC en nuestra red debemos h
 **IMPORTANTE**: un DC sólo debería dedicarse a autenticar usuarios y a servidor DNS. Como mucho le podríamos poner un servicio ligero como DHCP pero no es recomendable que haga también de servidor de ficheros, de impresión o de aplicaciones. Tampoco debería hacer nunca de servidor de comunicaciones ya que contiene información muy importante y no debería estar expuesto a internet sino protegido dentro de la LAN.
 
 ## Roles FSMO
-Si nuestra infraestructura de red consta de un sólo dominio con un único DC es muy sencilla su administración pero cuando tenemos un bosque con varios dominios y subdominios gestionados por diferentes DC (cada dominio/subdominio debe contar al menos con un DC pero pueden haber más) la cosa puede complicarse.
+Si nuestra infraestructura de red consta de un sólo dominio con un único DC su administración es muy sencilla, pero cuando tenemos un bosque con varios dominios y subdominios gestionados por diferentes DC (cada dominio/subdominio debe contar al menos con un DC pero pueden haber más) la cosa puede complicarse.
 
 Por ejemplo podría suceder que dos administradores estén creando simultáneamente 2 subdominios con el mismo nombre. O que en 2 DC se estén creando 2 usuarios y se les esté asignando el mismo identificador (SID) a ambos.
 
-Para solucionar los problemas derivados de la administración distribuida del bosque Microsoft ha definido 5 roles cada uno de los cuales que sólo puede ejecutarse en un único DC del bosque llamado _Maestro de operaciones único flexible_ (**FSMO**). Estos roles son:
+Para solucionar los problemas derivados de la administración distribuida del bosque Microsoft ha definido 5 roles cada uno de los cuales sólo puede ejecutarse en un único DC del bosque llamado _Maestro de operaciones único flexible_ (**FSMO**). Estos roles son:
 - Maestro de esquema (uno por bosque)
 - Patrón de nomenclatura de dominio (uno por bosque)
 - Patrón de RID
@@ -74,7 +74,7 @@ También es único en el bosque y su función es garantizar de que los nombres d
 
 **Maestro de ID relativo (Relative IDentifier Master)**
 
-Hay 1 maestro por dominio y se encarga de asignar RIDs a los DC de ese dominio. A cada DC le asigna 500 RID (a partir del 1000) y cuando le quedan menos de 50 vuelve a solicitar al RID Master otros 500. Así se asegura de que 2 DC distintos no puedan asignar un mismo RID a 2 objetos.
+Hay 1 maestro por dominio y se encarga de asignar RIDs a los DC de ese dominio. A cada DC le asigna 500 RID (a partir del 1000) y cuando les quedan menos de 50 vuelven a solicitar al RID Master otros 500. Así se asegura de que 2 DC distintos no puedan asignar un mismo RID a 2 objetos.
 
 **Emulador del Controlador Principal de Dominio (PDC Emulator)**
 
@@ -91,7 +91,7 @@ Podéis ampliar la información en páginas como:
 - [Windowsserver: Maestros de Operaciones (FSMO Roles)](https://windowserver.wordpress.com/2011/05/10/maestros-de-operaciones-fsmo-roles-parte-1/)
 
 ## Transferir roles FSMO
-Cuando un DC es correctamente degradado sus roles FSMO son asignados automáticamente a otros DC. También puede suceder que se apague el DC correctamente, por ejemplo por mantenimiento programado, y sus roles FSMO sean asignados a otro DC "vivo".
+Cuando un DC es correctamente degradado sus roles FSMO son asignados automáticamente a otros DC. También puede suceder que se apague el DC correctamente, por ejemplo por mantenimiento programado, y sus roles FSMO sean asignados a otro DC "activo".
 
 Sin embargo en ocasiones puede ser necesario que un _Administrador_ deba transferir manualmente un rol a otro DC, por ejemplo si el titular del mismo ha dejado de funcionar y se ha degradado con el comando `dcpromo /forceremoval`. El comando para transferir roles FSMO es
 ```cmd

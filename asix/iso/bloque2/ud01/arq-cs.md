@@ -23,12 +23,12 @@ Según cómo se relacionan entre sí los diferentes equipos miembros de una red 
 - redes que utilizan el modelo entre iguales o "_**peer to peer**_". En este modelo todos los ordenadores de la red son iguales y no hay ninguno que se encargue de controlar o dirigir al resto
 - redes que utilizan el modelo _**cliente/servidor**_. En este modelo uno (o más) de los ordenadores de la red es el ordenador principal o servidor que proporciona soporte al resto de equipos de la red, llamados clientes. En este tipo de redes los clientes realizan peticiones al servidor que les da respuesta.
 
-Los sistemas operativos instalados en los ordenadores de los usuarios de la red, normalmente sistemas Windows, Linux _Desktop_ o Mac OS X) tienen la posibilidad de conectarse a un **grupo de trabajo** (si se trata de una red "_peer to peer_") o a un **dominio**, en cuyo caso habrá un servidor principal con un sistema operativo de servidor como Windows Server, Linux, etc).
+Los sistemas operativos instalados en los ordenadores de los usuarios de la red (normalmente sistemas Windows, Linux _Desktop_ o Mac OS X) tienen la posibilidad de conectarse a un **grupo de trabajo** (si se trata de una red "_peer to peer_") o a un **dominio**, en cuyo caso habrá un servidor principal con un sistema operativo de servidor como Windows Server, Linux, etc.
 
 Cada opción tiene ventajas e inconvenientes que tendremos que valorar en el momento de elegir el tipo de sistema informático a crear. La principal ventaja de una red "peer to peer" es su simplicidad pero este también es su principal inconveniente porque dificulta el control sobre lo que sucede en la red y no permite una gestión centralizada de la misma lo que la hace inviable en redes grandes.
 
 Los principales parámetros que nos harán elegir un tipo de red u otro son:
-- Nivel de **seguridad**: una red "peer to peer" no permite el nivel de seguridad y el control sobre usuarios y recursos que permite un entorno con servidor.
+- Nivel de **seguridad**: una red "peer to peer" no permite el nivel de seguridad y el control sobre usuarios y recursos que permite un entorno cliente/servidor.
 - Número de **usuarios**: si tenemos pocos usuarios es más sencillo y más barato trabajar en una red peer to peer. Cuando crece el número de usuarios una red entre iguales es muy difícil de gestionar adecuadamente y es más práctico utilizar el modelo cliente/servidor.
 - Número de **equipos**: es el mismo caso de los usuarios. Si son muy pocos puede ser útil una red "peer to peer" pero cuando crece su número se tiene que ir a una con uno o más servidores.
 - **Servicios** a prestar: si los clientes sólo necesitan compartir una conexión en Internet no tiene sentido crear una red con servidor. Según aumentan los servicios necesarios (compartición de ficheros, de impresoras, servicios de red, gestión centralizada de usuarios, etc) se necesitará uno o más servidores para proporcionar esos servicios.
@@ -44,13 +44,13 @@ La red cliente-servidor es una red de comunicaciones en la que los clientes est�
 Los componentes habituales de este tipo de redes son:
 - **Servidores**: Son equipos con un sistema operativo de servidor y multiusuario que proporcionan recursos a los clientes
 - **Clientes**: Son equipos conectados a la red y que, a diferencia de los servidores, no comparten sus recursos.
-- **Dominio**: Es una agrupación lógica de elementos de la red (equipos, usuarios, recursos compartidos) que permite realizar una gestión centralizada, es decir, que desde una ubicación se pueden controlar los servicios administrativos del dominio. Los recursos los gestiona el servidor principal.
+- **Dominio**: Es una agrupación lógica de elementos de la red (equipos clientes, servidores, usuarios, recursos compartidos) que permite realizar una gestión centralizada, es decir, que desde una ubicación se pueden controlar los servicios administrativos del dominio. Los recursos los gestiona el servidor principal.
 
 La separación entre cliente y servidor es una separación de tipo lógico, donde el servidor no se ejecuta necesariamente sobre una sola máquina ni es necesariamente un único programa.
 
 En este tipo de arquitectura el servidor es el ordenador que controla la red y permite compartir sus recursos con el resto de equipos. 
 
-Las redes cliente / servidor tienen ventajas sobre una red "peer to peer" como:
+Las redes cliente/servidor tienen ventajas sobre una red "_peer to peer_" como:
 - Centralización de la gestión: la gestión de toda la red y sus recursos se puede hacer desde el servidor lo que facilita enormemente la tarea del administrador del sistema.
 - Centralización del control: los accesos a recursos los controlados por el servidor lo que hace más sencilla y segura su gestión.
 - Escalabilidad: se puede aumentar la capacidad de clientes y servidores por separado. Cualquier elemento puede ser aumentado (o mejorado) en cualquier momento, o se pueden añadir nuevos nodos en la red (clientes y/o servidores).
@@ -59,7 +59,7 @@ Las redes cliente / servidor tienen ventajas sobre una red "peer to peer" como:
 Este tipo de arquitectura también tiene inconvenientes, como:
 - Cuellos de botella: cuando una gran cantidad de clientes envían peticiones simultáneas al mismo servidor, pueden llegar a colapsarse. Esto se puede solucionar dimensionando la red adecuadamente y utilizando los servidores necesarios.
 - Robustez de la red: cuando un servidor está caído, las peticiones de los clientes no pueden ser satisfechas. En las redes P2P, los recursos están generalmente distribuidos en varios nodos de la red y aunque algunos caigan otros pueden seguir atendiendo a las peticiones.
-- El software y el hardware de un servidor debe ser específico: un hardware normal de un ordenador personal puede no ser suficiente para una determinada cantidad de clientes. Respecto al sistema operativo su precio és más caro en el caso de sistemas privativos (una licencia de Windows Server es mucho más cara que una de Windows 10).
+- El software y el hardware de un servidor debe ser específico: un hardware normal de un ordenador personal puede no ser suficiente para una determinada cantidad de clientes. Respecto al sistema operativo su precio és más caro en el caso de sistemas privativos (una licencia de Windows Server es mucho más cara que una de Windows 10/11).
 - Disponibilidad: El cliente no podrá acceder a los datos ni a las impresoras ni posiblemente a Internet si el servidor no está disponible.
 
 Por tanto en este tipo de redes el servidor debe estar bien dimensionado y el administrador debe tomar las decisiones adecuadas para minimizar el riesgo de caída de un servidor y restablecer el servicio lo más rápidamente posible si esto llega a suceder.

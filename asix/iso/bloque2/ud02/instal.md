@@ -3,17 +3,17 @@
   - [Planificación de la instalación](#planificación-de-la-instalación)
   - [Proceso de instalación](#proceso-de-instalación)
     - [Instalación Server Core](#instalación-server-core)
-  - [Finalización de la instalación](#finalización-de-la-instalación)
+  - [Configuración básica tras la instalación](#configuración-básica-tras-la-instalación)
     - [Proporcionar información del equipo](#proporcionar-información-del-equipo)
     - [Configurar la red](#configurar-la-red)
     - [Actualizar el servidor](#actualizar-el-servidor)
-    - [Configurar el servidor con _Powershell_](#configurar-el-servidor-con-powershell)
+    - [Configurar el servidor desde la _CLI_](#configurar-el-servidor-desde-la-cli)
     - [El Firewall](#el-firewall)
     - [Versión de evaluación](#versión-de-evaluación)
   - [Documentación de la instalación](#documentación-de-la-instalación)
 
 ## Planificación de la instalación
-Instalar un sistema operativo nunca es un proceso trivial y mucho menos en el caso de un servidor. Si el sistema no se instala y configura correctamente podemos encontrarnos posteriormente con fallos que serán difíciles de corregir. Ya vimos en el bloque 1 las [tareas a planificar](../ud03/aplnif.md#introducción) antes de realizar la instalación de un sistema operativo.
+Instalar un sistema operativo nunca es un proceso trivial y mucho menos en el caso de un servidor. Si el sistema no se instala y configura correctamente podemos encontrarnos posteriormente con fallos que serán difíciles de corregir. Ya vimos en el bloque 1 las [tareas a planificar](../../bloque1/SA01-3-instal/planif.html#introducción) antes de realizar la instalación de un sistema operativo.
 
 En la fase de [análisis del sistema](./README.md#caso-práctico) debemos haber respondido a la pregunta de para qué vamos a utilizar este sistema informático, tanto en la actualidad como en el futuro (al menos a corto/medio plazo).
 
@@ -40,7 +40,7 @@ En función de eso haremos la elección de los equipos a adquirir y los sistemas
 
 En nuestra práctica no tenemos que preocuparnos de la parte del hardware porque ya lo tenemos y no lo podemos cambiar. Simplemente miraremos si es necesario mejorar algún elemento como aumentar la cantidad de RAM o adquirir algún disco duro adicional o alguna otra tarjeta de red.
 
-Respecto al sistema operativo ya hemos elegido los sistemas para los clientes y debemos ahora elegir el sistema operativo para el servidor. Como aún no tenemos demasiados conocimientos de los sistemas GNU/Linux nos decantaremos por un Windows Server para el servidor que hemos visto que cumple con los requerimientos que nos plantean.
+Respecto al sistema operativo ya hemos elegido los sistemas para los clientes y debemos ahora elegir el sistema operativo para el servidor. Nos decantaremos por un Windows Server para el servidor que hemos visto que cumple con los requerimientos que nos plantean.
 
 Lo razonable es instalar la última versión: _Windows Server 2022_. Dentro de cada versión de Windows hay diferentes ediciones y debemos elegir la más adecuada para nuestro sistema.
 
@@ -54,7 +54,7 @@ El proceso de instalación es similar al de cualquier Windows cliente.
 ### Instalación Server Core
 Esta instalación (que es la opción por defecto al instalar el sistema) instala el servidor pero sin entorno gráfico, con las ventajas e inconvenientes que ello comporta. En realidad sí que hay un sistema gráfico desde el que se pueden realizar algunas acciones pero no es tan potente ni pesado como el entorno gráfico normal.
 
-## Finalización de la instalación
+## Configuración básica tras la instalación
 Una vez finalizada la instalación y antes de configurar el sistema es conveniente hacer una serie de comprobaciones:
 - **estado de los dispositivos**: desde el _Administrador de dispositivos_ podemos comprobar que no haya hardware sin detectar o con problemas de controladores
 - **comprobación de la red**: es fundamental que sea correcta. Podemos comprobarlo con comandos como `ping`, `tracert`, `nslookup`,... y también con las herramientas del _Centro de redes y recursos compartidos_
@@ -94,12 +94,12 @@ No profundizaremos en cómo hacerlo ya que es igual que en cualquier cliente Win
 
 **Recordad que nosotros deshabilitaremos las actualizaciones automáticas para no colapsar la red del instituto.**
 
-### Configurar el servidor con _Powershell_
+### Configurar el servidor desde la _CLI_
 Si hemos instalado el servidor sin entorno de escritorio debemos usar la terminal para configurarlo. Al arrancar el servidor automáticamente se abre la herramienta de texto **sconfig** nos permite configurar de forma sencilla e intuitiva muchas de las cosas más habituales:
 
 ![sconfig](media/sconfig.png)
 
-Además podemos usar directament _PowerShell_. Algunos comandos que podemos usar son:
+Además podemos usar comandos _PowerShell_. Algunos de los más útiles son:
 - Para cambiar el nombre del servidor:
 ```powershell
 Rename-Computer -NewName MISERVIDOR
@@ -108,7 +108,7 @@ Restart-Computer -force
 
 - Para ver el nombre de cada interfaz de red usamos el comando `Get-NetIPInterface`.
 
-- Para configurar la red podemos usar _Powershell_ o _netsh_:
+- Para configurar la red podemos usar _Powershell_ o el CMD _netsh_:
 ```powershell
 Get-NetAdapter –name Ethernet | Remove-NetIPAddress -Confirm:$false
 Get-NetAdapter –name Ethernet | New-NetIPAddress –AddressFamily IPv4 –IpAddress 192.168.1.25 -PrefixLength 24 -DefaultGateway 192.168.1.1

@@ -7,7 +7,7 @@
 ## Sistemas Windows
 Microsoft empezó haciendo sistemas operativos monousuario (Ms-DOS, Windows 95, ...) pero en los 90 creó su primer sistema operativo de red, **Windows NT**, para competir con los sistemas _Unix_ y _Novel Netware_ que entonces dominaban el mercado.
 
-A las diferentes versiones de NT siguió Windows Server 2000, 2003, 2008, 2008 R2, 2012, 2016 y la versión actual, Windows 2019 Server. El funcionamiento de la versión 2019 es muy parecida a las anteriores. De cada versión de sistema operativo hay diferentes _ediciones_, co funcionalidades enfocadas a distintos tipos de empresas. Las de Windows 2019 Server son:
+A las diferentes versiones de NT siguió Windows Server 2000, 2003, 2008, 2008 R2, 2012, 2016, 2019, 2022 y la versión actual, Windows 2025 Server. El funcionamiento de la versión 2025 es muy parecida a las anteriores. De cada versión de sistema operativo hay diferentes _ediciones_, co funcionalidades enfocadas a distintos tipos de empresas. Las de Windows 2019 Server son:
 - _Essentials_: enfocado a pequeñas empresas, con menor coste y prestaciones limitadas
 - _Standard_: adecuado para entornos poco virtualizados
 - _Datacenter_: pensado para centros de datos y _cloud computing_ con alto nivel de virtualización
@@ -29,10 +29,12 @@ Cualquier versión de Linux puede funcionar tanto como cliente como servidor por
 
 Como hemos comentado cualquier distribución Linux puede funcionar como cliente o servidor aunque algunas como Ubuntu distribuyen versiones diferentes: _Ubuntu Desktop_ para clientes y _Ubuntu Server_. Su estructura y configuración es idéntica y sólo cambia los servicios que se instalan por defecto.
 
-Algunas de las distribuciones GNU/Linux más utilizadas como servidores son **Debian**, **Ubuntu Server**, **Red Hat Entrerprise Linux (RHEL)** y su fork **CentOS**, **SuSE Linux**, ...
+Algunas de las distribuciones GNU/Linux más utilizadas como servidores son **Debian**, **Ubuntu Server**, **SuSE Linux**, **Red Hat Entrerprise Linux (RHEL)** y las alternativas actuales de su fork **CentOS** como **Rocky Linux** o **AlmaLinux**, ...
+
+Al igual que Windows, Linux también puede trabajar en un entorno de dominio. En este caso el sistema de autenticación y control de acceso se llama **LDAP** (_Active Directory es sólo una implementación del protocolo LDAP) y es muy potente y flexible. Una de las implementaciones más conocidas de LDAP para GNU/Linux es **OpenLDAP**.
 
 ## Redes mixtas
-Hace años era muy habitual que los clientes de una red tuvieron sistemas operativos Windows (XP, 7, etc) y también los servidores (Windows Server). Por otro lado hay empresas que trabajan con software libre donde todos sus equipos, clientes y servidores, tienen sistema operativo Linux.
+Hay empresas donde los clientes tienen sistemas operativos Windows (XP, 7, etc) y también los servidores (Windows Server). Por otro lado hay empresas que trabajan con software libre donde todos sus equipos, clientes y servidores, tienen sistema operativo Linux.
 
 Pero en muchas ocasiones no todos los equipos de la red tienen el mismo tipo de sistema operativo (todos Windows o todos Linux) sino que encontramos equipos, tanto clientes como servidores, con un tipo de sistema operativo y otros con otro tipo.
 
