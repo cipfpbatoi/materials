@@ -171,20 +171,18 @@ function setCookie(cname, cvalue, cexpires, cpath, cdomain, csecure) {
 
 ```javascript
 function getCookie(cname) {
-    if(document.cookie.length > 0){
-        start = document.cookie.indexOf(cname + '=')
-        if (start != -1) {   // Existe la cookie, busquemos dónde acaba su valor
-            //El inicio de la cookie, el nombre de la cookie mas les simbolo '='
-            start = start + nombre.length + 1
-            //Buscamos el final de la cookie (es el simbolo ';')
-            end = document.cookie.indexOf(';', start + cname.length + 1)
-            if (end === -1) {   // si no encuentra el ; es que es la última cookie
+    if (document.cookie.length > 0) {
+        let start = document.cookie.indexOf(cname + '=');
+        if (start !== -1) { // Existe la cookie
+            start = start + cname.length + 1; // Inicio del valor
+            let end = document.cookie.indexOf(';', start);
+            if (end === -1) { // Si no encuentra ';', es la última cookie
                 end = document.cookie.length;
             }
-            return document.cookie.substring(start + cname.length + 1, end)
+            return document.cookie.substring(start, end); // Extrae el valor
         }
     }
-    return ''   // Si estamos aquí es que no hemos encontrado la cookie
+    return ''; // No se encontró la cookie
 }
 ```
 
