@@ -78,7 +78,7 @@ Vue.createApp({
 
     <div id="app">
       <button @click="increment">
-        Count is: {\{ count }}
+        Count is: \{{ count }}
       </button>
     </div>
 
@@ -94,7 +94,7 @@ En este ejemplo podemos ver las 2 principales características de Vue:
 - __Renderizado declarativo__: Vue amplía HTML con una sintaxis que nos permite declarar en HTML una salida basada en un dato Javascript
 - __Reactividad__: Vue hace un seguimiento de las variables Javascript y modifica el DOM cuando alguna cambia
 
-Para probar el funcionamiento de código tenemos el **_Palyground_** de Vue al que accedemos desde su documentación en [https://vuejs.org/guide/quick-start.html#try-vue-online].
+Para probar el funcionamiento de código tenemos el [**_Playground_**](https://play.vuejs.org/) de Vue al que accedemos desde su documentación en [https://vuejs.org/guide/quick-start.html#try-vue-online].
 
 ### HTML
 En el HTML debemos vincular los scripts de la librería de Vue y de nuestro código. 
