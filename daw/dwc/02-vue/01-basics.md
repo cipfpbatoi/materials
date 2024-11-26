@@ -78,7 +78,7 @@ Vue.createApp({
 
     <div id="app">
       <button @click="increment">
-        Count is: \{{ count }}
+        Count is: { { count }}
       </button>
     </div>
 
