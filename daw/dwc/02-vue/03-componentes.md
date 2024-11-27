@@ -30,22 +30,24 @@ Para saber qué debe ser un componente y que no, podemos considerar un component
 - debe poder reutilizarse y combinarse con otros componentes para formar componentes mayores
 - son objetos JS
 
-El componente es un objeto con una parte de **HTML** donde definimos su estructura y una parte **JS** que le da su funcionalidad. CUando trabajemos con _Single File Components (SFC)_ también se incluirá una parte **CSS** para establecer su apariencia.
+El componente es un objeto con una parte de **HTML** donde definimos su estructura y una parte **JS** que le da su funcionalidad. Cuando trabajemos con _Single File Components (SFC)_ también se incluirá una parte **CSS** para establecer su apariencia.
 
 Separar nuestra aplicación en componentes nos va a ofrecer muchas ventajas:
 * encapsulamos el código de la aplicación en elementos más sencillos
 * facilita la reutilización de código
 * evita tener código repetido
 
-El primer paso a la hora de hacer una aplicación debe ser analizar qué componentes tendrá
+Aunque también tiene sus inconvenientes: habrá que geationar la comunicación entre componentes.
+
+El primer paso a la hora de hacer una aplicación debe ser analizar qué componentes tendrá. Para ello podemos hacer un _mockup_ de la aplicación donde se vean los diferentes elementos que la componen y cómo se relacionan entre ellos. A partir de ahí podemos ir creando los componentes necesarios.
 
 En definitiva nuestra aplicación será como un árbol de componentes con la instancia principal de Vue como raíz.
 
-![Árbol de componentes](https://vuejs.org/assets/components.7fbb3771.png)
+![Árbol de componentes](https://vuejs.org/assets/components.B1JZbf0_.png)
 
 ## Dividir la aplicación en componentes
-Un componeteusarlo se crea con `app.component` al que le pasamos 2 parámetros:
-- el nombredel componente
+Un componente se crea con `app.component` al que le pasamos 2 parámetros:
+- el nombre del componente
 - el objeto con sus opciones (`data`, `methods`, …). Además tendrá una opción **`template`** con el código HTML que se insertará donde pongamos el componente.
 
 Por ejemplo, vamos a crear un componente para mostrar cada elemento de la lista de tareas a hacer:
@@ -74,7 +76,7 @@ app.component('TodoItem', {
 app.mount('#app')
 ```
 
-**NOTA**: no se puede montar la apicación hasta después de haber definido los componentes.
+**NOTA**: no se puede montar la aplicación hasta después de haber definido los componentes.
 
 Ahora ya podemos usar el componente en nuestro HTML:
 
@@ -187,13 +189,13 @@ Podemos pasar parámetros a un componente añadiendo atributos a su etiqueta:
   <todo-item :todo="{ title: 'Nueva cosa', done: false }"></todo-item>
 </ul>
 ```
-NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no una variable.
+NOTA: recuerda que si no ponemos el _v-bind_ estaríamos pasando texto y no el valor de una variable (en este caso un objeto).
 
 El parámetro lo recibimos en el componente en una opción llamada `props`:
 ```javascript
 app.component('todo-item', {
   props: {
-    todo: String
+    todo: Object
   },
   template: `
     <li>
@@ -202,11 +204,11 @@ app.component('todo-item', {
 })
 ```
 
-Es equivalente a los parámetros que recibe una función.
+Las _props_ son el equivalente a los parámetros que recibe una función.
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-12)
 
-Se pueden declarar las _props_ recibidas como un array de string (`props: ['todo']`), aunque es mejor declararlas como un objeto porque nos permitirá hacer ciertas comprobaciones (en el ejemplo anterior que se recibe un _String_).
+Se pueden declarar las _props_ recibidas como un array de string (`props: ['todo']`), aunque es mejor declararlas como un objeto porque nos permitirá hacer ciertas comprobaciones (en el ejemplo anterior que se recibe un _Object_).
 
 **IMPORTANTE**: si un parámetro tiene más de 1 palabra en el HTML lo pondremos en forma kebab-case (ej.: `<todo-item :todo-elem=...>`) pero en el Javascript irá en camelCase (`app.component('todo-item',{ props: ['todoElem'],...})`). Vue hace la traducción automáticamente.
 
@@ -264,6 +266,8 @@ La decisión de qué componentes crear es subjetiva pero en principio cuanto má
 A continuación tienes la solución de cómo dividirla en componentes en un único fichero pero en su lugar lo que haremos es separar cada componente en su propio fichero.
 
 **IMPORTANTE**: separar los componentes en ficheros que se importan donde vayan a usarse sólo funciona si abrimos la aplicación desde un servidor web, no desde local (sí _http://..._, no _file://..._). Si no tenéis ninguno podéis usar la extensión **Live Server** de Visual Studio Code para ejecutar la aplicación.
+
+**NOTA**: ahora nuestra aplicación ya no funciona porque los datos que se declaran en un componenete son locales al mismo y no son accesibles desde otros componentes. Para solucionar esto necesitamos un sistema de comunicación entre componentes que veremos en el siguiente apartado.
 
 **Solución**
 

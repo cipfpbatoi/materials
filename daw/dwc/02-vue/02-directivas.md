@@ -40,11 +40,6 @@ Lo que enlazamos en una directiva o una interpolación puede ser una variable o 
 <p>{ { name }}</p>
 <p>{ { 'Cómo estás ' + name }}</p>
 <p>{ { name=='root'?'Hola Administrador':'Hola ' + name }}</p>
-\{{ name }}
-\{\{ name }}
-{{ '{{ name }}' }}
-{{ name {{}} }}
-'{{ name }}'
 ```
 
 ## Condicionales: v-if
@@ -97,18 +92,20 @@ Esta directiva repite el elemento HTML en que se encuentra una vez por cada elem
 
 La directiva v-for recorre el array _todos_ y para cada elemento del array crea una etiqueta \<li> y carga dicho elemento en la variable _elem_ a la que podemos acceder dentro del \<li>. 
 
-Además del elemento nos puede devolver su índice en el array: `v-for="(elem,index) in todos" ...`.
+Además del elemento nos puede devolver su índice en el array: `v-for="(elem, index) in todos" ...`.
 
 Vue es más eficiente a la hora de renderizar si cada elemento que crea *v-for* tiene su propia clave, lo que se consigue con el atributo *key*. Podemos indicar como clave algún campo único del elemento o el índice:
 ```html
-<... v-for="(elem,index) in todos" :key="index" ...>
+<... v-for="(item) in todos" :key="item.id" ...>
+o
+<... v-for="(item, index) in todos" :key="index" ...>
 ```
 
 Pasar una _key_ en cada _v-for_ es recomendable ahora pero será obligatorio al usarlo en componentes así que conviene usarlo siempre.
 
-También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0;i<10;i++)`):
+También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0; i<10; i++)`):
 ```html
-<span v-for="n in 10" :key="n">{{ n }}</span>
+<span v-for="i in 10" :key="i">{{ i }}</span>
 ```
 
 NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. Si se hace siempre se ejecuta primero el `v-if`.
