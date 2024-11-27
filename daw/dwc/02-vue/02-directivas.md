@@ -44,7 +44,7 @@ Lo que enlazamos en una directiva o una interpolación puede ser una variable o 
 \{\{ name }}
 {{ '{{ name }}' }}
 {{ name {{}} }}
-
+'{{ name }}'
 ```
 
 ## Condicionales: v-if
@@ -54,7 +54,7 @@ Esta directiva permite renderizar o no un elemento HTML en función de una varia
 
 El checkbox está enlazado a la variable _marcado_ (a la que al inicio le hemos dado el valor true, por eso aparece marcado por defecto) y los párrafos se muestran o no en función del valor de dicha variable.
 
-La directiva `v-else` es opcional (puede haber sólo un `v-if`) pero si la ponemos el elemento con el `v-else` debe ser el inmediatamente siguiente al del `v-if`.
+La directiva `v-else` es opcional (puede estar sólo el `v-if`) pero si la ponemos el elemento con el `v-else` debe ser el inmediatamente siguiente al del `v-if` (su _nextElementSibling_).
 
 NOTA: Los ejemplos de esta página son todos de Vue2. Recordad que en Vue3 es todo igual excepto la forma de crear la instancia Vue que sería:
 ```javascript
@@ -67,7 +67,7 @@ const app = Vue.createApp({
 }).mount('#app');
 ```
 
-También se pueden enlazar varios con `v-else-if`:
+También se pueden enlazar varios _if_ _else_ con `v-else-if`:
 ```html
 <div v-if="type === 'A'">
   A
