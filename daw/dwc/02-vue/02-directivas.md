@@ -42,7 +42,7 @@ Lo que enlazamos en una directiva o una interpolación puede ser una variable o 
 <p>{ { name=='root'?'Hola Administrador':'Hola ' + name }}</p>
 \{{ name }}
 \{\{ name }}
-{{ {{ name }} }}
+{{ '{{ name }}' }}
 {{ name {{}} }}
 
 ```
