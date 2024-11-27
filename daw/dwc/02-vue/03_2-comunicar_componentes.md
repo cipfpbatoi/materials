@@ -27,7 +27,7 @@ Ya hemos visto que podemos pasar información a un componente hijo mediante _pro
 
 Nos podemos encontrar las siguientes situaciones:
 * Comunicación de padres a hijos: paso de parámetros (**_props_**)
-* Comunicación de hijos a padres: emitir eventos (**_emit_**)
+* Comunicación de hijos a padres: emitir eventos (**_$emit_**)
 * Comunicación entre otros componentes: usar el patrón **_store pattern_**
 * Comunicación más compleja: **_Pinia_**
 
@@ -366,7 +366,7 @@ export default {
   template: `<p>Mensaje: { { message}} </p>`,
   data() {
     return {
-      store,  // recordad que equivale a store: store,
+      message: store.message,
       // y a continuación el resto de data del componente
       ...
     }
@@ -383,14 +383,14 @@ export default {
   template: `<button @click="delMessage">Borrar mensaje`,
   data() {
     return {
-      store,
+      store,  // recuerda que es lo mismo que store: store
       // y a continuación el resto de data del componente
       ...
     }
   },
   methods: {
     delMessage() {
-      this.store.message=''
+      this.store.message = ''
     }
   },
   ...
@@ -434,7 +434,7 @@ También es posible acceder a los datos y métodos del componente padre del actu
 De esta manera podríamos acceder directamente a datos del padre o usar la instancia de Vue como almacén (evitando crear el objeto **store** para compartir datos). Sin embargo, aunque esto puede ser útil en aplicaciones pequeñas, es difícil de mantener cuando nuestra aplicación crece por lo que se recomienda usar un **_Store pattern_** como veremos a continuación o **Pinia** si nuestra aplicación va a ser grande.
 
 ### Store pattern
-Es una mejora sobre lo que hemos visto de compartir datos. Para evitar que cualquier componente pueda modificar los datos compartidos en el almacén, las acciones que modifican dichos datos están incluidas dentro del propio almacén, lo que facilita su seguimiento:
+Es una mejora sobre lo que hemos visto de compartir datos. Para evitar que todos los componentes puedan modificar los datos compartidos en el almacén, las acciones que modifican dichos datos están incluidas dentro del propio almacén, lo que facilita su seguimiento:
 
 Fichero `/src/store/index.js`
 ```javascript
