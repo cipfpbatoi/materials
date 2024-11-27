@@ -13,9 +13,14 @@
 Las directivas son atributos especiales que se ponen en las etiquetas HTML y que les dan cierta funcionalidad. Todas comienzan por **v-**. 
 
 Las más comunes son:
-* `v-text`: es equivalente a hacer una interpolación (**{\{ ... }}**). Muestra el valor en la etiqueta
+* `v-text`: es equivalente a hacer una interpolación (**{\{ ... }}**). Muestra el valor en la etiqueta. Los dos ejemplos siguientes son equivalentes:
+  ```html
+  <p v-text="mensaje"></p>
+  <p>{ { mensaje }}</p>
+  ```
+
 * `v-once`: igual pero una vez renderizado no cambia lo mostrado en la vista aunque cambie el valor de la variable
-* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas). Internamente hace un `.innerHTML` del elemento mientras que `v-text` (y `{\{...}}`) hacen un `.textContent`
+* `v-html`: permite que el texto que se muestra contenga caracteres HTML que interpretará el navegador (al usar la interpolación las etiquetas HTML son escapadas). Internamente hace un `.innerHTML` del elemento mientras que `v-text` (y `{ {...}}`) hacen un `.textContent`
 * `v-bind`: para asignar el valor de una variable a un atributo de una etiqueta HTML (no entre la etiqueta y su cierre como hace la interpolación). Por ejemplo si tenemos la variable _estado_ cuyo valor es _error_ y queremos que un _span_ tenga como clase ese valor haremos:
 ```html
 <span v-bind:class="estado">...
@@ -30,11 +35,16 @@ El resultado será: `<span class="error">`. La directiva _v-bind:_ se puede abre
 * `v-for`: repite el elemento HTML que contiene esta etiqueta para cada elemento de un array
 * `v-on`: le pone al elemento HTML un escuchador de eventos (ej `<button v-on:click="pulsado">Pulsa</button>`. La directiva `v-on:` se puede abreviar como `@`, por ejemplo `<button @click="pulsado">Pulsa</button>`.
 
-Lo que enlazamos en una directiva o una interpolación puede ser una variable o una expresión javascript. Ej.:
+Lo que enlazamos en una directiva o una interpolación puede ser una variable o una expresión Javascript. Ej.:
 ```html
 <p>{ { name }}</p>
 <p>{ { 'Cómo estás ' + name }}</p>
 <p>{ { name=='root'?'Hola Administrador':'Hola ' + name }}</p>
+\{{ name }}
+\{\{ name }}
+{{ {{ name }} }}
+{{ name {{}} }}
+
 ```
 
 ## Condicionales: v-if

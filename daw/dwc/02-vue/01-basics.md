@@ -94,7 +94,9 @@ En este ejemplo podemos ver las 2 principales características de Vue:
 - __Renderizado declarativo__: Vue amplía HTML con una sintaxis que nos permite declarar en HTML una salida basada en un dato Javascript
 - __Reactividad__: Vue hace un seguimiento de las variables Javascript y modifica el DOM cuando alguna cambia
 
-Para probar el funcionamiento de código tenemos el [**_Playground_**](https://play.vuejs.org/) de Vue al que accedemos desde su documentación en [https://vuejs.org/guide/quick-start.html#try-vue-online].
+Para probar el funcionamiento de código tenemos el **_Playground_** de Vue al que accedemos desde su documentación en [https://vuejs.org/guide/quick-start.html#try-vue-online](https://vuejs.org/guide/quick-start.html#try-vue-online).
+
+Vamos a ver qué estamos haciendo en cada fichero:
 
 ### HTML
 En el HTML debemos vincular los scripts de la librería de Vue y de nuestro código. 
@@ -162,6 +164,7 @@ export default {
   // and will be exposed on `this`.
   data() {
     return {
+      msg: "Hola",
       count: 0
     }
   },
@@ -171,6 +174,9 @@ export default {
   methods: {
     increment() {
       this.count++
+    },
+    decrement() {
+      this.count--
     }
   },
 
@@ -184,6 +190,7 @@ export default {
 </script>
 
 <template>
+  <h1>{{ msg }}</h1>
   <button @click="increment">Count is: {{ count }}</button>
 </template>
 ```
@@ -195,11 +202,15 @@ export default {
 import { ref, onMounted } from 'vue'
 
 // reactive state
+const count = ref('Hola')
 const count = ref(0)
 
 // functions that mutate state and trigger updates
 function increment() {
   count.value++
+}
+function decrement() {
+  count.value--
 }
 
 // lifecycle hooks
@@ -209,6 +220,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <h1>{{ msg }}</h1>
   <button @click="increment">Count is: {{ count }}</button>
 </template>
 ```
@@ -221,7 +233,7 @@ En la [Guía de la documentación oficial de Vue](https://vuejs.org/tutorial/#st
 ### Enlace unidireccional: interpolación {\{...}}
 Donde queramos mostrar en la vista el valor de una variable simplemente la ponemos entre dobles llaves:
 ```html
-<p>Contador: {\{ counter }}</p>
+<p>Contador: { { counter }}</p>
 ```
 
 Y en el código Javascript sólo tenemos que declarar esa variable dentro del objeto devuelto por _data()_:
@@ -237,7 +249,7 @@ Y en el código Javascript sólo tenemos que declarar esa variable dentro del ob
 Podemos ver esa variable y manipularla desde la consola, y si cambiamos su valor vemos que cambia lo que muestra nuestra página. Esto es porque Vue (al igual que Angular o React) enlazan el DOM y los datos de forma que cualquier cambio en uno se refleja automáticamente en el otro.
 
 ### Enlazar a un atributo: v-bind
-Para mostrar un dato en el DOM usamos la interpolación **{\{  }}** pero si queremos nostrarlo como atributo de una etiqueta debemos usar `v-bind`:
+Para mostrar un dato en el DOM usamos la interpolación `**{ {  }}**` pero si queremos nostrarlo como atributo de una etiqueta debemos usar `v-bind`:
 ```html
   <p v-bind:title="message">
     Hover your mouse over me for a few seconds
@@ -253,7 +265,7 @@ Vue incorpora estos '_atributos_' que podemos usar en las etiquetas HTML y que s
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-3)
 
 ### Enlace bidireccional: v-model
-Tanto **{\{ }}** como `v-bind` son un enlace unidireccional: muestran en el DOM el valor de un dato y reaccionan ante cualquier cambio en dicho valor. 
+Tanto **`{ { }}`** como `v-bind` son un enlace unidireccional: muestran en el DOM el valor de un dato y reaccionan ante cualquier cambio en dicho valor. 
 
 Pero además está la directiva `v-model` que es un enlace bidireccional que enlaza un dato a un campo de formulario y permite cambiar el valor del campo al cambiar el dato pero también cambia el dato si se modifica lo introducido en el input. 
 ```html
@@ -280,7 +292,7 @@ Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [
 
 Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
-* Pinia/Vuex: es la herramienta de gestión de estado para aplicaciones medias/grandes
+* Pinia: es la herramienta de gestión de estado para aplicaciones medias/grandes
 * Eventos: permite ver todos los eventos emitidos
 * Refrescar: refresca la herramienta
 
