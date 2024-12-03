@@ -97,7 +97,13 @@ Install-WindowsFeature AD-Domain-Services
 Install-ADDSForest
 ```
 
-Powershell pedirá el nombre del nevo dominio y la contraseña del administrador. También podemos poner todos los parámetros para que no pida nada (adecuado si queremos ponerlo en un script). El comando para crear el dominio ACME.LAN sería:
+Est comando creará el dominio raíz en un nuevo bosque. Powershell pedirá el nombre del nuevo dominio y la contraseña del administrador. Si lo que queremos es añadir un dominio a un bosque existente deberemos usar el comando `Install-ADDSDomain` en lugar de `Install-ADDSForest`. Y para añadir otro DC a un dominio existente usaremos `Install-ADDSDomainController`. En estos casos deberemos proporcionar las credenciales de un administrador del dominio existente:
+  
+  ```powershell
+  Install-ADDSDomainController -Credential (Get-Credential)
+  ```
+
+También podemos poner todos los parámetros para que no pida nada (adecuado si queremos ponerlo en un script). El comando para crear el dominio ACME.LAN sería:
 ```powershell
 $dominioFQDN = "ACME.LAN"
 $dominioNETBIOS = "ACME"
@@ -117,6 +123,8 @@ Por defecto no están instalados los comandos Powershell para gestionar _Active 
 ```powershell
 Install-WindowsFeature -Name "RSAT-AD-PowerShell" -IncludeAllSubFeature
 ```
+
+Se pueden gestionar todos los dominios de un bosque con la herramienta _**Dominios y confianzas de Active Directory**_.
 
 ### Degradar un controlador de dominio
 Si tenemos que eliminar un controlador de dominio y dejarlo como servidor miembro o independiente se hace desinstalando el rol de **Servicios de dominio de Active Directory**.
