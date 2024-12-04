@@ -10,7 +10,7 @@
     - [Enlace unidireccional: interpolación {{...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
-  - [\[Vue devtools\]](#vue-devtools)
+  - [Vue devtools](#vue-devtools)
   - [Extensiones para el editor de código](#extensiones-para-el-editor-de-código)
   - [Otras utilidades](#otras-utilidades)
   - [Cursos de Vue](#cursos-de-vue)
@@ -285,34 +285,24 @@ NOTA: toda la aplicación se monta en el elemento _app_ por lo que las directiva
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-5)
 
-## [Vue devtools]
-Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. Es necesario instalarlo porque nos ayudará mucho a depurar nuestra aplicación, especialmente cuando comencemos a usar componentes.
+## Vue devtools
+Es una extensión para Chrome y Firefox que nos permite inspeccionar nuestro objeto Vue y acceder a todos los datos de nuestra aplicación. 
 
-Podemos buscar la extensión en nuestro navegador o acceder al enlace desde la [documentación de Vue](https://vuejs.org/guide/scaling-up/tooling.html#browser-devtools).
+Anteriormente había que instalarla pero ahora viene integrada en la herramienta de desarrollador de los navegadores.
 
-Si tenemos las DevTools instaladas en la herramienta de desarrollador aparece una nueva opción, _Vue_, con 4 botones:
+En ella tenemos distintos apartados, como:
 * Componentes: es la vista por defecto y nos permite inspeccionar todos los componentes Vue creados (ahora tenemos sólo 1, el principal, pero más adelante haremos componentes hijos)
 * Pinia: es la herramienta de gestión de estado para aplicaciones medias/grandes
+* Router: permite ver las rutas de nuestra aplicación
 * Eventos: permite ver todos los eventos emitidos
-* Refrescar: refresca la herramienta
+* ...
 
 ![DevTools](./img/DevTools.png)
-
-Junto al componente que estamos inspeccionando aparece **= $vm0** que indica que DevTools ha creado una variable con ese nombre que contiene el componente por si queremos inspeccionarlo desde la consola.
-
-Cuando inspeccionamos nuestros componentes, bajo la barra de botones aparece otra barra con 3 herramientas:
-* Buscar: permite buscar el componente con el nombre introducido aquí
-* Seleccionar componente en la página: al pulsarlo (se dibuja un punto en su interior) hace que al pulsar sobre un componente en nuestra página se seleccione en la herramienta de inspeccionar componentes
-* Formatear nombre de componentes: muestra los nombres de componentes en el modo _camelCase_ o _kebab-case_
-
-NOTA: Si por algún motivo queremos trabajar sin servidor web (desde file://...) hay que habilitar el acceso a ficheros en la extensión.
-
-![DevTools](./img/DevTolols-AllowFiles.png)
 
 ## Extensiones para el editor de código
 Cuando empecemos a trabajar con componentes usaremos ficheros con extensión **.vue** que integran el HTML, el JS y el CSS de cada componente. Para que nuestro editor los detecte correctamente es conveniente instalar la extensión para Vue.
 
-En el caso de **_Visual Studio Code_** esta extensión se llama **Volar** (sustituye en _Vue 3_ a la extensión _Vetur_ que se usa con _Vue 2_). En **_Sublime Text_** tenemos el plugin **Vue Syntax Highlight**.
+En el caso de **_Visual Studio Code_** esta extensión se llama **Vue-Oficial**.
 
 ## Otras utilidades
 _Vue 3_ permite utilizar directamente _Typescript_ en nuestros componentes simplemente indicándolo al definir el SFC (lo veremos al llegar allí).

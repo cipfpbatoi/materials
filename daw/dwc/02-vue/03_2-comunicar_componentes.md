@@ -16,7 +16,6 @@
     - [Slots con nombre](#slots-con-nombre)
     - [Acceder a datos del hijo desde el padre con _slot_](#acceder-a-datos-del-hijo-desde-el-padre-con-slot)
 - [Aplicación de ejemplo](#aplicación-de-ejemplo)
-  - [Solución con _Store pattern_](#solución-con-store-pattern)
 
 ## Introducción
 Cada componente tiene sus propios datos que son **datos de nivel de componente**, pero hay ocasiones en que varios componentes necesitan acceder a los mismos datos. Es lo que nos sucede en nuestra aplicación de ejemplo donde varios componentes necesitan acceder a la lista de tareas (variable _todos_) para mostrarla (_todo-list_), añadir items (_todo-add_) o borrarla (_todo-del-all_).
@@ -349,7 +348,7 @@ import { reactive } from 'vue'
 
 export const store = reactive({
   message: '',
-  newData: {},
+  myData: [],
   ...
 })
 ```
@@ -358,56 +357,36 @@ export const store = reactive({
 
 Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
 
+En cada componente que necesite acceder a datos del _store_ lo importamos y definimos dentro de _computed_ las variables a las que queramos acceder. No lo hacemos en _data_ porque allí declaro las variables locales del componente y estas está en el _store_.:
+```javascript
+
 Componente `compA.vue`
 ```javascript
 import { store } from '../store/'
 
 export default {
   template: `<p>Mensaje: { { message}} </p>`,
-  data() {
-    return {
-      message: store.message,
-      // y a continuación el resto de data del componente
-      ...
+  computed: {
+    message() {
+      return store.message
     }
   },
   ...
 }
 ```
 
-Componente `compB.vue`
-```javascript
-import { store } from '../store/'
-
-export default {
-  template: `<button @click="delMessage">Borrar mensaje`,
-  data() {
-    return {
-      store,  // recuerda que es lo mismo que store: store
-      // y a continuación el resto de data del componente
-      ...
-    }
-  },
-  methods: {
-    delMessage() {
-      this.store.message = ''
-    }
-  },
-  ...
-}
-```
-
-Desde cualquier componente podemos modificar el contenido de **store** y esos cambios se reflejarán automáticamente tanto en la vista de todos ellos.
+Y ya puedo acceder a la variable _message_ del _store_ desde el componente con `this.message`.
 
 Esta forma de trabajar tiene un grave inconveniente: como el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación es difícilmente mantenible y se convierte en una pesadilla depurar el código y encontrar errores.
 
-Para evitarlo podemos usar un patrón de almacén (_store pattern_) que veremos en el siguiente apartado.
+Para evitarlo usaremos un patrón de programación llamado _Store pattern_ que veremos en el siguiente apartado.
 
 ### $root y $parent
 Todos los componentes tienen acceso a:
-- sus variables locales, declaradas en `data()`
 - los parámetros que le han pasado como `props` (que no deberían cambiarse)
-- y además, a los datos y métodos definidos en la instancia de Vue (donde hacemos el `Vue.createApp()`, es decir, en el `main.js`) a los que accede desde el objeto **`$root`**
+- sus variables locales, declaradas en `data()`
+- sus variables calculadas, declaradas en `computed`
+- pero además tienen acceso a los datos y métodos definidos en la instancia de Vue (donde hacemos el `Vue.createApp()`, es decir, en el `main.js`) a los que accede desde el objeto **`$root`**
  
 Por ejemplo:
 
@@ -472,7 +451,7 @@ export default {
 }
 ```
 
-Fijaos que lo declaramos como `computed` porque es una varable calculada: una variable que está en otro sitio. También funcionaría si lo declaramos dentro de `data` pero así es más lógico.
+Fijaos que lo declaramos como `computed` porque es una varable calculada: una variable que está en otro sitio.
 
 Componente `compB.vue`
 ```javascript
@@ -538,8 +517,37 @@ se renderizará como:
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-14)
 
+Un ejemplo más util de _slot_ es el siguiente: queremos hacer un componente que renderice una fila de una tabla donde mostrar los datos de un usuario. Tendremos una última columna donde poner unos botones para realizar acciones sobre ese usuario pero esos botones variarán en función de la página donde se muestre la tabla. Para ello usaremos _slots_: 
+```html
+<template>
+  <tr>
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.age }}</td>
+    <td>
+      <slot></slot>
+    </td>
+  </tr>
+</template>
+```
+
+Donde queremos mostrar un usuario con botones para editar y borrar haremos:
+```html
+<user-row :user="user">
+    <button @click="editUser">Editar</button>
+    <button @click="deleteUser">Borrar</button>
+</user-row>
+```
+
+y donde queremos mostrarlo sólo con un botón para ver más detalles haremos:
+```html
+<user-row :user="user">
+    <button @click="showDetails">Detalles</button>
+</user-row>
+```
+
 ### Slots con nombre
-A veces nos interesa tener más de 1 slot en un componente. Para saber qué contenido debe ir a cada slot se les da un nombre. 
+A veces nos interesa tener más de un slot en un componente. Para saber qué contenido debe ir a cada slot se les da un nombre. 
 
 Vamos a ver un ejemplo de un componente llamado _base-layout_ con 3 _slots_, uno para la cabecera, otro para el pie y otro principal:
 ```html
@@ -602,9 +610,9 @@ El componente hijo puede hacer accesibles sus variables al padre declarándolas 
 
 ```html
 <!-- ParentComponent -->
-<ChildComponent v-slot={ text, count }>
+<child-component v-slot={ text, count }>
   {{ text }}: {{ count }}
-</ChildComponent>
+</child-component>
 ```
 
 Esto es particularmente útil en componentes hijos que muestran un array de datos (con un `v-for`) si queremos acceder con el padre a cada dato.
@@ -612,12 +620,9 @@ Esto es particularmente útil en componentes hijos que muestran un array de dato
 Podéis profundizar en el uso de _slots_ en la [documentación oficial de Vue](https://vuejs.org/guide/components/slots.html).
 
 # Aplicación de ejemplo
-Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_.
+Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_ y _Store pattern_. Para ello vamos a crear un _store_ que contendrá el array de tareas y los métodos para añadir, borrar y cambiar el estado de las tareas, así como para borrarlas todas.
 
-## Solución con _Store pattern_
-Creamos el _store_ para el array de cosas a hacer que debe ser accesible desde varios componentes. En él incluimos métodos para añadir un nuevo _todo_, para borrar uno, para cambiar el estado de un _todo_ y para borrarlos todos.
-
-En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su data. El resto de componentes no necesitan acceder al array, por lo que no lo incluimos en su data, pero sí llamarán a los métodos para cambiarlo.
+En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su _computed_. El resto de componentes no necesitan acceder al array, pero sí llamarán a los métodos para cambiarlo.
 
 Respecto al _todo-item_ debe cambiar los datos tanto al hacer doble click (se borra la tarea) como al marcar/desmarcar el checkbox (se cambia el estado de la tarea).
 

@@ -24,7 +24,7 @@ El framework _Vue_ sólo se ocupa de la capa de vista de la aplcación pero su "
 
 Una de las librerías más utilizadas es la que permite realizar de forma sencilla peticiones Ajax a un servidor. Existen múltiples librerías para ello y la más utilizada es [**axios**](https://github.com/axios/axios).
 
-Podríamos hacer peticiones Ajax como vimos en Javascript (con promesas o _fetch_) pero es más sencillo con _axios_. Axios ya devuelve los datos transformados a JSON en una propiedad llamada _data_.
+Podríamos hacer peticiones Ajax como vimos en Javascript (con _fetch_ y _async/await_) pero es más sencillo con _axios_. Axios ya devuelve los datos transformados a JSON en una propiedad llamada _data_.
 
 ## Instalación
 Como esta librería vamos a usarla en producción la instalaremos como dependencia del proyecto:
@@ -45,9 +45,9 @@ Ya podemos hacer peticiones Ajax en el componente. Para ello axios incluye los m
 * **.put(url, objeto)**: realiza una petición PUT a la url pasada como parámetro que posiblemente realizará un UPDATE sobre el registro indicado en la url que será actualizado con los datos del objeto pasado como segundo parámetro
 * **.delete(url)**: realiza una petición DELETE a la url pasada como parámetro que supondrá una consulta DELETE a la base de datos para borrar el registro indicado en la url
 
-Estos métodos devuelven una promesa por lo que al hacer la petición indicaremos con el método **`.then`** la función que se ejecutará cuando responda el servidor si la petición se resuelve correctamente y con el método **`.catch`** la función que se ejecutará cuando responda el servidor si ocurre algún error. También podemos hacer las llamadas con **`await`**.
+Estos métodos devuelven una promesa por lo que al hacer la petición deberemos anteponerle el **`await`** o bien indicaremos con el método **`.then`** la función que se ejecutará cuando responda el servidor si la petición se resuelve correctamente y con el método **`.catch`** la función que se ejecutará cuando responda el servidor si ocurre algún error.
 
-La respuesta del servidor tiene, entre otras, las propiedades:
+Lo que devuelve es un objeto que tiene, entre otras, las propiedades:
 * **`data`**: aquí tendremos los datos devueltos por el servidor
 * `status`: obtendremos el código de la respuesta del servidor (200, 404, ...)
 * `statusText`: el texto de la respuesta del servidor ('Ok', 'Not found', ...)
@@ -55,14 +55,7 @@ La respuesta del servidor tiene, entre otras, las propiedades:
 * `headers`: las cabeceras HTTP de la respuesta
 * ...
 
-La sintaxis de una petición GET a axios usando promesas sería algo como:
-```javascript
-axios.get(url)
-  .then(response => console.log(response.data))
-  .catch(response => console.error(response.message))
-```
-
-Y usando _async/await_ sería algo como:
+La sintaxis de una petición GET a axios usando _async/await_ sería algo como:
 ```javascript
 try {
   const response = await axios.get(url)
@@ -70,6 +63,13 @@ try {
 } catch (response) {
   console.error(response.message) 
 }
+```
+
+y usando promesas sería algo como:
+```javascript
+axios.get(url)
+  .then(response => console.log(response.data))
+  .catch(response => console.error(response.message))
 ```
 
 ## Aplicación de ejemplo
@@ -85,7 +85,7 @@ Los cambios que debemos hacer en nuestra aplicación son:
 Vamos a modificar los diferentes componentes para implementar os cambios requeridos:
 
 ### Pedir los datos al cargarse
-Modificamos el fichero **Todo-List.vue** para añadir en su sección _script_:
+Modificamos el fichero **TodoList.vue** para añadir en su sección _script_:
 * Antes del objeto vue:
 
 ```javascript
@@ -96,17 +96,18 @@ const SERVER = 'http://localhost:3000'
 // const SERVER = import.meta.env.VITE_URL_API
 ```
 
-* Dentro del objeto añadimos el _hook_ **mounted** para hacer la petición Ajax al montar el componente (recordad que esa función se ejecuta automáticamente cuando se acaba de _renderizar_ el componente):
+* Dentro del objeto añadimos el _hook_ **mounted()** para hacer la petición Ajax al montar el componente (recordad que esa función se ejecuta automáticamente cuando se acaba de _renderizar_ el componente):
 
 ```javascript
 ...
-  mounted() {
-    axios.get(SERVER + '/todos')
-      .then(response => this.todos = response.data)
-      .catch(response => {
+  async mounted() {
+    try {
+      const response = await axios.get(SERVER + '/todos')
+      this.todos = response.data
+    } catch (response) {
         alert('Error: ' + response.message)          
         this.todos=[]
-      })
+    }
   },
 ...
 ```
@@ -114,29 +115,37 @@ const SERVER = 'http://localhost:3000'
 ### Borrar un todo
 Modificamos el método _delTodo_ del fichero **Todo-List.vue**:
 ```javascript
-    delTodo(index){
+    async delTodo(index){
       const id = this.todos[index].id
-      axios.delete(SERVER + '/todos/' + id)
-        .then(response => this.todos.splice(index, 1) )
-        .catch(response => alert('Error: no se ha borrado el registro. ' + response.message))
+      try {
+        await axios.delete(SERVER + '/todos/' + id)
+        this.todos.splice(index, 1)
+      } catch (response) {
+        alert('Error: no se ha borrado el registro. ' + response.message)
+      }
     },
 ```
 
 ### Añadir un todo
 Modificamos el método _addTodo_ del fichero **Todo-List.vue**:
 ```javascript
-    addTodo(title) {
-      axios.post(SERVER + '/todos', {title: title, done: false})
-        .then(response => this.todos.push(response.data)
-        )
-        .catch(response => alert('Error: no se ha añadido el registro. ' + response.message))
+    async addTodo(title) {
+      try {
+        const response = await axios.post(SERVER + '/todos', {
+          title: title, 
+          done: false
+        })
+        this.todos.push(response.data)
+      } catch (response) {
+        alert('Error: no se ha añadido el registro. ' + response.message)
+      }
     },
 ```
 
 Al servidor hay que pasarle como parámetro el objeto a añadir. En el caso de _json-server_ devolverá en el **response.data** el nuevo objeto añadido al completo. Otras APIs devuelven sólo la _id_ del nuevo registro o pueden no devolver nada. 
 
 ### Actualizar el campo _done_
-Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamos su id, su título y su estado así que modificamos el _template_ del fichero **Todo-List.vue** para pasar el elemento entero a la función:
+Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamos su id, su título y su estado así que modificamos el _template_ del fichero **TodoList.vue** para pasar el elemento entero a la función:
 ```html
       <todo-item 
         v-for = "(item,index) in todos" 
@@ -147,30 +156,31 @@ Ahora ya no nos es útil el índice de la tarea a actualizar sino que necesitamo
       </todo-item>
 ```
 
-A continuación modificamos el método _changeTodo_ del fichero **Todo-List.vue**:
+A continuación modificamos el método _changeTodo_ del fichero **TodoList.vue**:
 ```javascript
-    toogleDone(todo) {
-      axios.put(SERVER + '/todos/' + todo.id, {
-          id: todo.id, 
-          title: todo.title, 
+    async toogleDone(todo) {
+      try {
+        const response = await axios.patch(SERVER + '/todos/' + todo.id, {
           done: !todo.done
         })
-        .then(response => todo.done = response.data.done)
-        .catch(response => alert('Error: no se ha modificado el registro. ' + response.message))
+        todo.done = response.data.done
+      } catch (response) {
+        alert('Error: no se ha modificado el registro. ' + response.message)
+      }
     },
 ```
 
-Lo que hay que pasar en el objeto y qué se devuelve en la respuesta depende del servidor API-REST usado. En el caso de json-server los campos que no le pasemos en el objeto los eliminará por lo que debemos pasar también al campo _title_ (otros servidores dejan como están los campos no incluidos en el objeto por lo que no haría falta pasárselo). Y lo que devuelve en **response.data** es el registro completo modificado.
-
 ### Borrar todas las tareas
-Modificamos el método _delTodos_ del fichero **Todo-List.vue**. Como el servidor no tiene una llamada para borrar todos los datos podemos recorrer el array _todos_ y borrar cada tarea usando el método **delTodo** que ya tenemos hecho:
+Modificamos el método _delTodos_ del fichero **TodoList.vue**. Como el servidor no tiene una llamada para borrar todos los datos podemos recorrer el array _todos_ y borrar cada tarea usando el método **delTodo** que ya tenemos hecho:
 ```javascript
     delTodos() {
       this.todos.forEach((todo, index) => this.delTodo(index))
     }
 ```
 
-Si lo probáis con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
+Esto no tiene mucho sentido y si necesito borrar todos los datos de la base de datos lo mejor es que la API me proporcione un método para borrarlos todos.
+
+Si lo probáis este código con muchos registros es posible que no se borren todos correctamente (en realidad sí se borran de la base de datos pero no del array). ¿Sabes por qué?. ¿Cómo lo podemos arreglar? (PISTA: el índice cambia según los elementos que haya y las peticiones asíncronas pueden no ejecutarse en el orden que esperamos).
 
 ## Organizar las peticiones
 Que cada componente haga llamadas a _axios_ tiene el inconveniente de que cada uno crea su propia instancia, además de que tenemos las peticiones a la API desperdigadas por el código. Para mejorar la legibilidad del código vamos a crear un fichero que será donde estén las peticiones a _axios_ de forma que nuestros componentes queden más limpios. Otra ventaja de centralizar las peticiones es que cosas como la URL a la que hacer la petición la definimos en un único sitio.
@@ -183,7 +193,10 @@ const apiClient = axios.create({
   // Esta parte es opcional. Estamos creando un 'axios' personailizado con las opciones
   // que necesitemos para no tener que indicarlas cada vez. En concreto:
   // - baseURL: lo que antecederá a la ruta de cada petición
-  // - headers.Accept: el tipo de datos que esperamos obtener
+  // - headers.Accept: el tipo de datos que esperamos obtener (no es necesario
+  // porque JSON es la opción por defecto)
+  // - headers.Content-type: el tipo de datos que estamos pasando al servidor (no es
+  // necesario porque JSON es la opción por defecto)
   // - headers.Authorization: el token que enviaremos junto a cada petición
   baseURL: 'http://localhost:3000',
   headers: {
@@ -225,10 +238,13 @@ import todosRepository from '../repositories/todosRepository'
 export default {
   ...
   methods: {
-    getData() {
-      todosRepository.getTodos()
-      .then(response => this.todos = response.data)
-      .catch(error => console.error('Error: ' + error.message))
+    async getData() {
+      try {
+        const response = await todosRepository.getTodos()
+        this.todos = response.data
+      } catch (response) {
+        console.error('Error: ' + response.message)
+      }
     },
     ...
   },
@@ -280,6 +296,24 @@ export default {
 }
 ```
 
+Y en los componentes donde queramos usarlo importamos el fichero y llamamos a las funciones que necesitemos:
+```javascript
+import apiService from '../apiService'
+
+export default {
+  methods: {
+    async getData() {
+      try {
+        const response = await apiService.todos.getAll()
+        this.todos = response.data
+      } catch (response) {
+        console.error('Error: ' + response.message)
+      }
+    },
+  },
+}
+```
+
 ### Api como clase
 También podemos usar programación orientada a objetos para hacer nuestra ApiService y construir una clase que se ocupe de las peticiones a la API:
 ```javascript
@@ -323,17 +357,15 @@ import APIService from '../APIService'
 const apiService = new APIService()
 
 export default {
-  ...
   methods: {
-    getData() {
-      apiService.getTodos()
-      .then(response => this.todos = response.data)
-      .catch(response => console.error(response.message))
+    async getData() {
+      try {
+        const response = await apiService.getAll()
+        this.todos = response.data
+      } catch (response) {
+        console.error('Error: ' + response.message)
+      }
     },
-    ...
-  },
-  mounted() {
-    this.getData()
   },
 }
 ```
@@ -362,10 +394,12 @@ const apiClient = axios.create({
 })
 ```
 
-El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del .env y el .env.local también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
+El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. En cualquier caso, si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables que deberán cambiarse por los valores adecuados en producción. Además del _.env_ y el _.env.local_ también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de VUE_APP_RUTA_API podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
 ## Axios interceptors
 Podemos hacer que se ejecute código antes de cualquier petición a axios o tras recibir la respuesta del servidor usando los _interceptores_ de axios. Es otra forma de enviar un token que nos autentifique ante una API sin tener que ponerlo en el código de cada petición, pero también nos permite hacer cualquier cosa que necesitemos.
+
+Y podemos interceptar las respuestas para, por ejemplo, redireccionar a la página de login si el servidor nos devuelve un error 401 (no autorizado).
 
 Para interceptar las peticiones que hacemos usaremos `axios.interceptors.request.use( (config) => fnAEjecutar, (error) => fnAEjecutar)` y para interceptar las respuestas del servidor `axios.interceptors.response.use( (response) => fnAEjecutar, (error) => fnAEjecutar)`. Se les pasa como parámetro la función a ejecutar si todo es correcto y la que se ejecutará si ha habido algún error. El interceptor de peticiones recibe como parámetro un objeto con toda la configuración de la petición (incluyendo sus cabeceras) y el interceptor de respuestas recibe la respuesta del servidor.
 
