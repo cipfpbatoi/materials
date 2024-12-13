@@ -10,6 +10,7 @@
     - [Configurar el servidor desde la _CLI_](#configurar-el-servidor-desde-la-cli)
     - [El Firewall](#el-firewall)
     - [Versión de evaluación](#versión-de-evaluación)
+  - [Escritorio remoto](#escritorio-remoto)
   - [Documentación de la instalación](#documentación-de-la-instalación)
 
 ## Planificación de la instalación
@@ -206,6 +207,16 @@ slmgr.vbs -rearm
 ```
 
 Este comando tarda un tiempo en ejecutarse y después nos pide que reiniciemos el sistema.
+
+## Escritorio remoto
+Normalmente los servidores están en el CPD y no tienen monitor, teclado ni ratón sino que se accede a ellos mediante _Escritorio remoto_ desde otro equipo. Para habilitarlo podemos hacerlo desde el 'Administrador del servidor':
+
+![Habilitar Escritorio remoto](media/ActivarEscritorioRemoto.png)
+
+Si queremos habilitarlo desde Powershell usaremos el comando:
+```powershell
+Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+```
 
 ## Documentación de la instalación
 A lo largo de la instalación es conveniente anotar en un documento cuestiones cómo:

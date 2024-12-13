@@ -14,7 +14,7 @@
   - [Ruta no encontrada: 404 Not found](#ruta-no-encontrada-404-not-found)
   - [Redireccionamiento](#redireccionamiento)
   - [Cambio de parámetros en una ruta](#cambio-de-parámetros-en-una-ruta)
-  - [Vistas con nombre y Subvistas](#vistas-con-nombre-y-subvistas)
+  - [Vistas con nombre y subvistas](#vistas-con-nombre-y-subvistas)
 
 ## Introducción
 
@@ -147,7 +147,7 @@ _VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEd
 }
 ```
 
-Esa ruta coincidirá con cualquier URL que comience por _/edit/_ y tenga algo más. Lo que haya tras la última _/_ lo asignará el _router_ a una variable llamada _id_ (el nombre que pongamos tras el carácter `:`) y dicha variable la recibirá el componente _UserEdit_ en un parámetro accesible desde `this.$route.params.id`. Si añadimos a la ruta la opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ que será accesible desde `this.id` directamente).
+Esa ruta coincidirá con cualquier URL que comience por _`/edit/`_ y tenga algo más. Lo que haya tras la última _`/`_ lo asignará el _router_ a una variable llamada _id_ (el nombre que pongamos tras el carácter `:`) y dicha variable la recibirá el componente _UserEdit_ en un parámetro accesible desde `this.$route.params.id`. Si añadimos una opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ que será accesible desde `this.id` directamente).
 
 ### Opciones de cada ruta
 
@@ -183,9 +183,9 @@ Fijaos que hemos de _bindear_ el atributo `to` porque ya no le pasamos texto sin
 Se podría hacer (aunque no es normal) una opción de menú a una ruta dinámica y pasarle el parámetro deseado. Por ejemplo para editar el usuario 5 haríamos:
 
 ```html
-<router-link :to="{name: 'edit', params: {id: 5}}"
-  >Editar usuario 5</router-link
->
+<router-link :to="{name: 'edit', params: {id: 5}}">
+  Editar usuario 5
+</router-link>
 ```
 
 En este caso es necesario que la ruta dinámica tenga un _name_.
@@ -213,8 +213,6 @@ Además podemos pasar a `push()` y `replace()` funciones _callback_ que se ejecu
 ```javascrip
 this.$router.push(location, onComplete?, onAbort?)
 ```
-
-También podemos obtener toda la ruta con `this.$route.fullPath`.
 
 ## Paso de parámetros
 
@@ -326,7 +324,7 @@ watch: {
 
 Cada vez que cambie el valor de _$route_ se ejecutará ese código y recibirá en el parámetro _to_ la nueva ruta y en _from_ el valor anterior de la variable. Veremos los _watchers_ más adelante o podéi consultar la [documentación de Vue](https://vuejs.org/guide/essentials/watchers.html).
 
-## Vistas con nombre y Subvistas
+## Vistas con nombre y subvistas
 
 Podemos cargar más de un componente usando varias etiquetas `<router-view>`. Por ejemplo si nestra página constará de 3 componentes (uno en la cabecera, otro el principal y otro en un _aside_ pondremos en el HTML:
 

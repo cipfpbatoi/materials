@@ -21,7 +21,7 @@ Tabla de contenidos
 
 
 ## Computed
-Cuando se crea un componente de Vue (o el componente raíz) se le pasa como parámetro un objeto con las opciones con que se creará. Entre ellas tenemos _props_, _ data_, _methods_, y también otras como _computed_ y _watch_.
+Cuando se crea un componente de Vue (o el componente raíz) se le pasa como parámetro un objeto con las opciones con que se creará. Entre ellas tenemos _props_, _data_, _methods_, y también otras como _computed_ y _watch_.
 
 Hemos visto que en una interpolación o directiva podemos poner una expresión javascript. Pero si la expresión es demasiado compleja hace que nuestro HTML sea más difícil de leer. La solución es crear una expresión calculada que nos permite tener "limpio" el HTML. Por ejemplo un código con expresiones complejas como:
 
@@ -135,7 +135,7 @@ Vue proporciona una forma genérica de controlar cuándo cambia el valor de una 
 })
 ```
 
-En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Veremos su utilidad cuando trabajemos con _vue-router_.
+En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Por ejemplo al cambiar una ruta dinámica con _vue-router_.
 
 NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
 
