@@ -45,13 +45,11 @@ export default {
 </template>
 ```
 
-Esto es lo que se llama **_one-way data flow_**:
-
-![one-way data flow](https://vuejs.org/assets/state-flow.a8bc738e.png)
+Esto es lo que se llama **_one-way data flow_**.
 
 El problema lo tenemos cuando un componente necesita acceder a datos (_state_) de otro componente. 
 
-En Vue la comunicación entre componentes padre-hijo se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos. Y vimos que si distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
+En Vue la comunicación entre componentes padre-hijo se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos (`$emit`). Y vimos que si distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
 
 El uso de _Pinia_ es imprescindible en aplicaciones de tamaño medio o grande pero incluso para aplicaciones pequeñas nos ofrece ventajas frente a un _store pattern_ hecho por nosotros como soporte para las _DevTools_ y para _Server Side Rendering_ o uso de Typescript. 
 
@@ -130,7 +128,7 @@ export const useCounterStore = defineStore('counter', () => {
 ```
 
 ## Usar Pinia
-En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente:
+En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_ puede ser en forma de objeto (si queremos cambiar el nombre de la variable o método) o en forma de array (si queremos usar el mismo nombre):
 
 ```javascript
 //MyComponent.vue
@@ -141,7 +139,7 @@ export default {
   ...
   computed: {
     ...mapState(useCounterStore, {
-      count: 'count',
+      countInStore: 'count',
     })
   },
   methods: {
@@ -150,7 +148,7 @@ export default {
 }
 ```
 
-Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.count` o `this.increment()`).
+Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.countInStore` o `this.increment()`).
 
 ### Getters
 En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un método en el almacén (dentro de **`getters`**) que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
@@ -201,6 +199,7 @@ export default {
       finishedTodos: 'finishedTodos',
     })
   },
+}
 ```
 
 Los getters pueden recibir parámetros, por ejemplo, para hacer búsquedas:
