@@ -128,7 +128,7 @@ export const useCounterStore = defineStore('counter', () => {
 ```
 
 ## Usar Pinia
-En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_ puede ser en forma de objeto (si queremos cambiar el nombre de la variable o método) o en forma de array (si queremos usar el mismo nombre):
+En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_ puede ser en forma de objeto (si queremos personalizar el método o cambiar el nombre de la variable o método) o en forma de array:
 
 ```javascript
 //MyComponent.vue
@@ -138,9 +138,7 @@ import { mapState, mapActions } from 'pinia';
 export default {
   ...
   computed: {
-    ...mapState(useCounterStore, {
-      countInStore: 'count',
-    })
+    ...mapState(useCounterStore, ['count'])
   },
   methods: {
     ...mapActions(useCounterStore, ['increment', 'decrement'])
@@ -148,7 +146,26 @@ export default {
 }
 ```
 
-Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.countInStore` o `this.increment()`).
+Con esto se _mapean_ las variables, _getters_ y _actions_ a variables y métodos locales a los que podemos acceder desde **`this.`** (por ejemplo `this.count` o `this.increment()`).
+
+En forma de objeto sería:
+```javascript
+computed: {
+  ...mapState(useCounterStore, {
+    countInStore: 'count',
+  }),
+  ...mapActions(useCounterStore, {
+    increment(store, quantity) {
+      return store.increment(quantity)
+    },
+    decrement(store, quantity) {
+      return store.decrement(quantity)
+    },
+  })
+}
+```
+
+y se llamarían con **`this.countInStore` o `this.increment(3)`. En este caso los métodos reciben como primer parámetro el _store_ y a cotinuación los parámetros que se le pasan a la acción.
 
 ### Getters
 En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un método en el almacén (dentro de **`getters`**) que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
