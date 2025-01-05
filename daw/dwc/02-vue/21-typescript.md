@@ -7,6 +7,7 @@
     - [Crear _custom types_](#crear-custom-types)
     - [interfaces](#interfaces)
     - [Creación automática de interfaces](#creación-automática-de-interfaces)
+  - [Tipado de _props_, _emits_, ...](#tipado-de-props-emits-)
   - [Tipos genéricos](#tipos-genéricos)
   - [Clases](#clases)
   - [Decoradores](#decoradores)
@@ -18,6 +19,8 @@ El hecho de que Javascript permite cambiar dinámicamente el tipo de datos de un
 
 Typescript obliga a definir el tipo de datos de una variable e impide cambiarlo (como sucede en la mayoría de lenguajes de programación) lo que nos obliga a escribir un código más consistente. Esto es especialmente importante en proyectos grandes o en los que colaboran muchos programadores.
 
+Podéis ampliar la información en la [documentación de Vue](https://vuejs.org/guide/typescript/overview) y en la [documentación oficial de Typescript](https://www.typescriptlang.org/docs/).
+
 ## Typescript en Vue
 El soporte de Typescript en Vue 3 es total ya que este framework ha sido totalmente reescrito en este lenguaje. Cuando creamos un nuevo proyecto una de las opciones que podemos marcar es _Typescript_ con lo que ya tendremos todo preparado para utilizar este lenguaje en nuestro proyecto. Veremos que al crearse el proyecto el fichero `main.js` ahora se llama **`main.ts`**. Además se crea un nuevo fichero llamado `tsconfig.json` con configuraciones por defecto para Typescript.
 
@@ -27,7 +30,8 @@ vue add typescript
 ```
  Al hacerlo nos pregunta, entre otras cosas, si queremos convertir todos nuestros ficheros _.js_ a _.ts_.
 
-Para usar TS en un componente tenemos que indicarlo en la etiqueta \<script\> e importar _defineComponent_ para transformar el objeto que exportamos. Con Javascript definimos un SFC con:
+Para usar TS en un componente tenemos que indicarlo en la etiqueta `<script>` e importar _defineComponent_ para transformar el objeto que exportamos. Con Javascript definimos un SFC con:
+
 ```vue
 <script>
 export default {
@@ -49,7 +53,7 @@ export default defineComponent({
 </script>
 ```
 
-No es necesario que todos los componentes estén en Typescript(o Javascript) sino que cada uno puede ser diferente.
+No es necesario que todos los componentes estén en Typescript (o Javascript) sino que cada uno puede ser diferente.
 
 ## Tipos de datos
 Los tipos de datos que podemos encontrar en Javascript son:
@@ -109,7 +113,7 @@ let myBtnStyle: buttonType = 'danger'
 Si le asigno un valor que no es uno de los definidos en su tipo se producirá un error.
  
 ### interfaces
-Una interface es la definición de los tipos de datos de un objeto, para evitar definirlo como hemos visto antes que es demasiado _verbose_. Por tanto es como definir nu nuevo tipo de datos.
+Una interface es la definición de los tipos de datos de un objeto, para evitar definirlo como hemos visto antes que es demasiado _verbose_. Por tanto es como definir un nuevo tipo de datos.
 ```typescript
 type Modules = 'DWEC' | 'DWES' |'DIW' |'DAW' | 'EIE' | 'Inglés'
 
@@ -120,7 +124,7 @@ interface Student {
 }
 ```
 
-Podemos centralizar todas las _interfaces_ que se usan en más de un componente en un fichero al que podemos llamar `src/types.ts`:
+Para centralizar la definición de tipos se suelen incluir todos los tipos e interfaces en un fichero que llamaremos `src/types.ts`, que exportará los tipos y/o interfaces que deban ser utilizados en otros ficheros:
 ```typescript
 type Modules = 'DWEC' | 'DWES' |'DIW' |'DAW' | 'EIE' | 'Inglés'
 
@@ -138,28 +142,84 @@ let futureStudent = {} as Student
 
 Esto nos permitirá hacer cosas como `futureStudent.name = 'Peter Parker'` sin que se produzcan errores de tipo. A esto se llama **_type assertions_**.
 
-Si se quiere aplicar un tipo propio a una variable pasada por _props_ debemos importar el _helper_ **_PropType_**:
-```typescript
-import { defineComponent, PropType } from 'vue'
-
-export default defineComponent({
-  props: {
-    Student: {
-      type: Object as PropType<Student>,
-      required: true
-    }
-  },
-})
-```
-
-Para centralizar la definición de tipos se suelen incluir todos los tipos e interfaces en un fichero que llamaremos `src/types.ts`. Deberemos exportar los tipos y/o interfaces.
-
 Visual Studio Code incluye la extensión **VueDX** que nos informa al escribir código si un objeto tiene o no la propiedad que estamos escribiendo. Es muy recomendable instalarla cuando trabajamos con Typescript.
 
 ### Creación automática de interfaces
 Tenemos utilidades que nos permiten generar automáticamente las interfaces de nuestra aplicación a partir de la documentación de la API o incluso a partir del fichero JSON de los datos. 
 
 Un ejemplo es [Quicktype](https://quicktype.io/typescript) donde pegamos nuestros datos en formato JSON y genera automáticamente las interfaces y _types_ necesarios en _typescript_.
+
+## Tipado de _props_, _emits_, ...
+
+En Vue 3 con Javascript ya podíamos definir el tipo de las _props_ que pasamos a un componente. Por ejemplo, si queremos que una _prop_ sea un _string_ lo indicaremos en el objeto _props_:
+```typescript
+export default defineComponent({
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    id: [String, Number],
+  }
+})
+```
+
+Si se quiere aplicar un tipo propio a una variable pasada por _props_ debemos importar el _helper_ **_PropType_**:
+```typescript
+import { defineComponent, PropType } from 'vue'
+
+export default defineComponent({
+  props: {
+    student: {
+      type: Object as PropType<Student>,
+      required: true
+    },
+    callback: Function as PropType<(id: number) => void>
+  },
+})
+```
+
+También debemos declarar el tipo del parámetro que se pasará en un _emit_:
+```typescript
+export default defineComponent({
+  emits: {
+    addTodo(payload: { todoTitle: string }) {
+      // perform runtime validation
+      return payload.todoTitle.length > 0
+    }
+  },
+  methods: {
+    onSubmit() {
+      this.$emit('addTodo', {
+        todoTitle: 'new To Do'
+      })
+    }
+  }
+})
+```
+
+En las funciones _computed_ normalmente no es necesario deckarar su tipo ya que este se infiere del valor retornado, aunque puede hacerse para mayor claridad:
+
+```typescript
+export default defineComponent({
+  computed: {
+    fullName(): string {
+      return this.student.name + ' ' + this.student.lastName
+    }
+  }
+})
+```
+
+También es conveniente indicar el tipo del objeto _event_ de los manejadores de eventos para evitar que sea de tipo _any_:
+```typescript
+export default defineComponent({
+  methods: {
+    handleClick(event: Event) { // o MouseEvent, KeyboardEvent, etc.
+      console.log(event)
+    }
+  }
+})
+```
 
 ## Tipos genéricos
 A veces nos gustaría que una función pudiera trabajar con distintos tipos de datos. Por ejemplo, una función para añadir un item a una lista podría ser:
@@ -189,9 +249,9 @@ const stringList = addItemList<string>('manzanas', [])
 Son muy similares a las de otros lenguajes. Ejemplo:
 ```typescript
 class Student {
-    public name : string;     // atributo accesible desde fuera de la clase
+    public name: string;     // atributo accesible desde fuera de la clase
     protected age: number;    // accesible desde clases que hereden de Student
-    private nia : string;  // accesible sólo desde la clase Student
+    private nia: string;  // accesible sólo desde la clase Student
 
     constructor(name:string ,age:number, nia:string){
         this.name = name;

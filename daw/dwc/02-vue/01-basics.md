@@ -45,7 +45,7 @@ Para utilizar Vue sólo necesitamos enlazarlo en nuestra página desde cualquier
 
 Esta no es la forma más recomendable de trabajar. Lo normal es crear un proyecto con **_npm_** que genere un completo _scaffolding_. Esto nos permitirá trabajar con componentes (_Single File Components_ o _SFC_) lo que nos facilitará enormemente la creación de nuestras aplicaciones.
 
-Un _SFC_ es un componente reutilizable que se guarda en un fichero con extensión _.vue_. Para que _VSCode_ reconozca correctamente los ficheros _.vue_ debemos instalar la _extensión_ **Volar**.
+Un _SFC_ es un componente reutilizable que se guarda en un fichero con extensión _.vue_. Para que _VSCode_ reconozca correctamente los ficheros _.vue_ debemos instalar la _extensión_ **Vue-Official** (anteriormente _Volar_).
 
 ## Estructura de una aplicación Vue
 Vamos a crear la aplicación con Vue que mostrará un contador y un botón para actualizarlo:

@@ -11,8 +11,9 @@ En este bloque vamos a conocer el framework **Vue** que es uno de los más utili
 7. [Pinia](./07-pinia.md)
    - NOTA: para Vue 2 consultar [Vuex](./07-vuex.md)
 8. [Formularios](./08-forms.md)
-9. [Testeando componentes](./0x-testing.md)
-10. [Y más...](./09-cosas.md)
-11. [Composition API](./10-vue3_composition_api.md)
+9. [Typescript](./21-typescript.md)
+10. [Testeando componentes](./0x-testing.md)
+11. [Y más...](./09-cosas.md)
+12. [Composition API](./10-vue3_composition_api.md)
 
 Podemos encontrar infinidad de documentación en Internet para ampliar lo que veremos en este bloque. Hay que destacar especialmente la [documentación oficial de Vue 3](https://v3.vuejs.org/) y [de Vue 2](https://vuejs.org/v2/guide/index.html) que es muy completa. También podemos encontrar gran cantidad de páginas, tutoriales y libros.
