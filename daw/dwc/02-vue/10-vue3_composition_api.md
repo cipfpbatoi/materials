@@ -3,7 +3,7 @@
   - [Introducción](#introducción)
   - [Ejemplo básico](#ejemplo-básico)
   - [setup](#setup)
-    - [\<script setup>](#script-setup)
+    - [\<script setup\>](#script-setup)
   - [Reactividad en Vue3](#reactividad-en-vue3)
   - [Configuraciones básicas](#configuraciones-básicas)
     - [_Props_](#props)
@@ -60,9 +60,8 @@ La _composition API_ es especialmente útil en aplicaciones grandes ya que va a 
 ![composition api vs options api](https://vuejs.org/assets/composition-api-after.e3f2c350.png)
 
 Cuándo es recomendable usarla:
-- si queremos soporte total de Typescript
 - si nuestro componente es demasiado largo y queremos organizarlo por características (_features_)
-- para mejorar la reutilización de código entre componentes
+- para mejorar la reutilización de código entre componentes, lo que es importante en aplicaciones grandes
 
 ## Ejemplo básico
 Por ejemplo, un componente que muestra un contador y un botón para incrementarlo, con la _Options API_ sería:
@@ -438,7 +437,7 @@ En cualquier componente donde necesitemos conocer la posición del ratón sólo 
 </template>
 ```
 
-Siempre que pongamos un escuchador en una _composable_ (como hemos hecho en el `onMounted`) debemos quitarlo cuando ya no se utilice (en el `unMounted`).
+Siempre que pongamos un escuchador en una _composable_ (como hemos hecho en el `onMounted`) debemos quitarlo cuando ya no se utilice (en el `onUnmounted`).
 
 ### Valores devueltos
 Como se ve la _composable_ devuelve un objeto formado por variables reactivas (_refs_) en lugar de un objeto reactivo. Se hace así por convención, lo que permite desestructurar las variables en el componente que las vaya a usar sin perder su reactividad (al desestructurar un _reactive_ deja de serlo).

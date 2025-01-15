@@ -10,7 +10,6 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
   - [Vuetify](#vuetify)
     - [Instalación](#instalación)
     - [Crear el layout](#crear-el-layout)
-    - [Saber más](#saber-más)
   - [Typescript](#typescript)
   - [SSR (Server Side Rendering)](#ssr-server-side-rendering)
   - [Crear aplicaciones móviles con Vue](#crear-aplicaciones-móviles-con-vue)
@@ -19,17 +18,17 @@ Algunas cosas interesantes que nos pueden ser útiles en nuestros proyectos son:
     - [Ionic Vue](#ionic-vue)
   - [Nuxt](#nuxt)
   - [Conclusión](#conclusión)
-  - [Angular](#angular)
+  - [Angular y React](#angular-y-react)
   - [Vue con Laravel](#vue-con-laravel)
     - [Creación del proyecto](#creación-del-proyecto)
     - [Configuramos el proyecto en Vue](#configuramos-el-proyecto-en-vue)
     - [Configuramos Laravel](#configuramos-laravel)
     - [Compilamos Vue](#compilamos-vue)
     - [Creamos la API](#creamos-la-api)
-    - [Saber más](#saber-más-1)
+    - [Saber más](#saber-más)
 
 ## Autenticación
-Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que le hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#a%C3%B1adir-cabeceras-a-la-petici%C3%B3n).
+Una parte importante de cualquier aplicación es la autenticación de usuarios. Una de las formas más usadas y sencillas de autenticarnos frente a una API es el uso de _tokens_: cuando nos logueamos la API nos pasa un token y en cada petición que le hagamos debemos adjuntar dicho token en las cabeceras de la petición, tal y como vimos al final del tema de [_axios_](https://cipfpbatoi.github.io/materials/daw/dwc/02-vue/04-axios.html#axios-interceptors).
 
 Aparte de eso, que es lo básico, hay muchas más cosas que podemos incluir en nuestras aplicaciones. Por ejemplo vamos a hacer una aplicación que:
 - al loguearnos la API nos pasa un token que guardaremos en el _store_ y también en el _localStorage_ para poder continuar logueados si se recarga la página (recuerda que al recargar se borran todas las variables de nuestro código)
@@ -44,45 +43,32 @@ Veamos el código para hacer todo esto:
 
 ### Store
 ```javascript
-// Fichero '@/store/index.js'
-...
-mutations: {
-    loginUser(state, token) {
-        state.token = token
-        localStorage.token = token
-    },
-    logoutUser(state) {
-        state.token = null
-        localStorage.removeItem('token')
-    },
-},
+// Fichero '@/stores/index.js'
 actions: {
-    login(context, user) {
-        return new Promise ((resolve, reject) => {
-            API.users.login(user)
-            .then((response) => {
-                context.commit('login', response.data)
-                resolve(response.data)
-            })
-            .catch((err) => reject(err))
-        })
+    async login(user) {
+      try {
+        const response = await API.users.login(user)
+        this.token = response.data
+        localStorage.item = response.data
+      } catch (error) {
+        throw new Error('Error al loguearse')
+      }
     },
-    ...
-},
+    logout() {
+      this.token = null
+      localStorage.removeItem('token')
+    },
+}
 ```
-
-La acción que envía las credenciales del usuario al servidor es una promesa porque el componente _Login.vue_ tiene que saber cuándo se obtiene el token para redireccionar a la página correspondiente.
-
-Las _mutaciones_ almacenan el _token_ en el _store_ y también en el _localStorage_.
 
 ### API
 ```javascript
 // Fichero '@/services/API.js'
 import axios from 'axios'
-import store from '@/store'
+import { useDataStore } from '../stores/index'
 import router from '@/router'
 
-const API_URL = process.env.VUE_APP_API
+const API_URL = import.meta.env.VITE_RUTA_API
 
 const users = {
     login: (item) => axios.post(`${API_URL}/auth/login`, item),
@@ -91,7 +77,7 @@ const users = {
 ...
 
 axios.interceptors.request.use((config) => {
-    const token = store.state.user.access_token
+    const token = localStorage.token
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
     }
@@ -106,7 +92,8 @@ axios.interceptors.response.use((response) => {
     if (error.response) {
         switch (error.response.status) {
             case 401:
-                store.commit('logout')
+                const store = useDataStore()
+                store.logout()
                 if (router.currentRoute.path !== 'login') {
                     router.replace({
                         path: 'login',
@@ -128,9 +115,8 @@ Interceptamos las peticiones para incluir el _token_ si lo tenemos.Y también la
 
 
 ### Login.vue
-```vue
+```javascript
 // script de la vista 'Login.vue'
-...
   mounted() {
     if (localStorage.token) {
       // Si el token caduca debemos comprobar que no haya expirado
@@ -139,33 +125,42 @@ Interceptamos las peticiones para incluir el _token_ si lo tenemos.Y también la
     }
   },
   methods: {
-    submit() {
-      this.$store.dispatch("login", this.user)
-        .then(() => this.loadPage())
-        .catch((err) => alert(err))
+    ...mapActions(useDataStore, ["login" , "logout"]),
+    async onSubmit() {
+      await this.login(this.user)
+      this.loadPage()
     },
     loadPage() {
       const redirect = decodeURIComponent(this.$route.query.redirect || '/')
       this.$router.push({ path: redirect })
     }
   },
-...
 ```
 
 ### Router
 ```javascript
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import store from '../store'
-
+import { createRouter, createWebHistory } from 'vue-router'
 import Datos from '../views/Datos.vue'
 ...
 
-Vue.use(VueRouter)
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  const routes = [
+    {
+      path: '/datos',
+      name: 'Datos',
+      component: Datos,
+      meta: {
+        requireAuth: true,
+      },
+    },
+    ...
+  ]
+})
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (store.token) {
+    if (localStorage.token) {
       next();
     }
     else {
@@ -180,28 +175,10 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-const routes = [
-  {
-    path: '/datos',
-    name: 'Datos',
-    component: Datos,
-    meta: {
-      requireAuth: true,
-    },
-  },
-  ...
-]
-
-export default router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+export default router
 ```
 
-Para ver algunos ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue podemos consultar cualquiera de estos enlaces:
-* [Authentication Best Practices for Vue](https://blog.sqreen.io/authentication-best-practices-vue/)
-* [Vue Authentication And Route Handling Using Vue-router](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
+En internet podemos encontrar innumerables ejemplos de cómo gestionar la autenticación en nuestros proyectos Vue.
 
 ## Paso a producción
 Una vez acabada nuestra aplicación debemos general el _build_ que pasaremos a producción. El _build_ es el conjunto de ficheros compilados, minificados, etc que subiremos al servidor de producción. Para ello tenemos un script en el _package.json_ que se encarga de todo:
@@ -221,14 +198,14 @@ Crea un directorio **_dist_** con lo qie hay que subir a producción:
 ## Vuetify
 Son varias las librerías para Vue que nos facilitan enormemente la creación de nuestros componentes ya que nos dan un código para los mismos (tanto el _template_ como el Javascript) de manera que simplemente personalizando ese código con nuestros datos ya tenemos un componente totalmente funcional. Entre ellas están [Material Design](https://material.io/design), [ElementUI](https://element.eleme.io/#/es), [Vuetify](https://vuetifyjs.com) y muchas otras.
 
-Podemos ver la utilidad de estas librerías consultando, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/) con Vuetify. Vuetify sigue el diseño de _Material Design_. 
+Podemos ver la utilidad de estas librerías consultando, por ejemplo, como crear una [_Datatable_](https://vuetifyjs.com/en/components/data-tables/basics/) con Vuetify. Vuetify sigue el diseño de _Material Design_. 
 
 Podemos obtener toda la información sobre esta librería en [su página web](https://vuetifyjs.com/en/).
 
 ### Instalación
 Vue se instala como cualquier otro plugin:
 ```bash
-vue add vuetify
+npm create vuetify@latest
 ```
 
 ### Crear el layout
@@ -248,12 +225,7 @@ Para cada elemento que queramos añadir:
 </v-list-tile-title>
 ```
 
-Si no nos gusta Material Dessign tenemos alternativas como _**Buefy**_ (que proporciona componentes Vue basados en _Bulma_) y muchas otras.
-
-### Saber más
-* [VuetifyJS.com](https://vuetifyjs.com/es-MX/getting-started/quick-start)
-* [Vuetify Material Framework in 60 minutes](https://www.youtube.com/watch?v=GeUhmMJUFZQ)
-* [Intro and Overview of Vuetify.js (Build a CRUD client with Vue.js)](https://www.youtube.com/watch?v=5GfpGaHKfyo)
+Si no nos gusta _Material Dessign_ tenemos alternativas como _**Buefy**_ (que proporciona componentes Vue basados en _Bulma_) y muchas otras.
 
 ## Typescript
 Es Javascript al que se le ha incorporado tipado de datos y otras utilidades. En los [apuntes](./21-typescript.html) puedes ver una introducción a cómo usarlo en Vue y en Internet tienes infinidad de recursos para aprender más.
@@ -263,7 +235,9 @@ Esta tecnología permite que al obtener la página un robot (haciendo `curl miUR
 
 El problema que tiene una SPA es que las rutas no existen realmente sino sólo en el front y se generan asíncronamente, lo que dificulta a los robots obtener las páginas de las distintas rutas.
 
-SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la puede indexar. Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén bien posicionados en los buscadores.
+SSR hace que la primera vez que un usuario accede a la web se sirve entera desde el servidor y el resto de veces ya se sirve desde el front. Eso permite que a un robot se le sirva toda desde el servidor y la pueda indexar. 
+
+Esto no es algo que nos interese en todos los proyectos, sólo en aquellos en que sea importante que estén bien posicionados en los buscadores.
 
 Más info: [Server-Side Rendering](https://vuejs.org/v2/guide/ssr.html).
 
@@ -288,7 +262,7 @@ Con ella podemos acceder a los diferentes [dispositivos](https://vue-native.io/d
 [Ionic](https://ionicframework.com/) es posiblemente el Framework más utilizado para crear aplicaciones móviles nativas a partir de nuestra aplicación web. Está basado en Angular pero desde diciembre de 2020 puede usarse directamente en Vue, y es compatible con Vue3 y su _Composition API_.
 
 ## Nuxt
-[Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Vuex_,...) lo que nos facilita el desarrollo de nuestros proyectos.
+[Nuxt](https://nuxtjs.org/) es un framework basado en Vue que crea un _scaffolding_ de Vue con todo lo necesario para una aplicación media-grande (incluye rutas, _Pinia_,...) lo que nos facilita el desarrollo de nuestros proyectos.
 
 También hay otras librerías que nos pueden ser de utilidad como:
 - _[Framework7](https://framework7.io/)_ para crear una aplicación web que use 
@@ -297,10 +271,11 @@ También hay otras librerías que nos pueden ser de utilidad como:
 ## Conclusión
 Como vés existen infinidad de librerías alrededor de Vue para ofrecernos nuevas funcionalidades. Son tantas que el equipo de Vue ha creado [AwesomeVue](https://github.com/vuejs/awesome-vue) donde se registran parte de estas librerías y a donde podemos acceder en busca de cualquier cosa que necesitemos.
 
-## Angular
-Aunque el crecimiento de Vue es muy importante, Angular sigue siendo aún el framework Javascript más demandado por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
+## Angular y React
+Aunque el crecimiento de Vue es muy importante, Angular y React siguen siendo los frameworks Javascript más demandados por las empresas. Si quieres aprender aquí tienes algunos enlaces de utilidad:
 - [Documentación oficial de Angular](https://angular.io/)
 - [Ejemplo de CRUD con Angular](https://www.djamware.com/post/5e435e84a8d0ef4300ffc5f6/angular-9-tutorial-learn-to-build-a-crud-angular-app-quickly)
+- [Documentación oficial de React](https://es.react.dev/)
 - ...
 
 ## Vue con Laravel
@@ -319,6 +294,8 @@ Creamos el proyecto Laravel. Dentro del mismo instalamos los paquetes que necesi
 ```bash
 laravel new laravue
 cd laravue
+composer require laravel/ui
+php artisan ui vue --auth
 npm install
 npm i -S vue-router
 ```
@@ -327,17 +304,13 @@ npm i -S vue-router
 Configuramos el router de Vue en un nuevo fichero JS (por ejemplo **/resources/js/router.js**) y lo importamos en el fichero principal, **/resources/js/app.js** (el equivalente al **main.js** de un proyecto con _vue-cli_):
 ```javascript
 // Fichero app.js
-...
-import App from './views/App'
-import router from './router'
+import { createApp } from 'vue';
+import App from './views/App.vue';
+import router from './router';
 
-const app = new Vue({
-    el: '#app',
-    components: {
-        App
-    },
-    router,
-});
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
 ```
 
 Creamos el fichero **/resources/js/App.vue** que será el equivalente al **App.vue** de los proyectos _vue-cli_:
@@ -345,13 +318,11 @@ Creamos el fichero **/resources/js/App.vue** que será el equivalente al **App.v
 <template>
     <div>
         <h1>Vue Router Demo App</h1>
-
-        <p>
+        <nav>
             <router-link to="/">Home</router-link>
             ...
             <router-link to="/about">Sobre nosotros...</router-link>
-        </p>
-
+        </nav>
         <div class="container">
             <router-view></router-view>
         </div>
@@ -363,7 +334,7 @@ Creamos el fichero **/resources/js/App.vue** que será el equivalente al **App.v
 Creamos la vista principal en **/resources/views/spa.blade.php**:
 ```HTML
 <!DOCTYPE html>
-<html lang="{{ str_replace('_','-', app()->getLocale()) }}">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -389,8 +360,11 @@ Route::get('/{any}', 'SpaController@index')->where('any', '.*');
 para lo que creamos el controlador:
 ```bash
 php artisan make:controller SpaController
-https://vuex.vuejs.org/guide/forms.html```
+https://vuex.vuejs.org/guide/forms.html
+```
+
 y lo editamos:
+
 ```php
 <?php
 namespace App\Http\Controllers;
@@ -410,7 +384,7 @@ Ahora simplemente ejecutamos en la terminal
 ```bash
 npm run dev
 ```
-y ya tenemos la aplicación en marcha. Si aparece un error de _"The Mix manifest does not exist"_ ejecutaremos `npm run prod`  que crea el fichero _mix-manifest.json_.
+y ya tenemos la aplicación en marcha. Si aparece un error de _"The Mix manifest does not exist"_ ejecutaremos `npm run build`  que crea el fichero _mix-manifest.json_.
 
 Para que se compilen automáticamente los cambios que vayamos haciendo en Vue mientras desarrollamos el proyecto ejecutamos `npm run watch-poll` en una terminal. 
 
@@ -444,17 +418,19 @@ Route::resources(
 );
 ```
 
-
 Luego creamos el controlador y el recurso:
+
 ```php
 php artisan make:controller Api/AlumnosController --api
 ```
+
 La opción `--resource` (o `-r`) crea automáticamente los puntos de entrada para los métodos indicados. La opción `--api` es igual pero no crea funciones para los métodos _create_ ni _edit_.
 
 y el recurso:
 ```php
 php artisan make:resource AlumnoResource
 ```
+
 Un recurso es un modelo que se debe transformar a un objeto JSON (lo que necesitamos en una API).
 
 y editamos el controlador:

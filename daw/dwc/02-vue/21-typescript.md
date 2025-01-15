@@ -151,7 +151,8 @@ Un ejemplo es [Quicktype](https://quicktype.io/typescript) donde pegamos nuestro
 
 ## Tipado de _props_, _emits_, ...
 
-En Vue 3 con Javascript ya podíamos definir el tipo de las _props_ que pasamos a un componente. Por ejemplo, si queremos que una _prop_ sea un _string_ lo indicaremos en el objeto _props_:
+En Vue 3 con Javascript ya podíamos definir el tipo de las _props_ que pasamos a un componente, pero con Typescript esto es obligatorio. Por ejemplo:
+
 ```typescript
 export default defineComponent({
   props: {

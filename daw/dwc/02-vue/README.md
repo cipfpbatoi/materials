@@ -12,7 +12,7 @@ En este bloque vamos a conocer el framework **Vue** que es uno de los más utili
    - NOTA: para Vue 2 consultar [Vuex](./07-vuex.md)
 8. [Formularios](./08-forms.md)
 9. [Typescript](./21-typescript.md)
-10. [Testeando componentes](./0x-testing.md)
+10. [Testeando componentes](https://vuejs.org/guide/scaling-up/testing)
 11. [Y más...](./09-cosas.md)
 12. [Composition API](./10-vue3_composition_api.md)
 
