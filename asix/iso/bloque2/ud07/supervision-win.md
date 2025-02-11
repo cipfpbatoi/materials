@@ -1,6 +1,7 @@
 # Supervisión de un sistema Windows
 - [Supervisión de un sistema Windows](#supervisión-de-un-sistema-windows)
   - [Introducción](#introducción)
+  - [Herramientas y programas de monitorización](#herramientas-y-programas-de-monitorización)
   - [Administrador del servidor](#administrador-del-servidor)
   - [Administrador de tareas](#administrador-de-tareas)
     - [Servicios](#servicios)
@@ -12,14 +13,20 @@
   - [Windows Admin Center (WAC)](#windows-admin-center-wac)
 
 ## Introducción
-Los sistemas Windows nos proporcionan varias herramientas que podemos utilizar para supervisar y monitorizar el sistema. Las más importantes son:
-- El Administrador del servidor
-- El Administrador de tareas
-- El Monitor de recursos
-- El Visor de eventos
-- El monitor de confiabilidad
-- El monitor de rendimiento
-- Windows Admin Center (WAC)
+## Herramientas y programas de monitorización
+Windows incluye varias herramientas que nos permiten monitorizar el sistema:
+- **Administrador de tareas**: nos permite ver los procesos que se están ejecutando en el sistema, el rendimiento del sistema, la utilización de la red, ...
+- **Monitor de recursos**: nos permite ver el uso de CPU, memoria, disco y red
+- **Registro de eventos**: nos permite ver los eventos que se han producido en el sistema
+- **Monitor de rendimiento**: nos permite monitorizar el rendimiento del sistema y crear informes
+- Otras herramientas, como el _Monitor de confiabilidad_, el _Administrador del servidor_, ...
+
+Además, podemos instalar otras herramientas, tanto de Microsoft como de terceros, que nos permiten monitorizar el sistema, por ejemplo:
+- **Sysmon**: herramienta de Microsoft que monitoriza el sistema y crea informes
+- **Process Hacker**: herramienta que nos permite ver los procesos que se están ejecutando en el sistema y su rendimiento
+- **System Informer**: herramienta que nos permite ver información del sistema
+- **Wireshark**: herramienta que nos permite ver el tráfico de red
+- ...
 
 Para gestionar las actualizaciones dispone del servicio **Windows Update** y su herramienta gráfica de configuración.
 
@@ -77,7 +84,7 @@ Según su gravedad pueden ser:
 - advertencia: puede ser un problema
 - información: sólo se registra un suceso
 
-ampliaremos esta información en el apartado de [logs del sistema](logs-win.md). 
+Ampliaremos esta información en el apartado de [logs del sistema](logs-win.md). 
 
 ## Monitor de confiabilidad
 Muestra en un gráfico la confiabilidad del equipo, entre 1 (mínima) y 10 (máxima) en función de los problemas y cambios detectados a lo largo del tiempo.

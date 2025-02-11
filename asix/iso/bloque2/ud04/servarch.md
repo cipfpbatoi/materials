@@ -56,7 +56,9 @@ Para ello vamos a la OU donde queramos publicarla y escogemos `Nuevo -> Carpeta 
 NOTA: este proceso no crea la carpeta compartida. La debemos haber creado y compartido previamente
 
 ## Grupos de almacenamiento
-Los grupos de almacenamiento (_storage pools_) permiten virtualizar el almacenamiento de manera similar a los discos LVM de Linux. Los discos físicos se agrupan para crear _pools_ de almacenamiento que se usan para crear espacios de almacenamiento virtual.
+Los grupos de almacenamiento (_storage pools_) permiten virtualizar el almacenamiento de manera similar a los discos LVM de Linux. Los discos físicos se agrupan para crear grupos o _pools_ de almacenamiento que se usan para crear uno o más discos virtuales llamados _espacios de almacenamiento_.
+
+Un espacio de almacenamiento aparece en el _Administrador de discos_ como un disco normal en el que podemos crear volúmenes, formatearlos y asignarles una letra de unidad.
 
 Los pasos a realizar son:
 
@@ -73,7 +75,9 @@ Los pasos a realizar son:
   - Tamaño: el espacio que tendrá este disco virtual (del total del grupo) 
 - En el disco creado creamos un nuevo **volumen** como si se tratara de un disco real, al que se asignaremos el espacio que queramos y su sistema de ficheros (NTFS o ReFS)
 
-Podéis ver un ejemplo de uso de grupos de almacenamiento en las páginas [Grupos de almacenamiento](https://blog.ragasys.es/grupos-de-almacenamiento-storage-pool-en-ms-windows-server-2016) y [Espacio de almacenamiento](https://blog.ragasys.es/espacio-de-almacenamiento-storage-space-tipo-parity-o-raid-5-en-ms-windows-server-2016) de RAGASYS SISTEMAS o en muchas otras páginas en internet.
+Podéis consultar la [documentación oficial de Microsoft](https://learn.microsoft.com/es-es/windows-server/storage/storage-spaces/deploy-standalone-storage-spaces) para más información.
+
+Tenemos un ejemplo de uso de grupos de almacenamiento en las páginas [Grupos de almacenamiento](https://blog.ragasys.es/grupos-de-almacenamiento-storage-pool-en-ms-windows-server-2016) y [Espacio de almacenamiento](https://blog.ragasys.es/espacio-de-almacenamiento-storage-space-tipo-parity-o-raid-5-en-ms-windows-server-2016) de RAGASYS SISTEMAS o en muchas otras páginas en internet.
 
 Los grupos de almacenamiento nos permiten realizar en caliente:
 - añadir o eliminar discos físicos de un grupo de almacenamiento (lo que cambiará su tamaño)
@@ -82,8 +86,15 @@ Los grupos de almacenamiento nos permiten realizar en caliente:
 
 También permiten, si en nuestro grupo de almacenamiento tenemos discos tanto HDD como SSD, crear discos por capas que nos permita utilizar volúmenes que requieran mucha velocidad utilizando discos SSD y volúmenes que no requieran tanta velocidad utilizar los discos HDD. De manera interna al crear un disco por capas con diferente hardware (HDD y SSD) almacenará los datos que se estén utilizando con mucha frecuencia en el disco SSD para que funcionen más eficientemente y los que se usen con menos frecuencia en el disco HDD.
 
-Podemos crear un espacio de almacenamiento con Powershell:
+Podemos crear un grupo de almacenamiento con Powershell:
 ```powershell
 $MyPhysicalDisks = Get-PhysicalDisk -CanPool $true
-NewStoragePool -FriendlyName MiGrupoAlm -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks MyPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
+NewStoragePool -FriendlyName MyStoragePool1 -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks MyPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
 ```
+
+Y crearemos en él un disco virtual de 50 GB:
+```powershell
+New-VirtualDisk –StoragePoolFriendlyName MyStoragePool1 –FriendlyName VirtualDisk1 –Size (50GB)
+```
+
+Una vez creado ya aparece el disco virtual _VirtualDisk1_ en el _Administrador de discos_ y podemos crear volúmenes en él o bien hacerlo desde Powershell.

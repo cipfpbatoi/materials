@@ -3,6 +3,7 @@
   - [Introducción](#introducción)
   - [Tareas del administrador del sistema](#tareas-del-administrador-del-sistema)
   - [Conceptos relacionados con la supervisión](#conceptos-relacionados-con-la-supervisión)
+  - [Programas de monitorización](#programas-de-monitorización)
 
 
 ## Introducción
@@ -46,3 +47,18 @@ Algunas definiciones de conceptos relacionados con el rendimiento del sistema so
 - se desea ajustar un sistema informático (operaciones de mantenimiento)
 - se va a poner en producción un nuevo equipo
 - hay problemas con un equipo o no ofrece un buen rendimiento
+
+## Herramientas y programas de monitorización
+Windows incluye varias herramientas que nos permiten monitorizar el sistema:
+- **Administrador de tareas**: nos permite ver los procesos que se están ejecutando en el sistema, el rendimiento del sistema, la utilización de la red, ...
+- **Monitor de recursos**: nos permite ver el uso de CPU, memoria, disco y red
+- **Registro de eventos**: nos permite ver los eventos que se han producido en el sistema
+- **Monitor de rendimiento**: nos permite monitorizar el rendimiento del sistema y crear informes
+- Otras herramientas, como el _Monitor de confiabilidad_, el _Administrador del servidor_, ...
+
+Además, podemos instalar otras herramientas, tanto de Microsoft como de terceros, que nos permiten monitorizar el sistema, por ejemplo:
+- **Sysmon**: herramienta de Microsoft que monitoriza el sistema y crea informes
+- **Process Hacker**: herramienta que nos permite ver los procesos que se están ejecutando en el sistema y su rendimiento
+- **System Informer**: herramienta que nos permite ver información del sistema
+- **Wireshark**: herramienta que nos permite ver el tráfico de red
+- ...

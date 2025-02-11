@@ -4,6 +4,12 @@
 
 ## Introducción
 
+- Linux
+  - who, last
+  - auth.log, syslog
+  - Lynis. Además genera informe de recomendaciones
+
+
 Enlaces:
 - [20 herramientas de línea de comandos para monitorear el rendimiento de Linux](https://es.linux-console.net/?p=788#gsc.tab=0)
 - [13 Herramientas de supervisión del rendimiento de Linux - Parte 2](https://es.linux-console.net/?p=952#gsc.tab=0)
