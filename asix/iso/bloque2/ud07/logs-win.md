@@ -4,6 +4,7 @@
   - [El Visor de eventos](#el-visor-de-eventos)
   - [Propiedades de un evento](#propiedades-de-un-evento)
     - [Propiedades del archivo de registro](#propiedades-del-archivo-de-registro)
+  - [Creación de Alertas con el Visor de Eventos](#creación-de-alertas-con-el-visor-de-eventos)
 
 ## Introducción
 Continuamente se producen eventos en el sistema, algunos normales (como un inicio de sesión o un acceso al disco) y otros erróneos (como un error de una aplicación o un intento inválido de inicio de sesión). Esos eventos o eventos se guardan en los ficheros de _log_ o registros para su posterior análisis por parte del administrador del sistema.
@@ -50,3 +51,19 @@ Si seleccionamos un registro en el Visor de eventos y desde su menú contextual 
 Desde aquí podemos ver donde se guarda el archivo y su tamaño e indicamos qué hacer cuando llego a su tamaño máxima, si queremos sobrescribir los eventos más antiguos o guardar una copia del registro.
 
 También desde su menú contextual tenemos la opción de vaciar registro que nos permite guardar una copia del registro antes de vaciarlo o simplemente borrar todo su contenido. La opción de Guardar eventos guarda una copia del registro pero sin vaciarlo posteriormente.
+
+## Creación de Alertas con el Visor de Eventos
+
+Windows permite crear alertas cuando se detectan eventos críticos.
+
+Ejemplo: Notificación de intentos de acceso fallidos (ID 4625)
+- Win + R → eventvwr
+- Registros de Windows → Seguridad
+- Buscar eventos con ID 4625 (inicio de sesión fallido).
+- Clic derecho → Adjuntar tarea a este evento.
+- Configurar una acción (enviar correo, ejecutar un script, mostrar mensaje).
+
+Casos de uso:
+- Detectar intentos de acceso no autorizados.
+- Supervisar cambios en cuentas de usuario.
+- Alertar sobre errores críticos del sistema.

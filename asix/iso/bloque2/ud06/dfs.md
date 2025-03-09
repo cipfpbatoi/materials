@@ -4,9 +4,14 @@
   - [Replicación DFS](#replicación-dfs)
 
 ## Introducción
-El rol **Espacios de nombres DFS** (_Distributed File System)_ de Windows Server permite mostrar carpetas compartidas ubicadas en diferentes servidores como una única estructura jerárquica de carpetas, de forma que el usuario ve en una vista única carpetas compartidas en diferentes servidores. Esto permite referenciar todos los recursos compartidos de una manera uniforme, sin importar dónde estén físicamente.
+El rol **Espacios de nombres DFS** (_Distributed File System)_ de Windows Server permite mostrar carpetas compartidas ubicadas en diferentes servidores como una única estructura jerárquica de carpetas, de forma que el usuario ve en una vista única carpetas compartidas en diferentes servidores. Esto permite referenciar todos los recursos compartidos de una manera uniforme, sin importar dónde estén físicamente. Esto proporciona importantes ventajas:
 
-Además proporciona redundancia y tolerancia a fallos ya que permite la creación de múltiples réplicas de los datos en diferentes servidores. Si un servidor está fuera de servicio, los usuarios pueden acceder a la información desde otra réplica.
+- no tenemos que saber en qué servidor en concreto se encuentra una carpeta compartida ya que hay un único punto donde están todas ellas
+- si cambiamos una carpeta compartida a otro servidor sólo hay que cambiar su configuración de DFS pero la ruta que deben poner los usuarios para acceder a la ella continúa siendo la misma
+
+Además con el rol de _Replicación DFS_ proporciona redundancia y tolerancia a fallos ya que permite la creación de múltiples réplicas de los datos en diferentes servidores con lo que conseguimos:
+- mejorar el rendimiento: los accesos a los datos se balancean entre los diferentes servidores permitiendo más accesos simultáneos
+- mejorar la fiabilidad: si un servidor está fuera de servicio, los usuarios pueden seguir accediendo a la información desde otra réplica
 
 ![Espacio de nombres DFS](https://learn.microsoft.com/es-es/windows-server/storage/dfs-namespaces/media/dfs-overview.png)
 
@@ -36,6 +41,6 @@ Si hemos instalado _Espacios de nombres DFS_ se administra igual que ese servici
 
 Veremos que ya hay creado un grupo de replicación llamado _Domain System Volume_ que es el encargado de replicar la carpeta SYSVOL. Crearemos un nuevo grupo de replicación y en el asistente indicaremos qué servidores forman parte del mismo y qué carpetas queremos replicar.
 
-Podemos ampliar la información en la [web de Microsoft](https://learn.microsoft.com/es-es/windows-server/storage/dfs-replication/dfsr-overview).
+Podemos ampliar la información en la [web de Microsoft](https://learn.microsoft.com/es-es/windows-server/storage/dfs-replication/dfsr-overview) y en infinidad de páginas y vídeos de internet como este de [Network Faculty](https://www.youtube.com/watch?v=GFVOTywGAgE&t=377s).
 
 Una alternativa es usar _Azure File Sync_ que permitiría tener los archivos en la nube y cada servidor local tendrá sólo una caché de los últimos consultados.

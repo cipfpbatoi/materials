@@ -23,5 +23,6 @@ Se trata de una herramienta que incluye Windows Server para realizar copias de s
 A la hora de instalarlo tened en cuenta que NO se trata de un rol sino de una CARACTERÍSTICA por lo que deberemos instalarlo desde allí.
 
 En internet podéis encontrar gran cantidad de tutoriales sobre esta herramienta, como:
+- [Microsoft: Copias de seguridad de Windows Server](https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-backing-up-a-full-server)
 - [Vembu: Windows Server Backup: Installation, Features and Limitations](https://www.vembu.com/blog/windows-server-backup-installation-features-limitations/)
 - [MiniTool: Windows Server Backup](https://www.minitool.com/backup-tips/windows-server-backup.html)

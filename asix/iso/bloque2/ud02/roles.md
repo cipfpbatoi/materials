@@ -135,6 +135,8 @@ Si estamos degradando el último controlador del dominio se eliminará el mismo,
 
 Para eliminar un controlador de dominio desde Powershell ejecutaremos `Uninstall-ADDSDomainController`.
 
+En la [web de Microsoft](https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/deploy/install-a-replica-windows-server-2012-domain-controller-in-an-existing-domain--level-200-) hay un artículo que detalla todo el proceso.
+
 ### Añadir un cliente al dominio
 En primer lugar hemos de asegurar la correcta conectividad de cliente y servidor, es decir:
 - que sus IPs pertenezcan a la misma red

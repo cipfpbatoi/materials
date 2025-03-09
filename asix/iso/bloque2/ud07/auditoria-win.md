@@ -22,16 +22,16 @@ Las **Directivas de auditoría** de Windows incluyen las siguientes categorías:
 - Eventos de sistema: registra el arranque, cierre y reinicio del sistema
 - Administración de cuentas: registra la creación, modificación o eliminación de cuentas de usuario, equipo o grupo
 
-Por defecto todas las auditorías están desactivadas pero podemos activar cualquiera de ellas creando una nueva GPO y configurando la auditoría que queramos en el `Editor de administración de directivas de grupo->Configuración de equipo->Directivas->Configuración de Windows->Configuración de seguridad->Directivas locales->Directiva de auditoría`.
+Por defecto todas las auditorías están desactivadas pero podemos activar cualquiera de ellas creando una nueva GPO y configurando la auditoría que queramos en el `Editor de administración de directivas de grupo -> Configuración de equipo -> Directivas -> Configuración de Windows -> Configuración de seguridad -> Directivas locales -> Directiva de auditoría`.
 
-Si queremos activarlas para un equipo lo haremos desde `Inicio->Herramientas administrativas->Directivas de seguridad local->_Configuración de seguridad_->_Directivas locales_->Directiva de auditoría`.
+Si queremos activarlas para un equipo lo haremos desde `Inicio -> Herramientas administrativas -> Directivas de seguridad local -> _Configuración de seguridad_ -> _Directivas locales_ -> Directiva de auditoría`.
 
 ![Directiva de auditoría](media/DirectivaAuditoria.png)
 
 Los eventos generados por las auditorías podremos verlos en el **Visor de eventos** de Windows, dentro de _Registros de Windows_->_Seguridad_.
 
 ## Auditoría avanzada
-Si queremos tener más control sobre lo que se audita lo haremos desde `Inicio->Herramientas administrativas->Directivas de seguridad local->Configuración de seguridad->Configuración de directiva de auditoría avanzada`.
+Si queremos tener más control sobre lo que se audita lo haremos desde `Inicio -> Herramientas administrativas -> Directivas de seguridad local -> Configuración de seguridad -> Configuración de directiva de auditoría avanzada`.
 
 En realidad cada categoría básica corresponde con varias de la categoría avanzada (es similar a los permisos donde normalmente usamos permisos estándar cada uno de los cuales corresponde a varios permisos especiales).
 

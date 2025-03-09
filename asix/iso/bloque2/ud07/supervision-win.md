@@ -1,6 +1,10 @@
-# Supervisión de un sistema Windows
-- [Supervisión de un sistema Windows](#supervisión-de-un-sistema-windows)
+# Monitorización de un sistema Windows
+- [Monitorización de un sistema Windows](#monitorización-de-un-sistema-windows)
   - [Introducción](#introducción)
+    - [Tareas del administrador del sistema](#tareas-del-administrador-del-sistema)
+    - [Conceptos relacionados con la supervisión](#conceptos-relacionados-con-la-supervisión)
+    - [Parámetros Clave a Supervisar](#parámetros-clave-a-supervisar)
+    - [Escenarios Comunes de Problemas](#escenarios-comunes-de-problemas)
   - [Herramientas y programas de monitorización](#herramientas-y-programas-de-monitorización)
   - [Administrador del servidor](#administrador-del-servidor)
   - [Administrador de tareas](#administrador-de-tareas)
@@ -13,6 +17,77 @@
   - [Windows Admin Center (WAC)](#windows-admin-center-wac)
 
 ## Introducción
+
+Es imprescindible conocer lo que está sucediendo en el sistema tanto para resolver problemas como para mejorar el rendimiento del mismo. Para ello comprobaremos el rendimiento del sistema antes de ponerlo en producción y lo volveremos a comprobar si a lo largo de la vida del equipo hay problemas o si llega un momento en el que no responde con la suficiente rapidez a su carga de trabajo. Esto nos permitirá conocer qué elemento es el cuello de botella que debemos mejorar para mejorar el funcionamiento general del equipo.
+
+### Tareas del administrador del sistema
+Las tareas del administrador de un sistema informático incluyen:
+- Es el responsable de la instalación del equipamiento necesario, tanto de hardware como de software: estudia las necesidades de la empresa y decide en cada caso el equipamiento a adquirir y cómo hacerlo
+- Instala y configura el equipamiento: prepara los equipos, instala y configura el sistema operativo, los distintos drivers necesarios y los diferentes programas que necesita el usuario
+- Instala (y/o configura para que se instalen) las actualizaciones del sistema, de drivers y de firmwares: siempre deben instalarse las actualizaciones de seguridad; las otras si aportan alguna mejora
+- Gestiona el sistema: cuentas de usuarios, recursos del sistema, ...
+- Es el responsable del correcto funcionamiento del sistema y de su buen rendimiento: realiza mantenimientos preventivos, monitoriza el funcionamiento del sistema, actualiza equipos y/o programas cuando es necesario, ...
+- Resuelve las incidencias que se produzcan, tanto de hardware como de software
+- Diseña e implementa la política de copias de seguridad de los datos
+- Diseña e implementa la política de respuesta ante fallos en cualquier elemento del sistema: imágenes de discos, equipos de respaldo, ...
+- Es el responsable de la seguridad del sistema: impide accesos no autorizados (tanto externos como internos), evita las fugas de información, ...
+- Gestiona la documentación técnica, manuales y políticas de TI
+
+Dependiendo del tamaño de la empresa tendrá un equipo que le ayude a la realización de estas tareas pero él es el responsable de que todo funcione correctamente.
+
+Para realizar este trabajo es necesario que conozca qué está pasando en el sistema en cada momento, así como que recoja información del mismo para poder consultarla cuando se detecte algún problema. Por tanto debe monitorizar:
+- el funcionamiento de los distintos equipos y su rendimiento
+- el estado de la red
+- el estado de los diferentes servicios y procesos
+- el almacenamiento
+- etc
+
+Por tanto la rutina diaria del administrador de sistemas incluye el monitoreo del sistema y la solución de problemas.
+
+### Conceptos relacionados con la supervisión
+Algunas definiciones de conceptos relacionados con el rendimiento del sistema son:
+- **Evaluación del rendimiento de un sistema informático**: es una medida de la calidad en el uso del hardware respecto a un conjunto de programas denominado "carga del sistema" donde puede existir interacción con usuarios.
+- **Carga del sistema**: conjunto de programas que se ejecutan en el sistema para satisfacer las necesidades de los usuarios. Suele ser un conjunto complejo y variable en el tiempo.
+- **Benchmark** (en castellano, comparativa o análisis): programa informático o un conjunto de programas que tienen como objetivo estimar el rendimiento de un elemento concreto o la totalidad del sistema y ​​poder comparar los resultados con máquinas similares.
+- **Cuello de botella**: situación que se da cuando un dispositivo del sistema informático recibe muchas peticiones y está muy saturado de trabajo, mientras que el resto de dispositivos están ociosos esperando su respuesta. Se trata de encontrar el dispositivo en el que se encuentra el cuello de botella porque mejorando su rendimiento mejorará el de todo el sistema.
+
+¿Cuándo debemos realizar una evaluación del rendimiento? Puede ser útil evaluar el rendimiento de un equipo cuando:
+- se desea diseñar un sistema informático nuevo
+- se desea seleccionar un sistema informático entre varias alternativas
+- se desea planificar la capacidad de un sistema informático
+- se desea ajustar un sistema informático (operaciones de mantenimiento)
+- se va a poner en producción un nuevo equipo
+- hay problemas con un equipo o no ofrece un buen rendimiento
+
+### Parámetros Clave a Supervisar
+Lo más importante a supervisar en un sistema informático son:
+- CPU:
+  - Uso promedio y picos.
+  - Identificar procesos que sobrecargan el procesador.
+- Memoria (RAM):
+  - Uso total y disponible.
+  - Problemas de fuga de memoria (leak).
+- Disco:
+  - Velocidad de lectura/escritura.
+  - Fragmentación.
+- Red:
+  - Uso de ancho de banda.
+  - Conexiones activas.
+- Servicios y aplicaciones críticas:
+  - Estado y rendimiento.
+
+### Escenarios Comunes de Problemas
+Algunos de los problemas más comunes que pueden surgir en un sistema informático son:
+- Problemas de rendimiento:
+  - Ejemplo: El sistema va lento debido a un proceso que consume mucha CPU.
+  - Solución: Identificar y cerrar el proceso.
+- Errores de hardware:
+  - Ejemplo: El disco duro está a punto de fallar.
+  - Solución: Identificar errores en el visor de eventos y realizar backups.
+- Ataques de seguridad:
+  - Ejemplo: Intentos de inicio de sesión no autorizados.
+  - Solución: Revisar el registro de seguridad y reforzar políticas.
+
 ## Herramientas y programas de monitorización
 Windows incluye varias herramientas que nos permiten monitorizar el sistema:
 - **Administrador de tareas**: nos permite ver los procesos que se están ejecutando en el sistema, el rendimiento del sistema, la utilización de la red, ...
@@ -36,7 +111,20 @@ Desde aquí tenemos un completo resumen del estado general de cada servidor que 
 ![Administrador del servidor](./media/administrador-servidor.png)
 
 ## Administrador de tareas
-En sistemas Windows podemos obtener importante información del `Administrador de tareas de Windows`, que nos muestra los programas, procesos y servicios que están en ejecución. Tiene varias pestañas con información sobre:
+En sistemas Windows podemos obtener importante información del `Administrador de tareas de Windows`, que nos muestra los programas, procesos y servicios que están en ejecución. 
+
+Sus funciones principales son:
+- Supervisión del uso de recursos.
+- Control de procesos y servicios en ejecución.
+- Análisis del rendimiento del sistema.
+
+Podemos acceder a él rápidamente pulsando:
+- `Ctrl + Alt + Supr` y seleccionando _Administrador de tareas_ 
+- `Ctrl + Shift + Esc`
+- `Win + X` y seleccionando _Administrador de tareas_ 
+-  o bien con el comando `taskmgr`.
+-  
+Tiene varias pestañas con información sobre:
 - **Procesos**: podemos ver los programas que se están ejecutando, tanto los abiertos por nosotros (_aplicaciones_) como los que están en segundo plano y los de Windows. De cada proceso vemos su nombre, el porcentaje de CPU está consumiendo ahora y la memoria que ocupa. Desde ahí podemos finalizar cualquier proceso.
 
 ![Administrador de tareas - Procesos](media/TaskManager-Procesos.png)

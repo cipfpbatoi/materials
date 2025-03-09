@@ -2,6 +2,8 @@
 - [Añadir otro DC a un dominio](#añadir-otro-dc-a-un-dominio)
   - [Introducción](#introducción)
   - [Instalación y configuración](#instalación-y-configuración)
+  - [Instalación desde la terminal](#instalación-desde-la-terminal)
+  - [Degradar un DC](#degradar-un-dc)
 
 
 ## Introducción
@@ -34,3 +36,8 @@ El resto del proceso es similar al del primer DC y al finalizar ya tendremos 2 D
 
 ![Domain Controllers](media/BDC-UsrAD.png)
 
+## Instalación desde la terminal
+Vimos cómo hacerlo en la [UD 2](../ud02/roles.md#instalar-el-dominio-desde-la-terminal).
+
+## Degradar un DC
+También lo vimos en la [UD 2](../ud02/roles.md#degradar-un-controlador-de-dominio).

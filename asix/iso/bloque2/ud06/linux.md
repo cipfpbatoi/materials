@@ -5,14 +5,14 @@
     - [Instalación](#instalación)
     - [Configuraciones adicionales](#configuraciones-adicionales)
     - [Sincronizar la hora](#sincronizar-la-hora)
+  - [Al instalar Ubuntu](#al-instalar-ubuntu)
+  - [Canonical _ADsys_](#canonical-adsys)
   - [pbis-open](#pbis-open)
     - [Configuraciones adicionales](#configuraciones-adicionales-1)
   - [Iniciar sesión en el dominio desde el entorno gráfico](#iniciar-sesión-en-el-dominio-desde-el-entorno-gráfico)
       - [Ligth Display Manager](#ligth-display-manager)
       - [Linux Mint](#linux-mint)
       - [Lubuntu](#lubuntu)
-  - [Al instalar Ubuntu](#al-instalar-ubuntu)
-  - [Canonical _ADsys_](#canonical-adsys)
 
 ## Introducción
 Aunque no es lo más habitual en ocasiones debemos añadir clientes GNU/Linux al dominio. Hay diferentes formas de hacerlos:
@@ -47,7 +47,7 @@ sudo realm -v discover midominio.lan
 
 Debe mostrar el nombre del dominio y la IP del DC.
 
-> NOTA: si eres el usuario _root_ y no encuentra la orden puede ser porque para convertirte el _root_ hayas ejecutado `su` en lugar de `su -`
+> NOTA: si eres el usuario _root_ y no encuentra la orden puede ser porque para convertirte el _root_ no hayas ejecutado `su -` sino solamente `su`.
 
 Para añadir el equipo al dominio ejecutamos:
 ```bash
@@ -101,8 +101,33 @@ Después reiniciaremos el servicio **ntp**. Podemos comprobar la sincronización
 
 Fuente: [EDUCATICA!](https://www.educatica.es/informatica/anadiendo-un-sistema-gnu-linux-al-dominio/)
 
+## Al instalar Ubuntu
+El instalador de _Ubuntu Desktop_ incluye una opción para añadir el equipo que estamos instalando en el dominio en el proceso de instalación del sistema operativo:
+
+![Añadir equipo a AD](media/InstalUbuntuADoption.png)
+
+Si marcamos esta opción en la siguiente pantalla nos pide el nombre del dominio y una cuenta para añadir el equipo al dominio (normalmente el del Administrador):
+
+![Configurar AD](media/InstalUbuntuADconfig.png)
+
+## Canonical _ADsys_
+**NOTA**: esta librería sólo está disponible para suscriptores de [Ubuntu Advantage](https://ubuntu.com/advantage).
+
+Desde Ubuntu Desktop 22.04 se incluye en el sistema esta librería que es un cliente de AD y que proporciona muchas más funcionalidades que las que teníamos sólo con SSSD (autenticación y unas pocas GPO).
+
+ADsys consta de un demonio (_adsysd_), que implementa la autenticación (con Samba y Kerberos) y las GPO, y una CLI (_adsysctl_) que nos permite controlar dicho demonio.
+
+Este paquete complementa a _SSSD_ y _PAM_ proporcionando:
+- soporte nativo de GPO, tanto de _Equipo_ como de _Usuario_
+- gestión de privilegios pudiendo otorgar o revocar privilegios para el usuario local o cualquier usuario o grupo de AD
+- ejecución de scripts al inicio o fin de sesión o de arranque de la máquina
+
+Para usar GPO debemos importar en AD las [plantillas adml o admx](https://github.com/ubuntu/adsys/tree/main/policies).
+
+Al igual que en Windows hay GPO tanto de _Equipo_ como de _Usuario_ que se aplican al cargar e sistema (_equipo_) o al iniciar la sesión (_usuario_).
+
 ## pbis-open
-El paquete PBIS (_PowerBroker Identity Services) es un script realizado por _Beyond Trust_ que automáticamente descarga los paquetes necesarios y configura los ficheros por nosotros. 
+El paquete PBIS (_PowerBroker Identity Services) es un script realizado por _Beyond Trust_ que automáticamente descarga los paquetes necesarios y configura los ficheros por nosotros. Sin embargo este paquete ha sido abandonado desde hace unos años por lo que **no es recomendable** su uso en sistemas recientes.
 
 Para que funcione debemos tener instalado el paquete _ssh_.
 
@@ -207,28 +232,3 @@ MinimumUid=1000
 MaximumUid=9999999999
 RememberLastUser=true
 ```
-
-## Al instalar Ubuntu
-El instalador de _Ubuntu Desktop_ incluye una opción para añadir el equipo que estamos instalando en el dominio en el proceso de instalación del sistema operativo:
-
-![Añadir equipo a AD](media/InstalUbuntuADoption.png)
-
-Si marcamos esta opción en la siguiente pantalla nos pide el nombre del dominio y una cuenta para añadir el equipo al dominio (normalmente el del Administrador):
-
-![Configurar AD](media/InstalUbuntuADconfig.png)
-
-## Canonical _ADsys_
-**NOTA**: esta librería sólo está disponible para suscriptores de [Ubuntu Advantage](https://ubuntu.com/advantage).
-
-Desde Ubuntu Desktop 22.04 se incluye en el sistema esta librería que es un cliente de AD y que proporciona muchas más funcionalidades que las que teníamos sólo con SSSD (autenticación y unas pocas GPO), aunque también puede instalarse en la versión 20.04.
-
-ADsys consta de un demonio (_adsysd_), que implementa la autenticación (con Samba y Kerberos) y las GPO, y una CLI (_adsysctl_) que nos permite controlar dicho demonio.
-
-Este paquete complementa a _SSSD_ y _PAM_ proporcionando:
-- soporte nativo de GPO, tanto de _Equipo_ como de _Usuario_
-- gestión de privilegios pudiendo otorgar o revocar privilegios para el usuario local o cualquier usuario o grupo de AD
-- ejecución de scripts al inicio o fin de sesión o de arranque de la máquina
-
-Para usar GPO debemos importar en AD las [plantillas adml o admx](https://github.com/ubuntu/adsys/tree/main/policies).
-
-Al igual que en Windows hay GPO tanto de _Equipo_ como de _Usuario_ que se aplican al cargar e sistema (_equipo_) o al iniciar la sesión (_usuario_).
