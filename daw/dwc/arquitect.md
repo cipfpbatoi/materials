@@ -11,6 +11,7 @@
     - [Limitaciones de JavaScript](#limitaciones-de-javascript)
     - [Frameworks y librerías de JavaScript](#frameworks-y-librerías-de-javascript)
   - [Evolución de las aplicaciones web](#evolución-de-las-aplicaciones-web)
+    - [Bundlers](#bundlers)
 
 ## Introducción
 La _World Wide Web_ (WWW) es un sistema de distribución de documentos de hipertexto o hipermedia interconectados y accesibles a través de Internet. Con un navegador web, un usuario visualiza sitios web compuestos de páginas web que pueden contener texto, imágenes, vídeos u otros contenidos multimedia, y navega a través de esas páginas usando hiperenlaces. Fue inventada por Tim Berners-Lee en 1989 mientras trabajaba en el CERN.
@@ -114,9 +115,11 @@ Si tenemos tantas opciones, ¿cuál es la mejor? Dependerá de las necesidades d
 
 En general, las aplicaciones web progresivas y las aplicaciones web híbridas son las más recomendadas, ya que ofrecen una experiencia de usuario similar a la de las aplicaciones nativas y son más fáciles de desarrollar y mantener que las aplicaciones nativas.
 
+### Bundlers
 Respecto al despliegue de las aplicaciones, antes se subía al servidor de producción el fichero index.html y el resto de ficheros (html, js, css, ...) que formaban la aplicación. Ahora lo normal es utilizar herramientas llamadas "bundlers" que:
-- unifican en uno todos los ficheros js y css
+- unifican en un único fichero todos los ficheros js y lo mismo con los css
 - minimizan el código js resultante lo que reduce el tamaño del fichero y mejora la velocidad de carga
 - transpilan el código js a una versión que todos los navegadores entiendan
 - eliminan código duplicado o innecesario de las librerías que se usan
-Una vez hecho esto se sube el resultado al servidor de producción.
+
+Una vez hecho esto se sube el resultado al servidor de producción. Uno de los _bundlers_ más utilizados es **Webpack**. En [esta página](https://sergiodxa.com/articles/que-es-un-bundler-de-js) puedes ampliar la información sobre qué es un bundler y su evolución.

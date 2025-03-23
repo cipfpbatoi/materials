@@ -24,7 +24,7 @@ Al menos debemos tener _Chrome_ y _Firefox_ que son los más utilizados y tambi�
 Trabajaremos principalmente con la consola del navegador (suele abrirse con F12) pero cuando veamos Ajax necesitaremos un cliente REST (yo usaré _RESTClient_ pero hay muchos) y en el bloque de Vue necesitaremos las _Vue DevTools_ para depurar nuestro código.
 
 ### Editor
-Yo usaré _Visual Studio Code_ pero cada uno puede usar el que más le guste, como _Sublime Text_, _Atom_, _Notepad++_ o incluso grandes entornos como _Eclipse_ o _Netbeans_ aunque no utiilizaremos la mayoría de herramientas que incluyen por lo que es matar moscas a cañonazos.
+Yo usaré _Visual Studio Code_ pero cada uno puede usar el que más le guste, como _Sublime Text_, _Atom_, _Notepad++_ o incluso grandes entornos como _Eclipse_ o _Netbeans_ aunque no utilizaremos la mayoría de herramientas que incluyen por lo que es matar moscas a cañonazos.
 
 _Visual Studio Code_ puede descargarse desde [https://code.visualstudio.com/](https://code.visualstudio.com/).
 
@@ -33,27 +33,27 @@ Para programar Javascript no necesitamos ninguna extensión adicional aunque es 
 
 También es recomendable instalar _Prettier_ para formatear correctamente los ficheros y _Live Server_ para probar la web en un servidor local. 
 
-Cuando veamos **Vue** habrá que instalar la extensión que nos permita trabajar de forma cómoda. En VSC se llama _Volar_.
+Cuando veamos **Vue** habrá que instalar la extensión que nos permita trabajar de forma cómoda. En VSC se llama _Vue-Official_.
 
 ### npm / yarn
-Tanto para Vue como para ejecutar los tests de nuestros programas necesitaremos _npm_, el gestor de paquetes de **_NodeJS_**. 
+Además cuando nuestras aplicaciones crezcan usaremos herramientas como _Vite_ para facilitar su gestión y mejorar su rendimiento. En algunos casos también pasaremos tests a nuestro código para asegurar su buen funcionamiento. Para usar estas herramientas necesitaremos _npm_, el gestor de paquetes de **_NodeJS_**. 
 
 En los apuntes tenéis [cómo instalarlo](#instalar-npm).
 
 ### git
 Utilizaremos _git_ para el control de versiones por lo que deberemos instalarlo. Para instalarlo simplemente habrá que instalar el paquete git (`apt-get install git`).
 
-Quien no quiera usar la consola y prefiera hacerlo desde el editor deberá instalar la extensión correspondiente
+Quien no quiera usar la consola y prefiera hacerlo desde el editor deberá instalar la extensión correspondiente.
 
 ### Vite
-Es un _module bundler_ (como _Webpack_). Su función es unir todo el código de los distintos ficheros javascript en un único fichero que es el que se importa en el _index.html_ y lo mismo con los ficheros CSS.
+Es una herramienta de construcción de aplicaciones que incluye un servidor de desarrollo para probar nuestro código y un _module bundler_ llamado _Rollup_ (similar a _Webpack_). Su función es unir todo el código de los distintos ficheros javascript en un único fichero que es el que se importa en el _index.html_ y lo mismo con los ficheros CSS.
 
-Además proporcionan otras ventajas:
+Además los _bundlers_ proporcionan otras ventajas:
 - transpilan el código, de forma que podemos usar sentencias javascript que aún no soportan muchos navegadores ya que se convertirán a sentencias que hacen lo mismo pero con código legacy
 - minimizan y optimizan el código para que ocupe menos y su carga sea más rápida
 - ofuscan el código al minimizarlo lo que dificulta que el usuario pueda ver en la consola lo que hace el programa y manipularlo
 
-Además _Vite_ incorpora un servidor de desarrollo para hacer más cómoda la creación y prueba de nuestros proyectos.
+_Vite_ también incorpora un servidor de desarrollo para hacer más cómoda la creación y prueba de nuestros proyectos.
 
 ### Tests
 Para testear nuestros programas utilizaremos [_Vitest_](https://vitest.dev/) que es una adaptación para _Vite_ de la librería para test [_Jest_](https://jestjs.io/es-ES/). Lo instalaremos con npm de manera global para poderlo usar en distintos proyectos. Podéis ver un breve resumen de cómo usar test en los [apuntes](./tests.md).
@@ -74,18 +74,25 @@ npm -v
 También podemos descargarlo directamente desde [NodeJS.org](https://nodejs.org/es/download/), descomprimir el paquete e instalarlo (`dpkg -i nombre_del_paquete`).
 
 ### Instalar librerías con _npm_
-Una vez instalado podemos crear un nuevo proyecto con el comando `npm init`. Esto crea una carpeta para el nuevo proyecto y dentro de ella el fichero `package.json`.
+Una vez instalado podemos crear un nuevo proyecto con el comando `npm init`. Esto crea una carpeta para el nuevo proyecto y dentro de ella el fichero `package.json` con información del proyecto y de sus dependencias.
 
 los comandos básicos de npm son `install` para instalar una librería y `remove` o `uninstall` para eliminarla. Para actualizar un paquete usamos el comando `update`. 
 
-Al instalar paquetes en algunos casos usaremos 2 opciones:
+Al instalar paquetes en algunos casos usaremos opciones:
 - `-g`: instala la librería de forma global para que esté disponible en todos nuestros proyectos no sólo en el proyecto actual
-- `-D`: indica que la librería a instalar es una dependencia de desarrollo y, por tanto, no se incluirá en el código generado para producción.
+- `--dev` o `-D`: indica que la librería a instalar es una dependencia de desarrollo y, por tanto, no se incluirá en el código generado para producción pero sí en el código de desarrollo
+- `--save` o `-S`: indica que la librería a instalar es una dependencia de producción. Es la copción por defecto por lo que si no ponemos ninguna opción es como poner `-D`. Tanto en este caso como en el anterior se incluirá en el fichero `package.json`
 
 Vamos a instalar ahora globalmente la librería que usaremos en la mayoría de nuestros proyectos, el _bundler_ **_Vite_**:
 
 ```bash
 npm install -g vite
+```
+
+También instalaremos globalmente la librería de test _Vitest_ que usaremos en los ejemplos de test:
+
+```bash
+npm install -g vitest
 ```
 
 ### El archivo package.json
@@ -99,7 +106,9 @@ Ejemplo de package.json:
  "description": "Nuevo proyecto npm",
  "main": "index.js",
  "scripts": {
-   "test": "vitest"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest"
  },
 "dependencies": {
    "axios": "^1.6.2",
@@ -112,3 +121,10 @@ Ejemplo de package.json:
  "license": "ISC"
 }
 ```
+
+Vemos que en el apartado `scripts` tenemos tres comandos que podemos ejecutar:
+- `dev`: lanza el servidor de desarrollo de _Vite_
+- `build`: crea el código de producción (en la carpeta _dist_)
+- `test`: lanza los tests de _Vitest_
+
+En `dependencies` tenemos las librerías que necesita nuestra aplicación para funcionar (que se añadirán al código de producción) y en `devDependencies` las que sólo necesita para desarrollo.

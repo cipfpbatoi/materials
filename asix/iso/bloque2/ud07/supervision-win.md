@@ -202,6 +202,10 @@ La información que recoge se reúne en **Conjuntos de Recopiladores de datos** 
 
 ![Monitor de Rendimiento](media/MonitorRendimiento.png)
 
+Ejemplos de uso del Monitor de Rendimiento:
+- [Manual de Microsoft](https://learn.microsoft.com/es-es/windows-server/remote/remote-desktop-services/rds-rdsh-performance-counters)
+- [Vídeo en YouTube](https://www.youtube.com/watch?v=BqGe-IuYLAo)
+
 ## Windows Update
 Esta herramienta gestiona las actualizaciones del sistema y permite configurar:
 - cuándo se descargarán las actualizaciones (se puede programar la hora o ponerlo en manual)
