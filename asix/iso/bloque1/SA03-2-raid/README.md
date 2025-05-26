@@ -8,7 +8,8 @@
     - [Creación de un volumen simple](#creación-de-un-volumen-simple)
       - [Creación de un volumen simple con Powershell](#creación-de-un-volumen-simple-con-powershell)
     - [Convertir un disco básico en dinámico](#convertir-un-disco-básico-en-dinámico)
-    - [Creación de un volumen distribuido (RAID-0)](#creación-de-un-volumen-distribuido-raid-0)
+    - [Creación de un volumen distribuido](#creación-de-un-volumen-distribuido)
+    - [Creación de un volumen seccionado (RAID-0)](#creación-de-un-volumen-seccionado-raid-0)
     - [Creación de volúmenes reflejados (RAID-1)](#creación-de-volúmenes-reflejados-raid-1)
     - [Creación de volúmenes RAID 5](#creación-de-volúmenes-raid-5)
     - [Powershell](#powershell)
@@ -75,13 +76,13 @@ En Windows tenemos dos tipos de discos:
 - **Básicos**: son los discos que hemos utilizado hasta ahora. Ya vimos en en un PC podíamos usar principalmente 2 tipos de tablas de particiones para los discos:
   - **la tabla de particiones Ms-DOS (la del MBR)** donde un disco puede tener hasta 4 particiones primarias una de las cuales puede ser extendida dentro de la cual se pueden crear tantas particiones lógicas como sea necesario
   - **la tabla de particiones GUID (GPT)**, más moderna y donde sólo existen particiones primarias y pueden haber hasta 128
-- **Dinámicos**: los discos no se organizan en particiones sino en volúmenes y no son accesibles desde sistemas operativos que no sean Windows (es decir, no podríamos tener un arranque dual con un Linux). Su principal ventaja es la gran versatilidad que ofrecen los volúmenes frente a una partición que siempre debe ser una parte contigua de un sólo disco.
+- **Dinámicos**: los discos no se organizan en particiones sino en volúmenes y no son accesibles desde sistemas operativos que no sean Windows (es decir, no podríamos tener un arranque dual con Linux). Su principal ventaja es la gran versatilidad que ofrecen los volúmenes frente a una partición que siempre debe ser una parte contigua de un sólo disco.
 
 Igual que en un disco básico creamos particiones (que aquí se llaman **volúmenes simples**) en un disco dinámico se crean **volúmenes dinámicos**. En un disco (tanto GPT como MBR) se pueden crear hasta 128 volúmenes dinámicos. Un volumen puede estar formado por una o más partes de un sólo disco o puede extenderse por más de un disco. Otra ventaja importante de los volúmenes es que se pueden redimensionar sin tener que reiniciar el sistema.
 
 Podemos crear distintos tipos de volúmenes dinámicos:
 - **distribuido**: es simplemente una partición que se extiende por más de un disco. La usaremos cuando una partición se haya quedado sin espacio para aumentar su espacio disponible
-- **seccionado**: es similar a un RAID-0 donde la información se divide para almacenarla en más de un disco, lo que aumenta la velocidad de transmisión ya que se pueden estar haciendo lecturas o escrituras en los 2 discos simultáneamente
+- **seccionado**: es como un RAID-0 donde la información se divide para almacenarla en más de un disco, lo que aumenta la velocidad de transmisión ya que se pueden estar haciendo lecturas o escrituras en los 2 discos simultáneamente
 - **reflejado**: es como un RAID-1 en que la misma información se guarda en 2 (reflejo doble) o 3 discos (reflejo triple). Proporciona tolerancia a fallos
 - **RAID-5** (paridad): se necesitan al menos 3 discos y proporciona tolerancia a fallos sin desperdiciar tanto espacio de disco como los volúmenes reflejados al no duplicarse la información guardada
 
@@ -136,7 +137,7 @@ Convertir un disco en dinámico nos da nuevas posibilidades (como utilizar RAID)
 
 Para convertir un disco dinámico en básico tenemos que eliminar previamente todos los volúmenes del disco (es decir, perderemos todos los datos) y a continuación desde su menú contextual seleccionamos Convertir en disco básico.
 
-### Creación de un volumen distribuido (RAID-0)
+### Creación de un volumen distribuido
 En un disco básico podemos crear un volumen básico como hemos visto antes o un volumen distribuido que incluye partes de más de un disco. Se hace desde su menú contextual seleccionando Nuevo volumen distribuido:
 
 ![Nuevo volumen dinámico](media/t5-04voldistrib.png)
@@ -144,6 +145,9 @@ En un disco básico podemos crear un volumen básico como hemos visto antes o un
 En esta pantalla añadimos todos los discos por los que se extenderá el volumen e indicamos el espacio a coger de cada disco. El resto del proceso es igual que para un volumen básico: asignamos letra o ruta de acceso y después el sistema de archivos a crear.
 
 ![Volúmenes](media/t5-admdisc.png)
+
+### Creación de un volumen seccionado (RAID-0)
+Se trata de hacer un volumen que funciona como un RAID-0, es decir, cada fichero que se guarda se reparte entre los distintos discos que forman el volumen lo que aumenta el rendimiento. Sin embargo, al igual que ocurre en un volumen distribuido, no hay ningún tipo de redundancia por lo que si falla un disco se perde toda la información del volumen. Se hace desde el menú contextual de un disco seleccionando Nuevo volumen seccionado y añadiendo todos los discos por los que se extenderá el volumen. El resto del proceso es igual que para un volumen básico: asignamos letra o ruta de acceso y después el sistema de archivos a crear.
 
 Se pueden crear sobre volúmenes básicos o dinámicos. Necesitamos 2 o más discos con espacio sin particionar. Se crea de forma similar al volumen distribuido pero la medida del volumen tiene que ser igual en cada disco.
 
