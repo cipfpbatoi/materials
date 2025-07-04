@@ -128,7 +128,7 @@ export const useCounterStore = defineStore('counter', () => {
 ```
 
 ## Usar Pinia
-En cada componente que lo necesitemos podemos usar el almacén de datos. Para ello lo importamos y luego definimos en _computed_ las variables del _state_ a que queramos acceder y en _methods_ las _actions_ que deseemos. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_ puede ser en forma de objeto (si queremos personalizar el método o cambiar el nombre de la variable o método) o en forma de array:
+Cada componente que lo necesite tiene acceso al almacén de datos. Para ello lo importa y declara las variables  del _state_ a las que quiera acceder dentro de _computed_ y dentro de _methods_ las _actions_ que deseemos llamar. Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_, puede ser en forma de array o en forma de objeto (si queremos personalizar el nombre de la variable o método):
 
 ```javascript
 //MyComponent.vue
@@ -155,17 +155,13 @@ computed: {
     countInStore: 'count',
   }),
   ...mapActions(useCounterStore, {
-    increment(store, quantity) {
-      return store.increment(quantity)
-    },
-    decrement(store, quantity) {
-      return store.decrement(quantity)
-    },
+    up: 'increment',
+    down: 'decrement',
   })
 }
 ```
 
-y se llamarían con **`this.countInStore` o `this.increment(3)`. En este caso los métodos reciben como primer parámetro el _store_ y a cotinuación los parámetros que se le pasan a la acción.
+y se llamarían con **`this.countInStore` o `this.up(3)`.
 
 ### Getters
 En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un método en el almacén (dentro de **`getters`**) que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):

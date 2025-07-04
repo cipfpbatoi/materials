@@ -11,7 +11,9 @@
     - [Limitaciones de JavaScript](#limitaciones-de-javascript)
     - [Frameworks y librerías de JavaScript](#frameworks-y-librerías-de-javascript)
   - [Evolución de las aplicaciones web](#evolución-de-las-aplicaciones-web)
+    - [Desarrollo _front-end_ moderno](#desarrollo-front-end-moderno)
     - [Bundlers](#bundlers)
+    - [Componentes](#componentes)
 
 ## Introducción
 La _World Wide Web_ (WWW) es un sistema de distribución de documentos de hipertexto o hipermedia interconectados y accesibles a través de Internet. Con un navegador web, un usuario visualiza sitios web compuestos de páginas web que pueden contener texto, imágenes, vídeos u otros contenidos multimedia, y navega a través de esas páginas usando hiperenlaces. Fue inventada por Tim Berners-Lee en 1989 mientras trabajaba en el CERN.
@@ -53,13 +55,16 @@ Una URL (_Uniform Resource Locator_) es una cadena de caracteres que se utiliza 
 ## Arquitectura cliente-servidor en la web
 Es la arquitectura de red en la que un cliente (navegador web) solicita recursos a un servidor web y este responde con la información solicitada. El cliente y el servidor se comunican a través del protocolo HTTP. El cliente envía una petición al servidor y este responde con la información solicitada. La arquitectura cliente-servidor se basa en el modelo de comunicación petición-respuesta.
 
-En el lado servidor (_server side_) se ejecutan las aplicaciones que generan las páginas web dinámicas. En el lado cliente (_client side_) se ejecutan aplicaciones que se ejecutan en el navegador web y que interactúan con el usuario. 
+![Frontend vs. Backend](https://www.seobility.net/wp-content/uploads/wiki/en/images/0/04/Frontend-vs-Backend.png)*Figure: Frontend vs. Backend – Author: Seobility – License: CC BY-SA 4.0*
 
-Muchas aplicaciones web modernas son aplicaciones de una sola página (_Single Page Applications_ o SPAs) que se ejecutan en el lado cliente y que se comunican con el servidor a través de una API (_Application Programming Interface_). En estas aplicacopnes el usuario está siempre en la misma página lo que minimiza la información intercambiada en el servidor y reduce el impass del cambio de página. Para obtener los datos del servidor se utiliza la tecnología AJAX (_Asynchronous JavaScript and XML_) que permite a javascript enviar y recibir datos del servidor asíncronamente sin tener que recargar la página.
+En el lado servidor (_server side_) se ejecuta el código que genera las páginas web dinámicamente. En el lado cliente (_client side_) se ejecuta (en el navegador web) código para que el usuario interactúe con la página de manera más dínámica y cómoda. 
+
+Muchas aplicaciones web modernas son aplicaciones de una sola página (_Single Page Applications_ o SPAs) que se ejecutan en el lado cliente y que se comunican con el servidor a través de una API (_Application Programming Interface_). En estas aplicaciones el usuario está siempre en la misma página lo que minimiza la información intercambiada con el servidor y reduce el impass del cambio de página. Para obtener los datos del servidor se utiliza la tecnología AJAX (_Asynchronous JavaScript and XML_) que permite a javascript enviar y recibir datos del servidor asíncronamente sin tener que recargar la página.
 
 ### Server-side
-La lógica de la aplicación se ejecuta en el servidor. El servidor genera las páginas web dinámicas y las envía al cliente. El cliente recibe la página y no tiene que hacer nada más que mostrarla. 
-Los elementos que encontramos en el lado cliente son el hardware (servidores y elementos de red), el software (servicios web como Apache, Nginx, etc) y lenguajes del lado servidor (PHP, Perl, C, Python, Javascript con NodeJS, etc).
+La lógica de la aplicación se ejecuta en el servidor. El servidor genera las páginas web dinámicamente y las envía al cliente. El navegador del cliente recibe la página y no tiene que hacer nada más que mostrarla.
+
+Los elementos que encontramos en el lado servidor son el hardware (servidores y elementos de red), el software (servicios web como Apache, Nginx, etc) y lenguajes del lado servidor (PHP, Perl, C, Python, Javascript con NodeJS, etc).
 
 Tareas comunes en el lado servidor:
 - **Acceder y guardar los datos**: se realiza en el servidor, normalmente en una **base de datos**
@@ -73,7 +78,10 @@ Tareas comunes en el lado servidor:
 ### Client-side
 La lógica de la aplicación se ejecuta en el navegador web del cliente. El servidor envía al cliente los recursos necesarios para ejecutar la aplicación y el cliente se encarga de mostrar la interfaz de usuario y de interactuar con el usuario. Ejemplos de tecnologías client-side son HTML, CSS y JavaScript.
 
-Los elementos que encontramos en el lado cliente son el navegador web (Firefox, Chrome, Safari, Edge, Opera, ...), lenguajes de marcas (HTML, CSS) y lenguajes de preogramación, sobre todo JavaScript.
+Los elementos que encontramos en el lado cliente son el navegador web (Firefox, Chrome, Safari, Edge, Opera, ...), lenguajes de marcas (HTML, CSS) y lenguajes de preogramación, sobre todo JavaScript:
+- **HTML** (_HyperText Markup Language_): lenguaje de marcado que se utiliza para estructurar el contenido de las páginas web. Estructura el contenido de la página web
+- **CSS** (_Cascading Style Sheets_): lenguaje de estilos que se utiliza para dar formato y estilo al contenido HTML. Hay frameworks para facilitar su uso como Bootstrap, Tailwind, Bulma, etc.
+- **Javascript**: lenguaje de programación que se utiliza para añadir interactividad a las páginas web. Permite manipular la página, gestionar eventos, pedir datos al servidor, etc. Se puede usar "JavaScript puro" o utilizar librerías y frameworks como jQuery, React, Angular, Vue.js, etc.
 
 Tareas comunes en el lado cliente:
 - **Interacción con el usuario**: mostrar la interfaz de usuario y permitir al usuario interactuar con la aplicación mejora la experiencia del usuario si se hace en el cliente
@@ -108,12 +116,23 @@ Según sea el proyecto a desarrollar utilizaremos sólo JavaScript o nos ayudare
 - Páginas web dinámicas: páginas web cuyo contenido cambia en función de la interacción del usuario o de otros factores. Dichos cambios suelen hacerse en el _server-side_ (acceso a datos, etc) o en el _client-side_
 - Aplicaciones web: aplicaciones que se ejecutan en el navegador web y que permiten al usuario interactuar con ellas. La mayor parte de la programación se ejecuta en el _server-side_. Un ejemplo será la intranet de nuestro centro. 
 - Aplicaciones de una sola página (SPAs): aplicaciones web que se cargan una sola vez y que permiten al usuario interactuar con la aplicación sin tener que recargar la página. Ejemplos de aplicaciones SPA son Gmail, Google Maps, Facebook, Twitter, etc.
+
+En la actualidad existen también otros tipos de aplicaciones web:
 - Aplicaciones web progresivas (PWAs): aplicaciones web que se comportan parecido a las aplicaciones nativas en los móviles y que permiten al usuario interactuar con la aplicación sin conexión a Internet. Ejemplos de PWAs son Twitter Lite, Flipkart, Starbucks, etc.
 - Aplicaciones web híbridas: aplicaciones que se ejecutan en el navegador web y que pueden también comportarse como aplicaciones nativas Android o iOS, aunque su rendimiento es menor. Para ello se utilizan herramientas como Ionic, PhoneGap, Cordova, etc.
 
 Si tenemos tantas opciones, ¿cuál es la mejor? Dependerá de las necesidades de la aplicación. Si se trata de un sitio web o una aplicación pequeña o que se va a usar esporádicamente es mejor usar páginas web dinámicas y generadas en el lado servidor lo que mejorará el SEO y al ser pequeñas no sobrecargará de trabajo al servidor. Si se trata de una aplicación grande o que se va a usar mucho es mejor usar una SPA que mejorará la experiencia del usuario. Si se trata de una aplicación que se va a usar en dispositivos móviles es mejor usar una aplicación web progresiva o una aplicación web híbrida. En todos los casos la aplicación tendrá que ser _responsive_ para que se adapte a cualquier dispositivo (escritorio, móvil, tablet, ...).
 
 En general, las aplicaciones web progresivas y las aplicaciones web híbridas son las más recomendadas, ya que ofrecen una experiencia de usuario similar a la de las aplicaciones nativas y son más fáciles de desarrollar y mantener que las aplicaciones nativas.
+
+### Desarrollo _front-end_ moderno
+El desarrollo moderno de aplicaciones web se basa en el uso de herramientas y tecnologías que facilitan la creación de aplicaciones web interactivas y dinámicas. Se caracteriza por:
+- uso de librerías, frameworks, [bundlers](#bundlers) y otras herramientas optimizan y simplifican el desarrollo
+- diseño basado en [componentes](#componentes), que permite crear aplicaciones más modulares y reutilizables
+- reactividad, que permite actualizar la interfaz de usuario de forma eficiente y rápida cuando cambia el estado de la aplicación, es decir, los datos
+- manejo de estado de la aplicación (son los datos que usa la aplicación y que pueden cambiar a lo largo de su ejecución)
+- diseño responsive, que permite que la aplicación se adapte a diferentes dispositivos y tamaños de pantalla
+- aplicaciones SPA que consumen datos de APIs externas
 
 ### Bundlers
 Respecto al despliegue de las aplicaciones, antes se subía al servidor de producción el fichero index.html y el resto de ficheros (html, js, css, ...) que formaban la aplicación. Ahora lo normal es utilizar herramientas llamadas "bundlers" que:
@@ -123,3 +142,15 @@ Respecto al despliegue de las aplicaciones, antes se subía al servidor de produ
 - eliminan código duplicado o innecesario de las librerías que se usan
 
 Una vez hecho esto se sube el resultado al servidor de producción. Uno de los _bundlers_ más utilizados es **Webpack**. En [esta página](https://sergiodxa.com/articles/que-es-un-bundler-de-js) puedes ampliar la información sobre qué es un bundler y su evolución.
+
+### Componentes
+El diseño cada interfaz de la aplicación se divide en componentes. Un componente es una parte de la interfaz de usuario que se puede reutilizar en diferentes partes de la aplicación. Cada componente tiene su propia lógica, estilo y estructura HTML. Los componentes pueden ser simples (un botón, un formulario, etc.) o complejos (una tabla, un gráfico, etc.). 
+
+![Árbol de componentes](https://vuejs.org/assets/components.B1JZbf0_.png)
+
+Cada componente tiene:
+- su propia estructura HTML
+- su propio estilo CSS
+- su propia lógica JavaScript
+
+Esta forma de diseñar la interfaz de usuario permite crear aplicaciones más modulares y reutilizables, lo que facilita el desarrollo y mantenimiento de la aplicación. Además, los componentes pueden comunicarse entre sí para compartir datos y eventos.
