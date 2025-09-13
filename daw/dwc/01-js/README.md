@@ -70,7 +70,7 @@ Sin embargo, por razones de seguridad, Javascript no nos permite hacer cosas com
 * ...
 
 ### Un poco de historia
-Javascript es una implementación del lenguaje **ECMAScript** (el estándar que define sus características). El lenguaje surgió en 1997 y todos los navegadores a partir de 2012 soportan al menos la versión **ES5.1** completamente. En 2015 se lanzó la 6ª versión, inicialmente llamada **ES6** y posteriormente renombrada como **ES2015**, que introdujo importantes mejoras en el lenguaje y que es la versión mínima que usaremos nosotros. Desde entonces van saliendo nuevas versiones cada año que introducen cambios pequeños. La última es la **ES2024**.
+Javascript es una implementación del lenguaje **ECMAScript** (el estándar que define sus características). El lenguaje surgió en 1997 y todos los navegadores a partir de 2012 soportan al menos la versión **ES5.1** completamente. En 2015 se lanzó la 6ª versión, inicialmente llamada **ES6** y posteriormente renombrada como **ES2015**, que introdujo importantes mejoras en el lenguaje y que es la versión mínima que usaremos nosotros. Desde entonces sale una nueva versión cada año que suele introducir cambios pequeños. La última es la **ES2025**.
 
 Las principales mejoras que introdujo ES2015 son: clases de objetos, let, for..of, Map, Set, Arrow functions, Promesas, spread, destructuring, ...
 
@@ -100,9 +100,7 @@ Siempre depuraremos los programas desde aquí (ponemos puntos de interrupción, 
 Es fundamental dedicar tiempo a saber utilizar la consola porque nos facilitará enormemente la tarea de depurar nuestro código. Podéis encontrar infinidad de páginas en internet donde nos explican en profundidad el uso de la consola, como [Debugging en el navegador](https://es.javascript.info/debugging-chrome).
 
 ### Editores
-Podemos usar el que más nos guste, desde editores tan simples como NotePad++ hasta complejos IDEs. La mayoría soportan las últimas versiones de la sintaxis de Javascript (Netbeans, Eclipse, Visual Studio, Sublime, Atom, Kate, Notepad++, ...). Yo voy a utilizar [**Visual Studio Code**](https://code.visualstudio.com/) o [**Sublime text**](https://www.sublimetext.com/) por su sencillez y por los plugins que incorpora para hacer más cómodo mi trabajo. En _Visual Studio Code_ instalaré algún _plugin_ como:
-- SonarLint: es más que un _linter_ y me informa de todo tipo de errores pero también del código que no cumple las recomendaciones (incluye gran número de reglas). Marca el código mientras lo escribimos y además podemos ver todas las advertencias en el panel de Problemas (Ctrl+
-- Vetur: lo instalaremos en el segundo bloque. Necesario para trabajar con los ficheros de _Vue_
+Podemos usar el que más nos guste, desde editores tan simples como NotePad++ hasta complejos IDEs. La mayoría soportan las últimas versiones de la sintaxis de Javascript (Netbeans, Eclipse, Visual Studio, Sublime, Atom, Kate, Notepad++, ...). Yo voy a utilizar [**Visual Studio Code**](https://code.visualstudio.com/) por su sencillez y por los plugins que incorpora para hacer más cómodo mi trabajo. Instalaremos varios _plugin_ para facilitar nuestro trabajo.
 
 ### Editores on-line
 Son muy útiles porque permiten ver el código y el resultado a la vez. Normalmente tienen varias pestañas o secciones de la página donde poner el código HTML, CSS yJavascript y ver su resultado. 
@@ -131,6 +129,13 @@ Como se ve en el primer vídeo, es posible poner el código directamente entre l
 ```html
 <script src="./scripts/main.js"></script>
 ```
+
+En resumen, puedo colocar la etiqueta _\<script>_ en:
+* En el _\<head>_ sin atributos. Se descarga y ejecuta el código antes de empezar a dibujar la página, por lo que si el código es pesado puede tardar mucho en mostrarse la página
+* En el _\<head>_ con atributo _async_. Se descarga el código mientras se renderiza la página y se ejecuta en cuanto se descarga, interrumpiendo el renderizado
+* En el _\<head>_ con atributo _defer_. Se descarga el código mientras se renderiza la página y se ejecuta cuando se ha terminado de renderizar la página entera
+* En cualquier lugar del _\<body>_. Se descarga el código y se ejecuta al llegar a la etiqueta, por lo que todas las etiquetas anteriores ya estarán renderizadas pero no las posteriores
+* Al final del _\<body>_. Se descarga y ejecuta el código cuando se ha terminado de renderizar la página entera
 
 ## Mostrar información
 Javascript permite mostrar al usuario ventanas modales para pedirle o mostrarle información. Las funciones que lo hacen son:

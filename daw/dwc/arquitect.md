@@ -1,5 +1,5 @@
-# Arquitecturas y Tecnologías de programación en clientes web
-- [Arquitecturas y Tecnologías de programación en clientes web](#arquitecturas-y-tecnologías-de-programación-en-clientes-web)
+# SA1: Arquitecturas y Tecnologías de programación en clientes web
+- [SA1: Arquitecturas y Tecnologías de programación en clientes web](#sa1-arquitecturas-y-tecnologías-de-programación-en-clientes-web)
   - [Introducción](#introducción)
   - [Componentes de la WWW](#componentes-de-la-www)
     - [Protocolo HTTP](#protocolo-http)
@@ -34,17 +34,21 @@ El protocolo HTTP es un protocolo de comunicación que se utiliza para la transf
 - **URL**: dirección del recurso solicitado
 - **Método**: GET, POST, PUT, DELETE, etc.
 - **Cabeceras**: información adicional sobre la petición. Son pares clave:valor
+![Cabeceras de una petición HTTP](img/cabeceras-http-peticion.png)
 - **Cuerpo**: datos adicionales que se envían con la petición (por ejemplo, en una petición POST). No todas las peticiones lo tienen
 
 La respuesta del servidor incluye:
 - **Código de estado**: indica si la petición fue exitosa o no. Algunos códigos comunes son 200 Ok, 403 Forbidden, 404 Not found, 500 Server error, etc
 - **Cabeceras**: información adicional sobre la respuesta
+![Cabeceras de una respuesta HTTP](img/cabeceras-http-respuesta.png)
 - **Cuerpo**: datos que se envían como respuesta a la petición. Puede ser HTML, JSON, XML, etc.
+
+En la página [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Session) puedes ampliar la información sobre cómo se realiza una petición HTTP.
 
 El protocolo HTTP es un protocolo sin estado, lo que significa que cada petición es independiente de las anteriores. Para poder mantener el estado de una sesión se utilizan cookies o tokens de autenticación.
 
 ### URL
-Una URL (_Uniform Resource Locator_) es una cadena de caracteres que se utiliza para identificar un recurso en la web. Ejemplos de URL podrían ser `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` o `https://www.google.com/search?q=dwec&client=firefox-b-lm`. Una URL tiene la siguiente estructura:
+Una URL (_Uniform Resource Locator_) o URI (_Uniform Resource Identifier_) es una cadena de caracteres que se utiliza para identificar un recurso en la web. Ejemplos de URL podrían ser `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` o `https://www.google.com/search?q=dwec&client=firefox-b-lm`. Una URL tiene la siguiente estructura:
 - **Protocolo**: http, https, ftp, etc. Se separa del nombre de dominio por `://`. En el primer ejemplo sería `http://` y en el segundo `https://`
 - **Nombre de dominio**: dirección IP o nombre de dominio del servidor que aloja el recurso (`cipfpbatoi.github.io` o `www.google.com` en los ejemplos anteriores)
 - **Puerto**: número de puerto en el que escucha el servidor, antecedido por `:` (por defecto 80 para HTTP y 443 para HTTPS). En los ejemplos no se incluye puerto por lo que se usa el puerto por defecto `http://cipfpbatoi.github.io/materials/daw/dwc/entorno.html#tests` es equivalente a `http://cipfpbatoi.github.io:80/materials/daw/dwc/entorno.html#tests` y el de google a `https://www.google.com:443/search?q=dwec&client=firefox-b-lm`
