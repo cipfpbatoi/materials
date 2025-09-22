@@ -4,11 +4,11 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [2.1-Sintaxis](./01-sintaxis.md): Variables. Funciones. Estructuras y bucles. Tipos de datos. Buenas prácticas
   * [Introducción a los test en Javascript](../tests.md)
 * [2.2-Objetos](./02.1-objetos.md): Introducción a los objetos en Javascript
-  * [Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [2.3-Arrays](./02.2-arrays.md): Métodos. _Functional Programming_. Referencia vs copia. Rest y Spread. Desestructuración de arrays. Map. Set
   * [Vite](./03.1-vite.md): Cómo usar vite
   * [Webpack](./03.1-webpack.md): Cómo usar webpack
 * [2.4-Programación Orientada a Objetos](./03-oop.md): Introducción. Clases. POO en JS5
+  * [Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [2.5-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, 
 * [3-Ajax. Promesas. SPA](./09-ajax.md)
 * [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
