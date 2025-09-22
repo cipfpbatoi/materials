@@ -40,7 +40,7 @@ Hemos implementado una función de suma en el fichero _sum.js_:
 function sum(a, b) {
   return a + b;
 }
-export sum;
+export {sum};
 ```
 
 NOTA: si no estamos usando \_Vite\_\_ podemos exportar la función con `module.exports = sum;`
@@ -49,6 +49,7 @@ Para probarla crearemos el fichero _sum.test.js_ con el siguiente contenido:
 
 ```javascript
 import { sum } from "./sum.js";
+import { describe, expect, test } from 'vitest';
 
 describe("sum", () => {
   test("sumar 1 + 2 es igual a 3", () => {
