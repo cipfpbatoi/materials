@@ -4,8 +4,10 @@
   - [Enviar un fitxer als alumnes per UDP](#enviar-un-fitxer-als-alumnes-per-udp)
     - [Resum](#resum)
   - [Muntar un servidor web en el nostre equip](#muntar-un-servidor-web-en-el-nostre-equip)
-    - [Crear i configurar el servidor web](#crear-i-configurar-el-servidor-web)
-    - [Utilitzar el servidor web](#utilitzar-el-servidor-web)
+    - [Servidor web amb Python](#servidor-web-amb-python)
+    - [Servidor web amb Docker](#servidor-web-amb-docker)
+      - [Crear i configurar el servidor web](#crear-i-configurar-el-servidor-web)
+      - [Utilitzar el servidor web](#utilitzar-el-servidor-web)
 
 ## Repositori d'imatges
 En el Centre tenim un servidor (`descargasiso.cipfpbatoi.lan`) on qualsevol pot deixar ISOs i OVAs per a que tots els pugam utilitzar. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
@@ -47,9 +49,32 @@ udp-sender -i nom-de-la-interficie-com-enp0s2 -f fitxer-a-enviar
 NOTA: el nom que posen els alumnes és el nom amb el que es guarda el fitxer i no ha de ser el mateix amb que s'envia.
 
 ## Muntar un servidor web en el nostre equip
+Tenim diferents maneres de fer-ho. Anem a vore com llançar un servidor web amb _python_ i com fer-ho amb _docker_.
+
+### Servidor web amb Python
+Si només volem compartir fitxers de forma puntual i no volem complicar-nos la vida podem utilitzar el servidor web que porta _python_ per defecte.
+
+Per a fer-ho anem al directori on estan els fitxers que volem compartir (per exemple en `/home/batoi/recursos`).
+A continuació obrim una terminal i llancem el servidor web amb:
+
+```bash
+python3 -m http.server
+```
+
+Això crea un servidor web al port 8000 (per defecte) i el directori arrel és el directori on estem situats. 
+Ara els alumnes poden accedir des del seu navegador a la nostra IP (per exemple `http://172.16.225.10:8000`).
+Quan no el necessitem més tanquem la terminal o fem `Ctrl+C`.
+
+Si volem que el servidor web estiga en un altre port (per exemple el 80) fem:
+
+```bash
+sudo python3 -m http.server 80
+```
+
+### Servidor web amb Docker
 Com que en la imatge del SSD tenim _docker_ instal·lat és molt senzill tindre un servidor web _dockeritzat_ per a poder deixar en ell les imatges i que els alumnes se les descarreguen des del seu navegador.
 
-### Crear i configurar el servidor web
+#### Crear i configurar el servidor web
 El primer que farem és crear un directori en el nostre ordinador que serà el directori arrel del servidor web (per exemple en `/home/batoi/recursos`).
 
 A continuació crearem el nostre servidor amb:
@@ -79,7 +104,7 @@ Obrim _VSC_ i en la barra de l'esquerra seleccionem **_Docker_** (és l'última 
 
 Guardem el fitxer i tanquem _VSC_. Aturem el servidor (`docker stop recursos`)i ja el tenim preparat per a utilitzar-lo quan el necessitem.
 
-### Utilitzar el servidor web
+#### Utilitzar el servidor web
 Quan volem que els alumnes es descarreguen del nostre ordinador una ISO o qualsevol altre fitxer el que hem de fer és:
 1. El copiem dins de la carpeta que hem creat per al servidor web (en el meu cas `/home/batoi/recursos`)
 2. Arranquem el servidor web: `docker start recursos`
