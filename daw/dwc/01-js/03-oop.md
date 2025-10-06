@@ -200,13 +200,26 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
 
 2. Pasándole _this_ como parámetro a la función
 ```javascript
-    getInfo() {
-        function nomAlum(alumno) {
-            return alumno.nombre + ' ' + alumno.apellidos
-        }
+   class Alumno {
+  constructor(nombre, apellidos, edad) {
+    this.nombre = nombre
+    this.apellidos = apellidos
+    this.edad = edad
+  }
 
-        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
+  getInfo() {
+    function nomAlum(alumno) {
+      return alumno.nombre + ' ' + alumno.apellidos
     }
+
+    return 'El alumno ' + nomAlum(this) + ' tiene ' + this.edad + ' años'
+  }
+}
+
+const a1 = new Alumno('Iván', 'Martos', 35)
+console.log(a1.getInfo())
+// → El alumno Iván Martos tiene 35 años
+
 ```
 
 3. Guardando el valor en otra variable (como _that_)
