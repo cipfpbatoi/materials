@@ -81,28 +81,34 @@ Recientemente se han introducido también propiedades estáticas, que funcionan 
 A la hora de encapsular el código de las clases es importante el uso de este tipo de elementos pero Javascript sólo los incluye desde ES2019 donde introdujo la sintaxis **`#`** para declaralos:
 ```javascript
 class Position {
-    #x = 0;
-    #y = 0;
+  #x = 0;
+  #y = 0;
 
-    constructor(x, y) {
-        this.#x = x
-        this.#y = y
-    }
-    getPosition() {
-        return { x: this.#x, y: this.#y };
-    }
-    increaseX() {
-        this.#x++;
-    }
-    increaseY() {
-        this.#y++;
-    }
+  constructor(x, y) {
+    this.#x = x;
+    this.#y = y;
+  }
+
+  getPosition() {
+    return { x: this.#x, y: this.#y };
+  }
+
+  increaseX() {
+    this.#x++;
+  }
+
+  increaseY() {
+    this.#y++;
+  }
 }
 
 const myPosition = new Position(20, 10);
-console.log(Position.getPosition()); // { x: 20, y: 10 }
-console.log(Position.x); // undefined
-console.log(Position.y); // undefined
+
+console.log(myPosition.getPosition()); // { x: 20, y: 10 }
+myPosition.increaseX();
+console.log(myPosition.getPosition()); // { x: 21, y: 10 }
+console.log(myPosition.x); // undefined (propiedad privada)
+
 ```
 
 Anteriormente existía una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo).
