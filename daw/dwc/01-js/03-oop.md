@@ -81,28 +81,34 @@ Recientemente se han introducido también propiedades estáticas, que funcionan 
 A la hora de encapsular el código de las clases es importante el uso de este tipo de elementos pero Javascript sólo los incluye desde ES2019 donde introdujo la sintaxis **`#`** para declaralos:
 ```javascript
 class Position {
-    #x = 0;
-    #y = 0;
+  #x = 0;
+  #y = 0;
 
-    constructor(x, y) {
-        this.#x = x
-        this.#y = y
-    }
-    getPosition() {
-        return { x: this.#x, y: this.#y };
-    }
-    increaseX() {
-        this.#x++;
-    }
-    increaseY() {
-        this.#y++;
-    }
+  constructor(x, y) {
+    this.#x = x;
+    this.#y = y;
+  }
+
+  getPosition() {
+    return { x: this.#x, y: this.#y };
+  }
+
+  increaseX() {
+    this.#x++;
+  }
+
+  increaseY() {
+    this.#y++;
+  }
 }
 
 const myPosition = new Position(20, 10);
-console.log(Position.getPosition()); // { x: 20, y: 10 }
-console.log(Position.x); // undefined
-console.log(Position.y); // undefined
+
+console.log(myPosition.getPosition()); // { x: 20, y: 10 }
+myPosition.increaseX();
+console.log(myPosition.getPosition()); // { x: 21, y: 10 }
+console.log(myPosition.x); // undefined (propiedad privada)
+
 ```
 
 Anteriormente existía una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo).
@@ -124,7 +130,7 @@ console.log('Alumno:' + carPerOrt)     // imprime 'Alumno: Pérez Ortíz, Carlos
                                 // en vez de 'Alumno: [object Object]'
 ```
 
-Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02.2-arrays.md):
+Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente por apellidos. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02.2-arrays.md):
 ```javascript
 misAlumnos.sort((alum1, alum2) => (alum1.apellidos+alum1.nombre).localeCompare(alum2.apellidos+alum2.nombre));   
 ```
@@ -194,13 +200,26 @@ Si debemos llamar a una función dentro de un método (o de un manejador de even
 
 2. Pasándole _this_ como parámetro a la función
 ```javascript
-    getInfo() {
-        function nomAlum(alumno) {
-            return alumno.nombre + ' ' + alumno.apellidos
-        }
+   class Alumno {
+  constructor(nombre, apellidos, edad) {
+    this.nombre = nombre
+    this.apellidos = apellidos
+    this.edad = edad
+  }
 
-        return 'El alumno ' + nomAlum(this) +' tiene ' + this.edad + ' años'
+  getInfo() {
+    function nomAlum(alumno) {
+      return alumno.nombre + ' ' + alumno.apellidos
     }
+
+    return 'El alumno ' + nomAlum(this) + ' tiene ' + this.edad + ' años'
+  }
+}
+
+const a1 = new Alumno('Iván', 'Martos', 35)
+console.log(a1.getInfo())
+// → El alumno Iván Martos tiene 35 años
+
 ```
 
 3. Guardando el valor en otra variable (como _that_)

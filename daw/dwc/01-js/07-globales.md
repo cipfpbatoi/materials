@@ -74,7 +74,7 @@ En Javascript casi todo son objetos. Ya hemos visto diferentes objetos:
 - history
 - document
 
-Los 5 primeros se corresponden al modelo de objetos del navegador (_BOM, Browser Object Model_) y _document_ se corresponde al modelo de objetos del documento (_DOM, Document Object Model_, ya lo hemos visto). Todos nos permiten interactuar con el navegador para realizar distintas acciones.
+Los 5 primeros se corresponden al modelo de objetos del navegador (_BOM, Browser Object Model_, lo veremos en el siguiente capítulo) y _document_ se corresponde al modelo de objetos del documento (_DOM, Document Object Model_, lo veremos dentro de poco). Todos nos permiten interactuar con el navegador para realizar distintas acciones.
 
 Pero además tenemos los tipos de objetos nativos, que no dependen del navegador. Son:
 - Number
