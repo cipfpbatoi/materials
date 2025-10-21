@@ -234,27 +234,34 @@ miPrimeraLista.replaceChild(nuevoLi, primerElementoDeLista);    // reemplaza el 
 **OJO**: Si añado con el método `append` o `appendChild` un nodo que estaba en otro sitio **se elimina de donde estaba** para añadirse a su nueva posición. Si quiero que esté en los 2 sitios deberé clonar el nodo y luego añadir el clon y no el nodo original.
 
 ### Añadir nuevos nodos con _innerHTML_
-Supongamos que tenemos un DIV cuya _id_ es _myDiv_ al que queremos añadir al final dos párrafos, el último de ellos con un texto en negrita. El código podría ser:
+Supongamos que tenemos un DIV cuya _id_ es _myDiv_ al que queremos añadir al final un párrafo con un texto en negrita. El código podría ser:
 
 ```javascript
-let miDiv = document.getElementById('myDiv');
-let nuevoParrafo = document.createElement('p');
-nuevoParrafo.textContent = 'Párrafo añadido al final';
-let ultimoParrafo = document.createElement('p');
+const miDiv = document.getElementById('myDiv');
+const nuevoParrafo = document.createElement('p');
 const textoNegrita = document.createElement('strong');
 textoNegrita.textContent = 'con texto en negrita';
-ultimoParrafo.append('Último párrafo ', textoNegrita);
-miDiv.append(nuevoParrafo, ultimoParrafo);
+nuevoParrafo.append('Último párrafo ', textoNegrita);
+miDiv.append(nuevoParrafo);
 ```
 
 Si utilizamos la propiedad **innerHTML** el código a usar es mucho más simple:
 
 ```javascript
 let miDiv = document.getElementById('myDiv');
-miDiv.innerHTML += '<p>Párrafo añadido al final</p><p>Último párrafo <strong>con texto en negrita</strong></p>';
+miDiv.innerHTML += '<p>Último párrafo <strong>con texto en negrita</strong></p>';
 ```
 
-**OJO**: La forma de añadir el último párrafo (línea #3: `miDiv.innerHTML+='<p>Párrafo añadido al final</p>';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a pintar TODO el contenido de miDIV.
+Pero esta forma de hacerlo (`miDiv.innerHTML+='<p>...';`) aunque es válida no es muy eficiente ya que obliga al navegador a volver a renderizar TODO el contenido de miDIV, y si algún párrafo tuviera algún escuchador de eventos se eliminaría.
+
+La forma ideal sería algo intermedio: creamos el nuevo nodo con _createElement_ y luego le asignamos su contenido con _innerHTML_:
+
+```javascript
+let miDiv = document.getElementById('myDiv');
+let nuevoParrafo = document.createElement('p');
+nuevoParrafo.innerHTML = 'Último párrafo <strong>con texto en negrita</strong>';
+miDiv.append(nuevoParrafo);
+```
 
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 
