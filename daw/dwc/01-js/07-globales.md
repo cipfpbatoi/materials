@@ -1,7 +1,6 @@
 # Objetos nativos
 - [Objetos nativos](#objetos-nativos)
   - [Introducción](#introducción)
-  - [Funciones globales](#funciones-globales)
   - [Objetos nativos del lenguaje](#objetos-nativos-del-lenguaje)
   - [Objeto Math](#objeto-math)
   - [Objeto Date](#objeto-date)
@@ -10,61 +9,6 @@
 ## Introducción
 En este tema vamos a ver las funciones globales de Javascript (muchas de las cuales ya hemos visto como _Number()_ o _String()_) y los objetos nativos que incorpora Javascript y que nos facilitarán el trabajo proporcionándonos métodos y propiedades útiles para no tener que "reinventar la rueda" en nuestras aplicaciones. Dentro de ellos está el objeto **RegExpr** que nos permite trabajar con **expresiones regulares** (son iguales que en otros lenguajes) que nos serán de gran ayuda, sobre todo a la hora de validar formularios y que por eso veremos en la siguiente unidad.
 
-## Funciones globales
-* `parseInt(valor)`: devuelve el valor pasado como parámetro convertido a entero o _NaN_ si no es posible la conversión. Este método es mucho más permisivo que _Number_ y convierte cualquier cosa que comience por un número (si encuentra un carácter no numérico detiene la conversión y devuelve lo convertido hasta el momento). Ejemplos:
-```javascript
-console.log( parseInt(3.84) )            // imprime 3 (ignora los decimales)
-console.log( parseInt('3.84') )          // imprime 3
-console.log( parseInt('28manzanas') )    // imprime 28
-console.log( parseInt('manzanas28') )    // imprime NaN
-```
-* `parseFloat(valor)`: igual pero devuelve un número decimal. Ejemplos:
-```javascript
-console.log( parseFloat(3.84) )            // imprime 3.84
-console.log( parseFloat('3.84') )          // imprime 3.84
-console.log( parseFloat('3,84') )          // imprime 3 (la coma no es un carácter numérico)
-console.log( parseFloat('28manzanas') )    // imprime 28
-console.log( parseFloat('manzanas28') )    // imprime NaN
-```
-* `Number(valor)`: convierte el valor a un número. Es como _parseFloat_ pero más estricto y si no puede convertir todo el valor devuelve _NaN_. Ejemplos:
-```javascript
-console.log( Number(3.84) )            // imprime 3.84
-console.log( Number('3.84') )          // imprime 3.84
-console.log( Number('3,84') )          // imprime NaN (la coma no es un carácter numérico)
-console.log( Number('28manzanas') )    // imprime NaN
-console.log( Number('manzanas28') )    // imprime NaN
-```
-* `String(valor)`: convierte el valor pasado a una cadena de texto. Si le pasamos un objeto llama al método _.toString()_ del objeto. Ejemplos:
-```javascript
-console.log( String(3.84) )                  // imprime '3.84'
-console.log( String([24, 3. 12]) )           // imprime '24,3,12'
-console.log( {nombre: 'Marta', edad: 26} )   // imprime "[object Object]"
-```
-* `Boolean(valor)`: convierte el valor pasado a un booleano. Sería el resultado de tenerlo como condición en un `if`. Muchas veces en vez de usar esto usamos la doble negación `!!` que da el mismo resultado. Ejemplos:
-```javascript
-console.log( Boolean('Hola') )      // Equivaldría a !!'Hola'. Imprime true
-console.log( Boolean(0) )           // Equivaldría a !!0. Imprime false
-```
-* `isNaN(valor)`: devuelve _true_ si lo pasado NO es un número o no puede convertirse en un número. Ejemplos:
-```javascript
-console.log( isNaN(3.84) )            // imprime false
-console.log( isNaN('3.84') )          // imprime false
-console.log( isNaN('3,84') )          // imprime true (la coma no es un carácter numérico)
-console.log( isNaN('28manzanas') )    // imprime true
-console.log( isNaN('manzanas28') )    // imprime true
-```
-* `isFinite(valor)`: devuelve _false_ si es número pasado es infinito (o demasiado grande)
-```javascript
-console.log( isFinite(3.84) )            // imprime true
-console.log( isFinite(3.84 / 0) )            // imprime false
-```
-* `encodeURI(string)` / `decodeURI(string)`: transforma la cadena pasada a una URL codificada válida transformando los caracteres especiales que contenga, excepto , / ? : @ & = + $ #. Debemos usarla siempre que vayamos a pasar una URL. Ejemplo:
-  * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
-  * Encoded: “http://domain.com?val=1%202%203&val2=r+y%256”
-* `encodeURIComponent(string)` / `decodeURIComponent(string)`: transforma también los caracteres que no transforma la anterior. Debemos usarla para codificar parámetros pero no una URL entera. Ejemplo:
-  * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
-  * Encoded: “http%3A%2F%2Fdomain.com%3Fval%3D1%202%203%26val2%3Dr%2By%256”
-  
 ## Objetos nativos del lenguaje
 En Javascript casi todo son objetos. Ya hemos visto diferentes objetos:
 - window
@@ -74,7 +18,7 @@ En Javascript casi todo son objetos. Ya hemos visto diferentes objetos:
 - history
 - document
 
-Los 5 primeros se corresponden al modelo de objetos del navegador (_BOM, Browser Object Model_, lo veremos en el siguiente capítulo) y _document_ se corresponde al modelo de objetos del documento (_DOM, Document Object Model_, lo veremos dentro de poco). Todos nos permiten interactuar con el navegador para realizar distintas acciones.
+Los 5 primeros se corresponden al modelo de objetos del navegador (_BOM, Browser Object Model_, que ya vimos) y _document_ se corresponde al modelo de objetos del documento (_DOM, Document Object Model_, también visto). Todos nos permiten interactuar con el navegador para realizar distintas acciones.
 
 Pero además tenemos los tipos de objetos nativos, que no dependen del navegador. Son:
 - Number

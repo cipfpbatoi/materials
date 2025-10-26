@@ -395,21 +395,46 @@ Tenemos los operadores aritméticos **+**, **-**, **\***, **/** y **%** y los un
 Podemos usar los operadores artméticos junto al operador de asignación **=** (+=, -=, *=, /= y %=).
 
 Algunos métodos útiles de los números son:
-- **.toFixed(num)**: redondea el número a los decimales indicados. Ej. `23.2376.toFixed(2)` devuelve 23.24
-- **.toLocaleString()**: devuelve el número convertido al formato local. Ej. `23.76.toLocaleString()` devuelve '23,76' (convierte el punto decimal en coma)
+- **.toFixed(num)**: devuelve un String con el número redondeado a los decimales indicados. Ej. `23.2376.toFixed(2)` devuelve 23.24
+- **.toLocaleString()**: igual pero devuelve el número convertido al formato local. Ej. `23.76.toLocaleString()` devuelve '23,76' (convierte el punto decimal en coma)
 
-Podemos forzar la conversión a número con la función **Number(valor)**. Ejemplo `Number('23.12')`devuelve 23.12
-
-Otras funciones útiles son:
-- **isNaN(valor)**: nos dice si el valor pasado es un número (false) o no (true)
-- **isFinite(valor)**: devuelve _true_ si el valor es finito (no es _Infinity_ ni _-Infinity_). 
-- **parseInt(valor)**: convierte el valor pasado a un número entero. Siempre que compience por un número la conversión se podrá hacer. Ej.:
+Además Javascript incluye funciones globales que son útiles para trabajar con números. Son:
+**Number(valor)**. convierte el valor a un número. Si no puede convertirlo devuelve _NaN_. Ejemplos:
 ```javascript
-parseInt(3.65)      // Devuelve 3
-parseInt('3.65')    // Devuelve 3
-parseInt('3 manzanas')    // Devuelve 3, Number devolvería NaN
+console.log( Number(3.84) )            // imprime 3.84
+console.log( Number('3.84') )          // imprime 3.84
+console.log( Number('3,84') )          // imprime NaN (la coma no es un carácter numérico)
+console.log( Number('28manzanas') )    // imprime NaN
+console.log( Number('manzanas28') )    // imprime NaN
 ```
-- **parseFloat(valor)**: como la anterior pero conserva los decimales
+- **parseInt(valor)**: devuelve el valor pasado como parámetro convertido a entero o _NaN_ si no es posible la conversión. Este método es mucho más permisivo que _Number_ y convierte cualquier cosa que comience por un número (si encuentra un carácter no numérico detiene la conversión y devuelve lo convertido hasta el momento). Ejemplos:
+```javascript
+console.log( parseInt(3.84) )            // imprime 3 (ignora los decimales)
+console.log( parseInt('3.84') )          // imprime 3
+console.log( parseInt('28manzanas') )    // imprime 28
+console.log( parseInt('manzanas28') )    // imprime NaN
+```
+- **parseFloat(valor)**: como la anterior pero conserva los decimales.Ejemplos:
+```javascript
+console.log( parseFloat(3.84) )            // imprime 3.84
+console.log( parseFloat('3.84') )          // imprime 3.84
+console.log( parseFloat('3,84') )          // imprime 3 (la coma no es un carácter numérico)
+console.log( parseFloat('28manzanas') )    // imprime 28
+console.log( parseFloat('manzanas28') )    // imprime NaN
+```
+- **isNaN(valor)**: devuelve _true_ si lo pasado NO es un número o no puede convertirse en un número. Ejemplos:
+```javascript
+console.log( isNaN(3.84) )            // imprime false
+console.log( isNaN('3.84') )          // imprime false
+console.log( isNaN('3,84') )          // imprime true (la coma no es un carácter numérico)
+console.log( isNaN('28manzanas') )    // imprime true
+console.log( isNaN('manzanas28') )    // imprime true
+```
+- **isFinite(valor)**: devuelve _false_ si es número pasado es infinito (_Infinity_ o _-Infinity_) o demasiado grande:
+```javascript
+console.log( isFinite(3.84) )            // imprime true
+console.log( isFinite(3.84 / 0) )        // imprime false
+```
 
 **OJO**: al sumar floats podemos tener problemas:
 ```javascript
@@ -424,7 +449,7 @@ Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
 ### String
 Las cadenas de texto van entre comillas simples o dobles, es indiferente. Podemos escapar un caràcter con \ (ej. `'Hola \'Mundo\''` devuelve _Hola 'Mundo'_).
 
-Para forzar la conversión a cadena se usa la función **String(valor)** (ej. `String(23)` devuelve '23')
+Para forzar la conversión a cadena se usa la función **String(valor)** (ej. `String(23)` devuelve '23').
 
 El operador de concatenación de cadenas es **+**. Ojo porque si pedimos un dato con _prompt_ siempre devuelve una cadena así que si le pedimos la edad al usuario (por ejemplo 20) y se sumamos 10 tendremos 2010 ('20'+10).
 
@@ -449,6 +474,21 @@ Algunos métodos y propiedades de las cadenas son:
 Podemos probar los diferentes métodos en la página de [w3schools](https://www.w3schools.com/jsref/jsref_obj_string.asp).
 
 > EJERCICIO: Haz una función a la que se le pasa un DNI (ej. 12345678w o 87654321T) y devolverá si es correcto o no. La letra que debe corresponder a un DNI correcto se obtiene dividiendo la parte numérica entre 23 y cogiendo de la cadena 'TRWAGMYFPDXBNJZSQVHLCKE' la letra correspondiente al resto de la divisón. Por ejemplo, si el resto es 0 la letra será la T y si es 4 será la G. Prueba la función en la consola con tu DNI
+
+Las funciones globales útiles para trabajar con cadenas son:
+* `String(valor)`: convierte el valor pasado a una cadena de texto. Si le pasamos un objeto llama al método _.toString()_ del objeto. Ejemplos:
+```javascript
+console.log( String(3.84) )                  // imprime '3.84'
+console.log( String([24, 3. 12]) )           // imprime '24,3,12'
+console.log( {nombre: 'Marta', edad: 26} )   // imprime "[object Object]"
+```
+* `encodeURI(string)` / `decodeURI(string)`: transforma la cadena pasada a una URL codificada válida transformando los caracteres especiales que contenga, excepto , / ? : @ & = + $ #. Debemos usarla siempre que vayamos a pasar una URL. Ejemplo:
+  * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
+  * Encoded: “http://domain.com?val=1%202%203&val2=r+y%256”
+* `encodeURIComponent(string)` / `decodeURIComponent(string)`: transforma también los caracteres que no transforma la anterior. Debemos usarla para codificar parámetros pero no una URL entera. Ejemplo:
+  * Decoded: “http://domain.com?val=1 2 3&val2=r+y%6"
+  * Encoded: “http%3A%2F%2Fdomain.com%3Fval%3D1%202%203%26val2%3Dr%2By%256”
+
 
 #### Template literals
 Desde ES2015 también podemos poner una cadena entre \` (acento grave) y en ese caso podemos poner dentro variables y expresiones que serán evaluadas al ponerlas dentro de **${}**. También se respetan los saltos de línea, tabuladores, etc que haya dentro. Ejemplo:

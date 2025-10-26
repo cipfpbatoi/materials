@@ -8,7 +8,6 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
   * [Vite](./03.1-vite.md): Cómo usar vite
   * [Webpack](./03.1-webpack.md): Cómo usar webpack
 * [2.3-Programación Orientada a Objetos](./03-oop.md): Introducción. Clases. POO en JS5
-  * [Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [2.4-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, 
 * [3-Ajax. Promesas. SPA](./09-ajax.md)
 * [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
