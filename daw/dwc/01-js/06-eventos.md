@@ -229,8 +229,7 @@ function aceptado(param1, param2, event) {
   // Aquí dentro tendremos los valores
   // this = var1
   // param1 = var2
-  // param2 = var3
-  // event es el objeto con la información del evento producido
+  // event es el objeto con la información del evento producido (click)
 }
 ```
 
