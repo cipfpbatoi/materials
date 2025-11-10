@@ -151,8 +151,23 @@ Al producirse un evento se generan automáticamente en su función manejadora 2 
 * **this**: siempre hace referencia al elemento que contiene el código en donde se encuentra la variable _this_. En el caso de una función manejadora será el elemento que tiene el escuchador que ha recibido el evento. OJO: se sobreescribe el valor anterior de _this_ por lo que si queremos conservarlo debemos guardarlo en otra variable antes de entrar en la función manejadora.
 * **event**: es un objeto y la función manejadora lo recibe como parámetro. Tiene propiedades y métodos que nos dan información sobre el evento, como:
   * **.type**: qué evento se ha producido (click, submit, keyDown, ...)
-  * **.target**: el elemento donde se produjo el evento (puede ser _this_  o un descendiente de _this_, como en el ejemplo siguiente) 
-  * **.currentTarget**: el elemento que contiene el escuchador del evento lanzado (normalmente el mismo que _this_). Por ejemplo si tenemos un _<p>_ al que le ponemos un escuchador de 'click' que dentro tiene un elemento _<span>_, si hacemos _click_ sobre el _<span>_ **event.target** será el _<span>_ que es donde hemos hecho click (está dentro de _<p>_) pero tanto _<this>_ como _event.currentTarget_ será _<p>_ (que es quien tiene el escuchador que se está ejecutando).
+  * **.target**: es el elemento exacto donde se originó el evento — el que el usuario realmente tocó, hizo clic, etc.
+  * **.currentTarget**: es el elemento que tiene asociado el manejador del evento, es decir, quien está escuchando ese evento.
+  * ```javascript
+    <p id="parrafo">
+      Haz clic <strong>aquí</strong> o en el texto.
+    </p>
+
+    <script>
+    const p = document.getElementById("parrafo");
+
+    p.addEventListener("click", function(event) {
+      console.log("event.target:", event.target);  // <strong> → el elemento donde ocurrió el clic
+      console.log("event.currentTarget:", event.currentTarget);  // <p> → el elemento con el listener
+      console.log("this:", this);  <p> → lo mismo que event.currentTarget
+    });
+    </script>
+    ```
   * **.relatedTarget**: en un evento 'mouseover' **event.target** es el elemento donde ha entrado el puntero del ratón y **event.relatedTarget** el elemento del que ha salido. En un evento 'mouseout' sería al revés.
   * **.cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
   * **.preventDefault()**: si un evento tiene un escuchador asociado se ejecuta el código de dicho escuchador y después el navegador realiza la acción que correspondería por defecto al evento si no tuviera escuchador (por ejemplo un escuchador del evento _click_ sobre un hiperenlace hará que se ejecute su código y después saltará a la página indicada en el _href_ del hiperenlace). Este método cancela la acción por defecto del navegador para el evento. Por ejemplo si el evento era el _submit_ de un formulario éste no se enviará o si era un _click_ sobre un hiperenlace no se irá a la página indicada en él.
