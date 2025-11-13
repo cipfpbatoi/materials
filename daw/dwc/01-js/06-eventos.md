@@ -320,7 +320,7 @@ Por ejemplo si queremos escuchar cuándo hacemos _click_ en cada celda de la tab
 **NOTA**: ten en cuenta que a veces el evento se produce en alguna etiqueta interna al elemento por lo que `event.target` no sería el elemento que buscamos sino su descendiente. Por ejemplo si hay una imagen en la celda el `event.target` podría ser la \<img> y no la \<td>. Para asegurarnos de llegar al elemento deseado podemos usar el selector `closest()` que vimos en el DOM (`tdClicked = event.target.closest('td')`).
 
 Ejemplo de delegación de eventos:
-<script async src="//https://jsfiddle.net/q57p42b9/embed/"></script>
+<script async src="//jsfiddle.net/q57p42b9/embed/"></script>
 
 Podéis ver más ejemplos de delegación de eventos en [El Tutorial de JavaScript Moderno](https://es.javascript.info/event-delegation).
 
