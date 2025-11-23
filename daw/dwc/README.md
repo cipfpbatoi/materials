@@ -4,7 +4,8 @@ Apuntes del módulo de "Desarrollo Web en Entorno Cliente" de 2º curso del CFGS
 ## Contenidos
 En primer lugar veremos una introducción al [desarrollo web y las arquitecturas utilizadas](arquitect.md) donde tendremos una visión general del desarrolo de aplicaciones web. A continuación los contenidos se van a dividir en 2 grandes bloques:
 1. **[Javascript](01-js)**: aquí aprenderemos a programar con el lenguaje Javascipt
-2. **[Vue](02-vue)**: en este bloque usaremos el framework Javascript **Vue JS**
+2. **[Vue _Options API_](02-vue)**: en este bloque usaremos el framework Javascript **Vue JS** con su sintaxis tradicional, la _Options API_
+2. **[Vue _Composition API_](02-vue-composition-api)**: en este bloque usaremos el framework Javascript **Vue JS** con su nueva sintaxis, la _Composition API_
 
 En la página del [entorno de trabajo](entorno.md) se explican las herramientas que necesitaremos para trabajar en este módulo.
 
