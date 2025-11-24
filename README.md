@@ -25,11 +25,13 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
   * [Afegir client GNU/Linux a Active Directory](./altres/sistemes-operatius/linux-ad/)
   * [Software RAID](./altres/sistemes-operatius/software-raid/)
   * [LVM](./altres/sistemes-operatius/lvm/)
+  * [Deshabilitar Windows Update](./sistemes-operatius/windows-update/)
 * [Virtualització. Virtualbox](./altres/virtualitzacio/)
 * [Configurar la xarxa en GNU/Linux](./altres/xarxa-linux/)
 * [Crear documentación con Markdown](./altres/markdown/)
 * [Pasar-li una ISO als alumnes](./altres/descargar-isos)
 * [Configuració mirrors locals](./altres/mirrors/)
+* [Recursos docència](./docencia/)
 
 ## Licencia
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Este obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional</a>.
