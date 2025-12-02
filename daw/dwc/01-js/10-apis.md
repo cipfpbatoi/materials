@@ -76,7 +76,7 @@ Podéis ver el funcionamiento de este ejemplo:
 
 <script async src="//jsfiddle.net/juansegura/bn495ygj/embed/"></script>
 
-NOTA: si hacemos _draggable_ un elemento, por ejemplo un párrafo, ya no se puede seleccionar con el ratón ya que al pinchar y arrastrar se mueve, no se selecciona. Para poder seleccionarlo debemos pinchar y arrastrar el ratón con las teclas _Ctrl+Alt_ pulsadas o hacerlo con el teclado. Ejemplo:
+NOTA: si hacemos _draggable_ un elemento, por ejemplo un párrafo, ya no se puede seleccionar con el ratón ya que al pinchar y arrastrar se mueve, no se selecciona. Ejemplo:
 
 <script async src="//jsfiddle.net/juansegura/dgyvLtho/embed/"></script>
 
