@@ -17,9 +17,9 @@ El principal registro que tenemos es el **Visor de eventos** que tiene 4 registr
 ![Visor de eventos](./media/visor-eventos.png)
 
 - **Aplicación**: aquí encontramos todos los eventos relacionados con las aplicaciones que se ejecutan en el sistema así como las alertas que nosotros configuramos en el _Monitor del sistema_ (posteriormente veremos como hacerlo)
-- **Seguridad**: se registran todos los eventos relacionados con las directivas de auditoría establecidas en los directivas de grupo. Podemos registrar todos los eventos (incluyendo los correctos) o solo los errores. También encontramos los eventos de uso de recursos compartidos.
+- **Seguridad**: se registran todos los eventos relacionados con las directivas de auditoría establecidas en los directivas de grupo (logins, autentificaciones, permisos, acceso a recursos, ...). Podemos registrar todos los eventos (incluyendo los correctos) o solo los errores. También encontramos los eventos de uso de recursos compartidos.
 - **Instalación**: eventos relacionados con la instalación y configuración de aplicaciones, incluyendo las operaciones de añadir o quitar funciones en el sistema
-- **Sistema**: eventos asociados al uso del sistema y los servicios instalados
+- **Sistema**: eventos asociados al uso del sistema y los servicios instalados (sistema, drivers, arranque, errores de hardware, ...)
 
 Además del _Registro de Windows_ tenemos otros 3 registros:
 - **Registros de aplicaciones y servicios**: almacena eventos de una aplicación o componente (como el registro de Internet Explorer, el del Servicio de directorio, el Servidor *DNS, etc.). Incluye 4 registros
@@ -39,7 +39,13 @@ Los eventos que muestra el _Visor de eventos_ se clasifican en:
 - **Error de auditoría**: se ha producido un error en el ejercicio de los derechos de un usuario
 
 ## Propiedades de un evento
-Al hacer doble clic sobre un evento podemos ver toda la información del mismo.
+Al hacer doble clic sobre un evento podemos ver toda la información del mismo, que incluye:
+- Event ID: identificador único del evento
+- Source (origen): qué aplicación / servicio / componente lo ha generado.
+- Fecha y hora del evento
+- Nivel (Level): tipo (Information, Warning, Error, Critical, etc.) según severidad
+- Usuario (si aplica): qué usuario generó el evento (p. ej. login, permisos).
+- Descripción / Mensaje: detalle de qué ha sucedido, con información concreta, códigos de error, paths, etc.
 
 Incluye un enlace de ayuda que envía la información del evento en Microsoft y nos abra el explorador de Internet con información sobre el evento de la web de Microsoft.
 

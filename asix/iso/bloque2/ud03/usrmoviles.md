@@ -131,8 +131,8 @@ El perfil de un usuario consta de muchas carpetas y archivos donde se almacena l
 A partir de ese momento cuando el usuario inicie sesión y realice cambios en su perfil estos cambios no se guardarán al cerrar la sesión.
 
 Se pueden dar 2 casos cuando queremos establecer los perfiles obligatorios:
-- queremos que un usuario tenga perfil obligatorio
-- queremos que un grupo de usuarios tenga perfil obligatorio (es lo que normalmente queremos hacer)
+- [queremos que un usuario tenga perfil obligatorio](#convertir-en-obligatorio-el-perfil-de-un-usuario)
+- [queremos que un grupo de usuarios tenga perfil obligatorio](#utilizar-un-mismo-perfil-obligatorio-para-muchos-usuarios) (es lo que normalmente queremos hacer)
 
 ### Convertir en obligatorio el perfil de un usuario
 **NOTA**: este caso es muy poco frecuente ya que lo normal es queramos que sea todo un grupo de usuarios los que tengan perfil obligatorio, no uno sólo. Ese caso lo vemos en el siguiente apartado.
@@ -162,7 +162,9 @@ Aquí podéis ver un pequeño [vídeo de cómo cambiar el propietario](media/cam
 ### Utilizar un mismo perfil obligatorio para muchos usuarios
 Este es el caso más habitual ya que normalmente es más de un usuario quien tiene que tener perfil obligatorio y el perfil tiene que ser igual para todos. Como además ninguno de esos usuarios puede hacer cambios en el perfil (porque es obligatorio) no tiene sentido que cada usuario tenga su propio perfil sino que es mejor usar un mismo perfil para todos ellos.
 
-La forma más sencilla de hacerlo es copiando el perfil desde un equipo cliente. En primer lugar debemos tener una carpeta compartida dentro de la cual crearemos la carpeta del perfil obligatorio (seguiendo el ejemplo de los perfiles móviles podría ser la carpeta `\\srvWin\GesDomini$`). También debemos tener creado un grupo con todos los usuarios que han de utilizar este perfil obligatorio. 
+La forma más sencilla de hacerlo es copiando el perfil desde un equipo cliente. En primer lugar debemos tener una carpeta compartida dentro de la cual crearemos la carpeta del perfil obligatorio. Por ejemplo en el servidor srvInfoBatoi00 tenemos la carpeta compartida _AdminXarxa_ y dentro de ella una carpeta _PerfOblig_ crearemos los perfiles obligatorios. Haremos uno _Taller_ para guardar el perfil obligatorio de los usuarios del taller. Si hubiéramos seguido el ejemplo de los perfiles móviles podría ser la carpeta `\\srvWin\GesDomini$`. 
+
+También debemos tener creado un grupo con todos los usuarios que han de utilizar este perfil obligatorio. 
 
 A continuación iniciamos sesión en un equipo cliente con el usuario _Administrador_ del dominio y hacemos:
 
@@ -170,11 +172,15 @@ A continuación iniciamos sesión en un equipo cliente con el usuario _Administr
 
 ![Perfiles de usuario](media/PerfilesUsuario.png)
 
-2.- Pulsamos el botón `Configuración` y accedemos a los perfiles. Seleccionamos el _Perfil predeterminado_ y pulsamos el botón `Copiar a`.
+2.- Pulsamos el botón `Configuración` y accedemos a los perfiles. 
+
+![Perfiles creados](media/PerfilesCreados.png)
+
+Seleccionamos el _Perfil predeterminado_ y pulsamos el botón `Copiar a`.
 
 ![Copiar perfil](media/t4-copiarPerfil.png)
 
-3.- En `Copiar perfil en` ponemos la ruta de la carpeta del servidor donde se guardará el perfil **con la extensión correspondiente** (**V6** para Windows 10 y superiores). Esta carpeta se creará (no hace falta que ya esté creada). Por ejemplo:
+3.- En `Copiar perfil en` ponemos la ruta de la carpeta del servidor donde se guardará el perfil **con la extensión correspondiente** (**V6** para Windows 10 y superiores). Esta carpeta se creará (no hace falta que ya esté creada). En el ejemplo de los perfiles móviles la ruta sería:
 
 ```[bash]
 \\srvWin\GesDominio$\PerfOblig.V6
