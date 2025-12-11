@@ -35,26 +35,46 @@ Nos podemos encontrar las siguientes situaciones:
 ## Props (de padre a hijo)
 Ya hemos visto que podemos pasar parámetros del padre al componente hijo. Si el valor del parámetro cambia en el padre automáticamente se reflejan esos cambios en el hijo.
 
+Los parámetros se pasan como variables definidas en la etiqueta del componente hijo:
+```html
+<ul>
+  <todo-item title="Aprender Vue" done="false" ></todo-item>
+</ul>
+```
+
+
 En _Options API_ debemos declarar en el componente hijo los parámetros que vamos a recibir en la opción `props`:
 ```javascript
 export default {
-  props: ['todo', 'done'],
+  props: ['title', 'done'],
 };
 ```
+
+Una vez declarados podemos acceder a ellos en el _template_ como `title` y `done` y en el _script_ `this.title` y `this.done`.
 
 En _Composition API_ se hace de forma similar pero usando `defineProps`:
 ```vue
 <script setup>
 import { defineProps } from 'vue';
 
-defineProps(['todo', 'done']);
+defineProps(['title', 'done']);
 </script>
 ```
 
-NOTA: Cualquier parámetro que pasemos sin _v-bind_ se considera texto. Si queremos pasar un número, booleano, array u objeto hemos de pasarlo con _v-bind_ igual que hacemos con las variables para que no se considere texto:
+Y en el _template_ se accede igual que en _Options API_ como `title` y `done`. Si necesitamos acceder a ellos en el _script_ los asignamos a una variable:
+```vue
+<script setup>
+import { defineProps } from 'vue';
+const props = defineProps(['title', 'done']);
+</script>
+```
+
+y en el _script_ se accede como `props.title` y `props.done`.
+
+**NOTA**: Cualquier parámetro que pasemos sin _v-bind_ se considera texto. Si queremos pasar un número, booleano, array u objeto hemos de pasarlo con _v-bind_ igual que hacemos con las variables para que no se considere texto:
 ```html
 <ul>
-  <todo-item todo="Aprender Vue" :done="false" ></todo-item>
+  <todo-item title="Aprender Vue" :done="false" ></todo-item>
 </ul>
 ```
 
@@ -98,7 +118,7 @@ defineProps({
 Si queremos pasar varios parámetros a un componente hijo podemos pasarle cada uno como en el ejemplo anterior:
 ```html
 <ul>
-  <todo-item todo="Aprender Vue" :done="false" ></todo-item>
+  <todo-item title="Aprender Vue" :done="false" ></todo-item>
 </ul>
 ```
 
@@ -113,7 +133,7 @@ o bien un único objeto en un atributo _v-bind_ sin nombre y lo que recibirá el
 <script setup>
   ...
   const propsObject = ref({ 
-    todo: 'Aprender Vue', 
+    title: 'Aprender Vue', 
     done: false
   })
   ...
@@ -125,7 +145,7 @@ y en el componente se reciben sus parámetros separadamente:
 // todo-item.vue
   ...
   defineProps({
-    todo: String,
+    title: String,
     done: Boolean
   })
   ...
@@ -227,7 +247,7 @@ El componente padre está escuchando el evento _input_ sobre el \<INPUT> del com
 Y si el componente hijo tiene varios elementos raíz también deberemos _bindear_ los _attrs_ a uno de ellos como acabamos de ver.
 
 ### Provide / Inject
-En ocasiones necesitamos pasar datos desde un componente padre a un componente que no es su hijo directo sino desdenciente del mismo. En estos casos podemos usar _provide/inject_.
+En ocasiones necesitamos pasar datos desde un componente padre a un componente que no es su hijo directo sino descendiente del mismo. En estos casos podemos usar _provide/inject_.
 
 Podemos ampliar la información en la [documentación oficial de Vue](https://vuejs.org/guide/components/provide-inject.html).
 
@@ -242,7 +262,7 @@ El padre debe capturar el evento como cualquier otro. En su HTML hará:
 <my-component @nombre-evento="fnManejadora" ... />
 ```
 
-y en su JS tendrá la función para manejar ese evento:
+y en su _script_ tendrá la función para manejar ese evento. En _Options API_:
 ```javascript
   methods: {
     fnManejadora(param) {
@@ -251,6 +271,14 @@ y en su JS tendrá la función para manejar ese evento:
   }
   ...
 ``` 
+
+o en _Composition API_:
+```javascript
+  const fnManejadora = (param) => {
+    ...
+  }
+  ...
+```
 
 El componente hijo puede emitir cualquiera de los eventos estándar de JS ('click', 'change', ...) o un evento personalizado ('cambiado', ...).
 
@@ -351,7 +379,7 @@ Componente **_todo-list.vue_**
 Le estamos indicando a Vue que el evento _dblclick_ se capture en _todo-list_ directamente por lo que el componente _todo-item_ no tiene que capturarlo ni hacer nada:
 
 ## Compartir datos
-Una forma sencilla de acceder a los mismos datos desde distintos componentes que no son padre-hijo es compartiendolos datos entre ellos. Para ello creamos un fichero _.js_ (no _.vue_) un objeto que contendrá todos los datos a compartir entre componentes y en cada componente que queramos usarlo lo importamos y lo registramos. Ejemplo:
+Una forma sencilla de acceder a los mismos datos desde distintos componentes que no son padre-hijo es compartiendolos datos entre ellos. Para ello creamos en un fichero _.js_ (no _.vue_) un objeto que contendrá todos los datos a compartir entre componentes y en cada componente que queramos usarlo lo importamos y lo registramos. Ejemplo:
 
 Fichero `/src/store/index.js`
 ```javascript
@@ -366,7 +394,7 @@ export const store = reactive({
 
 Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
 
-En cada componente que necesite acceder a datos del _store_ lo importamos y definimos dentro de _computed_ las variables a las que queramos acceder. No lo hacemos en _data_ porque allí declaro las variables locales del componente y estas está en el _store_.:
+En cada componente que necesite acceder a datos del _store_ lo importamos y declaramos como _computed_ las variables a las que queramos acceder. No lo hacemos en _data_ porque allí declaro las variables locales del componente y estas están en el _store_.:
 ```javascript
 
 Componente `compA.vue`
@@ -468,7 +496,7 @@ import { store } from '/src/datos.js'
 ## Aplicación de ejemplo
 Vamos a ver el ejemplo de una aplicación de tareas dividida en varios componentes que comparten los datos mediante un _store pattern_.
 
-Con lo que sabíamos hasta ahora podríamos hacer la aplicación declarando el array de tareas en el _app.vue_ y pasando los datos entre componentes mediante _props_ y eventos, pero sería un engorro y el código sería difícil de mantener. 
+Con lo que sabíamos hasta ahora podríamos hacer la aplicación declarando el array de tareas en el _App.vue_ y pasando los datos entre componentes mediante _props_ y eventos, pero sería un engorro y el código sería difícil de mantener.
 
 Usando un _store pattern_ centralizamos los datos de aplicación y las acciones que los modifican en un único sitio.
 
@@ -696,7 +724,7 @@ En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en 
 
 Respecto al _todo-item_ debe cambiar los datos tanto para borrar una tarea como para marcarla como 'Hecha'/'No hecha' (se cambia el estado de la tarea).
 
-Podemos ver la aplicación funcionando en la [Vue Playground](https://play.vuejs.org/#eNqNVc1u2zgQfhWuLrUBW0J/Tl7Fu0nbxbYo2mBT7KXqgRHHNhOKVEnKSWD4ofoMfbHOUKIs24mRIAdq5hvOx5lvxpvkvK7TdQPJLMldaWXtmQPf1PNCy6o21rOvRphP0nm2sKZiL9IsGijsxZ897lyIDx6qHtZ9H6DegTpXqge1nxFT6DxrSWB6/MDwWnEP+MVYLuQ6HPC4ejV/axx3jLMVL8EycB4Y//XTzPIMnR3MI9OpIu5ZNHEhppJokqWzCVBTjqRaUJ61ifKsT59MEu9Koxdymd44o7FYG4IWSWmqWiqwX2ovjXZFMmPBQz680tx9DDZvG5hEe7mC8vYR+427J1uRXFpwYNdQJL3Pc7sE37rfX32Gezz3zsqIRiH6hPM/cEY1xLGFXTRaIO0BLrD9EJok9fKre3/vQbv4KCJKyG3AFwk27O2Jp+/ovk7fhLhCb7GKA008LbgNs7Bg204jvTSw/thIDXekP3ZGoFGRFMl44MXudt7RmJ3NW0JywUZdWLrmqoHUW1mNxuPIl2TiOlfduNVow7z0CmYx217YhAmj0bfgygHbUnq6ZA+KBIhacNHT8TBQ9tO6lrpuPFtPsWmgzoqku7RIGOJLWBklwKId60gJGSkZnb26rxvvjWZ/l0qWt4jr6lEkc4zIs9Z9QuW7cXykPW2JkRhd6fZrPCghOr59xwcfPPro2Ydc48VI9sJYyy1dypnCf5xgPmA/4FxoZD1cSM+UVVBwaNBgy+3WV5G0ay6KNSBjBcJbOwF+o6dsmBQz9nISVVMkn4BbzT7yNb8KXHDO9lTTzVEb+Ooo8H/KeCLi9SDiUvEHxq3BgWYSc179IwWO9i6eRnc//M0g/KKRSjBnKvArnHvG73BTVI+Gfyepn+poo1C6coG9bOWgQC/9Cvs5XMdh+a6nC0M6JguxDngU8uwWHjpzKgUZCN5ZeqHnWaPaQ403AZZn/tngD8EDw70D+KvwAylXxnkUUZ6RBB5TzHMWkYCF1HBpTe2OlRP1UAf32RA8ahcPZpixL9c3UHqsX1gVB2P05BSlrsa5gJHUAu4n7CXF0kRFCZqlgnfYoP0LApWU8qbUPXT+cWA6HsyDJioZ26X4NbR1jr+Ssb39bX1v6W+D6iJH0Bbb4t7rIjMM3d3jaq5j254TTPhIKRtyOtogu6qMxgNm8epQkb+wgSiWf6FccdIXfsZzTLq3J59eVCFHu6kONmso4b7ktr8Bnscdbg==) o en el siguiente _codesandbox_:
+Podemos ver la aplicación con sintaxis _Composition API_ funcionando en la [Vue Playground](https://play.vuejs.org/#eNqNVc1u2zgQfhWuLrUBW0J/Tl7Fu0nbxbYo2mBT7KXqgRHHNhOKVEnKSWD4ofoMfbHOUKIs24mRIAdq5hvOx5lvxpvkvK7TdQPJLMldaWXtmQPf1PNCy6o21rOvRphP0nm2sKZiL9IsGijsxZ897lyIDx6qHtZ9H6DegTpXqge1nxFT6DxrSWB6/MDwWnEP+MVYLuQ6HPC4ejV/axx3jLMVL8EycB4Y//XTzPIMnR3MI9OpIu5ZNHEhppJokqWzCVBTjqRaUJ61ifKsT59MEu9Koxdymd44o7FYG4IWSWmqWiqwX2ovjXZFMmPBQz680tx9DDZvG5hEe7mC8vYR+427J1uRXFpwYNdQJL3Pc7sE37rfX32Gezz3zsqIRiH6hPM/cEY1xLGFXTRaIO0BLrD9EJok9fKre3/vQbv4KCJKyG3AFwk27O2Jp+/ovk7fhLhCb7GKA008LbgNs7Bg204jvTSw/thIDXekP3ZGoFGRFMl44MXudt7RmJ3NW0JywUZdWLrmqoHUW1mNxuPIl2TiOlfduNVow7z0CmYx217YhAmj0bfgygHbUnq6ZA+KBIhacNHT8TBQ9tO6lrpuPFtPsWmgzoqku7RIGOJLWBklwKId60gJGSkZnb26rxvvjWZ/l0qWt4jr6lEkc4zIs9Z9QuW7cXykPW2JkRhd6fZrPCghOr59xwcfPPro2Ydc48VI9sJYyy1dypnCf5xgPmA/4FxoZD1cSM+UVVBwaNBgy+3WV5G0ay6KNSBjBcJbOwF+o6dsmBQz9nISVVMkn4BbzT7yNb8KXHDO9lTTzVEb+Ooo8H/KeCLi9SDiUvEHxq3BgWYSc179IwWO9i6eRnc//M0g/KKRSjBnKvArnHvG73BTVI+Gfyepn+poo1C6coG9bOWgQC/9Cvs5XMdh+a6nC0M6JguxDngU8uwWHjpzKgUZCN5ZeqHnWaPaQ403AZZn/tngD8EDw70D+KvwAylXxnkUUZ6RBB5TzHMWkYCF1HBpTe2OlRP1UAf32RA8ahcPZpixL9c3UHqsX1gVB2P05BSlrsa5gJHUAu4n7CXF0kRFCZqlgnfYoP0LApWU8qbUPXT+cWA6HsyDJioZ26X4NbR1jr+Ssb39bX1v6W+D6iJH0Bbb4t7rIjMM3d3jaq5j254TTPhIKRtyOtogu6qMxgNm8epQkb+wgSiWf6FccdIXfsZzTLq3J59eVCFHu6kONmso4b7ktr8Bnscdbg==) o con sintaxis _Options API_ en el siguiente _codesandbox_:
 
 <iframe src="https://codesandbox.io/embed/todo-app-with-vue-cli-it-works-fnen9g?fontsize=14&hidenavigation=1&theme=dark"
      style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"

@@ -1,7 +1,7 @@
 # RA4 – Implantació de maquinari específic de Centres de Procés de Dades (CPD)
 - [RA4 – Implantació de maquinari específic de Centres de Procés de Dades (CPD)](#ra4--implantació-de-maquinari-específic-de-centres-de-procés-de-dades-cpd)
   - [1. Concepte de Centre de Procés de Dades (CPD)](#1-concepte-de-centre-de-procés-de-dades-cpd)
-  - [2. Tipus de CPD segons el seu model actual](#2-tipus-de-cpd-segons-el-seu-model-actual)
+  - [2. Tipus de CPD](#2-tipus-de-cpd)
     - [CPD local (on-premise)](#cpd-local-on-premise)
     - [CPD al núvol (cloud)](#cpd-al-núvol-cloud)
     - [CPD híbrid](#cpd-híbrid)
@@ -49,7 +49,7 @@ L’objectiu principal d’un CPD és garantir que els serveis informàtics func
 
 ---
 
-## 2. Tipus de CPD segons el seu model actual
+## 2. Tipus de CPD
 
 Actualment, els CPD poden classificar-se en diferents tipus segons la seua ubicació i model d’ús:
 
@@ -175,7 +175,7 @@ Els CPD generen una gran quantitat de calor. Per això es fan servir:
 - Sistemes HVAC (_Heating, Ventilation, Air Conditioning_) intel·ligents
 - Passadissos freds i calents
 - Free cooling (aprofitar l’aire exterior quan fa fresc)
-- Refrigeració líquida directa al xip (DLC) en servidors d’alt rendiment (IA, GPU)
+- Refrigeració líquida directa al xip (DLC) en servidors d’alt rendiment (AI, GPU)
 
 La temperatura recomanada és:
 - Entre **18 °C i 27 °C**
