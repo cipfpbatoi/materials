@@ -208,14 +208,14 @@ const toogleDone = () => {
   <li>
     <label>
       <del v-if="item.done">
-        {{ item.title }}
+        { { item.title }}
       </del>
       <span v-else>
-        {{ item.title }}
+        { { item.title }}
       </span>
     </label>
     <button @click="toogleDone()">
-      {{ item.done ? "No Hecha" : "Hecha" }}
+      { { item.done ? "No Hecha" : "Hecha" }}
     </button>
     <button @click="delTodo()">Borrar</button>
   </li>

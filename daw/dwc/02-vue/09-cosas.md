@@ -338,7 +338,7 @@ Creamos la vista principal en **/resources/views/spa.blade.php**:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{ { csrf_token() }}">
     <title>Vue SPA Demo</title>
 </head>
 <body>
@@ -346,7 +346,7 @@ Creamos la vista principal en **/resources/views/spa.blade.php**:
         <app></app>
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{ { mix('js/app.js') }}"></script>
 </body>
 </html>
 ```

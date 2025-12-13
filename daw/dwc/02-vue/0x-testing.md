@@ -121,7 +121,7 @@ El componente que vamos a probar es:
 ```vue
 <template>
   <div>
-    <h1>{{title}}</h1>    <button @click="changeTitle">Change title</button>  </div>
+    <h1>{ {title}}</h1>    <button @click="changeTitle">Change title</button>  </div>
 </template>
 
 <script>
@@ -158,7 +158,7 @@ El componente que vamos a probar es:
 ```vue
 <template>
   <div>
-    <h1>{{count}}</h1>
+    <h1>{ {count}}</h1>
     <button @click="increment">Increment</button>  </div>
 </template>
 

@@ -17,7 +17,6 @@
   - [Slots](#slots)
     - [Slots con nombre](#slots-con-nombre)
     - [Acceder a datos del hijo desde el padre con _slot_](#acceder-a-datos-del-hijo-desde-el-padre-con-slot)
-- [Aplicación de ejemplo](#aplicación-de-ejemplo-1)
 
 ## Introducción
 Cada componente tiene sus propios datos que son **datos de nivel de componente**, pero hay ocasiones en que varios componentes necesitan acceder a los mismos datos. Es lo que nos sucede en nuestra aplicación de ejemplo donde varios componentes necesitan acceder a la lista de tareas (variable _todos_) para mostrarla (_todo-list_), añadir items (_todo-add_) o borrarla (_todo-del-all_).
@@ -252,9 +251,21 @@ En ocasiones necesitamos pasar datos desde un componente padre a un componente q
 Podemos ampliar la información en la [documentación oficial de Vue](https://vuejs.org/guide/components/provide-inject.html).
 
 ## Emitir eventos (de hijo a padre)
-Si un componente hijo debe pasarle un dato a su padre o informarle de algo puede emitir un evento que el padre capturará y tratará convenientemente. Para emitir el evento el hijo hace:
+Si un componente hijo debe pasarle un dato a su padre o informarle de algo puede emitir un evento que el padre capturará y tratará convenientemente. El componente hijo puede emitir un evento desde el su _template_ o desde su _script_. Para emitir el evento desde el _template_ el hijo hace:
+```html
+<button @click="$emit('nombreEvento', parametro)">Haz algo</button>
+```
+
+Para hacerlo desde el _script_, en sintaxis _Options API_:
 ```javascript
-  this.$emit('nombreEvento', parametro)
+this.$emit('nombreEvento', parametro)
+```
+
+y en sintaxis _Composition API_:
+```javascript
+const emit = defineEmits(['nombreEvento'])
+
+emit('nombreEvento', parametro)
 ```
 
 El padre debe capturar el evento como cualquier otro. En su HTML hará:
@@ -282,7 +293,15 @@ o en _Composition API_:
 
 El componente hijo puede emitir cualquiera de los eventos estándar de JS ('click', 'change', ...) o un evento personalizado ('cambiado', ...).
 
-Igual que un componente declara las _props_ que recibe, también puede declarar los eventos que emite. Esto es opcional pero **muy recomendable** ya que proporciona mayor claridad al código. En _Options API_ se hace en la opción _emits_:
+Igual que un componente declara las _props_ que recibe, también puede declarar los eventos que emite. En _Composition API_ se hace como hemos visto con `defineEmits`:
+```vue
+<script setup>
+defineEmits(['nombreEvento']);
+</script>
+```
+
+
+En _Options API_ es opcional pero **muy recomendable** ya que proporciona mayor claridad al código:
 ```javascript
 // TodoItem.vue
 ...
@@ -293,40 +312,34 @@ emits: ['nombreEvento'],
 ...
 ```
 
-En _Composition API_ se hace usando `defineEmits`:
-```vue
-<script setup>
-import { defineEmits } from 'vue';
-
-defineEmits(['nombreEvento']);
-</script>
-```
-
 **Ejemplo**: continuando con la aplicación de tareas que dividimos en componentes, en el componente **_todo-item_** en lugar de hacer un alert emitiremos un evento al padre:
 ```javascript
 delTodo() {
-  this.$emit('delItem')
+  emit('delItem')
 },
 ``` 
 
 y en el componente **_todo-list_** lo escuchamos y llamamos al método que borre el item:
 ```vue
 <script setup>
-import TodoItem from './todo-item.vue'
+const todos = ref([...])  // array de tareas
 
 const delTodo = (index) => {
-  todos.splice(index, 1)
+  todos.value.splice(index, 1)
 }
-...
 </script>
+
 <template>
-  ...
-  <todo-item 
-    v-for="(item, index) in todos" :key="item.id"
-    :todo="item"
-    @del-item="delTodo(index)">
-  </todo-item>
-  ...
+    <div>
+      <ul>
+       <todo-item 
+         v-for="(item, index) in todos" 
+         :key="item.id"
+         :todo="item"
+         @del-item="delTodo(index)">
+       </todo-item>
+      </ul>
+    </div>
 </template>
 ``` 
 
@@ -336,8 +349,6 @@ const delTodo = (index) => {
 Como hemos dicho, los eventos que emite un componente pueden (y se recomienda) definirse con _defineEmits_. Y al igual que con las _props_ es posible definirlos usando sintaxis de objeto para validar los parámetros que se emiten. Para ello el evento se asigna a una función que recibe como parámetro los parámetros del evento y devuelve _true_ si es válido o _false_ si no lo es:
 ```vue
 <script setup>
-import { defineEmits } from 'vue';
-
 const emits = defineEmits({
   // No validation
   click: null,
@@ -361,7 +372,9 @@ const submitForm = (email, password) => {
 En este ejemplo el componente emite _click_ que no se valida y _submit_ donde se valida que reciba 2 parámetros.
 
 ### Capturar el evento en el padre
-En ocasiones (como en este caso) el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. Si en vez de usar el botón de 'Borrar' para eliminar una tarea la borramos haciendo doble click sobre ella podríamos hacer que el evento se capture directamente en el padre en lugar de en el hijo:
+En ocasiones el componente hijo no hace nada más que informar al padre de que se ha producido un evento sobre él. En estos casos podemos hacer que el evento se capture directamente en el padre en lugar de en el hijo.
+
+Por ejemplo, en nuestra aplicación de tareas, si en vez de usar el botón de 'Borrar' para eliminar una tarea queremos que se borre cuando hacemos doble click sobre ella, en lugar de capturar el evento _dblclick_ en el componente _todo-item_ y emitir un evento al padre para que lo borre, podemos hacer que el padre capture directamente el evento _dblclick_ sobre el hijo y llame a su método para borrar la tarea:
 
 Componente **_todo-list.vue_**
 ```vue
@@ -376,7 +389,7 @@ Componente **_todo-list.vue_**
 </template>
 ``` 
 
-Le estamos indicando a Vue que el evento _dblclick_ se capture en _todo-list_ directamente por lo que el componente _todo-item_ no tiene que capturarlo ni hacer nada:
+Le estamos indicando a Vue que el evento _dblclick_ se capture en _todo-list_ directamente por lo que el componente _todo-item_ no tiene que capturarlo ni hacer nada.
 
 ## Compartir datos
 Una forma sencilla de acceder a los mismos datos desde distintos componentes que no son padre-hijo es compartiendolos datos entre ellos. Para ello creamos en un fichero _.js_ (no _.vue_) un objeto que contendrá todos los datos a compartir entre componentes y en cada componente que queramos usarlo lo importamos y lo registramos. Ejemplo:
@@ -392,27 +405,29 @@ export const store = reactive({
 })
 ```
 
+**NOTA**: Recordad que para que la variable store sea reactiva (que la vista reaccione a los cambios que se produzcan en ella) hay que declararla con `reactive`, si es un objeto o array, o con `ref` si es un tipo primitivo (_string_, _number_, ...).
+
 Fijaos que se declara el objeto _store_ como una constante porque NO puedo cambiar su valor para que pueda ser usado por todos los componentes, pero sí el de sus propiedades.
 
-En cada componente que necesite acceder a datos del _store_ lo importamos y declaramos como _computed_ las variables a las que queramos acceder. No lo hacemos en _data_ porque allí declaro las variables locales del componente y estas están en el _store_.:
-```javascript
-
-Componente `compA.vue`
-```javascript
+En cada componente que necesite acceder a datos del _store_ lo importamos y definimos dentro de _computed_ las variables a las que queramos acceder. No lo hacemos en _data_ porque allí declaro las variables locales del componente y estas está en el _store_.:
+```vue
+<script setup>
 import { store } from '../store/'
 
-export default {
-  template: `<p>Mensaje: { { message}} </p>`,
-  computed: {
-    message() {
-      return store.message
-    }
-  },
-  ...
-}
+const message = computed(() => store.message)
+</script>
+
+<template>
+  <p>Mensaje: { { message }} </p>
+</template>
 ```
 
-Y ya puedo acceder a la variable _message_ del _store_ desde el componente con `this.message`.
+Y en cualquier método del componente puedo cambiar el valor de las variables del _store_ directamente:
+```javascript
+const updateMessage = (newValue) => {
+    store.message = newValue
+}
+```
 
 Esta forma de trabajar tiene un grave inconveniente: como el valor de cualquier dato puede ser modificado desde cualquier parte de la aplicación es difícilmente mantenible y se convierte en una pesadilla depurar el código y encontrar errores.
 
@@ -452,7 +467,7 @@ const message = computed(() => store.state.message)
 ...
 ```
 
-Fijaos que lo declaramos como `computed` porque es una varable calculada: una variable que está en otro sitio.
+Fijaos que lo declaramos como `computed` porque es una variable calculada: una variable que está en otro sitio.
 
 Y en sintaxis de _Options API_:
 
@@ -494,11 +509,11 @@ import { store } from '/src/datos.js'
 **NOTA**: no debemos guardar todos los datos en el _store_ sólo los datos de aplicación (aquellos que utiliza más de un componente). Los datos privados de cada componente seguiremos declarándolos en su `data`.
 
 ## Aplicación de ejemplo
-Vamos a ver el ejemplo de una aplicación de tareas dividida en varios componentes que comparten los datos mediante un _store pattern_.
+Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_ y _Store pattern_. Para ello vamos a crear un _store_ que contendrá el array de tareas y los métodos para añadir, borrar y cambiar el estado de las tareas, así como para borrarlas todas.
 
-Con lo que sabíamos hasta ahora podríamos hacer la aplicación declarando el array de tareas en el _App.vue_ y pasando los datos entre componentes mediante _props_ y eventos, pero sería un engorro y el código sería difícil de mantener.
+Con lo que sabíamos hasta ahora podríamos hacer funcionar la aplicación declarando el array de tareas en el _App.vue_ y pasando los datos entre componentes mediante _props_ y eventos, pero sería un engorro y el código sería difícil de mantener.
 
-Usando un _store pattern_ centralizamos los datos de aplicación y las acciones que los modifican en un único sitio.
+Usando un _store pattern_ centralizamos los datos de aplicación y las acciones que los modifican en un único sitio:
 
 ```javascript
 // /src/store/index.js
@@ -530,6 +545,7 @@ export const store = {
 };
 ```
 
+En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su _computed_. El resto de componentes no necesitan acceder al array, pero sí llamarán a los métodos para cambiarlo:
 ```vue
 // /src/components/TodoList.vue
 <script setup>
@@ -548,6 +564,9 @@ const todos = computed(() => store.state.todos);
 </template>
 ```
 
+Respecto al _todo-item_ debe cambiar los datos tanto para borrar una tarea como para marcarla como 'Hecha'/'No hecha' (se cambia el estado de la tarea).
+
+Los componentes _add-todo_ y _del-all_ no necesitan las tareas, sólo tienen que acceder a los métodos del _store_ para cambiarlas:
 ```vue
 // /src/components/DelAll.vue
 <script setup>
@@ -563,7 +582,16 @@ const delTodos = () => {
 </template>
 ```
 
-Podéis descargar el código desde el [repositorio](https://github.com/juanseguravasco/vue-todo-list/tree/4-comunicacion).
+Tenéis el código en el [repositorio](https://github.com/juanseguravasco/vue-todo-list/tree/4-comunicacion).
+
+Podemos ver la aplicación con sintaxis _Composition API_ funcionando en la [Vue Playground](https://play.vuejs.org/#eNqNVc1u2zgQfhWuLrUBW0J/Tl7Fu0nbxbYo2mBT7KXqgRHHNhOKVEnKSWD4ofoMfbHOUKIs24mRIAdq5hvOx5lvxpvkvK7TdQPJLMldaWXtmQPf1PNCy6o21rOvRphP0nm2sKZiL9IsGijsxZ897lyIDx6qHtZ9H6DegTpXqge1nxFT6DxrSWB6/MDwWnEP+MVYLuQ6HPC4ejV/axx3jLMVL8EycB4Y//XTzPIMnR3MI9OpIu5ZNHEhppJokqWzCVBTjqRaUJ61ifKsT59MEu9Koxdymd44o7FYG4IWSWmqWiqwX2ovjXZFMmPBQz680tx9DDZvG5hEe7mC8vYR+427J1uRXFpwYNdQJL3Pc7sE37rfX32Gezz3zsqIRiH6hPM/cEY1xLGFXTRaIO0BLrD9EJok9fKre3/vQbv4KCJKyG3AFwk27O2Jp+/ovk7fhLhCb7GKA008LbgNs7Bg204jvTSw/thIDXekP3ZGoFGRFMl44MXudt7RmJ3NW0JywUZdWLrmqoHUW1mNxuPIl2TiOlfduNVow7z0CmYx217YhAmj0bfgygHbUnq6ZA+KBIhacNHT8TBQ9tO6lrpuPFtPsWmgzoqku7RIGOJLWBklwKId60gJGSkZnb26rxvvjWZ/l0qWt4jr6lEkc4zIs9Z9QuW7cXykPW2JkRhd6fZrPCghOr59xwcfPPro2Ydc48VI9sJYyy1dypnCf5xgPmA/4FxoZD1cSM+UVVBwaNBgy+3WV5G0ay6KNSBjBcJbOwF+o6dsmBQz9nISVVMkn4BbzT7yNb8KXHDO9lTTzVEb+Ooo8H/KeCLi9SDiUvEHxq3BgWYSc179IwWO9i6eRnc//M0g/KKRSjBnKvArnHvG73BTVI+Gfyepn+poo1C6coG9bOWgQC/9Cvs5XMdh+a6nC0M6JguxDngU8uwWHjpzKgUZCN5ZeqHnWaPaQ403AZZn/tngD8EDw70D+KvwAylXxnkUUZ6RBB5TzHMWkYCF1HBpTe2OlRP1UAf32RA8ahcPZpixL9c3UHqsX1gVB2P05BSlrsa5gJHUAu4n7CXF0kRFCZqlgnfYoP0LApWU8qbUPXT+cWA6HsyDJioZ26X4NbR1jr+Ssb39bX1v6W+D6iJH0Bbb4t7rIjMM3d3jaq5j254TTPhIKRtyOtogu6qMxgNm8epQkb+wgSiWf6FccdIXfsZzTLq3J59eVCFHu6kONmso4b7ktr8Bnscdbg==) o con sintaxis _Options API_ en el siguiente _codesandbox_:
+
+<iframe src="https://codesandbox.io/embed/todo-app-with-vue-cli-it-works-fnen9g?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="ToDo App with vue-cli (it works!!!)"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
 
 ## Pinia
 Hemos visto que con un _store pattern_ se simplifica mucho la gestión de los datos de aplicación y al centralizar los métodos que modifican los datos tengo control sobre los cambios producidos. Sin embargo en un componente puedo seguir escribiendo código que manipule los datos del almacén directamente, sin usar los métodos del almacén. _Pinia_ básicamente es un _store pattern_ donde parte del trabajo de definirlo ya está hecho y que me obliga a usarlo para mainular los datos de aplicación (con él no puedo cambiarlos directamente desde un componente). Además se integra perfectamente con las _DevTools_ por lo que es muy sencillo seguir los cambios producidos.
@@ -619,9 +647,9 @@ Un ejemplo más util de _slot_ es el siguiente: queremos hacer un componente que
 ```html
 <template>
   <tr>
-    <td>{{ user.name }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.age }}</td>
+    <td>{ { user.name }}</td>
+    <td>{ { user.email }}</td>
+    <td>{ { user.age }}</td>
     <td>
       <slot></slot>
     </td>
@@ -709,27 +737,10 @@ El componente hijo puede hacer accesibles sus variables al padre declarándolas 
 ```html
 <!-- ParentComponent -->
 <child-component v-slot={ text, count }>
-  {{ text }}: {{ count }}
+   { { text }}: { { count }}
 </child-component>
 ```
 
 Esto es particularmente útil en componentes hijos que muestran un array de datos (con un `v-for`) si queremos acceder con el padre a cada dato.
 
 Podéis profundizar en el uso de _slots_ en la [documentación oficial de Vue](https://vuejs.org/guide/components/slots.html).
-
-# Aplicación de ejemplo
-Vamos a hacer que funcione la aplicación que tenemos hecha con _SFC_ y _Store pattern_. Para ello vamos a crear un _store_ que contendrá el array de tareas y los métodos para añadir, borrar y cambiar el estado de las tareas, así como para borrarlas todas.
-
-En el componente _todo_list_ debemos incluir el array _todos_ lo que haremos en su _computed_. El resto de componentes no necesitan acceder al array, pero sí llamarán a los métodos para cambiarlo.
-
-Respecto al _todo-item_ debe cambiar los datos tanto para borrar una tarea como para marcarla como 'Hecha'/'No hecha' (se cambia el estado de la tarea).
-
-Podemos ver la aplicación con sintaxis _Composition API_ funcionando en la [Vue Playground](https://play.vuejs.org/#eNqNVc1u2zgQfhWuLrUBW0J/Tl7Fu0nbxbYo2mBT7KXqgRHHNhOKVEnKSWD4ofoMfbHOUKIs24mRIAdq5hvOx5lvxpvkvK7TdQPJLMldaWXtmQPf1PNCy6o21rOvRphP0nm2sKZiL9IsGijsxZ897lyIDx6qHtZ9H6DegTpXqge1nxFT6DxrSWB6/MDwWnEP+MVYLuQ6HPC4ejV/axx3jLMVL8EycB4Y//XTzPIMnR3MI9OpIu5ZNHEhppJokqWzCVBTjqRaUJ61ifKsT59MEu9Koxdymd44o7FYG4IWSWmqWiqwX2ovjXZFMmPBQz680tx9DDZvG5hEe7mC8vYR+427J1uRXFpwYNdQJL3Pc7sE37rfX32Gezz3zsqIRiH6hPM/cEY1xLGFXTRaIO0BLrD9EJok9fKre3/vQbv4KCJKyG3AFwk27O2Jp+/ovk7fhLhCb7GKA008LbgNs7Bg204jvTSw/thIDXekP3ZGoFGRFMl44MXudt7RmJ3NW0JywUZdWLrmqoHUW1mNxuPIl2TiOlfduNVow7z0CmYx217YhAmj0bfgygHbUnq6ZA+KBIhacNHT8TBQ9tO6lrpuPFtPsWmgzoqku7RIGOJLWBklwKId60gJGSkZnb26rxvvjWZ/l0qWt4jr6lEkc4zIs9Z9QuW7cXykPW2JkRhd6fZrPCghOr59xwcfPPro2Ydc48VI9sJYyy1dypnCf5xgPmA/4FxoZD1cSM+UVVBwaNBgy+3WV5G0ay6KNSBjBcJbOwF+o6dsmBQz9nISVVMkn4BbzT7yNb8KXHDO9lTTzVEb+Ooo8H/KeCLi9SDiUvEHxq3BgWYSc179IwWO9i6eRnc//M0g/KKRSjBnKvArnHvG73BTVI+Gfyepn+poo1C6coG9bOWgQC/9Cvs5XMdh+a6nC0M6JguxDngU8uwWHjpzKgUZCN5ZeqHnWaPaQ403AZZn/tngD8EDw70D+KvwAylXxnkUUZ6RBB5TzHMWkYCF1HBpTe2OlRP1UAf32RA8ahcPZpixL9c3UHqsX1gVB2P05BSlrsa5gJHUAu4n7CXF0kRFCZqlgnfYoP0LApWU8qbUPXT+cWA6HsyDJioZ26X4NbR1jr+Ssb39bX1v6W+D6iJH0Bbb4t7rIjMM3d3jaq5j254TTPhIKRtyOtogu6qMxgNm8epQkb+wgSiWf6FccdIXfsZzTLq3J59eVCFHu6kONmso4b7ktr8Bnscdbg==) o con sintaxis _Options API_ en el siguiente _codesandbox_:
-
-<iframe src="https://codesandbox.io/embed/todo-app-with-vue-cli-it-works-fnen9g?fontsize=14&hidenavigation=1&theme=dark"
-     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-     title="ToDo App with vue-cli (it works!!!)"
-     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-   ></iframe>
-

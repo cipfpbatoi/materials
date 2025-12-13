@@ -57,8 +57,8 @@ export default {
 </script>
 <template>
   <div>
-    <p>Count: {{ count }}</p>
-    <p>Binary Count: {{ binaryCount }}</p>
+    <p>Count: { { count }}</p>
+    <p>Binary Count: { { binaryCount }}</p>
     <button @click="increment">Increment</button>
   </div>
 </template>
@@ -97,8 +97,8 @@ export default {
 </script>
 <template>
   <div>
-    <p>Count: {{ count }}</p>
-    <p>Binary Count: {{ binaryCount }}</p>
+    <p>Count: { { count }}</p>
+    <p>Binary Count: { { binaryCount }}</p>
     <button @click="increment">Increment</button>
   </div>
 </template>
@@ -123,8 +123,8 @@ const binaryCount = computed(() => count.value.toString(2));
 
 <template>
   <div>
-    <p>Count: {{ count }}</p>
-    <p>Binary Count: {{ binaryCount }}</p>
+    <p>Count: { { count }}</p>
+    <p>Binary Count: { { binaryCount }}</p>
     <button @click="increment">Increment</button>
   </div>
 </template>
@@ -148,7 +148,7 @@ const addItem = () => {
 </script>
 <template>
   <ul>
-    <li v-for="item in items" :key="item">{{ item }}</li>
+    <li v-for="item in items" :key="item">{ { item }}</li>
   </ul>
   <button @click="addItem">Añadir Elemento</button>
 </template>
@@ -191,8 +191,8 @@ const updateName = (newName) => {
 </script>
 <template>
   <div>
-    <p>Name: {{ user.name }}</p>
-    <p>Age: {{ user.age }}</p>
+    <p>Name: { { user.name }}</p>
+    <p>Age: { { user.age }}</p>
     <button @click="updateName('Jane')">Change Name</button>
   </div>
 </template>

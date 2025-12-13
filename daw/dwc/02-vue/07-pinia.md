@@ -40,7 +40,7 @@ export default {
 
 <!-- view -->
 <template>
-  {{ count }}
+  { { count }}
   <button @click="increment">Increment</button>
 </template>
 ```

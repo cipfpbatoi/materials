@@ -7,7 +7,7 @@
     - [Javascript](#javascript)
   - [Estilos de _API_](#estilos-de-api)
   - [_Binding_ de variables](#binding-de-variables)
-    - [Enlace unidireccional: interpolación {{...}}](#enlace-unidireccional-interpolación-)
+    - [Enlace unidireccional: interpolación { {...}}](#enlace-unidireccional-interpolación-)
     - [Enlazar a un atributo: v-bind](#enlazar-a-un-atributo-v-bind)
     - [Enlace bidireccional: v-model](#enlace-bidireccional-v-model)
   - [Vue devtools](#vue-devtools)
@@ -173,8 +173,8 @@ export default {
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="increment">Count is: {{ count }}</button>
+  <h1>{ { msg }}</h1>
+  <button @click="increment">Count is: { { count }}</button>
 </template>
 ```
 
@@ -203,8 +203,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="increment">Count is: {{ count }}</button>
+  <h1>{ { msg }}</h1>
+  <button @click="increment">Count is: { { count }}</button>
 </template>
 ```
 

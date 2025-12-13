@@ -132,7 +132,7 @@ Aquí incluiremos el HTML que sustituirá a la etiqueta del componente. Recuerda
 ```html
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green">{ { msg }}</h1>
     <h3>
       You’ve successfully created a project with
       <a href="https://vitejs.dev/">Vite</a> +
@@ -152,7 +152,7 @@ Respecto al lenguaje, podemos usar HTML (la opción por defecto) o [PUG](https:/
 ```html
 <template lang="pug">
 div.greetings
-  h1.green {{ msg }}
+  h1.green { { msg }}
   h3
     | You’ve successfully created a project with 
     a(href="https://vitejs.dev/") Vite
@@ -285,7 +285,7 @@ export default {
 ```html
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green">{ { msg }}</h1>
     <h3>
       You’ve successfully created a project with
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +

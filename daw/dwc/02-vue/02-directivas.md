@@ -105,7 +105,7 @@ Pasar una _key_ en cada _v-for_ es recomendable ahora pero será obligatorio al 
 
 También podemos usar `v-for` para que se ejecute sobre un rango (como el típico `for (i=0; i<10; i++)`):
 ```html
-<span v-for="i in 10" :key="i">{{ i }}</span>
+<span v-for="i in 10" :key="i">{ { i }}</span>
 ```
 
 NOTA: No se recomienda usar `v-for` y `v-if` sobre el mismo elemento. Si se hace siempre se ejecuta primero el `v-if`.

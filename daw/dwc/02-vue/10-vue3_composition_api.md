@@ -489,7 +489,7 @@ El componente que quiera usarla haría:
 </script>
 
 <template>
-  <div v-if="error">{{ error }}</div>
+  <div v-if="error">{ { error }}</div>
   <div v-else>
     // Aquí mostramos los datos recibidos en la variable 'data'
   </div>

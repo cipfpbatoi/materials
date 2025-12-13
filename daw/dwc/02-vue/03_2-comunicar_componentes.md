@@ -254,7 +254,7 @@ y en el componente **_todo-list_** lo escuchamos y llamamos al método que borre
 export default {
   template: `
     <div>
-      <h2>{{ title }}</h2>
+      <h2>{ { title }}</h2>
       <ul>
        <todo-item 
          v-for="(item, index) in todos" 
@@ -316,7 +316,7 @@ Componente **_todo-list.vue_**
 ```vue
 <template>
     <div>
-      <h2>{{ title }}</h2>
+      <h2>{ { title }}</h2>
       <ul>
        <todo-item 
          v-for="(item, index) in todos" 
@@ -521,9 +521,9 @@ Un ejemplo más util de _slot_ es el siguiente: queremos hacer un componente que
 ```html
 <template>
   <tr>
-    <td>{{ user.name }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.age }}</td>
+    <td>{ { user.name }}</td>
+    <td>{ { user.email }}</td>
+    <td>{ { user.age }}</td>
     <td>
       <slot></slot>
     </td>
@@ -611,7 +611,7 @@ El componente hijo puede hacer accesibles sus variables al padre declarándolas 
 ```html
 <!-- ParentComponent -->
 <child-component v-slot={ text, count }>
-  {{ text }}: {{ count }}
+  { { text }}: { { count }}
 </child-component>
 ```
 

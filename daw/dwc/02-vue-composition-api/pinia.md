@@ -38,7 +38,7 @@ const increment = () => {
 
 <!-- view -->
 <template>
-  {{ count }}
+  { { count }}
   <button @click="increment">Increment</button>
 </template>
 ```
@@ -126,8 +126,8 @@ const counterStore = useCounterStore()
 </script>
 <template>
   <div>
-    <p>Count: {{ counterStore.count }}</p>
-    <p>Double Count: {{ counterStore.doubleCount }}</p>
+    <p>Count: { { counterStore.count }}</p>
+    <p>Double Count: { { counterStore.doubleCount }}</p>
     <button @click="counterStore.decrement">-</button>
     <button @click="counterStore.increment">+</button>
   </div>

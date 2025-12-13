@@ -233,7 +233,7 @@ Para validar un `<select>` simplemente lo cambiamos por un `<Field as="select">`
   <option value="">--- Selecciona autor ---</option>
   <option v-for="autor in autores" :key="autor.id"
   :value="autor.id">
-    {{ autor.nombre + ' ' + autor.apellidos }}
+    { { autor.nombre + ' ' + autor.apellidos }}
   </option>
 </Field>
 <ErrorMessage name="autor" />

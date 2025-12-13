@@ -499,9 +499,9 @@ const todo = computed(() => {
 
 <template>
   <div>
-    <h2>Tarea {{ id }}</h2>
-    <p><strong>Título: </strong>{{ todo.title }}</p>
-    <p><strong>Hecha: </strong>{{ todo.done ? "Sí" : "No" }}</p>
+    <h2>Tarea { { id }}</h2>
+    <p><strong>Título: </strong>{ { todo.title }}</p>
+    <p><strong>Hecha: </strong>{ { todo.done ? "Sí" : "No" }}</p>
   </div>
 </template>
 ```
