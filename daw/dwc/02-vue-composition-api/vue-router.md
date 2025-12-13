@@ -519,3 +519,13 @@ En el _store_ hemos añadido el método _getTodoById(id)_ que devuelve la tarea 
 ```
 
 aunque también podríamos haber buscado la tarea haciendo una petición al servidor para asegurarnos de mostrar su valor actual, por si otro usuario lo hubiera cambiado.
+
+```vue
+<template>
+{{ hola }}
+\{{ hola }}
+{\{ hola }}
+{ { hola }}
+\{\{ hola }}
+</template>
+```
