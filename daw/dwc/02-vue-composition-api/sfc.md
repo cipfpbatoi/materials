@@ -95,7 +95,7 @@ Aquí se configura nuestra aplicación:
   * **dev**: lanza el servidor web de vite y configura vue para el entorno de desarrollo
   * **build**: crea los ficheros JS y CSS dentro de **/dist** con todo el código de la aplicación
   * **preview**: lanza un servidor web para previsualizar la aplicación ya construida para producción
-* **dependences**: se incluyen las librerías y plugins que utiliza nuestra aplicación en producción (vue, etc). Todas las dependencias se instalan dentro de **/node-modules**.  Para instalar una nueva dependencia de desarrollo ejecutaremos `npm install nombre-del-paquete -S` (la opción -S la añade a package.json como dependencia de producción).
+* **dependences**: se incluyen las librerías y plugins que utiliza nuestra aplicación en producción (vue, etc). Todas las dependencias se instalan dentro de **/node-modules**.  Para instalar una nueva dependencia en producción ejecutaremos `npm install nombre-del-paquete`.
 * **devDependencies**: igual pero son paquetes que sólo se usan en desarrollo (vite, etc). También se instalan dentro de node-modules pero no estarán cuando se genere el código para producción. Para instalar una nueva dependencia de desarrollo ejecutaremos `npm install nombre-del-paquete -D` (la opción -D la añade a package.json pero como dependencia de desarrollo).
 
 #### index.html
