@@ -478,6 +478,7 @@ Ya no hay sección de _script_ porque no necesitamos código en este componente.
 Sólo creamos un nuevo botón para ver los detalles de la tarea que llama a _viewTodo_ cuyo código es:
 
 ```javascript
+const router = useRouter();
 const viewTodo = () => {
   router.push(`/view/${props.item.id}`);
 };
@@ -519,13 +520,3 @@ En el _store_ hemos añadido el método _getTodoById(id)_ que devuelve la tarea 
 ```
 
 aunque también podríamos haber buscado la tarea haciendo una petición al servidor para asegurarnos de mostrar su valor actual, por si otro usuario lo hubiera cambiado.
-
-```vue
-<template>
-{{ hola }}
-\{{ hola }}
-{\{ hola }}
-{ { hola }}
-\{\{ hola }}
-</template>
-```

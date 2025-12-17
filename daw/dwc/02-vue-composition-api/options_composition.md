@@ -25,7 +25,7 @@ Este sistema de reactividad es una de las características más potentes de Vue,
 En la _Options API_ cada componente exporta un objeto con diferentes opciones como `data`, `methods`, `computed`, `watch`, etc. Cada una de estas opciones tiene una función específica:
 - `data`: define el estado reactivo del componente. Todas las variables definidas aquí son reactivas
 - `methods`: define los métodos del componente. Aquí se definen las funciones que pueden modificar el estado o realizar acciones
-- `computed`: define propiedades computadas que dependen de otras propiedades reactivas. Se definen como funciones y su valor se recalcula automáticamente cuando cambian sus dependencias
+- `computed`: define propiedades calculadas que dependen de otras propiedades reactivas. Se definen como funciones y su valor se recalcula automáticamente cuando cambian sus dependencias
 - `props`: define las propiedades que el componente puede recibir de su padre
 - `mounted`, `created`, etc.: son _hooks_ del ciclo de vida del componente que permiten ejecutar código en momentos específicos del ciclo de vida del componente.
 - `watch`: define observadores que reaccionan a cambios en propiedades reactivas. Se usan para ejecutar código en respuesta a cambios específicos en el estado.

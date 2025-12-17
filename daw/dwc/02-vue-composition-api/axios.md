@@ -194,7 +194,6 @@ export default {
 ### TodoItem.vue
 ```vue
 <script setup>
-import { defineProps } from "vue";
 import { store } from "../store";
 
 const props = defineProps({

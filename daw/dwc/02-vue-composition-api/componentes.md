@@ -191,8 +191,6 @@ Para pasar un parámetro a un subcomponente simplemente se pone como un atributo
 ### TodoItem.vue
 ```vue
 <script setup>
-import { defineProps } from "vue";
-
 const props = defineProps({
   item: Object,
 });

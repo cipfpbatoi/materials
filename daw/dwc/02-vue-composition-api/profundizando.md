@@ -94,7 +94,7 @@ const surname = ref('Doe');
 const fullName = computed({
   // getter
   get() {
-    return firstName.value + ' ' + lastName.value
+    return name.value + ' ' + surname.value
   },
   // setter
   set(newValue) {
@@ -104,88 +104,115 @@ const fullName = computed({
 })
 ```
 
-Si hacemos `this.fullName = 'John Doe'` estaremos asignando los valores adecuados a las variables _name_ y _surname_.
+Si hacemos `fullName = 'John Doe'` estaremos asignando los valores adecuados a las variables _name_ y _surname_.
 
 ## Watchers
-A veces necesitamos ejecutar código cuando cambia el valor de una variable reactiva. Vue proporciona una forma genérica de controlar cuándo cambia el valor de una variable reactiva para poder ejecutar código en ese momento poniéndole un _watcher_. Por ejemplo, tenemos las variables _name_ y _surname_ y queremos tener la variable _fullName_ actualizada cada vez que cambie alguna de las otras dos:
+A veces necesitamos ejecutar código cuando cambia el valor de una variable reactiva. Vue proporciona una forma genérica de controlar cuándo cambia el valor de una variable reactiva para poder ejecutar código en ese momento poniéndole un _watcher_. Por ejemplo, queremos mostrar por consola el valor de un contador cada vez que cambie:
+```javascript
+import { ref, watch } from 'vue';
+const counter = ref(0);
+watch(counter, (newValue, oldValue) => {
+  console.log(`El contador ha cambiado de ${oldValue} a ${newValue}`);
+});
+```
 
+Al `watch` le pasamos la variable reactiva a observar y una función que recibe el nuevo valor y el antiguo. Cada vez que cambie el valor de _counter_ se ejecutará la función.
 
 En sintaxis _Options API_:
 ```javascript
   data() {
     return {
-      name: 'John',
-      surname: 'Doe',
-      fullName: 'John Doe',
+      counter: 0
     }
   },
   watch: {
-    name(newValue, oldValue) {
-      this.fullName = newValue + ' ' + this.surname;
-    },
-    surname(newValue, oldValue) {
-      this.fullName = this.name + ' ' + newValue;
+    counter(newValue, oldValue) {
+      console.log(`El contador ha cambiado de ${oldValue} a ${newValue}`);
     },
   },
-})
 ```
 
-En este caso no tiene mucho sentido y es más fácil (y más eficiente) usar una propiedad _computed_ como hemos visto antes, pero hay ocasiones en que necesitamos ejecutar código al cambiar una variable y es así donde se usan. Por ejemplo al cambiar una ruta dinámica con _vue-router_.
+Podemos poner un _watcher_ para cualquier variable reactiva, ya sea con _ref_ o con _reactive_. Si es un objeto o array reaccionará a cualquier cambio en el mismo:
+```javascript
+import { ref, watch } from 'vue';
+const user = ref({ name: 'John', surname: 'Doe', age: 20 });
+watch(user, (newValue, oldValue) => {
+  console.log(`El usuario ha cambiado de ${JSON.stringify(oldValue)} a ${JSON.stringify(newValue)}`);
+});
+```
+
+Pero si quiero reaccionar al cambio de sólo una de sus propiedades debo cambiar la sintaxis. Por ejemplo quiero reaccionar sólo a la edad 
+
+```javascript
+// MAL
+// watch(user.value.age, (newValue, oldValue) => {
+// BIEN
+watch(() => user.value.age, (newValue, oldValue) => {
+  console.log(`La edad ha cambiado de ${oldValue} a ${newValue}`);
+});
+```
+
+Un ejemplo más útil sería poner un _watcher_ en la variable de ruta para poder reaccionar a los cambios en la misma.
 
 NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-10)
 
-## Acceder al DOM: 'ref'
-Aunque Vue se encarga de la vista por nosotros en alguna ocasión podemos tener que acceder a un elemento del DOM. En ese caso no haremos un `document.getElement...` sino que le ponemos una referencia al elemento con el atributo `ref` para poder acceder al mismo desde nuestro script:
-```vue
-<template>
-  <form ref="myForm">
-    ...
-  </form>
-</template>
+Podéis consultar la [documentación oficial de Vue sobre watchers](https://vuejs.org/guide/essentials/watchers.html) para ver todas las posibilidades que ofrecen.
 
+## Acceder al DOM: 'ref'
+Aunque Vue se encarga de la vista por nosotros en alguna ocasión podemos tener que acceder a un elemento del DOM. En ese caso no haremos un `document.getElement...` sino que le ponemos una referencia al elemento `ref` para poder acceder al mismo desde nuestro script:
+```vue
+<script setup>
+import { useTemplateRef, onMounted } from 'vue'
+
+const input = useTemplateRef('my-input')
+
+onMounted(() => {
+    input.value.focus()
+});
+</script>
+
+<template>
+  <input ref="my-input" />
+</template>
+```
+
+En sintaxis _Options API_ no hay que declarar la variable sino que está accesible desde `this.$refs`:
+```vue
 <script>
 export default {
   mounted() {
-    this.$refs.myForm.setAttribute('novalidate', true)
+    this.$refs.myInput.focus()
   }
 }
 </script>
 ```
 
-Desde el código tenemos acceso a todas las referencias desde `this.$refs`. Hay que tener en cuenta que sólo se puede acceder a un elemento después de montarse el componente (en el _hook_ **mounted()** o después).
+Hay que tener en cuenta que sólo se puede acceder a un elemento después de montarse el componente (en el _hook_ **mounted()** o después).
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-9)
 
 ### nextTick
-Si modificamos una variable reactiva el cambio se refleja automáticamente en el DOM, pero no inmediatamente sino que se espera hasta el evento _nextTick_ en el ciclo de modificación para asegurarse de no cambiar algo que quizá va a volverse a cambiar en este ciclo.
+Si modificamos una variable reactiva el cambio se refleja automáticamente en el DOM, pero no inmediatamente sino que se espera hasta el evento _next tick_ en el ciclo de modificación para asegurarse de no cambiar algo que quizá va a volverse a cambiar en este ciclo.
 
-Si accedemos al DOM antes de que se produzca este evento el valor aún será el antiguo. Para obtener el nuevo valor hemos de esperar al _nextTick_:
+Si accedemos al DOM antes de que se produzca este evento el valor aún será el antiguo. Para obtener el nuevo valor tras producirse el cambio ejecutamos _nextTick()_ para esperar a que se actualice el DOM:
 ```vue
 <template>
-  <p>Contador: <span ref="contador">{ { count }}</span></p>
+  <p>Contador: { { count }}</p>
   <button @click="increment">Incrementa</button>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      count: 0
-    }
-  },
-  methods: {
-    increment() {
-      count.value++
-      console.log('Contador en el DOM: ' + this.$refs.contador.textContent)
-      // Devolverá el valor sin actualizar aún
-      nextTick(() => {
-        console.log('Contador en el DOM tras nextTick: ' + this.$refs.contador.textContent)
-        // Devolverá el valor actualizado
-      })
-    }
-  }
+<script setup>
+import { ref, nextTick } from 'vue';
+const count = ref(0);
+function increment() {
+  count.value++
+  console.log('Contador en el DOM: ' + count.value)
+  // Devolverá el valor sin actualizar aún
+  await nextTick()
+  console.log('Contador en el DOM tras nextTick: ' + count.value)
+  // Devolverá el valor actualizado
 }
 </script>
 ```
@@ -290,28 +317,20 @@ data() {
 
 ## Ciclo de vida del componente
 ### El ciclo de vida de un componente
-Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida.
+Al crearse la instancia de Vue o un componente la aplicación debe realizar unas tareas como configurar la observación de variables, compilar su plantilla (_template_), montarla en el DOM o reaccionar ante cambios en las variables volviendo a renderizar las partes del DOM que han cambiado. Además ejecuta funciones definidas por el usuario cuando sucede alguno de estos eventos, llamadas _hooks_ del ciclo de vida:
+```vue
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log(`the component is now mounted.`)
+})
+</script>
+```
 
 En la siguiente imagen podéis ver el ciclo de vida de la instancia Vue (y de cualquier componente) y los eventos que se generan y que podemos interceptar:
 
-![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.16e4c08e.png)
-
-**NOTA**: En **Vue2**: los métodos **_beforeDestroyed_** y **_destroyed_** se usan en lugar de _**beforeUnmounted**_ y _**unmounted**_.
-
-**IMPORTANTE**: no debemos definir estas funciones como _arrow functions_ porque en estas funciones se enlaza en la variable _this_ el componente donde se definen y si hacemos una _arrow function_ no tendríamos _this_:
-```javascript
-// MAL, NO HACER ASÍ
-created: () => {
-    console.log('instancia creada'); 
-}
-```
-
-```javascript
-// BIEN, HACER ASÍ
-created() {
-    console.log('instancia creada'); 
-}
-```
+![Ciclo de vida de Vue](https://vuejs.org/assets/lifecycle.MuZLBFAS.png)
 
 Los principales _hooks_ son:
 - **beforeCreate**: aún no se ha creado el componente (sí la instancia de Vue) por lo que no tenemos acceso a sus variables, etc
@@ -320,8 +339,8 @@ Los principales _hooks_ son:
 - **mounted**: ahora ya tenemos acceso a todas las propiedades del componete. Es el sitio donde hacer una patición externa si el valor devuelto queremos asignarlo a una variable del componente
 - **beforeUpdate**: se ha modificado el componente pero aún no se han renderizado los cambios
 - **updated**: los cambios ya se han renderizado en la página
-- **beforeUnmount**: antes de que se destruya el componente (en versiones anteriores a Vue3 **beforeDestroy**)
-- **unmounted**: ya se ha destruido el componente (en versiones anteriores a Vue3 **destroyed**)
+- **beforeUnmount**: antes de que se destruya el componente
+- **unmounted**: ya se ha destruido el componente
 
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-9)
 
@@ -395,19 +414,18 @@ Para usarla en un componente la importamos y ya podemos usarla en el _template_:
   ...
 </template>
 
-<script>
+<script setup>
 import focus from './focus.js'
 ...
-}
 </script>
 ```
 
 Si queremos utilizarla en muchos componentes podemos importarla en el _main.js_ y así estará disponible para todos los componentes.
 
 Los estados de la directiva en los que podemos actuar son:
-- **mounted** (en Vue2 **inserted**): cuando se inserte la directiva
-- **updated** (en Vue2 **componentUpdated**): cuando se actualice el componente que contiene la directiva
-- **beforeMount** (en Vue2 **bind**): cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
+- **mounted**: cuando se inserte la directiva
+- **updated**: cuando se actualice el componente que contiene la directiva
+- **beforeMount**: cuando se enlaza la directiva al componente por primera vez, antes de montar el componente
 - ...
 
 ## Imágenes
@@ -437,15 +455,10 @@ NOTA: Si usamos _webpack_ en lugar de _Vite_, en lugar de importarlas usaremos e
 
 Con _Vite_ también podemos importarlas usando `import.meta.url` (más información en la [documentación de Vite](https://vitejs.dev/guide/assets.html#new-url-url-import-meta-url)):
 ```html
-<script>
-export default {
-  data() {
-    return {
-      imgUrl = new URL('./assets/elPatitoFeo.png', import.meta.url).href
-    }
-  },
-  ...
-}
+<script setup>
+import { ref } from 'vue'
+
+const imgUrl = ref(new URL('./assets/elPatitoFeo.png', import.meta.url).href)
 </script>
 
 <template>
@@ -457,14 +470,11 @@ export default {
 
 Esto nos permite también importar las imágenes dinámicamente:
 ```html
-<script>
-export default {
-  methods: {
-    function getImageUrl(name) {
-      return new URL(`./dir/${name}`, import.meta.url).href
-    }
-  }
-  ...
+<script setup>
+import { ref } from 'vue'
+
+function getImageUrl(name) {
+  return new URL(`./dir/${name}`, import.meta.url).href
 }
 </script>
 

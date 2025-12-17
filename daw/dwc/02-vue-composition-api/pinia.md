@@ -7,7 +7,7 @@ Tabla de contenidos
   - [Usar Pinia](#usar-pinia)
   - [Usar Pinia con _Options API_](#usar-pinia-con-options-api)
     - [Crear el almacén](#crear-el-almacén)
-    - [Acceder a variables y acciones](#acceder-a-variables-y-acciones)
+    - [Acceder a variables y acciones con _Options API_](#acceder-a-variables-y-acciones-con-options-api)
     - [Getters](#getters)
     - [Actions](#actions)
   - [state en formularios](#state-en-formularios)
@@ -47,7 +47,7 @@ Esto es lo que se llama **_one-way data flow_**.
 
 El problema lo tenemos cuando un componente necesita acceder a datos (_state_) de otro componente. 
 
-En Vue la comunicación entre componentes padre-hijo se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos (`$emit`). Y vimos que si distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
+En Vue la comunicación entre componentes padre-hijo se hace hacia abajo mediante `props` y hacia arriba emitiendo eventos (`emit`). Y vimos que si distintos componentes que no son padre-hijo tenían que compartir un mismo estado (acceder a los mismos datos) surgían problemas e intentamos solucionarlos con el patrón _store pattern_. Esto puede servir para pequeñas aplicaciones pero cuando crecen se hace difícil seguir los cambios. Para esos casos debemos usar _Pinia_, que proporciona un almacén de datos centralizado para todos los componentes de la aplicación y asegura que los datos sólo puedan cambiarse de forma controlada.
 
 El uso de _Pinia_ es imprescindible en aplicaciones de tamaño medio o grande pero incluso para aplicaciones pequeñas nos ofrece ventajas frente a un _store pattern_ hecho por nosotros como soporte para las _DevTools_ y para _Server Side Rendering_ o uso de Typescript. 
 
@@ -73,7 +73,7 @@ Si queremos usar _Pinia_ en un proyecto existente donde no la seleccionamos al c
 ## Crear un store
 Ahora hay que crear el fichero del store. Podemos tener todos los datos en un único fichero o, si son muchos, hacer ficheros diferentes. Por ejemplo para la aplicación de 'ToDo' podemos crear su store en **/src/stores/toDo.js**. 
 
-Al crear un almacén pondremos en él todas las variables que vaya a usar más de un componente (dentro de **`state`**) y los métodos para acceder a ellas y modificarlas (dentro de **`actions`**), por ejemplo, para compartir un contador haríamos:
+Al crear un almacén pondremos en él todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Pr ejemplo, para compartir un contador haríamos:
 
 ```javascript
 import { ref, computed } from 'vue'
@@ -81,7 +81,7 @@ import { defineStore } from 'pinia'
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
+  const binaryCount = computed(() => count.value.toString(2))
   function increment() {
     count.value++
   }
@@ -89,11 +89,11 @@ export const useCounterStore = defineStore('counter', () => {
     count.value--
   }
 
-  return { count, doubleCount, increment, decrement }
+  return { count, binaryCount, increment, decrement }
 })
 ```
 
-En este ejemplo hemos creado un almacén que tiene un dato (_count_), un dato calculado (_doubleCount_) y dos métodos para cambiar su valor (_increment_ y _decrement_). El primer parámetro de `defineStore` es el nombre con el que veremos el almacén desde las _DevTools_ (por si tenemos varios).
+En este ejemplo hemos creado un almacén que tiene un dato (_count_), un dato calculado (_binaryCount_) que es el contador en binario y dos métodos para cambiar su valor (_increment_ y _decrement_). El primer parámetro de `defineStore` es el nombre con el que veremos el almacén desde las _DevTools_ (por si tenemos varios) y el segundo su función _setup_.
 
 Desde la consola del navegador podemos usar las _DevTools_ para ver nuestro almacén. Para ello vamos a la pestaña de Vue y desde el _Inspector_ buscamos _Pinia_:
 
@@ -124,10 +124,11 @@ import { useCounterStore } from '../stores/counterStore.js'
 
 const counterStore = useCounterStore()
 </script>
+
 <template>
   <div>
     <p>Count: { { counterStore.count }}</p>
-    <p>Double Count: { { counterStore.doubleCount }}</p>
+    <p>Binary Count: { { counterStore.binaryCount }}</p>
     <button @click="counterStore.decrement">-</button>
     <button @click="counterStore.increment">+</button>
   </div>
@@ -141,8 +142,8 @@ import { useCounterStore } from '../stores/counterStore.js'
 import { storeToRefs } from 'pinia'
 
 const counterStore = useCounterStore()
-const { count, doubleCount, increment, decrement } = storeToRefs(counterStore)
-const { increment, decrement } = counterStore
+const { count } = storeToRefs(counterStore)
+const { increment } = counterStore
 </script>
 ```
 
@@ -150,7 +151,7 @@ Con las acciones no es necesario usar `storeToRefs()` porque no son reactivas.
 
 ## Usar Pinia con _Options API_
 ### Crear el almacén
-Para crear un almacén en Pinia, lo definimos igual que antes pero definimos en él 3 propiedades:
+Para crear un almacén en Pinia, lo definimos igual que antes pero el segundo parámetro será un objeto con 3 propiedades:
 - `state`: el estado inicial del almacén, es decir, las variables que contendrá.
 - `getters`: funciones que permiten obtener información derivada del estado (_computed_).
 - `actions`: funciones que permiten modificar el estado.
@@ -164,7 +165,7 @@ export const useCounterStore = defineStore('counter', {
     count: 0
   }),
   getters: {
-    doubleCount: (state) => state.count * 2
+    binaryCount: (state) => state.count.toString(2)
   },
   actions: {
     increment() {
@@ -177,10 +178,12 @@ export const useCounterStore = defineStore('counter', {
 })
 ```
 
-### Acceder a variables y acciones
-Cada componente que lo necesite tiene acceso al almacén de datos. Para ello lo importa y declara las variables  del _state_ a las que quiera acceder dentro de su sección _computed_ y las _actions_ que desee llamar dentro de su sección _methods_. 
+### Acceder a variables y acciones con _Options API_
+Cada componente que necesite acceder al almacén de datos lo importa y:
+- declara las variables  del _state_ o del _getter_ a las que quiera acceder dentro de su sección _computed_ usando el _helper_ `mapState`
+- declara las _actions_ que desee llamar dentro de su sección _methods_ usando el _helper_ `mapActions`
 
-Para ello debemos usar los _helpers_ `mapState` y `mapActions` en los que indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_, puede ser en forma de array o en forma de objeto (si queremos personalizar el nombre de la variable o método):
+En los _helpers_ `mapState` y `mapActions` indicaremos las variables y métodos del _store_ que queremos usar en este componente. Su sintaxis, como pasaba con los _props_, puede ser en forma de array o en forma de objeto (si queremos personalizar el nombre de la variable o método):
 ```javascript
 //MyComponent.vue
 import { useCounterStore } from '../stores/conterStore';
@@ -189,7 +192,7 @@ import { mapState, mapActions } from 'pinia';
 export default {
   ...
   computed: {
-    ...mapState(useCounterStore, ['count'])
+    ...mapState(useCounterStore, ['count', 'binaryCount'])
   },
   methods: {
     ...mapActions(useCounterStore, ['increment', 'decrement'])
@@ -215,7 +218,7 @@ computed: {
 y se llamarían con **`this.countInStore` o `this.up(3)`.
 
 ### Getters
-En ocasiones no necesitamos una variable del _state_ sino cierta información sobre ella (por ejemplo no todas las tareas del array _todos_ sino sólo las tareas pendientes). En ese caso podemos filtrarlas en cada componente que las necesite o podemos hacer un método en el almacén (dentro de **`getters`**) que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
+Aquí definiremos variables calculadas (por ejemplo sólo las tareas pendientes del array _todos_ sino) haciendo un método que nos devuelva directamente las tareas filtradas. Estos _getters_ funcionan como las variables  _computed_ (sólo se ejecutan de nuevo si cambian los datos de que dependen):
 
 ```javascript
 import { defineStore } from 'pinia'

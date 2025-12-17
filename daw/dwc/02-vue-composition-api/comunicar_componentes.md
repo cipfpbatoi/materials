@@ -54,8 +54,6 @@ Una vez declarados podemos acceder a ellos en el _template_ como `title` y `done
 En _Composition API_ se hace de forma similar pero usando `defineProps`:
 ```vue
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps(['title', 'done']);
 </script>
 ```
@@ -63,7 +61,6 @@ defineProps(['title', 'done']);
 Y en el _template_ se accede igual que en _Options API_ como `title` y `done`. Si necesitamos acceder a ellos en el _script_ los asignamos a una variable:
 ```vue
 <script setup>
-import { defineProps } from 'vue';
 const props = defineProps(['title', 'done']);
 </script>
 ```
