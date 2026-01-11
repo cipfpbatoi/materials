@@ -159,7 +159,7 @@ En este ejemplo, `items` es un array reactivo. Al llamar a `addItem`, se añade 
 De manera similar, si tenemos un objeto reactivo y modificamos una de sus propiedades, Vue también detectará el cambio y actualizará la vista:
 ```vue
 <script setup>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 const persona = ref({
   nombre: 'Juan',
   edad: 30
@@ -178,7 +178,7 @@ Si la variable que queremos que sea reactiva es un objeto o un array podemos usa
 
 ```vue
 <script setup>
-import { ref } from "vue";
+import { reactive } from "vue";
 
 const user = reactive({
   name: "John",
