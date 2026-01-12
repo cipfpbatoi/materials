@@ -11,8 +11,8 @@ En este bloque vamos a conocer el framework **Vue** que es uno de los más utili
 8. [Profundizando en Vue](./profundizando.md)
 9. [Pinia](./pinia.md)
 10. [Formularios](./08-forms.md)
-11. [Composable functions](./10-composables.md)
-12. [Typescript](./21-typescript.md)
+11. [Composable functions](./composables.md)
+12. [Typescript](./typescript.md)
 13. [Testeando componentes](https://vuejs.org/guide/scaling-up/testing)
 14. [Y más...](./09-cosas.md)
 

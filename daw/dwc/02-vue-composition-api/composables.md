@@ -1,12 +1,14 @@
 # Componsable functions
 - [Componsable functions](#componsable-functions)
   - [Introducción](#introducción)
-  - [Uso](#uso)
+  - [Usar _composables_](#usar-composables)
   - [Ejemplo: Posición del ratón](#ejemplo-posición-del-ratón)
+  - [Ejemplo: Llamadas a una API](#ejemplo-llamadas-a-una-api)
+  - [Ejemplo: Temporizador](#ejemplo-temporizador)
   - [Singleton Componsables](#singleton-componsables)
 
 ## Introducción
-Una función _componsable_ es una función que aprovecha la sintaxis de _Composition API_ para encapsular y reutilizar la lógica con estado, es decir, reactiva.
+Una función _componsable_ es una función que permite encapsular y reutilizar la lógica con estado, es decir, reactiva.
 
 Al crear aplicaciones frontend, a menudo necesitamos reutilizar la lógica para tareas comunes. Por ejemplo, podríamos necesitar formatear fechas en varios lugares, por lo que extraemos una función reutilizable para ello. Esta función de formateo encapsula la lógica sin estado: toma una entrada y devuelve inmediatamente la salida esperada. Existen muchas bibliotecas para reutilizar la lógica sin estado, como _lodash_ y _date-fns_.
 
@@ -16,7 +18,7 @@ Frente a un componente que renderiza una interfaz de usuario, una función compo
 
 Su utilidad es tener funciones reutilizables, que puedan utilizarse por diferentes componentes. Pero también son útiles para hacer más pequeño un componente que haya crecido demasiado sacando parte de su funcionalidad a otros ficheros.
 
-## Uso
+## Usar _composables_
 Por convención, las funciones componsables se nombran con el prefijo `use`, como `useMouse` o `useDatabaseConnection`. Esto indica que la función proporciona una funcionalidad específica que puede ser reutilizada en diferentes componentes. Normalmente se guardan en archivos javascript o typescript dentro de `src/composables`.
 
 Respecto a lo que devuelven, la convención es que no devuelvan un objeto reactivo con varias propiedades sino un objeto con varias propiedades reactivas, para que no se pierda la reactividad al desestructurarlo. Ejemplo:
@@ -82,6 +84,113 @@ const { x, y } = useMousePosition();
 Las coordenadas reactivas `x` e `y` se actualizan automáticamente a medida que el usuario mueve el ratón, y la interfaz de usuario refleja estos cambios en tiempo real.
 
 Con este enfoque, hemos encapsulado la lógica de rastreo del ratón en una función componsable reutilizable que puede ser utilizada en múltiples componentes sin duplicar código.
+
+## Ejemplo: Llamadas a una API
+Otro ejemplo común de una función componsable es la gestión de llamadas a una API. Aquí hay un ejemplo sencillo de una función componsable que realiza una llamada a una API para obtener datos y maneja el estado de carga y error:
+```javascript
+// Fichero: src/composables/useFetch.js
+import { ref } from 'vue
+
+export function useFetch(url) {
+  const data = ref(null);
+  const error = ref(null);
+  const loading = ref(false);
+
+  const fetchData = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        data.value = await response.json();
+      } else {
+        error.value = `Error ${response.status} en la llamada a la API`;
+      }
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return { data, error, loading, fetchData };
+}
+```
+En este ejemplo, `useFetch` es una función componsable que realiza una llamada a una API y maneja el estado de carga y error. Proporciona variables reactivas `data`, `error` y `loading`, así como una función `fetchData` para iniciar la llamada a la API.
+Para usar esta función componsable en un componente Vue, simplemente la importamos y la llamamos para acceder a sus variables y funciones:
+```javascript
+<script setup>
+import { useFetch } from '@/composables/useFetch';
+import { ref } from 'vue';
+
+const postId = ref(1);
+const { data, error, loading, fetchData } = useFetch(`https://jsonplaceholder.typicode.com/posts/${postId.value}`);
+</script>
+
+<template>
+  <div>
+    <div>
+      <label>Post a cargar:</label>
+      <input v-model="`postId`" placeholder="ID del post" />
+      <button @click="fetchData">Cargar datos</button>
+    </div>
+    <div v-if="loading">Cargando...</div>
+    <div v-else-if="error">Error: {{ error }}</div>
+    <div v-else>
+      <pre>{{ data }}</pre>
+    </div>
+  </div>
+</template>
+```
+
+## Ejemplo: Temporizador
+Vamos a ver un temporizador que nos permite saber los segundos transcurridos desde que se activa:
+```javascript
+// Fichero: src/composables/useTimer.js
+import { ref, onMounted, onUnmounted } from 'vue';
+export function useTimer() {
+  const time = ref(0);
+  let intervalId = null;
+
+  const start = () => {
+    if (intervalId) return; // Evitar múltiples activaciones
+    intervalId = setInterval(() => {
+      time.value++;
+    }, 1000);
+  };
+
+  const stop = () => {
+    clearInterval(intervalId);
+    intervalId = null;
+  };
+
+  const reset = () => {
+    time.value = 0;
+  };
+
+  onUnmounted(() => {
+    clearInterval(intervalId);
+  });
+
+  return { time, start, stop, reset };
+}
+```
+En este ejemplo, `useTimer` es una función componsable que proporciona un temporizador con funciones para iniciar, detener y reiniciar el conteo. Utiliza una variable reactiva `time` para rastrear el tiempo transcurrido en segundos.
+Para usar esta función componsable en un componente Vue, simplemente la importamos y la llamamos para acceder a sus variables y funciones:
+```javascript
+<script setup>
+import { useTimer } from '@/composables/useTimer';
+const { time, start, stop, reset } = useTimer();
+</script>
+<template>
+  <div>
+    <p>Tiempo transcurrido: { { time }} segundos</p>
+    <button @click="start">Iniciar</button>
+    <button @click="stop">Detener</button>
+    <button @click="reset">Reiniciar</button>
+  </div>
+</template>
+```
 
 ## Singleton Componsables
 A veces, es posible que deseemos que una función componsable mantenga un estado compartido entre múltiples componentes. En este caso, podemos implementar un patrón singleton dentro de la función componsable.

@@ -107,7 +107,7 @@ const fullName = computed({
 Si hacemos `fullName = 'John Doe'` estaremos asignando los valores adecuados a las variables _name_ y _surname_.
 
 ## Watchers
-A veces necesitamos ejecutar código cuando cambia el valor de una variable reactiva. Vue proporciona una forma genérica de controlar cuándo cambia el valor de una variable reactiva para poder ejecutar código en ese momento poniéndole un _watcher_. Por ejemplo, queremos mostrar por consola el valor de un contador cada vez que cambie:
+Un _watcher_ es una función que oberva cuándo cambia el valor de una variable reactiva y se ejecuta en ese momento. A diferencia de una _computed_ que devuelve un valor cuando cambia una variable, el _watcher_ nos va a permitir realizar acciones cuando cambia su valor. Por ejemplo, queremos mostrar por consola el valor de un contador cada vez que cambie:
 ```javascript
 import { ref, watch } from 'vue';
 const counter = ref(0);
@@ -116,7 +116,12 @@ watch(counter, (newValue, oldValue) => {
 });
 ```
 
-Al `watch` le pasamos la variable reactiva a observar y una función que recibe el nuevo valor y el antiguo. Cada vez que cambie el valor de _counter_ se ejecutará la función.
+La sintaxis de `watch` es:
+```javascript
+watch(variableReactiva, callbackFunction, opciones?)
+```
+
+Le pasamos la variable reactiva a observar y una función que recibe el nuevo valor y el antiguo. Cada vez que cambie el valor de _counter_ se ejecutará la función.
 
 En sintaxis _Options API_:
 ```javascript
@@ -159,6 +164,17 @@ NOTA: los _watcher_ son costosos por lo que no debemos abusar de ellos
 | Haz el ejercicio del tutorial de [Vue.js](https://vuejs.org/tutorial/#step-10)
 
 Podéis consultar la [documentación oficial de Vue sobre watchers](https://vuejs.org/guide/essentials/watchers.html) para ver todas las posibilidades que ofrecen.
+
+Otra forma de hacerlo es con `watchEffect`, que no necesita que le pasemos la variable a observar sino que observa todas las variables reactivas que usemos dentro de la función que le pasamos:
+```javascript
+import { ref, watchEffect } from 'vue';
+const counter = ref(0);
+watchEffect(() => {
+  console.log(`El contador vale ${counter.value}`);
+});
+```
+
+En este caso _watchEffect_ observará la variable _counter_ porque la usamos dentro de la función. Cada vez que cambie su valor se ejecutará la función.
 
 ## Acceder al DOM: 'ref'
 Aunque Vue se encarga de la vista por nosotros en alguna ocasión podemos tener que acceder a un elemento del DOM. En ese caso no haremos un `document.getElement...` sino que le ponemos una referencia al elemento `ref` para poder acceder al mismo desde nuestro script:
