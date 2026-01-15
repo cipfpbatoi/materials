@@ -5,6 +5,7 @@
     - [Compartir una carpeta desde la terminal](#compartir-una-carpeta-desde-la-terminal)
     - [Publicar una carpeta compartida](#publicar-una-carpeta-compartida)
   - [Grupos de almacenamiento](#grupos-de-almacenamiento)
+    - [Crear un grupo de almacenamiento desde Powershell](#crear-un-grupo-de-almacenamiento-desde-powershell)
 
 ## Introducción
 _Servicios de archivo y almacenamiento_ es una herramienta desde la que gestionar todo el almacenamiento del servidor. Accedemos a ella desde una opción del menú de la izquierda del _Administrador del servidor_. Tiene varias opciones:
@@ -60,6 +61,8 @@ Los grupos de almacenamiento (_storage pools_) permiten virtualizar el almacenam
 
 Un espacio de almacenamiento aparece en el _Administrador de discos_ como un disco normal en el que podemos crear volúmenes, formatearlos y asignarles una letra de unidad.
 
+**NOTA**: en ocasiones al usar máquinas virtuales de Virtualbox el asistente para crear un grupo de almacenamiento desde el entorno gráfico no detecta los discos físicos disponibles. En ese caso podemos crear el grupo de almacenamiento desde Powershell.
+
 Los pasos a realizar son:
 
 ![Storage Spaces Workflow](https://docs.microsoft.com/es-es/windows-server/storage/storage-spaces/media/deploy-standalone-storage-spaces/storage-spaces-workflow.png)
@@ -86,10 +89,18 @@ Los grupos de almacenamiento nos permiten realizar en caliente:
 
 También permiten, si en nuestro grupo de almacenamiento tenemos discos tanto HDD como SSD, crear discos por capas que nos permita utilizar volúmenes que requieran mucha velocidad utilizando discos SSD y volúmenes que no requieran tanta velocidad utilizar los discos HDD. De manera interna al crear un disco por capas con diferente hardware (HDD y SSD) almacenará los datos que se estén utilizando con mucha frecuencia en el disco SSD para que funcionen más eficientemente y los que se usen con menos frecuencia en el disco HDD.
 
-Podemos crear un grupo de almacenamiento con Powershell:
+### Crear un grupo de almacenamiento desde Powershell
+Vamos a ver un ejemplo en el que haremos un grupo de almacenamiento usando todos los discos físicos disponibles (los que no se están usando, que tienen el parámetro _CanPool_ a _true_). En él crearemos un disco virtual de 50 GB en el que posteriormente crearemos las particiones que queramos (desde el _Administrador de discos con con Powershell_).
+
+En primer lugar vamos a ver qué discos físicos tenemos disponibles para crear el grupo de almacenamiento:
 ```powershell
-$MyPhysicalDisks = Get-PhysicalDisk -CanPool $true
-NewStoragePool -FriendlyName MyStoragePool1 -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks MyPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
+Get-PhysicalDisk
+```
+
+Podemos usar todos aquellos que en el campo _CanPool_ sea _true_. Para crear un grupo de almacenamiento con todos ellos usamos el siguiente comando:
+```powershell
+$myPhysicalDisks = Get-PhysicalDisk -CanPool $true
+NewStoragePool -FriendlyName MyStoragePool1 -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks $myPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
 ```
 
 Y crearemos en él un disco virtual de 50 GB:
@@ -98,3 +109,8 @@ New-VirtualDisk –StoragePoolFriendlyName MyStoragePool1 –FriendlyName Virtua
 ```
 
 Una vez creado ya aparece el disco virtual _VirtualDisk1_ en el _Administrador de discos_ y podemos crear volúmenes en él o bien hacerlo desde Powershell.
+
+Para crear un volumen de 20 GB en el disco virtual usamos:
+```powershell
+New-Volume -FriendlyName Volume1 -FileSystem NTFS -StoragePoolFriendlyName MyStoragePool1 -Size 20GB
+```
