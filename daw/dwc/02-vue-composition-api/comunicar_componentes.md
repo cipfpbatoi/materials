@@ -668,7 +668,7 @@ y donde queremos mostrarlo sólo con un botón para ver más detalles haremos:
     <button @click="showDetails">Detalles</button>
 </user-row>
 ```
-
+Podéis ver el ejemplo completo en el siguiente [repositorio](https://github.com/imartosgazquez/dwec/tree/prueba-slots).
 ### Slots con nombre
 A veces nos interesa tener más de un slot en un componente. Para saber qué contenido debe ir a cada slot se les da un nombre. 
 
