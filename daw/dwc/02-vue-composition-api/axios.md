@@ -4,6 +4,7 @@
   - [Introducción](#introducción)
   - [Instalación](#instalación)
   - [Usar _axios_](#usar-axios)
+    - [Obtener los datos iniciales](#obtener-los-datos-iniciales)
   - [Aplicación de ejemplo](#aplicación-de-ejemplo)
     - [Fichero **_api.js_**](#fichero-apijs)
     - [store/index.js](#storeindexjs)
@@ -46,7 +47,7 @@ Ya podemos hacer peticiones Ajax en el componente. Para ello axios incluye los m
 
 Estos métodos devuelven una promesa por lo que al hacer la petición deberemos anteponerle el **`await`** o bien indicaremos con **`.then`** y **`.catch`** la función que se ejecutará cuando responda el servidor si la petición se resuelve correctamente y la que se ejecutará si ocurre algún error respectivamente.
 
-Lo que devuelve es un objeto que tiene, entre otras, las propiedades:
+La **respuesta** que devuelve es un objeto que tiene, entre otras, las propiedades:
 * **`data`**: aquí tendremos los datos devueltos por el servidor ya procesados
 * `status`: obtendremos el código de la respuesta del servidor (200, 404, ...)
 * `statusText`: el texto de la respuesta del servidor ('Ok', 'Not found', ...)
@@ -69,6 +70,55 @@ y usando promesas sería algo como:
 axios.get(url)
   .then(response => console.log(response.data))
   .catch(response => console.error(response.message))
+```
+
+### Obtener los datos iniciales
+Normalmente en una aplicación necesitaremos obtener los datos iniciales del servidor al cargar el componente principal. Para ello usaremos el _hook_ **onMounted()** (o **mounted()** si usamos _Options API_) que se ejecuta cuando el componente se ha montado en el DOM. En este _hook_ haremos la petición al servidor para obtener los datos iniciales.
+
+Si esos datos iniciales sólo los va a usar un componente los almacenaremos en una propiedad _reactive_ o _ref_ de ese componente y la carga de los mismos se hará en el _hook_ **onMounted()** de ese componente:
+```javascript
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const items = ref([])
+onMounted( async () => {
+  try {
+    const response = await axios.get('http://miapi.com/items')
+    items.value = response.data
+  } catch (error) {
+    console.error('Error fetching items: ', error.message)
+  }
+})
+```
+
+Si esos datos iniciales los vamos a compartir entre varios componentes lo mejor es almacenarlos en el _store_ (Pinia o Vuex) para que todos los componentes puedan acceder a ellos. En el _store_ crearemos una acción que haga la petición al servidor y almacene los datos en el estado del _store_:
+```javascript
+import axios from 'axios'
+import { reactive } from 'vue'
+
+export const store = {
+  state: reactive({
+    items: [],
+  }),
+  async fetchItemsAction() {
+    try {
+      const response = await axios.get('http://miapi.com/items')
+      this.state.items = response.data
+    } catch (error) {
+      console.error('Error fetching items: ', error.message)
+    }
+  }
+} 
+```
+
+En este caso en lugar de que cada componente que necesite esos datos pida al _store_ que los cargue podemos hacer esa petición en el **App.vue** para que se carguen al inicio de la aplicación y todos los componentes puedan acceder a ellos:
+```javascript
+import { store } from '@/store'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  store.fetchItemsAction()
+})
 ```
 
 ## Aplicación de ejemplo
@@ -173,7 +223,6 @@ const todos = computed(() => store.state.todos);
   </ul>
   <p v-else>No hay tareas que mostrar</p>
 </template>
-
 ```
 
 El _hook_ **onMounted()** se ejecuta al montarse el componente. En sistaxis de _Options API_ sería el _hook_ **mounted()**:

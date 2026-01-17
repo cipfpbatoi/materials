@@ -4,7 +4,7 @@ Tabla de contenidos
   - [Introducción](#introducción)
   - [Instalar y configurar Pinia](#instalar-y-configurar-pinia)
   - [Crear un store](#crear-un-store)
-  - [Usar Pinia](#usar-pinia)
+  - [Usar Pinia en un componente](#usar-pinia-en-un-componente)
   - [Usar Pinia con _Options API_](#usar-pinia-con-options-api)
     - [Crear el almacén](#crear-el-almacén)
     - [Acceder a variables y acciones con _Options API_](#acceder-a-variables-y-acciones-con-options-api)
@@ -73,7 +73,7 @@ Si queremos usar _Pinia_ en un proyecto existente donde no la seleccionamos al c
 ## Crear un store
 Ahora hay que crear el fichero del store. Podemos tener todos los datos en un único fichero o, si son muchos, hacer ficheros diferentes. Por ejemplo para la aplicación de 'ToDo' podemos crear su store en **/src/stores/toDo.js**. 
 
-Al crear un almacén pondremos en él todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Pr ejemplo, para compartir un contador haríamos:
+Al crear un almacén pondremos en él todas las variables que vaya a usar más de un componente y los métodos para acceder a ellas y modificarlas. Por ejemplo, para compartir un contador haríamos:
 
 ```javascript
 import { ref, computed } from 'vue'
@@ -116,7 +116,7 @@ export const useCounterStore = defineStore('counter', () => {
 ```
 También puede importar otros _stores_ si necesita acceder a sus datos.
 
-## Usar Pinia
+## Usar Pinia en un componente
 Para usar el almacén en un componente debemos importarlo y crear una instancia del mismo. Esto se hace llamando a la función que hemos exportado al definir el almacén (en este caso `useCounterStore()`). Con eso ya podemos usar el almacén como si fuera local al componente. Por ejemplo, en un componente _Counter.vue_ haríamos:
 ```javascript
 <script setup>
@@ -143,9 +143,19 @@ import { storeToRefs } from 'pinia'
 
 const counterStore = useCounterStore()
 const { count } = storeToRefs(counterStore)
-const { increment } = counterStore
+const { increment, decrement } = counterStore
 </script>
+
+<template>
+  <div>
+    <p>Count: { { count }}</p>
+    <button @click="decrement">-</button>
+    <button @click="increment">+</button>
+  </div>
+</template>
 ```
+
+Fijaos que ahora puedo acceder a `count` directamente sin usar `counterStore.count` porque lo he desestructurado.
 
 Con las acciones no es necesario usar `storeToRefs()` porque no son reactivas.
 
@@ -153,9 +163,8 @@ Con las acciones no es necesario usar `storeToRefs()` porque no son reactivas.
 ### Crear el almacén
 Para crear un almacén en Pinia, lo definimos igual que antes pero el segundo parámetro será un objeto con 3 propiedades:
 - `state`: el estado inicial del almacén, es decir, las variables que contendrá.
-- `getters`: funciones que permiten obtener información derivada del estado (_computed_).
+- `getters`: funciones que permiten obtener información derivada del estado (equivalente a variables _computed_).
 - `actions`: funciones que permiten modificar el estado.
-
 
 ```javascript
 import { defineStore } from 'pinia'

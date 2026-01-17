@@ -5,11 +5,11 @@
   - [Instalación](#instalación)
     - [Añadir vue-router a un proyecto ya creado](#añadir-vue-router-a-un-proyecto-ya-creado)
   - [Crear las rutas](#crear-las-rutas)
-    - [Rutas dinámicas](#rutas-dinámicas)
     - [Opciones de cada ruta](#opciones-de-cada-ruta)
   - [Crear un menú](#crear-un-menú)
   - [Saltar a una ruta](#saltar-a-una-ruta)
-  - [Paso de parámetros](#paso-de-parámetros)
+  - [Rutas dinámicas](#rutas-dinámicas)
+    - [Paso de parámetros a una ruta dinámica](#paso-de-parámetros-a-una-ruta-dinámica)
   - [El objeto _route_](#el-objeto-route)
   - [Ruta no encontrada: 404 Not found](#ruta-no-encontrada-404-not-found)
   - [Redireccionamiento](#redireccionamiento)
@@ -97,7 +97,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import AppHome from './components/AppHome.vue'
 import AppAbout from './components/AppAbout.vue'
 import UsersTable from './components/UsersTable.vue'
-import UserNew from './components/UserNew.vue'
+import UserForm from './components/UserForm.vue'
 import UserEdit from './components/UserEdit.vue'
 
 const routes = [
@@ -114,11 +114,7 @@ const routes = [
     component: UsersTable
   },{
     path: '/new',
-    component: UserNew
-  },{
-    path: '/edit/:id',
-    component: UserEdit
-    props: true
+    component: UserForm
   }
 ];
 
@@ -140,19 +136,6 @@ el componente indicado para esa ruta. Dicha etiqueta estará normalmente en el f
 
 El modo _'history'_ de nuestro router indica que use rutas "amigables" y que no incluyan la # (piensa que en realidad no se están cargando diferentes páginas sino partes de una única página ya que es una SPA). Esta es la opción que escogeremos siempre en las aplicaciones SPA, aunque si nuestro servidor web usa ASP.NET o JSP habrá que decirle que ignore las URLs porque ya se ocupa de ellas Vue. La alternativa sería usar `createWebHashHistory()` pero en ese caso las rutas en vez de ser algo como `http://localhost:8080/products` serían `http://localhost:8080/#products`.
 
-### Rutas dinámicas
-
-_VueRouter_ permite rutas dinámicas como la indicada para el componente _UserEdit_:
-
-```javascript
-{
-  path: '/edit/:id',
-  component: UserEdit
-}
-```
-
-Esa ruta coincidirá con cualquier URL que comience por _`/edit/`_ y tenga algo más. Lo que haya tras la última _`/`_ lo asignará el _router_ a una variable llamada _id_ (el nombre que pongamos tras el carácter `:`) y dicha variable la recibirá el componente _UserEdit_ en un parámetro accesible desde `route.params.id`. Si añadimos una opción `props: true` hacemos que el componente además reciba el parámetro en sus _props_ (en este caso recibirá una variable llamada _id_ que será accesible desde `props.id` directamente).
-
 ### Opciones de cada ruta
 
 Para cada ruta que queramos mapear hay que definir:
@@ -163,7 +146,7 @@ Para cada ruta que queramos mapear hay que definir:
 Además de esas propiedades podemos indicar:
 
 - **name**: le damos a la ruta un nombre que luego podemos usar para referirnos a ella
-- **props**: se usa en rutas dinámicas e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se incluye esta opción el componente tendrá que acceder al parámetro _id_ desde `route.params.id`
+- **props**: se usa en rutas dinámicas (lo veremos después) e indica que el componente recibirá el parámetro de la ruta en sus _props_. Si no se incluye esta opción el componente tendrá que acceder al parámetro _id_ desde `route.params.id`
 
 ## Crear un menú
 
@@ -184,23 +167,11 @@ Si le hemos puesto la propiedad _name_ a una ruta podemos hacer un enlace a ella
 
 Fijaos que hemos de _bindear_ el atributo `to` porque ya no le pasamos texto sino una variable.
 
-Se podría hacer (aunque no es normal) una opción de menú a una ruta dinámica y pasarle el parámetro deseado. Por ejemplo para editar el usuario 5 haríamos:
-
-```html
-<router-link :to="{name: 'edit', params: {id: 5}}">
-  Editar usuario 5
-</router-link>
-```
-
-En este caso es necesario que la ruta dinámica tenga un _name_.
-
 ## Saltar a una ruta
 
 Al hacer `.use(router)` en el fichero _main.js_ estamos declarando esa variable (_router_) en la instancia principal de la aplicación por lo que estará disponible para todos los componentes. 
 
-La forma de acceder a ella es diferente según usemos la _Options API_ o la _Composition API_. En _Options API_ se accede directamente desde `this.$router`.
-
-En _Composition API_ debemos importar la función `useRouter` desde _vue-router_ y usarla para obtener el router:
+La forma de acceder a ella es importar la función `useRouter` desde _vue-router_ y usarla para obtener el router:
 ```javascript
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -213,8 +184,6 @@ El código para cambiar la ruta desde Javascript es
 ```javascript
 router.push(ruta);
 ```
-
-O en _Options API_ `this.$router.push(ruta)`.
 
 Tenemos varios métodos para navegar por código:
 - **`.push(newUrl)`**: salta a la ruta _newUrl_ y la añade al historial
@@ -229,17 +198,65 @@ Además podemos pasar a `push()` y `replace()` funciones _callback_ que se ejecu
 router.push(location, onComplete?, onAbort?)
 ```
 
-## Paso de parámetros
-
-La forma de pasar parámetros a la ruta es:
+En _Options API_ no es necesario el _useRouter_ sino que se accede directamente desde `this.$router`:
 
 ```javascript
-router.push({ name: "users", params: { id: 123 } });
+this.$router.push('/about');
 ```
 
-esto hace que se salte a la ruta con _name_ "users" y le pasa como parámetro una _id_ de valor 123. En el componente que se cargue en dicha ruta obtendremos el parámetro pasado con `route.params.nombreparam` (en el ejemplo en `route.params.id` obtenemos el valor `"123"`).
+## Rutas dinámicas
+Hemos visto que cada ruta mapea un componente. Sin embargo muchas veces necesitaremos que una misma ruta cargue un componente pero con datos diferentes. Por ejemplo si tenemos un componente para editar usuarios (llamado _UserEdit.vue_) necesitaremos que se cargue ese mismo componente pero con los datos del usuario 1, o del usuario 2, etc. Para ello usaremos rutas dinámicas que incluyen parámetros. Por ejemplo:
+```javascript
+const routes = [
+...
+  {
+    path: '/new',
+    name: 'newUser',
+    component: UserForm
+  },{
+    path: '/edit/:id',
+    name: 'editUser',
+    component: UserForm,
+    props: true
+  }
+];
+```
 
-Se puede pasar más de un parámetro pero para que los pueda recibir el componente hay que ponerlos todos en el _router_. Por ejemplo para hacer un `router.push({ name: 'books', params: { autor: 12, tema: 4 }})`
+En este caso la ruta _/edit/:id_ es dinámica porque incluye un parámetro llamado _id_ (el carácter `:` indica que es un parámetro). Esa ruta coincidirá con cualquier URL que comience por _`/edit/`_ y tenga algo más. Lo que haya tras la última _`/`_ lo asignará el _router_ a una variable llamada _id_ (el nombre que pongamos tras el carácter `:`). Por ejemplo si la URL es `/edit/5` el parámetro _id_ tendrá el valor `5` y si la URL es `/edit/23` el parámetro _id_ tendrá el valor `23`.
+
+Ambas rutas cargarán el mismo componente _UserForm.vue_ pero en el segundo caso el componente recibirá un parámetro _id_ con el valor que haya en la URL. Para acceder a ese parámetro en el componente se utiliza erl objeto _route_ (ver más adelante) que obtendremos con `useRoute()` (OJO: no confundir con _router_ que es el objeto que gestiona las rutas):
+```javascript
+import { useRoute } from 'vue-router';
+const route = useRoute();
+```
+
+Y el valor del parámetro _id_ estará en `route.params.id`. Una vez obtenido el valor del parámetro ya podemos usarlo para cargar los datos del usuario que corresponda.
+
+Fijaos que en la definición de la ruta hemos puesto la opción `props: true`. Esto hace que el parámetro _id_ no sólo esté disponible en `route.params.id` sino que además el componente lo recibirá como una _prop_:
+```javascript
+const props = defineProps({
+  id: {
+    type: String,
+    required: false
+  }
+});
+```
+
+De esta forma el componente podrá acceder al parámetro _id_ desde `props.id` sin necesidad de importar el _useRoute_ y acceder a `route.params.id`. Es una forma más cómoda de acceder al parámetro. 
+
+### Paso de parámetros a una ruta dinámica
+Al saltar a una ruta dinámica con _router.push()_ podemos pasar el valor del parámetro de 2 maneras:
+- como parte de la URL:
+  ```javascript
+  router.push('/edit/5');
+  ```
+
+- como un objeto con el nombre de la ruta y los parámetros:
+  ```javascript
+  router.push({ name: 'editUser', params: { id: 5 } });
+  ```
+
+Se puede pasar más de un parámetro pero para que los pueda recibir el componente hay que definirlos todos en la ruta. Por ejemplo para hacer un `router.push({ name: 'books', params: { autor: 12, tema: 4 }})`
 
 la ruta en el _router_ debería contener ambas variables:
 
@@ -249,8 +266,7 @@ path: "/books/author/:autor/topic/:tema";
 
 Podemos pasar también un objeto como parámetro pero antes debemos convertirlo a texto con `JSON.stringify()`. Sin embargo no es muy conveniente porque la URL quedaría demasiado larga y "sucia".
 
-También se puede pasar una _query_ a la ruta:
-
+También se puede pasar una _query_ en lugar de parámetros. Por ejemplo
 ```javascript
 router.push({ path: "/register", query: { plan: "private" } });
 ```
@@ -259,13 +275,22 @@ salta a la URL `/register?plan=private`. En el componente que se carga obtenemos
 
 **IMPORTANTE**: Tened en cuenta que lo que se pasa como parámetro o consulta aparecerá en la URL por lo que no debemos enviar información sensible y no se recomienda enviar algo muy largo (como un objeto o array) para evitar que la URL quede "sucia".
 
+Tambien es posible (aunque no es normal) pasar un parámetro desde una opción de menú a una ruta dinámica. Por ejemplo para editar el usuario 5 haríamos un elemento del menú así:
+```html
+<router-link :to="{name: 'editUser', params: {id: 5}}">
+  Editar usuario 5
+</router-link>
+```
+
+En este caso es necesario que la ruta dinámica tenga un _name_.
+
 ## El objeto _route_
 Es un objeto que contiene información de la ruta actual (no confundir con _router_). 
-La forma de acceder a él es diferente según usemos la _Options API_ o la _Composition API_. En _Options API_ se accede directamente desde `this.$route`.
 
-En _Composition API_ debemos importar la función `useRoute` desde _vue-router_ y usarla para obtener el route:
+La forma de acceder a él es importando la función `useRoute` desde _vue-router_ y usarla para obtener el route:
 ```javascript
 import { useRoute } from 'vue-router';
+
 const route = useRoute();
 ```
 
@@ -276,6 +301,8 @@ Algunas de sus propiedades son:
 - **query**: si hubiera alguna consulta en la ruta (tras '?') se obtiene aquí un objeto con ellas
 - **path**: la ruta pasada (sin servidor ni querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users')
 - **fullPath**: la ruta pasada (con las querys, por ejemplo de `http://localhost:3000/users?company=5` devolvería '/users?company=5')
+
+En _Options API_ no se necesita el _useRoute_ sino que se accede directamente desde `this.$route`, ejemplo `this.$route.params.id`.
 
 ## Ruta no encontrada: 404 Not found
 Si en nuestra aplicación cargamos una ruta que no coincide con ninguna de las definidas en el _router_ no se cargará ningún componente en el _RouterView_.
@@ -294,7 +321,6 @@ Si llamamos a esa vista `PathNotFound.vue` la ruta a crear sería:
 Esta ruta hay que ponerla la última ya que coincidirá con cualquier URL (usa una expresión regular y la dice que la ruta coincida con '\*').
 
 ## Redireccionamiento
-
 En el _router_ puedo también poner una ruta que haga una redirección a otra en lugar de cargar un componente.
 
 ```javascript
