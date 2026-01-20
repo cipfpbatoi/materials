@@ -100,7 +100,7 @@ Get-PhysicalDisk
 Podemos usar todos aquellos que en el campo _CanPool_ sea _true_. Para crear un grupo de almacenamiento con todos ellos usamos el siguiente comando:
 ```powershell
 $myPhysicalDisks = Get-PhysicalDisk -CanPool $true
-NewStoragePool -FriendlyName MyStoragePool1 -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks $myPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
+New-StoragePool -FriendlyName MyStoragePool1 -StorageSubsystemFriendlyName "Windows Storage*" -PhysicalDisks $myPhysicalDisks -ProvisioningTypeDefault Thin -Verbose
 ```
 
 Y crearemos en él un disco virtual de 50 GB:
@@ -113,4 +113,20 @@ Una vez creado ya aparece el disco virtual _VirtualDisk1_ en el _Administrador d
 Para crear un volumen de 20 GB en el disco virtual usamos:
 ```powershell
 New-Volume -FriendlyName Volume1 -FileSystem NTFS -StoragePoolFriendlyName MyStoragePool1 -Size 20GB
+```
+
+OJO: por defecto al crear un volumen en un _Storge Pool_ se crea como _Mirrored_ (RAID1). Si queremos otro tipo de volumen (Simple o Parity) debemos indicarlo con el parámetro `-ResiliencySettingName`. Las opciones que tenemos son:
+- Simple: para RAID0
+- Mirror: para RAID1
+- Parity: para RAID5
+- DualParity: para RAID6 (sólo en Windows Server 2012 R2 y posteriores)
+
+Por ejemplo, para crearlo simple haremos:
+```powershell
+New-Volume -FriendlyName Volume1 -FileSystem NTFS -StoragePoolFriendlyName MyStoragePool1 -Size 20GB -ResiliencySettingName Simple
+```
+
+Si queremos ver la información del grupo de almacenamiento creado usamos:
+```powershell
+Get-StoragePool -FriendlyName MyStoragePool1 | Format-List *
 ```
