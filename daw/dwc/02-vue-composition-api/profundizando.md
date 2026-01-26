@@ -543,9 +543,9 @@ La mayoría reciben 3 parámetros:
 - **next**: función para que continue la carga del router. Siempre tras ejecutar el código que deseemos pondremos `netx()`.
 
 En el router tenemos estos _guards_:
-- **router.beforeEach(to, from, next)**: se ejecuta antes de que vaya a cambiarse la ruta
-- **router.afterEach(to, from)**: se ejecuta una vez cambiada la ruta (por eso no tiene next, porque ya ha acabado)
-- **ruta.beforeEnter(to, from, next)**: se pone como propiedad de una ruta y se ejecuta antes de entrar a ella
+- **router.beforeEach(to, from, next)**: se ejecuta de manera global antes de que vaya a cambiarse la ruta. (Es como el portero de un edificio)
+- **router.afterEach(to, from)**: se ejecuta una vez cambiada la ruta específica (por eso no tiene next, porque ya ha acabado)
+- **ruta.beforeEnter(to, from, next)**: se pone como propiedad de una ruta específica y se ejecuta antes de entrar a ella. (Es como el portero de una sóla puerta)
 
 Para aplicarlos en nuestro router lo asignamos a una variable que exportamos:
 ```javascript
@@ -567,6 +567,25 @@ router.beforeEach(to, from, next) {
 }
 
 export default router
+```
+beforeEnter se sule utilizar para proteger rutas específicas, por ejemplo:
+
+```javascript
+beforeEnter: (to, from, next) => {
+  if (!isAdmin()) next('/login')
+  else next()
+}
+```
+Un ejemplo típico de uso de beforeEach es Autenticación global o Control de roles:
+
+```javascript
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 ```
 
 En un componente también puedo definir los _hooks_:
