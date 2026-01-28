@@ -22,6 +22,7 @@ Tabla de contenidos
 
 ## Computed
 Como ya hemos visto podemos usar variables _calculadas_ a partir de otras variables reactivas y se declaran como _computed_. Lo hemos usado para obtener datos del _store_ pero también podemos usarlo para hacer cálculos con variables reactivas del propio componente, por ejemplo:
+- para hacer accesibels localmente variables del _store_
 - para mostrar totales
 - para formatear fechas
 - para filtrar listas
@@ -36,9 +37,9 @@ Por ejemplo, en lugar de hacer en el _template_ del componente:
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
-const author = reactive({
+const author = ref({
   name: 'John',
   surname: 'Doe',
   books: [
@@ -59,9 +60,9 @@ se puede simplificar el _template_ creando variables calculadas:
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
 
-const author = reactive({
+const author = ref({
   name: 'John',
   surname: 'Doe',
   books: [
@@ -72,11 +73,11 @@ const author = reactive({
 });
 
 const fullName = computed(() => {
-  return author.name + ' ' + author.surname;
+  return author.value.name + ' ' + author.value.surname;
 });
 
 const hasPublished = computed(() => {
-  return author.books.length > 0 ? 'Sí' : 'No'
+  return author.value.books.length > 0 ? 'Sí' : 'No'
 });
 </script>
 ```
