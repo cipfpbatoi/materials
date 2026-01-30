@@ -10,7 +10,7 @@ En este bloque vamos a conocer el framework **Vue** que es uno de los más utili
 7. [SPA: vue-router](./vue-router.md)
 8. [Profundizando en Vue](./profundizando.md)
 9. [Pinia](./pinia.md)
-10. [Formularios](./08-forms.md)
+10. [Formularios](./forms.md)
 11. [Composable functions](./composables.md)
 12. [Typescript](./typescript.md)
 13. [Testeando componentes](https://vuejs.org/guide/scaling-up/testing)
