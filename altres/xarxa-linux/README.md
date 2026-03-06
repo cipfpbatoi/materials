@@ -362,7 +362,7 @@ Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` i descomentem l
 net.ipv4.ip_forward=1
 ```
 
-En sistemes amb netplan podem utilitzar el fitxer `/etc/ufw/sysctl.conf` que ho habilitarà quan iniciem el Firewal **ufw**. En CentOS ja està habilitat per defecte (si tinguerem que afegir opcions ho faríem en el fitxer `/etc/sysctl.d/99-sysctl.conf`)
+En sistemes amb netplan podem utilitzar el fitxer anterior o el `/etc/ufw/sysctl.conf` que ho habilitarà quan iniciem el Firewal **ufw**. En Debian no existeix el fitxer `/etc/sysctl.conf` i hem de crear-lo dins de `/etc/sysctl.d/` (podem anomernar-lo `/etc/sysctl.d/99-sysctl.conf`) i escriure dins la línia `net.ipv4.ip_forward=1` per a habilitar l'enrutament.
 
 Perquè faça efecte hem de recarregar la configuració amb:
 ```bash
