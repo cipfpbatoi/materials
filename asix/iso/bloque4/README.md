@@ -1,8 +1,8 @@
 # Bloque 4: Actualización, monitorización y auditoría en sistemas operativos
 
 En este bloque veremos cómo se actualizan los sistemas operativos, cómo se monitorizan y cómo se auditan. El bloque está compuesto por las unidades:
-- [SA 8 - Monitoritzación del rendimiento en GNU/Linux i Windows](./ud01/): en esta unidad veremos cómo monitorizar el rendimiento de un sistema operativo tanto en GNU/Linux como en Windows.
-- [SA 9 - Auditoría de seguridad en GNU/Linux i Windows](./ud02/): en esta unidad veremos cómo auditar la seguridad de un sistema operativo tanto en GNU/Linux como en Windows.
+- [SA 8 - Monitoritzación del rendimiento sistema Windows](./ud01/): en esta unidad veremos cómo monitorizar el rendimiento de un sistema operativo tanto en GNU/Linux como en Windows.
+- [SA 9 - Auditoría de seguridad en sistemas Windows](./ud02/): en esta unidad veremos cómo auditar la seguridad de un sistema operativo tanto en GNU/Linux como en Windows.
 - [SA 10 - Actualización de sistemas operativos y gestión de incidencias](./ud03/): aquí veremos cómo se actualizan los sistemas operativos y cómo se gestionan las incidencias que puedan surgir en el sistema operativo.
 
 
