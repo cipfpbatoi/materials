@@ -188,12 +188,12 @@ Los eventos se clasifican por nivel de gravedad:
 
 Al hacer doble clic sobre un evento podemos ver toda la información del mismo, que incluye:
 
-    Event ID: identificador único del evento
-    Source (origen): qué aplicación / servicio / componente lo ha generado.
-    Fecha y hora del evento
-    Nivel (Level): tipo (Information, Warning, Error, Critical, etc.) según severidad
-    Usuario (si aplica): qué usuario generó el evento (p. ej. login, permisos).
-    Descripción / Mensaje: detalle de qué ha sucedido, con información concreta, códigos de error, paths, etc.
+- Event ID: identificador único del evento
+- Source (origen): qué aplicación / servicio / componente lo ha generado.
+- Fecha y hora del evento
+- Nivel (Level): tipo (Information, Warning, Error, Critical, etc.) según severidad
+- Usuario (si aplica): qué usuario generó el evento (p. ej. login, permisos).
+- Descripción / Mensaje: detalle de qué ha sucedido, con información concreta, códigos de error, paths, etc.
 
 Incluye un enlace de ayuda que envía la información del evento en Microsoft y nos abra el explorador de Internet con información sobre el evento de la web de Microsoft.
 
@@ -213,17 +213,17 @@ Windows permite crear alertas cuando se detectan eventos críticos.
 
 Ejemplo: Notificación de intentos de acceso fallidos (ID 4625)
 
-    Win + R → eventvwr
-    Registros de Windows → Seguridad
-    Buscar eventos con ID 4625 (inicio de sesión fallido).
-    Clic derecho → Adjuntar tarea a este evento.
-    Configurar una acción (enviar correo, ejecutar un script, mostrar mensaje).
+- Win + R → eventvwr
+- Registros de Windows → Seguridad
+- Buscar eventos con ID 4625 (inicio de sesión fallido).
+- Clic derecho → Adjuntar tarea a este evento.
+- Configurar una acción (enviar correo, ejecutar un script, mostrar mensaje).
 
 Casos de uso:
 
-    Detectar intentos de acceso no autorizados.
-    Supervisar cambios en cuentas de usuario.
-    Alertar sobre errores críticos del sistema.
+- Detectar intentos de acceso no autorizados.
+- Supervisar cambios en cuentas de usuario.
+- Alertar sobre errores críticos del sistema.
 
 ---
 
