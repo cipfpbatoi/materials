@@ -6,8 +6,10 @@
   - [Herramientas de información del sistema](#herramientas-de-información-del-sistema)
     - [Información del sistema (`msinfo32`)](#información-del-sistema-msinfo32)
     - [Administrador de dispositivos (`devmgmt.msc`)](#administrador-de-dispositivos-devmgmtmsc)
-    - [Comprobador de archivos del sistema (`sfc /scannow`)](#comprobador-de-archivos-del-sistema-sfc-scannow)
-    - [Administración y mantenimiento de imágenes de implementación (`DISM`)](#administración-y-mantenimiento-de-imágenes-de-implementación-dism)
+    - [Windows Resource Protection](#windows-resource-protection)
+      - [Comprobador de archivos del sistema (`sfc /scannow`)](#comprobador-de-archivos-del-sistema-sfc-scannow)
+  - [Si la copia de _WinSxS_ también estuviera dañada, entonces `sfc` no podría reparar los archivos y mostraría un mensaje de error indicando que no se pudieron reparar algunos archivos. En ese caso, la herramienta recomendada para reparar la imagen del sistema es `DISM`, que veremos a continuación.](#si-la-copia-de-winsxs-también-estuviera-dañada-entonces-sfc-no-podría-reparar-los-archivos-y-mostraría-un-mensaje-de-error-indicando-que-no-se-pudieron-reparar-algunos-archivos-en-ese-caso-la-herramienta-recomendada-para-reparar-la-imagen-del-sistema-es-dism-que-veremos-a-continuación)
+      - [Administración y mantenimiento de imágenes de implementación (`DISM`)](#administración-y-mantenimiento-de-imágenes-de-implementación-dism)
     - [Comprobación de disco (`chkdsk`)](#comprobación-de-disco-chkdsk)
     - [Monitor de confiabilidad](#monitor-de-confiabilidad)
     - [Herramientas de diagnóstico de memoria (`mdsched.exe`)](#herramientas-de-diagnóstico-de-memoria-mdschedexe)
@@ -117,15 +119,29 @@ Desde el Administrador de dispositivos se puede:
 
 ---
 
-### Comprobador de archivos del sistema (`sfc /scannow`)
+### Windows Resource Protection
+Es un sistema de protección de Windows que evita que archivos críticos del sistema sean modificados o eliminados. Controla:
+- Archivos .dll
+- Ejecutables del sistema
+- Claves importantes del registro
 
-`sfc` (System File Checker) analiza todos los archivos protegidos del sistema operativo y reemplaza automáticamente los que estén dañados o modificados por versiones incorrectas, utilizando una copia almacenada en caché del sistema.
+WRP hace 3 cosas clave:
+1. **Restringe permisos** a archivos críticos. Aunque seas administrador no puedes modificarlos directamente. Solo el sistema (TrustedInstaller) tiene permisos para hacerlo. Esto evita que un programa malicioso o un error humano pueda dañar el sistema.
+2. **Mantiene una lista** de archivos protegidos. Tiene una “base de datos” interna con los archivos que deben estar protegidos, sus versiones y hashes. Si un archivo protegido se modifica, WRP lo detecta.
+3. **Detecta y repara** automáticamente los archivos protegidos que estén dañados o modificados, utilizando una copia almacenada en caché del sistema. Esto se hace a través de la herramienta `sfc` (System File Checker) que veremos a continuación.
 
-Se ejecuta desde una consola con privilegios de administrador:
+Cuando WRP detecta un fallo NO repara desde internet sino que lo hace desde una copia local que tiene almacenada en la carpeta `C:\Windows\WinSxS` (Windows Side-by-Side), que es el almacén de componentes de Windows. Esto garantiza que la reparación se haga con una versión correcta y compatible del archivo, evitando problemas de versiones o incompatibilidades.
+
+Esta carpeta es el almacén de componentes de Windows y contiene todas las versiones de los archivos del sistema que han sido instalados a lo largo del tiempo, incluyendo las actualizaciones. Es una especie de "copia de seguridad" de los archivos del sistema que WRP utiliza para reparar cualquier archivo dañado o modificado, pero en realidad NO es una copia de los archivos sino que utiliza _**hard links**_ para que el mismo archivo pueda estar referenciado desde varias ubicaciones (WinSxS y System32) sin ocupar espacio adicional en disco.
+
+#### Comprobador de archivos del sistema (`sfc /scannow`)
+Al ejecutar desde una consola con privilegios de administrador:
 
 ```
 sfc /scannow
 ```
+
+WRPanaliza todos los archivos protegidos del sistema operativo y reemplaza automáticamente los que estén dañados o modificados por versiones incorrectas, utilizando la copia de _WinSxS_.
 
 El proceso puede tardar varios minutos. Al terminar informa de si se encontraron y repararon archivos dañados, si se encontraron pero no se pudieron reparar, o si todo está correcto. El log detallado se guarda en:
 
@@ -133,9 +149,10 @@ El proceso puede tardar varios minutos. Al terminar informa de si se encontraron
 %windir%\Logs\CBS\CBS.log
 ```
 
+Si la copia de _WinSxS_ también estuviera dañada, entonces `sfc` no podría reparar los archivos y mostraría un mensaje de error indicando que no se pudieron reparar algunos archivos. En ese caso, la herramienta recomendada para reparar la imagen del sistema es `DISM`, que veremos a continuación.
 ---
 
-### Administración y mantenimiento de imágenes de implementación (`DISM`)
+#### Administración y mantenimiento de imágenes de implementación (`DISM`)
 
 `DISM` (Deployment Image Servicing and Management) permite reparar la imagen de Windows cuando `sfc` no puede hacerlo porque la propia caché del sistema está dañada. Descarga los archivos de reparación directamente desde Windows Update (o desde una imagen ISO si no hay conexión a Internet).
 
@@ -746,7 +763,7 @@ Get-ADUser -Identity jgarcia -Properties LockedOut, Enabled, PasswordExpired, Pa
 
 **Desarrollo:**
 
-Elegir uno de los siguientes escenarios (o el que indique el profesor):
+Elegir uno de los siguientes escenarios:
 
 **Escenario A — Manual de administración de usuarios en Active Directory:**
 El manual debe cubrir: cómo crear un usuario nuevo, cómo asignarlo a grupos, cómo restablecer su contraseña, cómo deshabilitar/eliminar una cuenta, y al menos 3 incidencias frecuentes relacionadas (cuenta bloqueada, usuario que no puede acceder a recurso compartido, usuario que no recibe las GPO correctas).

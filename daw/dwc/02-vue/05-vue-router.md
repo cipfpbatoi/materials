@@ -304,11 +304,11 @@ Podemos solucionar esto desde el _router_ o desde el componente.
 Desde el _router_ podemos usar el elemento `beforeRouteUpdate` y realizar allí la carga de los datos:
 
 ```javascrip
-beforeRouteUpdate (to, from, next) {
+beforeRouteUpdate (to, from) {
     // Código que responde al cambio. En 'to' tenemos la ruta anterior y en 'from' la nueva
     // antes de acabar hay que llamar a next()
     // Aquí cargamos los nuevos datos
-    next();
+    return true;
 }
 ```
 

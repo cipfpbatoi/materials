@@ -5,7 +5,6 @@
   - [2. Directivas de auditoría en Windows Server](#2-directivas-de-auditoría-en-windows-server)
     - [2.1 Directivas de auditoría básicas](#21-directivas-de-auditoría-básicas)
     - [2.2 Directivas de auditoría avanzadas](#22-directivas-de-auditoría-avanzadas)
-    - [2.3 Configuración mediante GPO en un dominio](#23-configuración-mediante-gpo-en-un-dominio)
   - [3. Auditoría de acceso a objetos (ficheros y carpetas)](#3-auditoría-de-acceso-a-objetos-ficheros-y-carpetas)
     - [Paso 1: Activar la directiva de auditoría](#paso-1-activar-la-directiva-de-auditoría)
     - [Paso 2: Configurar la SACL del objeto](#paso-2-configurar-la-sacl-del-objeto)
@@ -53,9 +52,7 @@ Existen dos tipos de directivas de auditoría en Windows Server: la auditoría *
 
 ### 2.1 Directivas de auditoría básicas
 
-Se configuran en: `Configuración del equipo → Configuración de Windows → Configuración de seguridad → Directivas locales → Directiva de auditoría`
-
-Las nueve categorías son:
+Permiten auditar los eventos más comunes del sistema. Las nueve categorías que incluyen son:
 
 | Categoría | Qué audita |
 |-----------|------------|
@@ -71,13 +68,13 @@ Las nueve categorías son:
 
 Cada categoría puede configurarse para registrar eventos de **Correcto** (operación realizada con éxito), de **Error** (operación denegada o fallida) o ambos.
 
-Por defecto todas las auditorías están desactivadas pero podemos activar cualquiera de ellas creando una nueva GPO y configurando la auditoría que queramos en el `Editor de administración de directivas de grupo -> Configuración de equipo -> Directivas -> Configuración de Windows -> Configuración de seguridad -> Directivas locales -> Directiva de auditoría`.
+Por defecto todas las auditorías están desactivadas. Para activarlas tenemos 2 opciones:
+- Si queremos activarlas localmente para un equipo lo haremos desde `Inicio -> Herramientas administrativas -> Directivas de seguridad local -> Configuración de seguridad -> Directivas locales -> Directiva de auditoría`.
+- Para activarlas para el dominio creamos una GPO con la configuración de auditoría deseada y la vinculamos al dominio o a las unidades organizativas que queramos. Esto es lo más habitual en entornos profesionales. Se configura en el `Editor de administración de directivas de grupo -> Configuración de equipo -> Directivas -> Configuración de Windows -> Configuración de seguridad -> Directivas locales -> Directiva de auditoría`.
 
-Si queremos activarlas para un equipo lo haremos desde `Inicio -> Herramientas administrativas -> Directivas de seguridad local -> _Configuración de seguridad_ -> _Directivas locales_ -> Directiva de auditoría`.
+![Directiva de auditoría](./media/DirectivaAuditoria.png)
 
-![Directiva de auditoría](./media/directiva-auditoria.png)
-
-Los eventos generados por las auditorías podremos verlos en el Visor de eventos de Windows, dentro de `Registros de Windows->Seguridad`.
+Los eventos generados por las auditorías podremos verlos en el Visor de eventos de Windows, dentro de `Registros de Windows->Seguridad`. Recuerda que las directivas no se aplican inmediatamente, sino que el sistema las va aplicando progresivamente. Para forzar su aplicación se puede usar el comando `gpupdate /force` en la línea de comandos.
 
 ### 2.2 Directivas de auditoría avanzadas
 
@@ -86,19 +83,6 @@ Se configuran en: `Configuración del equipo → Directivas → Configuración d
 Amplían las categorías básicas en subcategorías mucho más específicas. Por ejemplo, la categoría "Inicio de sesión/Cierre de sesión" se divide en: Inicio de sesión, Cierre de sesión, Bloqueo de cuenta, Modo especial de inicio de sesión, etc.
 
 > **Importante:** no se deben combinar ambos tipos de directiva. Si se va a usar la auditoría avanzada, hay que activar la opción `Auditar: forzar la configuración de la subcategoría de directiva de auditoría (Windows Vista o posterior) para invalidar la configuración de la categoría de directiva de auditoría`, que se encuentra en `Directivas locales → Opciones de seguridad`.
-
-### 2.3 Configuración mediante GPO en un dominio
-
-En entornos con Active Directory, las directivas de auditoría se aplican a través de **Objetos de Directiva de Grupo (GPO)** para que afecten a todos los equipos del dominio o a las unidades organizativas deseadas.
-
-El proceso es:
-
-1. Abrir la **Consola de administración de directivas de grupo** (`gpmc.msc`).
-2. Crear una nueva GPO o editar una existente.
-3. Navegar hasta `Configuración del equipo → Directivas → Configuración de Windows → Configuración de seguridad → Directiva de auditoría` (o "Configuración de directiva de auditoría avanzada").
-4. Configurar las categorías deseadas.
-5. Vincular la GPO a la unidad organizativa correspondiente.
-6. Forzar la actualización en los equipos cliente con `gpupdate /force`.
 
 ---
 
@@ -261,7 +245,7 @@ Get-WinEvent -FilterHashtable @{
 
 **Parte A — Auditoría de inicios de sesión:**
 
-1. En el controlador de dominio, abrir `gpmc.msc` y crear una GPO llamada "Auditoria_ISO".
+1. En el controlador de dominio crear una GPO llamada "Auditoria_inicio".
 2. Configurar la directiva para auditar "Eventos de inicio de sesión" para Correcto y Error.
 3. Vincular la GPO al dominio y ejecutar `gpupdate /force` en los equipos clientes.
 4. Desde un equipo cliente, intentar iniciar sesión con una contraseña incorrecta 5 veces y luego iniciar sesión correctamente.
@@ -271,9 +255,8 @@ Get-WinEvent -FilterHashtable @{
 
 **Parte B — Auditoría de acceso a objetos:**
 
-1. En la misma GPO, activar "Auditar el acceso a objetos" para Correcto y Error.
-2. Crear una carpeta compartida en el servidor llamada `Documentos_RR.HH`.
-3. En las propiedades de la carpeta → Seguridad → Opciones avanzadas → Auditoría, agregar auditoría para el grupo "Usuarios del dominio" sobre las acciones Leer, Escribir y Eliminar (tanto correcto como error).
+1. En una nueva GPO activar "Auditar el acceso a objetos" para Correcto y Error.
+2. En la carpeta compartida de datos de la empresa agregar auditoría para el grupo "Usuarios del dominio" sobre las acciones Leer, Escribir y Eliminar (tanto correcto como error).
 4. Acceder a la carpeta desde un equipo cliente con un usuario que sí tiene permiso y con otro que no lo tiene.
 5. Crear y eliminar un fichero de prueba dentro de la carpeta.
 6. Analizar los eventos generados en el Visor de Eventos. Identificar el ID del evento, el usuario que realizó la acción y el objeto accedido.
@@ -287,7 +270,7 @@ Con los eventos obtenidos en las partes A y B, elaborar un informe de auditoría
 - Identificación de cualquier acceso sospechoso o no autorizado.
 - Conclusiones y recomendaciones.
 
-**Entrega:** capturas de pantalla de la configuración GPO, del Visor de Eventos con los filtros aplicados y del informe de auditoría en formato documento.
+**Entrega:** capturas de cada GPO, del Visor de Eventos con los filtros aplicados y del informe de auditoría en formato documento.
 
 ---
 
@@ -311,12 +294,12 @@ Con los eventos obtenidos en las partes A y B, elaborar un informe de auditoría
 
 ```powershell
 $eventos = Get-WinEvent -FilterHashtable @{
-    LogName='Security';
-    Id=@(4720,4722,4724,4725,4726,4732,4756);
-    StartTime=(Get-Date).AddDays(-1)
+  LogName='Security';
+  Id=@(4720,4722,4724,4725,4726,4732,4756);
+  StartTime=(Get-Date).AddDays(-1)
 }
 $eventos | Select-Object TimeCreated, Id, Message |
-    Export-Csv -Path "C:\Auditoria\informe_cuentas.csv" -NoTypeInformation -Encoding UTF8
+  Export-Csv -Path "C:\Auditoria\informe_cuentas.csv" -NoTypeInformation -Encoding UTF8
 ```
 
 5. Abrir el CSV con Excel y filtrar por tipo de evento. Identificar qué usuario realizó cada acción y a qué hora.

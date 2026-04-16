@@ -519,12 +519,11 @@ Son _hooks_ que podemos controlar en distintos momentos, algunos desde el compon
 La mayoría reciben 3 parámetros:
 - **to**: ruta a la que se va a saltar
 - **from**: ruta de la que se viene
-- **next**: función para que continue la carga del router. Siempre tras ejecutar el código que deseemos pondremos `netx()`.
 
 En el router tenemos estos _guards_:
-- **router.beforeEach(to, from, next)**: se ejecuta antes de que vaya a cambiarse la ruta
-- **router.afterEach(to, from)**: se ejecuta una vez cambiada la ruta (por eso no tiene next, porque ya ha acabado)
-- **ruta.beforeEnter(to, from, next)**: se pone como propiedad de una ruta y se ejecuta antes de entrar a ella
+- **router.beforeEach(to, from)**: se ejecuta antes de que vaya a cambiarse la ruta
+- **router.afterEach(to, from)**: se ejecuta una vez cambiada la ruta
+- **ruta.beforeEnter(to, from)**: se pone como propiedad de una ruta y se ejecuta antes de entrar a ella
 
 Para aplicarlos en nuestro router lo asignamos a una variable que exportamos:
 ```javascript
@@ -535,20 +534,20 @@ let router = new Router({
       component: 'MyComponent',
       beforeEnter(to, from, next) {
         console.log('Vengo de ' + from + ' y voy a ' + to);
-        next();
       },
+    }
 ...
+  ]
 })
 
-router.beforeEach(to, from, next) {
+router.beforeEach(to, from) {
   console.log('Vengo de ' + from + ' y voy a ' + to);
-  next();
 }
 
 export default router
 ```
 
 En un componente también puedo definir los _hooks_:
-- **beforeRouteEnter(to, from, next)**
-- **beforeRouteUpdate(to, from, next)**
-- **beforeRouteLeave(to, from, next)**
+- **beforeRouteEnter(to, from)**
+- **beforeRouteUpdate(to, from)**
+- **beforeRouteLeave(to, from)**
