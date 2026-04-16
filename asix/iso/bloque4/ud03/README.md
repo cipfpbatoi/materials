@@ -8,7 +8,6 @@
     - [Administrador de dispositivos (`devmgmt.msc`)](#administrador-de-dispositivos-devmgmtmsc)
     - [Windows Resource Protection](#windows-resource-protection)
       - [Comprobador de archivos del sistema (`sfc /scannow`)](#comprobador-de-archivos-del-sistema-sfc-scannow)
-  - [Si la copia de _WinSxS_ también estuviera dañada, entonces `sfc` no podría reparar los archivos y mostraría un mensaje de error indicando que no se pudieron reparar algunos archivos. En ese caso, la herramienta recomendada para reparar la imagen del sistema es `DISM`, que veremos a continuación.](#si-la-copia-de-winsxs-también-estuviera-dañada-entonces-sfc-no-podría-reparar-los-archivos-y-mostraría-un-mensaje-de-error-indicando-que-no-se-pudieron-reparar-algunos-archivos-en-ese-caso-la-herramienta-recomendada-para-reparar-la-imagen-del-sistema-es-dism-que-veremos-a-continuación)
       - [Administración y mantenimiento de imágenes de implementación (`DISM`)](#administración-y-mantenimiento-de-imágenes-de-implementación-dism)
     - [Comprobación de disco (`chkdsk`)](#comprobación-de-disco-chkdsk)
     - [Monitor de confiabilidad](#monitor-de-confiabilidad)
@@ -137,7 +136,7 @@ Esta carpeta es el almacén de componentes de Windows y contiene todas las versi
 #### Comprobador de archivos del sistema (`sfc /scannow`)
 Al ejecutar desde una consola con privilegios de administrador:
 
-```
+```cmd
 sfc /scannow
 ```
 
@@ -150,6 +149,7 @@ El proceso puede tardar varios minutos. Al terminar informa de si se encontraron
 ```
 
 Si la copia de _WinSxS_ también estuviera dañada, entonces `sfc` no podría reparar los archivos y mostraría un mensaje de error indicando que no se pudieron reparar algunos archivos. En ese caso, la herramienta recomendada para reparar la imagen del sistema es `DISM`, que veremos a continuación.
+
 ---
 
 #### Administración y mantenimiento de imágenes de implementación (`DISM`)
