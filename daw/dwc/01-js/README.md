@@ -5,9 +5,9 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
   * [Introducción a los test en Javascript](../tests.md)
 * [2.1-Objetos](./02.1-objetos.md): Introducción a los objetos en Javascript
 * [2.2-Arrays](./02.2-arrays.md): Métodos. _Functional Programming_. Referencia vs copia. Rest y Spread. Desestructuración de arrays. Map. Set
-  * [Vite](./03.1-vite.md): Cómo usar vite
-  * [Webpack](./03.1-webpack.md): Cómo usar webpack
 * [2.3-Programación Orientada a Objetos](./03-oop.md): Introducción. Clases. POO en JS5
+  * [Vite](./03.1-vite.md): Cómo usar vite
+  * [Vitest](./03.2-vitest.md): Cómo hacer tests
 * [2.4-Browser Object Model - BOM](./05-BOM.md): Timers. Objetos del BOM (window, 
 * [3-Ajax. Promesas. SPA](./09-ajax.md)
 * [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos

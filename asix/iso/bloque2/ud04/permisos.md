@@ -56,7 +56,7 @@ El comando incluido en el sistema para establecer los permisos NTFS desde la lí
 Vamos a ver algunos ejemplos de cómo utilizarlo:
 - Para dar al grupo Ventas el permiso de Control total sobre la carpeta Prueba:
 ```powershell
-icacls D:\Pruebas /grant INFO2\Ventas:(F)
+icacls D:\Pruebas /grant INFO2\Ventas:F
 ```
 - Para quitar la herencia en la carpeta Prueba:
 ```powershell
@@ -75,7 +75,12 @@ A crear un archivo o carpeta se pone como propietario del mismo el usuario que l
 ![Opciones avanzadas](media/opcavanz.png)
 
 Podemos ver el propietario actual y cambiarlo desde el botón **`Cambiar`**.
- 
+
+También podemos cambiar el propietario desde la línea de comandos con el comando `takeown` que es el equivalente a la opción de _Tomar posesión_ que tenemos en las opciones avanzadas. Por ejemplo para tomar posesión de la carpeta Pruebas del disco D: con el usuario actual:
+```powershell
+takeown /F D:\Pruebas
+```
+
 ### Permisos implícitos (heredados) y explícitos
 Al crear una carpeta o archivo este hereda los permisos de la carpeta en la que se crea. Y también si cambiamos los permisos de una carpeta, estos cambios se propagan a todas las subcarpetas y archivos que contiene.
 

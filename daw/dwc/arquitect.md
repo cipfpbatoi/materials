@@ -145,7 +145,7 @@ Respecto al despliegue de las aplicaciones, antes se subía al servidor de produ
 - transpilan el código js a una versión que todos los navegadores entiendan
 - eliminan código duplicado o innecesario de las librerías que se usan
 
-Una vez hecho esto se sube el resultado al servidor de producción. Uno de los _bundlers_ más utilizados es **Webpack**. En [esta página](https://sergiodxa.com/articles/que-es-un-bundler-de-js) puedes ampliar la información sobre qué es un bundler y su evolución.
+Una vez hecho esto se sube el resultado al servidor de producción. Algunos de los _bundlers_ más utilizados son **Vite** y **Webpack**.
 
 ### Componentes
 El diseño cada interfaz de la aplicación se divide en componentes. Un componente es una parte de la interfaz de usuario que se puede reutilizar en diferentes partes de la aplicación. Cada componente tiene su propia lógica, estilo y estructura HTML. Los componentes pueden ser simples (un botón, un formulario, etc.) o complejos (una tabla, un gráfico, etc.). 

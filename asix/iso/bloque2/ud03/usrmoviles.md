@@ -111,7 +111,7 @@ Para que se pueda crear esa carpeta el usuario _jsegura_ debe tener permisos par
 
 Cuando Windows crea esa carpeta le dará al usuario el permiso de **_Control total_** y **quitará los permisos al resto de usuarios**, incluido el _Administrador_ por lo que nadie más podrá acceder al perfil mas que el propio usuario.
 
-**NOTA**: si el _Administrador_ lo necesita puede acceder a cualquier carpeta incluso si no tiene permisos. Para ello desde _Propiedades_ de la carpeta deberá cambiar el propietario de la misma y poner como nuevo propietario él mismo o mejor, al grupo _Administradores_ (así el antiguo propietario sigue siendo el usuario propietario tras el cambio).
+**NOTA**: si el _Administrador_ lo necesita puede acceder a cualquier carpeta incluso si no tiene permisos. Para ello desde _Propiedades_ de la carpeta deberá cambiar el propietario de la misma y poner como nuevo propietario él mismo o mejor, al grupo _Administradores_ (así el antiguo propietario sigue siendo el usuario propietario tras el cambio). También puede tomar posesión de un fichero o carpeta desde la línea de comandos con el comando `takeown`.
 
 **ATENCIÓN**: como aún no sabemos compartir carpetas (lo veremos en la próxima unidad) podemos usar **`Servicios de archivo y almacenamiento`** dentro del `Administrador del servidor` para crearlas y compartirlas de manera sencilla.
 

@@ -169,6 +169,18 @@ DISM /Online /Cleanup-Image /ScanHealth
 DISM /Online /Cleanup-Image /RestoreHealth
 ```
 
+Si queremos que en lugar de descargar los archivos de reparación desde Windows Update, lo haga desde una imagen ISO de Windows (p.ej. montada en la unidad D:), usaríamos:
+
+```
+DISM /Online /Cleanup-Image /RestoreHealth /Source:WIM:D:\sources\install.wim:1 /LimitAccess
+```
+
+El :1 hace referencia al primero de los sistemas operativos que hay en la imagen. Si la imagen tiene varios sistemas operativos (p.ej. Windows 11 Home, Pro, Enterprise), habría que indicar el número correcto según el sistema que queramos usar para la reparación. Podemos ver el contenido de la imagen con:
+
+```
+DISM /Get-WimInfo /WimFile:D:\sources\install.wim
+```
+
 Después de ejecutar `DISM /RestoreHealth` con éxito, se recomienda volver a ejecutar `sfc /scannow` para que repare los archivos del sistema con la imagen ya restaurada.
 
 ---
