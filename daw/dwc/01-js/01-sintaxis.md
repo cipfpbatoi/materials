@@ -154,7 +154,7 @@ Al usar paréntesis `()` se llama a la función. Sin paréntesis sólo se hace r
 ### Funciones anónimas
 Como acabamos de ver podemos definir una función sin darle un nombre. Dicha función puede asignarse a una variable, autoejecutarse o asignasrse a un manejador de eventos. Ejemplo:
 ```javascript
-let holaMundo = function() {
+const holaMundo = function() {
     alert('Hola mundo!');
 }
 
@@ -166,7 +166,7 @@ Como vemos asignamos una función a una variable de forma que podamos "ejecutar"
 ### Arrow functions (funciones flecha)
 ES2015 permite declarar una función anónima de forma más corta. Ejemplo sin _arrow function_:
 ```javascript
-let potencia = function(base, exponente) {
+const potencia = function(base, exponente) {
     let valor=1;
     for (let i=1; i<=exponente; i++) {
       valor=valor*base;
@@ -183,7 +183,7 @@ Al escribirla con la sintaxis de una _arrow function_ lo que hacemos es:
 
 El ejemplo con _arrow function_:
 ```javascript
-let potencia = (base, exponente) => {
+const potencia = (base, exponente) => {
     let valor=1;
     for (let i=1; i<=exponente; i++) {
       valor=valor*base;
@@ -193,13 +193,13 @@ let potencia = (base, exponente) => {
 ```
 Otro ejemplo, sin _arrow function_:
 ```javascript
-let cuadrado = function(base) {
+const cuadrado = function(base) {
     return base * base;
 }
 ```
 conn _arrow function_:
 ```javascript
-let cuadrado = base => base * base;
+const cuadrado = base => base * base;
 ```
 
 > EJERCICIO: Haz una _arrow function_ que devuelva el cubo del número pasado como parámetro y pruébala desde la consola. Escríbela primero en la forma habitual y luego la "traduces" a _arrow function_.
@@ -251,6 +251,7 @@ switch(color) {
         colorFondo='negro';
 }
 ```
+
 Javascript permite que el _switch_ en vez de evaluar valores pueda evaluar expresiones. En este caso se pone como condición _true_:
 ```javascript
 switch(true) {
@@ -264,8 +265,9 @@ switch(true) {
         console.log('Eres muy mayor para entrar');
 }
 ```
+
 ### Bucle _while_
-Podemos usar el bucle _while...do_
+Podemos usar el bucle _while_
 ```javascript
 while (condicion) {
     // sentencias
@@ -279,12 +281,14 @@ while (nota) {
     nota=prompt('Introduce una nota (o cancela para finalizar)');
 }
 ```
+
 O el bucle _do...while_:
 ```javascript
 do {
     // sentencias
 } while (condicion)
 ```
+
 que al menos se ejecutará 1 vez. Ejemplo:
 ```javascript
 let nota;
@@ -302,7 +306,7 @@ Tenemos muchos _for_ que podemos usar.
 ### Bucle: for con contador
 Creamos una variable contador que controla las veces que se ejecuta el for:
 ```javascript
-let datos=[5, 23, 12, 85]
+const datos=[5, 23, 12, 85]
 let sumaDatos=0;
 
 for (let i=0; i<datos.length; i++) {
@@ -316,7 +320,7 @@ for (let i=0; i<datos.length; i++) {
 #### Bucle: for...in
 El bucle se ejecuta una vez para cada elemento del array (o propiedad del objeto) y se crea una variable contador que toma como valores la posición del elemento en el array:
 ```javascript
-let datos=[5, 23, 12, 85]
+const datos=[5, 23, 12, 85]
 let sumaDatos=0;
 
 for (let indice in datos) {
@@ -326,7 +330,7 @@ for (let indice in datos) {
 ```
 También sirve para recorrer las propiedades de un objeto:
 ```javascript
-let profe={
+const profe={
     nom:'Juan', 
     ape1='Pla', 
     ape2='Pla'
@@ -341,7 +345,7 @@ for (var campo in profe) {
 #### Bucle: for...of
 Es similar al _for...in_ pero la variable contador en vez de tomar como valor cada índice toma cada elemento. Es nuevo en ES2015:
 ```javascript
-let datos = [5, 23, 12, 85]
+const datos = [5, 23, 12, 85]
 let sumaDatos = 0;
 
 for (let valor of datos) {
@@ -442,7 +446,7 @@ console.log(0.1 + 0.2)    // imprime 0.30000000000000004
 ```
 Para evitarlo redondead los resultados (o `(0.1*10 + 0.2*10) / 10`).
 
-> EJERCICIO: Modifica la funciónque quieras de calcular la nota media para que devuelva la media con 1 decimal
+> EJERCICIO: Haz una función que calcule la nota media y que devuelva la media con 1 decimal
 
 > EJERCICIO: Modifica la función que devuelve el cubo de un número para que compruebe si el parámetro pasado es un número entero. Si no es un entero o no es un número mostrará un alert indicando cuál es el problema yndevolverá false.
 
@@ -550,10 +554,11 @@ function retirar(saldo, cantidad) {
 // Y donde se llama a la función_
 ...
 resultado = retirar(saldo, importe)
-if (resultado === false
+if (resultado === false) {
   alert('Saldo insuficiente')
 } else {
   saldo = resultado
+}
 ...
 ```
 

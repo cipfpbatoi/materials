@@ -101,10 +101,10 @@ A todos ellos se les puede anteponer _.not._ para negarlos (ej. `expect(sum(2, 2
 
 Para comparar números:
 
-- .toBetoBeGreaterThan(value)
-- .toBetoBeGreaterThanOrEqual(value)
-- .toBetoBeLessThan(value)
-- .toBetoBeLessThanOrEqual(value)
+- .toBeGreaterThan(value)
+- .toBeGreaterThanOrEqual(value)
+- .toBeLessThan(value)
+- .toBeLessThanOrEqual(value)
 - .toBeCloseTo(value): para comparaciones de números con coma flotante para no depender del redondeo
 
 Y podemos ver si un string cumple una expresión regular:
@@ -287,6 +287,25 @@ y después escribiremos el código necesario para que pase:
 
 ```javascript
 function max(a, b) {
+  if (a > b) {
+    return a;
+  } else {
+    return b;
+  }
+}
+```
+
+Ahora que ya funciona podemos refactorizar el código si es necesario:
+```javascript
+function max(a, b) {
   return a > b ? a : b;
 }
 ```
+
+o si lo queremos como _arrow function_:
+
+```javascript
+const max = (a, b) => (a > b ? a : b);
+```
+
+Y siempre tras refactorizar ejecutaremos los tests para asegurarnos de que siguen pasando.
