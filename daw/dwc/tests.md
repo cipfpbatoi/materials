@@ -271,13 +271,23 @@ El desarrollo guiado por test es una técnica de programación que consiste en e
 
 Esta técnica se basa en el ciclo _Red-Green-Refactor_ que consiste en:
 
-1. escribir un test que fallarà porque aún no hemos escrito el código
+1. escribir los test, que fallarán porque aún no hemos escrito el código
 2. escribir el código necesario para que pase el test
 3. refactorizar el código para mejorarlo, si es necesario
 
-Por ejemplo, si queremos escribir una función que devuelva el mayor de 2 números escribiremos un test que falle:
+Por ejemplo, si queremos escribir una función que devuelva el mayor de 2 números escribiremos su test, que fallará porque aún no hemos escrito el código:
 
 ```javascript
+describe("max", () => {
+  test("max(1, 2) should return 2", () => {
+    expect(max(1, 2)).toBe(2);
+  });
+  test("max(0, -2) should return 0", () => {
+    expect(max(0, -2)).toBe(0);
+  });
+});
+```
+
 test("max(1, 2) should return 2", () => {
   expect(max(1, 2)).toBe(2);
 });
