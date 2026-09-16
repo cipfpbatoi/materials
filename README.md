@@ -14,7 +14,10 @@ Ací tenim apunts de diferents mòduls així com altres que s'utilitzen en més 
 
 ### CFGS Administració de Sistemes Informàtics i Xarxes (ASIX)
 * [Implantació de Sistemes Operatius (1rASIX)](./asix/iso/)
-  
+
+### CFGM Sistemes Microinformàtics i Xarxes (SMX)
+* [Muntatge i Manteniment d'Equips (1rSMX)](smx/mme/)
+
 ### Altres apunts
 * [Sistemes operatius](./altres/sistemes-operatius)
   * [Arrencada del sistema](./altres/sistemes-operatius/arrencada/)
