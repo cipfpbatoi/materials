@@ -565,7 +565,7 @@ if (resultado === false) {
 Se trata de un código poco claro que podemos mejorar lanzando un error en la función. Para ello se utiliza la instrucción `throw`:
 ```javascript
   if (saldo < cantidad) {
-    throw 'Saldo insuficiente'
+    throw new Error('Saldo insuficiente')
   }
 ```
 
@@ -575,7 +575,7 @@ Siempre que vayamos a ejecutar código que pueda generar un error debemos ponerl
 ```javascript
 function retirar(saldo, cantidad) {
   if (saldo < cantidad) {
-    throw "Saldo insuficiente"
+    throw new Error('Saldo insuficiente')
   }
   return saldo - cantidad
 } 
@@ -585,10 +585,12 @@ function retirar(saldo, cantidad) {
 try {
   saldo = retirar(saldo, importe)
 } catch(err) {
-  alert(err)
+  alert(err.message)
 }
 ...
 ```
+
+**NOTA**: Podemos lanzar un error sin generar un nuevo objeto de tipo error, simplemente usando `throw 'mensaje'`, pero es recomendable crear un objeto de tipo _Error_ ya que nos permite acceder a propiedades como _name_ o _message_ y además podemos crear nuestras propias clases de error heredando de _Error_.
 
 Podemos ver en detalle cómo funcionan en la página de [MDN web docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/try...catch) de Mozilla.
 
