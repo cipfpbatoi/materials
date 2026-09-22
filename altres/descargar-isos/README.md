@@ -10,17 +10,7 @@
       - [Utilitzar el servidor web](#utilitzar-el-servidor-web)
 
 ## Repositori d'imatges
-En el Centre tenim un servidor (`descargasiso.cipfpbatoi.lan`) on qualsevol pot deixar ISOs i OVAs per a que tots els pugam utilitzar. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
-
-Podem pujar o baixar fitxers mitjançant `scp` (des de la terminal) o des de l'explorador d'arxius amb el protocol `sftp` (entorn gràfic).
-
-Per a fer-ho gràficament obrim l'_Explorador d'arxius_ i en la barra d'addresses posem 
-```uri
-sftp://diso@descargasiso.cipfpbatoi.lan/home/diso/REPOSITORI
-```
-(si no podem escriure en la barra perquè només ens ixen les icones polsem `Ctrl+L`).
-
-L'usuari és **`diso`** i la contrasenya **`diso-2021`**
+En el Centre tenim un mirror de Debian (`http://deb.cipfpbatoi.lan`). En eixa màquina també tenim un espai per a deixar ISOs i OVAs per a que tots els pugam utilitzar dins del directori `/recursos`. La idea és que tots nosaltres deixem allí les ISOs que descarreguem per a que les puguem utilitzar tots.
 
 **IMPORTANT**: no volem que els alumnes es descarreguen els fitxers directament des d'allí per a no sobrecarregar la xarxa dels servidors de l'institut.
 
@@ -32,17 +22,17 @@ Per a transferir arxius per UDP hem de tindre instal·lat el paquet `udpcast` (t
 Els alumnes han d'obri una terminal i escriure
 
 ```bash
-udp-receiver -f firxer-a-rebre
+udp-receiver -f fitxer-a-rebre
 ```
 
-La terminal es queda a l'espera de rebre les dades. Quan ho han fet tots, per a enviar-ho escrivim:
+La terminal es queda a l'espera de rebre les dades que es guardaran en un fotxer amb el nom especificat en la carpeta on s'ha executat el comando. Quan ho han fet tots, per a enviar-ho escrivim:
 
 ```bash
 udp-sender -i nom-de-la-interficie-com-enp0s2 -f fitxer-a-enviar
 ```
 
 ### Resum
-1. Descarreguen la ISO en l'equip del professor amb l'_Explorador d'arxius_ (`sftp://diso@descargaiso.cipfpbatoi.lan/home/diso/REPOSITORI`), per exemple _Win10.iso_
+1. Descarreguen la ISO en l'equip del professor (`http://deb.cipfpbatoi.lan/recursos`), per exemple _Win10.iso_
 2. Cada alumne escriu en una terminal `udp-receiver -f Win10.iso`
 3. Obrim una terminal i ho enviem amb `udp-sender -i enp0s2 -f Win10.iso`
 
@@ -52,7 +42,7 @@ NOTA: el nom que posen els alumnes és el nom amb el que es guarda el fitxer i n
 Tenim diferents maneres de fer-ho. Anem a vore com llançar un servidor web amb _python_ i com fer-ho amb _docker_.
 
 ### Servidor web amb Python
-Si només volem compartir fitxers de forma puntual i no volem complicar-nos la vida podem utilitzar el servidor web que porta _python_ per defecte.
+Si només volem compartir fitxers de forma puntual podem utilitzar el servidor web que porta _python_ per defecte.
 
 Per a fer-ho anem al directori on estan els fitxers que volem compartir (per exemple en `/home/batoi/recursos`).
 A continuació obrim una terminal i llancem el servidor web amb:
