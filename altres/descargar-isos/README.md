@@ -32,9 +32,9 @@ udp-sender -i nom-de-la-interficie-com-enp0s2 -f fitxer-a-enviar
 ```
 
 ### Resum
-1. Descarreguen la ISO en l'equip del professor (`http://deb.cipfpbatoi.lan/recursos`), per exemple _Win10.iso_
-2. Cada alumne escriu en una terminal `udp-receiver -f Win10.iso`
-3. Obrim una terminal i ho enviem amb `udp-sender -i enp0s2 -f Win10.iso`
+1. Descarreguen la ISO en l'equip del professor des de `http://deb.cipfpbatoi.lan/recursos`, per exemple _Win10.iso_
+2. Cada alumne llança en una terminal el comando `udp-receiver -f Win10.iso`
+3. Quan tots els alumnes estan esperant, obrim una terminal i ho enviem amb `udp-sender -i enp0s2 -f Win10.iso`
 
 NOTA: el nom que posen els alumnes és el nom amb el que es guarda el fitxer i no ha de ser el mateix amb que s'envia.
 
@@ -42,10 +42,9 @@ NOTA: el nom que posen els alumnes és el nom amb el que es guarda el fitxer i n
 Tenim diferents maneres de fer-ho. Anem a vore com llançar un servidor web amb _python_ i com fer-ho amb _docker_.
 
 ### Servidor web amb Python
-Si només volem compartir fitxers de forma puntual podem utilitzar el servidor web que porta _python_ per defecte.
+La manera més senzill per a compartir fitxers de forma puntual és utilitzar el servidor web que porta _python_ per defecte.
 
-Per a fer-ho anem al directori on estan els fitxers que volem compartir (per exemple en `/home/batoi/recursos`).
-A continuació obrim una terminal i llancem el servidor web amb:
+Per a fer-ho anem al directori on estan els fitxers que volem compartir (per exemple en `/home/batoi/recursos`). A continuació obrim una terminal i llancem el servidor web amb:
 
 ```bash
 python3 -m http.server

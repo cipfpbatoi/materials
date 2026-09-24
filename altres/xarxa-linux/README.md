@@ -357,16 +357,21 @@ Per a configurar l'enrutament hem de fer 2 accions:
 ### Habilitar l'enrutament
 L'enrutament el que fa és redirigir a la targeta de xarxa externa el tràfic de la targeta interna amb destinació a altres xarxes (com Internet).
 
-Per a habilitar l'enrutament editem el fitxer `/etc/sysctl.conf` i descomentem la línia:
-```bash
-net.ipv4.ip_forward=1
-```
-
-En sistemes amb netplan podem utilitzar el fitxer anterior o el `/etc/ufw/sysctl.conf` que ho habilitarà quan iniciem el Firewal **ufw**. En Debian no existeix el fitxer `/etc/sysctl.conf` i hem de crear-lo dins de `/etc/sysctl.d/` (podem anomernar-lo `/etc/sysctl.d/99-sysctl.conf`) i escriure dins la línia `net.ipv4.ip_forward=1` per a habilitar l'enrutament.
-
-Perquè faça efecte hem de recarregar la configuració amb:
+Per a habilitar l'enrutamenten en sistemes amb **ufw** (com Ubuntu) editem el fitxer `/etc/ufw/sysctl.conf` i descomentem la línia:
 ```bash
 sysctl -p
+```
+
+Això ho habilitarà quan iniciem el Firewal **ufw**. Sense utilitzar *ufw* hem de crear un fitxer dins de `/etc/sysctl.d/` (podem anomernar-lo `/etc/sysctl.d/99-sysctl.conf`) i escriure dins la línia `net.ipv4.ip_forward=1` per a habilitar l'enrutament. El fitxer ha de tindre extensió `.conf`. 
+
+Tant en un cas com en l'altre perquè faça efecte hem de reinicar l'equip o recarregar la configuració amb:
+```bash
+sysctl --system
+```
+
+Per a habilitar l'enrutamenten sistemes anteriors a Debian 13 (i Ubuntu 26.04) editem el fitxer `/etc/sysctl.conf` i descomentem la línia:
+```bash
+net.ipv4.ip_forward=1
 ```
 
 També podem habilitar-ho temporalment, fins que reiniciem la màquina, executant l'ordre
@@ -378,7 +383,7 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 
 Per a comprovar si està habilitat executem l'ordre
 ```bash
-cat /proc/sys/net/ipv4/ip_forward
+sysctl net.ipv4.ip_forward
 ```
 
 (si retorna 1 és que està habilitat i 0 és que està deshabilitat).
