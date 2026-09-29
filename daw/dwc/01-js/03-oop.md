@@ -4,6 +4,7 @@
   - [Herencia](#herencia)
   - [Propiedades y métodos privados](#propiedades-y-métodos-privados)
   - [Propiedades y métodos estáticos](#propiedades-y-métodos-estáticos)
+  - [Método _toString()_](#método-tostring)
   - [Método _valueOf()_](#método-valueof)
   - [Organizar el código](#organizar-el-código)
   - [El contexto de _this_](#el-contexto-de-this)
@@ -96,7 +97,6 @@ myPosition.moveRight();
 console.log(myPosition.getPosition()); // { x: 21, y: 10 }
 console.log(myPosition.#x); // Error (propiedad privada)
 console.log(myPosition.#increaseX); // Error (método privado)
-
 ```
 
 Anteriormente existía una convención de que cualquier propiedad o método que comience por el carácter `_` se trata de una propiedad o método **protegido** y no debería accederse al mismo desde el exterior (aunque en realidad el lenguaje permite hacerlo).
@@ -133,6 +133,7 @@ class User {
         return User.count;
     }
 }
+```
 
 Al declarar la propiedad _count_ como privada no se puede modificar desde fuera de la clase, sólo a través del constructor.
 
@@ -148,7 +149,7 @@ class Alumno {
 
 let carPerOrt = new Alumno('Carlos', 'Pérez Ortiz', 19);
 console.log('Alumno:' + carPerOrt)     // imprime 'Alumno: Pérez Ortíz, Carlos'
-                                // en vez de 'Alumno: [object Object]'
+// en vez de 'Alumno: [object Object]'
 ```
 
 Este método también es el que se usará si queremos ordenar una array de objetos (recordad que _.sort()_ ordena alfabéticamente para lo que llama al método _.toString()_ del objeto a ordenar). Por ejemplo, tenemos el array de alumnos _misAlumnos_ que queremos ordenar alfabéticamente por apellidos. Si la clase _Alumno_ no tiene un método _toString_ habría que hacer como vimos en el tema de [Arrays](./02.2-arrays.md):
