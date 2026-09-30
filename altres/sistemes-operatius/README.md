@@ -5,6 +5,7 @@ En aquesta carpeta trobaras recursos sobre sistemes operatius per a utilitzar en
 * [Particionament de discos](./particions/)
 * [La interfície de text. Comandos](./comandos/)
   * [Powershell](./powershell/)
+* [Comandos GNU/Linux para diagnóstico y gestión del hardware](./guia-comandos-hardware-linux.md)
 * [Samba](./samba/)
 * [Afegir client GNU/Linux a Active Directory](./linux-ad/)
 * [RAID](./RAID/)
