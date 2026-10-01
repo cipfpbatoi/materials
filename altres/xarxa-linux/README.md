@@ -366,7 +366,7 @@ Això ho habilitarà quan iniciem el Firewal **ufw**. Sense utilitzar *ufw* hem 
 
 Tant en un cas com en l'altre perquè faça efecte hem de reinicar l'equip o recarregar la configuració amb:
 ```bash
-sysctl --system
+sysctl -p
 ```
 
 Per a habilitar l'enrutamenten sistemes anteriors a Debian 13 (i Ubuntu 26.04) editem el fitxer `/etc/sysctl.conf` i descomentem la línia:
