@@ -359,7 +359,7 @@ L'enrutament el que fa és redirigir a la targeta de xarxa externa el tràfic de
 
 Per a habilitar l'enrutamenten en sistemes amb **ufw** (com Ubuntu) editem el fitxer `/etc/ufw/sysctl.conf` i descomentem la línia:
 ```bash
-sysctl -p
+net.ipv4.ip_forward=1
 ```
 
 Això ho habilitarà quan iniciem el Firewal **ufw**. Sense utilitzar *ufw* hem de crear un fitxer dins de `/etc/sysctl.d/` (podem anomernar-lo `/etc/sysctl.d/99-sysctl.conf`) i escriure dins la línia `net.ipv4.ip_forward=1` per a habilitar l'enrutament. El fitxer ha de tindre extensió `.conf`. 
