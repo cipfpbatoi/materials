@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador: síncrono, await en serie y Promise.all</title>
+<style>
+:root{--bg:#fff;--card:#F7F6F2;--line:#D3D1C7;--txt:#2C2C2A;--muted:#5F5E5A;--acc-bg:#EEEDFE;--acc:#534AB7;--acc-t:#3C3489;--warn-bg:#FAEEDA;--warn:#854F0B;--ok:#3B6D11}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1e1c;--card:#2C2C2A;--line:#444441;--txt:#F1EFE8;--muted:#B4B2A9;--acc-bg:#3C3489;--acc:#AFA9EC;--acc-t:#CECBF6;--warn-bg:#633806;--warn:#FAC775;--ok:#97C459}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+button{font:inherit;font-size:14px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--txt);cursor:pointer}
+button:hover{background:var(--card)}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button.on{background:var(--acc-bg);color:var(--acc-t);border-color:var(--acc)}
+.bar-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+pre{font:13px/1.5 ui-monospace,Consolas,monospace;background:var(--card);border-radius:8px;padding:12px 14px;margin:0;white-space:pre-wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px}
+.page{position:relative;border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-height:190px}
+.label{font-size:13px;color:var(--muted)}
+.stat{background:var(--card);border-radius:8px;padding:12px 14px}
+.stat b{display:block;font-size:22px;font-weight:500}
+#overlay{display:none;position:absolute;inset:0;border-radius:12px;background:var(--card);opacity:.95;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:not-allowed;text-align:center;padding:10px}
+#overlay strong{color:var(--warn);font-weight:500}
+.row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:center;margin:6px 0}
+.row code{font-size:13px}
+.track{position:relative;height:26px;background:var(--card);border-radius:8px;overflow:hidden}
+.fill{position:absolute;top:0;height:100%;width:0;border-radius:8px;background:var(--acc-bg);border:1px solid var(--acc)}
+.fill.sync{background:var(--warn-bg);border-color:var(--warn)}
+.axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="bar-row">
+  <button id="m-sync" class="on" onclick="setMode('sync')">Síncrono</button>
+  <button id="m-seq" onclick="setMode('seq')">AJAX con await en serie</button>
+  <button id="m-all" onclick="setMode('all')">AJAX con Promise.all</button>
+  <span style="flex:1"></span>
+  <button id="send" onclick="run()">Enviar peticiones</button>
+</div>
+<pre id="code"></pre>
+<div class="grid">
+  <div class="page">
+    <div class="label" style="margin-bottom:8px">Página del alumno</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button onclick="clickOk()">Púlsame</button>
+      <span>Clics atendidos: <b id="ok">0</b></span>
+    </div>
+    <div id="res" class="label" style="margin-top:12px;line-height:1.8">Aún no hay datos</div>
+    <div id="overlay" onclick="clickLost()">
+      <strong>Página congelada esperando al servidor</strong>
+      <span class="label">Clics perdidos: <span id="lost">0</span></span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start">
+    <div class="stat"><span class="label">Tiempo total</span><b id="total">0 ms</b></div>
+    <div class="stat"><span class="label">Interfaz</span><b id="ui">Libre</b></div>
+    <div class="label" style="grid-column:1/-1">Pulsa «Enviar peticiones» y luego intenta hacer clic en «Púlsame» mientras llegan los datos.</div>
+  </div>
+</div>
+<div style="margin-top:18px">
+  <div class="row"><code>/api/alumnos</code><div class="track"><div class="fill" id="b0"></div></div></div>
+  <div class="row"><code>/api/notas</code><div class="track"><div class="fill" id="b1"></div></div></div>
+  <div class="row"><code>/api/horario</code><div class="track"><div class="fill" id="b2"></div></div></div>
+  <div class="row"><span></span><div class="axis"><span>0 s</span><span>1 s</span><span>2 s</span><span>3 s</span><span>4 s</span></div></div>
+</div>
+<script>
+const R=[{u:'/api/alumnos',d:1200},{u:'/api/notas',d:800},{u:'/api/horario',d:1500}];
+const SCALE=4000;
+const CODE={
+sync:`// XHR síncrona (tercer parámetro false): bloquea el hilo principal
+for (const url of ['/api/alumnos', '/api/notas', '/api/horario']) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, false);
+  xhr.send();               // aquí se congela la página
+  pintar(xhr.responseText); // el DOM no se repinta hasta el final
+}`,
+seq:`// Asíncrono, pero cada petición espera a la anterior
+const alumnos = await fetch('/api/alumnos').then(r => r.json());
+pintar(alumnos);
+const notas   = await fetch('/api/notas').then(r => r.json());
+pintar(notas);
+const horario = await fetch('/api/horario').then(r => r.json());
+pintar(horario);`,
+all:`// Asíncrono y concurrente: las tres salen a la vez
+const [alumnos, notas, horario] = await Promise.all([
+  fetch('/api/alumnos').then(r => r.json()),
+  fetch('/api/notas').then(r => r.json()),
+  fetch('/api/horario').then(r => r.json())
+]);
+pintar(alumnos); pintar(notas); pintar(horario);`};
+let mode='sync',running=false,ok=0,lost=0;
+const $=id=>document.getElementById(id);
+function setMode(m){if(running)return;mode=m;['sync','seq','all'].forEach(k=>$('m-'+k).classList.toggle('on',k===m));$('code').textContent=CODE[m];reset();}
+function reset(){R.forEach((r,i)=>{const b=$('b'+i);b.style.width='0';b.style.left='0';b.className='fill'+(mode==='sync'?' sync':'');});$('res').textContent='Aún no hay datos';$('total').textContent='0 ms';$('ui').textContent='Libre';}
+function clickOk(){ok++;$('ok').textContent=ok;}
+function clickLost(){lost++;$('lost').textContent=lost;}
+function addRes(r){if($('res').dataset.empty!=='0'){$('res').innerHTML='';$('res').dataset.empty='0';}$('res').insertAdjacentHTML('beforeend','<div><span class="ok">&#10003;</span> Datos de '+r.u+' pintados</div>');}
+function run(){
+  if(running)return;running=true;reset();$('res').dataset.empty='1';
+  let acc=0;const plan=R.map(r=>{const s=mode==='all'?0:acc;acc+=r.d;return {r,s,e:s+r.d,done:false};});
+  const end=Math.max(...plan.map(p=>p.e));
+  if(mode==='sync'){lost=0;$('lost').textContent='0';$('overlay').style.display='flex';$('ui').textContent='Bloqueada';}
+  const t0=performance.now();
+  function tick(){
+    const t=Math.min(performance.now()-t0,end);
+    plan.forEach((p,i)=>{const b=$('b'+i);b.style.left=(p.s/SCALE*100)+'%';b.style.width=(Math.max(0,Math.min(t-p.s,p.r.d))/SCALE*100)+'%';
+      if(!p.done&&t>=p.e){p.done=true;if(mode==='seq')addRes(p.r);}});
+    $('total').textContent=Math.round(t)+' ms';
+    if(t<end)requestAnimationFrame(tick);
+    else{
+      if(mode!=='seq')plan.forEach(p=>addRes(p.r));
+      if(mode==='sync'){$('overlay').style.display='none';$('ui').textContent='Libre';}
+      running=false;
+    }
+  }
+  requestAnimationFrame(tick);
+}
+$('code').textContent=CODE.sync;
+</script>
+</body>
+</html>
