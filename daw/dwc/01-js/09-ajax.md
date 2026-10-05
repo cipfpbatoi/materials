@@ -35,9 +35,7 @@ Lo que significa **asíncrono** es que la página no permanecerá bloqueada espe
 
 Básicamente Ajax nos permite poder mostrar nuevos datos enviados por el servidor sin tener que recargar la página, que continuará disponible mientras se reciben y procesan los datos enviados por el servidor en segundo plano.
 
-<a title="By DanielSHaischt, via Wikimedia Commons [CC BY-SA 3.0 
- (https://creativecommons.org/licenses/by-sa/3.0
-)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Ajax-vergleich-en.svg"><img width="512" alt="Ajax-vergleich-en" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ajax-vergleich-en.svg/512px-Ajax-vergleich-en.svg.png"></a>
+<a title="DanielSHaischt, via Wikimedia Commons, CC BY-SA 3.0 &lt;https://creativecommons.org/licenses/by-sa/3.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Ajax-vergleich-en.svg"><img width="250" alt="Ajax-vergleich-en" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Ajax-vergleich-en.svg/250px-Ajax-vergleich-en.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"></a>
 
 Sin Ajax cada vez que necesitamos nuevos datos del servidor la página deja de estar disponible para el usuario hasta que se recarga con lo que envía el servidor. Con Ajax la página está siempre disponible para el usuario y simplemente se modifica (cambiando el DOM) cuando llegan los datos del servidor:
 
