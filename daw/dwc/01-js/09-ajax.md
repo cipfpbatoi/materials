@@ -132,8 +132,10 @@ Las peticiones Ajax se hacen a un servidor que proporcione una API. Como ahora n
 
 Para instalarlo en nuestra máquina (lo instalaremos global para poderlo usar en todas nuestras prácticas) ejecutamos:
 ```bash
-npm install -g json-server
+npm install -g json-server@0.17.4
 ```
+
+Le estamos diciendo que instale la versión 0.17 porque la 1 aún está en _beta_ y además convierte todas las _id_ en caracteres alfanuméricos aleatorios y nosotros en nuestra aplicación las querremos como numéricos. 
 
 Para que sirva un fichero datos.json:
 ```bash
