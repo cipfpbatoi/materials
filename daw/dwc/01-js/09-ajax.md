@@ -39,8 +39,14 @@ Básicamente Ajax nos permite poder mostrar nuevos datos enviados por el servido
 
 Sin Ajax cada vez que necesitamos nuevos datos del servidor la página deja de estar disponible para el usuario hasta que se recarga con lo que envía el servidor. Con Ajax la página está siempre disponible para el usuario y simplemente se modifica (cambiando el DOM) cuando llegan los datos del servidor:
 
-![Uniwebsidad: Introducción a Ajax](https://uniwebsidad.com/static/libros/imagenes/ajax/f0103.gif)
-_Fuente Uniwebsidad_
+![Petición síncrona vs Ajax](./img/peticion_sincrona_vs_ajax.svg)
+
+Veamos en una simulación la diferencia entre ambos tipos de peticiones (de momento ignora el `Promise.all`):
+
+<iframe src="./demos/ajax-simulador.html" title="Simulador síncrono, await y Promise.all"
+        style="width:100%; height:640px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+
+Si no se ve bien, [abre el simulador en una pestaña nueva](./demos/ajax-simulador.html).
 
 ### Métodos HTTP
 Las peticiones Ajax usan el protocolo HTTP (el mismo que utiliza el navegador para cargar una página). Este protocolo envía al servidor unas cabeceras HTTP (con información como el _userAgent_ del navegador, el idioma, etc), el tipo de petición y, opcionalmente, datos o parámetros (por ejemplo en la petición que procesa un formulario se envían los datos del mismo).
