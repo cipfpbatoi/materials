@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ajax: funciones callback</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 1rem; }
+  table { border-collapse: collapse; margin-top: 1rem; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+  <h1>Mostrar posts de un usuario</h1>
+  <form id="form-show">
+    <label for="id-usuario">Introduce el id del usuario: </label>
+    <input type="text" id="id-usuario" size="2">
+    <input type="submit" value="Mostrar posts">
+  </form>
+  <table>
+    <thead>
+      <tr><th>userId</th><th>Id</th><th>Título</th><th>Post</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p>Total de posts mostrados: <span id="num-posts"></span></p>
+
+<script>
+const SERVER = 'https://jsonplaceholder.typicode.com'
+const tbody = document.querySelector('tbody')
+
+window.addEventListener('load', function() {
+  document.getElementById('form-show').addEventListener('submit', (event) => {
+    event.preventDefault();
+    let idUser = document.getElementById('id-usuario').value
+    if (isNaN(idUser) || idUser.trim() == '') {
+      alert('Debes introducir un número')
+    } else {
+      getPosts(idUser, renderPosts)
+    }
+  })
+})
+
+function renderPosts(datos) {
+  tbody.innerHTML = '' // borramos el contenido de la tabla
+  datos.forEach(post => {
+    const newPost = document.createElement('tr')
+    newPost.innerHTML = `
+        <td>${post.userId}</td>
+        <td>${post.id}</td>
+        <td>${post.title}</td>
+        <td>${post.body}</td>`
+    tbody.appendChild(newPost)
+  })
+  document.getElementById('num-posts').textContent = datos.length;
+}
+
+function getPosts(idUser, callback) {
+  const peticion = new XMLHttpRequest()
+  peticion.open('GET', SERVER + '/posts?userId=' + idUser)
+  peticion.send()
+  peticion.addEventListener('load', function() {
+    if (peticion.status === 200) {
+      callback(JSON.parse(peticion.responseText));
+    } else {
+      console.error("Error " + peticion.status + " (" + peticion.statusText + ") en la petición")
+    }
+  })
+  peticion.addEventListener('error', () => console.error('Error en la petición HTTP'))
+}
+</script>
+</body>
+</html>

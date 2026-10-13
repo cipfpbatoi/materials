@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ajax: fetch con async/await</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 1rem; }
+  table { border-collapse: collapse; margin-top: 1rem; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+  <h1>Mostrar posts de un usuario</h1>
+  <form id="form-show">
+    <label for="id-usuario">Introduce el id del usuario: </label>
+    <input type="text" id="id-usuario" size="2">
+    <input type="submit" value="Mostrar posts">
+  </form>
+  <table>
+    <thead>
+      <tr><th>userId</th><th>Id</th><th>Título</th><th>Post</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p>Total de posts mostrados: <span id="num-posts"></span></p>
+
+<script>
+const SERVER = 'https://jsonplaceholder.typicode.com'
+const tbody = document.querySelector('tbody')
+
+window.addEventListener('load', () => {
+  document.getElementById('form-show').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    let idUser = document.getElementById('id-usuario').value
+    if (isNaN(idUser) || idUser.trim() == '') {
+      alert('Debes introducir un número')
+    } else {
+      const posts = await getData(idUser)
+      // La ejecución se para en la sentencia anterior hasta que
+      // contesta la función getData
+      tbody.innerHTML = ''
+      posts.forEach((post) => {
+        const newPost = document.createElement('tr');
+        newPost.innerHTML = `
+                <td>${post.userId}</td>
+                <td>${post.id}</td>
+                <td>${post.title}</td>
+                <td>${post.body}</td>`
+        tbody.appendChild(newPost)
+      })
+      document.getElementById('num-posts').textContent = posts.length
+    }
+  })
+})
+
+async function getData(idUser) {
+  const response = await fetch(SERVER + '/posts?userId=' + idUser)
+  if (!response.ok) {
+    throw `Error ${response.status} de la BBDD: ${response.statusText}`
+  }
+  const posts = await response.json()
+  return posts
+}
+</script>
+</body>
+</html>
