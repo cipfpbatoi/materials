@@ -420,29 +420,16 @@ Y este sería el código JavaScript:
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com';
-const tbody = document.getElementsByTagName('tbody')[0];
 
-window.addEventListener('load', function() {
-  document.getElementById('form-show').addEventListener('submit', (event) => {
+document.getElementById('form-show').addEventListener('submit', (event) => {
     event.preventDefault();
     let idUser = document.getElementById('id-usuario').value;
     if (isNaN(idUser) || idUser == '') {
       alert('Debes introducir un número');
     } else {
       const posts = getPosts(idUser);
-      tbody.innerHTML = ''; // borramos el contenido de la tabla
-      datos.forEach(post => {
-        const newPost = document.createElement('tr');
-        newPost.innerHTML = `
-            <td>${post.userId}</td>
-            <td>${post.id}</td>
-            <td>${post.title}</td>
-            <td>${post.body}</td>`;
-        tbody.appendChild(newPost);
-      })
-      document.getElementById('num-posts').textContent = datos.length;
+      renderPosts(posts);
     }
-  })
 })
 
 function getPosts(idUser) {
@@ -459,12 +446,30 @@ function getPosts(idUser) {
   })
   peticion.addEventListener('error', () => console.error('Error en la petición HTTP'));
 }
-```
 
+function renderPosts(datos) {
+  const tbody = document.getElementsByTagName('tbody')[0];
+
+  tbody.innerHTML = ''; // borramos el contenido de la tabla
+  datos.forEach(post => {
+    const newPost = document.createElement('tr');
+    newPost.innerHTML = `
+        <td>${post.userId}</td>
+        <td>${post.id}</td>
+        <td>${post.title}</td>
+        <td>${post.body}</td>`;
+      tbody.appendChild(newPost);
+    })
+    document.getElementById('num-posts').textContent = datos.length;
+  }
+})
+```
+<!--
 <iframe src="./demos/ajax-posts-1-sincrono.html" title="Ajax: si fuera síncrono (NO FUNCIONA)"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-1-sincrono.html).
+[Abre el ejemplo en una pestaña nueva](./demos/ajax-posts-1-sincrono.html).
 
 Pero esto no funciona porque el valor de `posts` siempre es _undefined_. Esto es porque cuando se llama a `getPosts` esta función no devuelve nada (por eso _posts_ es undefined) sino que devuelve los datos tiempo después, cuando el servidor contesta, pero entonces ya no hay nadie escuchando.
 
@@ -473,7 +478,6 @@ La solución es que todo el código, no sólo de la petición Ajax sino también
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com';
-const tbody = document.getElementsByTagName('tbody')[0];
 
 window.addEventListener('load', function() {
   document.getElementById('form-show').addEventListener('submit', (event) => {
@@ -494,38 +498,30 @@ function getPosts(idUser) {
   peticion.addEventListener('load', function() {
     if (peticion.status === 200) {
       const datos = JSON.parse(peticion.responseText); // Convertirmos los datos JSON a un objeto
-      tbody.innerHTML = ''; // borramos el contenido de la tabla
-      datos.forEach(post => {
-        const newPost = document.createElement('tr');
-        newPost.innerHTML = `
-            <td>${post.userId}</td>
-            <td>${post.id}</td>
-            <td>${post.title}</td>
-            <td>${post.body}</td>`;
-        tbody.appendChild(newPost);
-      })
-      document.getElementById('num-posts').textContent = datos.length;
+      renderPosts(datos);
     } else {
       console.error("Error " + peticion.status + " (" + peticion.statusText + ") en la petición");
     }
   })
   peticion.addEventListener('error', () => console.error('Error en la petición HTTP'));
 }
+...
 ```
 
+<!--
 <iframe src="./demos/ajax-posts-2-solucion-mala.html" title="Ajax: solución mala"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-2-solucion-mala.html).
+[Abre el ejemplo en una pestaña nueva](./demos/ajax-posts-2-solucion-mala.html).
 
 Este código sí que funcionaría pero tiene una pega: tenemos que tratar los datos (en este caso pintarlos en la tabla) en la función que gestiona la petición porque es la que sabe cuándo están disponibles esos datos. Y sabemos que una función no debería tener 2 responsabilidades diferentes (obtener los datos del servidor y renderizarlos en la página).
 
 ### Algo mejor: Funciones _callback_
-Esto se podría mejorar usando una función **_callback_**. La idea es que creamos una función que procese los datos (`renderPosts`) y se la pasamos a `getPosts` para que la llame cuando tenga los datos:
+Esto se podría mejorar usando una función **_callback_**. La idea es que le pasamos a `getPosts` la función que debe tratar los datos para que la llame cuando tenga los datos:
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com'
-const tbody = document.querySelector('tbody')
 
 window.addEventListener('load', function() {
   document.getElementById('form-show').addEventListener('submit', (event) => {
@@ -538,20 +534,6 @@ window.addEventListener('load', function() {
     }
   })
 })
-
-function renderPosts(datos) {
-  tbody.innerHTML = '' // borramos el contenido de la tabla
-  datos.forEach(post => {
-    const newPost = document.createElement('tr')
-    newPost.innerHTML = `
-        <td>${post.userId}</td>
-        <td>${post.id}</td>
-        <td>${post.title}</td>
-        <td>${post.body}</td>`
-    tbody.appendChild(newPost)
-  })
-  document.getElementById('num-posts').textContent = datos.length;
-}
 
 function getPosts(idUser, callback) {
   const peticion = new XMLHttpRequest()
@@ -568,10 +550,12 @@ function getPosts(idUser, callback) {
 }
 ```
 
+<!--
 <iframe src="./demos/ajax-posts-3-callback.html" title="Ajax: funciones callback"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-3-callback.html).
+[Abre el ejemplo en una pestaña nueva](./demos/ajax-posts-3-callback.html).
 
 Hemos creado una función que se ocupa de renderizar los datos y se la pasamos a la función que gestiona la petición para que la llame cuando los datos están disponibles. Utilizando la función _callback_ hemos conseguido que _getPosts()_ se encargue sólo de obtener los datos y cuando los tenga los pasa a la encargada de pintarlos en la tabla.
 
@@ -591,7 +575,7 @@ Sin embargo hay una forma más limpia de resolver una función asíncrona y que 
 
 Como dijimos esto NO funciona, a menos que convirtamos a `getPosts()` en una **_promesa_**. Cuando se realiza una llamada a una promesa quien la llama puede usar unos métodos (_.then()_ y _.catch()_) que NO SE EJECUTARÁN hasta que la promesa se haya resuelto (es decir, hasta que el servidor haya contestado):
 - **`.then(_function(datos) { ... }_)`**: se ejecuta cuando la promesa se haya resuelto satisfactoriamente. Su parámetro es una función que recibe como parámetro los datos que haya devuelto la promesa (que serán los datos pedidos al servidor)
-- **.catch(_function(datos) { ... }_)**: se ejecuta cuando se haya rechazado la promesa (si ha fallado, normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (que será información sobre el error producido).
+- **`.catch(_function(datos) { ... }_)`**: se ejecuta cuando se haya rechazado la promesa (si ha fallado, normalmente porque se ha recibido una respuesta errónea del servidor). Esta función recibe como parámetro la información pasada por la promesa al ser rechazada (que será información sobre el error producido).
 
 De esta manera nuestro código quedaría:
 ```javascript
@@ -601,19 +585,7 @@ De esta manera nuestro código quedaría:
       alert('Debes introducir un número')
     } else {
       getPosts(idUser)
-        .then((posts) => {  // aquí ya tenemos los datos en 'posts'
-          tbody.innerHTML = ''
-          posts.forEach((post) => {
-            const newPost = document.createElement('tr')
-            newPost.innerHTML = `
-                <td>${post.userId}</td>
-                <td>${post.id}</td>
-                <td>${post.title}</td>
-                <td>${post.body}</td>`
-            tbody.appendChild(newPost)
-          })
-          document.getElementById('num-posts').textContent = posts.length
-        })
+        .then((posts) => renderPosts(posts))  // aquí ya tenemos los datos en 'posts'
           // en el .catch() está el tratamiento de errores
         .catch((error) => console.error(error))
     }
@@ -665,7 +637,6 @@ El código del ejemplo de los posts usando promesas sería el siguiente:
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com'
-const tbody = document.querySelector('tbody')
 
 window.addEventListener('load', function() {
   document.getElementById('form-show').addEventListener('submit', (event) => {
@@ -676,17 +647,7 @@ window.addEventListener('load', function() {
     } else {
       getPosts(idUser)
         .then(function(posts) {
-          tbody.innerHTML = '' // borramos el contenido de la tabla
-          posts.forEach(post => {
-            const newPost = document.createElement('tr')
-            newPost.innerHTML = `
-                <td>${post.userId}</td>
-                <td>${post.id}</td>
-                <td>${post.title}</td>
-                <td>${post.body}</td>`
-            tbody.appendChild(newPost)
-          })
-          document.getElementById('num-posts').textContent = posts.length
+          renderPosts(posts)
         })
         .catch(function(error) {
           console.error(error)
@@ -711,11 +672,12 @@ function getPosts(idUser) {
   })
 }
 ```
-
+<!--
 <iframe src="./demos/ajax-posts-4-promesas.html" title="Ajax: promesas"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-4-promesas.html).
+[Aabre el ejemplo en una pestaña nueva](./demos/ajax-posts-4-promesas.html).
 
 **NOTA**: Fijaos que los errores del servidor SIEMPRE llegan a la consola. En el ejemplo anterior me aparecerán 2 veces: la primera que es el error original y la segunda donde lo pinto yo con el `console.error`.
 
@@ -733,7 +695,7 @@ Usando esto sí funcionaría el primer ejemplo que hicimos:
       alert('Debes introducir un número');
     } else {
       const posts = await getPosts(idUser);
-      // y aquí SÍ recibimos los datos porque ponemos AWAIT, en este caso para pintar los posts
+      renderPosts(posts); // y aquí SÍ recibimos los datos porque ponemos AWAIT, en este caso para pintar los posts
     }
 ```
 
@@ -743,6 +705,7 @@ Aquí el tratamiento de errores se hace con un _try/catch_:
 ```javascript
     try {
       const posts = await getPosts(idUser);
+      renderPosts(posts);
     } catch (error) {
       console.error(error);
     }
@@ -784,6 +747,7 @@ fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser)
   }) 
   .catch(err => console.error(err));
 ```
+
 Ese mismo ejemplo usando _async/await_ sería:
 ```javascript
 try {
@@ -795,7 +759,7 @@ try {
 }
 ```
 
-1. _fetch_ llama a _resolve_ siempre que el servidor conteste, **sin comprobar** si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde
+2. _fetch_ llama a _resolve_ siempre que el servidor conteste, **sin comprobar** si la respuesta es de éxito (200, 201, ...) o de error (4xx, 5xx). Por tanto siempre se ejecutará el _then_ excepto si se trata de un error de red y el servidor no responde. Por tanto si queremos comprobar si la respuesta es correcta o no debemos mirar la propiedad **`ok`** de la respuesta (que vale _true_ si el status está entre 200 y 299 y _false_ en caso contrario).
 
 ### Propiedades y métodos de la respuesta de _fetch_
 La respuesta devuelta por _fetch()_ tiene las siguientes propiedades y métodos:
@@ -809,7 +773,6 @@ El ejemplo que hemos visto con las promesas, usando _fetch_ quedaría:
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com'
-const tbody = document.querySelector('tbody')
 
 window.addEventListener('load', () => {
   document.getElementById('form-show').addEventListener('submit', (event) => {
@@ -820,29 +783,18 @@ window.addEventListener('load', () => {
     } else {
       fetch(SERVER + '/posts?userId=' + idUser)
         .then((response) => response.json())
-        .then((posts) => {
-          tbody.innerHTML = '' // borramos el contenido de la tabla
-          posts.forEach((post) => {
-            const newPost = document.createElement('tr')
-            newPost.innerHTML = `
-                  <td>${post.userId}</td>
-                  <td>${post.id}</td>
-                  <td>${post.title}</td>
-                  <td>${post.body}</td>`
-            tbody.appendChild(newPost)
-          })
-          document.getElementById('num-posts').textContent = posts.length
-        })
+        .then((posts) => renderPosts(posts))
         .catch((error) => console.error(error))
     }
   })
 })
 ```
-
+<!--
 <iframe src="./demos/ajax-posts-5-fetch.html" title="Ajax: fetch con promesas"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-5-fetch.html).
+[Abre el ejemplo en una pestaña nueva](./demos/ajax-posts-5-fetch.html).
 
 Este ejemplo fallaría si hubiéramos puesto mal la url: contestaría con un 404 pero se ejecutaría el _then_ intentando pintar unos posts que no tenemos.
 
@@ -850,7 +802,6 @@ El ejemplo con _async/await_ y _fetch_ sería:
 
 ```javascript
 const SERVER = 'https://jsonplaceholder.typicode.com'
-const tbody = document.querySelector('tbody')
 
 window.addEventListener('load', () => {
   document.getElementById('form-show').addEventListener('submit', async (event) => {
@@ -859,20 +810,12 @@ window.addEventListener('load', () => {
     if (isNaN(idUser) || idUser.trim() == '') {
       alert('Debes introducir un número')
     } else {
-      const posts = await getData(idUser)
-      // La ejecución se para en la sentencia anterior hasta que
-      // contesta la función getData
-      tbody.innerHTML = ''
-      posts.forEach((post) => {
-        const newPost = document.createElement('tr');
-        newPost.innerHTML = `
-                <td>${post.userId}</td>
-                <td>${post.id}</td>
-                <td>${post.title}</td>
-                <td>${post.body}</td>`
-        tbody.appendChild(newPost)
-      })
-      document.getElementById('num-posts').textContent = posts.length
+      try {
+        const posts = await getData(idUser)
+        renderPosts(posts)
+      } catch (error) {
+        console.error(error)
+      }
     }
   })
 })
@@ -887,30 +830,15 @@ async function getData(idUser) {
 }
 ```
 
+<!--
 <iframe src="./demos/ajax-posts-6-async-await.html" title="Ajax: fetch con async/await"
         style="width:100%; height:320px; border:1px solid #ddd; border-radius:8px;" loading="lazy"></iframe>
+-->
 
-Si no se ve bien, [abre el ejemplo en una pestaña nueva](./demos/ajax-posts-6-async-await.html).
+[Abre el ejemplo en una pestaña nueva](./demos/ajax-posts-6-async-await.html).
 
 ### Gestión de errores con _fetch_
 Según [MDN](https://developer.mozilla.org/es/docs/Web/API/Fetch_API) la promesa devuelta por la _API fetch_ sólo es rechazada en el caso de un error de red, es decir, el _.catch_ sólo saltará si no hemos recibido respuesta del servidor; en caso contrario la promesa siempre es resuelta.
-
-Por tanto para saber si se ha resuelto **satisfactoriamente** o no debemos comprobar la propiedad **_.ok_** de la respuesta. El código correcto del ejemplo anterior gestionando los posibles errores del servidor sería:
-
-```javascript
-try {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + idUser);
-  if (!response.ok) {
-    throw `Error ${response.status} de la BBDD: ${response.statusText}`
-  }
-  const myData = await response.json();
-  console.log(myData);
-} catch (err) {
-  console.error(err);
-}
-```
-
-En este caso si la respuesta del servidor no es _ok_ lanzamos un error que es interceptado por nuestro propio _catch_
 
 ### Otros métodos de petición con _fetch_
 Los ejemplos anteriores hacen peticiones GET al servidor. Para peticiones que no sean GET la función _fetch()_ admite un segundo parámetro con un objeto con la información a enviar en la petición HTTP. Ej.:
@@ -926,26 +854,18 @@ fetch(url, {
 
 Ejemplo de una petición para añadir datos:
 ```javascript
-fetch(url, {
+const response = await fetch(url, {
   method: 'POST', 
   body: JSON.stringify(data), // los datos que enviamos al servidor en el 'send'
   headers:{
     'Content-Type': 'application/json'
   }
 })
-.then(response => {
-  if (!response.ok) {
-    throw `Error ${response.status} de la BBDD: ${response.statusText}`
-  } 
-  return response.json()
-})
-.then(datos => {
-  alert('Datos recibidos')
-  console.log(datos)
-})
-.catch(err => {
-  alert('Error en la petición HTTP: ' + err.message);
-})
+if (!response.ok) {
+  throw `Error ${response.status} de la BBDD: ${response.statusText}`
+}
+const datos = await response.json()
+return datos
 ```
 
 Podéis ver mś ejemplos en [MDN web docs](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Utilizando_Fetch#Enviando_datos_JSON) y otras páginas.
@@ -1064,7 +984,7 @@ VITE_URL_API=http://localhost:3000
 El fichero _.env_ por defecto se sube al repositorio por lo que no debemos poner información sensible (como usuarios o contraseñas). Para ello tenemos un fichero **_.env.local_** que no se sube, o bien debemos añadir al _.gitignore_ dicho fichero. Si el fichero con la configuración no lo subimos al repositorio es conveniente tener un fichero _.env.exemple_, que sí se sube, con valores predeterminados para las distintas variables, que quien quiera desplegar nuestra aplicación deberá cambiar por sus valores adecuados en producción. Además del _.env_ y el _.env.local_ también hay distintos ficheros que son usados en desarrollo (_.env.development_) y en producción (_.env.production_) y que pueden tener distintos datos según el entorno en que nos encontramos. Por ejemplo en el de desarrollo el valor de **VITE_URL_API** podría ser "http://localhost:3000" si usamos _json-server_ mientras que en el de producción tendríamos la ruta del servidor de producción de la API.
 
 ### Distintas peticiones, distintos ficheros
-Las peticiones a la API deberíamos ponerlas en un fichero aparte para tener nuestro código organizado. Y peticiones a diferentes tipos de datos también deberían estar en ficheros diferentes. Por ejemplo si necesitamos obtener datos de posts y de usuarios podríamos crear una carpeta `/repositories` y dentro los ficheros `posts.repository.js` y `users.repository.js`.
+Las peticiones a la API deberíamos ponerlas en un fichero aparte para tener nuestro código organizado. Y peticiones a diferentes tipos de datos podrían estar en ficheros diferentes. Por ejemplo si necesitamos obtener datos de posts y de usuarios podríamos crear una carpeta `/repositories` y dentro los ficheros `posts.repository.js` y `users.repository.js`.
 
 Dentro de cada fichero haremos diferentes funciones y métodos para los diferentes tipos de petición, por ejemplo:
 ```javascript
