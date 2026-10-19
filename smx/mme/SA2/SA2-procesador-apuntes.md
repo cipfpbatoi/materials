@@ -15,28 +15,89 @@
 
 ---
 
-## Índice
-
-1. ¿Qué es el microprocesador?
-2. Un poco de historia y la Ley de Moore
-3. Estructura interna
-4. Núcleos e hilos
-5. La memoria caché
-6. Frecuencia de trabajo y rendimiento
-7. Conjuntos de instrucciones
-8. Arquitectura: 32 bits, 64 bits, x86 y ARM
-9. Alimentación, consumo y temperatura
-10. Overclocking, undervolting y turbo
-11. Fabricantes, gamas y nomenclatura
-12. Sockets, chipsets y compatibilidad
-13. Refrigeración
-14. Montaje del procesador paso a paso
-15. Diagnóstico y mantenimiento
-16. Cómo elegir un procesador
-17. Glosario
-18. Preguntas frecuentes
-19. Actividades propuestas
-20. Enlaces y recursos
+**Índice**
+- [SA2 – Componentes básicos de un equipo informático: el procesador](#sa2--componentes-básicos-de-un-equipo-informático-el-procesador)
+  - [1. ¿Qué es el microprocesador?](#1-qué-es-el-microprocesador)
+  - [2. Conjuntos de instrucciones](#2-conjuntos-de-instrucciones)
+    - [Extensiones de instrucciones](#extensiones-de-instrucciones)
+    - [Cómo ver las extensiones disponibles](#cómo-ver-las-extensiones-disponibles)
+  - [3. Un poco de historia](#3-un-poco-de-historia)
+    - [Los inicios](#los-inicios)
+    - [La Ley de Moore](#la-ley-de-moore)
+    - [¿Qué significan los "nanómetros"?](#qué-significan-los-nanómetros)
+  - [4. Estructura interna](#4-estructura-interna)
+    - [Bloques clásicos](#bloques-clásicos)
+    - [Bloques de un procesador moderno](#bloques-de-un-procesador-moderno)
+    - [Chiplets y tiles](#chiplets-y-tiles)
+  - [5. Núcleos e hilos](#5-núcleos-e-hilos)
+    - [Monoprocesador, multinúcleo y multiprocesador](#monoprocesador-multinúcleo-y-multiprocesador)
+    - [Hilos y SMT / Hyper-Threading](#hilos-y-smt--hyper-threading)
+    - [Arquitectura híbrida: núcleos P y núcleos E](#arquitectura-híbrida-núcleos-p-y-núcleos-e)
+    - [¿Cuántos núcleos hay hoy?](#cuántos-núcleos-hay-hoy)
+    - [¿Más núcleos es siempre mejor?](#más-núcleos-es-siempre-mejor)
+  - [6. La memoria caché](#6-la-memoria-caché)
+    - [Por qué existe](#por-qué-existe)
+    - [Niveles](#niveles)
+    - [Cómo leer la caché en una ficha o en CPU-Z](#cómo-leer-la-caché-en-una-ficha-o-en-cpu-z)
+    - [Ejemplos actuales](#ejemplos-actuales)
+    - [3D V-Cache](#3d-v-cache)
+  - [7. Frecuencia de trabajo y rendimiento](#7-frecuencia-de-trabajo-y-rendimiento)
+    - [El reloj](#el-reloj)
+    - [Reloj base × multiplicador](#reloj-base--multiplicador)
+    - [Frecuencia base y frecuencia turbo](#frecuencia-base-y-frecuencia-turbo)
+    - [La frecuencia no lo es todo: el IPC](#la-frecuencia-no-lo-es-todo-el-ipc)
+    - [Otras unidades que verás](#otras-unidades-que-verás)
+  - [8. Alimentación, consumo y temperatura](#8-alimentación-consumo-y-temperatura)
+    - [Voltajes](#voltajes)
+    - [TDP y límites de potencia](#tdp-y-límites-de-potencia)
+    - [Temperatura y *thermal throttling*](#temperatura-y-thermal-throttling)
+    - [Un caso real: la inestabilidad de los Intel Raptor Lake](#un-caso-real-la-inestabilidad-de-los-intel-raptor-lake)
+  - [9. Overclocking, undervolting y turbo](#9-overclocking-undervolting-y-turbo)
+    - [Overclocking](#overclocking)
+    - [¿Qué procesadores se pueden overclockear?](#qué-procesadores-se-pueden-overclockear)
+    - [Undervolting y PBO: lo que se hace hoy](#undervolting-y-pbo-lo-que-se-hace-hoy)
+    - [Turbo frente a overclocking](#turbo-frente-a-overclocking)
+  - [10. Fabricantes, gamas y nomenclatura](#10-fabricantes-gamas-y-nomenclatura)
+    - [Intel: de "Core i" a "Core Ultra"](#intel-de-core-i-a-core-ultra)
+    - [AMD Ryzen](#amd-ryzen)
+    - [Estaciones de trabajo y servidores](#estaciones-de-trabajo-y-servidores)
+  - [11. Sockets, chipsets y compatibilidad](#11-sockets-chipsets-y-compatibilidad)
+    - [Socket](#socket)
+    - [Chipset](#chipset)
+    - [Sockets de Intel](#sockets-de-intel)
+    - [Sockets de AMD](#sockets-de-amd)
+    - [La BIOS también cuenta](#la-bios-también-cuenta)
+    - [Cómo comprobar la compatibilidad (procedimiento)](#cómo-comprobar-la-compatibilidad-procedimiento)
+  - [12. Refrigeración](#12-refrigeración)
+    - [Pasta térmica](#pasta-térmica)
+    - [Refrigeración por aire](#refrigeración-por-aire)
+    - [Flujo de aire en la caja (*airflow*)](#flujo-de-aire-en-la-caja-airflow)
+    - [Refrigeración líquida AIO (*All In One*)](#refrigeración-líquida-aio-all-in-one)
+    - [Refrigeración líquida personalizada (*custom loop*)](#refrigeración-líquida-personalizada-custom-loop)
+    - [Portátiles](#portátiles)
+    - [Refrigeración por inmersión](#refrigeración-por-inmersión)
+    - [Refrigeración extrema](#refrigeración-extrema)
+    - [¿Qué refrigeración elijo?](#qué-refrigeración-elijo)
+  - [13. Montaje del procesador paso a paso](#13-montaje-del-procesador-paso-a-paso)
+    - [Procesador LGA (Intel y AMD AM5)](#procesador-lga-intel-y-amd-am5)
+    - [Procesador PGA (AMD AM4)](#procesador-pga-amd-am4)
+    - [Disipador](#disipador)
+    - [Alimentación](#alimentación)
+    - [Primer arranque](#primer-arranque)
+    - [Errores típicos](#errores-típicos)
+  - [14. Diagnóstico y mantenimiento](#14-diagnóstico-y-mantenimiento)
+    - [Herramientas de software](#herramientas-de-software)
+    - [Síntomas habituales y posibles causas](#síntomas-habituales-y-posibles-causas)
+    - [Mantenimiento preventivo](#mantenimiento-preventivo)
+  - [15. Cómo elegir un procesador](#15-cómo-elegir-un-procesador)
+    - [Según el uso](#según-el-uso)
+    - [Más allá del procesador](#más-allá-del-procesador)
+    - [Requisitos de Windows 11](#requisitos-de-windows-11)
+    - [Los "PC con IA"](#los-pc-con-ia)
+  - [16. Glosario](#16-glosario)
+  - [17. Preguntas frecuentes](#17-preguntas-frecuentes)
+  - [18. Actividades propuestas](#18-actividades-propuestas)
+  - [19. Enlaces y recursos](#19-enlaces-y-recursos)
 
 ---
 
@@ -58,7 +119,71 @@ Hoy no basta con que un procesador sea rápido: también tiene que ser **eficien
 
 ---
 
-## 2. Un poco de historia y la Ley de Moore
+## 2. Conjuntos de instrucciones
+
+Cada procesador entiende una lista concreta de instrucciones, su **juego de instrucciones** (**ISA**, _Instruction Set Architecture_). Las _ISA_ más conocidas son:
+| Nombre ISA | Empresa que la creó | Uso |
+|---|---|---|
+| x86 (tambien llamada IA32) |	Intel |	PC de hasta de 4 GB de RAM |
+| x64 (tambien llamada AMD64, EM64T, x86-64, Intel 64) |	AMD |	PC con mas de 4 GB de RAM |
+| ARMv7 (tambien llamada AArch32) |	ARM |	Móviles,tablet,etc de hasta de 4 GB de RAM |
+| ARMv8 (tambien llamada AArch64) |	ARM |	Móviles,tablet,etc con mas de 4 GB de RAM |
+| Power |	IBM |	Estaciones de trabajo, antiguos Mac y en consolas como PS3 y XBox 360 |
+| SPARC |	Oracle/Sun |	Estaciones de trabajo |
+| RISC-V |	RISC-V Fundation |	Alternativa **libre** a ARM, muy usada en IoT |
+
+Cuando se dice que un procesador es de 32 o 64 bits se habla principalmente del tamaño de sus **registros de propósito general** y de las **direcciones de memoria** que puede manejar. Por tanto un procesador de 32 bits sólo puede manejar 2³² direcciones de memoria, es decir 4GB.
+
+La arquitectura más común en PC es **x86-64** (Intel y AMD), aunque existen portátiles con ARM y Apple ha pasado de Intel a ARM en sus Mac con los chips M1, M2 y M3. Un programa compilado para x86 puede ejecutarse en un procesador x86-64, pero no al revés. Y un programa compilado para x86/x64 NO puede ejecutarse en un procesador ARM, aunque existen **emuladores** (Prism en Windows, Rosetta 2 en Mac) que traducen los programas x86 a instrucciones ARM pero es lento y algunos programas pueden no funcionar.
+
+### Extensiones de instrucciones
+Sobre la base x86, Intel y AMD han ido añadiendo **extensiones** para acelerar tareas concretas. Un programa que use una extensión que el procesador no tiene, sencillamente no funciona (o usa un camino más lento).
+
+Muchas extensiones son de tipo **SIMD** (*Single Instruction, Multiple Data*): una sola instrucción opera sobre varios datos a la vez. Por ejemplo, sumar de una vez 8 parejas de números en lugar de hacer 8 sumas. Es ideal para multimedia, imagen, vídeo, cifrado, ciencia e IA.
+
+| Extensión | Año aprox. | Qué aportó |
+|---|---|---|
+| **MMX** | 1997 (Pentium MMX) | Primeras instrucciones SIMD con enteros, pensadas para multimedia |
+| **3DNow!** | 1998 (AMD K6-2) | Respuesta de AMD, con coma flotante. Ya en desuso |
+| **SSE** | 1999 (Pentium III) | 70 instrucciones SIMD de coma flotante con registros de 128 bits |
+| **SSE2** | 2000 (Pentium 4) | 144 instrucciones, operaciones de doble precisión. Obligatoria en x86-64 |
+| **SSE3 / SSSE3** | 2004 / 2006 | Más instrucciones matemáticas y para multimedia |
+| **SSE4.1 / SSE4.2** | 2007-2008 | Más instrucciones, incluidas para texto y CRC |
+| **AVX / AVX2** | 2011 / 2013 | Registros de **256 bits**; AVX2 es hoy casi imprescindible en software moderno |
+| **FMA** | 2012-2013 | Multiplicar y sumar en una sola instrucción |
+| **AVX-512** | 2017 (Intel servidor), 2022 (AMD Zen 4) | Registros de **512 bits**; muy útil en ciencia e IA. Presente en AMD Zen 4/5, pero no en los Intel de consumo actuales |
+| **AMX** | 2023 (Xeon) | Unidades para operaciones con matrices, orientadas a IA |
+
+Otras extensiones importantes para un técnico son:
+
+| Extensión | Para qué sirve |
+|---|---|
+| **x86-64 / EM64T / AMD64** | Ejecutar sistemas y programas de 64 bits |
+| **VT-x (Intel) / AMD-V (AMD)** | **Virtualización por hardware**. Imprescindible para VirtualBox, VMware, Hyper-V, WSL2. Muchas veces viene **desactivada en la BIOS** y hay que activarla |
+| **VT-d / AMD-Vi (IOMMU)** | Pasar dispositivos físicos a máquinas virtuales |
+| **AES-NI** | Cifrado y descifrado AES acelerado (BitLocker, VPN, HTTPS) |
+| **NX / XD / DEP** | Bit de protección que impide ejecutar código en zonas de datos. Necesario para Windows modernos |
+| **SHA, RDRAND** | Cálculo de *hashes* y generación de números aleatorios por hardware |
+
+### Cómo ver las extensiones disponibles
+
+- **CPU-Z** → pestaña *CPU* → campo *Instructions*.
+- **HWiNFO** → resumen del sistema → recuadro *Características* (las admitidas aparecen en verde).
+- **Windows**: el Administrador de tareas → *Rendimiento* → *CPU* muestra si la virtualización está habilitada.
+- **Linux**: `lscpu` o `cat /proc/cpuinfo` (campo `flags`).
+- La ficha oficial del fabricante (ver apartado 20).
+
+![CPU-Z con un procesador AMD](img/CPU-Z-AMD.png)
+
+![CPU-Z con un procesador Intel](img/CPU-Z-Intel.png)
+
+![HWiNFO con un procesador Intel](img/HWinfo-Intel.png)
+
+**NOTA**: ¿Qué es el FSB que aparece deshabilitado en las capturas de CPU-Z?. En los procesadores antiguos (hasta ~2008) el controlador de memoria estaba en un chip de la placa base (el *northbridge*), y la CPU se comunicaba con él a través del **FSB** (*Front Side Bus*). Hoy ese bus **ya no existe**: la memoria se conecta directamente a la CPU y la comunicación con el chipset se hace mediante enlaces como **DMI** (Intel) o enlaces PCIe (AMD). Si en algún documento ves "FSB", "BSB" o *northbridge*, ahora sabes que es historia.
+
+---
+
+## 3. Un poco de historia
 
 ### Los inicios
 
@@ -72,7 +197,7 @@ Hoy no basta con que un procesador sea rápido: también tiene que ser **eficien
 - **2021 – Intel Alder Lake (12.ª gen).** Arquitectura **híbrida** con núcleos de rendimiento y de eficiencia en el PC de sobremesa.
 - **2023-2026 – Chiplets, IA y NPU.** Los procesadores se fabrican a trozos (*tiles* o *chiplets*), incorporan unidades para inteligencia artificial y Intel estrena la marca **Core Ultra**.
 
-Además de Intel y AMD, han fabricado o fabrican procesadores Motorola, IBM, Zilog, Cyrix, VIA, Texas Instruments, Qualcomm, Apple, MediaTek o Samsung, entre otros. En el PC de escritorio clásico (x86) solo quedan Intel y AMD.
+Además de Intel y AMD, han fabricado o fabrican procesadores Motorola, IBM, Zilog, Cyrix, VIA, Texas Instruments, Qualcomm, Apple, MediaTek o Samsung, entre otros. En la arquitectura PC (x86/x64) sólo quedan Intel y AMD.
 
 ### La Ley de Moore
 
@@ -92,7 +217,7 @@ Los grandes fabricantes de chips (*foundries*) son **TSMC** (Taiwán), **Samsung
 
 ---
 
-## 3. Estructura interna
+## 4. Estructura interna
 
 Los primeros procesadores tenían solo tres bloques. Los actuales integran muchos más.
 
@@ -118,22 +243,18 @@ Los primeros procesadores tenían solo tres bloques. Los actuales integran mucho
 | **NPU (unidad de procesamiento neuronal)** | Acelera tareas de inteligencia artificial (desenfoque de fondo en videollamadas, transcripción, asistentes) gastando muy poca energía. |
 | **Interconexión interna** | El "bus" que une todos estos bloques entre sí (*ring bus*, *mesh*, *Infinity Fabric*…). |
 
-### ¿Qué fue del FSB?
-
-En los procesadores antiguos (hasta ~2008) el controlador de memoria estaba en un chip de la placa base (el *northbridge*), y la CPU se comunicaba con él a través del **FSB** (*Front Side Bus*). Hoy ese bus **ya no existe**: la memoria se conecta directamente a la CPU y la comunicación con el chipset se hace mediante enlaces como **DMI** (Intel) o enlaces PCIe (AMD). Si en algún documento antiguo ves "FSB", "BSB" o *northbridge*, ahora sabes que es historia.
-
 ### Chiplets y tiles
 
 Muchos procesadores actuales no son un único trozo de silicio. Por ejemplo:
 
 - Un **Ryzen 9** de sobremesa tiene dos chiplets de núcleos (**CCD**, 8 núcleos cada uno) y un chiplet de entrada/salida (**IOD**) con el controlador de memoria, el PCIe y la gráfica integrada.
-- Un **Intel Core Ultra** se compone de varias *tiles*: núcleos, gráfica, entrada/salida, etc.
+- Un **Intel Core Ultra** se compone de varias *tiles* (nombre que da _Intel_ a los _chiplets_): núcleos, gráfica, entrada/salida, etc.
 
 Para el técnico esto apenas cambia nada al montar, pero ayuda a entender por qué un procesador puede tener, por ejemplo, la caché L3 "partida" entre grupos de núcleos.
 
 ---
 
-## 4. Núcleos e hilos
+## 5. Núcleos e hilos
 
 ### Monoprocesador, multinúcleo y multiprocesador
 
@@ -148,6 +269,8 @@ Para el técnico esto apenas cambia nada al montar, pero ayuda a entender por qu
 | Coste | Menor | Mucho mayor (placa especial + varias CPU) |
 | Comunicación entre núcleos | Muy rápida (dentro del mismo chip) | Más lenta (entre chips, por la placa) |
 | Capacidad máxima | Limitada por un solo chip | Suma la de todos los procesadores |
+
+![Multisocket vs multiprocesador](img/multisocket.png)
 
 ### Hilos y SMT / Hyper-Threading
 
@@ -192,11 +315,11 @@ No. Depende del programa:
 
 ---
 
-## 5. La memoria caché
+## 6. La memoria caché
 
 ### Por qué existe
 
-La CPU trabaja muchísimo más rápido que la memoria RAM. Si tuviera que esperar a la RAM para cada dato, pasaría la mayor parte del tiempo parada. La **caché** es una memoria pequeña, muy rápida y muy cara, situada dentro del procesador, que guarda **copias de los datos e instrucciones usados más recientemente o con más frecuencia**. Si el dato está en caché (*acierto* o *hit*), se obtiene enseguida; si no (*fallo* o *miss*), hay que ir a buscarlo a la RAM.
+La CPU trabaja muchísimo más rápido que la memoria RAM. Si tuviera que esperar a la RAM para cada dato, pasaría la mayor parte del tiempo parada. La **caché** es una memoria pequeña, muy rápida y muy cara, situada dentro del procesador, que guarda **copias de los datos e instrucciones usados más recientemente o con más frecuencia**. Si el dato está en caché se obtiene enseguida, si no hay que ir a buscarlo a la RAM.
 
 Funciona porque los programas suelen volver a usar los mismos datos y los datos cercanos a los que acaban de usar (principio de **localidad**).
 
@@ -212,21 +335,18 @@ Cuanto más cerca del núcleo, más rápida y más pequeña.
 
 ### Cómo leer la caché en una ficha o en CPU-Z
 
+[Ver captura de CPU-Z](#cómo-ver-las-extensiones-disponibles)
+
 En CPU-Z (pestaña *CPU* o *Caches*) aparece algo así para un procesador de 6 núcleos:
 
-```
-L1 Data    6 x 32 KBytes    8-way
-L1 Inst.   6 x 32 KBytes    8-way
-Level 2    6 x 256 KBytes   4-way
-Level 3    12 MBytes        16-way
-```
+![CPU-Z con un procesador de 6 núcleos](img/CPU-Z-cache.png)
 
 Se lee así:
-
 - **"6 x 32 KB"** = hay 6 bloques de 32 KB, **uno por núcleo**. Total L1 de datos: 192 KB.
 - L1 aparece **dos veces**: una para datos y otra para instrucciones.
+- L2 **"6 x 256 KB"** = 256 KB por núcleo, total 1,5 MB.
 - **L3 sin multiplicador** ("12 MB") = una sola caché **compartida** por todos los núcleos.
-- El "**8-way**" (asociatividad) indica cómo se organiza internamente la caché; no hace falta para elegir un procesador.
+- El "**8-way**" (asociatividad) indica cómo se organiza internamente la caché.
 
 Los fabricantes a veces anuncian la caché **sumada** ("caché total 40 MB" = L2 + L3). Fíjate siempre en qué están sumando.
 
@@ -241,7 +361,7 @@ AMD apila una capa extra de caché L3 **encima** del chiplet de núcleos. Los mo
 
 ---
 
-## 6. Frecuencia de trabajo y rendimiento
+## 7. Frecuencia de trabajo y rendimiento
 
 ### El reloj
 
@@ -262,12 +382,10 @@ Ejemplo: un procesador con BCLK de 100 MHz y multiplicador ×37 trabaja a 3.700 
 
 El multiplicador no es fijo: el procesador lo **cambia cientos de veces por segundo** según la carga. Cuando no hace nada baja a 800 MHz – 1 GHz para ahorrar energía, y cuando hay trabajo sube.
 
-> **Nota histórica.** En los equipos con FSB se usaba la misma idea con la frecuencia del bus. Cuidado con las cifras antiguas: un Pentium D a 3,6 GHz con "FSB de 800 MHz" en realidad tenía un bus de 200 MHz que transfería 4 veces por ciclo (800 "efectivos"), así que su multiplicador real era **×18**, no ×4,5.
-
 ### Frecuencia base y frecuencia turbo
 
 - **Frecuencia base**: la que el fabricante garantiza con todos los núcleos trabajando dentro del consumo nominal.
-- **Frecuencia turbo / boost máxima**: la que puede alcanzar **uno o pocos núcleos** durante un tiempo si hay margen de temperatura y consumo. Intel lo llama **Turbo Boost**; AMD, **Precision Boost**.
+- **Frecuencia turbo/boost máxima**: la que puede alcanzar **uno o pocos núcleos** durante un tiempo si hay margen de temperatura y consumo. Intel lo llama **Turbo Boost**; AMD, **Precision Boost**.
 
 El turbo depende del número de núcleos activos, del tipo de tarea, de la temperatura y de los límites de consumo configurados en la BIOS. Por eso **la refrigeración influye en el rendimiento**: con mejor refrigeración el procesador aguanta más tiempo en turbo.
 
@@ -293,77 +411,7 @@ Por eso **no se pueden comparar procesadores solo por los GHz**, y menos aún en
 
 ---
 
-## 7. Conjuntos de instrucciones
-
-Cada procesador entiende una lista concreta de instrucciones, su **juego de instrucciones** (*ISA*). Sobre la base x86, Intel y AMD han ido añadiendo **extensiones** para acelerar tareas concretas. Un programa que use una extensión que el procesador no tiene, sencillamente no funciona (o usa un camino más lento).
-
-### SIMD: una instrucción, muchos datos
-
-Muchas extensiones son de tipo **SIMD** (*Single Instruction, Multiple Data*): una sola instrucción opera sobre varios datos a la vez. Por ejemplo, sumar de una vez 8 parejas de números en lugar de hacer 8 sumas. Es ideal para multimedia, imagen, vídeo, cifrado, ciencia e IA.
-
-| Extensión | Año aprox. | Qué aportó |
-|---|---|---|
-| **MMX** | 1997 (Pentium MMX) | Primeras instrucciones SIMD con enteros, pensadas para multimedia |
-| **3DNow!** | 1998 (AMD K6-2) | Respuesta de AMD, con coma flotante. Ya en desuso |
-| **SSE** | 1999 (Pentium III) | 70 instrucciones SIMD de coma flotante con registros de 128 bits |
-| **SSE2** | 2000 (Pentium 4) | 144 instrucciones, operaciones de doble precisión. Obligatoria en x86-64 |
-| **SSE3 / SSSE3** | 2004 / 2006 | Más instrucciones matemáticas y para multimedia |
-| **SSE4.1 / SSE4.2** | 2007-2008 | Más instrucciones, incluidas para texto y CRC |
-| **AVX / AVX2** | 2011 / 2013 | Registros de **256 bits**; AVX2 es hoy casi imprescindible en software moderno |
-| **FMA** | 2012-2013 | Multiplicar y sumar en una sola instrucción |
-| **AVX-512** | 2017 (Intel servidor), 2022 (AMD Zen 4) | Registros de **512 bits**; muy útil en ciencia e IA. Presente en AMD Zen 4/5, pero no en los Intel de consumo actuales |
-| **AMX** | 2023 (Xeon) | Unidades para operaciones con matrices, orientadas a IA |
-
-### Otras extensiones importantes para un técnico
-
-| Extensión | Para qué sirve |
-|---|---|
-| **x86-64 / EM64T / AMD64** | Ejecutar sistemas y programas de 64 bits |
-| **VT-x (Intel) / AMD-V (AMD)** | **Virtualización por hardware**. Imprescindible para VirtualBox, VMware, Hyper-V, WSL2. Muchas veces viene **desactivada en la BIOS** y hay que activarla |
-| **VT-d / AMD-Vi (IOMMU)** | Pasar dispositivos físicos a máquinas virtuales |
-| **AES-NI** | Cifrado y descifrado AES acelerado (BitLocker, VPN, HTTPS) |
-| **NX / XD / DEP** | Bit de protección que impide ejecutar código en zonas de datos. Necesario para Windows modernos |
-| **SHA, RDRAND** | Cálculo de *hashes* y generación de números aleatorios por hardware |
-
-### Cómo ver qué instrucciones tiene un procesador
-
-- **CPU-Z** → pestaña *CPU* → campo *Instructions*.
-- **HWiNFO** → resumen del sistema → recuadro *Características* (las admitidas aparecen en verde).
-- **Windows**: el Administrador de tareas → *Rendimiento* → *CPU* muestra si la virtualización está habilitada.
-- **Linux**: `lscpu` o `cat /proc/cpuinfo` (campo `flags`).
-- La ficha oficial del fabricante (ver apartado 20).
-
----
-
-## 8. Arquitectura: 32 bits, 64 bits, x86 y ARM
-
-### 32 bits frente a 64 bits
-
-Cuando se dice que un procesador es de 32 o 64 bits se habla principalmente del tamaño de sus **registros de propósito general** y de las **direcciones de memoria** que puede manejar.
-
-| | 32 bits | 64 bits |
-|---|---|---|
-| Rango de un número entero sin signo | 0 a 4.294.967.295 (2³²) | 0 a 18.446.744.073.709.551.615 (2⁶⁴) |
-| Memoria direccionable | **4 GB** como máximo (en la práctica, unos 3,2-3,5 GB útiles en Windows) | En teoría 16 exabytes; en la práctica, lo que permita la placa y el sistema (128 GB, 256 GB, varios TB en servidores) |
-| Situación actual | Obsoleto en PC. Windows 11 ya no existe en versión de 32 bits | Estándar desde hace años |
-
-Si una operación da un resultado mayor que el máximo representable se produce un **desbordamiento** (*overflow*); si es menor que el mínimo, un **subdesbordamiento** (*underflow*).
-
-Un procesador de 64 bits puede ejecutar programas de 32 bits (Windows lo hace mediante una capa llamada WOW64), pero no al revés.
-
-> **¿Existen procesadores de 128 bits?** No como procesadores de propósito general. Lo que sí hay son **registros vectoriales** de 128, 256 y 512 bits (SSE, AVX, AVX-512), que guardan varios números a la vez para las instrucciones SIMD.
-
-### x86 frente a ARM (y RISC-V)
-
-- **x86-64**: la arquitectura de los PC con Intel y AMD. Enorme compatibilidad con software de décadas.
-- **ARM**: la arquitectura de casi todos los **móviles y tabletas**, de los **Mac con chips Apple M** y de portátiles Windows con **Qualcomm Snapdragon X**. También crece en servidores (AWS Graviton, NVIDIA Grace…). Destaca por su eficiencia energética.
-- **RISC-V**: arquitectura **abierta y libre de licencias**. Muy usada en microcontroladores y dispositivos integrados; empieza a aparecer en equipos más grandes.
-
-Un programa compilado para x86 no funciona directamente en ARM. Windows en ARM y macOS incluyen **emuladores** (Prism en Windows, Rosetta 2 en Mac) que traducen los programas x86, aunque algunos (por ejemplo ciertos controladores o sistemas antitrampas de juegos) pueden no funcionar.
-
----
-
-## 9. Alimentación, consumo y temperatura
+## 8. Alimentación, consumo y temperatura
 
 ### Voltajes
 
@@ -371,7 +419,7 @@ El procesador funciona con tensiones muy bajas, del orden de **0,7 a 1,4 V** seg
 
 - El procesador solicita en cada momento el voltaje que necesita (**VID**). Sube cuando aumenta la frecuencia y baja en reposo.
 - Todo es **automático**. En equipos muy antiguos los voltajes y frecuencias se configuraban con **jumpers** (pequeños puentes en la placa); hoy los jumpers solo se usan para cosas como borrar la CMOS.
-- Un VRM de calidad es importante en procesadores de gama alta: si se calienta demasiado, la placa reduce la potencia del procesador.
+- Un VRM de calidad es importante en procesadores de gama alta: si se calienta demasiado, la placa reduce la potencia del procesador. Por eso las placas de gama alta tienen VRM con disipador (mejor refrigeración).
 
 Bajar el voltaje reduce mucho el consumo y la temperatura, porque la potencia crece aproximadamente con el **cuadrado del voltaje**. Por eso la tensión de los procesadores ha ido bajando generación tras generación.
 
@@ -386,7 +434,7 @@ Cuidado: **el TDP no es exactamente el consumo eléctrico máximo**. Los procesa
 | Intel | **Processor Base Power** (PL1) | Potencia sostenida a largo plazo |
 | Intel | **Maximum Turbo Power** (PL2) | Potencia máxima en turbo |
 | AMD | **TDP** | Referencia térmica para elegir disipador |
-| AMD | **PPT** (*Package Power Tracking*) | Potencia máxima real que puede consumir el procesador por el socket |
+| AMD | **PPT** (*Package Power Tracking*) | Potencia máxima real que puede consumir el procesador |
 
 Ejemplo: un Intel Core Ultra 7 270K Plus tiene una potencia base de 125 W y una potencia turbo máxima de 250 W. Para elegir disipador conviene fijarse en el valor **alto**.
 
@@ -416,7 +464,7 @@ Lecciones para un técnico:
 
 ---
 
-## 10. Overclocking, undervolting y turbo
+## 9. Overclocking, undervolting y turbo
 
 ### Overclocking
 
@@ -457,7 +505,7 @@ En la práctica, con procesadores actuales que ya vienen muy ajustados de fábri
 
 ---
 
-## 11. Fabricantes, gamas y nomenclatura
+## 10. Fabricantes, gamas y nomenclatura
 
 ### Intel: de "Core i" a "Core Ultra"
 
@@ -465,16 +513,22 @@ Hasta 2023 Intel usaba **Core i3, i5, i7, i9** seguidos de la generación (por e
 
 ```
 Intel  Core Ultra  7   2   65   K
-       ─────────── ─   ─   ──   ─
-         marca    gama serie SKU sufijo
+       ──────────  ─   ─   ──   ─
+        producto  gama gen. SKU sufijo
 ```
+
+![Nombre procesadores Intel Core Ultra](https://intelcorp.scene7.com/is/image/intelcorp/core-ultra-naming-scheme:1920-1080?wid=1920&hei=1080&fmt=webp-alpha&qlt=85,0&resMode=sharp2&op_usm=1.75,0.3,2,0&iccEmbed=0)
 
 - **Gama**: 3, 5, 7 o 9 (equivalente a los antiguos i3, i5, i7, i9).
 - **Serie / generación**: "2" = Core Ultra Series 2 (2024), "3" = Series 3 (2026)…
 - **SKU**: posición dentro de la gama. Más alto = mejor.
 - **Sufijo**: tipo de producto (ver tabla).
 
-También existe la marca **Intel Core** sin "Ultra" (Core 3, 5, 7) para modelos más económicos, a menudo basados en arquitecturas anteriores. Los Pentium y Celeron desaparecieron como marca en 2023 y fueron sustituidos por "Intel Processor".
+También existe la marca **Intel Core** sin "Ultra" (Core 3, 5, 7) para modelos más económicos, a menudo basados en arquitecturas anteriores:
+
+![Nombre procesadores Intel Core](https://intelcorp.scene7.com/is/image/intelcorp/1000-series-naming-scheme:1920-1080?wid=1920&hei=1080&fmt=webp-alpha&qlt=85,0&resMode=sharp2&op_usm=1.75,0.3,2,0&iccEmbed=0) 
+
+Los Pentium y Celeron desaparecieron como marca en 2023 y fueron sustituidos por "Intel Processor".
 
 **Sufijos de Intel**
 
@@ -493,6 +547,8 @@ También existe la marca **Intel Core** sin "Ultra" (Core 3, 5, 7) para modelos 
 | **Plus** | Revisión mejorada de un modelo dentro de la misma serie (p. ej. Core Ultra 7 270K Plus) |
 
 > En generaciones antiguas aparecían otros sufijos como **G** (indicaba el nivel de gráfica integrada en portátiles de 10.ª gen), **HQ** (portátil de alto rendimiento con 4 núcleos), **HK** (portátil de alto rendimiento desbloqueado) o **M** (portátil). Si encuentras uno en un equipo antiguo, búscalo en la ficha oficial.
+
+Puedes encontrar toda la información sobre los sufijos de Intel en la [web oficial](https://www.intel.la/content/www/xl/es/processors/processor-numbers.html#editorialTableBlade-1)
 
 **Gamas de Intel de sobremesa (orientativo, 2026)**
 
@@ -580,7 +636,7 @@ Los procesadores de servidor añaden funciones que un equipo doméstico no neces
 
 ---
 
-## 12. Sockets, chipsets y compatibilidad
+## 11. Sockets, chipsets y compatibilidad
 
 ### Socket
 
@@ -654,7 +710,7 @@ Problema: para actualizar la BIOS normalmente hay que arrancar el equipo… con 
 
 ---
 
-## 13. Refrigeración
+## 12. Refrigeración
 
 Todo el consumo eléctrico del procesador se convierte en **calor**, y hay que sacarlo fuera del chip y fuera de la caja. El camino del calor es:
 
@@ -782,7 +838,7 @@ En competiciones de overclocking se usa **nitrógeno líquido** (−196 °C) ver
 
 ---
 
-## 14. Montaje del procesador paso a paso
+## 13. Montaje del procesador paso a paso
 
 > Antes de empezar: trabaja sobre una superficie limpia y despejada, con la placa sobre su caja o su bolsa antiestática, y **descárgate de electricidad estática** (pulsera antiestática conectada a tierra o tocar una superficie metálica conectada a tierra). Monta el procesador, la memoria y el disipador **antes** de meter la placa en la caja: es mucho más cómodo.
 
@@ -834,7 +890,7 @@ Conecta a la placa el cable **EPS de 8 pines (CPU)** de la fuente (en algunas pl
 
 ---
 
-## 15. Diagnóstico y mantenimiento
+## 14. Diagnóstico y mantenimiento
 
 ### Herramientas de software
 
@@ -872,7 +928,7 @@ Muchas placas tienen **LEDs de diagnóstico** (CPU, DRAM, VGA, BOOT) o un **disp
 
 ---
 
-## 16. Cómo elegir un procesador
+## 15. Cómo elegir un procesador
 
 ### Según el uso
 
@@ -911,7 +967,7 @@ Microsoft llama **Copilot+ PC** a los equipos con una **NPU de al menos 40 TOPS*
 
 ---
 
-## 17. Glosario
+## 16. Glosario
 
 | Término | Definición |
 |---|---|
@@ -960,7 +1016,7 @@ Microsoft llama **Copilot+ PC** a los equipos con una **NPU de al menos 40 TOPS*
 
 ---
 
-## 18. Preguntas frecuentes
+## 17. Preguntas frecuentes
 
 **¿Un procesador de 8 núcleos es el doble de rápido que uno de 4?**
 Solo en programas que aprovechan bien todos los núcleos (renderizado, compresión de vídeo…), y ni siquiera exactamente el doble. En muchos juegos y en ofimática la diferencia es pequeña.
@@ -1003,7 +1059,7 @@ Hoy, para la mayoría de usuarios, no es imprescindible. Sirve para funciones de
 
 ---
 
-## 19. Actividades propuestas
+## 18. Actividades propuestas
 
 1. **Identifica tu procesador.** En un equipo del aula, usa CPU-Z y HWiNFO y anota: modelo, socket, núcleos, hilos, frecuencia base y actual, multiplicador, BCLK, cachés L1/L2/L3, instrucciones (¿tiene AVX2? ¿VT-x?) y temperatura en reposo.
 2. **Descifra el nombre.** Explica qué significa cada parte de: Intel Core Ultra 7 265KF, AMD Ryzen 7 9800X3D, Intel Core i5-12400F, AMD Ryzen 5 5600G, AMD Ryzen AI 9 HX 370.
@@ -1016,7 +1072,7 @@ Hoy, para la mayoría de usuarios, no es imprescindible. Sirve para funciones de
 
 ---
 
-## 20. Enlaces y recursos
+## 19. Enlaces y recursos
 
 **Fichas técnicas oficiales**
 
