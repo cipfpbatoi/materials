@@ -200,15 +200,11 @@ primerElementoDeLista.replaceChild(nuevoLi);    // reemplaza el 1º elemento de 
 * `elementoAClonar.cloneNode(boolean)`: devuelve un clon de _elementoAClonar_ o de _elementoAClonar_ con todos sus descendientes según le pasemos como parámetro _false_ o _true_. Luego podremos insertarlo donde queramos.
 
 Otros métodos menos usados son:
-* `document.createTextNode('texto')`: crea un nuevo nodo de texto con el texto indicado, que luego tendremos que añadir a un nodo HTML. Normalmente no se usa porque _append_ y el resto de métodos anteriores ya lo crean automáticamente. Ej.:
+* `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_ y lo devuelve. Se diferencia con _append_ en que sólo permite un parámetro y éste debe ser un nodo, no puede ser texto. Por eso no suele usarse.
+* `document.createTextNode('texto')`: crea un nuevo nodo de texto con el texto indicado, que luego tendremos que añadir a un nodo HTML. Normalmente no se usa porque con _append_ y el resto de métodos anteriores se hace más fácilmente. Por ejemplo, el equivalente a `nuevoLi.append('Nuevo elemento de lista')` que hicimos antes sería:
 ```javascript
 let textoLi = document.createTextNode('Nuevo elemento de lista');
-```
-* `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_ y lo devuelve. Se diferencia con _append_ en que sólo permite un parámetro y éste debe ser un nodo, no puede ser texto. Por eso no suele usarse. Ejemplo:
-```javascript
 nuevoLi.appendChild(textoLi);     // añade el texto creado al elemento LI creado
-let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
-miPrimeraLista.appendChild(nuevoLi);    // añade LI como último hijo de UL, es decir al final de la lista
 ```
 * `elemento.insertBefore(nuevoNodo, nodo)`: añade _nuevoNodo_ como hijo de _elemento_ antes del hijo _nodo_. Ej.:
 ```javascript
@@ -216,13 +212,13 @@ let miPrimeraLista = document.getElementsByTagName('ul')[0];                // s
 let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];   // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.insertBefore(nuevoLi, primerElementoDeLista);                // añade LI al principio de la lista
 ```
-* `elemento.removeChild(nodo)`: borra _nodo_ de _elemento_ y por tanto se elimina de la página. Ej.:
+* `elemento.removeChild(nodo)`: borra _nodo_ como hijode _elemento_ y por tanto se elimina de la página. Ej.:
 ```javascript
 let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
 let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.removeChild(primerElementoDeLista);    // borra el primer elemento de la lista
-// También podríamos haberlo borrado sin tener el padre con:
-primerElementoDeLista.parentElement.removeChild(primerElementoDeLista);
+// Lo mismo usando remove seria:
+primerElementoDeLista.remove();
 ```
 * `elemento.replaceChild(nuevoNodo, viejoNodo)`: reemplaza _viejoNodo_ con _nuevoNodo_ como hijo de _elemento_. Ej.:
 ```javascript
@@ -262,6 +258,20 @@ let nuevoParrafo = document.createElement('p');
 nuevoParrafo.innerHTML = 'Último párrafo <strong>con texto en negrita</strong>';
 miDiv.append(nuevoParrafo);
 ```
+
+También podemos usar `insertAdjacentHTML` para añadir un nuevo nodo sin tener que crear el nodo y luego añadirlo y sin que se renderice de nuevo lo que ya estaba. Siguiendo con el ejemplo anterior:
+
+```javascript
+let miDiv = document.getElementById('myDiv');
+miDiv.insertAdjacentHTML('beforeend', '<p>Último párrafo <strong>con texto en negrita</strong></p>');
+```
+El primer parámetro indica dónde queremos añadir el nuevo nodo:
+* `beforebegin`: antes del nodo _miDiv_
+* `afterbegin`: como primer hijo de _miDiv_
+* `beforeend`: como último hijo de _miDiv_
+* `afterend`: después del nodo _miDiv_
+
+**NOTA IMPORTANTE sobre seguridad**: Cuando se inserte texto HTML en una página usando `innerHTML` o `insertAdjacentHTML()` debe tener cuidado de no usar cadenas de texto que no contengan las secuencias de escape pertinentes según sea el caso para evitar ataques de inyección de código. Si queremos insertar texto plano (por ejemplo, lo que escriba un usuario en un formulario) debemos escapar los caracteres especiales de HTML como `<`, `>`, `&`, `"`, `'` y `/`. Por ejemplo, si el usuario escribe `<script>alert('Hola')</script>` y lo insertamos en la página sin escapar los caracteres especiales, se ejecutará el código JavaScript y se mostrará la alerta. Para evitar esto, podemos usar la función `textContent` o `insertAdjacentText()` para insertar el texto plano sin interpretar el HTML.
 
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 

@@ -96,7 +96,11 @@ Por tanto **un _timer_ sirve para decidir cuándo hacer algo, pero no para medir
 ```javascript
 // MAL: cuenta ejecuciones, no tiempo
 let seconds = 60;
-setInterval(() => seconds--, 1000);
+const id = setInterval(() => {
+  seconds--;
+  console.log(seconds);
+  if (seconds === 0) clearInterval(id);
+}, 1000);
 
 // BIEN: el interval sólo sirve para refrescar; el tiempo se calcula
 const end = Date.now() + 60 * 1000;
@@ -122,6 +126,7 @@ const id = setInterval(() => {
 * **Ejecutar la función en vez de pasarla**: `setTimeout(showMessage(), 1000)` ejecuta `showMessage` ya
 * **No guardar el identificador**: si no lo guardamos no podremos cancelar el _timer_
 * **Crear un _interval_ sin cancelar el anterior**: si una función que hace `setInterval` se llama 2 veces tendremos 2 _intervals_ a la vez. Antes de crear uno nuevo debemos cancelar el que hubiera:
+
 ```javascript
 let idInterval;
 
@@ -130,7 +135,9 @@ function start() {
   idInterval = setInterval(tick, 1000);
 }
 ```
+
 * **Perder el `this` al pasar un método**: si pasamos un método de un objeto, la función se ejecuta "suelta" y dentro de ella `this` ya no es el objeto:
+
 ```javascript
 class Counter {
   constructor() {
@@ -292,7 +299,7 @@ Cuando el usuario pulsa 'Atrás' o 'Adelante' sobre una entrada creada así, la 
 
 ### Objeto [navigator](https://developer.mozilla.org/es/docs/Web/API/Navigator)
 Nos da información sobre el navegador y el sistema en que se ejecuta:
-* `.language`: el idioma preferido del usuario, como etiqueta [BCP 47](https://developer.mozilla.org/es/docs/Glossary/BCP_47_language_tag): `'es-ES'`, `'es-419'` (español de Latinoamérica), `'ca-ES-valencia'`, `'en-US'`, ... **No** es sólo el código del idioma, por lo que `navigator.language === 'es'` normalmente será falso. Para saber si es español usaremos `navigator.language.startsWith('es')`
+* `.language`: el idioma preferido del usuario, como etiqueta [BCP 47](https://developer.mozilla.org/es/docs/Glossary/BCP_47_language_tag): `'es-ES'`, `'es-419'` (español de Latinoamérica), `'ca-ES'`, `'en-US'`, ... **No** es sólo el código del idioma, por lo que `navigator.language === 'es'` normalmente será falso. Para saber si es español usaremos `navigator.language.startsWith('es')`
 * `.languages`: array con los idiomas que acepta el usuario, por orden de preferencia
 * `.onLine`: _false_ si sabemos seguro que no hay conexión (_true_ no garantiza que la haya)
 * `.userAgent`: cadena que identifica al navegador. Por razones históricas todos los navegadores dicen ser "Mozilla" y casi todos dicen ser también "Safari", así que es difícil de interpretar

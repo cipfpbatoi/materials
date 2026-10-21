@@ -10,7 +10,6 @@
     - [Eventos de toque](#eventos-de-toque)
     - [Eventos de formulario](#eventos-de-formulario)
   - [Los objetos _this_ y _event_](#los-objetos-this-y-event)
-    - [_Bindeo_ del objeto _this_](#bindeo-del-objeto-this)
   - [Propagación de eventos](#propagación-de-eventos)
   - [innerHTML y escuchadores de eventos](#innerhtml-y-escuchadores-de-eventos)
   - [Delegación de eventos](#delegación-de-eventos)
@@ -60,16 +59,6 @@ window.onload = function() {
 }
 ```
 
-o mejor
-  
-  ```javascript
-document.onDOMContentLoaded = () => {
-  document.getElementById('boton1').onclick = function() {
-    alert('Se ha pulsado');
-  }
-}
-```
-
 ### Event listeners
 Pero esta forma _tradicional_ de poner escuchadores a los eventos lo es la más adecuada. La forma recomendada de hacerlo es usando el modelo avanzado de registro de eventos del _W3C_, mediante el método `addEventListener` que recibe como primer parámetro el nombre del evento a escuchar (sin '_on_') y como segundo parámetro la función a ejecutar cuando se produzca (OJO, **sin paréntesis**):
 ```javascript
@@ -87,7 +76,7 @@ document.getElementById('boton1').addEventListener('click', () => {
 });
 ```
 
-Si queremos pasarle algún parámetro a la función manejadora (cosa bastante poco usual) debemos usar obligatoriamente funciones anónimas como escuchadores de eventos:
+Si queremos pasarle algún parámetro a la función manejadora (cosa bastante poco usual) debemos usar funciones anónimas como escuchadores de eventos:
 
 <script async src="//jsfiddle.net/juansegura/L5pkg93w/1/embed/js,html,result/"></script>
 
@@ -108,7 +97,7 @@ Se producen en el documento HTML:
 * **load**: se produce cuando termina de cargarse la página. Es útil para hacer acciones que requieran que la página esté cargada
 * **DOMContentLoaded**: se produce cuando se ha cargado el árbol DOM pero no se han cargado imágenes, hojas de estilo, ni subframes. Es el ideal para realizar acciones del DOM sin tener que esperar a que se carguen las imágenes y el CSS
 * **unload**: al destruirse el documento (ej. cerrar)
-* **beforeUnload**: antes de destruirse (podríamos mostrar un mensaje de confirmación)
+* **beforeunload**: antes de destruirse (podríamos mostrar un mensaje de confirmación)
 * **resize**: si cambia el tamaño del documento (porque se redimensiona la ventana)
 
 ### Eventos de ratón
@@ -129,7 +118,7 @@ Los produce el usuario al usar el teclado:
 * **keypress**: acción de pulsar y soltar (sólo se produce en las teclas alfanuméricas)
 
 NOTA: el orden de secuencia de los eventos es:
-_keyDown_ -> _keyPress_ -> _keyUp_
+_keydown_ -> _keypress_ -> _keyup_
 
 ### Eventos de toque
 Se producen al usar una pantalla táctil:
@@ -143,53 +132,53 @@ Se producen en los formularios:
 * **focus** / **blur**: al obtener/perder el foco el elemento
 * **change**: al perder el foco un \<input> o \<textarea> si ha cambiado su contenido o al cambiar de valor un \<select> o un \<checkbox>
 * **input**: al cambiar el valor de un \<imput> o \<textarea> (se produce cada vez que escribimos una letra es estos elementos)
-* **select**: al cambiar el valor de un \<select> o al seleccionar texto de un \<imput> o \<textarea>
+* **select**: al seleccionar texto de un \<imput> o \<textarea>
 * **submit** / **reset**: al enviar/recargar un formulario
 
 ## Los objetos _this_ y _event_
-Al producirse un evento se generan automáticamente en su función manejadora 2 objetos:
-* **this**: siempre hace referencia al elemento que contiene el código en donde se encuentra la variable _this_. En el caso de una función manejadora será el elemento que tiene el escuchador que ha recibido el evento. OJO: se sobreescribe el valor anterior de _this_ por lo que si queremos conservarlo debemos guardarlo en otra variable antes de entrar en la función manejadora.
-* **event**: es un objeto y la función manejadora lo recibe como parámetro. Tiene propiedades y métodos que nos dan información sobre el evento, como:
-  * **.type**: qué evento se ha producido (click, submit, keyDown, ...)
-  * **.target**: es el elemento exacto donde se originó el evento — el que el usuario realmente tocó, hizo clic, etc.
-  * **.currentTarget**: es el elemento que tiene asociado el manejador del evento, es decir, quien está escuchando ese evento.
-  * ```javascript
-    <p id="parrafo">
-      Haz clic <strong>aquí</strong> o en el texto.
-    </p>
+Como ya sabemos dentro de una función declarada con `function` la variable _this_ hace referencia al objeto que la contiene, por tanto el valor anterior de _this_ se pierde. Cuando se produce un evento y se ejecuta su función manejadora el valor de _this_ pasa a referirse al elemento que ha recibido el evento (el `currentTarget` que veremos a continuación). Sin embargo, si la función manejadora es una función flecha el valor de _this_ no se sobreescribe y mantiene el valor que tenía antes de entrar en la función manejadora.
 
-    <script>
-    const p = document.getElementById("parrafo");
+Al producirse un evento se genera automáticamente el objeto _event_ que contiene información sobre el evento producido y que se pasa como parámetro a la función manejadora. Tiene propiedades y métodos que nos dan información sobre el evento, como:
+* **.type**: qué evento se ha producido (click, submit, keydown, ...)
+* **.target**: es el elemento exacto donde se originó el evento, el que el usuario realmente tocó, hizo clic, etc.
+* **.currentTarget**: es el elemento que tiene asociado el manejador del evento, es decir, quien está escuchando ese evento.
+* ```javascript
+  <p id="parrafo">
+    Haz clic <strong>aquí</strong> o en el texto.
+  </p>
 
-    p.addEventListener("click", function(event) {
-      console.log("event.target:", event.target);  // <strong> → el elemento donde ocurrió el clic
-      console.log("event.currentTarget:", event.currentTarget);  // <p> → el elemento con el listener
-      console.log("this:", this);  <p> → lo mismo que event.currentTarget
-    });
-    </script>
-    ```
-  * **.relatedTarget**: en un evento 'mouseover' **event.target** es el elemento donde ha entrado el puntero del ratón y **event.relatedTarget** el elemento del que ha salido. En un evento 'mouseout' sería al revés.
-  * **.cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
-  * **.preventDefault()**: si un evento tiene un escuchador asociado se ejecuta el código de dicho escuchador y después el navegador realiza la acción que correspondería por defecto al evento si no tuviera escuchador (por ejemplo un escuchador del evento _click_ sobre un hiperenlace hará que se ejecute su código y después saltará a la página indicada en el _href_ del hiperenlace). Este método cancela la acción por defecto del navegador para el evento. Por ejemplo si el evento era el _submit_ de un formulario éste no se enviará o si era un _click_ sobre un hiperenlace no se irá a la página indicada en él.
-  * **.stopPropagation**: un evento se produce sobre un elemento y todos su padres. Por ejemplo si hacemos click en un \<span> que está en un \<p> que está en un \<div> que está en el BODY el evento se va propagando por todos estos elementos y saltarían los escuchadores asociados a todos ellos (si los hubiera). Si alguno llama a este método el evento no se propagará a los demás elementos padre.
-  * dependiento del tipo de evento tendrá más propiedades:
-    * eventos de ratón:
-      * **.button**: qué botón del ratón se ha pulsado (0: izq, 1: rueda; 2: dcho).
-      * **.screenX** / **.screenY**: las corrdenadas del ratón respecto a la pantalla
-      * **.clientX** / **.clientY**: las coordenadas del ratón respecto a la ventana cuando se produjo el evento
-      * **.pageX** / **.pageY**: las coordenadas del ratón respecto al documento (si se ha hecho un scroll será el clientX/Y más el scroll)
-      * **.offsetX** / **.offsetY**: las coordenadas del ratón respecto al elemento sobre el que se produce el evento
-      * **.detail**: si se ha hecho click, doble click o triple click
-    * eventos de teclado: son los más incompatibles entre diferentes navegadores. En el teclado hay teclas normales y especiales (Alt, Ctrl, Shift, Enter, Tab, flechas, Supr, ...). En la información del teclado hay que distinguir entre el código del carácter pulsado (e=101, E=69, €=8364) y el código de la tecla pulsada (para los 3 caracteres es el 69 ya que se pulsa la misma tecla). Las principales propiedades de _event_ son:
-      * **.key**: devuelve el nombre de la tecla pulsada
-      * **.which**: devuelve el código de la tecla pulsada
-      * **.keyCode** / **.charCode**: código de la tecla pulsada y del carácter pulsado (según navegadores)
-      * **.shiftKey** / **.ctrlKey** / **.altKey** / **.metaKey**: si está o no pulsada la tecla SHIFT / CTRL / ALT / META. Esta propiedad también la tienen los eventos de ratón
-      > NOTA: a la hora de saber qué tecla ha pulsado el usuario es conveniente tener en cuenta:
-      > * para saber qué carácter se ha pulsado lo mejor usar la propiedad _key_ o _charCode_ de _keyPress_, pero varía entre navegadores
-      > * para saber la tecla especial pulsada mejor usar el _key_ o el _keyCode_ de _keyUp_
-      > * captura sólo lo que sea necesario, se producen muchos eventos de teclado
-      > * para obtener el carácter a partir del código: `String fromCharCode(codigo);`
+  <script>
+  const p = document.getElementById("parrafo");
+
+  p.addEventListener("click", function(event) {
+    console.log("event.target:", event.target);  // <strong> → el elemento donde ocurrió el clic
+    console.log("event.currentTarget:", event.currentTarget);  // <p> → el elemento con el listener
+    console.log("this:", this);  // <p> → lo mismo que event.currentTarget
+  });
+  </script>
+  ```
+* **.relatedTarget**: en un evento 'mouseover' **event.target** es el elemento donde ha entrado el puntero del ratón y **event.relatedTarget** el elemento del que ha salido. En un evento 'mouseout' sería al revés.
+* **.cancelable**: si el evento puede cancelarse. En caso afirmativo se puede llamar a **event.preventDefault()** para cancelarlo
+* **.preventDefault()**: si un evento tiene un escuchador asociado se ejecuta el código de dicho escuchador y después el navegador realiza la acción que correspondería por defecto al evento si no tuviera escuchador (por ejemplo un escuchador del evento _click_ sobre un hiperenlace hará que se ejecute su código y después saltará a la página indicada en el _href_ del hiperenlace). Este método cancela la acción por defecto del navegador para el evento. Por ejemplo si el evento era el _submit_ de un formulario éste no se enviará o si era un _click_ sobre un hiperenlace no se irá a la página indicada en él.
+* **.stopPropagation**: un evento se produce sobre un elemento y todos su padres. Por ejemplo si hacemos click en un \<span> que está en un \<p> que está en un \<div> que está en el BODY el evento se va propagando por todos estos elementos y saltarían los escuchadores asociados a todos ellos (si los hubiera). Si alguno llama a este método el evento no se propagará a los demás elementos padre.
+* dependiento del tipo de evento tendrá más propiedades:
+  * eventos de ratón:
+    * **.button**: qué botón del ratón se ha pulsado (0: izq, 1: rueda; 2: dcho).
+    * **.screenX** / **.screenY**: las corrdenadas del ratón respecto a la pantalla
+    * **.clientX** / **.clientY**: las coordenadas del ratón respecto a la ventana cuando se produjo el evento
+    * **.pageX** / **.pageY**: las coordenadas del ratón respecto al documento (si se ha hecho un scroll será el clientX/Y más el scroll)
+    * **.offsetX** / **.offsetY**: las coordenadas del ratón respecto al elemento sobre el que se produce el evento
+    * **.detail**: si se ha hecho click, doble click o triple click
+  * eventos de teclado: son los más incompatibles entre diferentes navegadores. En el teclado hay teclas normales y especiales (Alt, Ctrl, Shift, Enter, Tab, flechas, Supr, ...). En la información del teclado hay que distinguir entre el código del carácter pulsado (e=101, E=69, €=8364) y el código de la tecla pulsada (para los 3 caracteres es el 69 ya que se pulsa la misma tecla). Las principales propiedades de _event_ son:
+    * **.key**: devuelve el nombre de la tecla pulsada
+    * **.which**: devuelve el código de la tecla pulsada
+    * **.keyCode** / **.charCode**: código de la tecla pulsada y del carácter pulsado (según navegadores)
+    * **.shiftKey** / **.ctrlKey** / **.altKey** / **.metaKey**: si está o no pulsada la tecla SHIFT / CTRL / ALT / META. Esta propiedad también la tienen los eventos de ratón
+    > NOTA: a la hora de saber qué tecla ha pulsado el usuario es conveniente tener en cuenta:
+    > * para saber qué carácter se ha pulsado lo mejor usar la propiedad _key_ o _charCode_ de _keyPress_, pero varía entre navegadores
+    > * para saber la tecla especial pulsada mejor usar el _key_ o el _keyCode_ de _keyUp_
+    > * captura sólo lo que sea necesario, se producen muchos eventos de teclado
+    > * para obtener el carácter a partir del código: `String.fromCharCode(codigo);`
       
 Lo mejor para familiarizarse con los diferentes eventos es consultar los [ejemplos de w3schools](https://www.w3schools.com/js/js_events_examples.asp).
 
@@ -215,7 +204,7 @@ class ... {
 La forma de solucionarlo es usar el método _.bind()_, que nos permite pasarle a una función el valor que queremos darle a la variable _this_ dentro de dicha función: 
 
 ```javascript
-document.getElementById('boton1').removeEventListener('click', this.pulsado.bind(this));
+document.getElementById('boton1').addEventListener('click', this.pulsado.bind(this));
 ```
 
 En este ejemplo el valor de _this_ dentro de la función _pulsado_ será _this_, es decir, la instancia de la clase, en lugar de _event.currentTarget_ (en vez de _this_ le podríamos pasar cualquier otro valor). 
@@ -223,7 +212,7 @@ En este ejemplo el valor de _this_ dentro de la función _pulsado_ será _this_,
 Podemos _bindear_, es decir, pasarle a la función manejadora más variables declarándolas como parámetros de _bind_. El primer parámetro será el valor de _this_ y los demás serán parámetros que recibirá la función antes de recibir el parámetro _event_ que será el último. Por ejemplo:
 
 ```javascript
-document.getElementById('acepto').removeEventListener('click', aceptado.bind(var1, var2));
+document.getElementById('acepto').addEventListener('click', aceptado.bind(var1, var2));
 ...
 function aceptado(param1, param2, event) {
   // Aquí dentro tendremos los valores
@@ -294,7 +283,10 @@ function renderNewRow(data) {
   let miTabla = document.getElementById('tabla-datos');
   let nuevaFila = `<tr id="${data.id}"><td>${data.dato1}</td><td>${data.dato2}...</td></tr>`;
   miTabla.innerHTML += nuevaFila;
-  document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: '+ event.target.id));
+  document.getElementById(data.id).addEventListener('dblclick', event => alert('Id: '+ event.currentT
+  target.id));  
+  // event.target sería el <td>, que no tiene id, por eso usamos currentTarget que es el <tr> que tiene el escuchador
+}
 ```
 
 Sin embargo así sólo la última fila añadida tendría escuchador ya que la línea `miTabla.innerHTML += nuevaFila` borra todo el contenido de _myTabla_ y lo vuelve a renderizar pero ya no tendría escuchadores, excepto el de _nuevaFila_ que lo ponemos después de renderizarlo.
@@ -308,6 +300,7 @@ function renderNewRow(data) {
   nuevaFila.innerHTML = `<td>${data.dato1}</td><td>${data.dato2}...</td>`;
   nuevaFila.addEventListener('dblclick', event => alert('Id: ' + event.target.id) );
   miTabla.appendChild(nuevaFila);
+}
 ```
 
 De esta forma además mejoramos el rendimiento ya que el navegador sólo tiene que renderizar el nodo correspondiente a la nuevaFila y no todas las filas de la tabla como pasaba con el primer código.
