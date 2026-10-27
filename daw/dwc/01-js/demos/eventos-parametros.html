@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eventos: pasar parámetros a la función manejadora</title>
+<style>
+:root{--bg:#fff;--card:#F7F6F2;--line:#D3D1C7;--txt:#2C2C2A;--muted:#5F5E5A}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1e1c;--card:#2C2C2A;--line:#444441;--txt:#F1EFE8;--muted:#B4B2A9}}
+body{margin:0;padding:16px;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+button{font:inherit;font-size:14px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--txt);cursor:pointer;margin-right:8px}
+button:hover{background:var(--card)}
+#mensaje{margin-top:16px;padding:12px 14px;background:var(--card);border-radius:8px;min-height:1.5em}
+</style>
+</head>
+<body>
+  <button id="boton1">Botón 1</button>
+  <button id="boton2">Botón 2</button>
+  <p id="mensaje">Pulsa un botón</p>
+
+<script>
+document.getElementById('boton1').addEventListener('click', (event) => saluda('Juan', event));
+document.getElementById('boton2').addEventListener('click', (event) => saluda('Ana', event));
+
+function saluda(nombre, event) {
+  document.getElementById('mensaje').textContent =
+    `Hola ${nombre}, has pulsado ${event.currentTarget.id}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eventos: delegación de eventos</title>
+<style>
+:root{--bg:#fff;--card:#F7F6F2;--line:#D3D1C7;--txt:#2C2C2A;--muted:#5F5E5A;--acc:#534AB7}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1e1c;--card:#2C2C2A;--line:#444441;--txt:#F1EFE8;--muted:#B4B2A9;--acc:#AFA9EC}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+button{font:inherit;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--txt);cursor:pointer}
+button:hover{background:var(--card)}
+form{display:flex;gap:8px;margin-bottom:12px}
+input{font:inherit;font-size:14px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--txt)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+#lista-libros{list-style:none;margin:0;padding:0}
+#lista-libros li{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px}
+#lista-libros li strong{flex:1}
+#log{list-style:none;margin:0;padding:12px 14px;background:var(--card);border-radius:8px;font:13px/1.7 ui-monospace,Consolas,monospace;min-height:160px}
+#log li.vacio{color:var(--muted);font-family:system-ui,sans-serif}
+</style>
+</head>
+<body>
+  <form id="form-libro">
+    <input id="titulo" placeholder="Título del libro" required>
+    <button type="submit">Añadir libro</button>
+  </form>
+
+  <div class="grid">
+    <ul id="lista-libros">
+      <li data-id="1"><strong>El Quijote</strong>
+        <button data-action="edit">Editar</button>
+        <button data-action="delete">Borrar</button>
+      </li>
+      <li data-id="2"><strong>La Regenta</strong>
+        <button data-action="edit">Editar</button>
+        <button data-action="delete">Borrar</button>
+      </li>
+    </ul>
+    <ol id="log"><li class="vacio">Pulsa los botones o haz click en un título. Añade un libro y comprueba que sus botones también funcionan, aunque no les hemos puesto ningún escuchador</li></ol>
+  </div>
+
+<script>
+const lista = document.getElementById('lista-libros');
+let siguienteId = 3;
+
+// UN SOLO escuchador para todos los botones de la lista, incluidos los que se añadan después
+lista.addEventListener('click', (event) => {
+  anota(`target: <${event.target.tagName.toLowerCase()}>`);
+
+  const boton = event.target.closest('button[data-action]');
+  if (!boton) return;   // el click no ha sido en un botón
+
+  const id = Number(boton.closest('li').dataset.id);
+  if (boton.dataset.action === 'delete') {
+    borraLibro(id);
+  } else if (boton.dataset.action === 'edit') {
+    editaLibro(id);
+  }
+});
+
+function borraLibro(id) {
+  lista.querySelector(`li[data-id="${id}"]`).remove();
+  anota(`→ borraLibro(${id})`);
+}
+
+function editaLibro(id) {
+  const titulo = lista.querySelector(`li[data-id="${id}"] strong`).textContent;
+  anota(`→ editaLibro(${id}): ${titulo}`);
+}
+
+document.getElementById('form-libro').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const li = document.createElement('li');
+  li.dataset.id = siguienteId++;
+  const titulo = document.createElement('strong');
+  titulo.textContent = document.getElementById('titulo').value;
+  li.append(titulo, creaBoton('edit', 'Editar'), creaBoton('delete', 'Borrar'));
+  lista.append(li);   // NO le ponemos escuchadores a sus botones
+  event.currentTarget.reset();
+  anota(`Añadido libro ${li.dataset.id} (sin escuchadores propios)`);
+});
+
+function creaBoton(accion, texto) {
+  const boton = document.createElement('button');
+  boton.dataset.action = accion;
+  boton.textContent = texto;
+  return boton;
+}
+
+function anota(texto) {
+  const log = document.getElementById('log');
+  log.querySelector('.vacio')?.remove();
+  const li = document.createElement('li');
+  li.textContent = texto;
+  log.append(li);
+}
+</script>
+</body>
+</html>

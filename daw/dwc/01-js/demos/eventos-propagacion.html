@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eventos: propagación (captura y burbujeo)</title>
+<style>
+:root{--bg:#fff;--card:#F7F6F2;--line:#D3D1C7;--txt:#2C2C2A;--muted:#5F5E5A;--acc:#534AB7;--cap:#185FA5;--cap-bg:#E6F1FB;--bub:#854F0B;--bub-bg:#FAEEDA;--stop:#A32D2D}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1e1c;--card:#2C2C2A;--line:#444441;--txt:#F1EFE8;--muted:#B4B2A9;--acc:#AFA9EC;--cap:#85B7EB;--cap-bg:#0C447C;--bub:#FAC775;--bub-bg:#633806;--stop:#F09595}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+.controles{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-bottom:12px;font-size:14px}
+select,button{font:inherit;font-size:14px;padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--txt)}
+button{cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+#div,#parrafo,#span{display:block;border:2px solid var(--line);border-radius:10px;padding:12px;margin:0;cursor:pointer;user-select:none;transition:background .15s}
+#div{padding-bottom:28px}
+#parrafo{margin-top:8px}
+#span{margin-top:8px;text-align:center}
+.flash-captura{background:var(--cap-bg)!important;border-color:var(--cap)!important}
+.flash-burbujeo{background:var(--bub-bg)!important;border-color:var(--bub)!important}
+#log{list-style:none;margin:0;padding:12px 14px;background:var(--card);border-radius:8px;font:13px/1.7 ui-monospace,Consolas,monospace;min-height:200px}
+#log li.captura{color:var(--cap)}
+#log li.burbujeo{color:var(--bub)}
+#log li.stop{color:var(--stop);font-weight:600}
+#log li.vacio{color:var(--muted);font-family:system-ui,sans-serif}
+.leyenda{font-size:13px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="controles">
+    <label><input type="checkbox" id="ver-captura"> Escuchar también en fase de captura</label>
+    <label>Llamar a <code>stopPropagation()</code> en:
+      <select id="parar-en">
+        <option value="">ningún elemento</option>
+        <option value="div">div</option>
+        <option value="parrafo">p</option>
+        <option value="span">span</option>
+      </select>
+    </label>
+    <button id="borrar">Borrar registro</button>
+  </div>
+
+  <div class="grid">
+    <div id="div">DIV
+      <p id="parrafo">P
+        <span id="span">SPAN</span>
+      </p>
+    </div>
+    <div>
+      <ol id="log"><li class="vacio">Haz click sobre SPAN, P o DIV</li></ol>
+      <p class="leyenda"><span style="color:var(--cap)">■</span> fase de captura &nbsp; <span style="color:var(--bub)">■</span> fase de burbujeo</p>
+    </div>
+  </div>
+
+<script>
+const log = document.getElementById('log');
+const elementos = ['div', 'parrafo', 'span'].map((id) => document.getElementById(id));
+let retardo = 0;   // para iluminar los elementos uno tras otro en el orden en que se ejecutan
+
+function escuchador(event, fase) {
+  // Si es el escuchador de captura y no se ha marcado la casilla, no hacemos nada
+  if (fase === 'captura' && !document.getElementById('ver-captura').checked) return;
+
+  // En el elemento pulsado (fase de destino) event.eventPhase vale Event.AT_TARGET
+  const destino = event.eventPhase === Event.AT_TARGET ? ' [destino]' : '';
+  anota(`${fase.padEnd(8)} → escuchador de ${event.currentTarget.id.padEnd(7)} (target: ${event.target.id})${destino}`, fase);
+  ilumina(event.currentTarget, fase);
+
+  if (document.getElementById('parar-en').value === event.currentTarget.id) {
+    event.stopPropagation();
+    anota(`stopPropagation() en ${event.currentTarget.id}: el evento no sigue`, 'stop');
+  }
+}
+
+for (const elemento of elementos) {
+  elemento.addEventListener('click', (event) => escuchador(event, 'captura'), true);  // fase de captura
+  elemento.addEventListener('click', (event) => escuchador(event, 'burbujeo'));      // fase de burbujeo (por defecto)
+}
+
+// Antes de que empiece el recorrido borramos el registro anterior
+document.addEventListener('click', (event) => {
+  if (elementos.includes(event.target)) {
+    log.innerHTML = '';
+    retardo = 0;
+  }
+}, true);
+
+function anota(texto, clase) {
+  const li = document.createElement('li');
+  li.textContent = texto;
+  li.className = clase;
+  log.append(li);
+}
+
+function ilumina(elemento, fase) {
+  const clase = 'flash-' + fase;
+  setTimeout(() => elemento.classList.add(clase), retardo);
+  setTimeout(() => elemento.classList.remove(clase), retardo + 450);
+  retardo += 500;
+}
+
+document.getElementById('borrar').addEventListener('click', () => {
+  log.innerHTML = '<li class="vacio">Haz click sobre SPAN, P o DIV</li>';
+});
+</script>
+</body>
+</html>
