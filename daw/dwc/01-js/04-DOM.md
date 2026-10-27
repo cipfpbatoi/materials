@@ -10,6 +10,7 @@
     - [Estilos de los nodos](#estilos-de-los-nodos)
     - [Atributos de clase](#atributos-de-clase)
     - [Atributos de datos](#atributos-de-datos)
+  - [Reaccionar a las acciones del usuario](#reaccionar-a-las-acciones-del-usuario)
 
 ## Introducción
 La mayoría de las veces que programamos con Javascript es para que se ejecute en una página web mostrada por el navegador. En este contexto tenemos acceso a ciertos objetos que nos permiten interactuar con la página (DOM) y con el navegador (Browser Object Model, BOM).
@@ -80,7 +81,7 @@ let nodos = document.getElementsByTagName('p');   // nodos contendrá todos los 
 ```javascript
 let radiosSexo = document.getElementsByName('sexo');   // radiosSexo contendrá todos los nodos con ese atributo (seguramente radiobuttons con name="sexo")
 ```
-* **.querySelector(selector)**: devuelve el primer nodo seleccionad por el _selector_ CSS indicado. Ej.:
+* **.querySelector(selector)**: devuelve el primer nodo seleccionado por el _selector_ CSS indicado. Ej.:
 ```javascript
 let nodo = document.querySelector('p.error');   // nodo contendrá el primer párrafo de clase _error_
 ```
@@ -90,13 +91,14 @@ let nodos = document.querySelectorAll('p.error');   // nodos contendrá todos lo
 ```
 NOTA: al aplicar estos métodos sobre _document_ se seleccionará sobre la página pero podrían también aplicarse a cualquier nodo y en ese caso la búsqueda se realizaría sólo entre los descendientes de dicho nodo.
 
+Una diferencia importante entre los `getElementsBy...` y los `querySelector...` es que los primeros devuelven una colección _en vivo_ (si se añaden o eliminan nodos que cumplan la condición la colección se actualiza automáticamente) mientras que los segundos devuelven una colección _estática_ (no se actualiza aunque se añadan o eliminen nodos). Los `querySelector...` tienen el método _forEach_ para recorrer la colección mientras que los `getElementsBy...`, aunque todos puedes recorrerse con un `for...of`.
+
 También tenemos 'atajos' para obtener algunos elementos comunes:
-* `document.documentElement`: devuelve el nodo del elemento _\<html>_
-* `document.head`: devuelve el nodo del elemento _\<head>_
-* `document.body`: devuelve el nodo del elemento _\<body>_
-* `document.title`: devuelve el nodo del elemento _\<title>_
-* `document.link`: devuelve una colección con todos los hiperenlaces del documento
-* `document.anchor`: devuelve una colección con todas las anclas del documento
+* `document.documentElement`: devuelve el nodo _\<html>_
+* `document.head`: devuelve el nodo _\<head>_
+* `document.body`: devuelve el nodo _\<body>_
+* `document.title`: devuelve el texto del nodo _\<title>_
+* `document.links`: devuelve una colección con todos los hiperenlaces del documento
 * `document.forms`: devuelve una colección con todos los formularios del documento
 * `document.images`: devuelve una colección con todas las imágenes del documento
 * `document.scripts`: devuelve una colección con todos los scripts del documento
@@ -121,16 +123,24 @@ En muchas ocasiones queremos acceder a cierto nodo a partir de uno dado. Para el
 * `elemento.nextElementSibling`: devuelve el elemento HTML que es el siguiente hermano de _elemento_ 
 * `elemento.nextSibling`: devuelve el nodo que es el siguiente hermano de _elemento_ (incluyendo nodos de tipo texto o comentarios)
 * `elemento.previousElementSibling`, `elemento.previousSibling`: igual pero con el hermano anterior
-* `elemento.hasChildNodes`: indica si _elemento_ tiene o no nodos hijos
+* `elemento.hasChildNodes()`: indica si _elemento_ tiene o no nodos hijos
 * `elemento.childElementCount`: devuelve el nº de nodos hijo de  _elemento_
-* `elemento.closest(selector)`: devuelve el ancestro más cercano que coincide con el selector. Por ejemplo si el elemento es un \<td> de una tabla entonces `elemento.closest('table')` devolverá la tabla a la que pertenece
+* `elemento.closest(selector)`: devuelve el ancestro más cercano que coincide con el selector (empezando por el propio elemento). Por ejemplo si _elemento_ es un \<td> de una tabla entonces `elemento.closest('table')` devolverá la tabla a la que pertenece
+* `elemento.matches(selector)`: devuelve _true_ si _elemento_ cumple el selector CSS pasado o _false_ si no. Por ejemplo, si _elemento_ es `<li class="important" data-id="7">`:
+```javascript
+elemento.matches('li');                  // true
+elemento.matches('.important');          // true
+elemento.matches('li.important[data-id]'); // true
+elemento.matches('ul > li');             // true si su padre es un UL
+elemento.matches('.done');               // false
+```
 
-**IMPORTANTE**: a menos que me interesen comentarios, saltos de página, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
+**IMPORTANTE**: a menos que me interesen comentarios, saltos de línea, etc **siempre** debo usar los métodos que sólo devuelven elementos HTML, no todos los nodos.
 
 ![Recorrer el árbol DOM](./img/domRelaciones.png)
 
-> EJERCICIO: Siguiento con la [página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) obtén desde la consola, al menos de 2 formas diferentes:
-> - El primér párrafo que hay dentro del div 'lipsum'
+> EJERCICIO: Siguiendo con la [página de ejemplo](./ejercicios/ejemplos/ejemploDOM.html) obtén desde la consola, al menos de 2 formas diferentes:
+> - El primer párrafo que hay dentro del div 'lipsum'
 > - El segundo párrafo de 'lipsum'
 > - El último item de la lista
 > - La label de 'Escoge sexo'
@@ -145,19 +155,18 @@ let contenido = elemento.innerHTML;   // contenido='Esta página es <strong>muy 
 ```javascript
 let contenido = elemento.textContent;   // contenido='Esta página es muy simple'
 ```
-* `elemento.value`: devuelve la propiedad 'value' de un \<input> (en el caso de un \<input> de tipo text devuelve lo que hay escrito en él). Como los \<inputs> no tienen etiqueta de cierre (\</input>) no podemos usar _.innerHTML_ ni _.textContent_.  Por ejemplo si _elem1_ es el nodo `<input name="nombre">` y _elem2_ es el nodo `<input tipe="radio" value="H">Hombre`
+* `elemento.value`: devuelve la propiedad 'value' de un \<input> (en el caso de un \<input> de tipo text devuelve lo que hay escrito en él). Como los \<inputs> no tienen etiqueta de cierre (\</input>) no podemos usar _.innerHTML_ ni _.textContent_.  Por ejemplo si _elem1_ es el nodo `<input name="nombre">` y _elem2_ es el nodo `<input type="radio" value="H">Hombre`
 ```javascript
 let cont1 = elem1.value;   // cont1 valdría lo que haya escrito en el <input> en ese momento
 let cont2 = elem2.value;   // cont2="H"
 ```
 
 Otras propiedades:
-* `elemento.innerText`: igual que _textContent_
-* `elemento.focus`: da el foco a _elemento_ (para inputs, etc). Para quitarle el foco `elemento.blur`
-* `elemento.clientHeight` / `elemento.clientWidth`: devuelve el alto / ancho visible del _elemento_
-* `elemento.offsetHeight` / `elemento.offsetWidth`: devuelve el alto / ancho total del _elemento_
-* `elemento.clientLeft` / `elemento.clientTop`: devuelve la distancia de _elemento_ al borde izquierdo / superior
-* `elemento.offsetLeft` / `elemento.offsetTop`: devuelve los píxels que hemos desplazado _elemento_ a la izquierda / abajo
+* `elemento.focus()`: da el foco a _elemento_ (para inputs, etc). Para quitarle el foco `elemento.blur()`
+* `elemento.clientHeight` / `elemento.clientWidth`: devuelve el alto / ancho visible del _elemento_ (incluye el _padding_ pero no el _border_ ni el _margin_)
+* `elemento.offsetHeight` / `elemento.offsetWidth`: devuelve el alto / ancho total del _elemento_ (incluye _padding_ y _border_ pero no el _margin_)
+* `elemento.clientLeft` / `elemento.clientTop`: devuelve el grosor del borde izquierdo / superior de _elemento_
+* `elemento.offsetLeft` / `elemento.offsetTop`: devuelve la posición del _elemento_ a la izquierda / abajo respecto a su _offsetParent_ (el primer ancestro que tenga posición relativa, absoluta o fija)
 
 > EJERCICIO: Obtén desde la consola, al menos de 2 formas:
 > - El innerHTML de la etiqueta de 'Escoge sexo'
@@ -171,9 +180,11 @@ Vamos a ver qué métodos nos permiten cambiar el árbol DOM, y por tanto modifi
 ```javascript
 let nuevoLi = document.createElement('li');
 ```
-* `elemento.append(elementos o texto)`: añade al DOM los parámetros pasados como últimos hijos de _elemento_. Se le puede pasar tanto un nodo DOM como una cadena de texto (para la que se creará su nodo de texto correspondiente) y que se le pueden pasar varios parámetros para crear varios nodos. Ej.:
+* `elemento.append(elementos o texto)`: añade al DOM los parámetros pasados como últimos hijos de _elemento_. Se le puede pasar tanto nodos DOM como cadenas de texto (para la que creará su nodo de texto correspondiente) y permite pasar varios parámetros para crear varios nodos. Ej.:
 ```javascript
-nuevoLi.append('Nuevo elemento de lista');     // añade el texto pasado al elemento LI creado
+let nuevoStrong = document.createElement('strong');   // crea un nuevo nodo <strong>
+nuevoStrong.append('nuevo');     // añade el texto pasado al elemento creado
+nuevoLi.append('Elemento de lista ', nuevoStrong);   // añade el texto y el nodo <strong> al elemento <li> creado: <li>Elemento de lista <strong>nuevo</strong></li>
 let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
 miPrimeraLista.append(nuevoLi);    // añade LI como último hijo de UL, es decir al final de la lista
 ```
@@ -182,7 +193,7 @@ miPrimeraLista.append(nuevoLi);    // añade LI como último hijo de UL, es deci
 const primerLi = document.createElement('li');
 primerLi.append('Primer elemento de lista'); 
 let miPrimeraLista = document.getElementsByTagName('ul')[0]; 
-miPrimeraLista.prepend(nuevoLi);
+miPrimeraLista.prepend(primerLi);    // añade LI como primer hijo de UL, es decir al principio de la lista
 ```
 * `elemento.after(elementos o texto)`: como _append_ pero en lugar de añadirlos como últimos hijos los añade como los siguientes hermanos de _elemento_.   
 ```javascript
@@ -194,10 +205,22 @@ primerLi.after(otroLi);
 * `elemento.remove()`: borra el nodo _elemento_ del documento.   
 * `elemento.replaceWith(nuevoNodo)`: reemplaza el nodo _elemento_ con el _nuevoNodo_ pasado
 ```javascript
-let primerElementoDeLista = document.getElementsByTagName('ul')[0].firstChild;  // selecciona el 1º LI de miPrimeraLista
-primerElementoDeLista.replaceChild(nuevoLi);    // reemplaza el 1º elemento de la lista con nuevoLi
+let primerElementoDeLista = document.getElementsByTagName('ul')[0].firstElementChild;  // selecciona el 1º LI del primer UL
+primerElementoDeLista.replaceWith(nuevoLi);    // reemplaza el 1º elemento de la lista con nuevoLi
 ```
 * `elementoAClonar.cloneNode(boolean)`: devuelve un clon de _elementoAClonar_ o de _elementoAClonar_ con todos sus descendientes según le pasemos como parámetro _false_ o _true_. Luego podremos insertarlo donde queramos.
+* `elemento.replaceChildren(elementos o texto)`: elimina todos los hijos de _elemento_ y los sustituye por los parámetros pasados (como _append_, admite nodos y cadenas de texto y varios parámetros). Ej.:
+```javascript
+const miLista = document.getElementById('lista-libros');
+
+miLista.replaceChildren();   // vacía la lista (equivale a miLista.innerHTML = '' o miLista.textContent = '')
+
+const li1 = document.createElement('li');
+li1.textContent = 'El Quijote';
+const li2 = document.createElement('li');
+li2.textContent = 'La Regenta';
+miLista.replaceChildren(li1, li2);   // la lista ahora sólo contiene estos 2 elementos
+```
 
 Otros métodos menos usados son:
 * `elemento.appendChild(nuevoNodo)`: añade _nuevoNodo_ como último hijo de _elemento_ y lo devuelve. Se diferencia con _append_ en que sólo permite un parámetro y éste debe ser un nodo, no puede ser texto. Por eso no suele usarse.
@@ -212,7 +235,7 @@ let miPrimeraLista = document.getElementsByTagName('ul')[0];                // s
 let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];   // selecciona el 1º LI de miPrimeraLista
 miPrimeraLista.insertBefore(nuevoLi, primerElementoDeLista);                // añade LI al principio de la lista
 ```
-* `elemento.removeChild(nodo)`: borra _nodo_ como hijode _elemento_ y por tanto se elimina de la página. Ej.:
+* `elemento.removeChild(nodo)`: borra _nodo_ como hijo de _elemento_ y por tanto se elimina de la página. Ej.:
 ```javascript
 let miPrimeraLista = document.getElementsByTagName('ul')[0];  // selecciona el 1º UL de la página
 let primerElementoDeLista = miPrimeraLista.getElementsByTagName('li')[0];  // selecciona el 1º LI de miPrimeraLista
@@ -271,7 +294,7 @@ El primer parámetro indica dónde queremos añadir el nuevo nodo:
 * `beforeend`: como último hijo de _miDiv_
 * `afterend`: después del nodo _miDiv_
 
-**NOTA IMPORTANTE sobre seguridad**: Cuando se inserte texto HTML en una página usando `innerHTML` o `insertAdjacentHTML()` debe tener cuidado de no usar cadenas de texto que no contengan las secuencias de escape pertinentes según sea el caso para evitar ataques de inyección de código. Si queremos insertar texto plano (por ejemplo, lo que escriba un usuario en un formulario) debemos escapar los caracteres especiales de HTML como `<`, `>`, `&`, `"`, `'` y `/`. Por ejemplo, si el usuario escribe `<script>alert('Hola')</script>` y lo insertamos en la página sin escapar los caracteres especiales, se ejecutará el código JavaScript y se mostrará la alerta. Para evitar esto, podemos usar la función `textContent` o `insertAdjacentText()` para insertar el texto plano sin interpretar el HTML.
+**NOTA IMPORTANTE sobre seguridad**: Cuando se inserte texto HTML en una página usando `innerHTML` o `insertAdjacentHTML()` debe tener cuidado de no usar cadenas de texto que no contengan las secuencias de escape pertinentes según sea el caso para evitar ataques de inyección de código. Si queremos insertar texto plano (por ejemplo, lo que escriba un usuario en un formulario) debemos escapar los caracteres especiales de HTML como `<`, `>`, `&`, `"`, `'` y `/`. Por ejemplo, si el usuario escribe `<img src="x" onerror="alert('Hola')">` y lo insertamos en la página sin escapar los caracteres especiales, se ejecutará el código JavaScript y se mostrará la alerta. Para evitar esto, podemos usar `textContent` o `insertAdjacentText()` para insertar el texto plano sin interpretar el HTML.
 
 Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](http://www.w3schools.com/js/js_htmldom_nodes.asp).
 
@@ -281,16 +304,16 @@ Podemos ver más ejemplos de creación y eliminación de nodos en [W3Schools](ht
 
 ## Atributos de los nodos
 Podemos ver y modificar los valores de los atributos de cada elemento HTML y también añadir o eliminar atributos:
-* `elemento.attributes`: devuelve un array con todos los atributos de _elemento_
+* `elemento.attributes`: devuelve una colección con todos los atributos de _elemento_
 * `elemento.hasAttribute('nombreAtributo')`: indica si _elemento_ tiene o no definido el atributo _nombreAtributo_
-* `elemento.getAttribute('nombreAtributo')`: devuelve el valor del atributo _nombreAtributo_ de _elemento_. Para muchos elementos este valor puede directamente con `elemento.atributo`. 
+* `elemento.getAttribute('nombreAtributo')`: devuelve el valor del atributo _nombreAtributo_ de _elemento_. Para muchos elementos este valor puede obtenerse directamente con `elemento.atributo`. 
 * `elemento.setAttribute('nombreAtributo', 'valor')`: establece _valor_ como nuevo valor del atributo _nombreAtributo_ de _elemento_. También puede cambiarse el valor directamente con `elemento.atributo=valor`.
 * `elemento.removeAttribute('nombreAtributo')`: elimina el atributo _nombreAtributo_ de _elemento_
 
-A algunos atributos comunes como `id`, `title` o `className` (para el atributo **class**) se puede acceder y cambiar como si fueran una propiedad del elemento (`elemento.atributo`). Ejemplos:
+Los elementos tienen propiedades para algunos atributos comunes como `id`, `title` o `className` (para el atributo **class**) a las que se puede acceder y cambiar su valor directamente. Ejemplos:
 ```javascript
 elemento.id = 'primera-lista';
-// es equivalente ha hacer:
+// es equivalente a hacer:
 elemento.setAttribute('id', 'primera-lista');
 ```
 
@@ -305,7 +328,7 @@ De todas formas normalmente **NO CAMBIAREMOS ESTILOS** a los elementos sino que 
 ### Atributos de clase
 Ya sabemos que el aspecto de la página debe configurarse en el CSS por lo que no debemos aplicar atributos _style_ al HTML. En lugar de ello les ponemos clases a los elementos que harán que se les aplique el estilo definido para dicha clase.
 
-Como es algo muy común en lugar de utilizar las instrucciones de `elemento.setAttribute('className', 'destacado')` o directamente `elemento.className='destacado'` podemos usar la propiedad **_[classList](https://developer.mozilla.org/es/docs/Web/API/Element/classList)_** que devuelve la colección de todas las clases que tiene el elemento. Por ejemplo si _elemento_ es `<p class="destacado direccion">...`: 
+Como es algo muy común en lugar de utilizar las instrucciones de `elemento.setAttribute('class', 'destacado')` o directamente `elemento.className='destacado'` podemos usar la propiedad **_[classList](https://developer.mozilla.org/es/docs/Web/API/Element/classList)_** que devuelve la colección de todas las clases que tiene el elemento. Por ejemplo si _elemento_ es `<p class="destacado direccion">...`: 
 ```javascript
 let clases=elemento.classList;   // clases=['destacado', 'direccion'], OJO es una colección, no un Array
 ```
@@ -319,11 +342,6 @@ elemento.classList.add('primero');   // ahora elemento será <p class="destacado
 ```javascript
 elemento.classList.remove('direccion');   // ahora elemento será <p class="destacado primero">...
 ```
-* **.toogle(clase)**: añade la clase pasada si no la tiene o la elimina si la tiene ya. Ej.:
-```javascript
-elemento.classList.toogle('destacado');   // ahora elemento será <p class="primero">...
-elemento.classList.toogle('direccion');   // ahora elemento será <p class="primero direccion">...
-```
 * **.contains(clase)**: dice si el elemento tiene o no la clase pasada. Ej.:
 ```javascript
 elemento.classList.contains('direccion');   // devuelve true
@@ -331,14 +349,6 @@ elemento.classList.contains('direccion');   // devuelve true
 * **.replace(oldClase, newClase)**: reemplaza del elemento una clase existente por una nueva. Ej.:
 ```javascript
 elemento.classList.replace('primero', 'ultimo');   // ahora elemento será <p class="ultimo direccion">...
-```
-
-Tened en cuenta que NO todos los navegadores soportan _classList_ por lo que si queremos añadir o quitar clases en navegadores que no lo soportan debemos hacerlo con los métodos estándar, por ejemplo para añadir la clase 'rojo':
-```javascript
-let clases = elemento.className.split(" ");
-if (clases.indexOf('rojo') == -1) {
-  elemento.className += ' ' + 'rojo';
-}
 ```
 
 ### Atributos de datos
@@ -356,8 +366,35 @@ HTML5 permite agregar atributos personalizados no visuales a las etiquetas utili
 
 ```javascript
 let article = document.getElementById('electriccars');
-console.log(article.dataset.columns); // 3
-console.log(article.dataset.indexNumber); // 12314
+console.log(article.dataset.columns); // "3"
+console.log(article.dataset.indexNumber); // "12314"
 ```
 
 Fuente: [Curso DWEC de José Castillo](https://xxjcaxx.github.io/libro_dwec/dom.html#atributos-de-datos)
+
+## Reaccionar a las acciones del usuario
+Para poder hacer cosas cuando el usuario interactúa con la página (pulsa un botón, envía un formulario, ...) tenemos que _escuchar_ los **eventos** que se producen. Los veremos en detalle en el [tema de eventos](./06-eventos.md) pero de momento nos basta con saber que con el método `addEventListener` sobre un elemento indicamos qué función queremos que se ejecute cuando se produzca un evento sobre dicho elemento. Recibe 2 parámetros:
+- el nombre del evento (`'click'`, `'submit'`, ...)
+- la función a ejecutar cuando se produzca, que recibe como parámetro un objeto con información del evento (normalmente lo llamaremos `event`)
+
+```javascript
+const boton = document.getElementById('borrar');
+boton.addEventListener('click', (event) => {
+  // este código se ejecuta cada vez que se pulse el botón
+  boton.closest('li').remove();
+});
+```
+
+En el caso de un formulario **no escucharemos el _click_ del botón de enviar sino el evento _submit_ del formulario**, que se produce tanto al pulsar el botón como al pulsar _Enter_ en un campo. Además, por defecto el navegador envía el formulario y recarga la página, así que lo primero que haremos será evitarlo con `event.preventDefault()`:
+
+```javascript
+const form = document.getElementById('form-libro');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();      // evitamos que se recargue la página
+  // Cojemos los datos del formulario
+  const titulo = document.getElementById('titulo').value;
+  // ... y los usamos
+});
+```
+
+**OJO**: un escuchador se pone a un elemento concreto. Si ese elemento se borra o se vuelve a crear (por ejemplo, con `innerHTML +=` sobre su padre) el escuchador desaparece.
