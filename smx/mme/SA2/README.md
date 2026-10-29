@@ -2,5 +2,5 @@
 
 ## Continguts
 - [Microprocessadores](./SA2-procesador-apuntes.md)
-- Memoria
+- [Memoria](./SA2-memoria-apuntes.md)
 - Almacenamiento
