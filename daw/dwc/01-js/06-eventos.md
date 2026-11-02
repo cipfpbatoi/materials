@@ -156,6 +156,14 @@ Se producen en el documento o la ventana:
 * **pagehide** / **visibilitychange**: al abandonar la página o cuando ésta pasa a estar oculta (cambiar de pestaña, minimizar, ...). Son los que debemos usar para guardar datos al salir. El antiguo evento **unload** está obsoleto y los navegadores lo están eliminando
 * **resize**: si cambia el tamaño de la ventana
 * **scroll**: al desplazarse por el documento o por un elemento con _scroll_
+* **hashchange** (de _window_): se produce cuando cambia el _hash_ de la URL, es decir, la parte que va tras el `#`. Ocurre al pulsar un enlace como `<a href="#about">`, al cambiar `location.hash` desde el código o al usar los botones de atrás y adelante del navegador. No se recarga la página. Dentro del manejador, `location.hash` tiene el nuevo valor, y el objeto _event_ incluye las propiedades `oldURL` y `newURL`. Ejemplo:
+```javascript
+window.addEventListener('hashchange', (event) => {
+  console.log('Ahora estás en', location.hash)
+  console.log('Has cambiado de', event.oldURL, 'a', event.newURL);
+});
+```
+* **popstate** (de _window_): se produce al moverse por el historial (atrás y adelante) entre entradas creadas con `history.pushState()`. Es lo que usan los _routers_ de los _frameworks_ para tener URLs sin `#`.
 
 ### Eventos de ratón
 Los produce el usuario con el ratón:
