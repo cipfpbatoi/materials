@@ -12,9 +12,9 @@ En este primer bloque vamos a conocer el lenguaje Javascript. El bloque se divid
 * [3-Ajax. Promesas. SPA](./09-ajax.md)
 * [4-Document Object Model - DOM](./04-DOM.md): Acceso a nodos. Acceso desde otros nodos. Manipular el árbol DOM. Atributos de los nodos
   * [4.1-MVC](./04.1-MVC.md): Cómo usaremos el patrón MVC para crear la UI de nuestra aplicación
+  * [Comunicación en MVC](./04.2-ComunicacionMVC.md): Cómo gestionamos los eventos en el patrón MVC
 location, history, otros objetos)
 * [5.1-Eventos](./06-eventos.md): Escuchadores. Tipos de eventos. Los objetos _this_ y _event_. Propagación de eventos (_bubbling_)
-  * [Comunicación en MVC](./04.2-ComunicacionMVC.md): Cómo gestionamos los eventos en el patrón MVC
 * [5.2-Validación de formularios](./08-forms.md): Validación de formularios. La API de validación de formularios. Expresiones regulares
 * [5.3-Objetos nativos](./07-globales.md): Funciones globales. Objetos nativos del lenguaje: Math, Date, RegExp, ...
 * [6-APIs HTML5](./10-apis.md): Drag and drop. API Storage. Geolocalización. API de Google Maps
