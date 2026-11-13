@@ -3,4 +3,4 @@
 ## Continguts
 - [Microprocessadores](./SA2-procesador-apuntes.md)
 - [Memoria](./SA2-memoria-apuntes.md)
-- Almacenamiento
+- [Almacenamiento](./SA2-almacenamiento-apuntes.md)

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAM LAB · Simulador de memoria RAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08111e;--panel:#0f1c2e;--panel2:#152740;--line:#24405f;--txt:#e6eef8;--mut:#8ea3bd;--acc:#2ee6a6;--gold:#f5c451;--bad:#ff6b6b;--warn:#ffb547;--blue:#5aa9ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+header{position:sticky;top:0;z-index:5;background:rgba(8,17,30,.96);border-bottom:1px solid var(--line)}
+.top{max-width:1100px;margin:auto;display:flex;align-items:center;gap:14px;padding:12px 16px 8px;flex-wrap:wrap}
+.logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:21px;letter-spacing:1px}
+.logo span{color:var(--acc)}
+.sub{color:var(--mut);font-size:13px}
+.score{margin-left:auto;font-family:'JetBrains Mono',monospace;background:var(--panel2);border:1px solid var(--line);padding:6px 12px;border-radius:8px;display:flex;gap:10px;align-items:center}
+.score b{color:var(--gold);font-size:18px}
+.score button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:6px;cursor:pointer;font-size:11px;padding:2px 6px}
+nav{max-width:1100px;margin:auto;display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto}
+nav button{flex:none;background:var(--panel);color:var(--mut);border:1px solid var(--line);padding:8px 12px;border-radius:8px;cursor:pointer;font:600 13px Inter,sans-serif}
+nav button.on{background:var(--acc);color:#04221a;border-color:var(--acc)}
+main{max-width:1100px;margin:auto;padding:18px 16px 60px}
+section{display:none}section.on{display:block}
+h2{margin:4px 0 4px;font-size:22px}
+.lead{color:var(--mut);margin:0 0 16px;max-width:820px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.btn{background:var(--panel2);color:var(--txt);border:1px solid var(--line);padding:8px 14px;border-radius:8px;cursor:pointer;font:600 14px Inter,sans-serif}
+.btn:hover{border-color:var(--blue)}
+.btn.pri{background:var(--acc);color:#04221a;border-color:var(--acc)}
+.btn.sel{background:var(--blue);color:#04121f;border-color:var(--blue)}
+.btn.ok{background:rgba(46,230,166,.18);border-color:var(--acc)}
+.btn.ko{background:rgba(255,107,107,.18);border-color:var(--bad)}
+.btn:disabled{opacity:.55;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.lbl{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-top:10px}
+.mono{font-family:'JetBrains Mono',monospace}
+.fb{border-radius:10px;padding:12px 14px;margin-top:12px;display:none}
+.fb.show{display:block}
+.fb.good{background:rgba(46,230,166,.1);border:1px solid var(--acc)}
+.fb.badf{background:rgba(255,107,107,.1);border:1px solid var(--bad)}
+.fb.mid{background:rgba(255,181,71,.1);border:1px solid var(--warn)}
+.modwrap{background:#0b1626;border:1px dashed var(--line);border-radius:12px;padding:12px;text-align:center}
+.modsvg{width:100%;max-width:640px;height:auto}
+.note{font-size:12px;color:var(--mut)}
+select,input[type=range]{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:6px;font:14px Inter,sans-serif}
+input[type=range]{padding:0;width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat .k{font-size:12px;color:var(--mut)}
+.stat .v{font:700 22px 'JetBrains Mono',monospace;color:var(--acc)}
+.bar{height:8px;background:#0b1626;border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.formula{font:13px 'JetBrains Mono',monospace;background:#0b1626;border-radius:8px;padding:10px;color:#bcd0e6;white-space:pre-wrap}
+/* placa */
+.board{background:linear-gradient(160deg,#123524,#0c2418);border:1px solid #2b5d43;border-radius:14px;padding:16px;display:flex;gap:18px;align-items:stretch;overflow-x:auto}
+.cpu{flex:none;width:110px;border:2px solid #9fb3c8;border-radius:8px;background:#20303f;display:flex;align-items:center;justify-content:center;font:700 13px 'JetBrains Mono',monospace;color:#cfe0f1;text-align:center;min-height:200px}
+.slots{display:flex;gap:14px}
+.slot{width:62px;min-height:230px;border-radius:6px;background:#0d1a12;border:2px solid #3a6b52;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px 0}
+.slot.chA{border-color:#4f8fd6}.slot.chB{border-color:#d68f4f}
+.slot .nm{position:absolute;top:-2px;transform:translateY(-100%);font:700 12px 'JetBrains Mono',monospace;color:#cfe0f1}
+.slot .stick{width:40px;height:190px;border-radius:4px;background:linear-gradient(#1f7a4d,#145c39);border:1px solid #2ee6a6;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font:700 13px 'JetBrains Mono',monospace;color:#eafff6}
+.slot.rec::after{content:"★";position:absolute;bottom:-24px;color:var(--gold)}
+.chlegend{display:flex;gap:14px;font-size:13px;margin-top:22px}
+.chlegend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chlegend .a::before{background:#4f8fd6}.chlegend .b::before{background:#d68f4f}
+.reto{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;border:1px solid var(--line);margin-bottom:6px;cursor:pointer;background:var(--panel2)}
+.reto.cur{border-color:var(--blue)}
+.reto .st{flex:none;width:22px;text-align:center}
+.mode{font:700 16px 'JetBrains Mono',monospace}
+.list{display:grid;gap:6px}
+.opt{text-align:left;width:100%}
+.verdict{font:700 18px Inter,sans-serif}
+.chk{margin:4px 0}
+.chk.okk::before{content:"✔ ";color:var(--acc)}.chk.wa::before{content:"⚠ ";color:var(--warn)}.chk.no::before{content:"✖ ";color:var(--bad)}
+.chip{display:inline-block;padding:3px 10px;border-radius:20px;border:1px solid var(--line);font-size:12px;margin:2px;color:var(--mut)}
+.chip.done{border-color:var(--acc);color:var(--acc)}
+.case{background:var(--panel2);border-left:4px solid var(--warn);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.finding{background:#0b1626;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:14px}
+.finding b{color:var(--blue)}
+.progress{height:6px;background:#0b1626;border-radius:3px;overflow:hidden;margin:8px 0 14px}
+.progress i{display:block;height:100%;background:var(--gold)}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#2a1d00;font-weight:800;padding:10px 18px;border-radius:30px;transition:transform .3s;z-index:10}
+#toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <div class="logo">RAM<span>_</span>LAB</div>
+      <div class="sub">MME · SA2 · Simulador para practicar la memoria RAM</div>
+    </div>
+    <div class="score">Puntos <b id="pts">0</b><button id="reset" title="Poner a cero">reiniciar</button></div>
+  </div>
+  <nav id="nav">
+    <button data-t="identificar">1 · Identificar módulos</button>
+    <button data-t="rendimiento">2 · Velocidad y latencia</button>
+    <button data-t="canales">3 · Doble canal</button>
+    <button data-t="compatibilidad">4 · Compatibilidad</button>
+    <button data-t="averias">5 · Diagnóstico</button>
+    <button data-t="test">6 · Test final</button>
+  </nav>
+</header>
+
+<main>
+<!-- 1 IDENTIFICAR -->
+<section id="identificar">
+  <h2>Identifica el módulo</h2>
+  <p class="lead">Observa el módulo y su etiqueta. Indica la generación, el formato, la velocidad en MT/s y los ranks. Fíjate en la etiqueta, la posición de la muesca, el tamaño, el borde de contactos y si lleva PMIC.</p>
+  <div class="card">
+    <div class="modwrap"><div id="modsvg"></div>
+      <div class="note">Dibujo esquemático (no a escala). La posición de la muesca cambia en cada generación para que no se pueda montar en una ranura incorrecta.</div>
+    </div>
+    <div class="lbl">Generación</div><div class="row" id="qGen"></div>
+    <div class="lbl">Formato</div><div class="row" id="qFmt"></div>
+    <div class="lbl">Velocidad (MT/s)</div><div class="row" id="qSpd"></div>
+    <div class="lbl">Ranks</div><div class="row" id="qRank"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn pri" id="idCheck">Comprobar</button>
+      <button class="btn" id="idHint">Pista</button>
+      <button class="btn" id="idNext">Otro módulo →</button>
+      <span class="note" id="idStreak"></span>
+    </div>
+    <div class="fb" id="idHintBox"></div>
+    <div class="fb" id="idFb"></div>
+  </div>
+  <div class="card note">
+    <b>Nomenclatura:</b> por velocidad <span class="mono">DDRx-yyyy</span> (yyyy = MT/s) o por tasa de transferencia <span class="mono">PCx-zzzzz</span> (zzzzz = MB/s = yyyy × 8). Ej.: DDR4-3200 = PC4-25600. Algunos fabricantes ponen la velocidad en lugar de la tasa (PC5-6000B) · U / UD = UDIMM (sobremesa), S = SO-DIMM · 1Rx8 = single rank, 2Rx8 = dual rank, chips de 8 bits.
+  </div>
+</section>
+
+<!-- 2 RENDIMIENTO -->
+<section id="rendimiento">
+  <h2>Velocidad, ancho de banda y latencia</h2>
+  <p class="lead">Configura un módulo y observa cómo cambian el ancho de banda y la latencia real. Más MT/s no siempre significa menos latencia: depende también del CL.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="lbl">Generación</div>
+      <div class="row" id="lGen"></div>
+      <div class="lbl">Velocidad (MT/s)</div>
+      <select id="lSpd"></select>
+      <div class="lbl">Latencia CAS (CL): <span class="mono" id="lClV"></span></div>
+      <input type="range" id="lCl">
+      <div class="lbl">Canales</div>
+      <div class="row" id="lCh"></div>
+    </div>
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><div class="k">Nombre comercial</div><div class="v" id="oName" style="font-size:17px"></div><div class="note" id="oPc"></div></div>
+        <div class="stat"><div class="k">Reloj real del bus</div><div class="v" id="oClk"></div><div class="note">DDR: 2 transferencias por ciclo</div></div>
+        <div class="stat"><div class="k">Ancho de banda teórico</div><div class="v" id="oBw"></div><div class="bar"><i id="bBw"></i></div></div>
+        <div class="stat"><div class="k">Latencia real (CAS)</div><div class="v" id="oLat"></div><div class="bar"><i id="bLat" style="background:var(--warn)"></i></div><div class="note">menos es mejor</div></div>
+      </div>
+      <div class="formula" id="oForm" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Reto: ¿qué kit es mejor?</h3>
+    <div class="row mono" id="cmpKits" style="font-size:16px"></div>
+    <div class="lbl" id="cmpQ"></div>
+    <div class="row" id="cmpOpts"></div>
+    <div class="fb" id="cmpFb"></div>
+    <div class="row"><button class="btn" id="cmpNext">Otra pareja →</button></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Cálculo rápido</h3>
+    <div id="calcQ" style="font-size:16px"></div>
+    <div class="row" id="calcOpts"></div>
+    <div class="fb" id="calcFb"></div>
+    <div class="row"><button class="btn" id="calcNext">Otra pregunta →</button></div>
+  </div>
+</section>
+
+<!-- 3 CANALES -->
+<section id="canales">
+  <h2>Doble canal (dual channel)</h2>
+  <p class="lead">Elige un módulo del inventario y haz clic en una ranura para colocarlo (clic sobre un módulo para quitarlo). Las ranuras A1-A2 son del canal A y B1-B2 del canal B. Completa los retos.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="lbl">Inventario</div>
+      <div class="row" id="inv"></div>
+      <div class="board" style="margin-top:28px">
+        <div class="cpu">CPU<br>(controlador<br>de memoria)</div>
+        <div class="slots" id="slots"></div>
+      </div>
+      <div class="chlegend"><span class="a">Canal A</span><span class="b">Canal B</span></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="manual">Ver manual de la placa</button>
+        <button class="btn" id="clearSlots">Vaciar ranuras</button>
+      </div>
+      <div class="fb" id="manualBox"></div>
+    </div>
+    <div class="card">
+      <div class="lbl">Estado de la memoria</div>
+      <div class="mode" id="mode"></div>
+      <div id="modeInfo" class="note" style="margin-top:6px"></div>
+      <div class="lbl" style="margin-top:16px">Retos</div>
+      <div id="retos"></div>
+      <div class="row"><button class="btn pri" id="retoCheck">Comprobar reto seleccionado</button></div>
+      <div class="fb" id="retoFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 COMPATIBILIDAD -->
+<section id="compatibilidad">
+  <h2>Banco de compatibilidad</h2>
+  <p class="lead">Elige una placa y un kit de memoria. Antes de montar, predice el resultado. Objetivo: encontrar un kit totalmente compatible para cada placa.</p>
+  <div class="card"><div class="lbl" style="margin-top:0">Progreso</div><div id="compProg"></div></div>
+  <div class="grid2">
+    <div class="card"><div class="lbl" style="margin-top:0">Placa / equipo</div><div class="list" id="boards"></div></div>
+    <div class="card"><div class="lbl" style="margin-top:0">Kit de memoria</div><div class="list" id="kits"></div></div>
+  </div>
+  <div class="card">
+    <div class="lbl" style="margin-top:0">Tu predicción</div>
+    <div class="row" id="pred"></div>
+    <div class="row"><button class="btn pri" id="mount">Montar y comprobar</button></div>
+    <div class="fb" id="report"></div>
+  </div>
+</section>
+
+<!-- 5 AVERIAS -->
+<section id="averias">
+  <h2>Diagnóstico de averías de memoria</h2>
+  <p class="lead">Lee la incidencia, usa las herramientas de prueba que necesites y elige el diagnóstico y la reparación. Acertar a la primera da más puntos.</p>
+  <div class="row" id="caseNav"></div>
+  <div class="card" id="caseBox"></div>
+</section>
+
+<!-- 6 TEST -->
+<section id="test">
+  <h2>Test final</h2>
+  <p class="lead">10 preguntas aleatorias sacadas de todos los apartados de los apuntes. Cada acierto suma 2 puntos.</p>
+  <div class="card" id="quiz"></div>
+</section>
+<p class="note" style="text-align:center;margin-top:30px">Contenidos basados en los apuntes <a style="color:var(--blue)" href="https://cipfpbatoi.github.io/materials/smx/mme/SA2/SA2-memoria-apuntes.html">SA2 · La memoria</a> del módulo MME.</p>
+</main>
+<div id="toast"></div>
+
+<script>
+/* ---------- utilidades ---------- */
+const $=s=>document.querySelector(s);
+const fmtN=(n,d=1)=>n.toLocaleString('es-ES',{maximumFractionDigits:d,minimumFractionDigits:0});
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let score=0;
+try{score=parseInt(localStorage.getItem('ramlab-score'))||0}catch(e){}
+function setScore(){$('#pts').textContent=score;try{localStorage.setItem('ramlab-score',score)}catch(e){}}
+function addPts(n){if(n<=0)return;score+=n;setScore();const t=$('#toast');t.textContent='+'+n+' puntos';t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1400)}
+$('#reset').onclick=()=>{score=0;setScore()};
+setScore();
+function fb(el,cls,html){el.className='fb show '+cls;el.innerHTML=html}
+function hideFb(el){el.className='fb';el.innerHTML=''}
+/* nombre por tasa: MT/s × 8, redondeado como hacen los fabricantes (DDR3-2133 → PC3-17000) */
+const pcRate=s=>Math.floor(s*8/100)*100;
+const pcName=(gen,s)=>`PC${gen==='DDR'?'':gen.slice(3)}-${pcRate(s)}`;
+
+/* ---------- pestañas ---------- */
+const TABS=['identificar','rendimiento','canales','compatibilidad','averias','test'];
+function showTab(t){if(!TABS.includes(t))t=TABS[0];document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.t;showTab(b.dataset.t)});
+window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)));
+showTab(location.hash.slice(1));
+
+/* ---------- 1. IDENTIFICAR ---------- */
+const GENS={
+ DDR3:{volt:'1,5 V (DDR3L: 1,35 V)',pins:{DIMM:240,'SO-DIMM':204},notch:{DIMM:.40,'SO-DIMM':.38},speeds:[1600,1866,2133]},
+ DDR4:{volt:'1,2 V',pins:{DIMM:288,'SO-DIMM':260},notch:{DIMM:.47,'SO-DIMM':.56},speeds:[2400,2666,3200]},
+ DDR5:{volt:'1,1 V',pins:{DIMM:288,'SO-DIMM':262},notch:{DIMM:.54,'SO-DIMM':.45},speeds:[4800,5600,6000,6400]}};
+const DDR4L={2400:'T',2666:'V',3200:'AA'};
+const ALLSPD=[1600,1866,2133,2400,2666,3200,4800,5600,6000,6400];
+function labelFor(m){
+ const head=`${m.cap}GB ${m.rank}Rx8 `,U=m.fmt==='DIMM';
+ if(m.byRate)return head+`${pcName(m.gen,m.speed)}${U?'U':'S'}`;
+ if(m.gen==='DDR4')return head+`PC4-${m.speed}${DDR4L[m.speed]}-${U?'UA2':'SA2'}`;
+ return head+`PC5-${m.speed}B-${U?'UD0':'SD0'}-1010`;
+}
+function moduleSVG(m){
+ const dimm=m.fmt==='DIMM',W=dimm?600:360,H=dimm?130:150,x0=20,y0=14,yb=y0+H,BG='#0b1626';
+ const curve=m.gen!=='DDR3'&&dimm, nX=x0+W*GENS[m.gen].notch[m.fmt];
+ const dy=x=>curve?4*(1-Math.pow((x-x0)/W*2-1,2)):0;
+ let s=`<svg viewBox="0 0 ${W+40} ${H+34}" class="modsvg" xmlns="http://www.w3.org/2000/svg">`;
+ s+=`<path d="M${x0} ${y0} L${x0+W} ${y0} L${x0+W} ${yb} ${curve?`Q${x0+W/2} ${yb+8} ${x0} ${yb}`:`L${x0} ${yb}`} Z" fill="#1d6b45" stroke="#2c8a5c"/>`;
+ for(let x=x0+10;x<x0+W-10;x+=5){if(Math.abs(x-nX)<8)continue;s+=`<rect x="${x}" y="${yb-15+dy(x)}" width="3" height="14" fill="#e3b341"/>`}
+ s+=`<rect x="${nX-5}" y="${yb-17+dy(nX)}" width="10" height="30" rx="3" fill="${BG}"/>`;
+ const sy=dimm?yb-42:y0+H*.5;
+ s+=`<circle cx="${x0}" cy="${sy}" r="7" fill="${BG}"/><circle cx="${x0+W}" cy="${sy}" r="7" fill="${BG}"/>`;
+ const n=dimm?4:2,cw=dimm?50:58,gap=12,half=8,cy=y0+30,ch=dimm?58:70,mid=x0+W/2;
+ for(let i=0;i<n;i++){
+  const xl=mid-half-(i+1)*cw-i*gap, xr=mid+half+i*(cw+gap);
+  s+=`<rect x="${xl}" y="${cy}" width="${cw}" height="${ch}" rx="2" fill="#151a21" stroke="#3a4350"/>`;
+  s+=`<rect x="${xr}" y="${cy}" width="${cw}" height="${ch}" rx="2" fill="#151a21" stroke="#3a4350"/>`;
+ }
+ if(m.gen==='DDR5'){const px=nX+14,py=yb-41;s+=`<rect x="${px}" y="${py}" width="30" height="22" rx="2" fill="#2a2f38" stroke="#9aa6b4"/><text x="${px+15}" y="${py+14}" font-size="8.5" fill="#e3ebf3" text-anchor="middle" font-family="JetBrains Mono,monospace">PMIC</text>`}
+ s+=`<rect x="${mid-9}" y="${cy-14}" width="18" height="10" fill="#2a2f38" stroke="#7d8896"/><text x="${mid}" y="${cy-17}" font-size="8" fill="#9fe7c7" text-anchor="middle" font-family="JetBrains Mono,monospace">SPD</text>`;
+ const lw=dimm?330:250,lx=dimm?x0+24:x0+14,ly=cy+ch-38;
+ s+=`<rect x="${lx}" y="${ly}" width="${lw}" height="30" rx="3" fill="#f4f6f8"/><text x="${lx+10}" y="${ly+20}" font-size="${dimm?14:11.5}" font-weight="700" fill="#14202e" font-family="JetBrains Mono,monospace">${labelFor(m)}</text>`;
+ return s+'</svg>';
+}
+let idM,idAns,idDone,idStreak=0;
+function optButtons(el,opts,key){el.innerHTML='';opts.forEach(o=>{const b=document.createElement('button');b.className='btn';b.textContent=o;b.onclick=()=>{if(idDone)return;idAns[key]=o;[...el.children].forEach(c=>c.classList.toggle('sel',c===b))};el.appendChild(b)})}
+function newModule(){
+ const gen=rnd(Object.keys(GENS));
+ idM={gen,fmt:rnd(['DIMM','SO-DIMM']),speed:rnd(GENS[gen].speeds),rank:rnd([1,2]),cap:rnd(gen==='DDR3'?[4,8]:gen==='DDR4'?[8,16,32]:[16,24,32,48])};
+ idM.byRate=gen==='DDR3'||Math.random()<.5;
+ idAns={};idDone=false;
+ $('#modsvg').innerHTML=moduleSVG(idM);
+ optButtons($('#qGen'),['DDR3','DDR4','DDR5'],'gen');
+ optButtons($('#qFmt'),['DIMM','SO-DIMM'],'fmt');
+ const cand=shuffle([idM.speed/2,...ALLSPD.filter(x=>x!==idM.speed)]);
+ const sp=[idM.speed/2,...cand.filter(x=>x!==idM.speed/2).slice(0,2)];
+ optButtons($('#qSpd'),shuffle([idM.speed,...sp]).map(x=>x+' MT/s'),'spd');
+ optButtons($('#qRank'),['Single rank (1R)','Dual rank (2R)'],'rank');
+ hideFb($('#idFb'));hideFb($('#idHintBox'));
+}
+$('#idNext').onclick=newModule;
+$('#idHint').onclick=()=>{const g=GENS[idM.gen];fb($('#idHintBox'),'mid',`Este módulo tiene <b>${g.pins[idM.fmt]} contactos</b> y su tensión nominal es <b>${g.volt}</b>. ${idM.gen==='DDR5'?'Lleva un chip <b>PMIC</b> cerca de la muesca.':'No lleva PMIC.'} ${idM.byRate?'La etiqueta usa la nomenclatura <b>por tasa</b> (MB/s): divide entre 8.':'La etiqueta indica directamente la <b>velocidad</b> en MT/s.'}`)};
+$('#idCheck').onclick=()=>{
+ if(idDone)return;
+ if(!idAns.gen||!idAns.fmt||!idAns.spd||!idAns.rank){fb($('#idFb'),'mid','Responde las cuatro preguntas antes de comprobar.');return}
+ idDone=true;
+ const rk=idM.rank===1?'Single rank (1R)':'Dual rank (2R)';
+ const right={gen:idM.gen,fmt:idM.fmt,spd:idM.speed+' MT/s',rank:rk};
+ let n=0;
+ [['#qGen','gen'],['#qFmt','fmt'],['#qSpd','spd'],['#qRank','rank']].forEach(([s,k])=>{if(idAns[k]===right[k])n++;[...$(s).children].forEach(c=>{if(c.textContent===right[k])c.classList.add('ok');else if(c.classList.contains('sel'))c.classList.add('ko')})});
+ addPts(n*2);
+ idStreak=n===4?idStreak+1:0;$('#idStreak').textContent=idStreak>1?`🔥 racha de ${idStreak}`:'';
+ if(idStreak&&idStreak%5===0)addPts(5);
+ const g=GENS[idM.gen];
+ const pc=idM.byRate?`${pcName(idM.gen,idM.speed)} es la nomenclatura por tasa (MB/s): ${pcRate(idM.speed)} / 8 ≈ ${idM.speed} MT/s → ${idM.gen}-${idM.speed}.`:`Este fabricante pone la velocidad en lugar de la tasa: ${idM.speed} MT/s (equivale a ${pcName(idM.gen,idM.speed)}).`;
+ fb($('#idFb'),n===4?'good':n?'mid':'badf',`<b>${n}/4 correctas.</b> Era un <b>${idM.gen} ${idM.fmt}</b> a <b>${idM.speed} MT/s</b>, ${idM.rank===1?'single':'dual'} rank.<br>· PC${idM.gen.slice(3)} → ${idM.gen}. ${pc}<br>· Reloj real: ${idM.speed/2} MHz (es lo que mostraría CPU-Z, no los MT/s).<br>· ${idM.rank}Rx8 → ${idM.rank===1?'un grupo de chips (single rank)':'dos grupos de chips (dual rank)'}, chips de 8 bits.<br>· ${idM.fmt==='DIMM'?'U/UD = UDIMM; el DIMM mide unos 133 mm y va en sobremesa':'S = SO-DIMM; mide unos 67-70 mm y va en portátiles, mini-PC, ITX y NAS'} · ${g.pins[idM.fmt]} contactos · ${g.volt}${idM.gen==='DDR5'?' · PMIC en el módulo':''}.`);
+};
+newModule();
+
+/* ---------- 2. RENDIMIENTO ---------- */
+const SPEEDS={DDR3:[800,1066,1333,1600,1866,2133],DDR4:[1600,2133,2400,2666,2933,3200,3600,4000],DDR5:[4800,5200,5600,6000,6400,7200,8000,8800]};
+const STDMAX={DDR3:2133,DDR4:3200,DDR5:8800};
+const CLR={DDR3:[7,14,11],DDR4:[14,22,16],DDR5:[28,46,36]};
+let L={gen:'DDR4',spd:3200,cl:16,ch:2};
+function segBtns(el,opts,get,set){el.innerHTML='';opts.forEach(o=>{const b=document.createElement('button');b.className='btn'+(get()===o.v?' sel':'');b.textContent=o.t;b.onclick=()=>{set(o.v);segBtns(el,opts,get,set);labRender()};el.appendChild(b)})}
+function labInit(){
+ segBtns($('#lGen'),['DDR3','DDR4','DDR5'].map(g=>({t:g,v:g})),()=>L.gen,v=>{L.gen=v;L.spd={DDR3:1600,DDR4:3200,DDR5:6000}[v];L.cl=CLR[v][2];fillSpd()});
+ segBtns($('#lCh'),[{t:'1 canal',v:1},{t:'2 canales (dual channel)',v:2}],()=>L.ch,v=>L.ch=v);
+ fillSpd();
+}
+function fillSpd(){const s=$('#lSpd');s.innerHTML=SPEEDS[L.gen].map(x=>`<option value="${x}" ${x===L.spd?'selected':''}>${x}${x>STDMAX[L.gen]?' (solo con XMP)':''}</option>`).join('');const r=$('#lCl');r.min=CLR[L.gen][0];r.max=CLR[L.gen][1];r.value=L.cl}
+$('#lSpd').onchange=e=>{L.spd=+e.target.value;labRender()};
+$('#lCl').oninput=e=>{L.cl=+e.target.value;labRender()};
+function labRender(){
+ const bw=L.spd*8*L.ch,lat=L.cl*2000/L.spd;
+ $('#lClV').textContent='CL'+L.cl;
+ $('#oName').textContent=`${L.gen}-${L.spd}`;$('#oPc').textContent=pcName(L.gen,L.spd);
+ $('#oClk').textContent=`${fmtN(L.spd/2,0)} MHz`;
+ $('#oBw').textContent=`${fmtN(bw/1000)} GB/s`;$('#bBw').style.width=Math.min(100,bw/1000/140.8*100)+'%';
+ $('#oLat').textContent=`${fmtN(lat,1)} ns`;$('#bLat').style.width=Math.min(100,lat/20*100)+'%';
+ $('#oForm').textContent=`Velocidad (MT/s) = Frecuencia (MHz) × 2   →  ${L.spd} = ${fmtN(L.spd/2,0)} × 2
+Nombre por tasa  = MT/s × 8             →  ${pcName(L.gen,L.spd)}
+Ancho de banda   = MT/s × 8 × canales   →  ${L.spd} × 8 × ${L.ch} = ${fmtN(bw,0)} MB/s ≈ ${fmtN(bw/1000)} GB/s
+Latencia (ns)    = CL × 2000 / MT/s     →  ${L.cl} × 2000 / ${L.spd} = ${fmtN(lat,1)} ns`;
+}
+labInit();labRender();
+const KITS_CMP=[['DDR4',2400,17],['DDR4',3200,16],['DDR4',3600,18],['DDR4',2666,19],['DDR4',3200,22],['DDR4',3600,16],['DDR5',4800,40],['DDR5',5600,46],['DDR5',6000,30],['DDR5',6000,36],['DDR5',6400,32],['DDR5',8000,40],['DDR5',5600,28],['DDR3',1600,9],['DDR3',1866,10]];
+let cmp;
+function newCmp(){
+ let a=rnd(KITS_CMP),b;do{b=rnd(KITS_CMP)}while(b===a);
+ cmp={a,b,q:rnd(['lat','bw']),done:false};
+ const lab=k=>`${k[0]}-${k[1]} CL${k[2]}`;
+ $('#cmpKits').innerHTML=`<span class="chip" style="font-size:15px;color:var(--txt)">A: ${lab(a)}</span> <span class="chip" style="font-size:15px;color:var(--txt)">B: ${lab(b)}</span>`;
+ $('#cmpQ').textContent=cmp.q==='lat'?'¿Cuál tiene MENOR latencia real (ns)?':'¿Cuál tiene MAYOR ancho de banda (un canal)?';
+ const o=$('#cmpOpts');o.innerHTML='';
+ ['A','B','Iguales'].forEach(t=>{const bt=document.createElement('button');bt.className='btn';bt.textContent=t;bt.onclick=()=>answerCmp(t,bt);o.appendChild(bt)});
+ hideFb($('#cmpFb'));
+}
+function answerCmp(t,bt){
+ if(cmp.done)return;cmp.done=true;
+ const f=k=>cmp.q==='lat'?k[2]*2000/k[1]:k[1]*8/1000;
+ const va=f(cmp.a),vb=f(cmp.b);let right;
+ if(Math.abs(va-vb)<0.05)right='Iguales';else if(cmp.q==='lat')right=va<vb?'A':'B';else right=va>vb?'A':'B';
+ [...$('#cmpOpts').children].forEach(c=>{if(c.textContent===right)c.classList.add('ok');else if(c===bt)c.classList.add('ko')});
+ const u=cmp.q==='lat'?' ns':' GB/s';
+ const ok=t===right;if(ok)addPts(3);
+ fb($('#cmpFb'),ok?'good':'badf',`${ok?'¡Correcto!':'No.'} A = <b>${fmtN(va,1)}${u}</b> · B = <b>${fmtN(vb,1)}${u}</b>. ${cmp.q==='lat'?'Latencia (ns) = CL × 2000 / MT/s. La latencia real apenas ha cambiado en 20 años (≈10-15 ns): un CL más alto no implica más lentitud si la velocidad también es mayor.':'Ancho de banda = MT/s × 8 bytes; el CL no influye.'}`);
+}
+$('#cmpNext').onclick=newCmp;newCmp();
+/* cálculo rápido (actividad 3 de los apuntes) */
+let calc;
+function newCalc(){
+ const gen=rnd(['DDR3','DDR4','DDR5']),s=rnd(SPEEDS[gen].filter(x=>x<=STDMAX[gen]||gen==='DDR5')),g=gen.slice(3);
+ const T=[
+  ()=>({q:`¿Cuál es el reloj real de un módulo <b>${gen}-${s}</b>?`,ok:`${s/2} MHz`,o:[`${s} MHz`,`${s*2} MHz`,`${s/4} MHz`],w:`Frecuencia = MT/s ÷ 2 = ${s/2} MHz.`}),
+  ()=>({q:`¿Cuál es el nombre por tasa de transferencia de un <b>${gen}-${s}</b>?`,ok:pcName(gen,s),o:[`PC${g}-${s}`,`PC${g}-${pcRate(s)*2}`,`PC${g}-${pcRate(s/2)}`],w:`Tasa = MT/s × 8 = ${s*8} MB/s → ${pcName(gen,s)}${pcRate(s)!==s*8?' (los fabricantes redondean)':''}.`}),
+  ()=>({q:`Ancho de banda teórico de <b>dos módulos ${gen}-${s}</b> en dual channel:`,ok:`${fmtN(s*16/1000)} GB/s`,o:[`${fmtN(s*8/1000)} GB/s`,`${fmtN(s*32/1000)} GB/s`,`${fmtN(s*2/1000)} GB/s`],w:`${s} × 8 × 2 canales = ${fmtN(s*16,0)} MB/s ≈ ${fmtN(s*16/1000)} GB/s.`}),
+  ()=>{const t=rnd([6000,6400,7200,8000]);return{q:`Una tienda anuncia memoria «DDR5 ${t} MHz». ¿Qué frecuencia mostrará CPU-Z?`,ok:`${t/2} MHz`,o:[`${t} MHz`,`${t*2} MHz`,`${t/8} MHz`],w:`La tienda da MT/s (aunque escriba MHz). CPU-Z muestra el reloj real: ${t} ÷ 2 = ${t/2} MHz. Las dos cifras son correctas.`}},
+ ];
+ calc=rnd(T)();calc.done=false;
+ $('#calcQ').innerHTML=calc.q;const o=$('#calcOpts');o.innerHTML='';
+ shuffle([calc.ok,...calc.o]).forEach(t=>{const b=document.createElement('button');b.className='btn';b.textContent=t;b.onclick=()=>{if(calc.done)return;calc.done=true;const ok=t===calc.ok;if(ok)addPts(2);[...o.children].forEach(c=>{if(c.textContent===calc.ok)c.classList.add('ok');else if(c===b)c.classList.add('ko')});fb($('#calcFb'),ok?'good':'badf',(ok?'<b>¡Correcto!</b> ':'<b>No.</b> ')+calc.w)};o.appendChild(b)});
+ hideFb($('#calcFb'));
+}
+$('#calcNext').onclick=newCalc;newCalc();
+
+/* ---------- 3. CANALES ---------- */
+const SL=['A1','A2','B1','B2'];
+let slots={A1:0,A2:0,B1:0,B2:0},invSel=8,showRec=false,curReto=0;
+const retosDone=new Set();
+const chCap=(s,c)=>(s[c+'1']||0)+(s[c+'2']||0);
+const used=s=>SL.filter(k=>s[k]);
+const RETOS=[
+ {t:'Instala un único módulo en la ranura que recomienda el manual.',c:s=>used(s).length===1&&s.A2,w:'Con un módulo, el manual de la mayoría de placas recientes indica A2.'},
+ {t:'Instala 2 módulos de 8 GB en dual channel siguiendo el manual.',c:s=>used(s).length===2&&s.A2===8&&s.B2===8,w:'Un módulo en cada canal: A2 y B2 (2.ª y 4.ª ranura desde la CPU) en la mayoría de placas recientes.'},
+ {t:'Error típico 1: coloca 2 módulos de forma que funcionen en single channel.',c:s=>used(s).length===2&&(!chCap(s,'A')||!chCap(s,'B')),w:'Dos módulos en el mismo canal (A1 y A2) dejan el otro canal vacío: single channel.'},
+ {t:'Error típico 2: monta 16 GB con un solo módulo.',c:s=>used(s).length===1&&chCap(s,'A')+chCap(s,'B')===16,w:'Un único módulo de 16 GB en lugar de dos de 8 GB funciona en single channel: la mitad de ancho de banda.'},
+ {t:'Monta 32 GB en DDR5 tal como recomiendan los apuntes.',c:s=>used(s).length===2&&s.A2===16&&s.B2===16,w:'32 GB = 2 × 16 GB en A2 y B2. Con DDR5 es mejor dos módulos grandes que cuatro, y quedan ranuras libres para ampliar.'},
+ {t:'Monta 24 GB con dos módulos de distinta capacidad (modo flexible).',c:s=>{const v=used(s).map(k=>s[k]).sort((a,b)=>a-b);return v.length===2&&v[0]===8&&v[1]===16&&chCap(s,'A')&&chCap(s,'B')},w:'8 + 16 GB en canales distintos: 8 + 8 GB en dual channel y los 8 GB restantes en single.'},
+];
+function renderInv(){const el=$('#inv');el.innerHTML='';[8,16,32].forEach(v=>{const b=document.createElement('button');b.className='btn'+(invSel===v?' sel':'');b.textContent=`Módulo ${v} GB`;b.onclick=()=>{invSel=v;renderInv()};el.appendChild(b)})}
+function renderSlots(){
+ const el=$('#slots');el.innerHTML='';
+ SL.forEach(k=>{const d=document.createElement('div');d.className='slot ch'+k[0]+(showRec&&(k==='A2'||k==='B2')?' rec':'');d.innerHTML=`<span class="nm">DIMM_${k}</span>`+(slots[k]?`<div class="stick">${slots[k]} GB</div>`:'');d.onclick=()=>{slots[k]=slots[k]?0:invSel;renderSlots()};el.appendChild(d)});
+ const A=chCap(slots,'A'),B=chCap(slots,'B'),tot=A+B,n=used(slots).length;let m,info,cls;
+ if(!tot){m='Sin memoria';info='El equipo no pasará el POST: LED DRAM encendido o pitidos.';cls='var(--bad)'}
+ else if(!A||!B){m=`Single channel · ${tot} GB`;info='Solo trabaja un canal de 64 bits. Con DDR5-6000: 48 GB/s.';cls='var(--warn)'}
+ else if(A===B){m=`Dual channel · ${tot} GB`;info='Los dos canales trabajan a la vez: se duplica el ancho de banda. Con DDR5-6000: 96 GB/s.';cls='var(--acc)'}
+ else{const mn=Math.min(A,B);m=`Modo flexible · ${tot} GB`;info=`${mn} + ${mn} GB funcionan en dual channel y los ${tot-2*mn} GB restantes en single.`;cls='var(--blue)'}
+ if(n===4)info+=' ⚠ Con cuatro módulos DDR5 la velocidad suele bajar, a menudo por debajo de 5000 MT/s.';
+ if((slots.A1&&!slots.A2)||(slots.B1&&!slots.B2))info+=' ⚠ Hay un módulo en A1/B1 con A2/B2 vacía: la mayoría de placas recientes piden llenar primero A2 y B2.';
+ $('#mode').textContent=m;$('#mode').style.color=cls;$('#modeInfo').textContent=info;
+}
+function renderRetos(){const el=$('#retos');el.innerHTML='';RETOS.forEach((r,i)=>{const d=document.createElement('div');d.className='reto'+(i===curReto?' cur':'');d.innerHTML=`<span class="st">${retosDone.has(i)?'✅':(i+1)}</span><span>${r.t}</span>`;d.onclick=()=>{curReto=i;renderRetos();hideFb($('#retoFb'))};el.appendChild(d)})}
+$('#retoCheck').onclick=()=>{const r=RETOS[curReto];if(r.c(slots)){if(!retosDone.has(curReto)){retosDone.add(curReto);addPts(10)}fb($('#retoFb'),'good','¡Reto superado! '+r.w);renderRetos()}else fb($('#retoFb'),'badf','Todavía no. Revisa la colocación y el estado de la memoria (puedes consultar el manual de la placa).')};
+$('#manual').onclick=()=>{showRec=!showRec;renderSlots();showRec?fb($('#manualBox'),'mid','<b>Extracto del manual:</b> 1 módulo → DIMM_A2 · 2 módulos → DIMM_A2 + DIMM_B2 · 4 módulos → todas las ranuras. Usa módulos idénticos (mismo kit): si se mezclan, todos funcionan a la velocidad y latencias del más lento. <br><i>Ojo: la regla «1-3 y 2-4» no sirve para todas las placas; consulta siempre el manual.</i>'):hideFb($('#manualBox'))};
+$('#clearSlots').onclick=()=>{slots={A1:0,A2:0,B1:0,B2:0};renderSlots()};
+renderInv();renderSlots();renderRetos();
+
+/* ---------- 4. COMPATIBILIDAD ---------- */
+const BOARDS=[
+ {id:'am5',n:'Placa AM5 · B650 (Ryzen 9000)',d:'Solo DDR5 · DIMM · 4 ranuras · máx. 192 GB · oficial DDR5-5600 · EXPO',gen:'DDR5',fmt:'DIMM',slots:4,max:192,jedec:5600,oc:8000,prof:'EXPO',cud:false},
+ {id:'z890',n:'Placa LGA 1851 · Z890 (Core Ultra 200S)',d:'Solo DDR5 · DIMM · 4 ranuras · máx. 256 GB · oficial DDR5-6400 · admite CUDIMM · XMP',gen:'DDR5',fmt:'DIMM',slots:4,max:256,jedec:6400,oc:9000,prof:'XMP',cud:true},
+ {id:'lga',n:'Placa LGA 1700 · B760 versión DDR4 (Core 14.ª)',d:'DDR4 · DIMM · 4 ranuras · máx. 128 GB · oficial DDR4-3200 · XMP',gen:'DDR4',fmt:'DIMM',slots:4,max:128,jedec:3200,oc:5000,prof:'XMP'},
+ {id:'am4',n:'Placa AM4 · B550 micro-ATX (Ryzen 5000)',d:'Solo DDR4 · DIMM · 2 ranuras · máx. 64 GB · oficial DDR4-3200 · XMP/DOCP',gen:'DDR4',fmt:'DIMM',slots:2,max:64,jedec:3200,oc:4600,prof:'XMP/DOCP'},
+ {id:'lap',n:'Portátil de oficina',d:'DDR4 · SO-DIMM · 2 ranuras · máx. 64 GB · 3200 · sin perfiles XMP',gen:'DDR4',fmt:'SO-DIMM',slots:2,max:64,jedec:3200,oc:0},
+ {id:'mini',n:'Mini-PC',d:'DDR5 · SO-DIMM · 2 ranuras · máx. 96 GB · 5600 · sin perfiles XMP',gen:'DDR5',fmt:'SO-DIMM',slots:2,max:96,jedec:5600,oc:0},
+];
+const KITS=[
+ {n:'2 × 16 GB DDR5-6000 CL30 UDIMM (EXPO)',gen:'DDR5',fmt:'DIMM',cnt:2,cap:16,spd:6000},
+ {n:'2 × 16 GB DDR5-5600 CL46 UDIMM',gen:'DDR5',fmt:'DIMM',cnt:2,cap:16,spd:5600},
+ {n:'4 × 16 GB DDR5-6000 CL30 UDIMM',gen:'DDR5',fmt:'DIMM',cnt:4,cap:16,spd:6000},
+ {n:'2 × 24 GB DDR5-8000 CL38 CUDIMM (XMP)',gen:'DDR5',fmt:'DIMM',cnt:2,cap:24,spd:8000,cudimm:true},
+ {n:'2 × 32 GB DDR5-5600 RDIMM ECC',gen:'DDR5',fmt:'DIMM',cnt:2,cap:32,spd:5600,reg:true},
+ {n:'2 × 8 GB DDR4-3200 CL16 UDIMM',gen:'DDR4',fmt:'DIMM',cnt:2,cap:8,spd:3200},
+ {n:'2 × 16 GB DDR4-3600 CL18 UDIMM (XMP)',gen:'DDR4',fmt:'DIMM',cnt:2,cap:16,spd:3600},
+ {n:'4 × 32 GB DDR4-3200 CL16 UDIMM',gen:'DDR4',fmt:'DIMM',cnt:4,cap:32,spd:3200},
+ {n:'1 × 16 GB DDR4-3200 SO-DIMM',gen:'DDR4',fmt:'SO-DIMM',cnt:1,cap:16,spd:3200},
+ {n:'2 × 8 GB DDR4-3200 SO-DIMM',gen:'DDR4',fmt:'SO-DIMM',cnt:2,cap:8,spd:3200},
+ {n:'2 × 32 GB DDR5-5600 SO-DIMM',gen:'DDR5',fmt:'SO-DIMM',cnt:2,cap:32,spd:5600},
+ {n:'2 × 8 GB DDR3-1600 UDIMM',gen:'DDR3',fmt:'DIMM',cnt:2,cap:8,spd:1600},
+];
+let cB=null,cK=null,cP=null;const compOk=new Set();const triedPairs=new Set();
+function evalCompat(b,k){
+ const L=[];let worst=0;const add=(lv,t)=>{L.push([lv,t]);worst=Math.max(worst,lv)};
+ if(k.gen!==b.gen)add(2,`Generación: el kit es ${k.gen} y la placa admite ${b.gen}. La muesca está en otra posición (y cambian voltaje y señales): no encaja y no hay adaptadores.`);else add(0,`Generación ${k.gen}: correcta.`);
+ if(k.fmt!==b.fmt)add(2,`Formato: el kit es ${k.fmt} y el equipo usa ${b.fmt}.`);else add(0,`Formato ${k.fmt}: correcto.`);
+ if(k.reg)add(2,`Tipo: RDIMM (registrada, de servidor). Aunque sea ${k.gen} de 288 contactos, una placa de PC no admite RDIMM.`);
+ else if(k.cudimm&&!b.cud&&k.gen===b.gen&&k.fmt===b.fmt)add(1,'Tipo: CUDIMM en una placa sin soporte: funcionará con el CKD desactivado.');
+ else if(k.gen===b.gen)add(0,`Tipo: ${k.cudimm?'CUDIMM, admitida por la placa':'UDIMM, correcto para PC'}.`);
+ if(k.cnt>b.slots)add(2,`Ranuras: el kit tiene ${k.cnt} módulos y solo hay ${b.slots} ranuras.`);
+ else if(k.cnt===1)add(1,'Un solo módulo: funcionará en single channel. Mejor dos módulos (por ejemplo, 2 × 8 GB).');
+ else add(0,`Ranuras: ${k.cnt} de ${b.slots}${k.cnt===2?' (dual channel en A2 y B2)':''}.`);
+ const tot=k.cnt*k.cap;
+ if(tot>b.max)add(2,`Capacidad: ${tot} GB supera el máximo de la placa (${b.max} GB).`);else add(0,`Capacidad: ${tot} GB (máximo ${b.max} GB).`);
+ if(worst<2){
+  if(k.spd<=b.jedec)add(0,`Velocidad: ${k.spd} MT/s, dentro de la velocidad oficial (${b.jedec}).`);
+  else if(b.oc&&k.spd<=b.oc)add(1,`Velocidad: por defecto funcionará a la velocidad oficial (JEDEC, ${b.jedec} MT/s o menos). Para llegar a ${k.spd} MT/s hay que activar ${b.prof} en la BIOS.`);
+  else if(!b.oc)add(1,`Velocidad: el equipo no admite perfiles XMP/EXPO; funcionará a ${b.jedec} MT/s.`);
+  else add(1,'Velocidad: supera el máximo de la placa; funcionará a una velocidad inferior.');
+  if(k.gen==='DDR5'&&k.cnt===4)add(1,'Cuatro módulos DDR5: la velocidad suele bajar, a menudo por debajo de 5000 MT/s. Mejor 2 × 32 GB.');
+ }
+ return {lv:worst,L};
+}
+const VERD=['Compatible','Compatible con matices','Incompatible'];
+function renderComp(){
+ const be=$('#boards');be.innerHTML='';BOARDS.forEach(b=>{const x=document.createElement('button');x.className='btn opt'+(cB===b?' sel':'');x.innerHTML=`${b.n}<br><span class="note" style="color:inherit;opacity:.8">${b.d}</span>`;x.onclick=()=>{cB=b;renderComp()};be.appendChild(x)});
+ const ke=$('#kits');ke.innerHTML='';KITS.forEach(k=>{const x=document.createElement('button');x.className='btn opt'+(cK===k?' sel':'');x.textContent=k.n;x.onclick=()=>{cK=k;renderComp()};ke.appendChild(x)});
+ const pe=$('#pred');pe.innerHTML='';VERD.forEach((v,i)=>{const x=document.createElement('button');x.className='btn'+(cP===i?' sel':'');x.textContent=v;x.onclick=()=>{cP=i;renderComp()};pe.appendChild(x)});
+ $('#compProg').innerHTML=BOARDS.map(b=>`<span class="chip ${compOk.has(b.id)?'done':''}">${compOk.has(b.id)?'✔ ':''}${b.n.split('(')[0].trim()}</span>`).join('');
+}
+$('#mount').onclick=()=>{
+ if(!cB||!cK||cP===null){fb($('#report'),'mid','Elige una placa, un kit y tu predicción.');return}
+ const r=evalCompat(cB,cK),key=cB.id+'|'+KITS.indexOf(cK),hit=cP===r.lv;
+ let extra='';
+ if(hit&&!triedPairs.has(key)){addPts(5);extra=' (+5)'}
+ triedPairs.add(key);
+ if(r.lv===0&&!compOk.has(cB.id)){compOk.add(cB.id);addPts(5);extra+=' · ¡Nueva placa completada! (+5)';if(compOk.size===BOARDS.length){addPts(15);extra+=' · 🏆 Todas las placas (+15)'}}
+ const cls=['okk','wa','no'];
+ fb($('#report'),r.lv===0?'good':r.lv===1?'mid':'badf',`<div class="verdict">${VERD[r.lv]}</div><div class="note" style="margin-bottom:6px">Tu predicción: ${VERD[cP]} → ${hit?'acertada':'fallada'}${extra}</div>`+r.L.map(([lv,t])=>`<div class="chk ${cls[lv]}">${t}</div>`).join(''));
+ renderComp();
+};
+renderComp();
+
+/* ---------- 5. AVERIAS ---------- */
+const CASES=[
+ {t:'Equipo recién montado sin imagen',s:'Acabamos de montar un equipo DDR4. Al pulsar el botón, los ventiladores giran pero no hay imagen. En la placa se queda encendido fijo un LED.',
+  tools:[['LEDs Debug / Q-LED','El LED encendido es el de <b>DRAM</b>. Los de CPU y VGA se apagaron correctamente.'],['Inspección visual','Uno de los módulos tiene la <b>pestaña de la ranura sin cerrar</b> y se ve un poco inclinado.'],['Memtest86+','No se puede ejecutar: el equipo no llega a arrancar.'],['Un módulo en A2','Con el módulo 2 solo en A2, arranca. Al reinsertar el módulo 1 presionando por ambos extremos hasta el «clic», también arranca con los dos.'],['Fuente de alimentación','Conectores ATX de 24 pines y EPS de 8 pines bien conectados.']],
+  o:[['Módulo mal insertado: reinsertarlo hasta que cierren las pestañas',1],['Módulo averiado: tramitar la garantía',0],['Fuente insuficiente: cambiarla',0],['Pila CMOS agotada: cambiar la CR2032',0]],
+  w:'LED DRAM = el POST falla en la memoria. La prueba con un módulo en A2 y la reinserción demuestran que funciona: solo estaba mal insertado, el error típico número uno.'},
+ {t:'Primer arranque con DDR5: pantalla negra',s:'Equipo nuevo AM5 con 2 × 16 GB DDR5. La primera vez que se enciende, la pantalla sigue en negro después de dos minutos. El alumno quiere apagarlo y desmontar la memoria.',
+  tools:[['LEDs Debug / Q-LED','El LED <b>DRAM</b> está encendido y a ratos parpadea; los ventiladores giran con normalidad.'],['Manual de la placa','«El primer arranque con DDR5 puede tardar varios minutos debido al <b>entrenamiento de memoria</b>. No apague el equipo.»'],['Esperar 5 minutos','El equipo muestra la pantalla de la BIOS. Los siguientes arranques son rápidos.'],['Inspección visual','Módulos bien insertados en A2 y B2, pestañas cerradas.']],
+  o:[['Es el entrenamiento de memoria normal de DDR5: esperar sin apagar',1],['Módulos mal insertados: reinsertarlos',0],['Módulos averiados: tramitar la garantía',0],['Activar EXPO para que arranque más rápido',0]],
+  w:'El primer arranque con DDR5 puede tardar varios minutos por el entrenamiento. Si pasara en cada arranque, habría que activar Memory Context Restore y actualizar la BIOS.'},
+ {t:'Pantallazos azules aleatorios',s:'Un usuario sufre pantallazos azules (MEMORY_MANAGEMENT) en momentos distintos y algunos archivos se corrompen al copiarlos. Hace poco tocó la configuración de la BIOS.',
+  tools:[['Configuración de la BIOS','Perfil <b>XMP activado</b> y, además, frecuencia subida a mano a DDR4-4000. El kit es DDR4-3600 CL18.'],['Memtest86+ (configuración actual)','<b>Errores</b> en la primera pasada.'],['Memtest86+ con XMP desactivado','Toda la noche, varias pasadas, <b>0 errores</b>.'],['Diagnóstico de memoria de Windows (mdsched)','Visor de eventos, origen MemoryDiagnostics-Results: <b>se detectaron errores de hardware</b> (con la configuración actual).'],['Temperaturas','CPU a 62 °C en carga: normal.']],
+  o:[['Configuración inestable: desactivar el overclock y usar el perfil XMP del kit (o uno más suave)',1],['Módulos defectuosos: sustituirlos',0],['Reinstalar Windows',0],['Sobrecalentamiento: cambiar la pasta térmica',0]],
+  w:'Si los errores solo aparecen con el overclock o el perfil activado, es inestabilidad de configuración, no un módulo averiado: bajar la velocidad (o subir ligeramente el voltaje). Si no arrancara, borrar CMOS.'},
+ {t:'Solo 3,2 GB utilizables',s:'Un equipo de oficina tiene 8 GB de RAM, pero en Configuración → Sistema aparece «8 GB (3,2 GB utilizables)».',
+  tools:[['BIOS','Detecta <b>8 GB</b> en dual channel.'],['Información del sistema','Tipo de sistema: <b>sistema operativo de 32 bits</b>, procesador x64.'],['Memtest86+','Varias pasadas, 0 errores.'],['PowerShell: Get-CimInstance Win32_PhysicalMemory','Dos módulos de 4 GB, ChannelA-DIMM0 y ChannelB-DIMM0, 2666.']],
+  o:[['Un SO de 32 bits solo puede usar unos 4 GB: instalar una versión de 64 bits',1],['Un módulo está averiado: sustituirlo',0],['Ranura dañada: probar otra ranura',0],['Límite de la placa: cambiar la placa',0]],
+  w:'La tabla de averías incluye «SO de 32 bits» como causa de menos memoria detectada: 2³² direcciones = 4 GB, y parte se reserva para hardware. La memoria está bien.'},
+ {t:'Ampliación que no se detecta',s:'Para ampliar de 8 a 16 GB se ha comprado un módulo de 8 GB igual al instalado. Después de instalarlo, el sistema sigue mostrando 8 GB.',
+  tools:[['BIOS','Total <b>8 GB</b>. DIMM_A2: 8 GB · DIMM_B2: <b>vacía</b>.'],['Inspección visual','El módulo nuevo está recto y nivelado en B2, con las pestañas cerradas.'],['Módulo nuevo solo en A2','<b>No arranca</b>: LED DRAM encendido.'],['Módulo antiguo solo en B2','Detectado sin problemas: la ranura B2 funciona.'],['Limpiar contactos con alcohol isopropílico','Mismo resultado con el módulo nuevo.']],
+  o:[['Módulo nuevo defectuoso: devolverlo o tramitar la garantía',1],['Ranura B2 dañada: cambiar la placa',0],['Límite de la placa: actualizar la BIOS',0],['Mover el módulo nuevo a A1',0]],
+  w:'El módulo nuevo falla en cualquier ranura y la ranura funciona con el antiguo: el defecto está en el módulo nuevo (probar módulos de uno en uno y en distintas ranuras).'},
+ {t:'«Me han vendido memoria más lenta»',s:'Un alumno ha montado un kit DDR5-6000 CL30 en una placa AM5. CPU-Z muestra «DRAM Frequency: 2400 MHz» y cree que le han timado.',
+  tools:[['CPU-Z, pestaña Memory','DRAM Frequency: <b>2400 MHz</b> · CL40 · Dual.'],['CPU-Z, pestaña SPD','JEDEC: 4800 MT/s CL40 · <b>perfil EXPO: 6000 MT/s CL30-36-36-76, 1,35 V</b>.'],['BIOS','EXPO: <b>desactivado</b> (valor por defecto).'],['Manual de la placa','Soporta DDR5 con perfiles EXPO por encima de 6000.']],
+  o:[['Funciona con valores JEDEC (4800 MT/s): activar el perfil EXPO en la BIOS',1],['Módulos falsificados: reclamar a la tienda',0],['Es correcto: CPU-Z muestra la mitad y ya va a 6000',0],['La placa no soporta 6000: cambiarla',0]],
+  w:'CPU-Z muestra el reloj real: 2400 MHz = 4800 MT/s, los valores JEDEC por defecto. Las cifras del kit son las del perfil EXPO, que hay que activar en la BIOS.'},
+ {t:'Equipo muy lento y disco sin parar',s:'Un portátil con Windows 11 va muy lento al tener abiertos el navegador, Teams y una hoja de cálculo. El indicador de actividad del disco no se apaga.',
+  tools:[['Administrador de tareas → Rendimiento → Memoria','En uso: <b>7,6 de 8 GB (95 %)</b>. Confirmada: <b>13,9 GB</b>. Ranuras usadas: 1 de 2.'],['Memtest86+','Una pasada completa, 0 errores.'],['Administrador de tareas → Disco','Actividad del 100 %, lecturas y escrituras constantes en <b>C:\\pagefile.sys</b>.'],['Manual del portátil','2 ranuras SO-DIMM DDR4-3200, máx. 32 GB.']],
+  o:[['Falta de RAM (paginación constante): ampliar con otro SO-DIMM de 8 GB, que además activa el dual channel',1],['Disco averiado: sustituir el SSD',0],['Módulo averiado: cambiarlo',0],['Aumentar el tamaño del archivo de paginación',0]],
+  w:'Uso cerca del 100 % y «Confirmada» mayor que la RAM física = el sistema está usando memoria virtual en el disco, miles de veces más lento. Hay que ampliar la RAM.'},
+];
+CASES.forEach(c=>c.o=shuffle(c.o));
+let caseI=0;const caseSt=CASES.map(()=>({used:new Set(),tries:0,solved:false}));
+function renderCaseNav(){const n=$('#caseNav');n.innerHTML='';CASES.forEach((c,i)=>{const b=document.createElement('button');b.className='btn'+(i===caseI?' sel':'');b.textContent=(caseSt[i].solved?'✅ ':'')+'Caso '+(i+1);b.onclick=()=>{caseI=i;renderCase()};n.appendChild(b)})}
+function renderCase(){
+ renderCaseNav();const c=CASES[caseI],st=caseSt[caseI];
+ $('#caseBox').innerHTML=`<div class="case"><b>Incidencia ${caseI+1}: ${c.t}</b><br>${c.s}</div><div class="lbl">Herramientas de prueba</div><div class="tools" id="tools"></div><div id="finds"></div><div class="lbl">Diagnóstico y reparación</div><div class="list" id="dOpts"></div><div class="fb" id="dFb"></div>`;
+ c.tools.forEach((t,i)=>{const b=document.createElement('button');b.className='btn'+(st.used.has(i)?' sel':'');b.textContent=t[0];b.onclick=()=>{st.used.add(i);renderCase()};$('#tools').appendChild(b)});
+ $('#finds').innerHTML=[...st.used].sort().map(i=>`<div class="finding"><b>${c.tools[i][0]}:</b> ${c.tools[i][1]}</div>`).join('');
+ c.o.forEach(([t,ok])=>{const b=document.createElement('button');b.className='btn opt';b.textContent=t;if(st.solved&&ok)b.classList.add('ok');b.onclick=()=>{
+  if(st.solved)return;st.tries++;
+  if(ok){st.solved=true;const p=st.tries===1?15:st.tries===2?8:3;addPts(p);renderCase();fb($('#dFb'),'good',`<b>¡Resuelto!</b> (${st.tries} intento${st.tries>1?'s':''}, ${st.used.size} prueba${st.used.size!==1?'s':''}). ${c.w}`)}
+  else{b.classList.add('ko');b.disabled=true;fb($('#dFb'),'badf',st.used.size<2?'No es eso. Usa alguna herramienta más antes de decidir.':'No es eso. Revisa lo que indican las pruebas.')}
+ };$('#dOpts').appendChild(b)});
+ if(st.solved)fb($('#dFb'),'good','<b>Caso resuelto.</b> '+c.w);
+}
+renderCase();
+
+/* ---------- 6. TEST ---------- */
+const POOL=[
+ ['En la jerarquía de memoria, ¿qué nivel es más rápido que la RAM pero más lento que la caché L1?',['Caché L3','SSD NVMe','Registros','HDD'],'Registros < 1 ns · L1 ~1 ns · L2 ~3-5 ns · L3 ~10-15 ns · RAM ~60-100 ns.'],
+ ['¿Qué significa que la RAM sea volátil?',['Pierde su contenido al quitar la alimentación','Solo se puede leer','Se borra cada vez que se lee','Guarda los datos aunque se apague'],'Al cerrar un programa o apagar, lo que no se ha guardado se pierde.'],
+ ['La celda de memoria DRAM está formada por…',['Un transistor y un condensador (1T1C)','Seis transistores','Un biestable','Una celda de puerta flotante'],'Condensador cargado = 1, descargado = 0. La SRAM usa un biestable de 6 transistores.'],
+ ['¿Qué tipo de memoria se usa en la caché del procesador?',['SRAM','DRAM','Flash','GDDR'],'SRAM: no necesita refresco, muy rápida pero poco densa y cara.'],
+ ['¿Por qué la DRAM necesita refresco?',['Porque los condensadores se descargan','Porque es memoria de solo lectura','Porque trabaja sin reloj','Porque usa luz ultravioleta'],'Como un vaso con un agujero: hay que rellenarlo cada pocos milisegundos.'],
+ ['¿Qué significa DDR?',['Double Data Rate: dos transferencias por ciclo','Dynamic Data RAM','Dual DIMM RAM','Direct Data Register'],'Transfiere en los flancos de subida y de bajada del reloj.'],
+ ['¿Cuál es el reloj real de una DDR4-3200?',['1600 MHz','3200 MHz','6400 MHz','800 MHz'],'Velocidad (MT/s) = Frecuencia (MHz) × 2 → 3200 / 2 = 1600 MHz.'],
+ ['¿Qué prefetch utiliza la DDR5?',['16n','8n','4n','2n'],'DDR 2n · DDR2 4n · DDR3 8n · DDR4 8n + grupos de bancos · DDR5 16n.'],
+ ['¿Qué dos generaciones comparten 240 contactos con la muesca en distinta posición?',['DDR2 y DDR3','DDR3 y DDR4','DDR y DDR2','DDR4 y DDR5'],'DDR2/DDR3: 240 contactos. DDR4/DDR5: 288 contactos. Siempre con la muesca en distinto sitio.'],
+ ['Tensión nominal de la DDR4:',['1,2 V','1,5 V','1,1 V','1,8 V'],'DDR2 1,8 V · DDR3 1,5 V · DDR4 1,2 V · DDR5 1,1 V.'],
+ ['¿Qué elemento es exclusivo de los módulos DDR5?',['El PMIC, situado cerca de la muesca','El chip SPD','Los contactos dorados','La muesca'],'En DDR5 la gestión de la alimentación pasa de la placa al módulo.'],
+ ['El «on-die ECC» de la DDR5…',['Corrige dentro del chip y no la convierte en memoria ECC','Es igual que la memoria ECC de servidor','Solo funciona con Xeon','Duplica la capacidad'],'Corrige dentro del chip sin informar al sistema. La ECC real usa chips adicionales (72 bits).'],
+ ['¿Qué guarda el chip SPD del módulo?',['Fabricante, capacidad, velocidades, latencias y perfiles XMP/EXPO','La BIOS de la placa','Los datos del usuario','La hora del sistema'],'Es una EEPROM que la BIOS lee al arrancar para configurar la memoria (plug and play).'],
+ ['En una etiqueta, «2Rx8» indica…',['Dual rank con chips de 8 bits','Dos módulos de 8 GB','DDR2 de 8 GB','2 canales a 8 GT/s'],'1R = single rank (un grupo de chips), 2R = dual rank. x8 = ancho de cada chip.'],
+ ['¿Cuántos contactos tiene un SO-DIMM DDR4?',['260','288','262','204'],'SO-DIMM: DDR3 204 · DDR4 260 · DDR5 262.'],
+ ['¿Qué inconveniente tiene la memoria LPDDR soldada?',['No se puede ampliar ni sustituir','Consume más','Es más lenta que la DDR','Necesita disipador'],'A cambio consume menos, ocupa menos y es más rápida (LPDDR5X > 8000 MT/s).'],
+ ['¿Qué es LPCAMM2?',['Un módulo plano y sustituible con LPDDR5X que se fija con tornillos','Un tipo de caché','Un perfil de overclock','Un formato de servidor'],'Lo usan portátiles profesionales desde 2024 y se espera que sustituya al SO-DIMM.'],
+ ['¿Qué incorpora un módulo CUDIMM?',['Un CKD que regenera la señal de reloj','Un chip registro para servidores','ECC de 72 bits','Memoria flash'],'Se usa en PC con DDR5 desde 6400 MT/s. Placas Intel serie 800 y posteriores.'],
+ ['¿Se puede instalar una RDIMM DDR5 en una placa de PC DDR5?',['No, las placas de PC no admiten RDIMM','Sí, porque tiene 288 contactos','Sí, pero sin ECC','Solo en la ranura A2'],'Aunque ambas sean DDR5 de 288 contactos, PC = UDIMM y servidor = RDIMM.'],
+ ['Ancho de banda de dos DDR4-3200 en dual channel:',['51 200 MB/s','25 600 MB/s','6400 MB/s','102 400 MB/s'],'3200 × 8 × 2 canales = 51 200 MB/s ≈ 51,2 GB/s.'],
+ ['Latencia real de una DDR5-6000 CL30:',['10 ns','30 ns','5 ns','20 ns'],'30 × 2000 / 6000 = 10 ns.'],
+ ['¿Cuál tiene menor latencia real: DDR4-3600 CL18 o DDR5-6400 CL32?',['Ninguna: las dos tienen 10 ns','DDR5-6400 CL32','DDR4-3600 CL18','No se puede calcular sin tRCD'],'18 × 2000 / 3600 = 10 ns · 32 × 2000 / 6400 = 10 ns. La latencia real apenas cambia; lo que crece es el ancho de banda.'],
+ ['En la notación CL30-36-36-76, el último número es…',['tRAS','CL','tRCD','tRP'],'Orden: CL - tRCD - tRP - tRAS.'],
+ ['¿Qué nombre por tasa corresponde a DDR4-2666?',['PC4-21300','PC4-2666','PC4-26660','PC4-10600'],'2666 × 8 = 21 328 → redondeado a PC4-21300.'],
+ ['¿Qué nombre por tasa corresponde a DDR5-5600?',['PC5-44800','PC5-5600','PC5-48000','PC5-22400'],'5600 × 8 = 44 800 MB/s.'],
+ ['Un único módulo de 16 GB en lugar de dos de 8 GB…',['Funciona en single channel','Funciona igual en dual channel','No arranca','Funciona en modo flexible'],'Para dual channel hace falta un módulo en cada canal.'],
+ ['Con dos módulos en una placa de 4 ranuras, en la mayoría de placas recientes se usan…',['A2 y B2','A1 y A2','A1 y B1','B1 y B2'],'La 2.ª y 4.ª ranura desde la CPU. Consulta siempre el manual.'],
+ ['Si mezclamos un módulo DDR4-3200 con otro DDR4-2666…',['Ambos funcionan a la velocidad del más lento','Cada uno va a su velocidad','Ambos van a 3200','El equipo no arranca nunca'],'Funciona a la velocidad y latencias del más lento, sin garantía de estabilidad.'],
+ ['Para 64 GB de DDR5, ¿qué configuración recomiendan los apuntes?',['2 × 32 GB','4 × 16 GB','8 × 8 GB','1 × 64 GB'],'Con cuatro módulos DDR5 suele bajar la velocidad; además quedan ranuras libres.'],
+ ['¿Qué es EXPO?',['El perfil de overclock de AMD para DDR5 (AM5)','Un tipo de módulo','Un test de memoria','El perfil de Intel'],'XMP es el de Intel (funciona también en la mayoría de placas AMD).'],
+ ['Tras activar XMP el equipo no arranca. ¿Cuál es el primer remedio?',['Borrar CMOS (Clear CMOS)','Cambiar los módulos','Reinstalar Windows','Cambiar la fuente'],'Jumper, botón o quitar la pila. Después: actualizar BIOS o probar un perfil más suave.'],
+ ['¿Qué referencia de memoria se recomienda para Ryzen 7000/9000?',['DDR5-6000 CL30','DDR5-8000 CL40','DDR4-3200 CL16','DDR5-4800 CL40'],'Es el punto óptimo para esa plataforma.'],
+ ['La memoria ECC…',['Corrige errores de un bit y detecta de dos','Corrige cualquier error','Es más rápida que la normal','Solo existe en DDR5'],'Usa chips adicionales (72 bits de ancho) y necesita soporte del procesador y la placa.'],
+ ['¿Qué memoria usan los aceleradores de IA, con chips apilados junto a la GPU?',['HBM','GDDR6','LPDDR5X','SRAM'],'HBM: alto ancho de banda y bajo consumo, pero cara. Su demanda ha disparado el precio de la RAM.'],
+ ['¿Cómo se llama el archivo de memoria virtual de Windows?',['pagefile.sys','swap.img','hiberfil.sys','memory.dmp'],'En Linux se usa una partición o archivo swap.'],
+ ['Una placa LGA 1700 con Core de 14.ª generación, ¿qué memoria usa?',['DDR4 o DDR5, según la placa','Solo DDR5','Solo DDR4','DDR4 y DDR5 a la vez'],'En LGA 1700 decide la placa, no el procesador. Nunca las dos a la vez.'],
+ ['¿Qué plataforma admite solo DDR4?',['AM4 (Ryzen 5000)','AM5','LGA 1851','LGA 1700'],'AM5 y LGA 1851 son solo DDR5.'],
+ ['¿Qué comando abre el Diagnóstico de memoria de Windows?',['mdsched','msconfig','wmic memorychip','dxdiag'],'Reinicia y prueba la memoria; el resultado aparece en el Visor de eventos (MemoryDiagnostics-Results).'],
+ ['¿Qué comando de Linux muestra la información de los módulos instalados?',['sudo dmidecode --type memory','free -h','lsblk','ip a'],'free -h muestra el uso, no los módulos.'],
+ ['Windows muestra 15,7 GB utilizables de 16 GB. ¿Qué ocurre?',['Es normal: reserva de hardware o firmware','Un módulo está averiado','Falta activar XMP','Es un SO de 32 bits'],'Una pequeña reserva es normal. Con 32 bits solo se podrían usar unos 4 GB.'],
+ ['¿Con qué se deben limpiar los contactos de un módulo?',['Alcohol isopropílico y paño sin pelusa','Goma de borrar','Agua y jabón','Lija fina'],'Nunca con goma de borrar.'],
+ ['¿Qué tipo de ROM se borraba con luz ultravioleta?',['EPROM','EEPROM','PROM','Flash'],'Tenía una ventanita en el chip. La EEPROM se borra eléctricamente.'],
+ ['¿Dónde se guardan los ajustes de la BIOS y el reloj, alimentados por una pila CR2032?',['En la CMOS','En el chip SPD','En la caché','En la VRAM'],'Si la pila se agota se pierde la hora o aparece «CMOS checksum error».'],
+];
+let Q;
+function startQuiz(){Q={qs:shuffle(POOL).slice(0,10).map(q=>({q:q[0],ok:q[1][0],opts:shuffle(q[1]),why:q[2]})),i:0,hits:0,ans:false};renderQ()}
+function renderQ(){
+ const box=$('#quiz');
+ if(Q.i>=Q.qs.length){box.innerHTML=`<h3 style="margin-top:0">Resultado: ${Q.hits}/10</h3><p>${Q.hits>=9?'¡Excelente! Dominas la memoria RAM.':Q.hits>=6?'Buen trabajo. Repasa los fallos en los apuntes.':'Repasa los apuntes y vuelve a intentarlo.'}</p><button class="btn pri" id="qr">Nuevo test</button>`;$('#qr').onclick=startQuiz;return}
+ const q=Q.qs[Q.i];
+ box.innerHTML=`<div class="note">Pregunta ${Q.i+1} de 10 · Aciertos: ${Q.hits}</div><div class="progress"><i style="width:${Q.i*10}%"></i></div><h3 style="margin-top:0">${q.q}</h3><div class="list" id="qo"></div><div class="fb" id="qfb"></div><div class="row"><button class="btn pri" id="qn" style="display:none">Siguiente →</button></div>`;
+ q.opts.forEach(o=>{const b=document.createElement('button');b.className='btn opt';b.textContent=o;b.onclick=()=>{
+  if(Q.ans)return;Q.ans=true;const ok=o===q.ok;if(ok){Q.hits++;addPts(2)}
+  [...$('#qo').children].forEach(c=>{if(c.textContent===q.ok)c.classList.add('ok');else if(c===b)c.classList.add('ko')});
+  fb($('#qfb'),ok?'good':'badf',(ok?'<b>¡Correcto!</b> ':'<b>No.</b> ')+q.why);$('#qn').style.display='';
+ };$('#qo').appendChild(b)});
+ $('#qn').onclick=()=>{Q.i++;Q.ans=false;renderQ()};
+}
+startQuiz();
+
+</script>
+</body>
+</html>
