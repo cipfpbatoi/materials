@@ -30,7 +30,6 @@
     - [2.2 Cómo se organiza la superficie: pistas, sectores y cilindros](#22-cómo-se-organiza-la-superficie-pistas-sectores-y-cilindros)
     - [2.3 De CHS a LBA](#23-de-chs-a-lba)
     - [2.4 Sectores de 512 bytes y de 4K](#24-sectores-de-512-bytes-y-de-4k)
-    - [2.5 Tecnologías de grabación: CMR, SMR y HAMR](#25-tecnologías-de-grabación-cmr-smr-y-hamr)
   - [3. Parámetros de un disco duro](#3-parámetros-de-un-disco-duro)
     - [3.1 Capacidad](#31-capacidad)
     - [3.2 Velocidad de rotación](#32-velocidad-de-rotación)
@@ -69,7 +68,7 @@
     - [8.3 GPT (GUID Partition Table)](#83-gpt-guid-partition-table)
     - [8.4 Comparativa](#84-comparativa)
     - [8.5 Las particiones de una instalación de Windows](#85-las-particiones-de-una-instalación-de-windows)
-    - [8.6 Convertir entre MBR y GPT](#86-convertir-entre-mbr-y-gpt)
+    - [8.6 Convertir entre MBR y GPT en Windows](#86-convertir-entre-mbr-y-gpt-en-windows)
   - [9. Sistemas de archivos y formateo](#9-sistemas-de-archivos-y-formateo)
     - [9.1 Qué es un sistema de archivos](#91-qué-es-un-sistema-de-archivos)
     - [9.2 Sistemas de archivos habituales](#92-sistemas-de-archivos-habituales)
@@ -188,6 +187,8 @@ Según **cómo** se guarda cada bit, hay tres grandes familias:
 | **Óptica** | Zonas que reflejan la luz de un láser de forma diferente | CD, DVD, Blu-ray |
 | **Electrónica (flash)** | Carga eléctrica atrapada en una celda de un chip | SSD, memorias USB, tarjetas SD, eMMC, UFS |
 
+![Cómo se almacena un bit en cada tecnología](./img/Cómo%20se%20almacena%20un%20bit%20en%20distintos%20dispositivos.png)
+
 ### 1.3 Interno, externo y extraíble
 
 - **Interno:** dentro de la caja, conectado a la placa base (mediante conector M.2, SATA).
@@ -217,18 +218,7 @@ El **disco duro** o **HDD** (*Hard Disk Drive*) guarda los datos de forma **magn
 
 ### 2.1 Componentes
 
-```
- ┌──────────────────────────────────────────────┐
- │  Carcasa hermética (aire filtrado o helio)   │
- │                                              │
- │      ╭───────────────╮        brazo ┐        │
- │    ╭─┤   PLATOS      ├─╮  ╭────────●──┐      │
- │    │ │      ●        │ │  │ actuador  │      │
- │    ╰─┤  (eje+motor)  ├─╯  ╰───────────┘      │
- │      ╰───────────────╯   cabezal en la punta │
- │                                              │
- └───────────────── PCB (controladora, caché) ──┘
-```
+![Partes de un disco duro](./img/HD-EstructFisisca.png)
 
 | Componente | Función |
 |---|---|
@@ -251,18 +241,10 @@ El **disco duro** o **HDD** (*Hard Disk Drive*) guarda los datos de forma **magn
 | **Sector** | Cada trozo en que se divide una pista. Es la **unidad mínima** que el disco lee o escribe. Tradicionalmente de **512 bytes**; los discos actuales usan **4096 bytes (4K)**. |
 | **Cilindro** | El conjunto de pistas que están **en la misma posición** en todas las caras. Como todos los cabezales se mueven juntos, se pueden leer todas las pistas de un cilindro sin mover el brazo. |
 
-```
-   Vista de una cara                      Cilindro (vista lateral)
 
-      ╭──────────────╮                  cabezal ─► ═══════ cara 0
-    ╭─┤ ╭──────────╮ ├─╮  ◄ pista               ─► ═══════ cara 1
-    │ │ │  ╭────╮  │ │ │                         ─► ═══════ cara 2
-    │ │ │  │ ●  │  │ │ │                         ─► ═══════ cara 3
-    │ │ │  ╰────╯  │ │ │                  └─ la misma pista en todas
-    ╰─┤ ╰──────────╯ ├─╯                     las caras = un cilindro
-      ╰──────╱───────╯
-           sector
-```
+| Imagen | Explicación |
+| :--- | :--- |
+| ![Organización lógica de un disco duro](https://upload.wikimedia.org/wikipedia/commons/a/ae/Disk-structure2.svg?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original) | A es una **pista** del disco (roja). Al conjunto de esa pista de cada cara de los platos se llama **cilindro** <br>B es un _sector geométrico_ (azul) <br>C es un **sector** de una pista (magenta) <br>D es un  **clúster**, un grupo de sectores consecutivos (verde). |
 
 Las pistas exteriores son más largas que las interiores, así que tienen **más sectores**. Esta técnica se llama **grabación por zonas** (*zoned bit recording*). Como el disco gira a velocidad constante, **en las pistas exteriores se leen más datos por vuelta**: el principio del disco (la parte exterior, donde se graba primero) es más rápido que el final.
 
@@ -274,22 +256,16 @@ Hoy se usa **LBA** (*Logical Block Addressing*): los sectores se numeran **del 0
 
 ### 2.4 Sectores de 512 bytes y de 4K
 
-Desde 2011 los discos usan internamente sectores de 4096 bytes (formato **Advanced Format**), porque así se pierde menos espacio en separaciones y códigos de corrección. Para mantener la compatibilidad:
+Desde que se inventaron los discos duros el tamaño del sector era de 512 bytes. A partir de 2011 los discos usan internamente sectores de 4096 bytes (formato **Advanced Format**), porque así se pierde menos espacio en separaciones y códigos de corrección. Para mantener la compatibilidad con sistemas antiguos, hay dos modos de presentación:
 
 - **512e** (*512 emulation*): el sector físico es de 4K, pero el disco se presenta como si tuviera sectores de 512 bytes.
 - **4Kn** (*4K native*): el disco se presenta con sectores de 4K. Necesita un sistema operativo y una UEFI que lo admitan.
 
+Podemos ver el tamaño de sector con `wmic diskdrive get bytespersector` en Windows o `fdisk -l` en Linux:
+
+![fdisk -l](./img/fdisk-l.png)
+
 **Consecuencia práctica:** las particiones deben empezar en una posición múltiplo de 4K (**alineación**). Las herramientas actuales lo hacen solas (alinean a 1 MiB). Si se clona un disco con herramientas antiguas, una partición desalineada puede bajar mucho el rendimiento.
-
-### 2.5 Tecnologías de grabación: CMR, SMR y HAMR
-
-| Tecnología | Cómo es | Dónde se usa |
-|---|---|---|
-| **CMR** (o PMR) | *Conventional Magnetic Recording*. Pistas independientes que no se solapan. | La mayoría de discos de NAS, vigilancia y empresa. Rendimiento estable. |
-| **SMR** | *Shingled Magnetic Recording*. Las pistas se **solapan** como las tejas de un tejado. Cabe más en cada plato, pero para reescribir una pista hay que reescribir las de al lado. | Discos baratos de sobremesa y externos, discos de archivo. **Muy lentos escribiendo de forma continua**: no se recomiendan para NAS ni RAID. |
-| **HAMR** | *Heat-Assisted Magnetic Recording*. Un láser calienta un punto diminuto del plato justo antes de escribir, lo que permite bits mucho más pequeños. | Discos de centro de datos de más de 30 TB. |
-
-> Antes de comprar un disco para un NAS, comprueba en la ficha técnica que sea **CMR**. Algunos fabricantes vendieron discos SMR sin indicarlo y causaron problemas en NAS y RAID.
 
 ---
 
@@ -675,11 +651,19 @@ El conector de la tarjeta tiene uno o dos cortes, llamados **llaves** (*keys*), 
 
 ## 8. Estructura lógica: particiones, MBR y GPT
 
-Un disco nuevo es solo una lista de sectores vacíos. Para que el sistema operativo pueda guardar archivos hay que:
+Un disco nuevo es solo una lista de sectores vacíos. Antes de poder utilizarlo para guardar archivos, hay que:
 
 1. **Inicializarlo** con un **esquema de particiones** (MBR o GPT).
 2. Crear una o varias **particiones**.
 3. **Formatear** cada partición con un **sistema de archivos** (apartado 9).
+
+Además, para que el sistema operativo pueda usar una partición tiene que **montarla**. Windows lo hace asignándole una **letra** (C:, D:…), y Linux, montándola en una **carpeta** (`/`, `/home`, `/mnt/datos`…).
+
+Podemos comparar este proceso con la construcción de una biblioteca para almacenar libros. Las distintas fases de la construcción serían:
+1. Crear las paredes exteriores del recinto donde irá la biblioteca (sería como **inicializar el disco**)
+2. Hacer tabiques internos para crear diferentes salas: podemos tener sólo 1 que ocupe todo el espacio o varias diferentes (≈ **particionar**)
+3. Poner estanterías en cada sala donde guardar los libros. En cada sala podemos tener un tipo de estanterías diferentes (≈ **formatear**)
+4. Por la mañana el bibliotecario abre la puerta de la sala para usar los libros (≈ el sistema operativo la monta al arrancar **montar**) y por la noche la cierra (≈ **desmontar** el sistema operativo la desmonta al apagar).
 
 ### 8.1 Particiones
 
@@ -738,9 +722,9 @@ Al instalar Windows 11 en un disco vacío, el instalador crea:
 | **Windows (C:)** | El resto | NTFS | Sistema, programas y datos. |
 | **Recuperación** | 600 MB–1 GB | NTFS | Entorno de recuperación de Windows (WinRE). |
 
-En Linux suele haber una partición **EFI** (que se puede compartir con Windows) y una partición **raíz** (`/`) con ext4 o Btrfs.
+En Linux suele haber una partición **EFI** (que se puede compartir con Windows si tenemos los 2 sistemas instalados) y una partición **raíz** (`/`) con ext4 o Btrfs. Además es habitual que los datos de los usuarios estén en una partición separada (`/home`). También puede haber una partición **swap** (intercambio) aunque cada vez más distribuciones usan un archivo de intercambio en la partición raíz.
 
-### 8.6 Convertir entre MBR y GPT
+### 8.6 Convertir entre MBR y GPT en Windows
 
 - **Disco de datos:** se puede convertir con la Administración de discos o `diskpart`, pero **hay que borrar todas las particiones antes** (se pierden los datos).
 - **Disco del sistema Windows:** la herramienta **`mbr2gpt`** lo convierte **sin borrar los datos**. Después hay que cambiar la UEFI de modo heredado (CSM) a modo UEFI.
