@@ -13,6 +13,7 @@
 - Instalar un disco de 3,5", uno de 2,5" y un SSD M.2, y prepararlo para usarlo (inicializar, particionar y formatear).
 - Explicar la diferencia entre MBR y GPT, y elegir el sistema de archivos adecuado.
 - Reconocer los tipos de almacenamiento extraíble: discos externos, memorias USB, tarjetas de memoria y discos ópticos.
+- Ver los discos, particiones y sistemas de archivos de un equipo desde Windows, desde Linux y con un USB de rescate como Hiren's BootCD PE.
 - Diagnosticar el estado de un disco con SMART y medir su rendimiento.
 - Mantener un disco en buen estado y borrar sus datos de forma segura.
 
@@ -110,11 +111,16 @@
     - [15.2 SSD M.2](#152-ssd-m2)
     - [15.3 Después de montarlo](#153-después-de-montarlo)
     - [15.4 Clonar el disco antiguo](#154-clonar-el-disco-antiguo)
-  - [16. Herramientas de información, diagnóstico y rendimiento](#16-herramientas-de-información-diagnóstico-y-rendimiento)
-    - [16.1 Ver los discos instalados](#161-ver-los-discos-instalados)
-    - [16.2 SMART: la salud del disco](#162-smart-la-salud-del-disco)
-    - [16.3 Comprobar el sistema de archivos y la superficie](#163-comprobar-el-sistema-de-archivos-y-la-superficie)
-    - [16.4 Medir el rendimiento](#164-medir-el-rendimiento)
+  - [16. Ver y diagnosticar el almacenamiento del equipo](#16-ver-y-diagnosticar-el-almacenamiento-del-equipo)
+    - [16.1 Qué queremos saber y dónde mirarlo](#161-qué-queremos-saber-y-dónde-mirarlo)
+    - [16.2 En Windows: herramientas gráficas](#162-en-windows-herramientas-gráficas)
+    - [16.3 En Windows: comandos](#163-en-windows-comandos)
+    - [16.4 En Linux: comandos](#164-en-linux-comandos)
+    - [16.5 En Linux: herramientas gráficas](#165-en-linux-herramientas-gráficas)
+    - [16.6 Hiren's BootCD PE](#166-hirens-bootcd-pe)
+    - [16.7 SMART: la salud del disco](#167-smart-la-salud-del-disco)
+    - [16.8 Comprobar el sistema de archivos y la superficie](#168-comprobar-el-sistema-de-archivos-y-la-superficie)
+    - [16.9 Medir el rendimiento](#169-medir-el-rendimiento)
   - [17. Mantenimiento y optimización](#17-mantenimiento-y-optimización)
     - [17.1 Discos duros: desfragmentar](#171-discos-duros-desfragmentar)
     - [17.2 SSD: TRIM, no desfragmentar](#172-ssd-trim-no-desfragmentar)
@@ -132,32 +138,6 @@
   - [22. Preguntas frecuentes](#22-preguntas-frecuentes)
   - [23. Actividades](#23-actividades)
   - [24. Recursos](#24-recursos)
-
-
-1. [El almacenamiento en el ordenador](#1-el-almacenamiento-en-el-ordenador)
-2. [El disco duro (HDD): cómo funciona](#2-el-disco-duro-hdd-cómo-funciona)
-3. [Parámetros de un disco duro](#3-parámetros-de-un-disco-duro)
-4. [Unidades de estado sólido (SSD)](#4-unidades-de-estado-sólido-ssd)
-5. [Interfaces y protocolos](#5-interfaces-y-protocolos)
-6. [Formatos de SSD y la ranura M.2](#6-formatos-de-ssd-y-la-ranura-m2)
-7. [HDD frente a SSD](#7-hdd-frente-a-ssd)
-8. [Estructura lógica: particiones, MBR y GPT](#8-estructura-lógica-particiones-mbr-y-gpt)
-9. [Sistemas de archivos y formateo](#9-sistemas-de-archivos-y-formateo)
-10. [Almacenamiento externo y extraíble](#10-almacenamiento-externo-y-extraíble)
-11. [Almacenamiento óptico: CD, DVD y Blu-ray](#11-almacenamiento-óptico-cd-dvd-y-blu-ray)
-12. [Almacenamiento en red, en la nube y copias de seguridad](#12-almacenamiento-en-red-en-la-nube-y-copias-de-seguridad)
-13. [La BIOS/UEFI y los discos](#13-la-biosuefi-y-los-discos)
-14. [Compatibilidad y elección del almacenamiento](#14-compatibilidad-y-elección-del-almacenamiento)
-15. [Instalación paso a paso](#15-instalación-paso-a-paso)
-16. [Herramientas de información, diagnóstico y rendimiento](#16-herramientas-de-información-diagnóstico-y-rendimiento)
-17. [Mantenimiento y optimización](#17-mantenimiento-y-optimización)
-18. [Síntomas y averías habituales](#18-síntomas-y-averías-habituales)
-19. [Borrado seguro y recuperación de datos](#19-borrado-seguro-y-recuperación-de-datos)
-20. [Tecnologías del pasado y del futuro](#20-tecnologías-del-pasado-y-del-futuro)
-21. [Glosario](#21-glosario)
-22. [Preguntas frecuentes](#22-preguntas-frecuentes)
-23. [Actividades](#23-actividades)
-24. [Recursos](#24-recursos)
 
 ---
 
@@ -1137,56 +1117,281 @@ Para cambiar un HDD por un SSD sin reinstalar, se puede **clonar** el disco: cop
 
 ---
 
-## 16. Herramientas de información, diagnóstico y rendimiento
+## 16. Ver y diagnosticar el almacenamiento del equipo
 
-### 16.1 Ver los discos instalados
+Cuando llega un equipo al taller, lo primero es saber **qué almacenamiento tiene y en qué estado está**: cuántos discos hay, de qué tipo, cómo están conectados, cómo están particionados, cuánto espacio queda y si están sanos. Podemos averiguarlo de tres formas:
 
-**Windows:**
+- **Desde Windows**, con sus herramientas gráficas, con comandos o con programas gratuitos.
+- **Desde Linux**, con comandos o herramientas gráficas. Sirve también un **USB autoarrancable** de Linux (*live*) para revisar un equipo sin tocar su sistema.
+- **Desde un USB de rescate** como **Hiren's BootCD PE**, cuando el sistema del equipo no arranca o no queremos usarlo.
 
-| Herramienta | Qué muestra |
+### 16.1 Qué queremos saber y dónde mirarlo
+
+| Qué queremos saber | Windows | Linux | Hiren's BootCD PE |
+|---|---|---|---|
+| Discos instalados, modelo y capacidad | Administración de discos, `Get-PhysicalDisk` | `lsblk`, `sudo fdisk -l` | HWiNFO, Administración de discos |
+| Si es HDD o SSD | Administrador de tareas, `Get-PhysicalDisk` (MediaType) | `lsblk -o NAME,ROTA` (columna ROTA) | HWiNFO, HD Tune |
+| Cómo está conectado (SATA, NVMe, USB) | `Get-PhysicalDisk` (BusType), CrystalDiskInfo | `lsblk -o NAME,TRAN` (columna TRAN) | HWiNFO |
+| Velocidad real de la conexión (SATA/600, PCIe 4.0 x4…) | CrystalDiskInfo (Modo de transferencia) | `smartctl -i`, `lspci -vv` | HWiNFO |
+| Esquema MBR o GPT | Administración de discos, `Get-Disk`, `diskpart` | `sudo parted -l`, `sudo fdisk -l` | Administración de discos, AOMEI Partition Assistant |
+| Particiones y sistemas de archivos | Administración de discos, `Get-Volume` | `lsblk -f`, `sudo blkid` | AOMEI Partition Assistant |
+| Espacio usado y libre | Explorador, `Get-Volume` | `df -h` | Explorador |
+| Tamaño de sector | `Get-PhysicalDisk`, `fsutil fsinfo sectorinfo` | `sudo fdisk -l` | HWiNFO |
+| Salud (SMART), temperatura, horas de uso | CrystalDiskInfo, Configuración de Windows | `smartctl`, `nvme smart-log`, Discos | GSmartControl, HDDScan, HD Tune |
+| Rendimiento | CrystalDiskMark | KDiskMark, Discos, `hdparm -t` | HD Tune |
+
+### 16.2 En Windows: herramientas gráficas
+
+**Administración de discos** (clic derecho en Inicio → *Administración de discos*, o `diskmgmt.msc`). Es la herramienta básica: muestra cada disco con sus particiones dibujadas en una barra.
+
+- Cada disco aparece como **Disco 0**, **Disco 1**… con su capacidad. Los extraíbles (USB) también aparecen.
+- Los colores indican el tipo de espacio: **azul oscuro**, partición primaria; **verde**, partición extendida (MBR); **azul claro**, unidad lógica; **negro**, espacio **no asignado**.
+- Para saber si un disco es **MBR o GPT**: clic derecho sobre el nombre del disco → *Propiedades* → pestaña *Volúmenes* → *Estilo de partición*.
+- Desde aquí se puede inicializar, crear, formatear, ampliar, reducir y eliminar particiones, y cambiar letras.
+
+**Configuración → Sistema → Almacenamiento → Configuración avanzada de almacenamiento → Discos y volúmenes** (Windows 11). Muestra cada disco con su tipo y, en *Propiedades*, su **estado**, la **temperatura** y, en los SSD, la **vida útil restante** estimada.
+
+**Administrador de tareas → Rendimiento → Disco.** Indica si es **SSD o HDD**, su capacidad, si contiene el sistema y su actividad y velocidad en tiempo real. Si un disco está siempre al 100 %, es un cuello de botella.
+
+**Administrador de dispositivos** (`devmgmt.msc`). En *Unidades de disco* aparecen los discos con su modelo, y en *Controladoras de almacenamiento*, las controladoras (SATA AHCI, NVMe, Intel RST/VMD…). Un signo de exclamación indica que falta un controlador.
+
+**Información del sistema** (`msinfo32`) → *Componentes* → *Almacenamiento* → *Discos*. Resume modelo, tamaño, número de particiones y **bytes por sector** de cada disco.
+
+**Optimizar unidades** (`dfrgui`). Indica el **tipo de medio** de cada unidad (unidad de estado sólido o disco duro) y cuándo se optimizó por última vez.
+
+**Programas gratuitos recomendados:**
+
+| Programa | Para qué |
 |---|---|
-| **Administración de discos** (`diskmgmt.msc`) | Discos, particiones, sistemas de archivos, MBR o GPT (en Propiedades → Volúmenes) |
-| **Administrador de dispositivos** | Discos y controladoras, y si les falta el controlador |
-| **Configuración → Sistema → Almacenamiento → Discos y volúmenes** | Discos, estado, temperatura y vida útil estimada de los SSD |
-| **Administrador de tareas → Rendimiento** | Uso del disco en tiempo real, tipo (HDD/SSD) y velocidad |
+| **CrystalDiskInfo** | SMART, temperatura, horas de uso y **modo de transferencia**. Este último se lee "actual \| máximo": por ejemplo, `SATA/600 \| SATA/600` es un disco SATA III funcionando a 6 Gb/s, y `PCIe 3.0 x4 \| PCIe 4.0 x4` es un SSD PCIe 4.0 que está funcionando a velocidad de PCIe 3.0. |
+| **CrystalDiskMark** | Rendimiento (apartado 16.9). |
+| **HWiNFO** | Inventario completo del equipo, incluidos los discos, sus controladoras y su conexión. |
+| **Herramienta del fabricante** | Samsung Magician, WD Dashboard, Crucial Storage Executive, Kingston SSD Manager, Seagate SeaTools… Muestran la salud, actualizan el firmware y hacen pruebas. |
 
-**`diskpart`** (en una consola como administrador):
+### 16.3 En Windows: comandos
+
+Abre **PowerShell** o **Terminal** como administrador.
+
+**PowerShell** (recomendado):
+
+```powershell
+# Discos físicos: modelo, HDD/SSD, bus (SATA, NVMe, USB), tamaño en bytes y salud
+Get-PhysicalDisk | Format-Table FriendlyName, MediaType, BusType, Size, HealthStatus
+
+# Discos: número, estilo de partición (MBR/GPT) y tamaño
+Get-Disk
+
+# Particiones de todos los discos
+Get-Partition
+
+# Volúmenes: letra, etiqueta, sistema de archivos, espacio libre y total
+Get-Volume
+
+# Tamaño de sector lógico y físico (512, 4096)
+Get-PhysicalDisk | Format-Table FriendlyName, LogicalSectorSize, PhysicalSectorSize
+
+# Temperatura, desgaste y horas de uso (no todos los discos lo informan)
+Get-PhysicalDisk | Get-StorageReliabilityCounter | Format-Table Temperature, Wear, PowerOnHours
+```
+
+Ejemplo de salida de `Get-PhysicalDisk` en un equipo con un SSD NVMe, un disco duro y un pendrive:
+
+```
+FriendlyName              MediaType   BusType          Size HealthStatus
+------------              ---------   -------          ---- ------------
+Samsung SSD 990 PRO 1TB   SSD         NVMe    1000204886016 Healthy
+ST2000DM008-2FR102        HDD         SATA    2000398934016 Healthy
+Kingston DataTraveler 3.0 Unspecified USB       30943995904 Healthy
+```
+
+El tamaño aparece en **bytes**. Para pasarlo a lo que muestra el Explorador, se divide entre 1024³: 1 000 204 886 016 / 1024³ ≈ **931,5 GB**.
+
+**diskpart** (en una consola como administrador):
 
 ```
 diskpart
-list disk            ← discos, tamaño y si son GPT (*)
+list disk          ← discos y tamaño; un * en la columna "GPT" indica que es GPT
 select disk 1
-detail disk          ← modelo, tipo de bus, particiones
+detail disk        ← modelo, tipo de bus, volúmenes del disco
 list partition
-list volume
+list volume        ← todas las letras, con su sistema de archivos y tamaño
+exit
 ```
 
 > `diskpart` también puede **borrar un disco entero** con `clean`. Comprueba **dos veces** qué disco has seleccionado antes de hacerlo.
 
-**PowerShell** (sustituye al antiguo comando `wmic`, que Microsoft ha declarado obsoleto y está retirando de Windows 11):
+**Otros comandos útiles:**
 
-```powershell
-Get-PhysicalDisk | Select FriendlyName, MediaType, BusType, Size, HealthStatus
-Get-Disk                           # discos, estilo de partición (MBR/GPT)
-Get-Partition
-Get-Volume                         # letras, sistema de archivos, espacio libre
-Get-PhysicalDisk | Get-StorageReliabilityCounter | Select Temperature, Wear, PowerOnHours
-```
+| Comando | Qué muestra |
+|---|---|
+| `fsutil fsinfo sectorinfo C:` | Tamaño de sector lógico y físico, alineación y si el disco admite TRIM |
+| `fsutil fsinfo ntfsinfo C:` | Datos del sistema NTFS: bytes por sector y por clúster |
+| `fsutil behavior query DisableDeleteNotify` | Si TRIM está activo (0 = activo) |
+| `chkdsk C:` | Comprueba el sistema de archivos sin reparar (solo lectura) |
+| `winsat disk -drive c` | Prueba de rendimiento rápida del disco C: |
 
-**Linux:**
+> El antiguo comando **`wmic`** (por ejemplo, `wmic diskdrive get model,size`) todavía funciona en muchos equipos, pero Microsoft lo ha declarado obsoleto y lo está retirando de Windows 11. Usa PowerShell.
+
+### 16.4 En Linux: comandos
+
+Casi todos necesitan permisos de administrador (`sudo`). Algunos están en paquetes que hay que instalar: `smartmontools` (smartctl), `nvme-cli` (nvme) y `lshw`.
+
+**Nombres de los dispositivos.** En Linux cada disco es un archivo dentro de `/dev`:
+
+| Dispositivo | Discos | Particiones |
+|---|---|---|
+| SATA, SAS y USB | `/dev/sda`, `/dev/sdb`, `/dev/sdc`… | `sda1`, `sda2`… |
+| NVMe | `/dev/nvme0n1`, `/dev/nvme1n1`… | `nvme0n1p1`, `nvme0n1p2`… |
+| Tarjetas SD y eMMC | `/dev/mmcblk0`… | `mmcblk0p1`… |
+
+**Ver los discos y las particiones:**
 
 ```bash
-lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT,MODEL,ROTA   # ROTA=1: HDD; 0: SSD
-sudo fdisk -l               # discos y particiones
-sudo parted -l              # incluye si es MBR (msdos) o GPT
-df -h                       # espacio usado y libre de cada sistema de archivos
+# Discos y particiones en forma de árbol
+lsblk
+
+# Solo los discos, con modelo, tamaño, si giran (ROTA) y cómo se conectan (TRAN)
+lsblk -d -o NAME,MODEL,SIZE,ROTA,TRAN
+
+# Particiones con sistema de archivos, etiqueta, UUID y punto de montaje
+lsblk -f
+
+# Discos y particiones con detalle: modelo, tamaño de sector, tipo de tabla (gpt o dos)
+sudo fdisk -l
+
+# Igual, indicando "Partition Table: gpt" o "msdos" (MBR)
+sudo parted -l
+
+# Identificador (UUID) y tipo de cada partición
+sudo blkid
+
+# Espacio usado y libre de cada sistema de archivos montado, con su tipo
+df -hT
+
+# Qué ocupa una carpeta
+du -sh /home/usuario
 ```
 
-En Linux, los discos SATA y USB aparecen como `/dev/sda`, `/dev/sdb`… (particiones `sda1`, `sda2`); los NVMe, como `/dev/nvme0n1` (particiones `nvme0n1p1`…); las tarjetas SD y eMMC, como `/dev/mmcblk0`.
+Ejemplo de salida de `lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS,ROTA,TRAN`:
 
-Herramientas gráficas: **GParted** y **Discos** (GNOME), que también muestra el estado SMART.
+```
+NAME          SIZE TYPE FSTYPE MOUNTPOINTS     ROTA TRAN
+sda           1,8T disk                           1 sata
+└─sda1        1,8T part ntfs   /mnt/datos         1
+nvme0n1     931,5G disk                           0 nvme
+├─nvme0n1p1   512M part vfat   /boot/efi          0
+├─nvme0n1p2   900G part ext4   /                  0
+└─nvme0n1p3    31G part swap   [SWAP]             0
+```
 
-### 16.2 SMART: la salud del disco
+Se lee así: hay un SSD NVMe (ROTA 0, TRAN nvme) con el sistema (partición EFI en FAT32, raíz `/` en ext4 y una partición de intercambio) y un disco duro SATA (ROTA 1) con una partición NTFS de datos.
+
+> La columna **ROTA** no es fiable en los dispositivos USB: muchos adaptadores USB dicen que el dispositivo "gira" aunque sea un pendrive o un SSD.
+
+**Ver la salud y la conexión:**
+
+```bash
+# Modelo, número de serie, capacidad, rpm o "Solid State Device",
+# tamaño de sector y versión SATA con la velocidad actual
+sudo smartctl -i /dev/sda
+
+# Resumen de salud: PASSED o FAILED
+sudo smartctl -H /dev/sda
+
+# Toda la información SMART (atributos, errores, pruebas)
+sudo smartctl -a /dev/sda
+
+# SSD NVMe: lista de unidades y su información SMART
+sudo nvme list
+sudo nvme smart-log /dev/nvme0
+
+# Resumen del hardware de almacenamiento
+sudo lshw -class disk -short
+```
+
+En la salida de `smartctl -i` de un disco SATA aparece una línea como `SATA Version is: SATA 3.3, 6.0 Gb/s (current: 6.0 Gb/s)`. Si *current* fuera 3.0 Gb/s, el disco estaría conectado a un puerto SATA II o con un cable defectuoso.
+
+**¿A qué velocidad PCIe trabaja un SSD NVMe?**
+
+```bash
+lspci | grep -i nvme                       # localiza el SSD, por ejemplo 01:00.0
+sudo lspci -vv -s 01:00.0 | grep -E "LnkCap|LnkSta"
+```
+
+`LnkCap` indica lo que admite el SSD y `LnkSta` cómo está funcionando. La velocidad se da en GT/s: **8 GT/s es PCIe 3.0**, **16 GT/s es PCIe 4.0** y **32 GT/s es PCIe 5.0**. `Width x4` indica los carriles. Si un SSD PCIe 4.0 muestra `Speed 8GT/s, Width x4`, está funcionando como PCIe 3.0.
+
+**Otros comandos útiles:**
+
+| Comando | Qué muestra |
+|---|---|
+| `cat /sys/block/sda/queue/rotational` | 1 si el disco gira (HDD) y 0 si no (SSD) |
+| `cat /sys/block/nvme0n1/queue/physical_block_size` | Tamaño de sector físico |
+| `sudo hdparm -I /dev/sda` | Información detallada de un disco SATA (modelo, funciones, TRIM) |
+| `sudo hdparm -t /dev/sda` | Prueba rápida de lectura secuencial |
+| `sudo dmesg \| grep -i -E "sata link\|nvme"` | Mensajes del núcleo al detectar los discos (velocidad del enlace SATA, errores) |
+| `systemctl status fstrim.timer` | Si el TRIM semanal está activado |
+| `findmnt` | Qué está montado y dónde |
+
+### 16.5 En Linux: herramientas gráficas
+
+- **Discos** (`gnome-disks`): muestra discos y particiones, el estado SMART (*Datos SMART y autocomprobaciones*) y permite medir el rendimiento (*Comparativa de rendimiento*), formatear y crear imágenes.
+- **GParted**: editor de particiones. Muestra el esquema (*Dispositivo → Crear tabla de particiones*), las particiones, sus sistemas de archivos y el espacio usado.
+- **GSmartControl**: interfaz gráfica de `smartctl`.
+- **KDiskMark**: rendimiento, con la misma interfaz que CrystalDiskMark.
+
+**USB autoarrancable de Linux.** Con un USB de **Ubuntu** (opción *Probar Ubuntu*), **GParted Live** o **SystemRescue** podemos arrancar cualquier equipo y usar todas estas herramientas **sin instalar nada y sin tocar el sistema del equipo**. Es muy útil para revisar un ordenador cuyo Windows no arranca o para copiar sus datos.
+
+### 16.6 Hiren's BootCD PE
+
+**Qué es.** Hiren's BootCD fue durante años el CD de rescate más usado por los técnicos. Su autor original dejó de actualizarlo en 2012, y desde entonces un grupo de seguidores mantiene **Hiren's BootCD PE**: un **Windows PE** (una versión reducida de Windows que arranca desde un USB) de 64 bits con **decenas de herramientas gratuitas** ya instaladas. La última versión es la **1.0.8**, de marzo de 2024; la imagen ISO ocupa unos 3 GB.
+
+**Para qué sirve:**
+
+- Revisar el estado de los discos de un equipo **que no arranca**.
+- **Copiar los datos** de un equipo averiado a un disco externo antes de repararlo.
+- Particionar, clonar y crear imágenes de discos.
+- Recuperar archivos borrados y particiones perdidas.
+- Reparar el arranque de Windows.
+
+Todo ello **sin usar el sistema operativo instalado**, lo que evita que un virus o un Windows dañado interfieran, y sin escribir nada en el disco del equipo si no lo pedimos.
+
+**Cómo prepararlo:**
+
+1. Descarga la ISO **solo desde la web oficial**: `hirensbootcd.org`. Hay copias modificadas en otras webs que pueden llevar malware.
+2. Crea el USB de arranque (de 8 GB o más) con la herramienta **ISO2USB** que ofrece la propia web, con **Rufus** o con **Ventoy**. Ventoy permite tener en el mismo pendrive varias ISO (Hiren's, Ubuntu, GParted Live, el instalador de Windows…) y elegir una al arrancar.
+3. Conecta el USB al equipo y entra en el **menú de arranque** (F8, F11 o F12, según la placa) para arrancar desde él.
+4. Requisitos: un equipo de 64 bits con al menos 2 GB de RAM (mejor 4 GB). Si no arranca, comprueba que el USB aparece en el menú de arranque en modo UEFI y, si hace falta, desactiva temporalmente **Secure Boot**.
+
+**Dentro de Hiren's.** Arranca un escritorio de Windows con un menú de inicio propio, donde las herramientas están ordenadas por categorías. Las más útiles para el almacenamiento son:
+
+| Categoría | Herramientas | Para qué |
+|---|---|---|
+| Información del sistema | **HWiNFO**, Speccy | Inventario de discos, controladoras y conexiones |
+| Salud y superficie del disco | **GSmartControl**, **HDDScan**, **HD Tune**, WD Data Lifeguard Diagnostics | SMART, temperatura, prueba de superficie, rendimiento |
+| Sistema de archivos | CheckDisk GUI | `chkdsk` con ventana |
+| Particiones | **AOMEI Partition Assistant**, Macrorit Partition Extender, Administración de discos | Ver, crear, ampliar y convertir particiones (MBR ↔ GPT) |
+| Clonado e imágenes | **Macrium Reflect**, AOMEI Backupper, Lazesoft Disk Image & Clone | Clonar un HDD a un SSD, crear y restaurar imágenes |
+| Recuperación de datos | **Recuva**, Puran File Recovery, GetDataBack, DiskExplorer | Recuperar archivos borrados o de particiones dañadas |
+| Arranque | BootIce, EasyBCD | Reparar o editar el arranque |
+| Borrado | HDD Low-Level Format Tool | Escribir ceros en todo un disco (no es un formato "de bajo nivel" real; ver 9.3) |
+
+**Precauciones:**
+
+- Al arrancar desde Hiren's, las **letras de las unidades cambian**: la unidad `X:` es el propio Hiren's y las particiones del equipo pueden tener letras distintas de las de su Windows. **Identifica cada disco por su tamaño, modelo y etiqueta** antes de tocar nada.
+- Desde Hiren's podemos borrar, particionar o formatear cualquier disco: un error se paga caro. Si vamos a recuperar datos, **primero copia, después repara**.
+- No se ha actualizado desde 2024: algunos programas son versiones antiguas y algunos componentes muy nuevos pueden no tener controlador.
+- Los discos cifrados con **BitLocker** aparecerán bloqueados: hace falta la clave de recuperación (suele estar en la cuenta Microsoft del usuario).
+
+**Un caso típico de taller con Hiren's:**
+
+1. Un portátil no arranca Windows. Arrancamos desde el USB de Hiren's.
+2. Con **HWiNFO** o la **Administración de discos** comprobamos que el SSD se detecta y vemos sus particiones.
+3. Con **GSmartControl** o **HD Tune** revisamos la salud del disco.
+4. Si el disco está mal o hay dudas, **copiamos los datos del usuario** a un disco externo con el Explorador.
+5. Después reparamos: el arranque (BootIce, o la reparación de Windows), el sistema de archivos (CheckDisk) o cambiamos el disco y **clonamos** (Macrium Reflect).
+
+### 16.7 SMART: la salud del disco
+
 
 **SMART** (*Self-Monitoring, Analysis and Reporting Technology*) es un sistema de autodiagnóstico que llevan todos los HDD y SSD. Registra contadores sobre su estado, y permite **anticipar muchos fallos**.
 
@@ -1213,14 +1418,14 @@ Herramientas gráficas: **GParted** y **Discos** (GNOME), que también muestra e
 
 > SMART **no avisa de todos los fallos**: un disco puede morir de repente por un fallo de la electrónica o de la controladora con todo en "Bueno". Pero si SMART avisa, **hay que hacer una copia de seguridad ya** y cambiar el disco.
 
-### 16.3 Comprobar el sistema de archivos y la superficie
+### 16.8 Comprobar el sistema de archivos y la superficie
 
 - **`chkdsk`** (Windows): comprueba y repara el sistema de archivos. `chkdsk C: /f` corrige errores; `/r` además busca sectores defectuosos (en un HDD puede tardar horas).
 - **`fsck`** (Linux): equivalente, sobre una partición **desmontada**.
 - **Pruebas largas del fabricante** (SeaTools, WD Dashboard) o `smartctl -t long /dev/sda`: leen toda la superficie del disco.
 - **Victoria** o **HD Tune** (Windows): mapa de la superficie con los tiempos de acceso de cada zona; los bloques lentos o rojos indican problemas.
 
-### 16.4 Medir el rendimiento
+### 16.9 Medir el rendimiento
 
 - **CrystalDiskMark** (Windows) y **KDiskMark** (Linux, misma interfaz): miden lectura y escritura secuencial (SEQ1M) y aleatoria (RND4K). La fila **RND4K Q1T1** es la que más se parece al uso diario.
 - **`fio`** (Linux): herramienta profesional, muy configurable.
